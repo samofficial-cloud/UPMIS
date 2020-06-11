@@ -18,8 +18,18 @@
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'auth'], function(){
+//Route::get('/abc', 'HomeController@index')->name('home');
 
-Route::get('/home', function () {
-    return view('master');
+Route::get('/', function () {
+    return view('index');
 });
+
+Route::get('/Space', function () {
+    return view('Space');
+});
+
+
+});
+
+
