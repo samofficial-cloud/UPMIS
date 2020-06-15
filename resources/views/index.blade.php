@@ -4,11 +4,11 @@
 <div class="wrapper">
 <div class="sidebar">
         <ul style="list-style-type:none;">
-            <li><a href="#"><i class="fas fa-home active"></i>Home</a></li>
-            <li><a href="#"><i class="fas fa-building"></i>Space</a></li>
+            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
             <li><a href="#"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="#"><i class="fas fa-car-side"></i>Car Rental</a></li>
-            <li><a href="#"><i class="fas fa-user"></i>Clients</a></li>
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <li><a href="#"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
@@ -16,7 +16,6 @@
         </ul> 
     </div>
 <div class="main_content">
-{{-- <h1 class="page-header">Dashboard</h1> --}}
 <div class="flex-container">
 <div style="flex-grow: 1" class="card shadow-sm p-10 mb-10 bg-white  flex_container_div">
 <div class="flex_container_inside">
