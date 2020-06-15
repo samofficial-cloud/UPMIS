@@ -564,3 +564,7 @@ margin-left: 43.5%;
 }
  
 
+.counterCell:before {
+    content: counter(tableCount);
+    counter-increment: tableCount;
+}
