@@ -24,8 +24,22 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function(){
 
 
+Route::get('/clients', 'clientsController@index')->name('clients');
 
 
+
+
+Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
+
+Route::get('/car','carRentalController@index');
+
+Route::get('/car/edit_car','carRentalController@editcar')->name('editcar');
+
+Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('deletecar');
+
+Route::get('/abcd', function () {
+    return view('multform');
+});
 
 });
 

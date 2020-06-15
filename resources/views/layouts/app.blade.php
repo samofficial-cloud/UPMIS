@@ -53,7 +53,7 @@
                      <div class="pl-2">
                       <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" />
                     </div>
-                    <div class="pl-3 pt-3" style="color: #111;"><h2>UDSM PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
+                    <div class="pl-3 pt-3" style="color: #111;"><h2 style="font-size: 2vw">UDSM PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
                       
                     </div>
                 </div>
@@ -120,6 +120,7 @@
             @yield('content')
         </main>
     </div>
+    @yield('pagescript')
 </body>
 
 <footer class="footer">
