@@ -566,3 +566,7 @@ margin-left: 43.5%;
       animation: blinker 0.6s linear infinite;
       }
 
+.counterCell:before {
+    content: counter(tableCount);
+    counter-increment: tableCount;
+}

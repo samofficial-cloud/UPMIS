@@ -14,20 +14,17 @@
 
 
 
-
-
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/Space', 'SpaceController@index');
+Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
+Route::get('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
+Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function(){
-//Route::get('/abc', 'HomeController@index')->name('home');
 
-Route::get('/', function () {
-    return view('index');
-});
 
-Route::get('/Space', function () {
-    return view('Space');
-});
+
 
 
 });

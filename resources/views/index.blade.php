@@ -5,7 +5,7 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
             <li><a href="#"><i class="fas fa-home active"></i>Home</a></li>
-            <li><a href="#"><i class="fas fa-building"></i>Space</a></li>
+            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
             <li><a href="#"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="#"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="#"><i class="fas fa-user"></i>Clients</a></li>
