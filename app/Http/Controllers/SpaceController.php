@@ -35,7 +35,7 @@ class SpaceController extends Controller
     {
 
         DB::table('spaces')->insert(
-            ['space_id' => $request->get('space_id'),'type' => $request->get('space_type'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide' => $request->get('rent_price_guide')]
+            ['space_id' => $request->get('space_id'),'space_type' => $request->get('space_type'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide' => $request->get('rent_price_guide')]
         );
 
 
@@ -53,7 +53,7 @@ class SpaceController extends Controller
 
         DB::table('spaces')
             ->where('id', $id)
-            ->update(['type' => $request->get('space_type')]);
+            ->update(['space_type' => $request->get('space_type')]);
 
 
         DB::table('spaces')
@@ -87,5 +87,74 @@ class SpaceController extends Controller
         return redirect('/Space')
             ->with('success', 'Renting space deleted successfully');
     }
+
+
+    public function autoCompleteSpaceId(Request $request)
+    {
+
+
+
+        if($request->get('query'))
+        {
+            $query = $request->get('query');
+            $space_type=$request->get('space_type');
+            $space_location=$request->get('space_location');
+
+        $space_id=DB::table('spaces')->where('space_type',$space_type)->where('location',$space_location)->where('space_id', 'LIKE', "%{$query}%")->get();
+
+
+
+            if(count($space_id)!=0){
+                $output = '<ul class="dropdown-menu_custom" style="display:block; width: 100%; margin-top: -25px;
+    margin-bottom: 10px; ">';
+                foreach($space_id as $row)
+                {
+                    $output .= '
+       <li id="listSpacePerTypeLocation">'.$row->space_id.'</li>
+       ';
+                }
+                $output .= '</ul>';
+                echo $output;
+            }
+            else{
+                echo "0";
+            }
+
+        }
+
+
+    }
+
+
+
+    public function autoCompleteSpaceSize(Request $request)
+    {
+
+
+
+        if($request->get('selected_space_id'))
+        {
+            $selected_space_id = $request->get('selected_space_id');
+
+
+            $space_size=DB::table('spaces')->where('space_id',$selected_space_id)->value('size');
+
+
+
+            if($space_size!=null){
+
+                echo $space_size;
+            }
+            else{
+                echo "0";
+            }
+
+        }
+
+
+    }
+
+
+
 
 }
