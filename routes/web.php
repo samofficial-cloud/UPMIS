@@ -46,9 +46,25 @@ Route::get('/car/edit_car','carRentalController@editcar')->name('editcar');
 
 Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('deletecar');
 
-Route::get('/abcd', function () {
-    return view('multform');
-});
+Route::get('/contracts/car_rental','carContractsController@index')->name('carContracts');
+
+Route::get('/contracts/car_rental/add','carContractsController@addContractForm')->name('carRentalForm');
+
+Route::get('/contracts/car_rental/edit/{id}','carContractsController@editContractForm')->name('EditcarRentalForm');
+
+Route::post('/contracts/car_rental/add/submit','carContractsController@newcontract')->name('newCarcontract');
+
+Route::post('/contracts/car_rental/edit/submit','carContractsController@editcontract')->name('editCarcontract');
+
+Route::get('/contracts/car_rental/delete/{id}', 'carContractsController@deletecontract')->name('deletecontract');
+
+Route::post('/autocomplete/vehicle', 'carRentalController@fetch')->name('autocomplete.fetch');
+
+Route::post('/autocomplete/model', 'carRentalController@model')->name('autocomplete.model');
+
+Route::post('/autocomplete/hirerate', 'carRentalController@hirerate')->name('autocomplete.hirerate');
+
+
 
 });
 
