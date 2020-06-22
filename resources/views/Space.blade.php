@@ -1,4 +1,55 @@
 @extends('layouts.app')
+@section('style')
+<style type="text/css">
+  div.dataTables_filter{
+    padding-left:878px;
+    padding-bottom:20px;
+  }
+
+  div.dataTables_length label {
+    font-weight: normal;
+    text-align: left;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  div.dataTables_length select {
+    height:25px;
+    width:10px;
+    font-size: 70%;
+  }
+  table.dataTable {
+    font-family: "Nunito", sans-serif;
+    font-size: 15px;
+
+
+
+  }
+  table.dataTable.no-footer {
+    border-bottom: 0px solid #111;
+  }
+
+  hr {
+    margin-top: 0rem;
+    margin-bottom: 2rem;
+    border: 0;
+    border: 2px solid #505559;
+  }
+  .form-inline .form-control {
+    width: 100%;
+  }
+
+  .form-wrapper{
+    width: 100%
+  }
+
+  .form-inline label {
+    justify-content: left;
+  }
+</style>
+
+@endsection
+
 @section('content')
 <div class="wrapper">
 <div class="sidebar">
@@ -44,69 +95,81 @@
                 </div>
 
                  <div class="modal-body">
-              <form method="post" action="{{ route('add_space')}}"  id="form1" >
-        {{csrf_field()}}
-                <div class="form-group row">
-                  <label for="course_name"  class="col-sm-3 col-form-label"><strong>Space Id <span style="color: red;">*</span> :</strong></label>
-                  <div class="col-sm-7">
-                    <input type="text" class="form-control" id="course_name" name="space_id" value="" Required autocomplete="off">
-                  </div>
-                </div>
+
+                   <form method="post" action="{{ route('add_space')}}"  id="form1" >
+                     {{csrf_field()}}
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for="course_name"  ><strong>Space Id <span style="color: red;">*</span> </strong></label>
+                         <input type="text" class="form-control" id="course_name" name="space_id" value="" Required autocomplete="off">
+                       </div>
+                     </div>
+                     <br>
+
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for="space_type"  ><strong>Type</strong></label>
+                         <select id="space_type" class="form-control" name="space_type" >
+
+                           <option value="Mall-shop" id="Option" >Mall-shop</option>
+                           <option value="Villa" id="Option">Villa</option>
+                           <option value="Office block" id="Option">Office block</option>
+                           <option value="Cafeteria" id="Option">Cafeteria</option>
+                           <option value="Stationery" id="Option">Stationery</option>
+                         </select>
+                       </div>
+                     </div>
+                     <br>
+
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for="space_location"  ><strong>Location</strong></label>
+                         <select class="form-control" id="space_location" name="space_location" >
+                           <option value="Mlimani City" id="Option" >Mlimani City</option>
+                           <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
+                         </select>
+                       </div>
+                     </div>
+                     <br>
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for="course_name"  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                         <input type="number" min="1" class="form-control" id="course_name" name="space_size" value=""  autocomplete="off">
+                       </div>
+                     </div>
+                     <br>
+
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for="rent_price_guide"  ><strong>Rent Price Guide</strong></label>
+                         <select id="rent_price_guide" class="form-control" name="rent_price_guide" >
+                           <option value="N/A" >N/A</option>
+                           <option value="200,000-500,000 TZS"  >200,000-500,000 TZS</option>
+                           <option value="500,000-1000,000 TZS" >500,000-1000,000 TZS</option>
+                           <option value="1000,000-2000,000 TZS" >1000,000-2000,000 TZS</option>
+                           <option value="2000,000-5000,000 TZS" >2000,000-5000,000 TZS</option>
+                           <option value="5000,000-10,000,000 TZS" >5000,000-10,000,000 TZS</option>
+                           <option value="10,000,000-50,000,000 TZS" >10,000,000-50,000,000 TZS</option>
+                           <option value="50,000,000-200,000,000 TZS" >50,000,000-200,000,000 TZS</option>
+                         </select>
+                       </div>
+                     </div>
+
+
+                     <div align="right">
+                       <button class="btn btn-primary" type="submit">Submit</button>
+                       <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                     </div>
+                   </form>
 
 
 
-        <div class="form-group row">
-          <label for="dept"  class="col-sm-3 col-form-label"><strong>Type:</strong></label>
-          <div class="col-sm-7">
-            <select name="space_type" >
 
-              <option value="Mall-shop" id="Option" >Mall-shop</option>
-              <option value="Villa" id="Option">Villa</option>
-              <option value="Office block" id="Option">Office block</option>
-              <option value="Cafeteria" id="Option">Cafeteria</option>
-              <option value="Stationery" id="Option">Stationery</option>
-            </select>
-        </div>
-        </div>
 
-        <div class="form-group row">
-          <label for="course"  class="col-sm-3 col-form-label"><strong>Location:</strong></label>
-          <div class="col-sm-7">
-            <select name="space_location" >
-              <option value="Mlimani City" id="Option" >Mlimani City</option>
-              <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
-            </select>
-        </div>
-        </div>
 
-        <div class="form-group row">
-          <label for="course_name"  class="col-sm-3 col-form-label"><strong>Size (SQM):</strong></label>
-          <div class="col-sm-7">
-          <input type="text" class="form-control" id="course_name" name="space_size" value="" required autocomplete="off">
-        </div>
-        </div>
 
-        <div class="form-group row">
-          <label for="instructor"  class="col-sm-3 col-form-label"><strong>Rent Price Guide:</strong></label>
-          <div class="col-sm-7">
-            <select name="rent_price_guide" >
-              <option value="200,000-500,000 TZS"  >200,000-500,000 TZS</option>
-              <option value="500,000-1000,000 TZS" >500,000-1000,000 TZS</option>
-              <option value="1000,000-2000,000 TZS" >1000,000-2000,000 TZS</option>
-              <option value="2000,000-5000,000 TZS" >2000,000-5000,000 TZS</option>
-              <option value="5000,000-10,000,000 TZS" >5000,000-10,000,000 TZS</option>
-              <option value="10,000,000-50,000,000 TZS" >10,000,000-50,000,000 TZS</option>
-              <option value="50,000,000-200,000,000 TZS" >50,000,000-200,000,000 TZS</option>
-            </select>
-      </div>
-      </div>
 
-      <div align="right">
-  <button class="btn btn-primary" type="submit" id="newdata">Save</button>
-  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-</div>
 
-      </form>
       </div>
       </div>
       </div>
@@ -137,9 +200,16 @@
 
             <td class="counterCell text-center"></td>
             <td><center>{{$var->space_id}}</center></td>
-            <td><center>{{$var->type}}</center></td>
+            <td><center>{{$var->space_type}}</center></td>
             <td><center>{{$var->location}}</center></td>
-            <td><center>{{$var->size}}</center></td>
+
+            <td><center>  @if($var->size==null)
+                  N/A
+                @else
+                  {{$var->size}}
+                            @endif
+
+              </center></td>
             <td><center>{{$var->rent_price_guide}}</center></td>
             <td><center><a data-toggle="modal" data-target="#edit_space{{$var->id}}" role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
 
@@ -155,23 +225,22 @@
                       </div>
 
                       <div class="modal-body">
-                        <form method="get" action="{{ route('edit_space',$var->id)}}" >
+                        <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
                           {{csrf_field()}}
-
-                          <div class="form-group row">
-                            <label for="course_name"  class="col-sm-3 col-form-label"><strong>Space Id:</strong></label>
-                            <div class="col-sm-7">
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="course_name"  ><strong>Space Id <span style="color: red;">*</span> </strong></label>
                               <input type="text" class="form-control" id="course_name" name="space_id" value="{{$var->space_id}}" Required autocomplete="off">
                             </div>
                           </div>
+                          <br>
 
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="space_type"  ><strong>Type</strong></label>
+                              <select id="space_type" class="form-control" name="space_type" >
 
-                          <div class="form-group row">
-                            <label for="dept"  class="col-sm-3 col-form-label"><strong>Type:</strong></label>
-                            <div class="col-sm-7">
-                              <select  name="space_type" >
-
-                                <option value=" {{$var->type}}" id="Option" >{{$var->type}}</option>
+                                <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
                                 <option value="Mall-shop" id="Option" >Mall-shop</option>
                                 <option value="Villa" id="Option">Villa</option>
                                 <option value="Office block" id="Option">Office block</option>
@@ -180,31 +249,33 @@
                               </select>
                             </div>
                           </div>
+                          <br>
 
-                          <div class="form-group row">
-                            <label for="course"  class="col-sm-3 col-form-label"><strong>Location:</strong></label>
-                            <div class="col-sm-7">
-                              <select  name="space_location" >
-
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="space_location"  ><strong>Location</strong></label>
+                              <select class="form-control" id="space_location" name="space_location" >
                                 <option value="{{$var->location}}" id="Option" >{{$var->location}}</option>
                                 <option value="Mlimani City" id="Option" >Mlimani City</option>
                                 <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
                               </select>
                             </div>
                           </div>
-
-                          <div class="form-group row">
-                            <label for="course_name"  class="col-sm-3 col-form-label"><strong>Size (SQM):</strong></label>
-                            <div class="col-sm-7">
-                              <input type="text" class="form-control" id="course_name" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                          <br>
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="course_name"  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                              <input type="number" min="1" class="form-control" id="course_name" name="space_size" value="{{$var->size}}"  autocomplete="off">
                             </div>
                           </div>
+                          <br>
 
-                          <div class="form-group row">
-                            <label for="instructor"  class="col-sm-3 col-form-label"><strong>Rent Price Guide:</strong></label>
-                            <div class="col-sm-7">
-                              <select name="rent_price_guide" >
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="rent_price_guide"  ><strong>Rent Price Guide</strong></label>
+                              <select id="rent_price_guide" class="form-control" name="rent_price_guide" >
                                 <option value="{{$var->rent_price_guide}}"  >{{$var->rent_price_guide}}</option>
+                                <option value="N/A" >N/A</option>
                                 <option value="200,000-500,000 TZS"  >200,000-500,000 TZS</option>
                                 <option value="500,000-1000,000 TZS" >500,000-1000,000 TZS</option>
                                 <option value="1000,000-2000,000 TZS" >1000,000-2000,000 TZS</option>
@@ -218,12 +289,12 @@
 
 
                           <div align="right">
-                            <button class="btn btn-primary" type="submit" id="newdata">Save</button>
+                            <button class="btn btn-primary" type="submit">Submit</button>
                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                           </div>
-
-
                         </form>
+
+
                       </div>
                     </div>
                   </div>
