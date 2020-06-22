@@ -11,7 +11,16 @@
             <li><a href="#"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="#"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-            <li><a href="#"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <div class="dropdown">
+  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <i class="fas fa-file-contract"></i> Contracts
+  </li>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
+    <a class="dropdown-item" href="#">Insurance</a>
+    <a class="dropdown-item" href="#">Space</a>
+  </div>
+</div>
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="#"><i class="fas fa-file-pdf"></i>Reports</a></li>

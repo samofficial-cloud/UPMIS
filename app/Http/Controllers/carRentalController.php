@@ -47,4 +47,58 @@ public function deletecar($id){
     return redirect()->back()->with('success', 'Car Deleted Successfully');
 
 }
+
+   public function fetch(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = carRental::where('vehicle_reg_no', 'LIKE', "%{$query}%")->where('vehicle_status','!=','Grounded')->get();
+      if(count($data)!=0){
+      $output = '<ul class="dropdown-menu form-card" style="display: block;
+    width: 100%; margin-left: 0%; margin-top: -3%;">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li id="list" style="margin-left: -3%;">'.$row->vehicle_reg_no.'</li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
+     else{
+      echo "0";
+     }
+
+   }
+ }
+
+
+ public function model(Request $request){
+
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = carRental::select('vehicle_model')->where('vehicle_reg_no',$query)->value('vehicle_model');
+     
+       $output = $data;
+     
+      echo $output;
+     
+   }
+ }
+
+ public function hirerate(Request $request){
+
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = carRental::select('hire_rate')->where('vehicle_reg_no',$query)->value('hire_rate');
+     
+       $output = $data;
+     
+      echo $output;
+     
+   }
+ }
 }

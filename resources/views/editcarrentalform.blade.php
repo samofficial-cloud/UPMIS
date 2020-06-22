@@ -261,7 +261,7 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul> 
     </div>
-<div class="main_content">
+<div class="main_content" >
 <div class="container-fluid" id="grad1">
     <div class="row justify-content-center mt-0">
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
@@ -270,7 +270,8 @@ $today=date('Y-m-d');
                 <p>Fill all form field with (*) to go to the next step</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
-                        <form id="msform" action="/">
+                        <form id="msform" method="post" action="{{ route('editCarcontract') }}">
+                            {{csrf_field()}}
                             <!-- progressbar -->
                             <ul id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>
@@ -280,14 +281,19 @@ $today=date('Y-m-d');
                              <!-- fieldsets -->
                             <fieldset>
                                 <div class="form-card">
-                                   <h2 class="fs-title">Client Information</h2> <div class="form-group">
+                                   <h2 class="fs-title">Client Information</h2> 
+    <div class="form-group">
 					<div class="form-wrapper" id="clientdiv">
           <label for="client_type">Client Type*</label>
           <span id="ctypemsg"></span>
             <select class="form-control" required="" id="client_type" name="client_type">
-              <option value="0" disabled selected hidden>select client type</option>
+                @if($contract->type=='Individual')
               <option value="1">Individual</option>
               <option value="2">Company/Organization</option>
+              @elseif($contract->type=='Company')
+              <option value="2">Company/Organization</option>
+              <option value="1">Individual</option>
+              @endif
             </select>
         
         </div>
@@ -297,12 +303,12 @@ $today=date('Y-m-d');
 						<div class="form-wrapper col-6">
 							<label for="first_name">First Name*</label>
                             <span id="name1msg"></span>
-							<input type="text" id="first_name" name="first_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="first_name" name="first_name" class="form-control" value="{{$contract->first_name}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="last_name">Last Name*</label>
                             <span id="name2msg"></span>
-							<input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="last_name" name="last_name" value="{{$contract->last_name}}" class="form-control" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
@@ -310,30 +316,32 @@ $today=date('Y-m-d');
 					<div class="form-wrapper">
 						<label for="company_name">Company Name*</label>
                         <span id="cnamemsg"></span>
-						<input type="text" id="company_name" name="company_name" class="form-control">
+						<input type="text" id="company_name" name="company_name" class="form-control" value="{{$contract->fullName}}">
 					</div>
 				</div>
 
     <div class="form-group">
 					<div class="form-wrapper">
 						<label for="email">Email</label>
-						<input type="text" name="email" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+						<input type="text" name="email" id="email" class="form-control" placeholder="someone@example.com" value="{{$contract->email}}" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="phone_number">Phone Number</label>
-						<input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+						<input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" value="{{$contract->phone_number}}" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="address">Address</label>
-						<input type="text" id="address" name="address" class="form-control">
+						<input type="text" id="address" name="address" class="form-control" value="{{$contract->address}}">
 					</div>
 				</div>
+                <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
+                <input type="text" name="client_id" value="{{$contract->client_id}}" hidden="">
                                 </div> 
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
                             </fieldset>
@@ -344,28 +352,30 @@ $today=date('Y-m-d');
 					<div class="form-group">
 					<div class="form-wrapper">
 						<label for="vehicle_reg">Vehicle Reg. No*</label>
-						<input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control">
+                        <span id="vehiclemsg"></span>
+						<input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" value="{{$contract->vehicle_reg_no}}">
+                         <span id="nameList"></span>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="vehiclemodel">Vehicle Model. No</label>
-						<input type="text" id="vehiclemodel" name="vehiclemodel" class="form-control" readonly="">
+						<input type="text" id="vehiclemodel" name="vehiclemodel" class="form-control" value="{{$contract->vehicle_model}}" readonly="">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="hirerate">Hire Rate</label>
-						<input type="text" id="hirerate" name="hirerate" class="form-control" readonly="">
+						<input type="text" id="hirerate" name="hirerate" class="form-control" value="{{$contract->hire_rate}}" readonly="">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="condition">Special Condition</label>
-						<input type="textarea" id="condition" name="condition" class="form-control">
+						<input type="textarea" id="condition" name="condition" class="form-control" value="{{$contract->special_condition}}">
 					</div>
 				</div>
 
@@ -381,26 +391,41 @@ $today=date('Y-m-d');
 				<div class="form-group row">
 						<div class="form-wrapper col-6">
 							<label for="start_date">Start Date*</label>
-							<input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
+							<input type="date" id="start_date" name="start_date" class="form-control" required="" value="{{$contract->start_date}}">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="end_date">End Date*</label>
-							<input type="date" id="end_date" name="end_date" class="form-control" required="" min="{{$today}}">
+							<input type="date" id="end_date" name="end_date" class="form-control" required="" value="{{$contract->end_date}}">
 						</div>
 					</div>
 
 					<div class="form-group row">
 					<div class="form-wrapper col-6">
-						<label for="rate">Rate*</label>
-						<input type="text" id="rate" name="rate" class="form-control">
+						<label for="currency">Currency*</label>
+						<select class="form-control" required="" id="currency" name="currency" required="">
+                @if($contract->currency=='TZS')
+              <option value="TZS">TZS</option>
+              <option value="USD">USD</option>
+              @elseif($contract->currency=='USD')
+              <option value="USD">USD</option>
+              <option value="TZS">TZS</option>
+              @endif
+            </select>
 					</div>
 				      
                              
 					<div class="form-wrapper col-6">
 						<label for="amount">Amount*</label>
-						<input type="text" id="amount" name="amount" class="form-control" required="">
+						<input type="text" id="amount" name="amount" class="form-control" required="" value="{{$contract->amount}}">
 					</div>
-				</div>       
+				</div>  
+
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="condition">Rate*</label>
+                        <input type="text" id="rate" name="rate" class="form-control" value="{{$contract->rate}}" required="">
+                    </div>
+                </div>     
                                 </div> 
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
                                 <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
@@ -418,8 +443,14 @@ $today=date('Y-m-d');
 
 @section('pagescript')
 <script type="text/javascript">
-$(document).ready(function(){
+    window.onload=function(){
+  document.getElementById("client_type").click();
+};
+</script>
 
+<script type="text/javascript">
+$(document).ready(function(){
+var a=1;
 var current_fs, next_fs, previous_fs; //fieldsets
 var opacity;
 var p1, p2;
@@ -445,8 +476,7 @@ next_fs = $(this).parent().next();
             else{
                 p1=1;
                 $('#name1msg').hide();
-                $('#first_name').attr('style','border-bottom: 1px solid #ccc');
-                
+                $('#first_name').attr('style','border-bottom: 1px solid #ccc');     
             }
 
             if(lastName==""){
@@ -499,17 +529,108 @@ next_fs = $(this).parent().next();
 
 });
 
+ $('#vehicle_reg').keyup(function(e){ 
+        console.log(4);
+        
+        e.preventDefault();
+        var query = $(this).val();
+        if(query != ''){
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.fetch') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            if(data=='0'){
+             $('#vehicle_reg').attr('style','border:1px solid #f00');
+             a = '0';
+            }
+            else{
+              a ='1';
+              //$('#message2').hide();
+              $('#vehicle_reg').attr('style','border:1px solid #ced4da'); 
+              $('#nameList').fadeIn();  
+              $('#nameList').html(data);
+          }
+        }
+         });
+        }
+        else if(query==''){
+          a ='1';
+              //$('#message2').hide();
+              $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+        }
+     });
+      
+  $(document).on('click', '#list', function(){
+   a ='1';
+   //$('#message2').hide();
+  $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+
+        $('#vehicle_reg').val($(this).text());      
+        $('#nameList').fadeOut();
+
+        var query = $('#vehicle_reg').val();
+        console.log(query);
+        if(query!=''){
+       var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.model') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            $('#vehiclemodel').val(data);
+          }
+          });
+
+         $.ajax({
+          url:"{{ route('autocomplete.hirerate') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            $('#hirerate').val(data);
+          }
+          });
+    } 
+   
+    });
+
+   $(document).on('click', 'form', function(){
+     $('#nameList').fadeOut();  
+    }); 
+
 $("#next2").click(function(){
+    console.log(a);
     current_fs = $(this).parent();
     next_fs = $(this).parent().next();
-    gonext();
+    var $vehicle_id=$('#vehicle_reg').val();
+    if($vehicle_id==''){
+     $('#vehiclemsg').show();
+     var message=document.getElementById('vehiclemsg');
+     message.style.color='red';
+     message.innerHTML="Required";
+     $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        
+        $('#vehiclemsg').hide();
+        $('#vehicle_reg').attr('style','border-bottom: 1px solid #ccc');
+        if(a=='1'){
+         gonext();   
+        }
+        else{
+          $('#vehiclemsg').show();
+          var message=document.getElementById('vehiclemsg');
+         message.style.color='red';
+         message.innerHTML="Invalid Vehicle Number";
+         $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');  
+        }
+        
+    }
 
   });  
 
 function gonext(){
-    console.log(3);
-
-
 //Add Class Active
 $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 
@@ -530,32 +651,6 @@ next_fs.css({'opacity': opacity});
 duration: 600
 });
 }
-
-// $(".next").click(function(){
-
-// current_fs = $(this).parent();
-// next_fs = $(this).parent().next();
-
-// //Add Class Active
-// $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-
-// //show the next fieldset
-// next_fs.show();
-// //hide the current fieldset with style
-// current_fs.animate({opacity: 0}, {
-// step: function(now) {
-// // for making fielset appear animation
-// opacity = 1 - now;
-
-// current_fs.css({
-// 'display': 'none',
-// 'position': 'relative'
-// });
-// next_fs.css({'opacity': opacity});
-// },
-// duration: 600
-// });
-// });
 
 $(".previous").click(function(){
 
@@ -585,7 +680,6 @@ duration: 600
 });
 
 $(".submit").click(function(){
-	console.log(2);
 return true;
 })
 
@@ -593,7 +687,7 @@ return true;
 </script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
+    $(document).ready(function() {
     $('#client_type').click(function(){
        var query = $(this).val();
        if(query=='1'){
@@ -616,6 +710,8 @@ return true;
        }
 
       });
+
+
     });
 </script>
 
