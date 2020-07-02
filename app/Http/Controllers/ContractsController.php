@@ -25,9 +25,10 @@ class ContractsController extends Controller
      */
     public function SpaceContractsManagement()
     {
-        $space_contracts=DB::table('space_contracts')->where('contract_status',1)->where('expiry_status',1)->get();
+        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_status',1)->where('space_contracts.expiry_status',1)->get();
 
         return view('space_contracts_management')->with('space_contracts',$space_contracts);
+
     }
 
     public function SpaceContractForm()
@@ -68,7 +69,7 @@ class ContractsController extends Controller
         }
 
 
-    $full_name=$request->get('first_name').' '.$request->get('last_name');
+        $full_name=$request->get('first_name').' '.$request->get('last_name');
 
         if(DB::table('clients')->where('full_name',$full_name)->count()>0){
 

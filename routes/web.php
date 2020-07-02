@@ -61,6 +61,7 @@
 
 
 
+
     //Invoices
 
 
@@ -70,6 +71,7 @@ Route::get('/clients', 'clientsController@index')->name('clients');
 
 
 Route::get('/clients/edit', 'clientsController@edit')->name('editclients');
+
 
 Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
 

@@ -87,9 +87,6 @@
 
 
 
-
-
-
       <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
@@ -112,7 +109,58 @@
           <tr>
 
             <td class="counterCell text-center"></td>
-            <td><center>{{$var->full_name}}</center></td>
+              <td><a data-toggle="modal" data-target="#client{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->full_name}}</center></a>
+                  <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">{{$var->full_name}} Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table style="width: 100%">
+                                      <tr>
+                                          <td>Client Type:</td>
+                                          <td>{{$var->type}}</td>
+                                      </tr>
+                                      @if($var->type=='Individual')
+                                          <tr>
+                                              <td> First Name:</td>
+                                              <td> {{$var->first_name}}</td>
+                                          </tr>
+                                          <tr>
+                                              <td>Last Name:</td>
+                                              <td>{{$var->last_name}}</td>
+                                          </tr>
+                                      @elseif($var->type=='Company')
+                                          <tr>
+                                              <td>Company Name:</td>
+                                              <td>{{$var->first_name}}</td>
+                                          </tr>
+                                      @endif
+                                      <tr>
+                                          <td>Phone Number:</td>
+                                          <td>{{$var->phone_number}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Email:</td>
+                                          <td>{{$var->email}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Address:</td>
+                                          <td>{{$var->address}}</td>
+                                      </tr>
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </td>
             <td><center>{{$var->space_id_contract}}</center></td>
             <td><center>{{$var->amount}}</center></td>
             <td><center>{{$var->currency}}</center></td>
