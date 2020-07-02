@@ -2,17 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1cee984-e120-4ecf-b5e3-ed1189003099" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/UPMIS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/UPMIS.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/client.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/client.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Space.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Space.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/Procfile" beforeDir="false" />
@@ -148,10 +137,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css">
+        <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="1284" column="21" lean-forward="true" selection-start-line="1284" selection-start-column="21" selection-end-line="1284" selection-end-column="21" />
+            <state relative-caret-position="-1012">
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
             </state>
           </provider>
         </entry>
@@ -193,7 +182,7 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -367,29 +356,23 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WATER RESERVOIR" type="462c0819:PsiDirectoryNode" />
+              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WATER RESERVOIR" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WATER RESERVOIR" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
+              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -446,16 +429,18 @@
       <workItem from="1593153440935" duration="12014000" />
       <workItem from="1593158091988" duration="30911000" />
       <workItem from="1593499962043" duration="38892000" />
+      <workItem from="1593672840295" duration="571000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="336803000" />
+    <option name="totallyTimeSpent" value="337374000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49908924" visible="true" weight="0.068683565" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49908924" visible="true" weight="0.2869992" />
       <window_info id="Structure" order="1" sideWeight="0.50091076" side_tool="true" weight="0.20114473" />
       <window_info id="npm" order="2" side_tool="true" weight="0.32951757" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -856,13 +841,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-207">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/InvoicesController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-620">
@@ -886,7 +864,14 @@
     <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
-          <caret line="1284" column="21" lean-forward="true" selection-start-line="1284" selection-start-column="21" selection-end-line="1284" selection-end-column="21" />
+          <caret line="1284" column="21" selection-start-line="1284" selection-start-column="21" selection-end-line="1284" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1012">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
