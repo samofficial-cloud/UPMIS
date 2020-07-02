@@ -107,6 +107,7 @@ $i=1;
   </a>
 <br>
 <br>
+
   <div class="tab">
   <button class="tablinks" onclick="openContracts(event, 'Active_Contracts')" id="defaultOpen"><strong>ACTIVE CONTRACTS</strong></button>
   <button class="tablinks" onclick="openContracts(event, 'Inactive_Contracts')"><strong>INACTIVE CONTRACTS</strong></button>
