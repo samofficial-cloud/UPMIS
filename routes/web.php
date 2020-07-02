@@ -37,7 +37,6 @@ Route::group(['middleware' => 'auth'], function(){
 
 
 
-
 Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
 
 Route::get('/car','carRentalController@index');

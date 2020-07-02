@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f1cee984-e120-4ecf-b5e3-ed1189003099" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SpaceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SpaceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Space.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Space.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/space_contracts_management.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/space_contracts_management.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.gitignore" afterDir="false" />
@@ -42,7 +41,7 @@
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/database/migrations/2019_05_05_155112_create_pump_status_table.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/database/migrations/2019_07_03_074214_create_treatment_table.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/database/migrations/2019_10_09_100501_add_pump_status.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/img/1.jpg" beforeDir="false" />
@@ -71,6 +70,7 @@
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/img/works/6.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/img/works/7.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/img/works/8.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/bootstrap.min.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/bootstrap.min_2.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/custom.js" beforeDir="false" />
@@ -93,6 +93,7 @@
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/quicksand/jquery.quicksand.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/quicksand/setting.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/validate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/mix-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/bootstrap.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/components/ChatForm.vue" beforeDir="false" />
@@ -138,86 +139,62 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+    <leaf>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-69">
-              <caret line="24" column="63" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="81" />
+            <state relative-caret-position="461">
+              <caret line="37" selection-start-line="37" selection-end-line="37" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SpaceController.php">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ContractsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="145" column="32" selection-start-line="145" selection-start-column="32" selection-end-line="145" selection-end-column="32" />
+            <state relative-caret-position="1035">
+              <caret line="67" column="51" lean-forward="true" selection-start-line="67" selection-start-column="51" selection-end-line="67" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/Space.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="225" lean-forward="true" selection-start-line="225" selection-end-line="225" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/carContractsController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-69" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/car_contracts.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="116">
+              <caret line="123" column="7" lean-forward="true" selection-start-line="123" selection-start-column="4" selection-end-line="174" selection-end-column="9" />
               <folding>
-                <element signature="e#40#68#0#PHP" expanded="true" />
-                <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
+                <element signature="e#4180#4199#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ContractsController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="381">
-              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/css/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="574" selection-start-line="574" selection-end-line="574" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/css/app.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="3439" column="1" lean-forward="true" selection-start-line="3439" selection-end-line="3457" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/space_contract_form_edit.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="395" column="118" selection-start-line="395" selection-start-column="118" selection-end-line="395" selection-end-column="118" />
-              <folding>
-                <element signature="e#7198#7220#0#HTML" expanded="true" />
-                <element signature="e#8025#8047#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/space_contract_form.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="382" column="145" selection-start-line="382" selection-start-column="145" selection-end-line="382" selection-end-column="145" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/space_contracts_management.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="314">
-              <caret line="82" column="56" selection-start-line="82" selection-start-column="56" selection-end-line="82" selection-end-column="56" />
+            <state relative-caret-position="-19">
+              <caret line="71" column="64" lean-forward="true" selection-start-line="71" selection-start-column="64" selection-end-line="71" selection-end-column="64" />
               <folding>
+                <element signature="e#1821#1894#0#HTML" expanded="true" />
                 <element signature="e#2032#2160#0#HTML" expanded="true" />
-                <element signature="e#4094#4128#0#HTML" expanded="true" />
+                <element signature="e#4016#4035#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -227,7 +204,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>if</find>
       <find>route</find>
       <find>mana</find>
       <find>delete</find>
@@ -257,6 +233,7 @@
       <find>dropdown-menu</find>
       <find>space_size</find>
       <find>space_id_contract</find>
+      <find>$contracts</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -289,13 +266,13 @@
         <option value="$PROJECT_DIR$/resources/views/car.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/Space.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/space_contract.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" />
-        <option value="$PROJECT_DIR$/resources/views/space_contracts_management.blade.php" />
         <option value="$PROJECT_DIR$/public/css/style.css" />
-        <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/SpaceController.php" />
         <option value="$PROJECT_DIR$/resources/views/space_contract_form.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/space_contract_form_edit.blade.php" />
+        <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" />
+        <option value="$PROJECT_DIR$/resources/views/space_contracts_management.blade.php" />
       </list>
     </option>
   </component>
@@ -399,6 +376,12 @@
       <path value="$PROJECT_DIR$/vendor/ramsey/uuid" />
       <path value="$PROJECT_DIR$/vendor/dragonmantank/cron-expression" />
       <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
+      <path value="$PROJECT_DIR$/vendor/laraveldaily/laravel-invoices" />
+      <path value="$PROJECT_DIR$/vendor/sabberworm/php-css-parser" />
+      <path value="$PROJECT_DIR$/vendor/phenx/php-font-lib" />
+      <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-dompdf" />
+      <path value="$PROJECT_DIR$/vendor/dompdf/dompdf" />
+      <path value="$PROJECT_DIR$/vendor/phenx/php-svg-lib" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -413,7 +396,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -442,17 +424,6 @@
             <path>
               <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
               <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -461,15 +432,11 @@
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -523,16 +490,18 @@
       <workItem from="1592374823384" duration="15695000" />
       <workItem from="1592462161484" duration="48884000" />
       <workItem from="1592744608219" duration="35634000" />
+      <workItem from="1593675031853" duration="7901000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="189608000" />
+    <option name="totallyTimeSpent" value="198364000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49908924" visible="true" weight="0.24693377" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49908924" visible="true" weight="0.031071136" />
       <window_info id="Structure" order="1" sideWeight="0.50091076" side_tool="true" weight="0.20114473" />
       <window_info id="npm" order="2" side_tool="true" weight="0.32951757" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -791,13 +760,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/multform.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="600" column="32" lean-forward="true" selection-start-line="600" selection-start-column="32" selection-end-line="600" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/multform.blade.php" />
     <entry file="file://$PROJECT_DIR$/resources/views/layouts/app.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-583">
@@ -819,24 +782,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/clientsController.php">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Space.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="227" column="75" lean-forward="true" selection-start-line="227" selection-start-column="73" selection-end-line="227" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/space_contracts_management.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="82" column="56" selection-start-line="82" selection-start-column="56" selection-end-line="82" selection-end-column="56" />
-          <folding>
-            <element signature="e#2032#2160#0#HTML" expanded="true" />
-            <element signature="e#4094#4128#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/css/app.css">
       <provider selected="true" editor-type-id="text-editor">
@@ -863,13 +808,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-69">
-          <caret line="24" column="63" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/space_contract_form.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -888,10 +826,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Space.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="225" lean-forward="true" selection-start-line="225" selection-end-line="225" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/carContractsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-69" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/car_contracts.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="123" column="7" lean-forward="true" selection-start-line="123" selection-start-column="4" selection-end-line="174" selection-end-column="9" />
+          <folding>
+            <element signature="e#4180#4199#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ContractsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="381">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+        <state relative-caret-position="1035">
+          <caret line="67" column="51" lean-forward="true" selection-start-line="67" selection-start-column="51" selection-end-line="67" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/space_contracts_management.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-19">
+          <caret line="71" column="64" lean-forward="true" selection-start-line="71" selection-start-column="64" selection-end-line="71" selection-end-column="64" />
+          <folding>
+            <element signature="e#1821#1894#0#HTML" expanded="true" />
+            <element signature="e#2032#2160#0#HTML" expanded="true" />
+            <element signature="e#4016#4035#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
