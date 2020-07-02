@@ -10,7 +10,7 @@ class carRentalController extends Controller
 {
     //
     public function index(){
-    	$cars=carRental::get();
+    	$cars=carRental::where('flag','1')->get();
     	return view('car')->with('cars',$cars);
     }
 
@@ -42,8 +42,8 @@ public function editcar(Request $request){
 
 public function deletecar($id){
     $car=carRental::find($id);
-    // $car->flag='0';
-    // $car->save();
+    $car->flag='0';
+    $car->save();
     return redirect()->back()->with('success', 'Car Deleted Successfully');
 
 }

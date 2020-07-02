@@ -16,8 +16,19 @@ class carContractsController extends Controller
         ->join('car_rentals', 'car_rentals.vehicle_reg_no', '=', 'car_contracts.vehicle_reg_no')
     	->where('clients.contract', 'Car Rental')
         ->where('car_contracts.flag','1')
+        ->WhereDate('end_date','>',date('Y-m-d'))
+        ->orderBy('car_contracts.fullName','asc')
     	->get();
-    	return view ('car_contracts')->with('contracts', $contracts);
+
+        $inactive_contracts=carContract::select('clients.type','clients.first_name','clients.last_name', 'clients.address','clients.email', 'clients.phone_number', 'car_contracts.vehicle_reg_no', 'car_contracts.start_date', 'car_contracts.end_date', 'car_contracts.amount', 'car_contracts.rate', 'car_contracts.fullName', 'car_contracts.id', 'car_rentals.vehicle_model', 'car_rentals.vehicle_status', 'car_rentals.hire_rate','car_contracts.special_condition', 'car_contracts.currency','car_contracts.flag')
+        ->join('clients', 'clients.full_name', '=', 'car_contracts.fullName')
+        ->join('car_rentals', 'car_rentals.vehicle_reg_no', '=', 'car_contracts.vehicle_reg_no')
+        ->where('clients.contract', 'Car Rental')
+        ->where('car_contracts.flag','0')
+        ->orWhereDate('end_date','<',date('Y-m-d'))
+        ->orderBy('car_contracts.fullName','asc')
+        ->get();
+    	return view ('car_contracts')->with('contracts', $contracts)->with('inactive_contracts',$inactive_contracts);
     }
 
     public function addContractForm(){
@@ -46,21 +57,62 @@ class carContractsController extends Controller
     $amount = $request->input('amount');
     $contract_type="Car Rental";
     $currency=$request->input('currency');
-
+    $full_name=$first_name. ' '.$last_name;
     
    if($client_type=='Individual'){
     $contract_data=array('fullName'=>$first_name. ' '.$last_name,"vehicle_reg_no"=>$vehicle_reg_no,'start_date'=>$start_date, 'end_date'=>$end_date, 'special_condition'=>$condition, 'rate'=>$rate, 'amount'=>$amount, 'currency'=>$currency);
 
+    $validate=client::where('full_name',$full_name)->get();
+
+    if (count($validate)>0) {
+        DB::table('clients')
+                ->where('full_name', $full_name)
+                ->update(['address' => $address]);
+
+            DB::table('clients')
+                ->where('full_name', $full_name)
+                ->update(['email' => $email]);
+
+            DB::table('clients')
+                ->where('full_name', $full_name)
+                ->update(['phone_number' => $phone_number]);
+    }
+
+    else{
     $client_data=array('first_name'=>$first_name,"last_name"=>$last_name,'address'=>$address, 'email'=>$email, 'phone_number'=>$phone_number, 'type'=>$client_type, 'full_name'=>$first_name. ' '.$last_name, 'contract'=>$contract_type);
+    DB::table('clients')->insert($client_data);
+}
+
 }
 
    else if($client_type=='Company'){
     $contract_data=array('fullName'=>$company_name,"vehicle_reg_no"=>$vehicle_reg_no,'start_date'=>$start_date, 'end_date'=>$end_date, 'special_condition'=>$condition, 'rate'=>$rate, 'amount'=>$amount, 'currency'=>$currency);
 
+
+$validate2=client::where('full_name',$company_name)->get();
+
+   if (count($validate2)>0) {
+      DB::table('clients')
+                ->where('full_name', $company_name)
+                ->update(['address' => $address]);
+
+            DB::table('clients')
+                ->where('full_name', $company_name)
+                ->update(['email' => $email]);
+
+            DB::table('clients')
+                ->where('full_name', $company_name)
+                ->update(['phone_number' => $phone_number]);
+    }
+
+    else {
     $client_data=array('full_name'=>$company_name,'address'=>$address, 'email'=>$email, 'phone_number'=>$phone_number, 'type'=>$client_type, 'contract'=>$contract_type, 'company _name'=>$company_name);
+    DB::table('clients')->insert($client_data);
 }
 
-    DB::table('clients')->insert($client_data);
+}
+
+    
 
     DB::table('car_contracts')->insert($contract_data);
 
@@ -127,5 +179,15 @@ public function deletecontract($id){
     $contract->save();
     return redirect()->back()->with('success', 'Contract Deleted Successfully');
 
+}
+
+public function renewContractForm($id){
+  $contract=carContract::select('clients.type','clients.first_name','clients.last_name', 'clients.address','clients.email', 'clients.phone_number', 'clients.client_id', 'car_contracts.vehicle_reg_no', 'car_contracts.start_date', 'car_contracts.end_date', 'car_contracts.amount', 'car_contracts.rate', 'car_contracts.fullName', 'car_contracts.id', 'car_rentals.vehicle_model', 'car_rentals.vehicle_status', 'car_rentals.hire_rate', 'car_contracts.special_condition', 'car_contracts.id','car_contracts.currency')
+        ->join('clients', 'clients.full_name', '=', 'car_contracts.fullName')
+        ->join('car_rentals', 'car_rentals.vehicle_reg_no', '=', 'car_contracts.vehicle_reg_no')
+        ->where('clients.contract', 'Car Rental')
+        ->where('car_contracts.id',$id)
+        ->first();
+        return view('renewCarrentalform')->with('contract',$contract);
 }
 }

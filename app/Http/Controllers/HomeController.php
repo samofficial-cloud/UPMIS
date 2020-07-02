@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PDF;
 
 class HomeController extends Controller
 {
@@ -25,4 +26,24 @@ class HomeController extends Controller
     {
         return view('index');
     }
+
+    public function report()
+    {
+        return view('reports');
+    }
+
+    public function spacereport1(){
+         
+        $space_type="list";
+        echo $space_type;
+    }
+
+    public function spacereport1PDF(){
+       
+        $pdf = PDF::loadView('spacereport1pdf');
+  
+        return $pdf->stream('List of Spaces.pdf');
+      }
+      
+    
 }
