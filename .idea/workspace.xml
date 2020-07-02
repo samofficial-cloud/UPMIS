@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1cee984-e120-4ecf-b5e3-ed1189003099" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/UPMIS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/UPMIS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SpaceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SpaceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Console/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/client.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/Space.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Space.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.gitignore" afterDir="false" />
@@ -42,7 +48,7 @@
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/database/migrations/2019_05_05_155112_create_pump_status_table.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/database/migrations/2019_07_03_074214_create_treatment_table.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/database/migrations/2019_10_09_100501_add_pump_status.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/img/1.jpg" beforeDir="false" />
@@ -71,6 +77,7 @@
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/img/works/6.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/img/works/7.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/img/works/8.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/bootstrap.min.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/bootstrap.min_2.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/custom.js" beforeDir="false" />
@@ -93,6 +100,7 @@
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/quicksand/jquery.quicksand.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/quicksand/setting.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/validate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/mix-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/bootstrap.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/components/ChatForm.vue" beforeDir="false" />
@@ -139,86 +147,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/routes/web.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-69">
-              <caret line="24" column="63" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="81" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SpaceController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="145" column="32" selection-start-line="145" selection-start-column="32" selection-end-line="145" selection-end-column="32" />
-              <folding>
-                <element signature="e#40#68#0#PHP" expanded="true" />
-                <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ContractsController.php">
+        <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="381">
-              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/css/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="574" selection-start-line="574" selection-end-line="574" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/css/app.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="3439" column="1" lean-forward="true" selection-start-line="3439" selection-end-line="3457" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/space_contract_form_edit.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="395" column="118" selection-start-line="395" selection-start-column="118" selection-end-line="395" selection-end-column="118" />
-              <folding>
-                <element signature="e#7198#7220#0#HTML" expanded="true" />
-                <element signature="e#8025#8047#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/space_contract_form.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="382" column="145" selection-start-line="382" selection-start-column="145" selection-end-line="382" selection-end-column="145" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/space_contracts_management.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="314">
-              <caret line="82" column="56" selection-start-line="82" selection-start-column="56" selection-end-line="82" selection-end-column="56" />
-              <folding>
-                <element signature="e#2032#2160#0#HTML" expanded="true" />
-                <element signature="e#4094#4128#0#HTML" expanded="true" />
-              </folding>
+            <state relative-caret-position="280">
+              <caret line="1284" column="21" lean-forward="true" selection-start-line="1284" selection-start-column="21" selection-end-line="1284" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -227,75 +160,90 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>if</find>
-      <find>route</find>
-      <find>mana</find>
-      <find>delete</find>
-      <find>company_name</find>
-      <find>space_id</find>
-      <find>edit_space_contract_final</find>
-      <find>programm</find>
-      <find>contract_dat</find>
-      <find>final</find>
-      <find>full_name</find>
-      <find>client</find>
-      <find>msform</find>
+      <find>getPumpStatus()</find>
+      <find>getVolume()</find>
+      <find>showPump_status_now</find>
+      <find>custom_hea</find>
+      <find>vw</find>
+      <find>volume</find>
+      <find>center</find>
+      <find>center{</find>
+      <find>768</find>
+      <find>watertank</find>
+      <find>flowrate</find>
+      <find>reports</find>
+      <find>script</find>
+      <find>767</find>
+      <find>pump</find>
+      <find>inside_div</find>
+      <find>by</find>
+      <find>on_off4</find>
+      <find>off_on_btn4</find>
+      <find>cir</find>
+      <find>set</find>
+      <find>join</find>
+      <find>end</find>
       <find>create</find>
-      <find>deactivate</find>
-      <find>dea</find>
-      <find>activation</find>
-      <find>togg</find>
-      <find>are</find>
-      <find>deactivate_space_contract</find>
-      <find>toggle_activation</find>
-      <find>edit_space_contract_form</find>
-      <find>EditSpaceContractForm</find>
-      <find>new c</find>
-      <find>action</find>
-      <find>space</find>
-      <find>nameListSpaceId</find>
-      <find>dropdown-menu</find>
-      <find>space_size</find>
-      <find>space_id_contract</find>
+      <find>insert</find>
+      <find>for</find>
+      <find>0</find>
+      <find>-&gt;update(</find>
+      <find>DB::table('space_contracts')-&gt;insert(</find>
+      <find>76</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/resources/views/home.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/app.blade.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/HomePageController.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/terminal_redirect.blade.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/common.js" />
-        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/layouts/app.blade.php" />
-        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/wazo.blade.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/kibamba.blade.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/kimara.blade.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/reservoir_1.blade.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/reservoir_2.blade.php" />
-        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/routes/web.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/routes/api.php" />
-        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/reports_dataController.php" />
-        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/level_report.blade.php" />
         <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/auth/login.blade.php" />
-        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css" />
-        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/terminal.blade.php" />
-        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/reports.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/car.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/Space.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/space_contract.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" />
         <option value="$PROJECT_DIR$/resources/views/space_contracts_management.blade.php" />
         <option value="$PROJECT_DIR$/public/css/style.css" />
-        <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/SpaceController.php" />
         <option value="$PROJECT_DIR$/resources/views/space_contract_form.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/space_contract_form_edit.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/InsuranceController.php" />
+        <option value="$PROJECT_DIR$/resources/views/insurance.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/insurance_contracts_management.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/insurance_contract_form.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/insurance_contract_form_edit.blade.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/level_report.blade.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/waterTank.js" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/StatusController.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/routes/web.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/reports_dataController.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/reports.blade.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/config/app.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package.json" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/terminal.blade.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/wazo.blade.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/layouts/app.blade.php" />
+        <option value="$PROJECT_DIR$/app/Console/Kernel.php" />
+        <option value="$PROJECT_DIR$/app/Console/Commands/SendInvoices.php" />
+        <option value="$PROJECT_DIR$/app/Notifications/SendInvoice.php" />
+        <option value="$PROJECT_DIR$/app/client.php" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/resources/views/index.blade.php" />
+        <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/InvoicesController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/ContractsController.php" />
+        <option value="$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css" />
       </list>
     </option>
   </component>
@@ -399,6 +347,12 @@
       <path value="$PROJECT_DIR$/vendor/ramsey/uuid" />
       <path value="$PROJECT_DIR$/vendor/dragonmantank/cron-expression" />
       <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
+      <path value="$PROJECT_DIR$/vendor/laraveldaily/laravel-invoices" />
+      <path value="$PROJECT_DIR$/vendor/sabberworm/php-css-parser" />
+      <path value="$PROJECT_DIR$/vendor/phenx/php-font-lib" />
+      <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-dompdf" />
+      <path value="$PROJECT_DIR$/vendor/dompdf/dompdf" />
+      <path value="$PROJECT_DIR$/vendor/phenx/php-svg-lib" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -413,63 +367,29 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
+              <item name="WATER RESERVOIR" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
+              <item name="WATER RESERVOIR" type="462c0819:PsiDirectoryNode" />
               <item name="public" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
+              <item name="WATER RESERVOIR" type="462c0819:PsiDirectoryNode" />
               <item name="public" type="462c0819:PsiDirectoryNode" />
               <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UPMIS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UPMIS" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -522,23 +442,26 @@
       <workItem from="1591947984282" duration="71979000" />
       <workItem from="1592374823384" duration="15695000" />
       <workItem from="1592462161484" duration="48884000" />
-      <workItem from="1592744608219" duration="35634000" />
+      <workItem from="1592744608219" duration="101012000" />
+      <workItem from="1593153440935" duration="12014000" />
+      <workItem from="1593158091988" duration="30911000" />
+      <workItem from="1593499962043" duration="38892000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="189608000" />
+    <option name="totallyTimeSpent" value="336803000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <frame x="-7" y="-7" width="1295" height="695" extended-state="7" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49908924" visible="true" weight="0.24693377" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49908924" visible="true" weight="0.068683565" />
       <window_info id="Structure" order="1" sideWeight="0.50091076" side_tool="true" weight="0.20114473" />
       <window_info id="npm" order="2" side_tool="true" weight="0.32951757" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32969034" />
-      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32969034" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3989071" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -547,7 +470,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32969034" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32969034" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.44626594" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -580,246 +503,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/views/home.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HomeController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="25" column="26" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.editorconfig">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/HomePageController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/terminal_redirect.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="412" column="52" lean-forward="true" selection-start-line="412" selection-start-column="52" selection-end-line="413" />
-          <folding>
-            <element signature="n#style#0;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/Chart.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/jquery.modal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/jquery-3.3.1.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/waterTank.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/wow.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/common.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1338">
-          <caret line="443" lean-forward="true" selection-start-line="443" selection-end-line="443" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-759" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/wazo.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="81" column="51" selection-start-line="81" selection-start-column="51" selection-end-line="81" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/kibamba.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/kimara.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="84" column="10" lean-forward="true" selection-start-line="84" selection-start-column="10" selection-end-line="84" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/reservoir_1.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="80" column="8" selection-start-line="80" selection-start-column="2" selection-end-line="84" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/reservoir_2.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/reports_dataController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/StatusController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2001" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/routes/api.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="828">
-          <caret line="40" column="3" selection-start-line="40" selection-start-column="1" selection-end-line="43" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/layouts/app.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="63" column="46" lean-forward="true" selection-start-line="63" selection-start-column="45" selection-end-line="63" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/auth/login.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/terminal.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2254">
-          <caret line="98" column="26" selection-start-line="98" selection-start-column="23" selection-end-line="98" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18722">
-          <caret line="814" selection-start-line="814" selection-end-line="814" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1334">
-          <caret line="58" column="16" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/reports.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2047">
-          <caret line="89" column="103" selection-start-line="89" selection-start-column="103" selection-end-line="89" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/level_report.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="88" column="52" selection-start-line="88" selection-start-column="52" selection-end-line="88" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/multform.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="600" column="32" lean-forward="true" selection-start-line="600" selection-start-column="32" selection-end-line="600" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/layouts/app.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-583">
-          <caret line="59" column="20" lean-forward="true" selection-start-line="59" selection-start-column="20" selection-end-line="59" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/car.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="12" column="28" lean-forward="true" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/carRentalController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-740" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/clientsController.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/Space.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -838,35 +521,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/app.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="3439" column="1" lean-forward="true" selection-start-line="3439" selection-end-line="3457" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="321">
           <caret line="574" selection-start-line="574" selection-end-line="574" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SpaceController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="145" column="32" selection-start-line="145" selection-start-column="32" selection-end-line="145" selection-end-column="32" />
-          <folding>
-            <element signature="e#40#68#0#PHP" expanded="true" />
-            <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-69">
-          <caret line="24" column="63" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="81" />
         </state>
       </provider>
     </entry>
@@ -888,10 +546,347 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/pump_status_now_three.blade.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/pump_status_now_two.blade.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/insurance.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="54" column="21" lean-forward="true" selection-start-line="54" selection-start-column="21" selection-end-line="54" selection-end-column="21" />
+          <folding>
+            <element signature="e#2621#2628#1#HTML" expanded="true" />
+            <element signature="e#2980#2999#0#HTML" expanded="true" />
+            <element signature="e#4235#4254#0#HTML" expanded="true" />
+            <element signature="e#4967#4989#0#HTML" expanded="true" />
+            <element signature="e#5042#5064#0#HTML" expanded="true" />
+            <element signature="e#5131#5153#0#HTML" expanded="true" />
+            <element signature="e#5218#5240#0#HTML" expanded="true" />
+            <element signature="e#5302#5324#0#HTML" expanded="true" />
+            <element signature="e#5385#5407#0#HTML" expanded="true" />
+            <element signature="e#5992#6029#0#HTML" expanded="true" />
+            <element signature="e#6193#6227#0#HTML" expanded="true" />
+            <element signature="e#6653#6660#1#HTML" expanded="true" />
+            <element signature="e#7096#7115#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SpaceController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="2" lean-forward="true" selection-start-line="2" selection-end-line="2" selection-end-column="9" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+            <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/InsuranceController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="83" column="52" selection-start-line="83" selection-start-column="52" selection-end-line="83" selection-end-column="52" />
+          <folding>
+            <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/car.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2208">
+          <caret line="12" column="28" lean-forward="true" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/editcarrentalform.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="300" lean-forward="true" selection-start-line="300" selection-end-line="300" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/insurance_contracts_management.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="138" column="17" selection-start-line="138" selection-start-column="17" selection-end-line="138" selection-end-column="17" />
+          <folding>
+            <element signature="e#4655#4689#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/insurance_contract_form.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="272" column="9" lean-forward="true" selection-start-line="272" selection-start-column="9" selection-end-line="272" selection-end-column="9" />
+          <folding>
+            <element signature="e#6355#6381#0#HTML" expanded="true" />
+            <element signature="e#9329#9355#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/insurance_contract_form_edit.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="316" column="146" selection-start-line="316" selection-start-column="146" selection-end-line="316" selection-end-column="146" />
+          <folding>
+            <element signature="e#30205#30231#0#HTML" expanded="true" />
+            <element signature="e#33236#33262#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/js/waterTank.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/reports.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1196">
+          <caret line="52" column="14" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/level_report.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2093">
+          <caret line="91" column="104" selection-start-line="91" selection-start-column="97" selection-end-line="91" selection-end-column="104" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/StatusController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2185">
+          <caret line="98" selection-start-line="98" selection-end-line="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/app/Http/Controllers/reports_dataController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/config/broadcasting.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-966" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/bootstrap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-924" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-533" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/routes/channels.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="41" column="6" selection-start-line="41" selection-start-column="6" selection-end-line="41" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/bootstrap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-390" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/app.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79097">
+          <caret line="3439" column="1" selection-start-line="3439" selection-end-line="3457" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-395" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/js/components/ExampleComponent.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package-lock.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3795" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="19" column="5" lean-forward="true" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/config/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="144" column="53" selection-start-line="144" selection-start-column="53" selection-end-line="144" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/app.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="16" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/wazo.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
+          <folding>
+            <element signature="e#5504#5534#0#HTML" expanded="true" />
+            <element signature="e#6791#6819#0#HTML" expanded="true" />
+            <element signature="e#7481#7509#0#HTML" expanded="true" />
+            <element signature="e#7542#7572#0#HTML" expanded="true" />
+            <element signature="e#8385#8415#0#HTML" expanded="true" />
+            <element signature="e#9270#9298#0#HTML" expanded="true" />
+            <element signature="e#9758#9786#0#HTML" expanded="true" />
+            <element signature="e#9847#9877#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/layouts/app.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Console/Kernel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2020-06-29.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-487" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HomeController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-276" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="35" column="58" selection-start-line="35" selection-start-column="58" selection-end-line="35" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Console/Commands/SendInvoices.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="989">
+          <caret line="44" column="1" selection-start-line="44" selection-start-column="1" selection-end-line="44" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/client.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#23#62#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/resources/views/terminal.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9591">
+          <caret line="417" column="18" selection-start-line="417" selection-start-column="15" selection-end-line="423" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/layouts/app.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2806">
+          <caret line="122" column="14" selection-start-line="122" selection-start-column="12" selection-end-line="122" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="805">
+          <caret line="35" column="22" lean-forward="true" selection-start-line="35" selection-start-column="22" selection-end-line="35" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Notifications/SendInvoice.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="47" column="27" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="27" />
+          <folding>
+            <element signature="e#37#66#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-207">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/InvoicesController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-620">
+          <caret line="11" column="1" lean-forward="true" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ContractsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="381">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+        <state relative-caret-position="232">
+          <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../WATER RESERVOIR/Code/WATER RESERVOIR/public/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="1284" column="21" lean-forward="true" selection-start-line="1284" selection-start-column="21" selection-end-line="1284" selection-end-column="21" />
         </state>
       </provider>
     </entry>

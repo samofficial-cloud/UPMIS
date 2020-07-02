@@ -195,7 +195,7 @@
         </thead>
         <tbody>
 
-        @foreach($spaces as $var)
+        @foreach($insurance as $var)
           <tr>
 
             <td class="counterCell text-center"></td>

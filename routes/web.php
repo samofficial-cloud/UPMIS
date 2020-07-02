@@ -14,10 +14,10 @@
 
 
 
+    Route::get('/send_invoice', 'InvoicesController@SendSpaceInvoice')->name('send_invoice');
+    Auth::routes();
 
-Auth::routes();
-
-Route::group(['middleware' => 'auth'], function(){
+    Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/Space', 'SpaceController@index');
@@ -27,6 +27,31 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
     Route::get('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
+
+    //space
+
+
+    //space contracts
+    Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
+
+
+
+
+    //Insurance
+    Route::get('/insurance', 'InsuranceController@index');
+    Route::post('/add_insurance', 'InsuranceController@addInsurance')->name('add_insurance');
+    Route::post('/edit_insurance/{id}', 'InsuranceController@editInsurance')->name('edit_insurance');
+    Route::get('/deactivate_insurance/{id}', 'InsuranceController@deactivateInsurance')->name('deactivate_insurance');
+
+
+    //Insurance contracts
+    Route::get('/terminate_insurance_contract/{id}', 'ContractsController@terminateInsuranceContract')->name('terminate_insurance_contract');
+    Route::get('/edit_insurance_contract/{id}/', 'ContractsController@EditInsuranceContractForm')->name('edit_insurance_contract');
+    Route::get('/edit_insurance_contract_final/{contract_id}', 'ContractsController@EditInsuranceContractFinalProcessing')->name('edit_insurance_contract_final');
+    Route::get('/insurance_contracts_management', 'ContractsController@InsuranceContractsManagement');
+    Route::get('/insurance_contract_form', 'ContractsController@InsuranceContractForm');
+    Route::get('/create_insurance_contract', 'ContractsController@CreateInsuranceContract')->name('create_insurance_contract');
+
     Route::get('/edit_space_contract/{id}/', 'ContractsController@EditSpaceContractForm')->name('edit_contract');
     Route::get('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
     Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
@@ -34,6 +59,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
 
     Route::get('/clients', 'clientsController@index')->name('clients');
+
+
+    //Invoices
+
 
 
 

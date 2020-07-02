@@ -8,7 +8,7 @@
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            <li><a href="#"><i class="fas fa-address-card"></i>Insurance</a></li>
+            <li><a href="insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="#"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <div class="dropdown">
@@ -17,8 +17,8 @@
   </li>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-    <a class="dropdown-item" href="#">Insurance</a>
-    <a class="dropdown-item" href="#">Space</a>
+    <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
+    <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
@@ -86,3 +86,30 @@
 </div>
 @endsection 
 
+@section('pagescript')
+
+
+  <script>
+
+    setInterval(function () {
+
+      $.ajax({
+        url : '{{ route("send_invoice")}}',
+        type : "GET",
+        success : function(data){
+
+          console.log(data);
+
+        },
+        error : function(data) {
+
+        }
+      });
+
+    }, 1000000);
+
+
+  </script>
+
+
+@endsection
