@@ -23,7 +23,7 @@
 </div>
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
-            <li><a href="#"><i class="fas fa-file-pdf"></i>Reports</a></li>
+            <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul> 
     </div>
 <div class="main_content">

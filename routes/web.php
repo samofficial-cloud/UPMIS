@@ -33,10 +33,11 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
     Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
 
-    Route::get('/clients', 'clientsController@index')->name('clients');
 
 
+Route::get('/clients', 'clientsController@index')->name('clients');
 
+Route::get('/clients/edit', 'clientsController@edit')->name('editclients');
 
 Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
 
@@ -58,13 +59,21 @@ Route::post('/contracts/car_rental/edit/submit','carContractsController@editcont
 
 Route::get('/contracts/car_rental/delete/{id}', 'carContractsController@deletecontract')->name('deletecontract');
 
+Route::get('/contracts/car_rental/renew/{id}','carContractsController@renewContractForm')->name('RenewcarRentalForm');
+
 Route::post('/autocomplete/vehicle', 'carRentalController@fetch')->name('autocomplete.fetch');
 
 Route::post('/autocomplete/model', 'carRentalController@model')->name('autocomplete.model');
 
 Route::post('/autocomplete/hirerate', 'carRentalController@hirerate')->name('autocomplete.hirerate');
 
+Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('autocomplete.spaces');
 
+Route::get('/reports', 'HomeController@report')->name('reports');
+
+Route::post('/reports/space1', 'HomeController@spacereport1')->name('spacereport1');
+
+Route::get('/reports/space1/pdf','HomeController@spacereport1PDF')->name('spacereport1pdf');
 
 });
 

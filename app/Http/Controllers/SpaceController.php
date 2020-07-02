@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\space;
 
 class SpaceController extends Controller
 {
@@ -153,6 +154,31 @@ class SpaceController extends Controller
 
 
     }
+
+    public function fetchspaceid(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = space::where('space_id', 'LIKE', "%{$query}%")->get();
+      if(count($data)!=0){
+      $output = '<ul class="dropdown-menu form-card" style="display: block;
+    width: 100%; margin-left: 0%; margin-top: -3%;">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li id="list" style="margin-left: -3%;">'.$row->space_id.'</li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
+     else{
+      echo "0";
+     }
+
+   }
+ }
 
 
 
