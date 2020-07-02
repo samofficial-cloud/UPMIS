@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ContractsController extends Controller
 {
@@ -38,6 +39,27 @@ class ContractsController extends Controller
 
     public function CreateSpaceContract(Request $request)
     {
+    $programming_end_date='';
+        //for programming purposes
+        if($request->get('payment_cycle')=='Monthly') {
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $daysToAdd = 30;
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+
+        }elseif($request->get('payment_cycle')=='Yearly'){
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $daysToAdd = 365;
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+
+        }else{
+
+
+        }
+
 
         if($request->get('client_type')==1){
             $client_type="Individual";
@@ -63,16 +85,29 @@ class ContractsController extends Controller
                 ->where('full_name', $full_name)
                 ->update(['phone_number' => $request->get('phone_number')]);
 
+
+
+
+
+            DB::table('space_contracts')->insert(
+                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date]
+            );
+
         }else {
 
             if($request->get('company_name')=="") {
+
+
+
                 DB::table('clients')->insert(
                     ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type]
                 );
 
 
+
+
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate')]
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date]
                 );
 
             } else {
@@ -81,8 +116,12 @@ class ContractsController extends Controller
                     ['first_name' => $request->get('company_name'), 'last_name' => '', 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type]
                 );
 
+
+
+
+
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate')]
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date]
                 );
 
 
@@ -97,8 +136,6 @@ class ContractsController extends Controller
 
     public function terminateSpaceContract(Request $request,$id)
     {
-
-
 
             DB::table('space_contracts')
                 ->where('contract_id', $id)
@@ -223,9 +260,40 @@ class ContractsController extends Controller
             ->where('contract_id', $contract_id)
             ->update(['start_date' => $request->get('start_date')]);
 
+
         DB::table('space_contracts')
             ->where('contract_id', $contract_id)
             ->update(['end_date' => $request->get('end_date')]);
+
+//for programming purposes
+        if($request->get('payment_cycle')=='Monthly') {
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $daysToAdd = 30;
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['programming_end_date' => $programming_end_date]);
+
+
+        }elseif($request->get('payment_cycle')=='Yearly'){
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $daysToAdd = 365;
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['programming_end_date' => $programming_end_date]);
+
+
+        }else{
+
+
+        }
+
 
 
 
@@ -237,6 +305,129 @@ class ContractsController extends Controller
 
 
         return redirect('/space_contracts_management')
+            ->with('success', 'Contract details edited successfully');
+    }
+
+
+
+    //insurance contracts
+
+    public function InsuranceContractsManagement()
+    {
+        $insurance_contracts=DB::table('insurance_contracts')->where('contract_status',1)->where('expiry_status',1)->get();
+
+        return view('insurance_contracts_management')->with('insurance_contracts',$insurance_contracts);
+    }
+
+
+
+
+
+    public function terminateInsuranceContract(Request $request,$id)
+    {
+
+
+
+        DB::table('insurance_contracts')
+            ->where('id', $id)
+            ->update(['contract_status' => 0]);
+
+        return redirect('/insurance_contracts_management')
+            ->with('success', 'Contract terminated successfully');
+
+
+    }
+
+
+    public function InsuranceContractForm()
+    {
+
+        $insurance_data=DB::table('insurance')->get();
+        return view('insurance_contract_form')->with('insurance_data',$insurance_data);
+    }
+
+
+    public function CreateInsuranceContract(Request $request)
+    {
+
+
+        DB::table('insurance_contracts')->insert(
+            ['vehicle_registration_no' => $request->get('vehicle_registration_no'), 'vehicle_use' => $request->get('vehicle_use'), 'principal' => $request->get('principal'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $request->get('end_date'), 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no')]
+        );
+
+
+
+        return redirect('/insurance_contracts_management')
+            ->with('success', 'Contract created successfully');
+    }
+
+
+    public function EditInsuranceContractForm(Request $request,$id)
+    {
+
+
+        $insurance_data=DB::table('insurance')->get();
+        $contract_data=DB::table('insurance_contracts')->where('id',$id)->get();
+
+        return view('insurance_contract_form_edit')->with('insurance_data',$insurance_data)->with('contract_id',$id)->with('contract_data',$contract_data);
+    }
+
+
+    public function EditInsuranceContractFinalProcessing(Request $request,$contract_id)
+    {
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['vehicle_registration_no' => $request->get('vehicle_registration_no')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['vehicle_use' => $request->get('vehicle_use')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['principal' => $request->get('principal')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['insurance_type' => $request->get('insurance_type')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['commission_date' => $request->get('commission_date')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['end_date' => $request->get('end_date')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['sum_insured' => $request->get('sum_insured')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['premium' => $request->get('premium')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['actual_ex_vat' => $request->get('actual_ex_vat')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['currency' => $request->get('currency')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['commission' => $request->get('commission')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['receipt_no' => $request->get('receipt_no')]);
+
+
+
+
+        return redirect('/insurance_contracts_management')
             ->with('success', 'Contract details edited successfully');
     }
 

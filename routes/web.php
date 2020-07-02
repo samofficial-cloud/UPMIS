@@ -14,10 +14,10 @@
 
 
 
+    Route::get('/send_invoice', 'InvoicesController@SendSpaceInvoice')->name('send_invoice');
+    Auth::routes();
 
-Auth::routes();
-
-Route::group(['middleware' => 'auth'], function(){
+    Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/Space', 'SpaceController@index');
@@ -27,14 +27,50 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
     Route::get('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
+
+    //space
+
+
+    //space contracts
+    Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
+
+
+
+
+    //Insurance
+    Route::get('/insurance', 'InsuranceController@index');
+    Route::post('/add_insurance', 'InsuranceController@addInsurance')->name('add_insurance');
+    Route::post('/edit_insurance/{id}', 'InsuranceController@editInsurance')->name('edit_insurance');
+    Route::get('/deactivate_insurance/{id}', 'InsuranceController@deactivateInsurance')->name('deactivate_insurance');
+
+
+    //Insurance contracts
+    Route::get('/terminate_insurance_contract/{id}', 'ContractsController@terminateInsuranceContract')->name('terminate_insurance_contract');
+    Route::get('/edit_insurance_contract/{id}/', 'ContractsController@EditInsuranceContractForm')->name('edit_insurance_contract');
+    Route::get('/edit_insurance_contract_final/{contract_id}', 'ContractsController@EditInsuranceContractFinalProcessing')->name('edit_insurance_contract_final');
+    Route::get('/insurance_contracts_management', 'ContractsController@InsuranceContractsManagement');
+    Route::get('/insurance_contract_form', 'ContractsController@InsuranceContractForm');
+    Route::get('/create_insurance_contract', 'ContractsController@CreateInsuranceContract')->name('create_insurance_contract');
+
     Route::get('/edit_space_contract/{id}/', 'ContractsController@EditSpaceContractForm')->name('edit_contract');
     Route::get('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
     Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
     Route::post('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
     Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
 
-    Route::get('/clients', 'clientsController@index')->name('clients');
 
+
+
+
+    //Invoices
+
+
+
+
+Route::get('/clients', 'clientsController@index')->name('clients');
+
+
+Route::get('/clients/edit', 'clientsController@edit')->name('editclients');
 
 
 Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
@@ -57,13 +93,21 @@ Route::post('/contracts/car_rental/edit/submit','carContractsController@editcont
 
 Route::get('/contracts/car_rental/delete/{id}', 'carContractsController@deletecontract')->name('deletecontract');
 
+Route::get('/contracts/car_rental/renew/{id}','carContractsController@renewContractForm')->name('RenewcarRentalForm');
+
 Route::post('/autocomplete/vehicle', 'carRentalController@fetch')->name('autocomplete.fetch');
 
 Route::post('/autocomplete/model', 'carRentalController@model')->name('autocomplete.model');
 
 Route::post('/autocomplete/hirerate', 'carRentalController@hirerate')->name('autocomplete.hirerate');
 
+Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('autocomplete.spaces');
 
+Route::get('/reports', 'HomeController@report')->name('reports');
+
+Route::post('/reports/space1', 'HomeController@spacereport1')->name('spacereport1');
+
+Route::get('/reports/space1/pdf','HomeController@spacereport1PDF')->name('spacereport1pdf');
 
 });
 
