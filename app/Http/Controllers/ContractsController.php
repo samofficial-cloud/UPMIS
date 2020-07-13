@@ -83,7 +83,7 @@ class ContractsController extends Controller
 
         $full_name=$request->get('first_name').' '.$request->get('last_name');
 
-        if(DB::table('clients')->where('full_name',$full_name)->count()>0){
+        if(DB::table('clients')->where('full_name',$full_name)->where('contract','Space')->count()>0){
 
             DB::table('clients')
                 ->where('full_name', $full_name)
@@ -112,7 +112,7 @@ class ContractsController extends Controller
 
 
                 DB::table('clients')->insert(
-                    ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type]
+                    ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
                 );
 
 
@@ -125,7 +125,7 @@ class ContractsController extends Controller
             } else {
 
                 DB::table('clients')->insert(
-                    ['first_name' => $request->get('company_name'), 'last_name' => '', 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type]
+                    ['first_name' => $request->get('company_name'), 'last_name' => '', 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
                 );
 
 

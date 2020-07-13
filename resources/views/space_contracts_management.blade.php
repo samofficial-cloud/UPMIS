@@ -74,7 +74,7 @@
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 
     <div class="main_content">
@@ -211,7 +211,15 @@
 
                                       <tr>
                                           <td>Rent price guide:</td>
-                                          <td>{{$var->rent_price_guide}}</td>
+                                          <td>
+
+                                              @if($var->rent_price_guide_from==null)
+                                                N/A
+                                              @else
+                                                {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}
+                                              @endif
+
+                                              </td>
                                       </tr>
                                   </table>
                                   <br>
@@ -383,7 +391,15 @@
 
                                                     <tr>
                                                         <td>Rent price guide:</td>
-                                                        <td>{{$var->rent_price_guide}}</td>
+                                                        <td>
+
+                                                            @if($var->rent_price_guide_from==null)
+                                                              N/A
+                                                            @else
+                                                              {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}
+                                                            @endif
+
+                                                            </td>
                                                     </tr>
                                                 </table>
                                                 <br>
