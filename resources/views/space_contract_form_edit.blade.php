@@ -411,7 +411,7 @@ $today=date('Y-m-d');
 				<div class="form-group row">
 						<div class="form-wrapper col-6">
 							<label for="start_date">Start Date *</label>
-							<input type="date" id="start_date" name="start_date" value="{{$var->start_date}}" class="form-control" required="" min="{{$today}}">
+							<input type="date" id="start_date" name="start_date" value="{{$var->start_date}}" class="form-control" required="" min="{{$var->start_date}}">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="end_date">End Date *</label>
@@ -476,6 +476,13 @@ $today=date('Y-m-d');
 @endsection
 
 @section('pagescript')
+
+    <script type="text/javascript">
+        window.onload=function(){
+            document.getElementById("client_type").click();
+        };
+    </script>
+
 <script type="text/javascript">
 $(document).ready(function(){
 

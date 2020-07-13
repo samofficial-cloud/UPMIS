@@ -141,17 +141,42 @@
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="rent_price_guide"  ><strong>Rent Price Guide</strong></label>
-                         <select id="rent_price_guide" class="form-control" name="rent_price_guide" >
-                           <option value="N/A" >N/A</option>
-                           <option value="200,000-500,000 TZS"  >200,000-500,000 TZS</option>
-                           <option value="500,000-1000,000 TZS" >500,000-1000,000 TZS</option>
-                           <option value="1000,000-2000,000 TZS" >1000,000-2000,000 TZS</option>
-                           <option value="2000,000-5000,000 TZS" >2000,000-5000,000 TZS</option>
-                           <option value="5000,000-10,000,000 TZS" >5000,000-10,000,000 TZS</option>
-                           <option value="10,000,000-50,000,000 TZS" >10,000,000-50,000,000 TZS</option>
-                           <option value="50,000,000-200,000,000 TZS" >50,000,000-200,000,000 TZS</option>
-                         </select>
+                         <label for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                         <input type="checkbox"  style="display: inline-block;" value="rent_price_guide_selected" id="rent_price_guide_checkbox" name="rent_price_guide_checkbox" autocomplete="off">
+                         <div  id="rent_price_guide_div" style="display: none;" class="form-group row">
+
+                         <div class="col-4 inline_block form-wrapper">
+                           <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                           <div class="">
+                             <input type="number" min="1" class="form-control" id="rent_price_guide_from" name="rent_price_guide_from" value=""  autocomplete="off">
+                           </div>
+                         </div>
+
+                         <div class="col-4 inline_block form-wrapper">
+                           <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                           <div  class="">
+                             <input type="number" min="1" class="form-control" id="rent_price_guide_to" name="rent_price_guide_to" value=""  autocomplete="off">
+                           </div>
+                         </div>
+
+
+                         <div class="col-3 inline_block form-wrapper">
+                           <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                           <div  class="">
+                             <select id="rent_price_guide_currency" class="form-control" name="rent_price_guide_currency" >
+                               <option value=""></option>
+                               <option value="TZS" >TZS</option>
+                               <option value="USD" >USD</option>
+                             </select>
+                           </div>
+
+                         </div>
+
+                         </div>
+
+
+
+
                        </div>
                      </div>
 
@@ -195,7 +220,7 @@
         </thead>
         <tbody>
 
-        @foreach($insurance as $var)
+        @foreach($spaces as $var)
           <tr>
 
             <td class="counterCell text-center"></td>
@@ -210,8 +235,19 @@
                             @endif
 
               </center></td>
-            <td><center>{{$var->rent_price_guide}}</center></td>
-            <td><center><a data-toggle="modal" data-target="#edit_space{{$var->id}}" role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+            <td><center>
+
+                @if($var->rent_price_guide_from==null)
+                  N/A
+                @else
+                  {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}
+                @endif
+
+                </center></td>
+            <td>
+
+
+              <a data-toggle="modal" data-target="#edit_space{{$var->id}}" onclick="trigger_click({{$var->id}});" role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
 
                 <a data-toggle="modal" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
                 <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
@@ -270,23 +306,52 @@
                           </div>
                           <br>
 
+
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="rent_price_guide"  ><strong>Rent Price Guide</strong></label>
-                              <select id="rent_price_guide" class="form-control" name="rent_price_guide" >
-                                <option value="{{$var->rent_price_guide}}"  >{{$var->rent_price_guide}}</option>
-                                <option value="N/A" >N/A</option>
-                                <option value="200,000-500,000 TZS"  >200,000-500,000 TZS</option>
-                                <option value="500,000-1000,000 TZS" >500,000-1000,000 TZS</option>
-                                <option value="1000,000-2000,000 TZS" >1000,000-2000,000 TZS</option>
-                                <option value="2000,000-5000,000 TZS" >2000,000-5000,000 TZS</option>
-                                <option value="5000,000-10,000,000 TZS" >5000,000-10,000,000 TZS</option>
-                                <option value="10,000,000-50,000,000 TZS" >10,000,000-50,000,000 TZS</option>
-                                <option value="50,000,000-200,000,000 TZS" >50,000,000-200,000,000 TZS</option>
-                              </select>
+                              <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                              @if($var->rent_price_guide_checkbox==0)
+                              <input type="checkbox"  style="display: inline-block;" onclick="checkbox({{$var->id}});"  id="rent_price_guide_checkbox_edit_zero{{$var->id}}" name="rent_price_guide_checkbox" value="rent_price_guide_selected_edit"  autocomplete="off">
+                              @else
+                                <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                              @endif
+                              <div  id="rent_price_guide_div_edit{{$var->id}}" style="display: none;" class="form-group row">
+
+                                <div class="col-4 inline_block form-wrapper">
+                                  <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                  <div class="">
+                                    <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                  </div>
+                                </div>
+
+                                <div class="col-4 inline_block  form-wrapper">
+                                  <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                  <div  class="">
+                                    <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                  </div>
+                                </div>
+
+
+                                <div class="col-3 inline_block  form-wrapper">
+                                  <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                  <div  class="">
+                                    <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                      <option value="" ></option>
+                                      <option value="TZS" >TZS</option>
+                                      <option value="USD" >USD</option>
+                                      <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                    </select>
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+
+
+
                             </div>
                           </div>
-
 
                           <div align="right">
                             <button class="btn btn-primary" type="submit">Submit</button>
@@ -335,7 +400,7 @@
                 </div>
 
 
-              </center>
+
             </td>
           </tr>
         @endforeach
@@ -352,4 +417,99 @@
   </div>
 </div>
 </div>
+@endsection
+
+@section('pagescript')
+<script>
+
+
+
+
+  $("#rent_price_guide_checkbox").trigger('change');
+
+  $('#rent_price_guide_checkbox').change(function(){
+
+      if( $('#rent_price_guide_checkbox').prop('checked') ){
+
+        document.getElementById("rent_price_guide_div").style.display = "block";
+
+      } else {
+        document.getElementById("rent_price_guide_div").style.display = "none";
+
+        var input_from = document.getElementById("rent_price_guide_from");
+        input_from.value = "";
+
+        var input_to = document.getElementById("rent_price_guide_to");
+        input_to.value = "";
+
+      }
+
+
+  });
+
+
+
+
+
+
+
+  function checkbox(id) {
+    //for edit case checkbox not selected
+    $("#rent_price_guide_checkbox_edit_zero"+id).trigger('change');
+
+    $('#rent_price_guide_checkbox_edit_zero'+id).change(function () {
+
+      if ($('#rent_price_guide_checkbox_edit_zero'+id).prop('checked')) {
+        document.getElementById("rent_price_guide_div_edit"+id).style.display = "block";
+
+      } else {
+        document.getElementById("rent_price_guide_div_edit"+id).style.display = "none";
+
+        var input_from = document.getElementById("rent_price_guide_from_edit"+id);
+        input_from.value = "";
+
+        var input_to = document.getElementById("rent_price_guide_to_edit"+id);
+        input_to.value = "";
+
+        var input_currency_edit = document.getElementById("rent_price_guide_currency_edit"+id);
+        input_currency_edit.value = "";
+
+
+
+      }
+
+
+    });
+
+    //for edit case checkbox selected
+    $("#rent_price_guide_checkbox_edit_one"+id).trigger('change');
+
+    $('#rent_price_guide_checkbox_edit_one'+id).change(function () {
+
+      if ($('#rent_price_guide_checkbox_edit_one'+id).prop('checked')) {
+        document.getElementById("rent_price_guide_div_edit"+id).style.display = "block";
+
+
+      } else {
+        document.getElementById("rent_price_guide_div_edit"+id).style.display = "none";
+
+        var input_from = document.getElementById("rent_price_guide_from_edit"+id);
+        input_from.value = "";
+
+        var input_to = document.getElementById("rent_price_guide_to_edit"+id);
+        input_to.value = "";
+
+        var input_currency_edit = document.getElementById("rent_price_guide_currency_edit"+id);
+        input_currency_edit.value = "";
+
+
+      }
+
+
+    });
+
+  }
+</script>
+
+
 @endsection

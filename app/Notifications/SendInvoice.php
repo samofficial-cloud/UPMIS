@@ -7,6 +7,8 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
+use PDF;
+
 class SendInvoice extends Notification
 {
     use Queueable;
@@ -43,12 +45,16 @@ class SendInvoice extends Notification
      */
     public function toMail($notifiable)
     {
+        $pdf = PDF::loadView('invoice_pdf');
+
         return (new MailMessage)
             ->greeting('Greetings ' . ($this->name) . ',')
             ->subject('INVOICE')
             ->line(' To view the invoice click the button below')
+            ->attachData($pdf->output(), "invoice.pdf")
             ->action('INVOICE', url('http://127.0.0.1:8000/myreservations'))
             ->line('Thank you!');
+
     }
 
     /**

@@ -94,6 +94,7 @@
         <thead class="thead-dark">
         <tr>
           <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
+            <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
           <th scope="col" style="color:#3490dc;"><center>Vehicle Reg No</center></th>
           <th scope="col" style="color:#3490dc;"><center>Vehicle Use</center></th>
           <th scope="col" style="color:#3490dc;"><center>Principal</center></th>
@@ -115,6 +116,7 @@
           <tr>
 
             <td class="counterCell text-center"></td>
+              <td><center>{{$var->full_name}}</center></td>
             <td><center>{{$var->vehicle_registration_no}}</center></td>
             <td><center>{{$var->vehicle_use}}</center></td>
             <td><center>{{$var->principal}}</center></td>

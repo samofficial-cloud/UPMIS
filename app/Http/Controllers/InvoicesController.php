@@ -8,6 +8,7 @@ use App\Notifications\SendInvoice;
 use App\client;
 use Carbon\Carbon;
 
+
 class InvoicesController extends Controller
 {
     /**
@@ -37,15 +38,28 @@ class InvoicesController extends Controller
 
         foreach ($expired_space_contracts as $var) {
 
+
+
+
+
             $client=client::where('full_name',$var->full_name)->first();
             $first_name = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('clients.full_name', $var->full_name)->value('first_name');
+
             $client->notify(new SendInvoice($first_name));
+
         }
 
-    echo "Success";
+    echo "Email sent Successfully";
 
     }
 
+
+
+    public function index()
+    {
+      return view('invoice_pdf');
+
+    }
 
 
 
