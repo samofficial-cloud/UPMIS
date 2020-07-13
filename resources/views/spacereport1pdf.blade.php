@@ -74,9 +74,9 @@ table {
         
             }
             elseif($_GET['space_status']=='0'){
-               $space=space::where('status','1')->get();
+               $space=space::where('status','1')->where('min_price','>=',$_GET['min_price'])->where('max_price','<=',$_GET['max_price'])->get();
               foreach($space as $var){
-                $inactive=space_contract::where('space_id_contract',$var->space_id)->where('min_price','>=',$_GET['min_price'])->where('max_price','<=',$_GET['max_price'])->whereDate('end_date', '>=', $today)->get();
+                $inactive=space_contract::where('space_id_contract',$var->space_id)->whereDate('end_date', '>=', $today)->get();
                 
                 if(count($inactive)==0){
                   $space2[]=$var->space_id;
