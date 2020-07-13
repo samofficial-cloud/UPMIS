@@ -243,7 +243,7 @@ select.list-dt:focus {
 @endsection
 
 @section('content')
-<?php 
+<?php
 $today=date('Y-m-d');
 ?>
 <!-- MultiStep Form -->
@@ -259,7 +259,7 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="#"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -271,13 +271,13 @@ $today=date('Y-m-d');
                 <div class="row">
                     <div class="col-md-12 mx-0">
 
-                        <form id="msform" METHOD="GET" action="{{ route('edit_space_contract_final',['contract_id'=>$contract_id,'client_id'=>$client_id])}}">
+                        <form id="msform" METHOD="GET" action="{{ route('create_space_contract')}}">
 
                             <!-- progressbar -->
                             <ul id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>
                                 <li  id="account"><strong>Renting Space</strong></li>
-                                <li id="payment"><strong>Payment</strong></li>    
+                                <li id="payment"><strong>Payment</strong></li>
                             </ul>
                              <!-- fieldsets -->
                             <fieldset>
@@ -300,7 +300,7 @@ $today=date('Y-m-d');
                 @endif
 
             </select>
-        
+
         </div>
     </div>
 
@@ -345,7 +345,7 @@ $today=date('Y-m-d');
 						<input type="text" readonly id="address" name="address" value="{{$var->address}}" class="form-control">
 					</div>
 				</div>
-                                </div> 
+                                </div>
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
                             </fieldset>
                             {{-- Second Form --}}
@@ -399,9 +399,9 @@ $today=date('Y-m-d');
 
 
 
-				
-                                </div> 
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
                             </fieldset>
                             {{-- Third Form --}}
@@ -460,8 +460,8 @@ $today=date('Y-m-d');
 
 
                                     @endforeach
-                                </div> 
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
                             </fieldset>
                         </form>
@@ -512,7 +512,7 @@ next_fs = $(this).parent().next();
                 p1=1;
                 $('#name1msg').hide();
                 $('#first_name').attr('style','border-bottom: 1px solid #ccc');
-                
+
             }
 
             if(lastName==""){
@@ -528,7 +528,7 @@ next_fs = $(this).parent().next();
                 p2=1;
                 $('#name2msg').hide();
                 $('#last_name').attr('style','border-bottom: 1px solid #ccc');
-                
+
             }
             if(p1=='1' & p2=='1'){
                 gonext();
@@ -552,7 +552,7 @@ next_fs = $(this).parent().next();
              gonext();
             }
             }
-        
+
         else{
              $('#ctypemsg').show();
              var message=document.getElementById('ctypemsg');
@@ -560,7 +560,7 @@ next_fs = $(this).parent().next();
              message.innerHTML="Required";
              $('#client_type').attr('style','border:1px solid #f00');
 
-            
+
         }
 
 });
@@ -570,7 +570,7 @@ $("#next2").click(function(){
     next_fs = $(this).parent().next();
     gonext();
 
-  });  
+  });
 
 function gonext(){
     console.log(3);

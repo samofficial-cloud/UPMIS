@@ -270,7 +270,7 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -308,12 +308,12 @@ $today=date('Y-m-d');
 						<div class="form-wrapper col-6">
 							<label for="first_name">First Name*</label>
                             <span id="name1msg"></span>
-							<input type="text" id="first_name" name="first_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="first_name" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="last_name">Last Name*</label>
                             <span id="name2msg"></span>
-							<input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="last_name" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
