@@ -109,9 +109,19 @@ Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('aut
 
 Route::get('/reports', 'HomeController@report')->name('reports');
 
-Route::post('/reports/space1', 'HomeController@spacereport1')->name('spacereport1');
+Route::get('/reports/space1', 'HomeController@spacereport1')->name('spacereport1');
 
 Route::get('/reports/space1/pdf','HomeController@spacereport1PDF')->name('spacereport1pdf');
+
+Route::get('/reports/space2/pdf','HomeController@spacereport2PDF')->name('spacereport2pdf');
+
+Route::get('/reports/insurance/pdf','HomeController@insurancereportPDF')->name('insurancereportpdf');
+
+Route::get('/reports/tenant/pdf','HomeController@tenantreportPDF')->name('tenantreportpdf');
+
+Route::get('/reports/car_rental/pdf','HomeController@carreportPDF')->name('carreportpdf');
+
+Route::get('/reports/contracts/pdf','HomeController@contractreportPDF')->name('contractreportpdf');
 
 });
 

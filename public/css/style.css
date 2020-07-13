@@ -528,6 +528,8 @@ margin-left: 43.5%;
 .wrapper{
   display: flex;
   position: relative;
+  min-height: 100%;
+  margin-bottom: 50px;
 }
 
 .wrapper .sidebar{
@@ -536,6 +538,9 @@ margin-left: 43.5%;
   background: #e5e5e5;
   padding: 30px 0px;
   position: absolute;
+  /*z-index: 1030;*/
+  top: 0;
+  bottom: 0;
 }
 
 .wrapper .sidebar h2{
@@ -600,6 +605,15 @@ margin-left: 43.5%;
     border-radius: 0.25rem;
 }
 
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    /*line-height: 60px*/;
+}
+
 .link_style {
     cursor: pointer !important;
     color: blue !important;
@@ -615,4 +629,5 @@ margin-left: 43.5%;
 .inline_block {
     display: inline-block;
 }
+
 
