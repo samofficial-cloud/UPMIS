@@ -250,26 +250,15 @@ $today=date('Y-m-d');
 <div class="wrapper">
 <div class="sidebar">
         <ul style="list-style-type:none;">
-
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
-
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+            <li><a href="#"><i class="fas fa-address-card"></i>Insurance</a></li>
+            <li><a href="#"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-            <div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <i class="fas fa-file-contract"></i> Contracts
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
-    <a class="dropdown-item" href="/space_contracts_management">Space</a>
-  </div>
-</div>
+            <li><a href="#"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
-            <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+            <li><a href="#"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul> 
     </div>
 <div class="main_content">
@@ -300,7 +289,7 @@ $today=date('Y-m-d');
 					<div class="form-wrapper" id="clientdiv">
           <label for="client_type">Client Type*</label>
           <span id="ctypemsg"></span>
-            <select class="form-control"  id="client_type" name="client_type">
+            <select class="form-control" readonly id="client_type" name="client_type">
 
               <option value="1">Individual</option>
               <option value="2">Company/Organization</option>
@@ -319,12 +308,12 @@ $today=date('Y-m-d');
 						<div class="form-wrapper col-6">
 							<label for="first_name">First Name*</label>
                             <span id="name1msg"></span>
-							<input type="text" id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" readonly id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="last_name">Last Name*</label>
                             <span id="name2msg"></span>
-							<input type="text" id="last_name" value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="last_name" readonly value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
@@ -332,28 +321,28 @@ $today=date('Y-m-d');
 					<div class="form-wrapper">
 						<label for="company_name">Company Name*</label>
                         <span id="cnamemsg"></span>
-						<input type="text" id="company_name" name="company_name" value="{{$var->first_name}}" class="form-control">
+						<input type="text" readonly id="company_name" name="company_name" value="{{$var->first_name}}" class="form-control">
 					</div>
 				</div>
 
     <div class="form-group">
 					<div class="form-wrapper">
 						<label for="email">Email</label>
-						<input type="text" name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+						<input type="text" name="email" readonly value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="phone_number">Phone Number</label>
-						<input type="text" id="phone_number" name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+						<input type="text" id="phone_number" readonly name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="address">Address</label>
-						<input type="text" id="address" name="address" value="{{$var->address}}" class="form-control">
+						<input type="text" readonly id="address" name="address" value="{{$var->address}}" class="form-control">
 					</div>
 				</div>
                                 </div> 
@@ -369,7 +358,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="space_type"  ><strong>Type</strong></label>
-                                            <select id="space_type" class="form-control" name="space_type">
+                                            <select id="space_type" readonly class="form-control" name="space_type">
 
                                                 <option value="Mall-shop" id="Option" >Mall-shop</option>
                                                 <option value="Villa" id="Option">Villa</option>
@@ -385,7 +374,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="space_location"  ><strong>Location</strong></label>
-                                            <select class="form-control" id="space_location" name="space_location" >
+                                            <select readonly class="form-control" id="space_location" name="space_location" >
                                                 <option value="Mlimani City" id="Option" >Mlimani City</option>
                                                 <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
                                                 <option value="{{$var->location}}" id="Option">{{$var->location}}</option>
@@ -396,7 +385,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="course_name"  ><strong>Space Id  </strong></label>
-                                            <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" Required autocomplete="off">
+                                            <input type="text" readonly class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" Required autocomplete="off">
                                             <div id="nameListSpaceId"></div>
                                         </div>
                                     </div>
@@ -404,7 +393,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="course_name"  ><strong>Size (SQM) *</strong></label>
-                                            <input type="number" min="1" class="form-control" id="space_size" readonly name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                            <input type="number" readonly min="1" class="form-control" id="space_size" readonly name="space_size" value="{{$var->size}}"  autocomplete="off">
                                         </div>
                                     </div>
 
@@ -422,11 +411,11 @@ $today=date('Y-m-d');
 				<div class="form-group row">
 						<div class="form-wrapper col-6">
 							<label for="start_date">Start Date *</label>
-							<input type="date" id="start_date" name="start_date" value="{{$var->start_date}}" class="form-control" required="" min="{{$var->start_date}}">
+							<input type="date" id="start_date" name="start_date" value="" class="form-control" required="" min="{{$today}}">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="end_date">End Date *</label>
-							<input type="date" id="end_date" name="end_date" class="form-control" value="{{$var->end_date}}" required="" min="{{$today}}">
+							<input type="date" id="end_date" name="end_date" class="form-control" value="" required="" min="{{$today}}">
 						</div>
 					</div>
 
@@ -434,7 +423,7 @@ $today=date('Y-m-d');
 
 					<div class="form-wrapper col-6">
 						<label for="amount">Amount *</label>
-						<input type="number" min="1" id="amount" name="amount" value="{{$var->amount}}" class="form-control" required="">
+						<input type="number" min="1" id="amount" name="amount" value="" class="form-control" required="">
 					</div>
 
                         <div class="form-wrapper col-6">
@@ -442,7 +431,7 @@ $today=date('Y-m-d');
                             <select id="currency" class="form-control" name="currency" >
                                 <option value="TZS" >TZS</option>
                                 <option value="USD" >USD</option>
-                                <option value="{{$var->currency}}" selected >{{$var->currency}}</option>
+
                             </select>
                         </div>
 
@@ -457,13 +446,13 @@ $today=date('Y-m-d');
                                             <select id="payment_cycle" class="form-control" name="payment_cycle" >
                                                 <option value="Monthly" >Monthly</option>
                                                 <option value="Yearly" >Yearly</option>
-                                                <option value="{{$var->payment_cycle}}" >{{$var->payment_cycle}}</option>
+
                                             </select>
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="escalation_rate">Escalation Rate</label>
-                                            <input type="text" id="escalation_rate" name="escalation_rate" value="{{$var->escalation_rate}}" class="form-control" required>
+                                            <input type="text" id="escalation_rate" name="escalation_rate" value="" class="form-control" required>
                                         </div>
 
 

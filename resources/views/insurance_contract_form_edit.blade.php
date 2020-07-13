@@ -294,16 +294,19 @@
                                             <div class="form-card">
                                                 <h2 style="text-align: center" class="fs-title">Insurance Information</h2>
                                                 <div class="form-group">
-                                                    <div class="form-wrapper" id="clientdi">
 
-                                                        <br>
-                                                        <br>
-
-                                                    </div>
 
 
                                                     <div class="form-group row">
+                                                        @foreach($contract_data as $var)
                                                         <div class="form-wrapper col-12">
+                                                            <br>
+                                                            <label for="full_name"  ><strong>Client Name</strong></label>
+                                                            <input type="text" value="{{$var->full_name}}"  id="full_name" name="full_name" class="form-control" required>
+                                                        </div>
+
+                                                        <div class="form-wrapper col-6">
+                                                            <br>
                                                             <label for="client_type"><strong>Principal</strong></label>
 
                                                             <select class="form-control"  id="principal" name="principal">
@@ -330,8 +333,8 @@
 
                                                             </select>
                                                         </div>
-@foreach($contract_data as $var)
-                                                        <div class="form-wrapper col-12">
+
+                                                        <div class="form-wrapper col-6">
                                                             <br>
                                                             <label for="space_location"  ><strong>Insurance Type</strong></label>
                                                             <select class="form-control" id="insurance_type" name="insurance_type" >
@@ -394,7 +397,7 @@
                                                 <div class="form-group row">
                                                     <div class="form-wrapper col-6">
                                                         <label for="start_date">Commission Date *</label>
-                                                        <input type="date" id="commission_date" name="commission_date"  value="{{$var->commission_date}}" class="form-control" required="" min="{{$today}}">
+                                                        <input type="date" id="commission_date" name="commission_date"  value="{{$var->commission_date}}" class="form-control" required="" min="{{$var->commission_date}}">
                                                     </div>
                                                     <div class="form-wrapper col-6">
                                                         <label for="end_date">End Date *</label>

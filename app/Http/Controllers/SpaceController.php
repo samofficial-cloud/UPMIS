@@ -35,9 +35,17 @@ class SpaceController extends Controller
     public function addSpace(Request $request)
     {
 
+        if($request->get('rent_price_guide_checkbox')==null){
+
         DB::table('spaces')->insert(
-            ['space_id' => $request->get('space_id'),'space_type' => $request->get('space_type'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide' => $request->get('rent_price_guide')]
+            ['space_id' => $request->get('space_id'),'space_type' => $request->get('space_type'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => $request->get('rent_price_guide_from'),'rent_price_guide_to' => $request->get('rent_price_guide_to'),'rent_price_guide_currency' => $request->get('rent_price_guide_currency'),'rent_price_guide_checkbox' => 0]);
+        }else{
+        DB::table('spaces')->insert(
+            ['space_id' => $request->get('space_id'),'space_type' => $request->get('space_type'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => $request->get('rent_price_guide_from'),'rent_price_guide_to' => $request->get('rent_price_guide_to'),'rent_price_guide_currency' => $request->get('rent_price_guide_currency'),'rent_price_guide_checkbox' => 1]
         );
+    }
+
+
 
 
         return redirect('/Space')
@@ -61,16 +69,35 @@ class SpaceController extends Controller
             ->where('id', $id)
             ->update(['location' => $request->get('space_location')]);
 
-
-
         DB::table('spaces')
             ->where('id', $id)
             ->update(['size' => $request->get('space_size')]);
 
         DB::table('spaces')
             ->where('id', $id)
-            ->update(['rent_price_guide' => $request->get('rent_price_guide')]);
+            ->update(['rent_price_guide_from' => $request->get('rent_price_guide_from')]);
 
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['rent_price_guide_to' => $request->get('rent_price_guide_to')]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['rent_price_guide_currency' => $request->get('rent_price_guide_currency')]);
+
+        if($request->get('rent_price_guide_checkbox')==null) {
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_checkbox' => 0]);
+        }else {
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_checkbox' => 1]);
+
+        }
 
         return redirect('/Space')
             ->with('success', 'Renting space details edited successfully');
@@ -82,7 +109,6 @@ class SpaceController extends Controller
         DB::table('spaces')
             ->where('id', $id)
             ->update(['status' => 0]);
-
 
 
         return redirect('/Space')

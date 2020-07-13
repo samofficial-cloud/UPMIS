@@ -33,7 +33,7 @@
 
     //space contracts
     Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
-
+    Route::get('/renew_space_contract_form/{id}','ContractsController@renewSpaceContractForm')->name('renew_space_contract_form');
 
 
 
@@ -60,9 +60,11 @@
 
 
 
-
-
     //Invoices
+        Route::get('/invoice_pdf', 'InvoicesController@index');
+
+
+
 
 
 
@@ -76,6 +78,8 @@ Route::get('/clients/edit', 'clientsController@edit')->name('editclients');
 Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
 
 Route::get('/car','carRentalController@index');
+
+
 
 Route::get('/car/edit_car','carRentalController@editcar')->name('editcar');
 
