@@ -62,7 +62,7 @@ class carContractsController extends Controller
    if($client_type=='Individual'){
     $contract_data=array('fullName'=>$first_name. ' '.$last_name,"vehicle_reg_no"=>$vehicle_reg_no,'start_date'=>$start_date, 'end_date'=>$end_date, 'special_condition'=>$condition, 'rate'=>$rate, 'amount'=>$amount, 'currency'=>$currency);
 
-    $validate=client::where('full_name',$full_name)->get();
+    $validate=client::where('full_name',$full_name)->where('contract',$contract_type)->get();
 
     if (count($validate)>0) {
         DB::table('clients')
@@ -89,7 +89,7 @@ class carContractsController extends Controller
     $contract_data=array('fullName'=>$company_name,"vehicle_reg_no"=>$vehicle_reg_no,'start_date'=>$start_date, 'end_date'=>$end_date, 'special_condition'=>$condition, 'rate'=>$rate, 'amount'=>$amount, 'currency'=>$currency);
 
 
-$validate2=client::where('full_name',$company_name)->get();
+$validate2=client::where('full_name',$company_name)->where('contract',$contract_type)->get();
 
    if (count($validate2)>0) {
       DB::table('clients')
