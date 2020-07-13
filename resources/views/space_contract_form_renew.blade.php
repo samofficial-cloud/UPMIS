@@ -166,15 +166,10 @@ select.list-dt:focus {
     content: "\f04d"
 }
 
-#progressbar #vehicle:before {
+#progressbar #personal:before {
     font-family: FontAwesome;
-    content: "\f1b9"
+    content: "\f007"
 }
-
-    #progressbar #insurance:before {
-        font-family: FontAwesome;
-        content: "\f15c"
-    }
 
 #progressbar #payment:before {
     font-family: FontAwesome;
@@ -248,7 +243,7 @@ select.list-dt:focus {
 @endsection
 
 @section('content')
-<?php
+<?php 
 $today=date('Y-m-d');
 ?>
 <!-- MultiStep Form -->
@@ -264,124 +259,149 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="#"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul>
+        </ul> 
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
     <div class="row justify-content-center mt-0">
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                <h2><strong>Insurance Contract Information</strong></h2>
+                <h2><strong>Renting Space Contract Information</strong></h2>
                 <p>Fill all form field with (*) to go to the next step</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
-                        <form id="msform" METHOD="GET" action="{{ route('create_insurance_contract')}}">
+
+                        <form id="msform" METHOD="GET" action="{{ route('edit_space_contract_final',['contract_id'=>$contract_id,'client_id'=>$client_id])}}">
+
                             <!-- progressbar -->
                             <ul id="progressbar">
-
-                            	<li class="" id="insurance"><strong>Insurance</strong></li>
-                                <li  id="vehicle"><strong>Vehicle</strong></li>
-                                <li id="payment"><strong>Payment</strong></li>
+                            	<li class="active" id="personal"><strong>Client</strong></li>
+                                <li  id="account"><strong>Renting Space</strong></li>
+                                <li id="payment"><strong>Payment</strong></li>    
                             </ul>
-
-
                              <!-- fieldsets -->
                             <fieldset>
+                                @foreach ($contract_data as $var)
+
+
                                 <div class="form-card">
-                                   <h2 style="text-align: center" class="fs-title">Insurance Information</h2>
-                                    <div class="form-group">
+                                   <h2 class="fs-title">Client Information</h2> <div class="form-group">
+					<div class="form-wrapper" id="clientdiv">
+          <label for="client_type">Client Type*</label>
+          <span id="ctypemsg"></span>
+            <select class="form-control" readonly id="client_type" name="client_type">
 
+              <option value="1">Individual</option>
+              <option value="2">Company/Organization</option>
+                @if($var->type=="Individual")
+                    <option value="1" selected>{{$var->type}}</option>
+                @else
+                    <option value="2" selected>{{$var->type}}</option>
+                @endif
 
-
-
-
-
-                                        <div class="form-group row">
-
-                                            <div class="form-wrapper col-12">
-                                                <br>
-                                                <label for="space_location"  ><strong>Client Name</strong></label>
-                                                <input type="text" id="full_name" name="full_name" class="form-control" required>
-                                            </div>
-
-                                            <div class="form-wrapper col-6">
-                                                <br>
-                                                <label for="client_type"><strong>Principal</strong></label>
-
-                                                <select class="form-control"  id="principal" name="principal">
-
-                                                    <?php
-
-                                                    $tempOut = array();
-                                                    foreach($insurance_data as $values){
-                                                        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
-                                                        $val = (iterator_to_array($iterator,true));
-                                                        $tempoIn=$val['insurance_company'];
-
-                                                        if(!in_array($tempoIn, $tempOut))
-                                                        {
-                                                            print('<option value="'.$val['insurance_company'].'">'.$val['insurance_company'].'</option>');
-                                                            array_push($tempOut,$tempoIn);
-                                                        }
-
-                                                    }
-                                                    ?>
-
-                                                </select>
-                                            </div>
-
-                                            <div class="form-wrapper col-6">
-                                                <br>
-                                                <label for="space_location"  ><strong>Insurance Type</strong></label>
-                                                <select class="form-control" id="insurance_type" name="insurance_type" >
-                                                    <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                                                    <option value="COMPREHENSIVE" id="Option">COMPREHENSIVE</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-
+            </select>
+        
+        </div>
     </div>
 
+        <div class="form-group row" id="namediv" style="display: none;">
+						<div class="form-wrapper col-6">
+							<label for="first_name">First Name*</label>
+                            <span id="name1msg"></span>
+							<input type="text" readonly id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+						</div>
+						<div class="form-wrapper col-6">
+							<label for="last_name">Last Name*</label>
+                            <span id="name2msg"></span>
+							<input type="text" id="last_name" readonly value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+						</div>
+					</div>
 
-                                    <br>
-                                    <br>
+					<div class="form-group" id="companydiv" style="display: none;">
+					<div class="form-wrapper">
+						<label for="company_name">Company Name*</label>
+                        <span id="cnamemsg"></span>
+						<input type="text" readonly id="company_name" name="company_name" value="{{$var->first_name}}" class="form-control">
+					</div>
+				</div>
 
-                                </div>
+    <div class="form-group">
+					<div class="form-wrapper">
+						<label for="email">Email</label>
+						<input type="text" name="email" readonly value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="form-wrapper">
+						<label for="phone_number">Phone Number</label>
+						<input type="text" id="phone_number" readonly name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="form-wrapper">
+						<label for="address">Address</label>
+						<input type="text" readonly id="address" name="address" value="{{$var->address}}" class="form-control">
+					</div>
+				</div>
+                                </div> 
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
                             </fieldset>
                             {{-- Second Form --}}
                             <fieldset>
                                 <div class="form-card">
-                                  <h2 style="text-align: center" class="fs-title">Vehicle Information</h2>
+                                  <h2 class="fs-title">Renting Space Information</h2>
 
 
 
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="space_type"  ><strong>Type</strong></label>
+                                            <select id="space_type" readonly class="form-control" name="space_type">
 
-                                    <div class="form-group row">
-                                        <div class="form-wrapper col-12">
-                                            <br>
-                                            <label for="client_type"><strong>Vehicle Registration Number</strong></label>
-
-                                            <input type="text" id="vehicle_registration_no" name="vehicle_registration_no" class="form-control" required>
-                                        </div>
-
-                                        <br>
-                                        <div class="form-wrapper col-12">
-                                            <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
-                                            <select class="form-control" id="vehicle_use" name="vehicle_use" >
-                                                <option value="PRIVATE" id="Option" >PRIVATE</option>
-                                                <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
+                                                <option value="Mall-shop" id="Option" >Mall-shop</option>
+                                                <option value="Villa" id="Option">Villa</option>
+                                                <option value="Office block" id="Option">Office block</option>
+                                                <option value="Cafeteria" id="Option">Cafeteria</option>
+                                                <option value="Stationery" id="Option">Stationery</option>
+                                                <option value="{{$var->space_type}}" selected id="Option">{{$var->space_type}}</option>
                                             </select>
                                         </div>
                                     </div>
 
 
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="space_location"  ><strong>Location</strong></label>
+                                            <select readonly class="form-control" id="space_location" name="space_location" >
+                                                <option value="Mlimani City" id="Option" >Mlimani City</option>
+                                                <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
+                                                <option value="{{$var->location}}" id="Option">{{$var->location}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                    <br>
-                                    <br>
-                                </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="course_name"  ><strong>Space Id  </strong></label>
+                                            <input type="text" readonly class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" Required autocomplete="off">
+                                            <div id="nameListSpaceId"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="course_name"  ><strong>Size (SQM) *</strong></label>
+                                            <input type="number" readonly min="1" class="form-control" id="space_size" readonly name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+				
+                                </div> 
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
                                 <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
                             </fieldset>
                             {{-- Third Form --}}
@@ -390,28 +410,30 @@ $today=date('Y-m-d');
                                     <h2 class="fs-title">Payment Information</h2>
 				<div class="form-group row">
 						<div class="form-wrapper col-6">
-							<label for="start_date">Commission Date *</label>
-							<input type="date" id="commission_date" name="commission_date" class="form-control" required="" min="{{$today}}">
+							<label for="start_date">Start Date *</label>
+							<input type="date" id="start_date" name="start_date" value="" class="form-control" required="" min="{{$today}}">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="end_date">End Date *</label>
-							<input type="date" id="end_date" name="end_date" class="form-control" required="" min="{{$today}}">
+							<input type="date" id="end_date" name="end_date" class="form-control" value="" required="" min="{{$today}}">
 						</div>
 					</div>
 
 					<div class="form-group row">
 
 					<div class="form-wrapper col-6">
-						<label for="amount">Sum Insured *</label>
-						<input type="number" min="1" id="sum_insured" name="sum_insured" class="form-control" required="">
+						<label for="amount">Amount *</label>
+						<input type="number" min="1" id="amount" name="amount" value="" class="form-control" required="">
 					</div>
 
                         <div class="form-wrapper col-6">
-                            <label for="amount">Premium *</label>
-                            <input type="text" id="premium" name="premium" class="form-control" required="">
+                            <label for="currency">Currency</label>
+                            <select id="currency" class="form-control" name="currency" >
+                                <option value="TZS" >TZS</option>
+                                <option value="USD" >USD</option>
+
+                            </select>
                         </div>
-
-
 
 
 
@@ -420,39 +442,26 @@ $today=date('Y-m-d');
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
-                                            <label for="amount">Actual (Excluding VAT) *</label>
-                                            <input type="number" min="1" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
-                                        </div>
+                                            <label for="payment_cycle">Payment cycle</label>
+                                            <select id="payment_cycle" class="form-control" name="payment_cycle" >
+                                                <option value="Monthly" >Monthly</option>
+                                                <option value="Yearly" >Yearly</option>
 
-                                        <div class="form-wrapper col-6">
-                                            <label for="currency">Currency</label>
-                                            <select id="currency" class="form-control" name="currency" >
-                                                <option value="TZS" >TZS</option>
-                                                <option value="USD" >USD</option>
                                             </select>
                                         </div>
 
-
-                                    </div>
-
-                                    <div class="form-group row">
-
                                         <div class="form-wrapper col-6">
-                                            <label for="amount">Commission * </label>
-                                            <input type="number" min="1" id="commission" name="commission" class="form-control" required="">
-                                        </div>
-
-                                        <div class="form-wrapper col-6">
-                                            <label for="amount">Receipt Number * </label>
-                                            <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="">
+                                            <label for="escalation_rate">Escalation Rate</label>
+                                            <input type="text" id="escalation_rate" name="escalation_rate" value="" class="form-control" required>
                                         </div>
 
 
                                     </div>
 
 
-                                </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                    @endforeach
+                                </div> 
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
                                 <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
                             </fieldset>
                         </form>
@@ -467,6 +476,13 @@ $today=date('Y-m-d');
 @endsection
 
 @section('pagescript')
+
+    <script type="text/javascript">
+        window.onload=function(){
+            document.getElementById("client_type").click();
+        };
+    </script>
+
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -476,7 +492,76 @@ var p1, p2;
 $("#next1").click(function(){
 current_fs = $(this).parent();
 next_fs = $(this).parent().next();
-    gonext();
+    var clientType=$("#client_type").val(),
+        firstName=$("#first_name").val(),
+        lastName=$("#last_name").val(),
+        companyName=$("#company_name").val();
+
+        if(clientType=="1"){
+            $('#ctypemsg').hide();
+            $('#client_type').attr('style','border: 1px solid #ccc');
+            if(firstName==""){
+                p1=0;
+             $('#name1msg').show();
+             var message=document.getElementById('name1msg');
+             message.style.color='red';
+             message.innerHTML="Required";
+             $('#first_name').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p1=1;
+                $('#name1msg').hide();
+                $('#first_name').attr('style','border-bottom: 1px solid #ccc');
+                
+            }
+
+            if(lastName==""){
+                p2=0;
+                $('#name2msg').show();
+             var message=document.getElementById('name2msg');
+             message.style.color='red';
+             message.innerHTML="Required";
+             $('#last_name').attr('style','border-bottom:1px solid #f00');
+            }
+
+            else{
+                p2=1;
+                $('#name2msg').hide();
+                $('#last_name').attr('style','border-bottom: 1px solid #ccc');
+                
+            }
+            if(p1=='1' & p2=='1'){
+                gonext();
+            }
+
+        }
+
+        else if(clientType=="2"){
+            $('#ctypemsg').hide();
+            $('#client_type').attr('style','border: 1px solid #ccc');
+            if(companyName==""){
+             $('#cnamemsg').show();
+             var message=document.getElementById('cnamemsg');
+             message.style.color='red';
+             message.innerHTML="Required";
+             $('#company_name').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+             $('#cnamemsg').hide();
+             $('#company_name').attr('style','border-bottom: 1px solid #ccc');
+             gonext();
+            }
+            }
+        
+        else{
+             $('#ctypemsg').show();
+             var message=document.getElementById('ctypemsg');
+             message.style.color='red';
+             message.innerHTML="Required";
+             $('#client_type').attr('style','border:1px solid #f00');
+
+            
+        }
 
 });
 
@@ -485,7 +570,7 @@ $("#next2").click(function(){
     next_fs = $(this).parent().next();
     gonext();
 
-  });
+  });  
 
 function gonext(){
     console.log(3);
@@ -600,7 +685,6 @@ return true;
     });
 </script>
 
-
 <script>
     $( document ).ready(function() {
 
@@ -696,5 +780,8 @@ return true;
 
 
 </script>
+
+
+
 
 @endsection

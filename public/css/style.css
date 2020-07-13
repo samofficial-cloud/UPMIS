@@ -599,3 +599,20 @@ margin-left: 43.5%;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
 }
+
+.link_style {
+    cursor: pointer !important;
+    color: blue !important;
+    text-decoration: underline !important;
+}
+
+.link_style:hover {
+    text-decoration: none;
+    text-shadow: 1px 1px 1px grey;
+}
+
+
+.inline_block {
+    display: inline-block;
+}
+

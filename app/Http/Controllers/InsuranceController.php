@@ -67,6 +67,9 @@ class InsuranceController extends Controller
             ->update(['commission' => $request->get('commission')]);
 
 
+
+
+
         return redirect('/insurance')
             ->with('success', 'Insurance details edited successfully');
     }
