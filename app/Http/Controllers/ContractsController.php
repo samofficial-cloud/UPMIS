@@ -25,9 +25,10 @@ class ContractsController extends Controller
      */
     public function SpaceContractsManagement()
     {
-        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_status',1)->where('space_contracts.expiry_status',1)->get();
+        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',1)->WhereDate('end_date','>',date('Y-m-d'))->get();
+        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
 
-        return view('space_contracts_management')->with('space_contracts',$space_contracts);
+        return view('space_contracts_management')->with('space_contracts',$space_contracts)->with('space_contracts_inactive',$space_contracts_inactive);
 
     }
 
@@ -35,6 +36,17 @@ class ContractsController extends Controller
     {
 
         return view('space_contract_form');
+    }
+
+
+    public function renewSpaceContractForm(Request $request,$id)
+    {
+        $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->get();
+
+        $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->value('clients.client_id');
+
+        return view('space_contract_form_renew')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id);
+
     }
 
     public function CreateSpaceContract(Request $request)
@@ -352,7 +364,7 @@ class ContractsController extends Controller
 
 
         DB::table('insurance_contracts')->insert(
-            ['vehicle_registration_no' => $request->get('vehicle_registration_no'), 'vehicle_use' => $request->get('vehicle_use'), 'principal' => $request->get('principal'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $request->get('end_date'), 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no')]
+            ['vehicle_registration_no' => $request->get('vehicle_registration_no'), 'vehicle_use' => $request->get('vehicle_use'), 'principal' => $request->get('principal'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $request->get('end_date'), 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name')]
         );
 
 
@@ -424,6 +436,9 @@ class ContractsController extends Controller
             ->where('id', $contract_id)
             ->update(['receipt_no' => $request->get('receipt_no')]);
 
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['full_name' => $request->get('full_name')]);
 
 
 

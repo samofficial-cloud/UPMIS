@@ -166,10 +166,15 @@ select.list-dt:focus {
     content: "\f04d"
 }
 
-#progressbar #personal:before {
+#progressbar #vehicle:before {
     font-family: FontAwesome;
-    content: "\f007"
+    content: "\f1b9"
 }
+
+    #progressbar #insurance:before {
+        font-family: FontAwesome;
+        content: "\f15c"
+    }
 
 #progressbar #payment:before {
     font-family: FontAwesome;
@@ -284,25 +289,34 @@ $today=date('Y-m-d');
                         <form id="msform" METHOD="GET" action="{{ route('create_insurance_contract')}}">
                             <!-- progressbar -->
                             <ul id="progressbar">
-                            	<li class="active" id="personal"><strong>Insurance</strong></li>
-                                <li  id="account"><strong>Vehicle</strong></li>
+
+                            	<li class="" id="insurance"><strong>Insurance</strong></li>
+                                <li  id="vehicle"><strong>Vehicle</strong></li>
                                 <li id="payment"><strong>Payment</strong></li>
                             </ul>
+
+
                              <!-- fieldsets -->
                             <fieldset>
                                 <div class="form-card">
                                    <h2 style="text-align: center" class="fs-title">Insurance Information</h2>
                                     <div class="form-group">
-					<div class="form-wrapper" id="clientdi">
 
-<br>
-                        <br>
 
-        </div>
+
+
 
 
                                         <div class="form-group row">
+
                                             <div class="form-wrapper col-12">
+                                                <br>
+                                                <label for="space_location"  ><strong>Client Name</strong></label>
+                                                <input type="text" id="full_name" name="full_name" class="form-control" required>
+                                            </div>
+
+                                            <div class="form-wrapper col-6">
+                                                <br>
                                                 <label for="client_type"><strong>Principal</strong></label>
 
                                                 <select class="form-control"  id="principal" name="principal">
@@ -327,7 +341,7 @@ $today=date('Y-m-d');
                                                 </select>
                                             </div>
 
-                                            <div class="form-wrapper col-12">
+                                            <div class="form-wrapper col-6">
                                                 <br>
                                                 <label for="space_location"  ><strong>Insurance Type</strong></label>
                                                 <select class="form-control" id="insurance_type" name="insurance_type" >
