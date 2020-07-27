@@ -71,10 +71,10 @@
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-            <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
-            <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 
     <div class="main_content">
@@ -89,12 +89,12 @@
 
         <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="    background-color: lightgrey;
     padding: 10px;
-    margin-left: -16px;
+    margin-left: -2px;
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">New Insurance</a>
   <br>
 
-  <div class="row justify-content-center">
+  <div class="">
     <div class="modal fade" id="add_insurance" role="dialog">
 
       <div class="modal-dialog" role="document">
@@ -303,4 +303,12 @@
   </div>
 </div>
 </div>
+
+
+<script type="text/javascript">
+  var table = $('#myTable').DataTable( {
+    dom: '<"top"fl>rt<"bottom"pi>'
+  } );
+
+</script>
 @endsection

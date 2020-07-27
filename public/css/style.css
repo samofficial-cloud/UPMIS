@@ -628,8 +628,8 @@ margin-left: 43.5%;
 }
 
 .link_style:hover {
-    text-decoration: none;
-    text-shadow: 1px 1px 1px grey;
+    text-decoration: underline !important;
+    cursor: pointer !important;
 }
 
 
@@ -638,4 +638,14 @@ margin-left: 43.5%;
 }
 
 
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+    margin-top: 10px;
 
+}
+
+
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 5px;
+}

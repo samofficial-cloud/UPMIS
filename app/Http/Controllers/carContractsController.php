@@ -116,6 +116,10 @@ $validate2=client::where('full_name',$company_name)->where('contract',$contract_
 
     DB::table('car_contracts')->insert($contract_data);
 
+   //create invoice
+
+
+
    return redirect()->route('carContracts')->with('success', 'Contract Added Successfully');
 
 }
