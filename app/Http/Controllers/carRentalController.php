@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\carRental;
+use App\operational_expenditure;
 
 class carRentalController extends Controller
 {
     //
     public function index(){
     	$cars=carRental::where('flag','1')->get();
-    	return view('car')->with('cars',$cars);
+      $operational=operational_expenditure::where('flag','1')->get();
+    	return view('car')->with('cars',$cars)->with('operational',$operational);
     }
 
     public function newcar(Request $request){
@@ -61,6 +63,31 @@ public function deletecar($id){
       {
        $output .= '
        <li id="list" style="margin-left: -3%;">'.$row->vehicle_reg_no.'</li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
+     else{
+      echo "0";
+     }
+
+   }
+ }
+
+ public function fetch2(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = carRental::where('vehicle_reg_no', 'LIKE', "%{$query}%")->where('vehicle_status','!=','Grounded')->get();
+      if(count($data)!=0){
+      $output = '<ul class="dropdown-menu_custom" style="display: block;
+    width: 100%; margin-left: 0%; margin-top: 0%; margin-bottom: 1%;">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li id="list" style="margin-left: 1%; margin-right: 1%;">'.$row->vehicle_reg_no.'</li>
        ';
       }
       $output .= '</ul>';

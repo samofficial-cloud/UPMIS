@@ -444,6 +444,8 @@ select.list-dt:focus {
               {{-- <option value="car history">List of Car Rental History</option> --}}
               <option value="cars">List of Rental Cars</option>
               <option value="clients">List of Clients</option>
+              <option>Revenue Report From CPTU Vehicles</option>
+              <option value="operational">Revenue Report For Service, Repairs and Fuel For Motor Vehicles</option>
             </select>
         </div>
     </div>
@@ -1380,6 +1382,23 @@ $("#tenant_type").click(function(){
            message.style.color='red';
            message.innerHTML="Required";
            $('#car_type').attr('style','border:1px solid #f00');
+      }
+      else if(query16=='operational'){
+        var _token = $('input[name="_token"]').val();
+          var postData5 = "report_type="+ query16;
+            $.ajax({
+            url: "{{ route('spacereport1') }}",
+            method:"GET",
+            data: postData5,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(data) {
+                window.location.href = "/reports/car_rental2/pdf?"+postData5;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+
       }
       else{
             p18=1;

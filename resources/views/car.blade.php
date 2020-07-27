@@ -2,7 +2,7 @@
 @section('style')
 <style type="text/css">
 div.dataTables_filter{
-  padding-left:878px;
+  padding-left:852px;
   padding-bottom:20px;
 }
 
@@ -80,6 +80,7 @@ $i='1';
     </div>
 <div class="main_content">
 	<div class="container" style="max-width: 1308px;">
+    <br>
 		@if ($errors->any())
           <div class="alert alert-danger">
             <strong>Sorry!!</strong> Something went Wrong<br>
@@ -96,6 +97,15 @@ $i='1';
         <p>{{$message}}</p>
       </div>
     @endif
+<br>
+    <div class="tab">
+            <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>CAR RENTAL LIST</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button>
+        </div>
+        <div id="car_list" class="tabcontent">
+  <br>
+  <h3>1. LIST OF CONTRACTS</h3>
+  <br>
         <a data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -273,7 +283,249 @@ $i='1';
 
   </tbody>
 </table>
+</div>
+<div id="Operational" class="tabcontent">
+  
+  <br>
+  <h3>2. OPERATIONAL EXPENDITURE</h3>
+  <br>
+   <a data-toggle="modal" data-target="#car_operational" class="btn btn-success button_color active" style="
+    padding: 10px;
+    
+    margin-bottom: 5px;
+    margin-top: 4px;" role="button" aria-pressed="true">Add</a>
 
+    <div class="modal fade" id="car_operational" role="dialog">
+
+              <div class="modal-dialog   modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Fill the form below to add operational expenditures</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('addOperational') }}">
+        {{csrf_field()}}
+        <div class="form-group" id="OpregNodiv">
+          <div class="form-wrapper">
+            <label for="op_vehicle_reg_no">Vehicle Registration No</label>
+            <input type="text" id="op_vehicle_reg_no" name="op_vehicle_reg_no" class="form-control" required="" autocomplete="off">
+            <div id="nameList"></div>
+          </div>
+        </div>
+
+        <div class="form-group" id="lpodiv">
+          <div class="form-wrapper">
+            <label for="model">LPO Number</label>
+            <input type="text" id="lpo_no" name="lpo_no" class="form-control" required="">
+          </div>
+        </div>
+
+        <div class="form-group" id="datediv">
+          <div class="form-wrapper">
+            <label for="date_received">Date Received</label>
+            <input type="date" id="date_received" name="date_received" class="form-control" required="">
+          </div>
+        </div>
+
+        <div class="form-group" id="providerdiv">
+          <div class="form-wrapper">
+            <label for="model">Service Provider</label>
+            <input type="text" id="provider" name="provider" class="form-control" required="">
+          </div>
+        </div>
+
+
+        <div class="form-group" id="fueldiv">
+          <div class="form-wrapper">
+            <label for="model">Fuel Consumed</label>
+            <input type="text" id="fuel" name="fuel" class="form-control" required="">
+          </div>
+        </div>
+
+        <div class="form-group" id="amountdiv">
+          <div class="form-wrapper">
+            <label for="amount">Amount</label>
+            <input type="text" id="amount" name="amount" class="form-control" required="">
+          </div>
+        </div>
+
+        <div class="form-group" id="totaldiv">
+          <div class="form-wrapper">
+            <label for="total">Total</label>
+            <input type="text" id="total" name="total" class="form-control" required="">
+          </div>
+        </div>
+        
+        <div class="form-group" id="descriptiondiv">
+          <div class="form-wrapper">
+            <label for="description">Description of Work</label>
+            <textarea type="text" id="description" name="description" class="form-control" maxlength="100" required=""></textarea>
+          </div>
+        </div>
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+
+      </form>
+
+                 </div>
+               </div>
+             </div>
+           </div>
+           <table class="hover table table-striped table-bordered" id="myTable1">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Vehicle No.</center></th>
+      <th scope="col" style="color:#3490dc;"><center>LPO No.</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Date Received</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Description of Work</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Service Provider</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Fuel Consumed</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Amount</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Total</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($operational as $operational)
+      <tr>
+        <td class="counterCell text-center">.</td>
+        <td>{{$operational->vehicle_reg_no}}</td>
+        <td>{{$operational->lpo_no}}</td>
+        <td><center>{{$operational->date_received}}</center></td>
+        <td>{{$operational->description}}</td>
+        <td>{{$operational->service_provider}}</td>
+        <td>{{$operational->fuel_consumed}}</td>
+        <td>{{$operational->amount}}</td>
+        <td>{{$operational->total}}</td>
+        <td>
+          <a data-toggle="modal" data-target="#editops{{$operational->id}}" role="button" aria-pressed="true" id="{{$operational->id}}"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+         <div class="modal fade" id="editops{{$operational->id}}" role="dialog">
+
+              <div class="modal-dialog modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Fill the form below to edit car details</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="#">
+        {{csrf_field()}}
+        <div class="form-group" id="OpregNodiv">
+          <div class="form-wrapper">
+            <label for="op_vehicle_reg_no{{$operational->id}}">Vehicle Registration No</label>
+            <input type="text" id="op_vehicle_reg_no{{$operational->id}}" name="op_vehicle_reg_no" class="form-control" required="" autocomplete="off" value="{{$operational->vehicle_reg_no}}">
+            <div id="nameList2"></div>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group" id="lpodiv">
+          <div class="form-wrapper">
+            <label for="lpo_no{{$operational->id}}">LPO Number</label>
+            <input type="text" id="lpo_no{{$operational->id}}" name="lpo_no" class="form-control" required="" value="{{$operational->lpo_no}}">
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group" id="datediv">
+          <div class="form-wrapper">
+            <label for="date_received{{$operational->id}}">Date Received</label>
+            <input type="date" id="date_received{{$operational->id}}" name="date_received" class="form-control" required="" value="{{$operational->date_received}}">
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group" id="providerdiv">
+          <div class="form-wrapper">
+            <label for="provider{{$operational->id}}">Service Provider</label>
+            <input type="text" id="provider{{$operational->id}}" name="provider" class="form-control" required="" value="{{$operational->service_provider}}">
+          </div>
+        </div>
+        <br>
+
+
+        <div class="form-group" id="fueldiv">
+          <div class="form-wrapper">
+            <label for="fuel{{$operational->id}}">Fuel Consumed</label>
+            <input type="text" id="fuel{{$operational->id}}" name="fuel" class="form-control" required="" value="{{$operational->fuel_consumed}}">
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group" id="amountdiv">
+          <div class="form-wrapper">
+            <label for="amount{{$operational->id}}">Amount</label>
+            <input type="text" id="amount{{$operational->id}}" name="amount" class="form-control" required="" value="{{$operational->amount}}">
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group" id="totaldiv">
+          <div class="form-wrapper">
+            <label for="total{{$operational->id}}">Total</label>
+            <input type="text" id="total{{$operational->id}}" name="total" class="form-control" required="" value="{{$operational->total}}">
+          </div>
+        </div>
+        <br>
+        
+        <div class="form-group" id="descriptiondiv">
+          <div class="form-wrapper">
+            <label for="description{{$operational->id}}">Description of Work</label>
+            <textarea type="text" id="description{{$operational->id}}" name="description" class="form-control" maxlength="100" required="" value="{{$operational->description}}"></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+
+      </form>
+
+                 </div>
+               </div>
+             </div>
+           </div>
+
+            <a data-toggle="modal" data-target="#Deactivateop{{$operational->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
+<div class="modal fade" id="Deactivateop{{$operational->id}}" role="dialog">
+
+        <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+           <div class="modal-body">
+            <p style="font-size: 20px;">Are you sure you want to delete this operational expenditure?</p>
+            <br>
+            <div align="right">
+      <a class="btn btn-info" href="{{route('deleteops',$operational->id)}}">Proceed</a>
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button> 
+</div>
+      
+</div>
+</div>
+</div>
+</div> 
+          
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+  </div>
 
 </div>
 </div>
@@ -282,8 +534,88 @@ $i='1';
 
 @section('pagescript')
 <script type="text/javascript">
+  $(document).ready(function(){
 	var table = $('#myTable').DataTable( {
         dom: '<"top"fl>rt<"bottom"pi>'
     } );
+
+  var table = $('#myTable1').DataTable( {
+        dom: '<"top"fl>rt<"bottom"pi>'     
+    } );
+});
+</script>
+
+<script type="text/javascript">
+  function openContracts(evt, evtName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(evtName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+document.getElementById("defaultOpen").click();
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+  $('#op_vehicle_reg_no').keyup(function(e){  
+        e.preventDefault();
+        var query = $(this).val();
+        if(query != ''){
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.fetch2') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            console.log(2);
+            if(data=='0'){
+              console.log(3);
+             $('#op_vehicle_reg_no').attr('style','border:1px solid #f00');
+             a = '0';
+            }
+            else{
+              console.log(4);
+              a ='1';
+              //$('#message2').hide();
+              $('#op_vehicle_reg_no').attr('style','border:1px solid #ced4da'); 
+              $('#nameList').fadeIn();  
+              $('#nameList').html(data);
+          }
+        }
+         });
+        }
+        else if(query==''){
+          a ='1';
+              //$('#message2').hide();
+              $('#op_vehicle_reg_no').attr('style','border:1px solid #ced4da');
+        }
+     });
+
+  $(document).on('click', '#list', function(){
+    console.log(5);
+   a ='1';
+  $('#op_vehicle_reg_no').attr('style','border:1px solid #ced4da');
+  $('#op_vehicle_reg_no').val($(this).text());      
+  $('#nameList').fadeOut();
+   
+    });
+
+   $(document).on('click', 'form', function(){
+     $('#nameList').fadeOut();  
+    }); 
+    }); 
 </script>
 @endsection
