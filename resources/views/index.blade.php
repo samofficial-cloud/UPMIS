@@ -6,7 +6,6 @@
         <ul style="list-style-type:none;">
 
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
-
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
@@ -21,8 +20,20 @@
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-            <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
-            <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
+
+          <div class="dropdown">
+            <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-file-contract"></i> Invoices
+            </li>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="/invoice_management">Space</a>
+              <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
+              <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
+            </div>
+          </div>
+
+
+            <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul> 
     </div>
@@ -94,7 +105,7 @@
     setInterval(function () {
 
       $.ajax({
-        url : '{{ route("send_invoice")}}',
+        url : '{{ route("create_space_invoice")}}',
         type : "GET",
         success : function(data){
 
@@ -106,7 +117,7 @@
         }
       });
 
-    }, 1000000);
+    }, 10000000);
 
 
   </script>

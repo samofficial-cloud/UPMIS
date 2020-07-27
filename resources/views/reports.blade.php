@@ -128,10 +128,10 @@ select.list-dt:focus {
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-            <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
-            <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -144,7 +144,7 @@ select.list-dt:focus {
                     <div class="col-md-12 mx-0">
                         <form id="msform" method="post" action="#">
                             {{csrf_field()}}
-                            
+
                              <!-- fieldsets -->
                             <fieldset>
                                 <div class="form-card">
@@ -176,12 +176,12 @@ select.list-dt:focus {
         </div>
     </div>
 
-    
+
       <div class="form-group" id="spacefilterdiv" style="display: none;">
-        <div class="form-wrapper"> 
+        <div class="form-wrapper">
       <label for="space_filter" style=" display: inline-block; white-space: nowrap;">Apply Filter
       <input id="space_filter" type="checkbox" name="space_filter" style="margin-bottom: 15px;" value="true"></label>
-    
+
       </div>
     </div>
 
@@ -195,20 +195,20 @@ select.list-dt:focus {
     </div>
 
     <div class="form-group" id="spacefilterBydate" style="display: none;">
-        <div class="form-wrapper"> 
+        <div class="form-wrapper">
       <label for="space_filter_date" style=" display: inline-block; white-space: nowrap;">Filter By Date
       <input id="space_filter_date" type="checkbox" name="space_filter_date" style="margin-bottom: 15px;" value=""></label>
-    
+
       </div>
     </div>
 
-      
+
 
     <div class="form-group" id="spacefilterBydiv" style="display: none;">
       <div class="form-wrapper">
                   <label for="Criteria">Filter By</label>
                   <div class="row">
-{{-- 
+{{--
                     <div class="form-wrapper col-2">
                   <label for="date" style=" display: block;
     white-space: nowrap;">Date
@@ -223,21 +223,21 @@ select.list-dt:focus {
                 </label>
                  </div>
 
-                 <div class="form-wrapper col-3"> 
+                 <div class="form-wrapper col-3">
                   <label for="Status" style=" display: block;
     white-space: nowrap;">Occupation
     <input class="form-check-input" type="checkbox" name="status" id="Status" value="">
-                   </label>           
+                   </label>
                 </div>
 
-                <div class="form-wrapper col-3"> 
+                <div class="form-wrapper col-3">
                   <label for="location_filter" style=" display: block;
     white-space: nowrap;">Location
                    <input class="form-check-input" type="checkbox" name="location_filter" id="location_filter" value="">
-                   </label>           
+                   </label>
                 </div>
 
-               
+
                </div>
              </div>
            </div>
@@ -307,12 +307,12 @@ select.list-dt:focus {
                 </label>
                  </div>
 
-                 <div class="form-wrapper col-3"> 
+                 <div class="form-wrapper col-3">
                   <label for="insurance_typefilter" style=" display: block;
     white-space: nowrap;">Insurance Type
                    <input class="form-check-input" type="checkbox" name="insurance_typefilter" id="insurance_typefilter" value="">
-                   </label>           
-                </div> 
+                   </label>
+                </div>
                </div>
              </div>
            </div>
@@ -377,19 +377,19 @@ select.list-dt:focus {
                 </label>
                  </div>
 
-                 <div class="form-wrapper col-3"> 
+                 <div class="form-wrapper col-3">
                   <label for="contract_filter" style=" display: block;
     white-space: nowrap;">Contract Status
                    <input class="form-check-input" type="checkbox" name="contract_filter" id="contract_filter" value="">
-                   </label>           
+                   </label>
                 </div>
 
-                <div class="form-wrapper col-3"> 
+                <div class="form-wrapper col-3">
                   <label for="payment_filter" style=" display: block;
     white-space: nowrap;">Payment Status
                    <input class="form-check-input" type="checkbox" name="payment_filter" id="payment_filter" value="">
-                   </label>           
-                </div>  
+                   </label>
+                </div>
                </div>
              </div>
            </div>
@@ -502,7 +502,7 @@ select.list-dt:focus {
         </div>
     </div>
 
-    
+
   </div>
   <div>
   <button class="btn btn-primary" type="submit" id="submitbutton">Submit</button>
@@ -700,7 +700,7 @@ select.list-dt:focus {
        $("input[name='client_filter']:checked").prop("checked", false);
        $('#contract_type').val(" ");
        $('#contractbusiness_type').val(" ");
-       $('#client_type').val(" ");  
+       $('#client_type').val(" ");
      }
      else if(query=='contract'){
       $('#contracttypediv').show();
@@ -750,7 +750,7 @@ select.list-dt:focus {
      }
     });
 
-   
+
 
    $("#space_type").click(function(){
      var query = $(this).val();
@@ -942,8 +942,8 @@ var a;
             else{
               a ='1';
               //$('#message2').hide();
-              $('#space_id').attr('style','border:1px solid #ced4da'); 
-              $('#nameListSpaceId').fadeIn();  
+              $('#space_id').attr('style','border:1px solid #ced4da');
+              $('#nameListSpaceId').fadeIn();
               $('#nameListSpaceId').html(data);
           }
         }
@@ -954,7 +954,7 @@ var a;
               //$('#message2').hide();
               $('#space_id').attr('style','border:1px solid #ced4da');
         }
-     
+
 
     });
 
@@ -963,21 +963,21 @@ var a;
    //$('#message2').hide();
   $('#space_id').attr('style','border:1px solid #ced4da');
 
-        $('#space_id').val($(this).text());      
+        $('#space_id').val($(this).text());
         $('#nameListSpaceId').fadeOut();
 
         });
 
    $(document).on('click', 'form', function(){
-     $('#nameListSpaceId').fadeOut();  
-    }); 
+     $('#nameListSpaceId').fadeOut();
+    });
 
 $("#tenant_type").click(function(){
  var query= $(this).val();
  if(query=='list'){
   $('#TenantfilterBydiv').show();
  }
-   }); 
+   });
 
    $("#submitbutton").click(function(e){
        e.preventDefault();
@@ -1081,7 +1081,7 @@ $("#tenant_type").click(function(){
       headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    }); 
+    });
 
           var _token = $('input[name="_token"]').val();
           var postData = "module="+ query+ "&space_type="+ query2+ "&min_price=" + query3 + "&max_price=" +query4 + "&space_status=" +query5+"&space_prize="+$('#space_prize').val()+"&status="+ $('#Status').val()+"&location="+queryA+"&location_status="+$('#location_filter').val();
@@ -1171,7 +1171,7 @@ $("#tenant_type").click(function(){
                 console.log(errorThrown);
             }
         });
-          
+
         }
 
 
@@ -1180,7 +1180,7 @@ $("#tenant_type").click(function(){
        else{
         p1=0;
                 $('#spacetypemsg').hide();
-                $('#space_type').attr('style','border: 1px solid #ccc');  
+                $('#space_type').attr('style','border: 1px solid #ccc');
         }
     }
     else if(query=='insurance'){
@@ -1210,7 +1210,7 @@ $("#tenant_type").click(function(){
           else{
             p9=1;
           $('#principaltypemsg').hide();
-          $('#principaltype').attr('style','border: 1px solid #ccc'); 
+          $('#principaltype').attr('style','border: 1px solid #ccc');
           }
         }
         else{
@@ -1230,7 +1230,7 @@ $("#tenant_type").click(function(){
           else{
             p10=1;
            $('#insurancetypemsg').hide();
-          $('#insurance_type').attr('style','border: 1px solid #ccc'); 
+          $('#insurance_type').attr('style','border: 1px solid #ccc');
           }
         }
         else{
@@ -1290,7 +1290,7 @@ $("#tenant_type").click(function(){
       else{
             p14=1;
            $('#tenanttypemsg').hide();
-          $('#tenant_type').attr('style','border: 1px solid #ccc'); 
+          $('#tenant_type').attr('style','border: 1px solid #ccc');
           }
 
           if($('#business_filter').is(":checked")){
@@ -1306,7 +1306,7 @@ $("#tenant_type").click(function(){
           else{
             p15=1;
            $('#businesstypemsg').hide();
-          $('#business_type').attr('style','border: 1px solid #ccc'); 
+          $('#business_type').attr('style','border: 1px solid #ccc');
           }
         }
         else{
@@ -1326,7 +1326,7 @@ $("#tenant_type").click(function(){
           else{
             p16=1;
            $('#contractstatusmsg').hide();
-          $('#contract_status').attr('style','border: 1px solid #ccc'); 
+          $('#contract_status').attr('style','border: 1px solid #ccc');
           }
         }
         else{
@@ -1346,7 +1346,7 @@ $("#tenant_type").click(function(){
           else{
             p17=1;
            $('#paymentstatusmsg').hide();
-          $('#payment_status').attr('style','border: 1px solid #ccc'); 
+          $('#payment_status').attr('style','border: 1px solid #ccc');
           }
         }
         else{
@@ -1403,7 +1403,7 @@ $("#tenant_type").click(function(){
       else{
             p18=1;
            $('#cartypemsg').hide();
-          $('#car_type').attr('style','border: 1px solid #ccc'); 
+          $('#car_type').attr('style','border: 1px solid #ccc');
           }
 
           if(p18==1){
@@ -1455,7 +1455,7 @@ $("#tenant_type").click(function(){
         }
       }
 
-      
+
 
 
         if($('#client_filter').is(":checked")){
@@ -1471,7 +1471,7 @@ $("#tenant_type").click(function(){
           else{
             p21=1;
            $('#clienttypemsg').hide();
-          $('#client_type').attr('style','border: 1px solid #ccc'); 
+          $('#client_type').attr('style','border: 1px solid #ccc');
           }
         }
         else{
@@ -1499,7 +1499,7 @@ $("#tenant_type").click(function(){
     }
 
     });
-    
+
     $("#insurance_reporttype").click(function(e){
       var query=$(this).val();
       if(query=='sales'){

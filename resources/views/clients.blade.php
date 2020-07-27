@@ -11,10 +11,10 @@ div.dataTables_length label {
     font-weight: normal;
     text-align: left;
     white-space: nowrap;
-    display: inline-block;  
+    display: inline-block;
 }
 
-div.dataTables_length select { 
+div.dataTables_length select {
   height:25px;
   width:10px;
   font-size: 70%;
@@ -22,9 +22,9 @@ div.dataTables_length select {
 table.dataTable {
 font-family: "Nunito", sans-serif;
     font-size: 15px;
-    
 
-    
+
+
   }
   table.dataTable.no-footer {
     border-bottom: 0px solid #111;
@@ -74,10 +74,10 @@ a.title{
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-            <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
-            <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 <div class="main_content">
   <?php $i='1';
@@ -137,7 +137,7 @@ a.title{
                 </div>
 
                  <div class="modal-body">
-                 
+
                     @foreach($contract as $contract)
                       <ol><li>{{$contract->contract}}</li></ol>
                     @endforeach
@@ -185,7 +185,11 @@ a.title{
 <div class="form-group">
           <div class="form-wrapper">
             <label for="phone_number">Phone Number</label>
+
+
+
             <input type="text" id="phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+
           </div>
         </div>
 <br>
@@ -232,7 +236,7 @@ a.title{
 @section('pagescript')
 <script type="text/javascript">
    var table = $('#myTable').DataTable( {
-        dom: '<"top"fl>rt<"bottom"pi>'     
+        dom: '<"top"fl>rt<"bottom"pi>'
     } );
 </script>
 @endsection

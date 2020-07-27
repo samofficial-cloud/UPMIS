@@ -71,8 +71,8 @@
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-            <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
-            <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul>
     </div>
@@ -89,7 +89,7 @@
 
         <a href="/space_contract_form" class="btn button_color active" style="    background-color: lightgrey;
     padding: 10px;
-    margin-left: -16px;
+    margin-left: -2px;
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">New Contract</a>
 
@@ -284,7 +284,7 @@
                 <br>
 
 
-                <table class="hover table table-striped table-bordered" id="myTable">
+                <table class="hover table table-striped table-bordered" id="myTable2">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
@@ -467,5 +467,16 @@
             evt.currentTarget.className += " active";
         }
         document.getElementById("defaultOpen").click();
+    </script>
+
+
+
+    <script type="text/javascript">
+        var table = $('#myTable').DataTable( {
+            dom: '<"top"fl>rt<"bottom"pi>'
+        } );
+        var table2 = $('#myTable2').DataTable( {
+            dom: '<"top"fl>rt<"bottom"pi>'
+        } );
     </script>
 @endsection

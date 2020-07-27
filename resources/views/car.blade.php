@@ -10,10 +10,10 @@ div.dataTables_length label {
     font-weight: normal;
     text-align: left;
     white-space: nowrap;
-    display: inline-block;  
+    display: inline-block;
 }
 
-div.dataTables_length select { 
+div.dataTables_length select {
   height:25px;
   width:10px;
   font-size: 70%;
@@ -21,9 +21,9 @@ div.dataTables_length select {
 table.dataTable {
 font-family: "Nunito", sans-serif;
     font-size: 15px;
-    
 
-    
+
+
   }
   table.dataTable.no-footer {
     border-bottom: 0px solid #111;
@@ -73,10 +73,10 @@ $i='1';
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-            <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
-            <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 <div class="main_content">
 	<div class="container" style="max-width: 1308px;">
@@ -108,7 +108,7 @@ $i='1';
   <br>
         <a data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="
     padding: 10px;
-    
+
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">Add Car</a>
 
@@ -148,7 +148,7 @@ $i='1';
               <option value="Minor Repair">Minor Repair</option>
               <option value="Grounded">Grounded</option>
             </select>
-        
+
         </div>
     </div>
 
@@ -229,7 +229,7 @@ $i='1';
               <option value="Minor Repair">Minor Repair</option>
               <option value="Grounded">Grounded</option>
             </select>
-        
+
         </div>
     </div>
 <br>
@@ -267,13 +267,13 @@ $i='1';
             <br>
             <div align="right">
       <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
-      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button> 
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 </div>
-      
+
 </div>
 </div>
 </div>
-</div> 
+</div>
       </td>
   </tr>
   <?php
@@ -536,7 +536,7 @@ $i='1';
 <script type="text/javascript">
   $(document).ready(function(){
 	var table = $('#myTable').DataTable( {
-        dom: '<"top"fl>rt<"bottom"pi>'     
+        dom: '<"top"fl>rt<"bottom"pi>'
     } );
 
   var table = $('#myTable1').DataTable( {

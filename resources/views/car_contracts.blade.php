@@ -11,10 +11,10 @@ div.dataTables_length label {
     font-weight: normal;
     text-align: left;
     white-space: nowrap;
-    display: inline-block;  
+    display: inline-block;
 }
 
-div.dataTables_length select { 
+div.dataTables_length select {
   height:25px;
   width:10px;
   font-size: 70%;
@@ -22,9 +22,9 @@ div.dataTables_length select {
 table.dataTable {
 font-family: "Nunito", sans-serif;
     font-size: 15px;
-    
 
-    
+
+
   }
   table.dataTable.no-footer {
     border-bottom: 0px solid #111;
@@ -78,10 +78,10 @@ $i=1;
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-            <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
-            <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+  <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 <div class="main_content">
   <br>
@@ -201,7 +201,7 @@ $i=1;
                     <tr>
                       <td>Vehicle Registration No:</td>
                       <td>{{$contracts->vehicle_reg_no}}</td>
-                    </tr> 
+                    </tr>
                    <tr>
                      <td>Vehicle Model:</td>
                      <td> {{$contracts->vehicle_model}}</td>
@@ -242,15 +242,20 @@ $i=1;
             <br>
             <div align="right">
       <a class="btn btn-info" href="{{route('deletecontract',$contracts->id)}}">Proceed</a>
-      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button> 
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 </div>
-      
-</div>
-</div>
+
 </div>
 </div>
+</div>
+</div>
+
+
+
+
 <a href="/contracts/car_rental/print?id={{$contracts->id}}"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>
          
+
     </td>
      </tr>
      <?php
@@ -354,7 +359,7 @@ $i=1;
                     <tr>
                       <td>Vehicle Registration No:</td>
                       <td>{{$contracts->vehicle_reg_no}}</td>
-                    </tr> 
+                    </tr>
                    <tr>
                      <td>Vehicle Model:</td>
                      <td> {{$contracts->vehicle_model}}</td>
@@ -385,9 +390,9 @@ $i=1;
     <td>Terminated</td>
     @endif
     <td>
-      
+
 <a href="{{ route('RenewcarRentalForm',$contracts->id) }}" title="Click to Renew Contract"><center><i class="fa fa-refresh" style="font-size:36px;"></i></center></a>
-         
+
     </td>
      </tr>
      <?php
@@ -406,10 +411,10 @@ $i=1;
 @section('pagescript')
 <script type="text/javascript">
   var table = $('#myTable').DataTable( {
-        dom: '<"top"fl>rt<"bottom"pi>'     
+        dom: '<"top"fl>rt<"bottom"pi>'
     } );
   var table2 = $('#myTable2').DataTable( {
-        dom: '<"top"fl>rt<"bottom"pi>'     
+        dom: '<"top"fl>rt<"bottom"pi>'
     } );
 </script>
 <script type="text/javascript">

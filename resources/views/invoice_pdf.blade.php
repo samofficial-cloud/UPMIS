@@ -1,11 +1,54 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
     <style>
+
+        /*.container {*/
+            /*width: 100%;*/
+            /*!*padding-right: 15px;*!*/
+            /*!*padding-left: 15px;*!*/
+            /*margin-right: auto;*/
+            /*margin-left: auto;*/
+        /*}*/
+
+        /*@media (min-width: 576px) {*/
+            /*.container {*/
+                /*max-width: 540px;*/
+            /*}*/
+        /*}*/
+
+        /*@media (min-width: 768px) {*/
+            /*.container {*/
+                /*max-width: 720px;*/
+            /*}*/
+        /*}*/
+
+        /*@media (min-width: 992px) {*/
+            /*.container {*/
+                /*max-width: 960px;*/
+            /*}*/
+        /*}*/
+
+        /*@media (min-width: 1200px) {*/
+            /*.container {*/
+                /*max-width: 1140px;*/
+            /*}*/
+        /*}*/
+
+
+
+        /*@media print {*/
+
+            /*.container {*/
+                /*min-width: 992px !important;*/
+            /*}*/
+
+
+        /*}*/
+
+
         hr {
             display: block;
             height: 1px;
@@ -23,10 +66,10 @@
 
             float: left;}
 
-        .horizontal_align_margin {width: 11.66%;
+        .horizontal_align_margin {width: 13.66%;
 
             float: left;
-        margin-left: 5%;}
+        margin-left: 3%;}
 
     </style>
 </head>
@@ -43,67 +86,78 @@
 
 <div style="width: 100%">
     <div style="float:left; width: 50%; ">
-        <div style="margin-left: 30%; width:70%;">
-            <p><b>Invoice No: </b></p>
-            <p><b>Project ID:</b></p>
-            <p><b>Debtor Account Code:</b></p>
-            <p><b>Debtor Name:</b></p>
-            <p><b>Debtor Address:</b></p>
-            <p><b>Amount:</b></p>
-            <p><b>Currency:</b></p>
-            <p><b>GEPG Control No.:</b></p>
-        <p><b>TIN:</b></p>
+        <div style="margin-left: 20%; width:80%;">
+            <p><b>Invoice No: {{$invoice_number}} </b></p>
+            <p><b>Project ID: {{$project_id}}</b></p>
+            <p><b>Debtor Account Code: {{$debtor_account_code}}</b></p>
+            <p><b>Debtor Name: {{$debtor_name}}</b></p>
+            <p><b>Debtor Address: {{$debtor_address}}</b></p>
+            <p><b>Amount: {{$amount_to_be_paid}}</b></p>
+            <p><b>Currency: {{$currency}}</b></p>
+            <p><b>GEPG Control No.: {{$gepg_control_no}}</b></p>
+            <p><b>TIN: {{$tin}}</b></p>
         </div>
     </div>
 
     <div style="float:left; width: 50%; ">
         <div style="margin-left: 35%; width:65%;">
-            <p><b>Invoice Date:</b></p>
-            <p><b>Period:</b></p>
-            <p><b>Financial Year:</b></p>
+            <p><b>Invoice Date: {{$invoice_date}}</b></p>
+            <p><b>Period: {{$period}}</b></p>
+            <p><b>Financial Year: {{$financial_year}}</b></p>
 <br><br><br><br><br>
-            <p><b>Max No. of Days to Pay :</b></p>
-        <p><b>Status:</b></p>
-        <p><b>VRN:</b></p>
+            <p><b>Max No. of Days to Pay: {{$max_no_of_days_to_pay}}</b></p>
+        <p><b>Status: {{$status}}</b></p>
+        <p><b>VRN: {{$vrn}}</b></p>
         </div>
     </div>
 
 </div>
 
 
-
-    <table class="container">
-        <thead class="">
+<div  style="clear: both">
+    <table style="width: 100%" class="container">
+        <thead >
 
         <tr>
-            <th>Inc. Code</th>
-            <th>Description</th>
-            <th>Amount(TZS)</th>
+            <th><center>Inc. Code</center></th>
+            <th><center>Description</center></th>
+            <th><center>Amount ({{$currency}})</center></th>
         </tr>
         </thead>
 
         <tbody>
 
             <tr>
-                <td >757565</td>
-                <td>Web hosting income being charges for webhosting and domain</td>
-                <td>166,000</td>
+                <td ><center>{{$inc_code}}</center></td>
+                <td><center>{{$description}}</center></td>
+                <td><center>{{$amount_to_be_paid}}</center></td>
+
+            </tr>
+
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr>
+                <td ><center></center></td>
+                <td style="text-align: right">Total:</td>
+                <td><center>{{$amount_to_be_paid}}</center></td>
 
             </tr>
 
         </tbody>
 
     </table>
-<br><br>
-    <div class="container">
-       <div style="float: right; margin-right: 106px;"><span><b>Total: </b>   </span><span>700000</span></div>
 
-    </div>
+</div>
+<br>
+
 <div style="clear: both"></div>
     <div>
-        <div style="float: left; "><p><b>Amount in Words   </b> </p><p class="dottedUnderline">One hundred sixty six thousand six hundred only </p>
+        <div style="float: left; "><p><b>Amount in Words   </b> </p><p class="dottedUnderline">{{$amount_in_words}} </p>
 
-            <p><b>Please make payment through GEPG Control Number: 45465656</b></p>
+            <p><b>Please make payment through GEPG Control Number: {{$gepg_control_no}}</b></p>
 
 
         </div>
@@ -112,24 +166,21 @@
     <div style="clear: both"></div>
     <br>
     <div style="width: 100%;">
-        <div class="horizontal_align"><b>Prepared By  </b></div>
-        <div  class="dottedUnderline horizontal_align"><b>Samwel Peter</b></div>
+        <div class="horizontal_align"><b>Prepared By</b></div>
+        <div  class="dottedUnderline horizontal_align"><b>{{$prepared_by}}</b></div>
         <div class="horizontal_align_margin "><b>Signature</b></div>
-        <div  class="dottedUnderline horizontal_align">fdgdfgd</div>
+        <div  class="dottedUnderline horizontal_align">signature</div>
         <div class="horizontal_align_margin"><b>Date</b></div>
-        <div  class="dottedUnderline horizontal_align"><b>10/07/2020</b></div>
-
-
+        <div  class="dottedUnderline horizontal_align"><b>{{$today}}</b></div>
     </div>
 <br><br>
     <div style="width: 100%;">
         <div class="horizontal_align"><b>Approved By</b></div>
-        <div  class="dottedUnderline horizontal_align"><b>John Edward  </b></div>
+        <div  class="dottedUnderline horizontal_align"><b>{{$approved_by}} </b></div>
         <div class="horizontal_align_margin "><b>Signature</b></div>
-        <div class="dottedUnderline horizontal_align">fdgdfgd</div>
+        <div class="dottedUnderline horizontal_align">signature</div>
         <div class="horizontal_align_margin"><b>Date</b></div>
-        <div class="dottedUnderline horizontal_align"><b>10/07/2020</b></div>
-
+        <div class="dottedUnderline horizontal_align"><b>{{$today}}</b></div>
 
     </div>
 <br>

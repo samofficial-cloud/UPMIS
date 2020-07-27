@@ -14,7 +14,7 @@
 
 
 
-    Route::get('/send_invoice', 'InvoicesController@SendSpaceInvoice')->name('send_invoice');
+    Route::get('/create_space_invoice', 'InvoicesController@CreateSpaceInvoice')->name('create_space_invoice');
     Auth::routes();
 
     Route::group(['middleware' => 'auth'], function(){
@@ -60,12 +60,32 @@
 
 
 
-    //Invoices
+    //Invoices Space
         Route::get('/invoice_pdf', 'InvoicesController@index');
+        Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
+        Route::post('/send_invoice_space/{id}', 'InvoicesController@sendInvoiceSpace')->name('send_invoice_space');
+        Route::post('/change_payment_status_space/{id}', 'InvoicesController@changePayementStatusSpace')->name('change_payment_status_space');
+
+
+
+        //Invoices car rental
+        Route::get('/car_rental_invoice_management', 'InvoicesController@CarRentalInvoiceManagement');
+        Route::post('/change_payment_status_car_rental/{id}', 'InvoicesController@changePayementStatusCarRental')->name('change_payment_status_car_rental');
+        Route::post('/send_invoice_car_rental/{id}', 'InvoicesController@sendInvoiceCarRental')->name('send_invoice_car_rental');
+
+
+        //Insurance invoices
+        Route::get('/insurance_invoice_management', 'InvoicesController@insuranceInvoiceManagement');
+        Route::post('/send_invoice_insurance/{id}', 'InvoicesController@sendInvoiceInsurance')->name('send_invoice_insurance');
+        Route::post('/change_payment_status_insurance/{id}', 'InvoicesController@changePayementStatusInsurance')->name('change_payment_status_insurance');
 
 
 
 
+
+
+        //payment
+        Route::get('/payment_management', 'PaymentController@paymentManagement');
 
 
 
