@@ -6,34 +6,289 @@ use Illuminate\Http\Request;
 use DB;
 use App\carContract;
 use App\client;
+use PDF;
+use Auth;
 
 class carContractsController extends Controller
 {
     //
     public function index(){
-    	$contracts=carContract::select('clients.type','clients.first_name','clients.last_name', 'clients.address','clients.email', 'clients.phone_number', 'car_contracts.vehicle_reg_no', 'car_contracts.start_date', 'car_contracts.end_date', 'car_contracts.amount', 'car_contracts.rate', 'car_contracts.fullName', 'car_contracts.id', 'car_rentals.vehicle_model', 'car_rentals.vehicle_status', 'car_rentals.hire_rate','car_contracts.special_condition', 'car_contracts.currency')
-    	->join('clients', 'clients.full_name', '=', 'car_contracts.fullName')
-        ->join('car_rentals', 'car_rentals.vehicle_reg_no', '=', 'car_contracts.vehicle_reg_no')
-    	->where('clients.contract', 'Car Rental')
-        ->where('car_contracts.flag','1')
-        ->WhereDate('end_date','>',date('Y-m-d'))
-        ->orderBy('car_contracts.fullName','asc')
-    	->get();
+        if(Auth::user()->role=='CPTU staff'){
+    	// $contracts=carContract::select('clients.type','clients.first_name','clients.last_name', 'clients.address','clients.email', 'clients.phone_number', 'car_contracts.vehicle_reg_no', 'car_contracts.start_date', 'car_contracts.end_date', 'car_contracts.amount', 'car_contracts.rate', 'car_contracts.fullName', 'car_contracts.id', 'car_rentals.vehicle_model', 'car_rentals.vehicle_status', 'car_rentals.hire_rate','car_contracts.special_condition', 'car_contracts.currency')
+    	// ->join('clients', 'clients.full_name', '=', 'car_contracts.fullName')
+     //    ->join('car_rentals', 'car_rentals.vehicle_reg_no', '=', 'car_contracts.vehicle_reg_no')
+    	// ->where('clients.contract', 'Car Rental')
+     //    ->where('car_contracts.flag','1')
+     //    ->WhereDate('end_date','>',date('Y-m-d'))
+     //    ->orderBy('car_contracts.fullName','asc')
+    	// ->get();
 
-        $inactive_contracts=carContract::select('clients.type','clients.first_name','clients.last_name', 'clients.address','clients.email', 'clients.phone_number', 'car_contracts.vehicle_reg_no', 'car_contracts.start_date', 'car_contracts.end_date', 'car_contracts.amount', 'car_contracts.rate', 'car_contracts.fullName', 'car_contracts.id', 'car_rentals.vehicle_model', 'car_rentals.vehicle_status', 'car_rentals.hire_rate','car_contracts.special_condition', 'car_contracts.currency','car_contracts.flag')
-        ->join('clients', 'clients.full_name', '=', 'car_contracts.fullName')
-        ->join('car_rentals', 'car_rentals.vehicle_reg_no', '=', 'car_contracts.vehicle_reg_no')
-        ->where('clients.contract', 'Car Rental')
-        ->where('car_contracts.flag','0')
-        ->orWhereDate('end_date','<',date('Y-m-d'))
-        ->orderBy('car_contracts.fullName','asc')
-        ->get();
-    	return view ('car_contracts')->with('contracts', $contracts)->with('inactive_contracts',$inactive_contracts);
+     //    $inactive_contracts=carContract::select('clients.type','clients.first_name','clients.last_name', 'clients.address','clients.email', 'clients.phone_number', 'car_contracts.vehicle_reg_no', 'car_contracts.start_date', 'car_contracts.end_date', 'car_contracts.amount', 'car_contracts.rate', 'car_contracts.fullName', 'car_contracts.id', 'car_rentals.vehicle_model', 'car_rentals.vehicle_status', 'car_rentals.hire_rate','car_contracts.special_condition', 'car_contracts.currency','car_contracts.flag')
+     //    ->join('clients', 'clients.full_name', '=', 'car_contracts.fullName')
+     //    ->join('car_rentals', 'car_rentals.vehicle_reg_no', '=', 'car_contracts.vehicle_reg_no')
+     //    ->where('clients.contract', 'Car Rental')
+     //    ->where('car_contracts.flag','0')
+     //    ->orWhereDate('end_date','<',date('Y-m-d'))
+     //    ->orderBy('car_contracts.fullName','asc')
+     //    ->get();
+    	// return view ('car_contracts')->with('contracts', $contracts)->with('inactive_contracts',$inactive_contracts);
+
+        $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','0')->get();
+        $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','0')->get();
+        $closed=carContract::where('form_completion','1')->get();
+        return view ('car_contracts2')->with('outbox',$outbox)->with('inbox',$inbox)->with('closed',$closed);
+     }
+     elseif(Auth::user()->role=='Vote Holder'){
+        $inbox=carContract::where('head_msg_status','inbox')->where('form_completion','0')->get();
+        $outbox=carContract::where('head_msg_status','outbox')->where('form_completion','0')->get();
+        return view('car_contracts3')->with('inbox',$inbox)->with('outbox',$outbox);
+     }
+      elseif(Auth::user()->role=='Accountant'){
+         $inbox=carContract::where('acc_msg_status','inbox')->where('form_completion','0')->get();
+        $outbox=carContract::where('acc_msg_status','outbox')->where('form_completion','0')->get();
+        return view('car_contracts4')->with('inbox',$inbox)->with('outbox',$outbox);
+      }
+       elseif(Auth::user()->role=='Head of CPTU'){
+         $inbox=carContract::where('head_cptu_msg_status','inbox')->where('form_completion','0')->get();
+        $outbox=carContract::where('head_cptu_msg_status','outbox')->where('form_completion','0')->get();
+        return view('car_contracts5')->with('inbox',$inbox)->with('outbox',$outbox);
+      }
+
     }
 
-    public function addContractForm(){
-    	return view('carRentalForm');
+    public function addContractFormA(){
+        
+         return view('carRentalForm2');        	
     }
+
+    public function addContractFormB($id){
+        $contract=carContract::find($id);
+         return view('carRentalFormB1')->with('contract',$contract);         
+    }
+
+    public function addContractFormC($id){
+        $contract=carContract::find($id);
+         return view('carRentalFormB2')->with('contract',$contract);         
+    }
+
+    public function addContractFormD($id){
+        $contract=carContract::find($id);
+         return view('carRentalFormB3')->with('contract',$contract);         
+    }
+
+    public function addContractFormE($id){
+        $contract=carContract::find($id);
+         return view('carRentalFormB4')->with('contract',$contract);         
+    }
+
+    // public function addContractForm(){
+    //     return view('carRentalForm2');
+    // }
+
+    public function newContractA(Request $request){
+    $first_name = $request->input('first_name');
+    $last_name = $request->input('last_name');
+    $full_name=$first_name. ' '.$last_name;
+        DB::table('car_contracts')->insert(
+                    ['fullName' => $full_name, 'area_of_travel' => $request->get('area'), 'faculty' => $request->get('faculty_name'), 'cost_centre' => $request->get('centre_name'),'designation' => $request->get('designation'), 'start_date' => $request->get('start_date'), 'end_date' => $request->get('end_date'), 'start_time' => $request->get('start_time'), 'end_time' => $request->get('end_time'),'overtime'=>$request->get('overtime'), 'destination'=>$request->get('destination'), 'purpose'=>$request->get('purpose'), 'trip_nature'=>$request->get('trip_nature'), 'estimated_distance'=>$request->get('estimated_distance'), 'estimated_cost'=>$request->get('estimated_cost'), 'form_initiator' => Auth::user()->name, 'cptu_msg_status'=>'outbox', 'form_status'=>'Vote Holder', 'head_msg_status'=> 'inbox', 'form_completion'=>'0']
+                );
+        return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+    }
+
+    public function newContractB(Request $request){
+        $id=$request->get('contract_id');
+        DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['transport_code' => $request->get('code_no')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['funds_available' => $request->get('fund_available')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['balance_status' => $request->get('balance_status')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['vote_title' => $request->get('vote_holder')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['fund_committed' => $request->get('commited_fund')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['acc_name' => $request->get('approve_name')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['acc_date' => $request->get('approve_date')]);
+
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_msg_status' => 'outbox']);
+
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['form_status' => 'Accountant']);
+
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['acc_msg_status' => 'inbox']);
+
+
+                 return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+    }
+
+    public function newContractC(Request $request){
+        $id=$request->get('contract_id');
+
+        DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['transport_code' => $request->get('code_no')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['funds_available' => $request->get('fund_available')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['balance_status' => $request->get('balance_status')]);
+                
+        DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_name' => $request->get('head_name')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_date' => $request->get('head_date')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_approval_status' => $request->get('head_approval_status')]);
+
+              DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['acc_msg_status' => 'outbox']);
+
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['form_status' => 'Head of CPTU']);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_cptu_msg_status' => 'inbox']);
+
+                return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+
+      }
+
+      public function newContractD(Request $request){
+        $id=$request->get('contract_id');
+        DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_cptu_name' => $request->get('head_cptu_name')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_cptu_date' => $request->get('head_cptu_date')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_cptu_approval_status' => $request->get('head_cptu_approval_status')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['vehicle_reg_no' => $request->get('vehicle_reg')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_cptu_msg_status' => 'outbox']);
+
+                  DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['cptu_msg_status' => 'inbox']);
+
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['form_status' => 'CPTU Staff']);
+
+                return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+
+              }
+
+        public function newContractE(Request $request){
+        $id=$request->get('contract_id');
+        DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['initial_speedmeter' => $request->get('speedmeter_km')]);
+
+          DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['initial_speedmeter_time' => $request->get('speedmeter_time')]);
+
+            DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['ending_speedmeter' => $request->get('end_speedmeter_km')]);
+
+          DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['ending_speedmeter_time' => $request->get('end_speedmeter_time')]);
+
+            DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['overtime_hrs' => $request->get('end_overtime')]);
+            
+            DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['driver_name' => $request->get('driver_name')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['driver_date' => $request->get('driver_date')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['charge_km' => $request->get('charge_km')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['mileage_km' => $request->get('mileage_km')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['mileage_tshs' => $request->get('mileage_tshs')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['penalty_hrs' => $request->get('penalty_hrs')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['overtime_charges' => $request->get('overtime_charges')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['total_charges' => $request->get('total_charges')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['standing_charges' => $request->get('standing_charges')]);
+
+           DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['grand_total' => $request->get('grand_total')]);
+
+            DB::table('car_contracts')
+           ->where('id', $id)
+           ->update(['form_completion' => '1']);
+
+           return redirect()->route('carContracts')->with('success', 'Details submitted Successfully');
+
+              }
+
+
 
     public function newContract(Request $request){
     $client_typ = $request->input('client_type');
@@ -189,5 +444,9 @@ public function renewContractForm($id){
         ->where('car_contracts.id',$id)
         ->first();
         return view('renewCarrentalform')->with('contract',$contract);
+}
+public function printContractForm(){
+    $pdf=PDF::loadView('carcontractspdf');    
+    return $pdf->stream('Vehicle Requistion Form.pdf');
 }
 }
