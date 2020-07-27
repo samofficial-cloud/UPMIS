@@ -185,7 +185,7 @@ a.title{
 <div class="form-group">
           <div class="form-wrapper">
             <label for="phone_number">Phone Number</label>
-            <input type="text" id="phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="">
+            <input type="text" id="phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
           </div>
         </div>
 <br>

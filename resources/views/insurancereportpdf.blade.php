@@ -43,6 +43,9 @@ table {
     else if($_GET['report_type']=='principals'){
     	$principal=insurance::where('status','1')->get();
     }
+     else if($_GET['report_type']=='clients'){
+      $clients=insurance_contract::get();
+    }
 
 	?>
 
@@ -66,6 +69,8 @@ table {
      @endif
      @elseif($_GET['report_type']=='principals')
      <br><br><strong>List of Insurance Principals</strong>
+     @elseif($_GET['report_type']=='clients')
+      <br><br><strong>List of Insurance Clients</strong>
     @endif
 </center>
 
@@ -128,6 +133,35 @@ table {
       	
       </tbody>
 </table>
+ @elseif($_GET['report_type']=='clients')
+ <table>
+    <thead class="thead-dark">
+        <tr>
+          <th scope="col" style="width: 5%;"><center>S/N</center></th>
+           <th scope="col"><center>Client Name</center></th>
+          <th scope="col"><center>Vehicle Reg No</center></th>
+          <th scope="col" style="width: 18%;" ><center>Commission Date</center></th>
+          <th scope="col" ><center>End Date</center></th>
+           <th scope="col" ><center>Receipt No </center></th>
+          <th scope="col" ><center>Sum Insured</center></th>    
+        </tr>
+        </thead>
+        <tbody>
+
+        @foreach($clients as $var)
+          <tr>
+
+            <td class="counterCell">.</td>
+            <td>{{$var->full_name}}</td>
+            <td><center>{{$var->vehicle_registration_no}}</center></td>
+            <td><center>{{$var->commission_date}}</center></td>
+            <td><center>{{$var->end_date}}</center></td>
+            <td><center>{{$var->receipt_no}}</center></td>
+            <td><center>{{$var->currency}} {{$var->sum_insured}}</center></td>   
+          </tr>
+          @endforeach
+      </tbody>
+ </table>
 @endif
 </body>
 </html>

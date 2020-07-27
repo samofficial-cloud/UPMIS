@@ -79,19 +79,41 @@ Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
 
 Route::get('/car','carRentalController@index');
 
-
+Route::post('/car/operational_expenditure/add','operational_expenditureController@addOperational')->name('addOperational');
 
 Route::get('/car/edit_car','carRentalController@editcar')->name('editcar');
 
 Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('deletecar');
 
+Route::get('/car/operational_expenditure/delete/{id}', 'operational_expenditureController@deleteoperational')->name('deleteops');
+
 Route::get('/contracts/car_rental','carContractsController@index')->name('carContracts');
 
-Route::get('/contracts/car_rental/add','carContractsController@addContractForm')->name('carRentalForm');
+Route::get('/contracts/car_rental/add','carContractsController@addContractFormA')->name('carRentalForm');
+
+Route::get('/contracts/car_rental_B/add/{id}','carContractsController@addContractFormB')->name('carRentalFormB');
+
+Route::get('/contracts/car_rental_C/add/{id}','carContractsController@addContractFormC')->name('carRentalFormC');
+
+Route::get('/contracts/car_rental_D/add/{id}','carContractsController@addContractFormD')->name('carRentalFormD');
+
+Route::get('/contracts/car_rental_E/add/{id}','carContractsController@addContractFormE')->name('carRentalFormE');
 
 Route::get('/contracts/car_rental/edit/{id}','carContractsController@editContractForm')->name('EditcarRentalForm');
 
+Route::get('/contracts/car_rental/print','carContractsController@printContractForm')->name('printcarRentalForm');
+
 Route::post('/contracts/car_rental/add/submit','carContractsController@newcontract')->name('newCarcontract');
+
+Route::post('/contracts/car_rental/add_A/submit','carContractsController@newcontractA')->name('newCarcontractA');
+
+Route::post('/contracts/car_rental/add_B/submit','carContractsController@newcontractB')->name('newCarcontractB');
+
+Route::post('/contracts/car_rental/add_C/submit','carContractsController@newcontractC')->name('newCarcontractC');
+
+Route::post('/contracts/car_rental/add_D/submit','carContractsController@newcontractD')->name('newCarcontractD');
+
+Route::post('/contracts/car_rental/add_E/submit','carContractsController@newcontractE')->name('newCarcontractE');
 
 Route::post('/contracts/car_rental/edit/submit','carContractsController@editcontract')->name('editCarcontract');
 
@@ -100,6 +122,8 @@ Route::get('/contracts/car_rental/delete/{id}', 'carContractsController@deleteco
 Route::get('/contracts/car_rental/renew/{id}','carContractsController@renewContractForm')->name('RenewcarRentalForm');
 
 Route::post('/autocomplete/vehicle', 'carRentalController@fetch')->name('autocomplete.fetch');
+
+Route::post('/autocomplete/vehicle_2', 'carRentalController@fetch2')->name('autocomplete.fetch2');
 
 Route::post('/autocomplete/model', 'carRentalController@model')->name('autocomplete.model');
 
@@ -120,6 +144,8 @@ Route::get('/reports/insurance/pdf','HomeController@insurancereportPDF')->name('
 Route::get('/reports/tenant/pdf','HomeController@tenantreportPDF')->name('tenantreportpdf');
 
 Route::get('/reports/car_rental/pdf','HomeController@carreportPDF')->name('carreportpdf');
+
+Route::get('/reports/car_rental2/pdf','HomeController@carreportPDF2')->name('carreportpdf2');
 
 Route::get('/reports/contracts/pdf','HomeController@contractreportPDF')->name('contractreportpdf');
 

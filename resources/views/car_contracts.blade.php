@@ -249,7 +249,7 @@ $i=1;
 </div>
 </div>
 </div>
-<a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>
+<a href="/contracts/car_rental/print?id={{$contracts->id}}"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>
          
     </td>
      </tr>
