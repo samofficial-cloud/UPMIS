@@ -288,8 +288,8 @@ $today=date('Y-m-d');
 					<div class="form-wrapper" id="areadiv">
           <label for="area">Area of Travel*</label>
           <span id="areamsg"></span>
-            <select class="form-control" required="" id="area" name="area">
-              <option value="0" disabled selected hidden>select area of travel</option>
+            <select class="form-control" required="" id="area" name="area" required="">
+              <option value="" disabled selected hidden>select area of travel</option>
               <option value="Within">Within Dar es Salaam/Kibaha</option>
               <option value="Outside">Outside Dar es Salaam/Kibaha</option>
             </select>
@@ -302,7 +302,7 @@ $today=date('Y-m-d');
                             <label for="designation">Designation*</label>
                             <span id="designationmsg"></span>
                             <select class="form-control" required="" id="designation" name="designation">
-              <option value="0" disabled selected hidden> </option>
+              <option value="" disabled selected hidden> </option>
               <option value="Prof.">Prof.</option>
               <option value="Dr.">Dr.</option>
               <option value="Eng.">Eng.</option>
@@ -315,25 +315,32 @@ $today=date('Y-m-d');
 						<div class="form-wrapper col-5">
 							<label for="first_name">First Name*</label>
                             <span id="name1msg"></span>
-							<input type="text" id="first_name" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="first_name" name="first_name" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
 						</div>
 						<div class="form-wrapper col-5">
 							<label for="last_name">Last Name*</label>
                             <span id="name2msg"></span>
-							<input type="text" id="last_name" name="last_name" class="form-control" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
+
+                    <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" class="form-control" required placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                    </div>
+                </div>
 
 					<div class="form-group row" id="facultydiv">
 						<div class="form-wrapper col-6">
 							<label for="faculty_name">Faculty/Department/Unit*</label>
                             <span id="name1msg"></span>
-							<input type="text" id="faculty_name" name="faculty_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="faculty_name" name="faculty_name" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="centre_name">Cost Centre No.*</label>
                             <span id="name2msg"></span>
-							<input type="text" id="centre_name" name="centre_name" class="form-control">
+							<input type="text" id="centre_name" name="centre_name" class="form-control" required="">
 						</div>
 					</div>
 
@@ -361,22 +368,22 @@ $today=date('Y-m-d');
 
 					<div class="form-group">
 					<div class="form-wrapper">
-						<label for="overtime">Estimate Overtime</label>
-						<input type="text" id="overtime" name="overtime" class="form-control">
+						<label for="overtime">Estimate Overtime in Hrs</label>
+						<input type="text" id="overtime" name="overtime" class="form-control" required="" onkeypress="if((this.value.length<=2) && ((event.charCode >= 48 && event.charCode <= 57)||(event.charCode==46))){return true} else return false;">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="destination">Destination</label>
-						<input type="text" id="destination" name="destination" class="form-control">
+						<input type="text" id="destination" name="destination" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="purpose">Purpose/reason of the trip</label>
-						<input type="text" id="purpose" name="purpose" class="form-control">
+						<input type="text" id="purpose" name="purpose" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 					</div>
 				</div>
 
@@ -384,8 +391,8 @@ $today=date('Y-m-d');
 					<div class="form-wrapper" id="naturediv">
           <label for="trip_nature">Nature of the trip*</label>
           <span id="trip_naturemsg"></span>
-            <select class="form-control" required="" id="trip_nature" name="trip_nature">
-              <option value="0" disabled selected hidden>select nature of the trip</option>
+            <select class="form-control" required="" id="trip_nature" name="trip_nature" required=""> 
+              <option value="" disabled selected hidden>select nature of the trip</option>
               <option value="Departmental">Department/Unit Duty</option>
               <option value="Private">Private</option>
               <option value="Emergency">Emergency</option>
@@ -398,12 +405,12 @@ $today=date('Y-m-d');
 						<div class="form-wrapper col-6">
 							<label for="estimated_distance">Estimated Distance in Kms*</label>
                             <span id="estimated_distancemsg"></span>
-							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control"  onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="estimated_cost">Estimated Cost in Tshs.*</label>
                             <span id="estimated_costmsg"></span>
-							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 						</div>
 					</div>
 

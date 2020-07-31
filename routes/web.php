@@ -117,6 +117,8 @@ Route::get('/contracts/car_rental_C/add/{id}','carContractsController@addContrac
 
 Route::get('/contracts/car_rental_D/add/{id}','carContractsController@addContractFormD')->name('carRentalFormD');
 
+Route::get('/contracts/car_rental_D1/add/{id}','carContractsController@addContractFormD1')->name('carRentalFormD1');
+
 Route::get('/contracts/car_rental_E/add/{id}','carContractsController@addContractFormE')->name('carRentalFormE');
 
 Route::get('/contracts/car_rental/edit/{id}','carContractsController@editContractForm')->name('EditcarRentalForm');
@@ -133,6 +135,8 @@ Route::post('/contracts/car_rental/add_C/submit','carContractsController@newcont
 
 Route::post('/contracts/car_rental/add_D/submit','carContractsController@newcontractD')->name('newCarcontractD');
 
+Route::post('/contracts/car_rental/add_D1/submit','carContractsController@newcontractD1')->name('newCarcontractD1');
+
 Route::post('/contracts/car_rental/add_E/submit','carContractsController@newcontractE')->name('newCarcontractE');
 
 Route::post('/contracts/car_rental/edit/submit','carContractsController@editcontract')->name('editCarcontract');
@@ -142,6 +146,8 @@ Route::get('/contracts/car_rental/delete/{id}', 'carContractsController@deleteco
 Route::get('/contracts/car_rental/renew/{id}','carContractsController@renewContractForm')->name('RenewcarRentalForm');
 
 Route::post('/autocomplete/vehicle', 'carRentalController@fetch')->name('autocomplete.fetch');
+
+Route::post('/autocomplete2/vehicle', 'carRentalController@fetchs2')->name('autocomplete2.fetch');
 
 Route::post('/autocomplete/vehicle_2', 'carRentalController@fetch2')->name('autocomplete.fetch2');
 
@@ -168,6 +174,12 @@ Route::get('/reports/car_rental/pdf','HomeController@carreportPDF')->name('carre
 Route::get('/reports/car_rental2/pdf','HomeController@carreportPDF2')->name('carreportpdf2');
 
 Route::get('/reports/contracts/pdf','HomeController@contractreportPDF')->name('contractreportpdf');
+
+Route::get('/notification/{id}', 'notificationsController@ShowNotifications')->name('ShowNotifications');
+
+Route::get('/car/available_cars', function () {
+        return View::make('available_cars');
+    });
 
 });
 

@@ -43,7 +43,7 @@
 	<p style="font-size: 19px;">
 		1. I confirm that under Travel/Transport Activity Code No.<b>{{$contract->transport_code}}</b> the funds available for further use is Tshs. <b>{{$contract->funds_available}}</b>. This Balance is <b>{{$contract->balance_status}}</b> for this application
 		<br>
-		2. Vote Holder(Trip Authorizing Officer) Tittle:<b>{{$contract->vote_title}}</b>.<br> I commit the fund to the tune of Tshs.<b>{{$contract->fund_committed}}</b> for this Application/Trip
+		2. Vote Holder (Trip Authorizing Officer) Tittle: <b>{{$contract->vote_title}}</b>.<br> I commit the fund to the tune of Tshs.<b>{{$contract->fund_committed}}</b> for this Application/Trip
 		<br><br>
 		Name: <b>{{$contract->acc_name}}</b> <span style="padding-left: 30px;">Date: <b>{{$contract->acc_date}}</b></span>
 	</p>
@@ -59,12 +59,21 @@
 	<hr>
 </div>
 <div>
+	@if($contract->area_of_travel=='Within')
 	<strong>D. HEAD OF CPTU</strong>
 	<p style="font-size: 19px;">
-		<b>{{$contract->head_cptu_approval_status}}</b>  - Vehicle Reg No: <b>{{$contract->vehicle_reg_no}}</b><br><br>
+		{{-- <b>{{$contract->head_cptu_approval_status}}</b>  - --}} Vehicle Reg No: <b>{{$contract->vehicle_reg_no}}</b><br><br>
 		Name: <b>{{$contract->head_cptu_name}}</b> <span style="padding-left: 30px;">Date: <b>{{$contract->head_cptu_date}}</b></span>
 
 	</p>
+	@elseif($contract->area_of_travel=='Outside')
+	<strong>D. DVC: (Administration)</strong>
+	<p style="font-size: 19px;">
+		{{-- <b>{{$contract->dvc_approval_status}}</b>  - --}} Vehicle Reg No: <b>{{$contract->vehicle_reg_no}}</b><br><br>
+		Name: <b>{{$contract->dvc_name}}</b> <span style="padding-left: 30px;">Date: <b>{{$contract->dvc_date}}</b></span>
+
+	</p>
+	@endif
 	<hr>
 </div>
 <div>

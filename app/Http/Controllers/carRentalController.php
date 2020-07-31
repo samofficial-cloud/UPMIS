@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use App\carRental;
 use App\operational_expenditure;
 
@@ -56,6 +56,36 @@ public function deletecar($id){
      {
       $query = $request->get('query');
       $data = carRental::where('vehicle_reg_no', 'LIKE', "%{$query}%")->where('vehicle_status','!=','Grounded')->get();
+      if(count($data)!=0){
+      $output = '<ul class="dropdown-menu form-card" style="display: block;
+    width: 100%; margin-left: 0%; margin-top: -3%;">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li id="list" style="margin-left: -3%;">'.$row->vehicle_reg_no.'</li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
+     else{
+      echo "0";
+     }
+
+   }
+ }
+
+ public function fetchs2(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $start_date=$request->get('start_date');
+      $data= DB::table('car_rentals')
+        ->where('vehicle_reg_no', 'LIKE', "%{$query}%")
+        ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')->where('vehicle_reg_no','!=',null)->whereDate('end_date','>=', $start_date)->pluck('vehicle_reg_no')->toArray())
+        ->where('vehicle_status','!=','Grounded')
+        ->get();
       if(count($data)!=0){
       $output = '<ul class="dropdown-menu form-card" style="display: block;
     width: 100%; margin-left: 0%; margin-top: -3%;">';
