@@ -73,7 +73,16 @@ $i='1';
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+<div class="dropdown">
+  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-file-contract"></i> Invoices
+  </li>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/invoice_management">Space</a>
+    <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
+    <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
+  </div>
+</div>
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul>
@@ -285,13 +294,13 @@ $i='1';
 </table>
 </div>
 <div id="Operational" class="tabcontent">
-  
+
   <br>
   <h3>2. OPERATIONAL EXPENDITURE</h3>
   <br>
    <a data-toggle="modal" data-target="#car_operational" class="btn btn-success button_color active" style="
     padding: 10px;
-    
+
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">Add</a>
 
@@ -358,7 +367,7 @@ $i='1';
             <input type="text" id="total" name="total" class="form-control" required="">
           </div>
         </div>
-        
+
         <div class="form-group" id="descriptiondiv">
           <div class="form-wrapper">
             <label for="description">Description of Work</label>
@@ -476,7 +485,7 @@ $i='1';
           </div>
         </div>
         <br>
-        
+
         <div class="form-group" id="descriptiondiv">
           <div class="form-wrapper">
             <label for="description{{$operational->id}}">Description of Work</label>
@@ -512,14 +521,14 @@ $i='1';
             <br>
             <div align="right">
       <a class="btn btn-info" href="{{route('deleteops',$operational->id)}}">Proceed</a>
-      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button> 
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 </div>
-      
+
 </div>
 </div>
 </div>
-</div> 
-          
+</div>
+
         </td>
       </tr>
       @endforeach
@@ -540,7 +549,7 @@ $i='1';
     } );
 
   var table = $('#myTable1').DataTable( {
-        dom: '<"top"fl>rt<"bottom"pi>'     
+        dom: '<"top"fl>rt<"bottom"pi>'
     } );
 });
 </script>
@@ -570,7 +579,7 @@ document.getElementById("defaultOpen").click();
 </script>
 <script type="text/javascript">
   $(document).ready(function(){
-  $('#op_vehicle_reg_no').keyup(function(e){  
+  $('#op_vehicle_reg_no').keyup(function(e){
         e.preventDefault();
         var query = $(this).val();
         if(query != ''){
@@ -590,8 +599,8 @@ document.getElementById("defaultOpen").click();
               console.log(4);
               a ='1';
               //$('#message2').hide();
-              $('#op_vehicle_reg_no').attr('style','border:1px solid #ced4da'); 
-              $('#nameList').fadeIn();  
+              $('#op_vehicle_reg_no').attr('style','border:1px solid #ced4da');
+              $('#nameList').fadeIn();
               $('#nameList').html(data);
           }
         }
@@ -608,14 +617,14 @@ document.getElementById("defaultOpen").click();
     console.log(5);
    a ='1';
   $('#op_vehicle_reg_no').attr('style','border:1px solid #ced4da');
-  $('#op_vehicle_reg_no').val($(this).text());      
+  $('#op_vehicle_reg_no').val($(this).text());
   $('#nameList').fadeOut();
-   
+
     });
 
    $(document).on('click', 'form', function(){
-     $('#nameList').fadeOut();  
-    }); 
-    }); 
+     $('#nameList').fadeOut();
+    });
+    });
 </script>
 @endsection
