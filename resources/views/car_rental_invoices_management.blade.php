@@ -307,6 +307,42 @@
                                                                     </tr>
 
                                                                     <tr>
+                                                                        <td>Start Time:</td>
+                                                                        <td>{{$var->start_time}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>End Time:</td>
+                                                                        <td>{{$var->end_time}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Area of Travel:</td>
+                                                                        <td>{{$var->area_of_travel}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Faculty:</td>
+                                                                        <td>{{$var->faculty}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Destination:</td>
+                                                                        <td>{{$var->destination}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Purpose:</td>
+                                                                        <td>{{$var->purpose}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Trip Nature:</td>
+                                                                        <td>{{$var->trip_nature}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
                                                                         <td>Amount:</td>
                                                                         <td>{{$var->amount}} {{$var->currency}}</td>
                                                                     </tr>
@@ -335,7 +371,7 @@
                                         <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
 
                                         <td>
-                                            <center> <a data-toggle="modal" style=" color: #3490dc;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                            <center> <a data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
 
                                                 <div class="modal fade" id="send_invoice{{$var->invoice_number}}" role="dialog">
@@ -443,7 +479,106 @@
                                         <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                         <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                         <td><center>{{$var->period}}</center></td>
-                                        <td><center>{{$var->contract_id}}</center></td>
+                                        <td><center>
+                                                <a  style="color:blue!important;"  class="link_style" data-toggle="modal" data-target="#contract{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>
+                                                <div class="modal fade" id="contract{{$var->invoice_number}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Contract Details.</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <table style="width: 100%">
+                                                                    <tr>
+                                                                        <td>Full Name:</td>
+                                                                        <td>{{$var->fullName}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Vehicle Registration Number:</td>
+                                                                        <td> {{$var->vehicle_reg_no}}</td>
+                                                                    </tr>
+
+                                                                    {{--<tr>--}}
+                                                                    {{--<td> Vehicle Use:</td>--}}
+                                                                    {{--<td> {{$var->vehicle_use}}</td>--}}
+                                                                    {{--</tr>--}}
+
+
+                                                                    <tr>
+                                                                        <td>Start Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->start_date))}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>End Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->end_date))}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Start Time:</td>
+                                                                        <td>{{$var->start_time}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>End Time:</td>
+                                                                        <td>{{$var->end_time}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Area of Travel:</td>
+                                                                        <td>{{$var->area_of_travel}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Faculty:</td>
+                                                                        <td>{{$var->faculty}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Destination:</td>
+                                                                        <td>{{$var->destination}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Purpose:</td>
+                                                                        <td>{{$var->purpose}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Trip Nature:</td>
+                                                                        <td>{{$var->trip_nature}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Amount:</td>
+                                                                        <td>{{$var->amount}} {{$var->currency}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Rate:</td>
+                                                                        <td>{{$var->rate}}</td>
+                                                                    </tr>
+
+                                                                </table>
+                                                                <br>
+                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+                                            </center></td>
                                         <td><center>{{$var->amount_to_be_paid}} {{$var->currency}}</center></td>
                                         <td><center>{{$var->gepg_control_no}}</center></td>
                                         <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
@@ -493,7 +628,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">Comments</label>
-                                                                            <input type="text" class="form-control" id="course_name" name="user_comments" value="{{$var->user_comments}}" Required autocomplete="off">
+                                                                            <input type="text" class="form-control" id="course_name" name="user_comments" value="{{$var->user_comments}}"  autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                     <br>
@@ -583,7 +718,106 @@
                                         <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                         <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                         <td><center>{{$var->period}}</center></td>
-                                        <td><center>{{$var->contract_id}}</center></td>
+                                        <td><center>
+                                                <a  style="color:blue!important;"  class="link_style" data-toggle="modal" data-target="#contract{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>
+                                                <div class="modal fade" id="contract{{$var->invoice_number}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Contract Details.</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <table style="width: 100%">
+                                                                    <tr>
+                                                                        <td>Full Name:</td>
+                                                                        <td>{{$var->fullName}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Vehicle Registration Number:</td>
+                                                                        <td> {{$var->vehicle_reg_no}}</td>
+                                                                    </tr>
+
+                                                                    {{--<tr>--}}
+                                                                    {{--<td> Vehicle Use:</td>--}}
+                                                                    {{--<td> {{$var->vehicle_use}}</td>--}}
+                                                                    {{--</tr>--}}
+
+
+                                                                    <tr>
+                                                                        <td>Start Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->start_date))}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>End Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->end_date))}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Start Time:</td>
+                                                                        <td>{{$var->start_time}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>End Time:</td>
+                                                                        <td>{{$var->end_time}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Area of Travel:</td>
+                                                                        <td>{{$var->area_of_travel}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Faculty:</td>
+                                                                        <td>{{$var->faculty}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Destination:</td>
+                                                                        <td>{{$var->destination}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Purpose:</td>
+                                                                        <td>{{$var->purpose}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Trip Nature:</td>
+                                                                        <td>{{$var->trip_nature}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Amount:</td>
+                                                                        <td>{{$var->amount}} {{$var->currency}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Rate:</td>
+                                                                        <td>{{$var->rate}}</td>
+                                                                    </tr>
+
+                                                                </table>
+                                                                <br>
+                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+                                            </center></td>
                                         <td><center>{{$var->amount_to_be_paid}} {{$var->currency}}</center></td>
                                         <td><center>{{$var->gepg_control_no}}</center></td>
                                         <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>

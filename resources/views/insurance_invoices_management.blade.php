@@ -251,7 +251,7 @@
                                 <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>End date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Period</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
+                                {{--<th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>--}}
                                 <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Created Date</center></th>
 
@@ -268,13 +268,106 @@
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                     <td><center>{{$var->period}}</center></td>
-                                    <td><center>{{$var->contract_id}}</center></td>
+                                    {{--<td><center>--}}
+                                            {{--<a  style="color:blue!important;"  class="link_style" data-toggle="modal" data-target="#contract{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>--}}
+                                            {{--<div class="modal fade" id="contract{{$var->invoice_number}}" role="dialog">--}}
+
+                                                {{--<div class="modal-dialog" role="document">--}}
+                                                    {{--<div class="modal-content">--}}
+                                                        {{--<div class="modal-header">--}}
+                                                            {{--<b><h5 class="modal-title">Contract Details.</h5></b>--}}
+
+                                                            {{--<button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                                                        {{--</div>--}}
+
+                                                        {{--<div class="modal-body">--}}
+                                                            {{--<table style="width: 100%">--}}
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Full Name:</td>--}}
+                                                                    {{--<td>{{$var->full_name}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td> Vehicle Registration Number:</td>--}}
+                                                                    {{--<td> {{$var->vehicle_registration_no}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                {{--<td> Vehicle Use:</td>--}}
+                                                                {{--<td> {{$var->vehicle_use}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Principal:</td>--}}
+                                                                    {{--<td>{{$var->principal}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Insurance Type:</td>--}}
+                                                                    {{--<td>{{$var->insurance_type}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Commission Date:</td>--}}
+                                                                    {{--<td>{{date("d/m/Y",strtotime($var->commission_date))}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>End Date:</td>--}}
+                                                                    {{--<td>{{date("d/m/Y",strtotime($var->end_date))}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Sum Insured:</td>--}}
+                                                                    {{--<td>{{$var->sum_insured}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Premium:</td>--}}
+                                                                    {{--<td>{{$var->premium}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Actual (Excluding VAT):</td>--}}
+                                                                    {{--<td>{{$var->actual_ex_vat}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Commission:</td>--}}
+                                                                    {{--<td>{{$var->commission}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Receipt Number:</td>--}}
+                                                                    {{--<td>{{$var->receipt_no}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+
+                                                            {{--</table>--}}
+                                                            {{--<br>--}}
+                                                            {{--<center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+
+
+
+
+
+
+
+                                        {{--</center></td>--}}
                                     <td><center>{{$var->amount_to_be_paid}} {{$var->currency}}</center></td>
               
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
 
                                     <td>
-                                        <center> <a data-toggle="modal" style=" color: #3490dc;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                        <center> <a data-toggle="modal" style=" color: #3490dc; cursor: pointer"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
 
                                         <div class="modal fade" id="send_invoice{{$var->invoice_number}}" role="dialog">
@@ -363,7 +456,7 @@
                                 <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>End date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Period</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
+                                {{--<th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>--}}
                                 <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>GEPG Control No</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
@@ -382,7 +475,100 @@
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                     <td><center>{{$var->period}}</center></td>
-                                    <td><center>{{$var->contract_id}}</center></td>
+                                    {{--<td><center>--}}
+                                            {{--<a  style="color:blue!important;"  class="link_style" data-toggle="modal" data-target="#contract{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>--}}
+                                            {{--<div class="modal fade" id="contract{{$var->invoice_number}}" role="dialog">--}}
+
+                                                {{--<div class="modal-dialog" role="document">--}}
+                                                    {{--<div class="modal-content">--}}
+                                                        {{--<div class="modal-header">--}}
+                                                            {{--<b><h5 class="modal-title">Contract Details.</h5></b>--}}
+
+                                                            {{--<button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                                                        {{--</div>--}}
+
+                                                        {{--<div class="modal-body">--}}
+                                                            {{--<table style="width: 100%">--}}
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Full Name:</td>--}}
+                                                                    {{--<td>{{$var->full_name}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td> Vehicle Registration Number:</td>--}}
+                                                                    {{--<td> {{$var->vehicle_registration_no}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td> Vehicle Use:</td>--}}
+                                                                    {{--<td> {{$var->vehicle_use}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Principal:</td>--}}
+                                                                    {{--<td>{{$var->principal}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Insurance Type:</td>--}}
+                                                                    {{--<td>{{$var->insurance_type}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Commission Date:</td>--}}
+                                                                    {{--<td>{{date("d/m/Y",strtotime($var->commission_date))}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>End Date:</td>--}}
+                                                                    {{--<td>{{date("d/m/Y",strtotime($var->end_date))}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Sum Insured:</td>--}}
+                                                                    {{--<td>{{$var->sum_insured}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Premium:</td>--}}
+                                                                    {{--<td>{{$var->premium}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Actual (Excluding VAT):</td>--}}
+                                                                    {{--<td>{{$var->actual_ex_vat}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Commission:</td>--}}
+                                                                    {{--<td>{{$var->commission}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Receipt Number:</td>--}}
+                                                                    {{--<td>{{$var->receipt_no}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+
+                                                            {{--</table>--}}
+                                                            {{--<br>--}}
+                                                            {{--<center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+
+
+
+
+
+
+
+                                        {{--</center></td>--}}
                                     <td><center>{{$var->amount_to_be_paid}} {{$var->currency}}</center></td>
                                     <td><center>{{$var->gepg_control_no}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
@@ -432,7 +618,7 @@
                                                             <div class="form-group">
                                                                 <div class="form-wrapper">
                                                                     <label for="course_name">Comments</label>
-                                                                    <input type="text" class="form-control" id="course_name" name="user_comments" value="{{$var->user_comments}}" Required autocomplete="off">
+                                                                    <input type="text" class="form-control" id="course_name" name="user_comments" value="{{$var->user_comments}}"  autocomplete="off">
                                                                 </div>
                                                             </div>
                                                             <br>
@@ -502,7 +688,7 @@
                                 <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>End date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Period</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
+
                                 <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>GEPG Control No</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
@@ -522,7 +708,100 @@
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                     <td><center>{{$var->period}}</center></td>
-                                    <td><center>{{$var->contract_id}}</center></td>
+                                    {{--<td><center>--}}
+                                            {{--<a  style="color:blue!important;"  class="link_style" data-toggle="modal" data-target="#contract{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>--}}
+                                            {{--<div class="modal fade" id="contract{{$var->invoice_number}}" role="dialog">--}}
+
+                                                {{--<div class="modal-dialog" role="document">--}}
+                                                    {{--<div class="modal-content">--}}
+                                                        {{--<div class="modal-header">--}}
+                                                            {{--<b><h5 class="modal-title">Contract Details.</h5></b>--}}
+
+                                                            {{--<button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                                                        {{--</div>--}}
+
+                                                        {{--<div class="modal-body">--}}
+                                                            {{--<table style="width: 100%">--}}
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Full Name:</td>--}}
+                                                                    {{--<td>{{$var->full_name}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td> Vehicle Registration Number:</td>--}}
+                                                                    {{--<td> {{$var->vehicle_registration_no}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td> Vehicle Use:</td>--}}
+                                                                    {{--<td> {{$var->vehicle_use}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Principal:</td>--}}
+                                                                    {{--<td>{{$var->principal}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Insurance Type:</td>--}}
+                                                                    {{--<td>{{$var->insurance_type}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Commission Date:</td>--}}
+                                                                    {{--<td>{{date("d/m/Y",strtotime($var->commission_date))}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>End Date:</td>--}}
+                                                                    {{--<td>{{date("d/m/Y",strtotime($var->end_date))}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Sum Insured:</td>--}}
+                                                                    {{--<td>{{$var->sum_insured}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Premium:</td>--}}
+                                                                    {{--<td>{{$var->premium}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Actual (Excluding VAT):</td>--}}
+                                                                    {{--<td>{{$var->actual_ex_vat}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Commission:</td>--}}
+                                                                    {{--<td>{{$var->commission}} {{$var->currency}}</td>--}}
+                                                                {{--</tr>--}}
+
+                                                                {{--<tr>--}}
+                                                                    {{--<td>Receipt Number:</td>--}}
+                                                                    {{--<td>{{$var->receipt_no}}</td>--}}
+                                                                {{--</tr>--}}
+
+
+
+                                                            {{--</table>--}}
+                                                            {{--<br>--}}
+                                                            {{--<center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+
+
+
+
+
+
+
+                                        {{--</center></td>--}}
                                     <td><center>{{$var->amount_to_be_paid}} {{$var->currency}}</center></td>
                                     <td><center>{{$var->gepg_control_no}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>

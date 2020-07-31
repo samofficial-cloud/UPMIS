@@ -77,6 +77,8 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+                        <?php
+
 
                                   <i class="fa fa-bell" style="font-size:36px;color:#282727"></i>
                                   <a id="navbarDropdownNotifications" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -84,8 +86,63 @@
                                 </a>
                                 
                                 @if($total==0)
+
+                        $insurance_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','insurance')->count('id');
+                        $car_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','car_rental')->count('id');
+                        $space_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','space')->count('id');
+                        $total_invoice_notifications=$car_invoice_notifications_count+$insurance_invoice_notifications_count+$space_invoice_notifications_count;
+
+                        ?>
+
+
+                        @if((Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+
+
+                                @if($total_invoice_notifications==0 )
+                            <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
+                            </a>
+
+                                    @else
+                                  <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger">{{$total_invoice_notifications}}</span>
+                                </a>
+                                @endif
+                        @else
+                            {{--other notifications--}}
+                            <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
+                            </a>
+
+                        @endif
+
+
+
+
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
-                                  <a class="dropdown-item" href="#">You have no new notification</a>
+                                    @if($space_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                  <a class="dropdown-item" href="/invoice_management">You have {{$space_invoice_notifications_count}} space invoice to review</a>
+                                    @elseif($space_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        <a class="dropdown-item" href="/invoice_management">You have {{$space_invoice_notifications_count}} space invoices to review</a>
+                                    @else
+                                    @endif
+
+                                        @if($car_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                            <a class="dropdown-item" href="/car_rental_invoice_management">You have {{$car_invoice_notifications_count}} car rental invoice to review</a>
+                                        @elseif($car_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                            <a class="dropdown-item" href="/car_rental_invoice_management">You have {{$car_invoice_notifications_count}} car rental invoices to review</a>
+                                        @else
+                                        @endif
+
+                                        @if($insurance_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                            <a class="dropdown-item" href="/insurance_invoice_management">You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
+                                        @elseif($insurance_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                            <a class="dropdown-item" href="/insurance_invoice_management">You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
+                                        @else
+                                        @endif
+
+
                                 </div>
                                 @elseif($total>0)
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">

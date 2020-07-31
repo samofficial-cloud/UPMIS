@@ -393,6 +393,50 @@ class carContractsController extends Controller
            ->where('id', $id)
            ->update(['form_completion' => '1']);
 
+
+            $inserted_contract=DB::table('car_contracts')->where('id',$id)->get();
+
+            foreach($inserted_contract as $var) {
+
+
+                    $period= date("d/m/Y",strtotime($var->start_date)).' to  '. date("d/m/Y",strtotime($var->end_date));
+
+                $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+                $amount_in_words='';
+
+                if($var->currency=='TZS'){
+                    $amount_in_words=Terbilang::make($var->amount,' TZS',' ');
+
+                }if ($var->currency=='USD'){
+
+                    $amount_in_words=Terbilang::make($var->amount,' USD',' ');
+                }
+
+                else{
+
+
+                }
+
+                $today=date('Y-m-d');
+
+                $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+
+
+            DB::table('car_rental_invoices')->insert(
+                ['contract_id' => $var->id, 'invoicing_period_start_date' => $var->start_date,'invoicing_period_end_date' => $var->end_date,'period' => $period,'project_id' => 'Car rental','debtor_account_code' => '','debtor_name' => $var->fullName,'debtor_address' => '','amount_to_be_paid' => $var->amount,'currency'=>$var->currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Car Rental','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Car Rental','prepared_by'=>'Name','approved_by'=>'Name']
+            );
+
+            }
+
+            $invoice_number_created=DB::table('car_rental_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'car_rental']
+            );
+
+
            return redirect()->route('carContracts')->with('success', 'Details submitted Successfully');
 
               }

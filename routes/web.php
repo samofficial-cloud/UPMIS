@@ -78,6 +78,7 @@
         Route::get('/insurance_invoice_management', 'InvoicesController@insuranceInvoiceManagement');
         Route::post('/send_invoice_insurance/{id}', 'InvoicesController@sendInvoiceInsurance')->name('send_invoice_insurance');
         Route::post('/change_payment_status_insurance/{id}', 'InvoicesController@changePayementStatusInsurance')->name('change_payment_status_insurance');
+        Route::get('/create_insurance_invoice', 'InvoicesController@CreateInsuranceInvoice');
 
 
 
@@ -87,9 +88,18 @@
         //payment
         Route::get('/payment_management', 'PaymentController@paymentManagement');
 
+        // Water Bills
+        Route::get('/create_water_bills_invoice', 'InvoicesController@CreateWaterBillsInvoice')->name('create_water_bills_invoice');
+        Route::get('/water_bills_invoice_management', 'InvoicesController@WaterBillsInvoiceManagement');
 
 
-Route::get('/clients', 'clientsController@index')->name('clients');
+        // electricity Bills
+        Route::get('/create_electricity_bills_invoice', 'InvoicesController@CreateElectricityBillsInvoice')->name('create_electricity_bills_invoice');
+        Route::get('/electricity_bills_invoice_management', 'InvoicesController@ElectricityBillsInvoiceManagement');
+
+
+
+        Route::get('/clients', 'clientsController@index')->name('clients');
 
 
 Route::get('/clients/edit', 'clientsController@edit')->name('editclients');
