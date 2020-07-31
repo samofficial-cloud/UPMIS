@@ -294,46 +294,58 @@ $today=date('Y-m-d');
     </div> 
 
     <div class="form-group row" id="namediv">
-						<div class="form-wrapper col-6">
-							<label for="first_name">First Name*</label>
-							<input type="text" id="first_name" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" value="{{$contract->fullName}}" readonly>
-						</div>
-						<div class="form-wrapper col-6">
-							<label for="last_name">Last Name*</label>
-							<input type="text" id="last_name" name="last_name" class="form-control" value="{{$contract->fullName}}" readonly="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-						</div>
-					</div>
+                        <div class="form-wrapper col-2">
+                            <label for="first_name">Designation</label>
+                            <input type="text" id="designation" name="designation" class="form-control" value="{{$contract->designation}}" readonly>
+                        </div>
+
+                        <div class="form-wrapper col-5">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control" value="{{$contract->first_name}}" readonly>
+                        </div>
+                        <div class="form-wrapper col-5">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control" value="{{$contract->last_name}}" readonly="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="email">Client Email</label>
+                        <input type="text" name="email" id="email" class="form-control" readonly="" value="{{$contract->email}}">
+                    </div>
+                </div>
 
 					<div class="form-group row" id="facultydiv">
 						<div class="form-wrapper col-6">
-							<label for="faculty_name">Faculty/Department/Unit*</label>
-							<input type="text" id="faculty_name" name="faculty_name" class="form-control"  value="{{$contract->faculty}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<label for="faculty_name">Faculty/Department/Unit</label>
+							<input type="text" id="faculty_name" name="faculty_name" class="form-control"  value="{{$contract->faculty}}" readonly>
 						</div>
 
 						<div class="form-wrapper col-6">
-							<label for="centre_name">Cost Centre No.*</label>
-							<input type="text" id="centre_name" name="centre_name" class="form-control" value="{{$contract->cost_centre}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<label for="centre_name">Cost Centre No.</label>
+							<input type="text" id="centre_name" name="centre_name" class="form-control" value="{{$contract->cost_centre}}" readonly>
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<div class="form-wrapper col-6">
-							<label for="start_date">Start Date*</label>
+							<label for="start_date">Start Date</label>
 							<input type="date" id="start_date" name="start_date" class="form-control" value="{{$contract->start_date}}" readonly="">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="end_date">End Date*</label>
+							<label for="end_date">End Date</label>
 							<input type="date" id="end_date" name="end_date" class="form-control" value="{{$contract->end_date}}" readonly="">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<div class="form-wrapper col-6">
-							<label for="start_time">Start Time*</label>
+							<label for="start_time">Start Time</label>
 							<input type="time" id="start_time" name="start_time" class="form-control" readonly="" value="{{$contract->start_time}}">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="end_time">End Time*</label>
+							<label for="end_time">End Time</label>
 							<input type="time" id="end_time" name="end_time" class="form-control" readonly="" value="{{$contract->end_time}}">
 						</div>
 					</div>
@@ -361,7 +373,7 @@ $today=date('Y-m-d');
 
                <div class="form-group">
 					<div class="form-wrapper" id="naturediv">
-          <label for="trip_nature">Nature of the trip*</label>
+          <label for="trip_nature">Nature of the trip</label>
           <span id="trip_naturemsg"></span>
             <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">    
         </div>
@@ -369,11 +381,11 @@ $today=date('Y-m-d');
 
     <div class="form-group row" id="estimationdiv">
 						<div class="form-wrapper col-6">
-							<label for="estimated_distance">Estimated Distance in Kms*</label>
+							<label for="estimated_distance">Estimated Distance in Kms</label>
 							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{$contract->estimated_distance}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="estimated_cost">Estimated Cost in Tshs.*</label>
+							<label for="estimated_cost">Estimated Cost in Tshs.</label>
                             <span id="estimated_costmsg"></span>
 							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{$contract->estimated_cost}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
@@ -386,22 +398,29 @@ $today=date('Y-m-d');
                     </div>
                     <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse2">B. AVAILABILITY OF FUNDS</a></h2>
                     <div id="collapse2" class="collapse show">
+                        @if($contract->head_approval_status == 'Rejected')
                         <form id="msform" method="post" action="{{ route('newCarcontractB') }}">
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
+                        <p style="color: red; text-align: left;">This Application has been rejected by the accountant due to the following reason(s).</p>
+                        <div class="form-group">
+                    <div class="form-wrapper">
+                        <textarea type="text" id="acc_remark" name="acc_remark" class="form-control" value="" readonly="" style="border: inset !important;">{{$contract->acc_remark}}</textarea>
+                    </div>
+                </div>
 
-                    <div class="form-group">
+                <div class="form-group">
                     <div class="form-wrapper">
                         <label for="code_no">Travel/Transport Activity Code No.</label>
-                        <input type="text" id="code_no" name="code_no" class="form-control">
+                        <input type="text" id="code_no" name="code_no" class="form-control" value="{{$contract->transport_code}}" required onkeypress="if((this.value.length<=5)){return true} else{return false}" onblur="javascript:this.value=this.value.toUpperCase();">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper">
                         <label for="fund_available">Funds Available for Further use in Tshs.</label>
-                        <input type="text" id="fund_available" name="fund_available" class="form-control">
+                        <input type="text" id="fund_available" name="fund_available" class="form-control" value="{{$contract->funds_available}}" required onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
 
@@ -410,7 +429,7 @@ $today=date('Y-m-d');
           <label for="balance_status">Balance Status*</label>
           <span id="balance_statusmsg"></span>
             <select class="form-control" required="" id="balance_status" name="balance_status">
-              <option value="0" disabled selected hidden>Select balance status</option>
+              <option value="" disabled selected hidden>Select balance status</option>
               <option value="Sufficient">Sufficient</option>
               <option value="Not Sufficient">Not Sufficient</option>
             </select>
@@ -421,14 +440,86 @@ $today=date('Y-m-d');
                 <div class="form-group">
                     <div class="form-wrapper">
                         <label for="vote_holder">Vote Holder Title</label>
-                        <input type="text" id="vote_holder" name="vote_holder" class="form-control">
+                        <input type="text" id="vote_holder" name="vote_holder" required="{{$contract->vote_title}}" class="form-control" value="{{$contract->vote_title}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper">
                         <label for="commited_fund">Fund to commit</label>
-                         <input type="text" id="commited_fund" name="commited_fund" class="form-control" >
+                         <input type="text" id="commited_fund" name="commited_fund" required class="form-control" value="{{$contract->fund_committed}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                    </div>
+                </div>
+
+                 <div class="form-group" id="vote_remarkdiv">
+                    <div class="form-wrapper">
+                        <label for="vote_remark">Remarks</label>
+                         <textarea type="text" id="vote_remarks" name="vote_remarks" class="form-control" value="" style="border: inset !important;"></textarea>
+                    </div>
+                </div>
+
+    <div class="form-group row" id="approvedbydiv">
+                        <div class="form-wrapper col-6">
+                            <label for="approve_name">Name*</label>
+                            <span id="approve_namemsg"></span>
+                            <input type="text" id="approve_name" name="approve_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
+                        </div>
+                        <div class="form-wrapper col-6">
+                            <label for="approve_date">Date*</label>
+                            <span id="approve_datemsg"></span>
+                            <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$today}}" readonly="">
+                        </div>
+                    </div>
+                    <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
+            </div>
+            <button class="btn btn-primary" type="submit">Forward</button>
+        </fieldset>
+                    </form>
+
+                        @else
+                        <form id="msform" method="post" action="{{ route('newCarcontractB') }}">
+                            {{csrf_field()}}
+                            <fieldset>
+                                <div class="form-card">
+
+                    <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="code_no">Travel/Transport Activity Code No.</label>
+                        <input type="text" id="code_no" name="code_no" class="form-control" required onkeypress="if((this.value.length<=5)){return true} else{return false}" onblur="javascript:this.value=this.value.toUpperCase();">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="fund_available">Funds Available for Further use in Tshs.</label>
+                        <input type="text" id="fund_available" name="fund_available" class="form-control" required onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-wrapper" id="balance_statusdiv">
+          <label for="balance_status">Balance Status*</label>
+          <span id="balance_statusmsg"></span>
+            <select class="form-control" required="" id="balance_status" name="balance_status">
+              <option value="" disabled selected hidden>Select balance status</option>
+              <option value="Sufficient">Sufficient</option>
+              <option value="Not Sufficient">Not Sufficient</option>
+            </select>
+        
+        </div>
+    </div>
+
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="vote_holder">Vote Holder Title</label>
+                        <input type="text" id="vote_holder" name="vote_holder" required="" class="form-control" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="commited_fund">Fund to commit</label>
+                         <input type="text" id="commited_fund" name="commited_fund" required class="form-control" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
 
@@ -451,6 +542,7 @@ $today=date('Y-m-d');
                             </fieldset>
 
                         </form>
+                        @endif
                     </div>
 
 

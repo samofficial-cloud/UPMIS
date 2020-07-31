@@ -300,52 +300,64 @@ $today=date('Y-m-d');
                                    
                                    <div class="form-group">
 					<div class="form-wrapper" id="areadiv">
-          <label for="area">Area of Travel*</label>
+          <label for="area">Area of Travel</label>
             <input type="text" class="form-control" required="" id="area" name="area" value="{{$contract->area_of_travel}} Dar es Salaam/Kibaha" readonly="">    
         </div>
     </div> 
 
     <div class="form-group row" id="namediv">
-						<div class="form-wrapper col-6">
-							<label for="first_name">First Name*</label>
-							<input type="text" id="first_name" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" value="{{$contract->fullName}}" readonly>
-						</div>
-						<div class="form-wrapper col-6">
-							<label for="last_name">Last Name*</label>
-							<input type="text" id="last_name" name="last_name" class="form-control" value="{{$contract->fullName}}" readonly="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-						</div>
-					</div>
+                        <div class="form-wrapper col-2">
+                            <label for="first_name">Designation</label>
+                            <input type="text" id="designation" name="designation" class="form-control" value="{{$contract->designation}}" readonly>
+                        </div>
+
+                        <div class="form-wrapper col-5">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control" value="{{$contract->first_name}}" readonly>
+                        </div>
+                        <div class="form-wrapper col-5">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control" value="{{$contract->last_name}}" readonly="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="email">Client Email</label>
+                        <input type="text" name="email" id="email" class="form-control" readonly="" value="{{$contract->email}}">
+                    </div>
+                </div>
 
 					<div class="form-group row" id="facultydiv">
 						<div class="form-wrapper col-6">
-							<label for="faculty_name">Faculty/Department/Unit*</label>
+							<label for="faculty_name">Faculty/Department/Unit</label>
 							<input type="text" id="faculty_name" name="faculty_name" class="form-control"  value="{{$contract->faculty}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 
 						<div class="form-wrapper col-6">
-							<label for="centre_name">Cost Centre No.*</label>
+							<label for="centre_name">Cost Centre No.</label>
 							<input type="text" id="centre_name" name="centre_name" class="form-control" value="{{$contract->cost_centre}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<div class="form-wrapper col-6">
-							<label for="start_date">Start Date*</label>
+							<label for="start_date">Start Date</label>
 							<input type="date" id="start_date" name="start_date" class="form-control" value="{{$contract->start_date}}" readonly="">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="end_date">End Date*</label>
+							<label for="end_date">End Date</label>
 							<input type="date" id="end_date" name="end_date" class="form-control" value="{{$contract->end_date}}" readonly="">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<div class="form-wrapper col-6">
-							<label for="start_time">Start Time*</label>
+							<label for="start_time">Start Time</label>
 							<input type="time" id="start_time" name="start_time" class="form-control" readonly="" value="{{$contract->start_time}}">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="end_time">End Time*</label>
+							<label for="end_time">End Time</label>
 							<input type="time" id="end_time" name="end_time" class="form-control" readonly="" value="{{$contract->end_time}}">
 						</div>
 					</div>
@@ -373,7 +385,7 @@ $today=date('Y-m-d');
 
                <div class="form-group">
 					<div class="form-wrapper" id="naturediv">
-          <label for="trip_nature">Nature of the trip*</label>
+          <label for="trip_nature">Nature of the trip</label>
           <span id="trip_naturemsg"></span>
             <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">    
         </div>
@@ -381,11 +393,11 @@ $today=date('Y-m-d');
 
     <div class="form-group row" id="estimationdiv">
 						<div class="form-wrapper col-6">
-							<label for="estimated_distance">Estimated Distance in Kms*</label>
+							<label for="estimated_distance">Estimated Distance in Kms</label>
 							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{$contract->estimated_distance}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="estimated_cost">Estimated Cost in Tshs.*</label>
+							<label for="estimated_cost">Estimated Cost in Tshs.</label>
                             <span id="estimated_costmsg"></span>
 							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{$contract->estimated_cost}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
@@ -419,7 +431,7 @@ $today=date('Y-m-d');
 
                 <div class="form-group">
                     <div class="form-wrapper" id="balance_statusdiv">
-          <label for="balance_status">Balance Status*</label>
+          <label for="balance_status">Balance Status</label>
           <span id="balance_statusmsg"></span>
             <input type="text" class="form-control" required="" id="balance_status" name="balance_status" value="{{$contract->balance_status}}" readonly="">
         </div>
@@ -441,12 +453,12 @@ $today=date('Y-m-d');
 
     <div class="form-group row" id="approvedbydiv">
                         <div class="form-wrapper col-6">
-                            <label for="approve_name">Name*</label>
+                            <label for="approve_name">Name</label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="approve_name" name="approve_name" class="form-control" value="{{$contract->acc_name}}" readonly="">
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="approve_date">Date*</label>
+                            <label for="approve_date">Date</label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$contract->acc_date}}" readonly="">
                         </div>
@@ -459,10 +471,19 @@ $today=date('Y-m-d');
 
                     <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">C. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
                     <div id="collapse3" class="collapse show">
-                        <form id="msform" method="post" action="{{ route('newCarcontractC') }}" style="font-size: 17px;">
+                        <form id="msform" method="post" action="{{ route('newCarcontractC') }}" style="font-size: 17px;" onsubmit="return getdata()" name="myForm">
                             {{csrf_field()}}
+                            <div class="form-card">
+                                @if($contract->vote_remarks!=null)
+                        <p style="text-align: left;">This Application has the following remark(s) from the Vote Holder, <b>{{$contract->acc_name}}</b>.</p>
+                        <div class="form-group">
+                    <div class="form-wrapper">
+                        <textarea type="text" id="acc_remark" name="acc_remark" class="form-control" value="" readonly="" style="border: inset !important;">{{$contract->vote_remarks}}</textarea>
+                    </div>
+                </div>
+                @endif
                         <div class="form-card" style="padding: 4px;">
-                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <input type="text" id="centre_name" name="centre_name" value="{{$contract->cost_centre}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;"> has a balance of Tshs. <input type="text" id="fund_available" name="fund_available" value="{{$contract->funds_available}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;"> for transport code No <input type="text" id="code_no" name="code_no"  value="{{$contract->transport_code}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;">. This amount is <select required="" id="balance_status" name="balance_status" style="padding: 0px; border: inset; margin: 10px;width: 15%;font-size: 16px;">
+                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <input type="text" id="centre_name" name="centre_name" required value="{{$contract->cost_centre}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();"> has a balance of Tshs. <input type="text" id="fund_available" name="fund_available" required value="{{$contract->funds_available}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;"> for transport code No <input type="text" id="code_no" name="code_no" required="" value="{{$contract->transport_code}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();">. This amount is <select required="" id="balance_status" name="balance_status" style="padding: 0px; border: inset; margin: 10px;width: 15%;font-size: 16px;">
                             @if($contract->balance_status=='Sufficient')
               <option value="Sufficient">Sufficient</option>
               <option value="Not Sufficient">Not Sufficient</option>
@@ -484,7 +505,7 @@ $today=date('Y-m-d');
                   <div class="form-wrapper col-2">
                   <label for="business_filter" style=" display: block;
     white-space: nowrap;">Accepted
-                  <input class="form-check-input" type="radio" name="head_approval_status" id="Accepted" value="Accepted">
+                  <input class="form-check-input" type="radio" name="head_approval_status" id="Accepted" value="Accepted" checked>
                 </label>
                  </div>
 
@@ -500,7 +521,8 @@ $today=date('Y-m-d');
                             <div class="form-group" id="acc_reasondiv" style="display: none;">
                     <div class="form-wrapper">
                         <label for="acc_reason">Reason</label>
-                         <textarea type="text" id="acc_reason" name="acc_reason" class="form-control" value="" style="border: inset !important;"></textarea>
+                        <span id="message"></span>
+                         <textarea type="text" id="acc_remark" name="acc_remark" class="form-control" value="" style="border: inset !important;"></textarea>
                     </div>
                 </div>
                                    <div class="form-group row" id="approvedbydiv">
@@ -549,5 +571,23 @@ $today=date('Y-m-d');
        }
      });
     });
+</script>
+
+<script type="text/javascript">
+    function getdata(){
+       var txtone = document.forms["myForm"]["head_approval_status"].value;
+        var txttwo = document.forms["myForm"]["acc_remark"].value;
+
+
+      if ((txtone=='Rejected') &&(txttwo=='')){
+        var message=document.getElementById('message');
+        message.style.color='red';
+        message.innerHTML="*Reason(s) Required ";
+        return false;
+      }
+      else{
+        return true;
+      }
+  }
 </script>
 @endsection

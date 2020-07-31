@@ -1,6 +1,179 @@
 @extends('layouts.app')
 @section('style')
 <style type="text/css">
+<style type="text/css">
+  * {
+    margin: 0;
+    padding: 0
+}
+
+html {
+    height: 100%
+}
+
+#grad1 {
+    background-color: : #9C27B0;
+    /*background-image: linear-gradient(120deg, #FF4081, #81D4FA)*/
+}
+
+#msform {
+    text-align: center;
+    position: relative;
+    margin-top: 20px
+}
+
+#msform fieldset .form-card {
+    background: white;
+    border: 0 none;
+    border-radius: 0px;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    padding: 20px 40px 30px 40px;
+    box-sizing: border-box;
+    width: 94%;
+    margin: 0 3% 20px 3%;
+    position: relative
+}
+
+#msform fieldset {
+    background: white;
+    border: 0 none;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 20px;
+    position: relative
+}
+
+#msform fieldset:not(:first-of-type) {
+    display: none
+}
+
+#msform fieldset .form-card {
+    text-align: left;
+    color: #212529;
+}
+
+#msform input,
+#msform textarea {
+    padding: 0px 8px 4px 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 25px;
+    margin-top: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    /*font-family: montserrat;*/
+    color: #2C3E50;
+    font-size: 16px;
+    letter-spacing: 1px
+}
+
+#msform input:focus,
+#msform textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: none;
+    font-weight: bold;
+    border-bottom: 2px solid skyblue;
+    outline-width: 0
+}
+
+#msform .action-button {
+    width: 100px;
+    background: skyblue;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 0px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px
+}
+
+#msform .action-button:hover,
+#msform .action-button:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue
+}
+
+#msform .action-button-previous {
+    width: 100px;
+    background: #616161;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 0px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px
+}
+
+#msform .action-button-previous:hover,
+#msform .action-button-previous:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161
+}
+
+select.list-dt {
+    border: none;
+    outline: 0;
+    border-bottom: 1px solid #ccc;
+    padding: 2px 5px 3px 5px;
+    margin: 2px
+}
+
+select.list-dt:focus {
+    border-bottom: 2px solid skyblue
+}
+
+.card {
+    z-index: 0;
+    border: none;
+    border-radius: 0.5rem;
+    position: relative
+}
+
+.fs-title {
+    font-size: 25px;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left
+}
+
+
+
+.radio-group {
+    position: relative;
+    margin-bottom: 25px
+}
+
+.radio {
+    display: inline-block;
+    width: 204;
+    height: 104;
+    border-radius: 0;
+    background: lightblue;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 8px 2px
+}
+
+.radio:hover {
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3)
+}
+
+.radio.selected {
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1)
+}
+
+.fit-image {
+    width: 100%;
+    object-fit: cover
+}
+
 div.dataTables_filter{
   padding-left:852px;
   padding-bottom:20px;
@@ -110,10 +283,11 @@ $i='1';
     <div class="tab">
             <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>CAR RENTAL LIST</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button>
+             <button class="tablinks" onclick="openContracts(event, 'availability')"><strong>CAR AVAILABILITY</strong></button>
         </div>
         <div id="car_list" class="tabcontent">
   <br>
-  <h3>1. LIST OF CONTRACTS</h3>
+  <h3>1. LIST OF CARS</h3>
   <br>
         <a data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="
     padding: 10px;
@@ -536,6 +710,38 @@ $i='1';
   </table>
   </div>
 
+  <?php
+  $today=date('Y-m-d');
+  ?>
+
+    <div id="availability" class="tabcontent">
+  <br>
+  <h3>3. CAR AVAILABILITY</h3>
+  <form id="msform">
+    <fieldset>
+    <div class="form-card">
+   {{--  <h4 class="fs-title">Please fill the form below</h4> --}}
+      <div class="form-group row">
+            <div class="form-wrapper col-6">
+              <label for="start_date">Start Date*</label>
+              <input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
+            </div>
+            <div class="form-wrapper col-6">
+              <label for="end_date">End Date*</label>
+              <input type="date" id="end_date" name="end_date" class="form-control" required="" min="{{$today}}">
+            </div>
+          </div>
+          <center><button class="btn btn-primary" type="submit" id="check">Submit</button></center>
+    </div>  
+    </fieldset>
+  </form>
+  <br>
+  <div id="content">
+    <div id="loading"></div>
+  </div>
+
+</div>
+
 </div>
 </div>
 </div>
@@ -551,6 +757,8 @@ $i='1';
   var table = $('#myTable1').DataTable( {
         dom: '<"top"fl>rt<"bottom"pi>'
     } );
+
+  
 });
 </script>
 
@@ -623,8 +831,47 @@ document.getElementById("defaultOpen").click();
     });
 
    $(document).on('click', 'form', function(){
-     $('#nameList').fadeOut();
+
+     $('#nameList').fadeOut();  
+    }); 
+
+   $(document).ajaxSend(function(){
+    $("#loading").fadeIn(250);
+    });
+$(document).ajaxComplete(function(){
+    $("#loading").fadeOut(250);
+    });
+
+$("#check").click(function(e){
+    $("#error").hide();
+    var query = $('#start_date').val();
+    var query2 = $('#end_date').val();
+    if(query!='' && query2!=''){
+      if(new Date(query2) <= new Date(query)){
+        var query3=query2;
+        query2=query;
+        query=query3;
+      }
+      $.ajax({
+      url: "/car/available_cars?",
+      context: document.body,
+      data:{start_date:query,end_date:query2}
+    })
+    .done(function(fragment) { 
+      $("#content").html(fragment);
+      var table = $('#myTable4').DataTable( {
+        dom: '<"top"fl>rt<"bottom"pi>'
     });
     });
+    return false;
+    
+  }
+    
+});
+
+    }); 
+
+  
+
 </script>
 @endsection

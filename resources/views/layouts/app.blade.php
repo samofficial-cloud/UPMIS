@@ -44,6 +44,12 @@
      @yield('style')
 </head>
 <body>
+  <?php
+  use App\notification;
+  $notifications=notification::where('flag','1')->where('role',Auth::user()->role)->get();
+  $i='1';
+  $total=count($notifications);
+  ?>
     <div id="app">
         <nav class="navbar navbar-expand-sm navbar-dark color_navbar navbar-laravel" style="width: 100%">
             <div class="container" style="max-width: 1534px;">
@@ -72,6 +78,14 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         <?php
+
+
+                                  <i class="fa fa-bell" style="font-size:36px;color:#282727"></i>
+                                  <a id="navbarDropdownNotifications" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   {{$total}} 
+                                </a>
+                                
+                                @if($total==0)
 
                         $insurance_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','insurance')->count('id');
                         $car_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','car_rental')->count('id');
@@ -105,6 +119,7 @@
 
 
 
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
                                     @if($space_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
                                   <a class="dropdown-item" href="/invoice_management">You have {{$space_invoice_notifications_count}} space invoice to review</a>
@@ -129,6 +144,17 @@
 
 
                                 </div>
+                                @elseif($total>0)
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
+                                  @foreach($notifications as $notifications)
+                                <a class="dropdown-item" href="{{ route('ShowNotifications',$notifications->id
+                                ) }}">{{$i}}. {{$notifications->message}}</a>
+                                <?php
+                                $i=$i+1;
+                                ?>
+                                  @endforeach
+                                </div>
+                                @endif
                        {{--  @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>

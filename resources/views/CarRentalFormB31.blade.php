@@ -503,13 +503,13 @@ $today=date('Y-m-d');
                     </div>
 
                     </div>
-                    <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse4">D. HEAD OF CPTU</a></h2>
+                    <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse4">D. DVC: (Administration)</a></h2>
                     <div id="collapse4" class="collapse show">
-                       <form id="msform" method="post" action="{{ route('newCarcontractD') }}" style="font-size: 17px;">
+                       <form id="msform" method="post" action="{{ route('newCarcontractD1') }}" style="font-size: 17px;">
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
-                                    {{-- <div class="form-group">
+                                   {{--  <div class="form-group">
                         <div class="form-wrapper">
                   <div class="row">
                   <div class="form-wrapper col-2">
@@ -578,12 +578,12 @@ $today=date('Y-m-d');
 <script type="text/javascript">
     $(document).ready(function(){
      $('#vehicle_reg').keyup(function(e){ 
-        console.log($('#start_date').val());
+        console.log(4);
         
         e.preventDefault();
         var query = $(this).val();
         if(query != ''){
-         var _token = $('input[name="_token"]').val();
+        var _token = $('input[name="_token"]').val();
          $.ajax({
           url:"{{ route('autocomplete2.fetch') }}",
           method:"POST",
