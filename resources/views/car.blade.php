@@ -254,6 +254,8 @@ $i='1';
     <a class="dropdown-item" href="/invoice_management">Space</a>
     <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
     <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
+<a class="dropdown-item" href="/water_bills_invoice_management">Water</a>
+<a class="dropdown-item" href="/electricity_bills_invoice_management">Electricity</a>
   </div>
 </div>
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
@@ -732,7 +734,7 @@ $i='1';
             </div>
           </div>
           <center><button class="btn btn-primary" type="submit" id="check">Submit</button></center>
-    </div>  
+    </div>
     </fieldset>
   </form>
   <br>
@@ -758,7 +760,7 @@ $i='1';
         dom: '<"top"fl>rt<"bottom"pi>'
     } );
 
-  
+
 });
 </script>
 
@@ -832,8 +834,8 @@ document.getElementById("defaultOpen").click();
 
    $(document).on('click', 'form', function(){
 
-     $('#nameList').fadeOut();  
-    }); 
+     $('#nameList').fadeOut();
+    });
 
    $(document).ajaxSend(function(){
     $("#loading").fadeIn(250);
@@ -857,21 +859,21 @@ $("#check").click(function(e){
       context: document.body,
       data:{start_date:query,end_date:query2}
     })
-    .done(function(fragment) { 
+    .done(function(fragment) {
       $("#content").html(fragment);
       var table = $('#myTable4').DataTable( {
         dom: '<"top"fl>rt<"bottom"pi>'
     });
     });
     return false;
-    
+
   }
-    
+
 });
 
-    }); 
+    });
 
-  
+
 
 </script>
 @endsection

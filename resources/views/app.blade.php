@@ -175,13 +175,13 @@
 
                                         @if($water_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
 
-                                            <a class="dropdown-item" href="/water_bills_invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water invoice to review</a>
+                                            <a class="dropdown-item" href="/insurance_invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water invoice to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
                                         @elseif($water_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
 
-                                            <a class="dropdown-item" href="/water_bills_invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water invoices to review</a>
+                                            <a class="dropdown-item" href="/insurance_invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water invoices to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
@@ -191,13 +191,13 @@
 
                                         @if($electricity_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
 
-                                            <a class="dropdown-item" href="/electricity_bills_invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity invoice to review</a>
+                                            <a class="dropdown-item" href="/insurance_invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity invoice to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
                                         @elseif($electricity_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
 
-                                            <a class="dropdown-item" href="/electricity_bills_invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity invoices to review</a>
+                                            <a class="dropdown-item" href="/insurance_invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity invoices to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>

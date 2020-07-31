@@ -99,7 +99,7 @@
                 @endif
                 <div style="width:100%; text-align: center ">
                     <br>
-                    <h2>SPACE INVOICES</h2>
+                    <h2>ELECTRICITY INVOICES</h2>
 
                     <br>
 
@@ -331,6 +331,11 @@
                                                                     <td>{{$var->escalation_rate}} </td>
                                                                 </tr>
 
+                                                                <tr>
+                                                                    <td>Has Electricity Bill:</td>
+                                                                    <td>{{$var->has_electricity_bill}} </td>
+                                                                </tr>
+
 
 
 
@@ -368,7 +373,7 @@
                                                     </div>
 
                                                     <div class="modal-body">
-                                                        <form method="post" action="{{ route('send_invoice_space',$var->invoice_number)}}"  id="form1" >
+                                                        <form method="post" action="{{ route('send_invoice_electricity_bills',$var->invoice_number)}}"  id="form1" >
                                                             {{csrf_field()}}
 
                                                             <div class="form-group">
@@ -524,6 +529,11 @@
                                                                     <td>{{$var->escalation_rate}} </td>
                                                                 </tr>
 
+                                                                <tr>
+                                                                    <td>Has Electricity Bill:</td>
+                                                                    <td>{{$var->has_electricity_bill}} </td>
+                                                                </tr>
+
 
 
 
@@ -571,7 +581,7 @@
                                                     </div>
 
                                                     <div class="modal-body">
-                                                        <form method="post" action="{{ route('change_payment_status_space',$var->invoice_number)}}"  id="form1" >
+                                                        <form method="post" action="{{ route('change_payment_status_electricity_bills',$var->invoice_number)}}"  id="form1" >
                                                             {{csrf_field()}}
                                                             <div class="form-group">
                                                                 <div class="form-wrapper">
@@ -741,6 +751,11 @@
                                                                 <tr>
                                                                     <td>Escalation Rate:</td>
                                                                     <td>{{$var->escalation_rate}} </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Has Electricity Bill:</td>
+                                                                    <td>{{$var->has_electricity_bill}} </td>
                                                                 </tr>
 
 

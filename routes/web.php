@@ -91,12 +91,14 @@
         // Water Bills
         Route::get('/create_water_bills_invoice', 'InvoicesController@CreateWaterBillsInvoice')->name('create_water_bills_invoice');
         Route::get('/water_bills_invoice_management', 'InvoicesController@WaterBillsInvoiceManagement');
+        Route::post('/send_invoice_water_bills/{id}', 'InvoicesController@sendInvoiceWaterBills')->name('send_invoice_water_bills');
+        Route::post('/change_payment_status_water_bills/{id}', 'InvoicesController@changePaymentStatusWaterBills')->name('change_payment_status_water_bills');
 
-
-        // electricity Bills
+        // Electricity Bills
         Route::get('/create_electricity_bills_invoice', 'InvoicesController@CreateElectricityBillsInvoice')->name('create_electricity_bills_invoice');
         Route::get('/electricity_bills_invoice_management', 'InvoicesController@ElectricityBillsInvoiceManagement');
-
+        Route::post('/send_invoice_electricity_bills/{id}', 'InvoicesController@sendInvoiceElectricityBills')->name('send_invoice_electricity_bills');
+        Route::post('/change_payment_status_electricity_bills/{id}', 'InvoicesController@changePaymentStatusElectricityBills')->name('change_payment_status_electricity_bills');
 
 
         Route::get('/clients', 'clientsController@index')->name('clients');

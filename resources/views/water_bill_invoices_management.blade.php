@@ -77,8 +77,10 @@
                     </li>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="/invoice_management">Space</a>
-                        <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
-                        <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
+              <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
+              <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a> 
+              <a class="dropdown-item" href="/water_bills_invoice_management">Water</a>
+              <a class="dropdown-item" href="/electricity_bills_invoice_management">Electricity</a>
                     </div>
                 </div>
             <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
@@ -97,7 +99,7 @@
                 @endif
                 <div style="width:100%; text-align: center ">
                     <br>
-                    <h2>SPACE INVOICES</h2>
+                    <h2>WATER INVOICES</h2>
 
                     <br>
 
@@ -329,6 +331,11 @@
                                                                     <td>{{$var->escalation_rate}} </td>
                                                                 </tr>
 
+                                                                <tr>
+                                                                    <td>Has Water Bill:</td>
+                                                                    <td>{{$var->has_water_bill}} </td>
+                                                                </tr>
+
 
 
 
@@ -366,7 +373,7 @@
                                                     </div>
 
                                                     <div class="modal-body">
-                                                        <form method="post" action="{{ route('send_invoice_space',$var->invoice_number)}}"  id="form1" >
+                                                        <form method="post" action="{{ route('send_invoice_water_bills',$var->invoice_number)}}"  id="form1" >
                                                             {{csrf_field()}}
 
                                                             <div class="form-group">
@@ -522,6 +529,11 @@
                                                                     <td>{{$var->escalation_rate}} </td>
                                                                 </tr>
 
+                                                                <tr>
+                                                                    <td>Has Water Bill:</td>
+                                                                    <td>{{$var->has_water_bill}} </td>
+                                                                </tr>
+
 
 
 
@@ -569,7 +581,7 @@
                                                     </div>
 
                                                     <div class="modal-body">
-                                                        <form method="post" action="{{ route('change_payment_status_space',$var->invoice_number)}}"  id="form1" >
+                                                        <form method="post" action="{{ route('change_payment_status_water_bills',$var->invoice_number)}}"  id="form1" >
                                                             {{csrf_field()}}
                                                             <div class="form-group">
                                                                 <div class="form-wrapper">
@@ -739,6 +751,11 @@
                                                                 <tr>
                                                                     <td>Escalation Rate:</td>
                                                                     <td>{{$var->escalation_rate}} </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Has Water Bill:</td>
+                                                                    <td>{{$var->has_water_bill}} </td>
                                                                 </tr>
 
 

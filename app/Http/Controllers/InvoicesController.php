@@ -210,7 +210,7 @@ class InvoicesController extends Controller
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-            Notification::route('mail','samforbuilding@gmail.com')
+            Notification::route('mail','upmistesting@gmail.com')
                 ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'5647768',$max_no_of_days_to_pay,'OK','7868',$amount_in_words,'4353',$today,$financial_year,'4th Quarter','Renting Space Fees','Jacob Peter','John Temu',date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('invoices')
@@ -273,7 +273,7 @@ class InvoicesController extends Controller
     $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-    Notification::route('mail','samforbuilding@gmail.com')
+    Notification::route('mail','upmistesting@gmail.com')
         ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Car Rental','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'78775',$max_no_of_days_to_pay,'OK','5654',$amount_in_words,'1234',$today,$financial_year,'3rd Quarter','Car Rental Fees','Jacob Temu','John Peter',date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
     DB::table('car_rental_invoices')
@@ -518,7 +518,7 @@ class InvoicesController extends Controller
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-            Notification::route('mail','samforbuilding@gmail.com')
+            Notification::route('mail','upmistesting@gmail.com')
                 ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'UDIA','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Insurance Monthly Fees','Name','Name',date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('insurance_invoices')
@@ -569,10 +569,9 @@ class InvoicesController extends Controller
 
     public function ElectricityBillsInvoiceManagement()
     {
-        $invoices_not_sent = DB::table('electricity_bill_invoices')->where('email_sent_status', 'NOT SENT')->get();
-        $invoices_payment_not_complete = DB::table('electricity_bill_invoices')->where('email_sent_status', 'SENT')->where('payment_status', '!=', 'Paid')->get();
-        $invoices_payment_complete = DB::table('electricity_bill_invoices')->where('payment_status', 'Paid')->where('email_sent_status', 'SENT')->get();
-
+        $invoices_not_sent=DB::table('electricity_bill_invoices')->join('space_contracts','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->where('electricity_bill_invoices.email_sent_status','NOT SENT')->get();
+        $invoices_payment_not_complete=DB::table('electricity_bill_invoices')->join('space_contracts','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->where('electricity_bill_invoices.email_sent_status','SENT')->where('electricity_bill_invoices.payment_status','!=','Paid')->get();
+        $invoices_payment_complete=DB::table('electricity_bill_invoices')->join('space_contracts','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->where('electricity_bill_invoices.payment_status','Paid')->where('electricity_bill_invoices.email_sent_status','SENT')->get();
 
         return view('electricity_bill_invoices_management')->with('invoices_not_sent', $invoices_not_sent)->with('invoices_payment_not_complete', $invoices_payment_not_complete)->with('invoices_payment_complete', $invoices_payment_complete);
 
@@ -689,12 +688,11 @@ class InvoicesController extends Controller
 
 
 
-    public function sendInvoiceWaterBills(Request $request,$id)
+    public function sendInvoiceElectricityBills(Request $request,$id)
     {
 
 
-
-        $invoice_data=DB::table('water_bill_invoices')->where('invoice_number', $id)->get();
+        $invoice_data=DB::table('electricity_bill_invoices')->where('invoice_number', $id)->get();
         $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
         $today=date('Y-m-d');
 
@@ -720,19 +718,19 @@ class InvoicesController extends Controller
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-            Notification::route('mail','samforbuilding@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Rentwater_bill','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Water bill','Name','Name',date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+            Notification::route('mail','upmistesting@gmail.com')
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Water bill','Name','Name',date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-            DB::table('water_bill_invoices')
+            DB::table('electricity_bill_invoices')
                 ->where('invoice_number', $id)
                 ->update(['invoice_date' => $today]);
 
 
-            DB::table('water_bill_invoices')
+            DB::table('electricity_bill_invoices')
                 ->where('invoice_number', $id)
                 ->update(['email_sent_status' => 'SENT']);
 
-            DB::table('water_bill_invoices')
+            DB::table('electricity_bill_invoices')
                 ->where('invoice_number', $id)
                 ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
@@ -740,27 +738,27 @@ class InvoicesController extends Controller
 
         }
 
-        DB::table('invoice_notifications')->where('invoice_category',  'water bill')->where('invoice_id',$id)->delete();
+        DB::table('invoice_notifications')->where('invoice_category',  'electricity bill')->where('invoice_id',$id)->delete();
 
 
-        return redirect('/water_bill_invoice_management')
+        return redirect('/electricity_bills_invoice_management')
             ->with('success', 'Invoice Sent Successfully');
 
     }
 
 
-    public function changePaymentStatusWaterBills(Request $request,$id)
+    public function changePaymentStatusElectricityBills(Request $request,$id)
     {
 
-        DB::table('water_bill_invoices')
+        DB::table('electricity_bill_invoices')
             ->where('invoice_number', $id)
             ->update(['payment_status' => $request->get('payment_status')]);
 
-        DB::table('water_bill_invoices')
+        DB::table('electricity_bill_invoices')
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
-        return redirect('/water_bill_invoice_management')
+        return redirect('/electricity_bills_invoice_management')
             ->with('success', 'Changes saved Successfully');
 
     }
@@ -772,10 +770,9 @@ class InvoicesController extends Controller
 //water bills
     public function WaterBillsInvoiceManagement()
     {
-        $invoices_not_sent=DB::table('water_bill_invoices')->where('email_sent_status','NOT SENT')->get();
-        $invoices_payment_not_complete=DB::table('water_bill_invoices')->where('email_sent_status','SENT')->where('payment_status','!=','Paid')->get();
-        $invoices_payment_complete=DB::table('water_bill_invoices')->where('payment_status','Paid')->where('email_sent_status','SENT')->get();
-
+        $invoices_not_sent=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->where('water_bill_invoices.email_sent_status','NOT SENT')->get();
+        $invoices_payment_not_complete=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->where('water_bill_invoices.email_sent_status','SENT')->where('water_bill_invoices.payment_status','!=','Paid')->get();
+        $invoices_payment_complete=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->where('water_bill_invoices.payment_status','Paid')->where('water_bill_invoices.email_sent_status','SENT')->get();
 
         return view('water_bill_invoices_management')->with('invoices_not_sent',$invoices_not_sent)->with('invoices_payment_not_complete',$invoices_payment_not_complete)->with('invoices_payment_complete',$invoices_payment_complete);
 
@@ -922,7 +919,7 @@ class InvoicesController extends Controller
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-            Notification::route('mail','samforbuilding@gmail.com')
+            Notification::route('mail','upmistesting@gmail.com')
                 ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Water bill','Name','Name',date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('water_bill_invoices')
@@ -945,7 +942,7 @@ class InvoicesController extends Controller
         DB::table('invoice_notifications')->where('invoice_category',  'water bill')->where('invoice_id',$id)->delete();
 
 
-        return redirect('/water_bill_invoice_management')
+        return redirect('/water_bills_invoice_management')
             ->with('success', 'Invoice Sent Successfully');
 
     }
@@ -962,7 +959,7 @@ class InvoicesController extends Controller
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
-        return redirect('/water_bill_invoice_management')
+        return redirect('/water_bills_invoice_management')
             ->with('success', 'Changes saved Successfully');
 
     }

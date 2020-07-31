@@ -29,13 +29,17 @@
               <a class="dropdown-item" href="/invoice_management">Space</a>
               <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
               <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
+
+              <a class="dropdown-item" href="/water_bills_invoice_management">Water</a>
+              <a class="dropdown-item" href="/electricity_bills_invoice_management">Electricity</a>
+
             </div>
           </div>
 
 
             <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+        </ul>
     </div>
 <div class="main_content">
 <div class="flex-container">
@@ -95,7 +99,7 @@
 </div>
 </div>
 </div>
-@endsection 
+@endsection
 
 @section('pagescript')
 
