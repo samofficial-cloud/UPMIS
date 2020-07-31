@@ -71,7 +71,16 @@
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+<div class="dropdown">
+  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-file-contract"></i> Invoices
+  </li>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/invoice_management">Space</a>
+    <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
+    <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
+  </div>
+</div>
     <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul>
@@ -87,14 +96,14 @@
           </div>
         @endif
 
-        <a href="/insurance_contract_form" class="btn button_color active" style="    background-color: lightgrey;
+        <a href="/insurance_contract_form" class="btn button_color active" style="     background-color: lightgrey;
     padding: 10px;
-    margin-left: -16px;
+    margin-left: -2px;
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">New Contract</a>
   <br>
 
-  <div class="row justify-content-center">
+  <div class="">
 
 
 
@@ -187,10 +196,10 @@
 </div>
 
 
-{{--<script type="text/javascript">--}}
-    {{--var table = $('#myTable').DataTable( {--}}
-        {{--dom: '<"top"fl>rt<"bottom"pi>'--}}
-    {{--} );--}}
+<script type="text/javascript">
+    var table = $('#myTable').DataTable( {
+        dom: '<"top"fl>rt<"bottom"pi>'
+    } );
 
-{{--</script>--}}
+</script>
 @endsection

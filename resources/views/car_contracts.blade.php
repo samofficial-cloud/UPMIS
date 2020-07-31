@@ -78,7 +78,16 @@ $i=1;
     <a class="dropdown-item" href="/space_contracts_management">Space</a>
   </div>
 </div>
-<li><a href="/invoice_management"><i class="fas fa-file-invoice"></i>Invoice</a></li>
+<div class="dropdown">
+  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-file-contract"></i> Invoices
+  </li>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/invoice_management">Space</a>
+    <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
+    <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
+  </div>
+</div>
   <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul>
@@ -254,7 +263,7 @@ $i=1;
 
 
 <a href="/contracts/car_rental/print?id={{$contracts->id}}"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>
-         
+
 
     </td>
      </tr>

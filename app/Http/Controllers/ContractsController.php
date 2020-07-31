@@ -102,7 +102,7 @@ class ContractsController extends Controller
 
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date]
+                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date')]
             );
 
         }else {
@@ -119,7 +119,7 @@ class ContractsController extends Controller
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date]
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date')]
                 );
 
             } else {
@@ -133,7 +133,7 @@ class ContractsController extends Controller
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date]
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date')]
                 );
 
 
@@ -289,6 +289,11 @@ class ContractsController extends Controller
                 ->where('contract_id', $contract_id)
                 ->update(['programming_end_date' => $programming_end_date]);
 
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['programming_start_date' => $request->get('start_date')]);
+
+
 
         }elseif($request->get('payment_cycle')=='Yearly'){
 
@@ -299,6 +304,14 @@ class ContractsController extends Controller
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
                 ->update(['programming_end_date' => $programming_end_date]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['programming_start_date' => $request->get('start_date')]);
+
+
+
 
 
         }else{
@@ -366,6 +379,8 @@ class ContractsController extends Controller
         DB::table('insurance_contracts')->insert(
             ['vehicle_registration_no' => $request->get('vehicle_registration_no'), 'vehicle_use' => $request->get('vehicle_use'), 'principal' => $request->get('principal'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $request->get('end_date'), 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name')]
         );
+
+
 
 
 

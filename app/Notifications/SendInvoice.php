@@ -42,6 +42,7 @@ class SendInvoice extends Notification
     protected $programming_start_date;
     protected $programming_end_date;
 
+
     public function __construct($name,$invoice_number,$project_id,$debtor_account_code,$debtor_name,$debtor_address,$amount_to_be_paid,$currency,$gepg_control_no,$tin,$max_no_of_days_to_pay,$status,$vrn,$amount_in_words,$inc_code,$invoice_date,$financial_year,$period,$description,$prepared_by,$approved_by,$programming_start_date,$programming_end_date)
     {
         $this->name = $name;
@@ -121,7 +122,7 @@ class SendInvoice extends Notification
         return (new MailMessage)
             ->greeting('Dear ' . ($this->name) . ',')
             ->subject('INVOICE')
-            ->line(' Please find the attached invoice for the period between '. (date("d/m/Y",strtotime($this->programming_start_date))).' and '.(date("d/m/Y",strtotime($this->programming_end_date))).'.')
+            ->line(' Please find the attached invoice for the period between '.$this->programming_start_date.' and '.$this->programming_end_date.'.')
             ->attachData($pdf->output(), "invoice.pdf");
 
 
