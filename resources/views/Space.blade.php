@@ -97,6 +97,13 @@
             <p>{{$message}}</p>
           </div>
         @endif
+<br>
+          @if (session('error'))
+            <div class="alert alert-danger">
+              {{ session('error') }}
+              <br>
+            </div>
+          @endif
 
         <a data-toggle="modal" data-target="#space" class="btn button_color active" style="    background-color: lightgrey;
     padding: 10px;
@@ -122,8 +129,8 @@
                      {{csrf_field()}}
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="course_name"  ><strong>Space Id <span style="color: red;">*</span> </strong></label>
-                         <input type="text" class="form-control" id="course_name" name="space_id" value="" Required autocomplete="off">
+                         <label for=""  ><strong>Space Id  </strong></label>
+                         <input type="text" class="form-control" id="" name="space_id" value="" Required autocomplete="off">
                        </div>
                      </div>
                      <br>
@@ -155,8 +162,8 @@
                      <br>
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="course_name"  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                         <input type="number" min="1" class="form-control" id="course_name" name="space_size" value=""  autocomplete="off">
+                         <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                         <input type="number" min="1" class="form-control" id="" name="space_size" value=""  autocomplete="off">
                        </div>
                      </div>
                      <br>
@@ -269,7 +276,7 @@
             <td>
 
 
-              <a data-toggle="modal" data-target="#edit_space{{$var->id}}" onclick="trigger_click({{$var->id}});" role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+              <a data-toggle="modal" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
 
                 <a data-toggle="modal" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
                 <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
@@ -287,8 +294,8 @@
                           {{csrf_field()}}
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="course_name"  ><strong>Space Id <span style="color: red;">*</span> </strong></label>
-                              <input type="text" class="form-control" id="course_name" name="space_id" value="{{$var->space_id}}" Required autocomplete="off">
+                              <label for="" ><strong>Space Id</strong></label>
+                              <input type="text" class="form-control" id="" name="space_id" value="{{$var->space_id}}" Required autocomplete="off">
                             </div>
                           </div>
                           <br>
@@ -298,12 +305,50 @@
                               <label for="space_type"  ><strong>Type</strong></label>
                               <select id="space_type" class="form-control" name="space_type" >
 
+                                @if($var->space_type=='Mall-shop')
                                 <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
-                                <option value="Mall-shop" id="Option" >Mall-shop</option>
                                 <option value="Villa" id="Option">Villa</option>
                                 <option value="Office block" id="Option">Office block</option>
                                 <option value="Cafeteria" id="Option">Cafeteria</option>
                                 <option value="Stationery" id="Option">Stationery</option>
+
+                                @elseif($var->space_type=='Villa')
+                                  <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
+                                  <option value="Mall-shop" id="Option" >Mall-shop</option>
+                                  <option value="Office block" id="Option">Office block</option>
+                                  <option value="Cafeteria" id="Option">Cafeteria</option>
+                                  <option value="Stationery" id="Option">Stationery</option>
+                                @elseif($var->space_type=='Office block')
+                                  <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
+                                  <option value="Mall-shop" id="Option">Mall-shop</option>
+                                  <option value="Villa" id="Option">Villa</option>
+                                  <option value="Cafeteria" id="Option">Cafeteria</option>
+                                  <option value="Stationery" id="Option">Stationery</option>
+                                @elseif($var->space_type=='Cafeteria')
+                                  <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
+                                  <option value="Mall-shop" id="Option" >Mall-shop</option>
+                                  <option value="Villa" id="Option">Villa</option>
+                                  <option value="Office block" id="Option">Office block</option>
+                                  <option value="Stationery" id="Option">Stationery</option>
+                                @elseif($var->space_type=='Stationery')
+                                  <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
+                                  <option value="Mall-shop" id="Option" >Mall-shop</option>
+                                  <option value="Villa" id="Option">Villa</option>
+                                  <option value="Office block" id="Option">Office block</option>
+                                  <option value="Cafeteria" id="Option">Cafeteria</option>
+
+                                  @else
+
+                                  @endif
+
+
+
+
+
+
+
+
+
                               </select>
                             </div>
                           </div>
@@ -313,17 +358,23 @@
                             <div class="form-wrapper">
                               <label for="space_location"  ><strong>Location</strong></label>
                               <select class="form-control" id="space_location" name="space_location" >
-                                <option value="{{$var->location}}" id="Option" >{{$var->location}}</option>
-                                <option value="Mlimani City" id="Option" >Mlimani City</option>
+
+                                @if($var->location=='Mlimani City')
+                                  <option value="{{$var->location}}" id="Option" >{{$var->location}}</option>
                                 <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
+                                @elseif($var->location=='UDSM Main Campus')
+                                  <option value="Mlimani City" id="Option" >Mlimani City</option>
+                                @else
+
+                                @endif
                               </select>
                             </div>
                           </div>
                           <br>
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="course_name"  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                              <input type="number" min="1" class="form-control" id="course_name" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                              <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                              <input type="number" min="1" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
                             </div>
                           </div>
                           <br>
@@ -332,24 +383,22 @@
                           <div class="form-group">
                             <div class="form-wrapper">
                               <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
-                              @if($var->rent_price_guide_checkbox==0)
-                              <input type="checkbox"  style="display: inline-block;" onclick="checkbox({{$var->id}});"  id="rent_price_guide_checkbox_edit_zero{{$var->id}}" name="rent_price_guide_checkbox" value="rent_price_guide_selected_edit"  autocomplete="off">
-                              @else
-                                <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
-                              @endif
-                              <div  id="rent_price_guide_div_edit{{$var->id}}" style="display: none;" class="form-group row">
+                              @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+
+                              <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
 
                                 <div class="col-4 inline_block form-wrapper">
                                   <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
                                   <div class="">
-                                    <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                    <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
                                   </div>
                                 </div>
 
                                 <div class="col-4 inline_block  form-wrapper">
                                   <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
                                   <div  class="">
-                                    <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                    <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
                                   </div>
                                 </div>
 
@@ -357,11 +406,20 @@
                                 <div class="col-3 inline_block  form-wrapper">
                                   <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
                                   <div  class="">
-                                    <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                    <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
                                       <option value="" ></option>
-                                      <option value="TZS" >TZS</option>
+
+                                      @if($var->rent_price_guide_currency=='TZS')
                                       <option value="USD" >USD</option>
                                       <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                      @elseif($var->rent_price_guide_currency=='USD')
+                                        <option value="TZS">TZS</option>
+                                        <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+
+                                        @else
+
+                                      @endif
+
                                     </select>
                                   </div>
 
@@ -369,11 +427,46 @@
 
                               </div>
 
+                              @else
+                                <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                                <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
+
+                                  <div class="col-4 inline_block form-wrapper">
+                                    <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                    <div class="">
+                                      <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
+                                    </div>
+                                  </div>
+
+                                  <div class="col-4 inline_block  form-wrapper">
+                                    <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                    <div  class="">
+                                      <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
+                                    </div>
+                                  </div>
+
+
+                                  <div class="col-3 inline_block  form-wrapper">
+                                    <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                    <div  class="">
+                                      <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                        <option value=""></option>
+                                          <option value="USD" >USD</option>
+                                          <option value="TZS">TZS</option>
+                                      </select>
+                                    </div>
+
+                                  </div>
+
+                                </div>
+                              @endif
+
 
 
 
                             </div>
                           </div>
+                          <br>
 
                           <div align="right">
                             <button class="btn btn-primary" type="submit">Submit</button>
@@ -529,6 +622,57 @@
 
 
     });
+
+
+
+    //for edit case checkbox selected
+    $("#rent_price_guide_checkbox_edit_filled"+id).trigger('change');
+
+    $('#rent_price_guide_checkbox_edit_filled'+id).change(function () {
+
+      if ($('#rent_price_guide_checkbox_edit_filled'+id).prop('checked')) {
+        document.getElementById("rent_price_guide_div_edit_filled"+id).style.display = "block";
+
+        var input_from = document.getElementById("rent_price_guide_from_edit_filled"+id);
+        input_from.required = true;
+
+        var input_to = document.getElementById("rent_price_guide_to_edit_filled"+id);
+        input_to.required = true;
+
+        var input_currency_edit = document.getElementById("rent_price_guide_currency_edit_filled"+id);
+        input_currency_edit.required = true;
+
+
+      } else {
+        document.getElementById("rent_price_guide_div_edit_filled"+id).style.display = "none";
+
+        var input_from = document.getElementById("rent_price_guide_from_edit_filled"+id);
+        input_from.value = "";
+
+        var input_to = document.getElementById("rent_price_guide_to_edit_filled"+id);
+        input_to.value = "";
+
+        var input_currency_edit = document.getElementById("rent_price_guide_currency_edit_filled"+id);
+        input_currency_edit.value = "";
+
+
+        var input_from = document.getElementById("rent_price_guide_from_edit_filled"+id);
+        input_from.required = false;
+
+        var input_to = document.getElementById("rent_price_guide_to_edit_filled"+id);
+        input_to.required = false;
+
+        var input_currency_edit = document.getElementById("rent_price_guide_currency_edit_filled"+id);
+        input_currency_edit.required = false;
+
+
+      }
+
+
+    });
+
+
+
 
   }
 </script>

@@ -75,13 +75,16 @@ class ContractsController extends Controller
 
         if($request->get('client_type')==1){
             $client_type="Individual";
+            $full_name=$request->get('first_name').' '.$request->get('last_name');
+
 
         }else{
             $client_type="Company/Organization";
+            $full_name=$request->get('company_name');
         }
 
 
-        $full_name=$request->get('first_name').' '.$request->get('last_name');
+
 
         if(DB::table('clients')->where('full_name',$full_name)->where('contract','Space')->count()>0){
 
@@ -145,6 +148,121 @@ class ContractsController extends Controller
         return redirect('/space_contracts_management')
             ->with('success', 'Contract created successfully');
     }
+
+
+
+
+
+
+
+    public function RenewSpaceContract(Request $request,$id)
+    {
+
+        DB::table('space_contracts')->where('contract_id', $id)->delete();
+
+
+        $programming_end_date='';
+        //for programming purposes
+        if($request->get('payment_cycle')=='Monthly') {
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $daysToAdd = 30;
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+
+        }elseif($request->get('payment_cycle')=='Yearly'){
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $daysToAdd = 365;
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+
+        }else{
+
+
+        }
+
+
+        if($request->get('client_type')==1){
+            $client_type="Individual";
+            $full_name=$request->get('first_name').' '.$request->get('last_name');
+
+
+        }else{
+            $client_type="Company/Organization";
+            $full_name=$request->get('company_name');
+        }
+
+
+
+
+        if(DB::table('clients')->where('full_name',$full_name)->where('contract','Space')->count()>0){
+
+            DB::table('clients')
+                ->where('full_name', $full_name)
+                ->update(['address' => $request->get('address')]);
+
+            DB::table('clients')
+                ->where('full_name', $full_name)
+                ->update(['email' => $request->get('email')]);
+
+            DB::table('clients')
+                ->where('full_name', $full_name)
+                ->update(['phone_number' => $request->get('phone_number')]);
+
+
+
+
+
+            DB::table('space_contracts')->insert(
+                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date')]
+            );
+
+        }else {
+
+            if($request->get('company_name')=="") {
+
+
+
+                DB::table('clients')->insert(
+                    ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
+                );
+
+
+
+
+                DB::table('space_contracts')->insert(
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date')]
+                );
+
+            } else {
+
+                DB::table('clients')->insert(
+                    ['first_name' => $request->get('company_name'), 'last_name' => '', 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
+                );
+
+
+
+
+
+                DB::table('space_contracts')->insert(
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date')]
+                );
+
+
+            }
+        }
+
+
+
+        return redirect('/space_contracts_management')
+            ->with('success', 'Contract created successfully');
+    }
+
+
+
+
+
 
     public function terminateSpaceContract(Request $request,$id)
     {
@@ -367,7 +485,7 @@ class ContractsController extends Controller
     public function InsuranceContractForm()
     {
 
-        $insurance_data=DB::table('insurance')->get();
+        $insurance_data=DB::table('insurance')->where('status',1)->get();
         return view('insurance_contract_form')->with('insurance_data',$insurance_data);
     }
 
@@ -393,7 +511,7 @@ class ContractsController extends Controller
     {
 
 
-        $insurance_data=DB::table('insurance')->get();
+        $insurance_data=DB::table('insurance')->where('status',1)->get();
         $contract_data=DB::table('insurance_contracts')->where('id',$id)->get();
 
         return view('insurance_contract_form_edit')->with('insurance_data',$insurance_data)->with('contract_id',$id)->with('contract_data',$contract_data);

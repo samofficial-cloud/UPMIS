@@ -137,7 +137,7 @@
           <tr>
 
             <td class="counterCell text-center"></td>
-              <td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->full_name}}</center></a>
+              <td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->full_name}}</center></a>
                   <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
 
                       <div class="modal-dialog" role="document">
@@ -163,7 +163,7 @@
                                               <td>Last Name:</td>
                                               <td>{{$var->last_name}}</td>
                                           </tr>
-                                      @elseif($var->type=='Company')
+                                      @elseif($var->type=='Company/Organization')
                                           <tr>
                                               <td>Company Name:</td>
                                               <td>{{$var->first_name}}</td>
@@ -189,7 +189,7 @@
                       </div>
                   </div>
               </td>
-              <td><a class="link_style" data-toggle="modal" data-target="#space_id{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
+              <td><a class="link_style" data-toggle="modal" data-target="#space_id{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
                   <div class="modal fade" id="space_id{{$var->contract_id}}" role="dialog">
 
                       <div class="modal-dialog" role="document">
@@ -317,7 +317,7 @@
                         <tr>
 
                             <td class="counterCell text-center"></td>
-                            <td><a class="link_style"  data-toggle="modal" data-target="#client{{$var->contract_id}}"  aria-pressed="true"><center>{{$var->full_name}}</center></a>
+                            <td><a class="link_style" style="color: blue !important; text-decoration: underline !important;" data-toggle="modal" data-target="#client{{$var->contract_id}}"  aria-pressed="true"><center>{{$var->full_name}}</center></a>
                                 <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
 
                                     <div class="modal-dialog" role="document">
@@ -343,7 +343,7 @@
                                                             <td>Last Name:</td>
                                                             <td>{{$var->last_name}}</td>
                                                         </tr>
-                                                    @elseif($var->type=='Company')
+                                                    @elseif($var->type=='Company/Organization')
                                                         <tr>
                                                             <td>Company Name:</td>
                                                             <td>{{$var->first_name}}</td>
@@ -369,7 +369,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td><a class="link_style" data-toggle="modal" data-target="#space_id{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
+                            <td><a class="link_style" data-toggle="modal" data-target="#space_id{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
                                 <div class="modal fade" id="space_id{{$var->contract_id}}" role="dialog">
 
                                     <div class="modal-dialog" role="document">

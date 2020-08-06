@@ -121,8 +121,8 @@
               {{csrf_field()}}
               <div class="form-group">
                 <div class="form-wrapper">
-                  <label for="insurance_company"  ><strong>Insurance Company <span style="color: red;">*</span> </strong></label>
-                  <input type="text" class="form-control" id="insurance_company" name="insurance_company" value="" Required autocomplete="off">
+                  <label for="insurance_company"  ><strong>Insurance Company  </strong></label>
+                  <input type="text" class="form-control" id="insurance_company" name="insurance_company"  Required autocomplete="off">
                 </div>
               </div>
               <br>
@@ -132,8 +132,7 @@
                   <label for="insurance_type"  ><strong>Insurance Type</strong></label>
                   <select id="insurance_type" class="form-control" name="insurance_type" >
                     <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                    <option value="THIRD PARTY" id="Option" >COMPREHENSIVE</option>
-
+                    <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
                   </select>
                 </div>
               </div>
@@ -142,14 +141,14 @@
               <div class="form-group">
                 <div class="form-wrapper">
                   <label for="price"  ><strong>Price</strong></label>
-                  <input type="number" min="1" class="form-control" id="price" name="price" value="" required  autocomplete="off">
+                  <input type="number" min="1" class="form-control" id="price" name="price"  required  autocomplete="off">
                 </div>
               </div>
               <br>
               <div class="form-group">
                 <div class="form-wrapper">
                   <label for="commission"  ><strong>Commission<span style="color: red;"></span></strong></label>
-                  <input type="number" min="1" class="form-control" id="commission" name="commission" value="" required autocomplete="off">
+                  <input type="number" min="1" class="form-control" id="commission" name="commission"  required autocomplete="off">
                 </div>
               </div>
               <br>
@@ -214,7 +213,7 @@
                           {{csrf_field()}}
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="insurance_company"  ><strong>Insurance Company <span style="color: red;">*</span> </strong></label>
+                              <label for="insurance_company"  ><strong>Insurance Company  </strong></label>
                               <input type="text" class="form-control" id="insurance_company" name="insurance_company" value="{{$var->insurance_company}}" Required autocomplete="off">
                             </div>
                           </div>
@@ -224,9 +223,19 @@
                             <div class="form-wrapper">
                               <label for="insurance_type"  ><strong>Insurance Type</strong></label>
                               <select id="insurance_type" class="form-control" name="insurance_type" >
-                                <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                                <option value="THIRD PARTY" id="Option" >COMPREHENSIVE</option>
-                                <option value=" {{$var->insurance_type}}" id="Option" selected >{{$var->insurance_type}}</option>
+
+                                @if($var->insurance_type=='THIRD PARTY')
+                                  <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
+                                  <option value=" {{$var->insurance_type}}" id="Option" selected >{{$var->insurance_type}}</option>
+                                  @elseif($var->insurance_type=='COMPREHENSIVE')
+                                  <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
+                                  <option value=" {{$var->insurance_type}}" id="Option" selected >{{$var->insurance_type}}</option>
+
+                                  @else
+
+                                  @endif
+
+
                               </select>
                             </div>
                           </div>

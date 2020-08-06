@@ -414,12 +414,12 @@ $today=date('Y-m-d');
 
 					<div class="form-wrapper col-6">
 						<label for="amount">Sum Insured *</label>
-						<input type="number" min="1" id="sum_insured" name="sum_insured" class="form-control" required="">
+						<input type="number" min="0" id="sum_insured" name="sum_insured" class="form-control" required="">
 					</div>
 
                         <div class="form-wrapper col-6">
                             <label for="amount">Premium *</label>
-                            <input type="text" id="premium" name="premium" class="form-control" required="">
+                            <input type="number" min="0"  id="premium" name="premium" class="form-control" required="">
                         </div>
 
 
@@ -432,7 +432,7 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-6">
                                             <label for="amount">Actual (Excluding VAT) *</label>
-                                            <input type="number" min="1" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
+                                            <input type="number" min="0" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
                                         </div>
 
                                         <div class="form-wrapper col-6">
@@ -450,7 +450,7 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-6">
                                             <label for="amount">Commission * </label>
-                                            <input type="number" min="1" id="commission" name="commission" class="form-control" required="">
+                                            <input type="number" min="0" id="commission" name="commission" class="form-control" required="">
                                         </div>
 
                                         <div class="form-wrapper col-6">

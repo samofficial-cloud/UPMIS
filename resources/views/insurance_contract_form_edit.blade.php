@@ -321,8 +321,18 @@
 
                                                                     if(!in_array($tempoIn, $tempOut))
                                                                     {
-                                                                        print('<option value="'.$val['insurance_company'].'">'.$val['insurance_company'].'</option>');
+                                                                        foreach($contract_data as $var){
+
+                                                                            if($val['insurance_company']==$var->principal){
+
+                                                                            }else{
+
+                                                                                print('<option value="'.$val['insurance_company'].'">'.$val['insurance_company'].'</option>');
+                                                                            }
+
+
                                                                         array_push($tempOut,$tempoIn);
+                                                                        }
                                                                     }
 
                                                                 }
@@ -338,9 +348,14 @@
                                                             <br>
                                                             <label for="space_location"  ><strong>Insurance Type</strong></label>
                                                             <select class="form-control" id="insurance_type" name="insurance_type" >
+
+                                                                @if($var->insurance_type=='THIRD PARTY')
+                                                                    <option value="COMPREHENSIVE" id="Option">COMPREHENSIVE</option>
+                                                                    <option value="{{$var->insurance_type}}" selected id="Option">{{$var->insurance_type}}</option>
+                                                                    @elseif($var->insurance_type=='COMPREHENSIVE')
                                                                 <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                                                                <option value="COMPREHENSIVE" id="Option">COMPREHENSIVE</option>
                                                                 <option value="{{$var->insurance_type}}" selected id="Option">{{$var->insurance_type}}</option>
+                                                                    @endif
                                                             </select>
                                                         </div>
                                                     </div>
@@ -374,10 +389,18 @@
                                                     <br>
                                                     <div class="form-wrapper col-12">
                                                         <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
-                                                        <select class="form-control" id="vehicle_use" name="vehicle_use" >
+                                                        <select class="form-control" id="vehicle_use" name="vehicle_use">
+
+                                                            @if($var->vehicle_use=='PRIVATE')
+                                                                <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
+                                                                <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
+                                                            @elseif($var->vehicle_use=='COMMERCIAL')
                                                             <option value="PRIVATE" id="Option" >PRIVATE</option>
-                                                            <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
                                                             <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
+                                                                @else
+
+                                                                @endif
+
                                                         </select>
                                                     </div>
                                                 </div>
@@ -409,12 +432,12 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="amount">Sum Insured *</label>
-                                                        <input type="number" min="1" id="sum_insured"  value="{{$var->sum_insured}}" name="sum_insured" class="form-control" required="">
+                                                        <input type="number" min="0" id="sum_insured"  value="{{$var->sum_insured}}" name="sum_insured" class="form-control" required="">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="amount">Premium *</label>
-                                                        <input type="text" id="premium" name="premium" value="{{$var->premium}}" class="form-control" required="">
+                                                        <input type="number"  min="0" id="premium" name="premium" value="{{$var->premium}}" class="form-control" required="">
                                                     </div>
 
 
@@ -427,14 +450,22 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="amount">Actual (Excluding VAT) *</label>
-                                                        <input type="number" min="1" id="actual_ex_vat"  value="{{$var->actual_ex_vat}}" name="actual_ex_vat" class="form-control" required="">
+                                                        <input type="number" min="0" id="actual_ex_vat"  value="{{$var->actual_ex_vat}}" name="actual_ex_vat" class="form-control" required="">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="currency">Currency</label>
                                                         <select id="currency" class="form-control" name="currency" >
-                                                            <option value="TZS" >TZS</option>
-                                                            <option value="USD" >USD</option>
+                                                            @if($var->currency=='TZS')
+                                                                <option value="{{$var->currency}}" selected>{{$var->currency}}</option>
+                                                                <option value="USD" >USD</option>
+                                                            @elseif($var->currency=='USD')
+                                                                <option value="{{$var->currency}}" selected>{{$var->currency}}</option>
+                                                                <option value="TZS">TZS</option>
+                                                                @else
+
+                                                                @endif
+
                                                         </select>
                                                     </div>
 
@@ -445,11 +476,11 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="amount">Commission * </label>
-                                                        <input type="number" min="1" id="commission" name="commission" value="{{$var->commission}}" class="form-control" required="">
+                                                        <input type="number" min="0" id="commission" name="commission" value="{{$var->commission}}" class="form-control" required="">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="amount">Receipt Number * </label>
+                                                        <label for="amount">Receipt Number *</label>
                                                         <input type="text" id="receipt_no" name="receipt_no" value="{{$var->receipt_no}}" class="form-control" required="">
                                                     </div>
 

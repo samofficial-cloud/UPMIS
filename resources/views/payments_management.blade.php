@@ -152,7 +152,7 @@
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center>{{$var->currency}}</center></td>
+                                        <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
 
                                     </tr>
@@ -212,7 +212,7 @@
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center>{{$var->currency}}</center></td>
+                                        <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
 
                                     </tr>
@@ -271,7 +271,7 @@
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center>{{$var->currency}}</center></td>
+                                        <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
 
                                     </tr>
@@ -330,7 +330,7 @@
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center>{{$var->currency}}</center></td>
+                                        <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
 
                                     </tr>
@@ -389,7 +389,7 @@
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center>{{$var->currency}}</center></td>
+                                        <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
 
                                     </tr>

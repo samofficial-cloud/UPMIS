@@ -26,7 +26,11 @@
     Route::get('/space_contract_form', 'ContractsController@SpaceContractForm');
     Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
     Route::get('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
-    Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
+    Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');
+
+
+
+        Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
 
     //space
 
@@ -76,7 +80,7 @@
 
         //Insurance invoices
         Route::get('/insurance_invoice_management', 'InvoicesController@insuranceInvoiceManagement');
-        Route::post('/send_invoice_insurance/{id}', 'InvoicesController@sendInvoiceInsurance')->name('send_invoice_insurance');
+        Route::get('/send_invoice_insurance/{id}', 'InvoicesController@sendInvoiceInsurance')->name('send_invoice_insurance');
         Route::post('/change_payment_status_insurance/{id}', 'InvoicesController@changePayementStatusInsurance')->name('change_payment_status_insurance');
         Route::get('/create_insurance_invoice', 'InvoicesController@CreateInsuranceInvoice');
 
