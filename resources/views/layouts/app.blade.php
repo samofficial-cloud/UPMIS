@@ -74,11 +74,36 @@
                         <!-- Authentication Links -->
                         <?php
 
+                        $insurance_invoice_notifications_count_total=0;
+                        $car_invoice_notifications_count_total=0;
+                        $space_invoice_notifications_count_total=0;
+                        $water_invoice_notifications_count_total=0;
+                        $electricity_invoice_notifications_count_total=0;
+
                         $insurance_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','insurance')->count('id');
+                        if($insurance_invoice_notifications_count!=0){
+                            $insurance_invoice_notifications_count_total=1;
+                        }else{}
+
                         $car_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','car_rental')->count('id');
+                        if($car_invoice_notifications_count!=0){
+                            $car_invoice_notifications_count_total=1;
+                        }else{}
+
                         $space_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','space')->count('id');
+                        if($space_invoice_notifications_count!=0){
+                            $space_invoice_notifications_count_total=1;
+                        }else{}
+
                         $water_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','water bill')->count('id');
+                        if($water_invoice_notifications_count!=0){
+                            $water_invoice_notifications_count_total=1;
+                        }else{}
+
                         $electricity_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','electricity bill')->count('id');
+                        if($electricity_invoice_notifications_count!=0){
+                            $electricity_invoice_notifications_count_total=1;
+                        }else{}
 
                         use App\notification;
                         $notifications=notification::where('flag','1')->where('role',Auth::user()->role)->get();
@@ -87,12 +112,12 @@
                         $total=count($notifications);
 
 
-                        $total_invoice_notifications=$car_invoice_notifications_count+$insurance_invoice_notifications_count+$space_invoice_notifications_count+$total+$water_invoice_notifications_count+$electricity_invoice_notifications_count;
+                        $total_invoice_notifications=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
 
                         ?>
 
 
-                        @if((Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                        @if(Auth::user()->invoice_notification_flag==1)
 
 
                                 @if($total_invoice_notifications==0)
@@ -107,9 +132,16 @@
                                 @endif
                                 @else
                             {{--other notifications--}}
-                            <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
-                            </a>
+                            @if($total==0)
+                                <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
+                                </a>
+
+                            @else
+                                <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger">{{$total}}</span>
+                                </a>
+                            @endif
 
                         @endif
 
@@ -120,12 +152,12 @@
 
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
-                                    @if($space_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                    @if($space_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
 
 
 
                                         <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoice to review</a>
-                                    @elseif($space_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                    @elseif($space_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
 
 
 
@@ -135,7 +167,7 @@
 
 
 
-                                        @if($car_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        @if($car_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
 
 
 
@@ -146,7 +178,7 @@
                                             ?>
 
 
-                                        @elseif($car_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        @elseif($car_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
 
 
                                             <a class="dropdown-item" href="/car_rental_invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoices to review</a>
@@ -157,13 +189,13 @@
                                         @else
                                         @endif
 
-                                        @if($insurance_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        @if($insurance_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
 
                                             <a class="dropdown-item" href="/insurance_invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
-                                        @elseif($insurance_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        @elseif($insurance_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
 
                                             <a class="dropdown-item" href="/insurance_invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
                                             <?php
@@ -173,13 +205,13 @@
                                         @endif
 
 
-                                        @if($water_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        @if($water_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
 
                                             <a class="dropdown-item" href="/water_bills_invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water invoice to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
-                                        @elseif($water_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        @elseif($water_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
 
                                             <a class="dropdown-item" href="/water_bills_invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water invoices to review</a>
                                             <?php
@@ -189,13 +221,13 @@
                                         @endif
 
 
-                                        @if($electricity_invoice_notifications_count==1 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        @if($electricity_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
 
                                             <a class="dropdown-item" href="/electricity_bills_invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity invoice to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
-                                        @elseif($electricity_invoice_notifications_count!=0 AND (Auth::user()->role=='Insurance Agent' OR Auth::user()->role=='Accountant' OR Auth::user()->role=='Admin'))
+                                        @elseif($electricity_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
 
                                             <a class="dropdown-item" href="/electricity_bills_invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity invoices to review</a>
                                             <?php
@@ -209,9 +241,7 @@
 
                                         @if($total==0)
 
-                                            <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
-                                            </a>
+
 
 
                                         @elseif($total>0)

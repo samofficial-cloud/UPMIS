@@ -87,6 +87,8 @@
                         $total=count($notifications);
 
 
+
+
                         $total_invoice_notifications=$car_invoice_notifications_count+$insurance_invoice_notifications_count+$space_invoice_notifications_count+$total+$water_invoice_notifications_count+$electricity_invoice_notifications_count;
 
                         ?>
@@ -107,9 +109,17 @@
                                 @endif
                                 @else
                             {{--other notifications--}}
-                            <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
-                            </a>
+
+                            @if($total_invoice_notifications==0)
+                                <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
+                                </a>
+
+                            @else
+                                <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger">{{$total_invoice_notifications}}</span>
+                                </a>
+                            @endif
 
                         @endif
 
@@ -209,6 +219,7 @@
 
                                         @if($total==0)
 
+
                                             <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
                                             </a>
@@ -223,6 +234,8 @@
                                                 $i=$i+1;
                                                 ?>
                                             @endforeach
+
+                                            @else
 
                                         @endif
 

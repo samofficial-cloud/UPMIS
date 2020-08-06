@@ -271,7 +271,7 @@ $today=date('Y-m-d');
                 <div class="row">
                     <div class="col-md-12 mx-0">
 
-                        <form id="msform" METHOD="GET" action="{{ route('create_space_contract')}}">
+                        <form id="msform" METHOD="GET" action="{{ route('renew_space_contract',$contract_id)}}">
 
                             <!-- progressbar -->
                             <ul id="progressbar">

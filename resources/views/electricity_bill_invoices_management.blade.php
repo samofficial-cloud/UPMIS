@@ -253,7 +253,9 @@
                                 <th scope="col"  style="color:#3490dc;"><center>End date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Period</center></th>
                                 <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Debt</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Current Amount</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Cumulative Amount</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Created Date</center></th>
 
                                 <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
@@ -354,7 +356,17 @@
 
 
                                         </center></td>
-                                    <td><center>{{$var->amount_to_be_paid}} {{$var->currency}}</center></td>
+                                    <td><center>{{$var->debt}} {{$var->currency}}</center></td>
+                                    @if($var->current_amount==0)
+                                        <td><center>N/A</center></td>
+                                    @else
+                                        <td><center>{{$var->current_amount}} {{$var->currency}}</center></td>
+                                    @endif
+                                    @if($var->cumulative_amount==0)
+                                        <td><center>N/A</center></td>
+                                    @else
+                                        <td><center>{{$var->cumulative_amount}} {{$var->currency}}</center></td>
+                                    @endif
 
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
 
@@ -375,6 +387,29 @@
                                                     <div class="modal-body">
                                                         <form method="post" action="{{ route('send_invoice_electricity_bills',$var->invoice_number)}}"  id="form1" >
                                                             {{csrf_field()}}
+
+
+                                                            <div class="form-group row">
+
+                                                                <div class="form-wrapper col-6">
+                                                                    <label for="amount">Current Amount</label>
+                                                                    <input type="number" min="0" id="amount" name="current_amount" class="form-control" required="">
+                                                                </div>
+
+                                                                <div class="form-wrapper col-6">
+                                                                    <label for="currency">Currency</label>
+                                                                    <select id="currency" class="form-control" name="currency" >
+                                                                        <option value="{{$var->currency}}">{{$var->currency}}</option>
+                                                                    </select>
+                                                                </div>
+
+
+
+                                                            </div>
+
+                                                            <br>
+
+
 
                                                             <div class="form-group">
                                                                 <div class="form-wrapper">
@@ -449,7 +484,9 @@
                                 <th scope="col"  style="color:#3490dc;"><center>End date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Period</center></th>
                                 <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Debt</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Current Amount</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Cumulative Amount</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>GEPG Control No</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Payment Status</center></th>
@@ -552,7 +589,17 @@
 
 
                                         </center></td>
-                                    <td><center>{{$var->amount_to_be_paid}} {{$var->currency}}</center></td>
+                                    <td><center>{{$var->debt}} {{$var->currency}}</center></td>
+                                    @if($var->current_amount==0)
+                                        <td><center>N/A</center></td>
+                                    @else
+                                        <td><center>{{$var->current_amount}} {{$var->currency}}</center></td>
+                                    @endif
+                                    @if($var->cumulative_amount==0)
+                                        <td><center>N/A</center></td>
+                                    @else
+                                        <td><center>{{$var->cumulative_amount}} {{$var->currency}}</center></td>
+                                    @endif
                                     <td><center>{{$var->gepg_control_no}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td><center>{{$var->payment_status}}</center></td>
@@ -672,7 +719,9 @@
                                 <th scope="col"  style="color:#3490dc;"><center>End date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Period</center></th>
                                 <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Debt</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Current Amount</center></th>
+                                <th scope="col"  style="color:#3490dc;"><center>Cumulative Amount</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>GEPG Control No</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
                                 <th scope="col"  style="color:#3490dc;"><center>Payment Status</center></th>
@@ -776,7 +825,17 @@
 
 
                                         </center></td>
-                                    <td><center>{{$var->amount_to_be_paid}} {{$var->currency}}</center></td>
+                                    <td><center>{{$var->debt}} {{$var->currency}}</center></td>
+                                    @if($var->current_amount==0)
+                                        <td><center>N/A</center></td>
+                                    @else
+                                        <td><center>{{$var->current_amount}} {{$var->currency}}</center></td>
+                                    @endif
+                                    @if($var->cumulative_amount==0)
+                                        <td><center>N/A</center></td>
+                                    @else
+                                        <td><center>{{$var->cumulative_amount}} {{$var->currency}}</center></td>
+                                    @endif
                                     <td><center>{{$var->gepg_control_no}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td><center>{{$var->payment_status}}</center></td>

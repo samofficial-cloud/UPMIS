@@ -404,7 +404,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="course_name"  ><strong>Size (SQM) *</strong></label>
-                                            <input type="number" min="1" class="form-control" id="space_size" readonly name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                            <input type="number" min="0" class="form-control" id="space_size" readonly name="space_size" value="{{$var->size}}"  autocomplete="off">
                                         </div>
                                     </div>
 
@@ -434,7 +434,7 @@ $today=date('Y-m-d');
 
 					<div class="form-wrapper col-6">
 						<label for="amount">Amount *</label>
-						<input type="number" min="1" id="amount" name="amount" value="{{$var->amount}}" class="form-control" required="">
+						<input type="number" min="0" id="amount" name="amount" value="{{$var->amount}}" class="form-control" required="">
 					</div>
 
                         <div class="form-wrapper col-6">
