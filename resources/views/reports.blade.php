@@ -229,7 +229,7 @@ select.list-dt:focus {
 
                   <div class="form-wrapper col-2" id="spacefilterprize">
                   <label for="prize" style=" display: block;
-    white-space: nowrap;">Prize
+    white-space: nowrap;">Price
                   <input class="form-check-input" type="checkbox" name="space_prize" id="space_prize" value="">
                 </label>
                  </div>
@@ -263,7 +263,7 @@ select.list-dt:focus {
             <div class="form-wrapper col-6">
               <label for="end_date">To*</label>
               <span id="enddatemsg"></span>
-              <input type="date" id="end_date" name="end_date" class="form-control">
+              <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
             </div>
           </div>
 
@@ -372,6 +372,7 @@ select.list-dt:focus {
             <select class="form-control" id="tenant_type" name="tenant_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
               <option value="list">List of Tenants</option>
+               <option value="invoice">Tenants Invoice</option>
             </select>
         </div>
     </div>
@@ -440,11 +441,83 @@ select.list-dt:focus {
           <span id="paymentstatusmsg"></span>
             <select class="form-control" id="payment_status" name="payment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
-              <option value="1">Paid</option>
-              <option value="0">Not Paid</option>
+              <option value="Paid">Paid</option>
+              <option value="Not Paid">Not Paid</option>
             </select>
         </div>
     </div>
+
+    <div class="form-group" id="TenantInvoiceCriteriadiv" style="display: none;">
+      <div class="form-wrapper">
+                  <label for="Criteria">Criteria</label>
+                  <span id="t_invoiceCriteriamsg"></span>
+                  <div class="row">
+
+                  <div class="form-wrapper col-3">
+                  <label for="space_rent" style=" display: block;
+    white-space: nowrap;">Space Rent
+                  <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="space_rent" value="rent" checked="">
+                </label>
+                 </div>
+
+                 <div class="form-wrapper col-3">
+                  <label for="electricity_bill" style=" display: block;
+    white-space: nowrap;">Electricity Bill
+                   <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="electricity_bill" value="electricity" >
+                   </label>
+                </div>
+
+                <div class="form-wrapper col-3">
+                  <label for="water_bill" style=" display: block;
+    white-space: nowrap;">Water Bill
+                   <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="water_bill" value="water">
+                   </label>
+                </div>
+               </div>
+             </div>
+           </div>
+
+           <div class="form-group row" id="t_invoicedurationdiv" style="display: none;">
+            <div class="form-wrapper col-6">
+              <label for="t_Invoice_start_date">From*</label>
+              <span id="t_Invoice_startdatemsg"></span>
+              <input type="date" id="t_Invoice_start_date" name="t_Invoice_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+            </div>
+            <div class="form-wrapper col-6">
+              <label for="t_Invoice_end_date">To*</label>
+              <span id="t_invoice_enddatemsg"></span>
+              <input type="date" id="t_invoice_end_date" name="t_invoice_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+            </div>
+          </div>
+
+          <div class="form-group" id="TenantInvoicefilterBydiv" style="display: none;">
+      <div class="form-wrapper">
+                  <label for="Criteria">Filter By</label>
+                  <div class="row">
+
+                <div class="form-wrapper col-3">
+                  <label for="t_invoice_payment_filter" style=" display: block;
+    white-space: nowrap;">Payment Status
+                   <input class="form-check-input" type="checkbox" name="t_invoice_payment_filter" id="t_invoice_payment_filter" value="">
+                   </label>
+                </div>
+               </div>
+             </div>
+           </div>
+
+            <div class="form-group" id="tInvoicepaymentstatusdiv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="t_invoicepayment_status">Select Payment Status*</label>
+          <span id="t_invoicepaymentstatusmsg"></span>
+            <select class="form-control" id="t_invoicepayment_status" name="t_invoicepayment_status">
+              <option value=" " disabled selected hidden>Select Payment Status</option>
+              <option value="Paid">Paid</option>
+              <option value="Not Paid">Not Paid</option>
+            </select>
+        </div>
+    </div>
+
+    
 
     <div class="form-group" id="cartypediv" style="display: none;">
           <div class="form-wrapper">
@@ -455,11 +528,24 @@ select.list-dt:focus {
               {{-- <option value="car history">List of Car Rental History</option> --}}
               <option value="cars">List of Rental Cars</option>
               <option value="clients">List of Clients</option>
-              <option>Revenue Report From CPTU Vehicles</option>
+              <option value="revenue">Revenue Report From CPTU Vehicles</option>
               <option value="operational">Revenue Report For Service, Repairs and Fuel For Motor Vehicles</option>
             </select>
         </div>
     </div>
+
+    <div class="form-group row" id="revenue_durationdiv" style="display: none;">
+            <div class="form-wrapper col-6">
+              <label for="rev_start_date">From*</label>
+              <span id="rev_startdatemsg"></span>
+              <input type="date" id="rev_start_date" name="rev_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+            </div>
+            <div class="form-wrapper col-6">
+              <label for="rev_end_date">To*</label>
+              <span id="rev_enddatemsg"></span>
+              <input type="date" id="rev_end_date" name="rev_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+            </div>
+          </div>
 
     <div class="form-group" id="contracttypediv" style="display: none;">
           <div class="form-wrapper">
@@ -552,6 +638,14 @@ select.list-dt:focus {
        $("input[name='business_filter']:checked").prop("checked", false);
        $("input[name='contract_filter']:checked").prop("checked", false);
        $("input[name='payment_filter']:checked").prop("checked", false);
+       $('#TenantInvoiceCriteriadiv').hide();
+       $('#t_invoicedurationdiv').hide();
+       $('#TenantInvoicefilterBydiv').hide();
+       $('#tInvoicepaymentstatusdiv').hide();
+       $("input[name='t_invoice_payment_filter']:checked").prop("checked", false);
+       $('#t_Invoice_start_date').val('');
+       $('#t_invoice_end_date').val('');
+       $('#t_invoicepayment_status').val(' ');
        $('#insurance_reporttype').val(" ");
        $('#principaltype').val(" ");
        $('#insurance_type').val(" ");
@@ -560,6 +654,7 @@ select.list-dt:focus {
        $('#contract_status').val(" ");
        $('#payment_status').val(" ");
        $('#cartypediv').hide();
+       $('#revenue_durationdiv').hide();
        $('#car_type').val(" ");
        $('#tenanttypediv').hide();
        $('#contracttypediv').hide();
@@ -600,11 +695,20 @@ select.list-dt:focus {
        $("input[name='business_filter']:checked").prop("checked", false);
        $("input[name='contract_filter']:checked").prop("checked", false);
        $("input[name='payment_filter']:checked").prop("checked", false);
+       $('#TenantInvoiceCriteriadiv').hide();
+       $('#t_invoicedurationdiv').hide();
+       $('#TenantInvoicefilterBydiv').hide();
+       $('#tInvoicepaymentstatusdiv').hide();
+       $("input[name='t_invoice_payment_filter']:checked").prop("checked", false);
+       $('#t_Invoice_start_date').val('');
+       $('#t_invoice_end_date').val('');
+       $('#t_invoicepayment_status').val(' ');
        $('#business_type').val(" ");
        $('#contract_status').val(" ");
        $('#payment_status').val(" ");
        $('#tenant_type').val(" ");
        $('#cartypediv').hide();
+       $('#revenue_durationdiv').hide();
        $('#car_type').val(" ");
       $('#insurancereporttypediv').show();
       $('#tenanttypediv').hide();
@@ -663,6 +767,7 @@ select.list-dt:focus {
        $('#contract_type').val(" ");
        $('#contractbusiness_type').val(" ");
        $('#client_type').val(" ");
+       $('#revenue_durationdiv').hide();
      }
      else if(query=='car'){
       $('#cartypediv').show();
@@ -704,6 +809,14 @@ select.list-dt:focus {
        $("input[name='payment_filter']:checked").prop("checked", false);
        $("input[name='principal_filter']:checked").prop("checked", false);
        $("input[name='insurance_typefilter']:checked").prop("checked", false);
+       $('#TenantInvoiceCriteriadiv').hide();
+       $('#t_invoicedurationdiv').hide();
+       $('#TenantInvoicefilterBydiv').hide();
+       $('#tInvoicepaymentstatusdiv').hide();
+       $("input[name='t_invoice_payment_filter']:checked").prop("checked", false);
+      $('#t_Invoice_start_date').val('');
+      $('#t_invoice_end_date').val('');
+       $('#t_invoicepayment_status').val(' ');
        $('#contracttypediv').hide();
        $('#contractbusinesstypediv').hide();
        $('#ContractfilterBydiv').hide();
@@ -728,6 +841,14 @@ select.list-dt:focus {
        $("input[name='business_filter']:checked").prop("checked", false);
        $("input[name='contract_filter']:checked").prop("checked", false);
        $("input[name='payment_filter']:checked").prop("checked", false);
+       $('#TenantInvoiceCriteriadiv').hide();
+       $('#t_invoicedurationdiv').hide();
+       $('#TenantInvoicefilterBydiv').hide();
+      $('#tInvoicepaymentstatusdiv').hide();
+      $("input[name='t_invoice_payment_filter']:checked").prop("checked", false);
+  $('#t_Invoice_start_date').val('');
+  $('#t_invoice_end_date').val('');
+  $('#t_invoicepayment_status').val(' ');
        $('#insurance_reporttype').val(" ");
        $('#principaltype').val(" ");
        $('#insurance_type').val(" ");
@@ -755,6 +876,7 @@ select.list-dt:focus {
        $('#max_price').val(" ");
        $('#space_status').val("");
        $('#Locationtype').val("");
+       $('#revenue_durationdiv').hide();
        $("input[name='space_filter_date']:checked").prop("checked", false);
        $("input[name='space_prize']:checked").prop("checked", false);
        $("input[name='location_filter']:checked").prop("checked", false);
@@ -904,12 +1026,16 @@ select.list-dt:focus {
    $("#payment_filter").click(function(){
     if($(this).is(":checked")){
       $('#paymentstatusdiv').show();
+      $('#t_invoicedurationdiv').show();
       $("#payment_filter").val("true");
     }
     else{
       $("#payment_filter").val("");
       $('#payment_status').val(" ");
       $('#paymentstatusdiv').hide();
+      $('#t_invoicedurationdiv').hide();
+      $('#t_Invoice_start_date').val('');
+      $('#t_invoice_end_date').val('');
     }
     });
 
@@ -930,8 +1056,23 @@ select.list-dt:focus {
     var query=$(this).val();
     if(query=='list'){
       $('#contractbusinesstypediv').show();
-      $('#ContractfilterBydiv').show();
+      //$('#ContractfilterBydiv').show();
     }
+    else{
+      $('#contractbusinesstypediv').hide();
+    }
+   });
+
+   $('#contractbusiness_type').click(function(){
+     var query=$(this).val();
+     if(query=='Space'){
+      $('#ContractfilterBydiv').show();
+     }
+     else{
+      $('#ContractfilterBydiv').hide();
+      $('#clienttypediv').hide();
+      $("input[name='client_filter']:checked").prop("checked", false);
+     }
    });
 
 
@@ -987,12 +1128,63 @@ $("#tenant_type").click(function(){
  var query= $(this).val();
  if(query=='list'){
   $('#TenantfilterBydiv').show();
+  $('#TenantInvoiceCriteriadiv').hide();
+  $('#t_invoicedurationdiv').hide();
+  $('#TenantInvoicefilterBydiv').hide();
+  $('#tInvoicepaymentstatusdiv').hide();
+  $("input[name='t_invoice_payment_filter']:checked").prop("checked", false);
+  $('#t_Invoice_start_date').val('');
+  $('#t_invoice_end_date').val('');
+  $('#t_invoicepayment_status').val(' ');
+  $('#t_Invoice_startdatemsg').hide();
+   $('#t_Invoice_start_date').attr('style','border-bottom:1px solid #ccc');
+   $('#t_invoice_enddatemsg').hide();
+   $('#t_invoice_end_date').attr('style','border-bottom:1px solid #ccc');
+ }
+ else if(query=='invoice'){
+  $('#TenantInvoiceCriteriadiv').show();
+  $('#t_invoicedurationdiv').show();
+  $('#TenantInvoicefilterBydiv').show();
+   $('#TenantfilterBydiv').hide();
+   $('#businesstypediv').hide();
+   $('#contractstatusdiv').hide();
+   $('#paymentstatusdiv').hide();
+   $("input[name='business_filter']:checked").prop("checked", false);
+   $("input[name='contract_filter']:checked").prop("checked", false);
+   $("input[name='payment_filter']:checked").prop("checked", false);
+   $('#business_type').val(' ');
+   $('#contract_status').val(' ');
+   $('#payment_status').val(' ');
+   $('#t_Invoice_startdatemsg').hide();
+   $('#t_Invoice_start_date').attr('style','border-bottom:1px solid #ccc');
+   $('#t_invoice_enddatemsg').hide();
+   $('#t_invoice_end_date').attr('style','border-bottom:1px solid #ccc');
  }
    });
 
+$("#t_invoice_payment_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#tInvoicepaymentstatusdiv').show();
+    }
+    else{
+      $('#tInvoicepaymentstatusdiv').hide();
+      $('#t_invoicepayment_status').val(" ");
+    }
+    });
+
+$("#car_type").click(function(){
+    var query= $(this).val();
+ if(query=='revenue'){
+   $('#revenue_durationdiv').show();
+ }
+ else{
+  $('#revenue_durationdiv').hide();
+ }
+  });
+
    $("#submitbutton").click(function(e){
        e.preventDefault();
-       var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21;
+       var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24;
        var query = $("#module").val();
 
        if(query=='space'){
@@ -1160,6 +1352,11 @@ $("#tenant_type").click(function(){
           $('#enddatemsg').hide();
           $('#end_date').attr('style','border-bottom: 1px solid #ccc');
           }
+          if(new Date(query8) <= new Date(query7)){
+          var queryz=query8;
+          query8=query7;
+          query7=queryz;
+          }
 
          }
          else{
@@ -1298,12 +1495,104 @@ $("#tenant_type").click(function(){
            message.innerHTML="Required";
            $('#tenant_type').attr('style','border:1px solid #f00');
       }
+      else if(query12=='invoice'){
+        p14=1;
+        $('#tenanttypemsg').hide();
+        $('#tenant_type').attr('style','border: 1px solid #ccc');
+        var query20=$('input[name=t_invoiceCriteria]:checked').val();
+        if(query20==null){
+          p15=0;
+          $('#t_invoiceCriteriamsg').show();
+          var message=document.getElementById('t_invoiceCriteriamsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+        }
+        else{
+          p15=1;
+          $('#t_invoiceCriteriamsg').hide();
+        }
+
+        var query21=$('#t_Invoice_start_date').val();
+        var query22=$('#t_invoice_end_date').val();
+        if(query21==''){
+          p16=0;
+          $('#t_Invoice_startdatemsg').show();
+          var message=document.getElementById('t_Invoice_startdatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#t_Invoice_start_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+          p16=1;
+         $('#t_Invoice_startdatemsg').hide();
+         $('#t_Invoice_start_date').attr('style','border-bottom:1px solid #ccc');
+        }
+        if(query22==''){
+          p17=0;
+          $('#t_invoice_enddatemsg').show();
+          var message=document.getElementById('t_invoice_enddatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#t_invoice_end_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+          p17=1;
+         $('#t_invoice_enddatemsg').hide();
+         $('#t_invoice_end_date').attr('style','border-bottom:1px solid #ccc');
+        }
+        if(new Date(query22) <= new Date(query21)){
+        var query23=query22;
+        query22=query21;
+        query21=query23;
+      }
+
+      if($('#t_invoice_payment_filter').is(":checked")){
+        $("#t_invoice_payment_filter").val("true");
+        var query24=$('#t_invoicepayment_status').val();
+        if(query24==null){
+          p22=0;
+          $('#t_invoicepaymentstatusmsg').show();
+          var message=document.getElementById('t_invoicepaymentstatusmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+        $('#t_invoicepayment_status').attr('style','border:1px solid #f00');
+        }
+        else{
+          p22=1;
+          $('#t_invoicepaymentstatusmsg').hide();
+           $('#t_invoicepayment_status').attr('style','border:1px solid #ccc');
+        }
+      }
       else{
+        p22=1;
+        $("#t_invoice_payment_filter").val("");
+        $('#t_invoicepaymentstatusmsg').hide();
+        $('#t_invoicepayment_status').attr('style','border:1px solid #ccc');
+      }
+
+      if(p14==1 && p15==1 && p16==1 && p17==1 && p22==1){
+          var _token = $('input[name="_token"]').val();
+          var postData4 = "report_type="+ query12+ "&criteria="+ query20+ "&start_date=" + query21 + "&end_date=" + query22 +"&payment_filter="+$('#t_invoice_payment_filter').val()+"&payment_status="+query24;
+
+            $.ajax({
+            url: "{{ route('spacereport1') }}",
+            method:"GET",
+            data: postData4,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(data) {
+                window.location.href = "/reports/tenant/pdf?"+postData4;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        }
+
+      }
+      else if(query12=='list'){
             p14=1;
            $('#tenanttypemsg').hide();
           $('#tenant_type').attr('style','border: 1px solid #ccc');
-          }
-
           if($('#business_filter').is(":checked")){
           var query13 =$('#business_type').val();
           if(query13==null){
@@ -1322,9 +1611,10 @@ $("#tenant_type").click(function(){
         }
         else{
           p15=1;
+          $('#businesstypemsg').hide();
+          $('#business_type').attr('style','border: 1px solid #ccc');
         }
-
-        if($('#contract_filter').is(":checked")){
+         if($('#contract_filter').is(":checked")){
           var query14 =$('#contract_status').val();
           if(query14==null){
             p16=0;
@@ -1342,8 +1632,9 @@ $("#tenant_type").click(function(){
         }
         else{
           p16=1;
+          $('#contractstatusmsg').hide();
+          $('#contract_status').attr('style','border: 1px solid #ccc');
         }
-
         if($('#payment_filter').is(":checked")){
           var query15 =$('#payment_status').val();
           if(query15==null){
@@ -1359,14 +1650,49 @@ $("#tenant_type").click(function(){
            $('#paymentstatusmsg').hide();
           $('#payment_status').attr('style','border: 1px solid #ccc');
           }
+        var query21=$('#t_Invoice_start_date').val();
+        var query22=$('#t_invoice_end_date').val();
+        if(query21==''){
+          p23=0;
+          $('#t_Invoice_startdatemsg').show();
+          var message=document.getElementById('t_Invoice_startdatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#t_Invoice_start_date').attr('style','border-bottom:1px solid #f00');
         }
         else{
-          p17=1;
+          p23=1;
+         $('#t_Invoice_startdatemsg').hide();
+         $('#t_Invoice_start_date').attr('style','border-bottom:1px solid #ccc');
+        }
+        if(query22==''){
+          p24=0;
+          $('#t_invoice_enddatemsg').show();
+          var message=document.getElementById('t_invoice_enddatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#t_invoice_end_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+          p24=1;
+         $('#t_invoice_enddatemsg').hide();
+         $('#t_invoice_end_date').attr('style','border-bottom:1px solid #ccc');
+        }
+        if(new Date(query22) <= new Date(query21)){
+        var query23=query22;
+        query22=query21;
+        query21=query23;
+      }
+        }
+        else{
+          p17=1;p23=1;p24=1;
+          $('#paymentstatusmsg').hide();
+          $('#payment_status').attr('style','border: 1px solid #ccc');
         }
 
-        if(p14==1 && p15==1 && p16==1 && p17==1){
+        if(p14==1 && p15==1 && p16==1 && p17==1 && p23==1 && p24==1){
            var _token = $('input[name="_token"]').val();
-          var postData4 = "report_type="+ query12+ "&business_filter="+ $('#business_filter').val()+ "&business_type=" + query13 + "&contract_filter=" + $('#contract_filter').val() + "&contract_status=" + query14 +"&payment_filter="+$('#payment_filter').val()+"&payment_status="+query15;
+          var postData4 = "report_type="+ query12+ "&business_filter="+ $('#business_filter').val()+ "&business_type=" + query13 + "&contract_filter=" + $('#contract_filter').val() + "&contract_status=" + query14 +"&payment_filter="+$('#payment_filter').val()+"&payment_status="+query15+"&start_date=" +query21+ "&end_date="+query22;
 
             $.ajax({
             url: "{{ route('spacereport1') }}",
@@ -1381,7 +1707,8 @@ $("#tenant_type").click(function(){
             }
         });
         }
-
+          }
+        
     }
 
     else if(query=='car'){
@@ -1410,6 +1737,50 @@ $("#tenant_type").click(function(){
             }
         });
 
+      }
+      else if(query16=='revenue'){
+        var rev_start=$('#rev_start_date').val();
+        var rev_end=$('#rev_end_date').val();
+        console.log(rev_start);
+        if(rev_start==''){
+           var message=document.getElementById('rev_startdatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#rev_start_date').attr('style','border-bottom:1px solid #f00');
+        }
+        if(rev_end==''){
+          var message=document.getElementById('rev_enddatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#rev_end_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+           $('#rev_enddatemsg').hide();
+           $('#rev_startdatemsg').hide();
+        $('#rev_start_date').attr('style','border-bottom: 1px solid #ccc');
+        $('#rev_end_date').attr('style','border-bottom: 1px solid #ccc');
+        if(new Date(rev_end) <= new Date(rev_start)){
+        var rev_end2=rev_end;
+        rev_end=rev_start;
+        rev_start=rev_end2;
+      }
+
+        var _token = $('input[name="_token"]').val();
+          var postData5 = "report_type="+ query16;
+
+            $.ajax({
+            url: "{{ route('spacereport1') }}",
+            method:"GET",
+            data: postData5,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(data) {
+                window.location.href = "/reports/car_rental/pdf?"+postData5+"&start_date="+rev_start+"&end_date="+rev_end;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        }
       }
       else{
             p18=1;
