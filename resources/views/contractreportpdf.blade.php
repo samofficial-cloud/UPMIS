@@ -27,13 +27,28 @@ use App\space_contract;
 use App\insurance_contract;
 use App\carContract;
 if($_GET['business_type']=='Space'){
-$contracts=space_contract::where('contract_status',1)->get();
+  if(($_GET['client_filter']=='true') && ($_GET['client_type']=='Company')){
+    $contracts=DB::table('space_contracts')
+        ->join('clients', 'clients.full_name', '=', 'space_contracts.full_name')
+        ->where('type','Company')
+        ->where('contract_status',1)->get();
+  }
+  else if(($_GET['client_filter']=='true') && ($_GET['client_type']=='Individual')){
+    $contracts=DB::table('space_contracts')
+        ->join('clients', 'clients.full_name', '=', 'space_contracts.full_name')
+        ->where('type','Individual')
+        ->where('contract_status',1)->get();
+  }
+  else{
+   $contracts=space_contract::where('contract_status',1)->get();
+  }
+
 }
 elseif($_GET['business_type']=='Insurance'){
-	$contracts=insurance_contract::where('contract_status',1)->get();
+	$contracts=insurance_contract::get();
 }
 elseif($_GET['business_type']=='Car Rental'){
-	$contracts=carContract::where('flag',1)->get();
+	$contracts=carContract::where('form_completion','1')->orderBy('car_contracts.fullName','asc')->get();
 }
 ?>
 @if($_GET['business_type']=='Space')
@@ -42,7 +57,13 @@ elseif($_GET['business_type']=='Car Rental'){
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
      <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
     </b>
-    <br><br><strong>List of Space Contracts</strong>
+  @if(($_GET['client_filter']=='true') && ($_GET['client_type']=='Company'))
+      <br><br><strong>List of Space Contracts Whose Client Type is Company</strong>
+  @elseif(($_GET['client_filter']=='true') && ($_GET['client_type']=='Individual'))
+  <br><br><strong>List of Space Contracts Whose Client Type is Individual</strong>
+  @else
+  <br><br><strong>List of Space Contracts</strong>
+  @endif  
 </center>
     <br><br>
 <table class="hover table table-striped table-bordered" id="myTable">
@@ -137,23 +158,25 @@ elseif($_GET['business_type']=='Car Rental'){
     <tr>
       <th scope="col"><center>S/N</center></th>
       <th scope="col"><center>Client Name</center></th>
+      <th scope="col"><center>Cost Centre</center></th>
       <th scope="col"><center>Vehicle Registration No.</center></th>
+      <th scope="col"><center>Destination</center></th>
       <th scope="col"><center>Start Date</center></th>
       <th scope="col"><center>End Date</center></th>
       <th scope="col"><center>Amount</center></th>
-      <th scope="col"><center>Rates</center></th>
     </tr>
   </thead>
   <tbody>
     @foreach($contracts as $var)
     <tr>
     	<td class="counterCell text-center">.</td>
-    	<td>{{$var->fullName}}</td>
+    	<td>{{$var->designation}} {{$var->fullName}}</td>
+      <td>{{$var->cost_centre}}</td>
     	<td>{{$var->vehicle_reg_no}}</td>
+      <td>{{$var->destination}}</td>
     	<td><center>{{$var->start_date}}</center></td>
     	<td><center>{{$var->end_date}}</center></td>
-    	<td>{{$var->currency}} {{$var->amount}}</td>
-    	<td><center>{{$var->rate}}</center></td>
+    	<td>TZS {{$var->grand_total}}</td>
     </tr>
     @endforeach
 </tbody>

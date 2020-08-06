@@ -30,163 +30,81 @@ table {
       	if($_GET['space_type']=='list'){
       		if(($_GET['space_prize']=='true') && ($_GET['status']=='true') &&($_GET['location_status']=='true')){
             if($_GET['space_status']=='1'){
-            $space=space::where('status','1')->where('location',$_GET['location'])->get();
-        foreach ($space as $var){
-            $active= space_contract::select('location','size','rent_price_guide','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('space_id_contract',$var->space_id)->where('spaces.min_price','>=',$_GET['min_price'])->where('spaces.max_price','<=',$_GET['max_price'])->whereDate('end_date', '>=', $today)->distinct()->get();
-            $spaces[]=$active;
-        }
-        $spaces=array_flatten($spaces);
-        
+            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
             }
             elseif($_GET['space_status']=='0'){
-               $space=space::where('status','1')->where('location',$_GET['location'])->where('min_price','>=',$_GET['min_price'])->where('max_price','<=',$_GET['max_price'])->get();
-              foreach($space as $var){
-                $inactive=space_contract::where('space_id_contract',$var->space_id)->whereDate('end_date', '>=', $today)->get();
-                
-                if(count($inactive)==0){
-                  $space2[]=$var->space_id;
-                }else
-                {   
-                
-              }
-                }
-                foreach($space2 as $var){
-                  $space3=space::where('space_id',$var)->get();
-                  $spaces[]=$space3;
-                }
-                 $spaces=array_flatten($spaces);
+          $spaces= DB::table('spaces')
+        ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+        ->where('status','1')
+        ->where('location',$_GET['location'])->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
+        ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
+        ->orderBy('space_id','asc')
+        ->get();
             }
             
       			}
 
       			if(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true')){
-      				$spaces=space::where('min_price','>=',$_GET['min_price'])->where('max_price','<=',$_GET['max_price'])->where('status','1')->where('location',$_GET['location'])->get();
+      				$spaces=space::where('rent_price_guide_from','>=',$_GET['min_price'])->where('rent_price_guide_to','<=',$_GET['max_price'])->where('status','1')->where('location',$_GET['location'])->orderby('space_id','asc')->get();
       			}
 
             if(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true')){
                if($_GET['space_status']=='1'){
-            $space=space::where('status','1')->get();
-        foreach ($space as $var){
-            $active= space_contract::select('location','size','rent_price_guide','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('space_id_contract',$var->space_id)->where('min_price','>=',$_GET['min_price'])->where('max_price','<=',$_GET['max_price'])->whereDate('end_date', '>=', $today)->distinct()->get();
-            $spaces[]=$active;
-        }
-        $spaces=array_flatten($spaces);
+            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->orderby('space_id','asc')->distinct()->get();
         
             }
             elseif($_GET['space_status']=='0'){
-               $space=space::where('status','1')->where('min_price','>=',$_GET['min_price'])->where('max_price','<=',$_GET['max_price'])->get();
-              foreach($space as $var){
-                $inactive=space_contract::where('space_id_contract',$var->space_id)->whereDate('end_date', '>=', $today)->get();
-                
-                if(count($inactive)==0){
-                  $space2[]=$var->space_id;
-                }else
-                {
-                 
-                
-              }
-             
-                }
-               
-
-                foreach($space2 as $var){
-                  $space3=space::where('space_id',$var)->get();
-                  $spaces[]=$space3;
-                }
-                 $spaces=array_flatten($spaces);
-                
-
+               $spaces= DB::table('spaces')
+        ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+        ->where('status','1')
+        ->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
+        ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
+        ->orderBy('space_id','asc')
+        ->get();
             }
             }
+
 
             if(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true')){
-              $spaces=space::where('min_price','>=',$_GET['min_price'])->where('max_price','<=',$_GET['max_price'])->where('status','1')->get();
+              $spaces=space::where('rent_price_guide_from','>=',$_GET['min_price'])->where('rent_price_guide_to','<=',$_GET['max_price'])->where('status','1')->orderBy('space_id','asc')->get();
             }
       			
       		
           if(($_GET['space_prize']!='true') && ($_GET['location_status']=='true') && ($_GET['status']=='true')){
             if($_GET['space_status']=='1'){
-            $space=space::where('status','1')->where('location',$_GET['location'])->get();
-        foreach ($space as $var){
-            $active= space_contract::select('location','size','rent_price_guide','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('space_id_contract',$var->space_id)->whereDate('end_date', '>=', $today)->distinct()->get();
-            $spaces[]=$active;
-            
-        }
-        $spaces=array_flatten($spaces);
+            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
             }
 
             elseif($_GET['space_status']=='0'){
-               $space=space::where('status','1')->where('location',$_GET['location'])->get();
-              foreach($space as $var){
-                $inactive=space_contract::where('space_id_contract',$var->space_id)->whereDate('end_date', '>=', $today)->get();
-                
-                if(count($inactive)==0){
-                  $space2[]=$var->space_id;
-                }else
-                {
-                 
-                
-              }
-             
-                }
-               
-
-                foreach($space2 as $var){
-                  $space3=space::where('space_id',$var)->get();
-                  $spaces[]=$space3;
-                }
-                 $spaces=array_flatten($spaces);
-                
-
-            }
-            
-            
+               $spaces= DB::table('spaces')
+        ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+        ->where('status','1')
+        ->where('location',$_GET['location'])
+        ->orderBy('space_id','asc')
+        ->get();
+            }  
           }
 
           if(($_GET['space_prize']!='true')&&($_GET['location_status']=='true') && ($_GET['status']!='true')){
-            $spaces=space::where('status','1')->where('location',$_GET['location'])->get();
+            $spaces=space::where('status','1')->where('location',$_GET['location'])->orderBy('space_id','asc')->get();
           }
 
           if(($_GET['space_prize']!='true')&&($_GET['location_status']!='true') && ($_GET['status']=='true')){
-            if($_GET['space_status']=='1'){
-            $space=space::where('status','1')->get();
-        foreach ($space as $var){
-            $active= space_contract::select('location','size','rent_price_guide','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('space_id_contract',$var->space_id)->whereDate('end_date', '>=', $today)->distinct()->get();
-            $spaces[]=$active;
-            
-        }
-        $spaces=array_flatten($spaces);
+            if($_GET['space_status']=='1'){    
+           $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->orderBy('space_id','asc')->distinct()->get();
             }
 
             elseif($_GET['space_status']=='0'){
-               $space=space::where('status','1')->get();
-              foreach($space as $var){
-                $inactive=space_contract::where('space_id_contract',$var->space_id)->whereDate('end_date', '>=', $today)->get();
-                
-                if(count($inactive)==0){
-                  $space2[]=$var->space_id;
-                }else
-                {
-                 
-                
-              }
-             
-                }
-               
-
-                foreach($space2 as $var){
-                  $space3=space::where('space_id',$var)->get();
-                  $spaces[]=$space3;
-                }
-                 $spaces=array_flatten($spaces);
-                
-
-            }
-            
+        $spaces= DB::table('spaces')
+        ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+        ->where('status','1')
+        ->orderBy('space_id','asc')
+        ->get();
+            }    
           }
 
           if(($_GET['status']!='true') &&($_GET['location_status']!='true')&& ($_GET['space_prize']!='true')){
-            $spaces=space::where('status','1')->get();
+            $spaces=space::where('status','1')->orderBy('space_id','asc')->get();
           }
           
       	}
@@ -217,7 +135,7 @@ table {
     @endif
     @endif
     @if(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true'))
-     <br><br><strong>List of Spaces Whose Price Range Between{{$_GET['min_price']}} and {{$_GET['max_price']}}</strong>
+     <br><br><strong>List of Spaces Whose Price Range Between {{$_GET['min_price']}} and {{$_GET['max_price']}}</strong>
     @endif
      @if(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true'))
       @if($_GET['space_status']=='1')
@@ -275,7 +193,7 @@ table {
                             @endif
 
               </center></td>
-            <td><center>{{$var->rent_price_guide}}</center></td>
+            <td><center>{{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}}</center></td>
         </tr>
         @endforeach
     </tbody>

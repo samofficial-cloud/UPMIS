@@ -215,6 +215,7 @@
 
 
                                         @elseif($total>0)
+                                        
 
                                             @foreach($notifications as $notifications)
                                                 <a class="dropdown-item" href="{{ route('ShowNotifications',$notifications->id

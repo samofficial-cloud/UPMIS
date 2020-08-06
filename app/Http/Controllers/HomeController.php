@@ -63,18 +63,25 @@ class HomeController extends Controller
       }
 
       public function tenantreportPDF(){
-        $pdf=PDF::loadView('tenantreportpdf');
-        return $pdf->stream('Tenant Report.pdf');
+        if($_GET['report_type']=='list'){
+           $pdf=PDF::loadView('tenantreportpdf')->setPaper('a4', 'landscape');
+           return $pdf->stream('Tenant Report.pdf');
+        }
+        elseif($_GET['report_type']=='invoice'){
+          $pdf=PDF::loadView('tenantreportpdf')->setPaper('a4', 'landscape');;
+           return $pdf->stream('Tenant Invoice Report.pdf');
+        }
+       
       }
 
       public function carreportPDF(){
-        if($_GET['report_type']=='clients'){
-         $pdf=PDF::loadView('carreportpdf')->setPaper('a4', 'landscape');   
-        }
-        else{
-           $pdf=PDF::loadView('carreportpdf'); 
-        }
-        
+        // if($_GET['report_type']=='clients'){
+        //  $pdf=PDF::loadView('carreportpdf')->setPaper('a4', 'landscape');   
+        // }
+        // else{
+        //    $pdf=PDF::loadView('carreportpdf'); 
+        // }
+        $pdf=PDF::loadView('carreportpdf');
         return $pdf->stream('Car Rental Report.pdf');
       }
 
