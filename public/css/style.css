@@ -389,6 +389,13 @@ margin-left: 43.5%;
     /*border-bottom: none;*/
 }
 
+.tab2 {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background: #dbe7ef;
+    border-top-right-radius: 50px 20px;
+    /*border-bottom: none;*/
+}
 /* Style the buttons that are used to open the tab content */
 .tab button {
   background-color: #d1d8da;
@@ -418,12 +425,49 @@ margin-left: 43.5%;
 
 }
 
+.tab2 button {
+  background-color: #79c4e1;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 10px;
+  transition: 0.3s;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  margin: 1px 0px 1px 2px;
+  border-radius: 50px 20px;
+  /*margin: 5px 5px 5px 5px;*/
+  /*border-radius: 7px;
+  box-shadow: 0 2px rgba(0,0,0,0.2);
+  opacity: 0.8;*/
+}
+
+/* Change background color of buttons on hover */
+.tab2 button:hover {
+  background-color: #c6bad8;
+}
+
+/* Create an active/current tablink class */
+.tab2 button.active {
+  background-color:#fff;
+
+}
+
 /* Style the tab content */
 .tabcontent {
   display: none;
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
+}
+
+.tabcontent2 {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom-left-radius: 50px 20px;
 }
 
 #loading {
