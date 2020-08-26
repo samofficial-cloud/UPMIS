@@ -59,8 +59,8 @@ table {
         <td>{{$operational->description}}</td>
         <td>{{$operational->service_provider}}</td>
         <td>{{$operational->fuel_consumed}}</td>
-        <td>{{$operational->amount}}</td>
-        <td>{{$operational->total}}</td>	
+        <td>{{number_format($operational->amount)}}</td>
+        <td>{{number_format($operational->total)}}</td>	
   	</tr>
   	@endforeach
   </tbody>

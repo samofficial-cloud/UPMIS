@@ -177,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
        //dompdf
         Barryvdh\DomPDF\ServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
 
     ],
 
@@ -228,6 +229,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
 
     ],
 

@@ -90,10 +90,19 @@ class HomeController extends Controller
          return $pdf->stream('Car Rental Operational Report.pdf');
       }
 
+      public function carreportPDF3(){
+        $pdf=PDF::loadView('carhistoryreportpdf');    
+         return $pdf->stream('Car History Report.pdf');
+      }    
+
       public function contractreportPDF(){
         $pdf=PDF::loadView('contractreportpdf')->setPaper('a4', 'landscape');
         return $pdf->stream('Contract Report.pdf');
       }
       
+      public function invoicereportPDF(){
+        $pdf=PDF::loadView('invoicereportpdf')->setPaper('a4', 'landscape');
+        return $pdf->stream('Invoice Report.pdf');
+      }
     
 }
