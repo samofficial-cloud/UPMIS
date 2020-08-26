@@ -353,47 +353,68 @@ $today=date('Y-m-d');
                                 <div class="form-card">
                                   <h2 class="fs-title">Renting Space Information</h2>
 
+                                    <div class="form-group row pt-1">
 
-
-                                    <div class="form-group">
-                                        <div class="form-wrapper">
-                                            <label for="space_type"  ><strong>Type</strong></label>
-                                            <select id="space_type" class="form-control" name="space_type" >
-
-                                                <option value="Mall-shop" id="Option" >Mall-shop</option>
-                                                <option value="Villa" id="Option">Villa</option>
-                                                <option value="Office block" id="Option">Office block</option>
-                                                <option value="Cafeteria" id="Option">Cafeteria</option>
-                                                <option value="Stationery" id="Option">Stationery</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <div class="form-wrapper">
-                                            <label for="space_location"  ><strong>Location</strong></label>
-                                            <select class="form-control" id="space_location" name="space_location" >
-                                                <option value="Mlimani City" id="Option" >Mlimani City</option>
-                                                <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="form-wrapper">
-                                            <label for="course_name"  ><strong>Space Id  </strong></label>
+                                        <div class="form-wrapper col-12 ">
+                                            <label for="" ><strong>Space Number</strong></label>
                                             <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="" Required autocomplete="off">
                                             <div id="nameListSpaceId"></div>
                                         </div>
+
+
                                     </div>
 
-                                    <div class="form-group">
-                                        <div class="form-wrapper">
-                                            <label for="course_name"  ><strong>Size (SQM) *</strong></label>
-                                            <input type="number" min="0" class="form-control" id="space_size" name="space_size" value="" readonly autocomplete="off">
+                                    <div class="form-group row">
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="major_industry"  ><strong>Major industry</strong></label>
+                                            <input type="text" class="form-control"  name="major_industry" id="major_industry"  value="" readonly autocomplete="off">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for=""  ><strong>Minor industry</strong></label>
+                                            <input type="text" class="form-control" id="minor_industry" name="minor_industry" value="" readonly autocomplete="off">
                                         </div>
                                     </div>
+
+
+                                    <div class="form-group row">
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="space_location"  ><strong>Location</strong></label>
+                                            <input type="text" class="form-control"  name="space_location" value="" id="location" readonly autocomplete="off">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="space_location"  ><strong>Sub location</strong></label>
+                                            <input type="text"  class="form-control" id="sub_location" name="space_sub_location" value="" readonly autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+
+
+
+                                        <div class="form-wrapper col-12">
+                                            <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                                            <input type="number" min="1" step="0.01" class="form-control" id="space_size" name="space_size" value="" readonly autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="has_water_bill"  ><strong>Need to also pay Water bill</strong></label>
+                                            <input type="text"  class="form-control" id="has_water_bill" name="has_water_bill" value="" readonly autocomplete="off">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
+                                            <input type="text"  class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="" readonly autocomplete="off">
+                                        </div>
+                                    </div>
+
 
 
 
@@ -407,14 +428,24 @@ $today=date('Y-m-d');
                                 <div class="form-card">
                                     <h2 class="fs-title">Payment Information</h2>
 				<div class="form-group row">
-						<div class="form-wrapper col-6">
+						<div class="form-wrapper col-12">
 							<label for="start_date">Start Date *</label>
 							<input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
 						</div>
-						<div class="form-wrapper col-6">
-							<label for="end_date">End Date *</label>
-							<input type="date" id="end_date" name="end_date" class="form-control" required="" min="{{$today}}">
-						</div>
+
+                    <div class="form-wrapper col-6">
+                        <label for="duration">Duration *</label>
+                        <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control" required="" >
+                    </div>
+
+                    <div class="form-wrapper col-6">
+                        <label for="currency">Period *</label>
+                        <select id="currency" class="form-control" name="duration_period" required>
+                            <option value="" ></option>
+                            <option value="Months" >Months</option>
+                            <option value="Years" >Years</option>
+                        </select>
+                    </div>
 					</div>
 
 					<div class="form-group row">
@@ -441,8 +472,15 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-6">
                                             <label for="payment_cycle">Payment cycle</label>
                                             <select id="payment_cycle" class="form-control" name="payment_cycle" >
-                                                <option value="Monthly" >Monthly</option>
-                                                <option value="Yearly" >Yearly</option>
+                                                <?php
+                                                $payment_cycles=DB::table('payment_cycle_settings')->get();
+                                                ?>
+
+                                                @foreach($payment_cycles as $payment_cycle)
+
+                                                    <option value="{{$payment_cycle->cycle}}">{{$payment_cycle->cycle}}</option>
+
+                                                @endforeach
                                             </select>
                                         </div>
 
@@ -690,15 +728,13 @@ return true;
             {
                 var _token = $('input[name="_token"]').val();
 
-                var space_type=document.getElementById("space_type").value;
-                var space_location=document.getElementById("space_location").value;
 
 
 
                 $.ajax({
-                    url:"{{ route('autocomplete.space_id') }}",
+                    url:"{{ route('space_id_suggestions') }}",
                     method:"GET",
-                    data:{query:query,space_type:space_type,space_location:space_location, _token:_token},
+                    data:{query:query,_token:_token},
                     success:function(data){
                         if(data=='0'){
                             $('#space_id_contract').attr('style','border:1px solid #f00');
@@ -716,6 +752,7 @@ return true;
             else if(query==''){
 
                 $('#space_id_contract').attr('style','border:1px solid #ced4da');
+                $('#nameListSpaceId').fadeOut();
             }
         });
 
@@ -734,7 +771,7 @@ return true;
             var selected_space_id=$(this).text();
 
             $.ajax({
-                url:"{{ route('autocomplete.space_size') }}",
+                url:"{{ route('autocomplete.space_fields') }}",
                 method:"get",
                 data:{selected_space_id:selected_space_id},
                 success:function(data){
@@ -747,9 +784,18 @@ return true;
 
 
 
+                        var final_data=JSON.parse(data);
 
-                        $('#space_size').attr('style','border:1px solid #ced4da');
-                        $('#space_size').val(data);
+
+                        $('#space_size').val(final_data.size);
+                        $('#major_industry').val(final_data.major_industry);
+                        $('#minor_industry').val(final_data.minor_industry);
+                        $('#location').val(final_data.location);
+                        $('#sub_location').val(final_data.sub_location);
+                        $('#has_water_bill').val(final_data.has_water_bill);
+                        $('#has_electricity_bill').val(final_data.has_electricity_bill);
+
+
 
                     }
                 }

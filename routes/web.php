@@ -21,10 +21,15 @@
 
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/Space', 'SpaceController@index');
-    Route::get('/autocomplete.space_id', 'SpaceController@autoCompleteSpaceId')->name('autocomplete.space_id');
-    Route::get('/autocomplete.space_size', 'SpaceController@autoCompleteSpaceSize')->name('autocomplete.space_size');
+    Route::get('/space_contract_on_fly/{id}/', 'ContractsController@OnFlySpaceContractForm')->name('space_contract_on_fly');
+
+
+
+    Route::get('/space_id_suggestions', 'SpaceController@spaceIdSuggestions')->name('space_id_suggestions');
+    Route::get('/autocomplete.space_fields', 'SpaceController@autoCompleteSpaceFields')->name('autocomplete.space_fields');
     Route::get('/space_contract_form', 'ContractsController@SpaceContractForm');
-    Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
+    Route::get('/contracts_management', 'ContractsController@ContractsManagement');
+    Route::get('/contract_details/{contract_id}', 'ContractsController@ContractDetails')->name('contract_details');
     Route::get('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
     Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');
 
@@ -61,12 +66,14 @@
     Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
     Route::post('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
     Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
+    Route::post('/generate_minor_list', 'SpaceController@generateMinorList')->name('generate_minor_list');
 
 
 
     //Invoices Space
         Route::get('/invoice_pdf', 'InvoicesController@index');
         Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
+        Route::post('/create_space_invoice_manually', 'InvoicesController@CreateSpaceInvoiceManually')->name('create_space_invoice_manually');
         Route::post('/send_invoice_space/{id}', 'InvoicesController@sendInvoiceSpace')->name('send_invoice_space');
         Route::post('/change_payment_status_space/{id}', 'InvoicesController@changePayementStatusSpace')->name('change_payment_status_space');
 
@@ -76,13 +83,14 @@
         Route::get('/car_rental_invoice_management', 'InvoicesController@CarRentalInvoiceManagement');
         Route::post('/change_payment_status_car_rental/{id}', 'InvoicesController@changePayementStatusCarRental')->name('change_payment_status_car_rental');
         Route::post('/send_invoice_car_rental/{id}', 'InvoicesController@sendInvoiceCarRental')->name('send_invoice_car_rental');
-
+        Route::post('/create_car_invoice_manually', 'InvoicesController@CreateCarInvoiceManually')->name('create_car_invoice_manually');
 
         //Insurance invoices
         Route::get('/insurance_invoice_management', 'InvoicesController@insuranceInvoiceManagement');
         Route::get('/send_invoice_insurance/{id}', 'InvoicesController@sendInvoiceInsurance')->name('send_invoice_insurance');
         Route::post('/change_payment_status_insurance/{id}', 'InvoicesController@changePayementStatusInsurance')->name('change_payment_status_insurance');
         Route::get('/create_insurance_invoice', 'InvoicesController@CreateInsuranceInvoice');
+        Route::post('/create_insurance_invoice_manually', 'InvoicesController@CreateInsuranceInvoiceManually')->name('create_insurance_invoice_manually');
 
 
 
@@ -91,19 +99,33 @@
 
         //payment
         Route::get('/payment_management', 'PaymentController@paymentManagement');
+        Route::get('/check_availability_space', 'PaymentController@checkAvailabilitySpace')->name('check_availability_space');
+        Route::get('/check_availability_insurance', 'PaymentController@checkAvailabilityInsurance')->name('check_availability_insurance');
+        Route::get('/check_availability_car', 'PaymentController@checkAvailabilityCar')->name('check_availability_car');
+        Route::get('/check_availability_water', 'PaymentController@checkAvailabilityWater')->name('check_availability_water');
+        Route::get('/check_availability_electricity', 'PaymentController@checkAvailabilityElectricity')->name('check_availability_electricity');
+
+        //payments
+        Route::post('/create_space_payment_manually', 'PaymentController@CreateSpacePaymentManually')->name('create_space_payment_manually');
+        Route::post('/create_car_payment_manually', 'PaymentController@CreateCarPaymentManually')->name('create_car_payment_manually');
+        Route::post('/create_insurance_payment_manually', 'PaymentController@CreateInsurancePaymentManually')->name('create_insurance_payment_manually');
+        Route::post('/create_water_payment_manually', 'PaymentController@CreateWaterPaymentManually')->name('create_water_payment_manually');
+        Route::post('/create_electricity_payment_manually', 'PaymentController@CreateElectricityPaymentManually')->name('create_electricity_payment_manually');
+
 
         // Water Bills
         Route::get('/create_water_bills_invoice', 'InvoicesController@CreateWaterBillsInvoice')->name('create_water_bills_invoice');
         Route::get('/water_bills_invoice_management', 'InvoicesController@WaterBillsInvoiceManagement');
         Route::post('/send_invoice_water_bills/{id}', 'InvoicesController@sendInvoiceWaterBills')->name('send_invoice_water_bills');
         Route::post('/change_payment_status_water_bills/{id}', 'InvoicesController@changePaymentStatusWaterBills')->name('change_payment_status_water_bills');
+        Route::post('/create_water_invoice_manually', 'InvoicesController@CreateWaterBillInvoiceManually')->name('create_water_invoice_manually');
 
         // Electricity Bills
         Route::get('/create_electricity_bills_invoice', 'InvoicesController@CreateElectricityBillsInvoice')->name('create_electricity_bills_invoice');
         Route::get('/electricity_bills_invoice_management', 'InvoicesController@ElectricityBillsInvoiceManagement');
         Route::post('/send_invoice_electricity_bills/{id}', 'InvoicesController@sendInvoiceElectricityBills')->name('send_invoice_electricity_bills');
         Route::post('/change_payment_status_electricity_bills/{id}', 'InvoicesController@changePaymentStatusElectricityBills')->name('change_payment_status_electricity_bills');
-
+        Route::post('/create_electricity_invoice_manually', 'InvoicesController@CreateElectricityBillInvoiceManually')->name('create_electricity_invoice_manually');
 
         Route::get('/clients', 'clientsController@index')->name('clients');
 

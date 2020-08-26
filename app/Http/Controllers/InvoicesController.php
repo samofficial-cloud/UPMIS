@@ -112,7 +112,7 @@ class InvoicesController extends Controller
             if(count($invoice_to_be_created)==0){
 
                 DB::table('invoices')->insert(
-                    ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $var->programming_start_date,'invoicing_period_end_date' => $var->programming_end_date,'period' => $period,'project_id' => 'renting_space','debtor_account_code' => $var->client_id,'debtor_name' => $var->full_name,'debtor_address' => $var->address,'amount_to_be_paid' => ($var->amount+$amount_not_paid),'currency'=>$var->currency,'gepg_control_no'=>'','tin'=>$var->tin,'vrn'=>$var->vrn,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Space Rent','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                    ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $var->programming_start_date,'invoicing_period_end_date' => $var->programming_end_date,'period' => $period,'project_id' => 'renting_space','debtor_account_code' => $var->client_id,'debtor_name' => $var->full_name,'debtor_address' => $var->address,'amount_to_be_paid' => ($var->amount+$amount_not_paid),'currency_invoice'=>$var->currency,'gepg_control_no'=>'','tin'=>$var->tin,'vrn'=>$var->vrn,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Space Rent','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
                 );
 
                 $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
@@ -144,6 +144,71 @@ class InvoicesController extends Controller
 
 
 
+    public function CreateSpaceInvoiceManually(Request $request)
+    {
+
+
+
+        if ($request->get('invoicing_period_start_date')>$request->get('invoicing_period_end_date')) {
+
+            return redirect()->back()->with("error","Invoice start date cannot be greater than invoice end date. Please try again");
+        }
+
+
+
+        $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+        $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+        $today=date('Y-m-d');
+
+        $amount_in_words='';
+
+        if($request->get('currency')=='TZS'){
+            $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' TZS',' ');
+
+        }if ($request->get('currency')=='USD'){
+
+        $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' USD',' ');
+    }
+
+    else{
+
+
+    }
+
+
+
+        $invoice_to_be_created=DB::select('call invoice_exists_space (?,?,?)',[$request->get('contract_id'),$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date')]);
+
+
+        if(count($invoice_to_be_created)==0){
+
+            DB::table('invoices')->insert(
+                ['contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $request->get('period','N/A'),'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A']
+            );
+
+            $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
+            );
+
+
+        }else{
+
+
+        }
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Space invoice created Successfully');
+
+
+
+
+    }
+
+
+
     public function index()
     {
 
@@ -157,12 +222,16 @@ class InvoicesController extends Controller
     public function invoiceManagement()
     {
 
-        $invoices_not_sent=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->where('invoices.email_sent_status','NOT SENT')->get();
-        $invoices_payment_not_complete=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->where('invoices.email_sent_status','SENT')->where('invoices.payment_status','!=','Paid')->get();
-        $invoices_payment_complete=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->where('invoices.payment_status','Paid')->where('invoices.email_sent_status','SENT')->get();
+        $space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->get();
+        $insurance_invoices=DB::table('insurance_invoices')->get();
+        $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->get();
+        $water_bill_invoices=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->get();
+        $electricity_bill_invoices=DB::table('electricity_bill_invoices')->join('space_contracts','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->get();
 
 
-        return view('invoices_management')->with('invoices_not_sent',$invoices_not_sent)->with('invoices_payment_not_complete',$invoices_payment_not_complete)->with('invoices_payment_complete',$invoices_payment_complete);
+
+
+        return view('invoices_management')->with('space_invoices',$space_invoices)->with('insurance_invoices',$insurance_invoices)->with('car_rental_invoices',$car_rental_invoices)->with('water_bill_invoices',$water_bill_invoices)->with('electricity_bill_invoices',$electricity_bill_invoices);
 
     }
 
@@ -227,7 +296,7 @@ class InvoicesController extends Controller
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-            Notification::route('mail','samforbuilding@gmail.com')
+            Notification::route('mail','upmistesting@gmail.com')
                 ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'5647768',$max_no_of_days_to_pay,'OK','7868',$amount_in_words,'4353',$today,$financial_year,'4th Quarter','Renting Space Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('invoices')
@@ -290,7 +359,7 @@ class InvoicesController extends Controller
     $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-    Notification::route('mail','samforbuilding@gmail.com')
+    Notification::route('mail','upmistesting@gmail.com')
         ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Car Rental','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'78775',$max_no_of_days_to_pay,'OK','5654',$amount_in_words,'1234',$today,$financial_year,'3rd Quarter','Car Rental Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
     DB::table('car_rental_invoices')
@@ -329,6 +398,75 @@ class InvoicesController extends Controller
 
 
     //Car Rental invoices
+
+    public function CreateCarInvoiceManually(Request $request)
+    {
+
+
+
+        if ($request->get('invoicing_period_start_date')>$request->get('invoicing_period_end_date')) {
+
+            return redirect()->back()->with("error","Invoice start date cannot be greater than invoice end date. Please try again");
+        }
+
+
+
+        $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+        $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+        $today=date('Y-m-d');
+
+        $amount_in_words='';
+
+        if($request->get('currency')=='TZS'){
+            $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' TZS',' ');
+
+        }if ($request->get('currency')=='USD'){
+
+        $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' USD',' ');
+    }
+
+    else{
+
+
+    }
+
+
+        $period= date("d/m/Y",strtotime($request->get('invoicing_period_start_date'))).' to  '. date("d/m/Y",strtotime($request->get('invoicing_period_end_date')));
+
+
+        $invoice_to_be_created=DB::select('call invoice_exists_car (?,?,?)',[$request->get('contract_id'),$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date')]);
+
+
+        if(count($invoice_to_be_created)==0){
+
+            DB::table('car_rental_invoices')->insert(
+                ['contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A']
+            );
+
+            $invoice_number_created=DB::table('car_rental_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'car_rental']
+            );
+
+
+        }else{
+
+
+        }
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Car rental invoice created Successfully');
+
+
+
+
+    }
+
+
+
+
 
     public function CarRentalInvoiceManagement()
     {
@@ -444,7 +582,7 @@ class InvoicesController extends Controller
                         if(count($invoice_to_be_created)==0){
 
                             DB::table('insurance_invoices')->insert(
-                                ['contract_id' => '', 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $var->principal,'debtor_address' => '','amount_to_be_paid' => $amount_ten_percent,'currency'=>'TZS','gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance Monthly fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                                ['contract_id' => '', 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $var->principal,'debtor_address' => '','amount_to_be_paid' => $amount_ten_percent,'currency_invoice'=>'TZS','gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance Monthly fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
                             );
 
 //                            $users = User::where('role', 'Insurance Agent')->get();
@@ -502,6 +640,77 @@ class InvoicesController extends Controller
 
 
 
+    public function CreateInsuranceInvoiceManually(Request $request)
+    {
+
+
+
+        if ($request->get('invoicing_period_start_date')>$request->get('invoicing_period_end_date')) {
+
+            return redirect()->back()->with("error","Invoice start date cannot be greater than invoice end date. Please try again");
+        }
+
+
+
+        $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+        $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+        $today=date('Y-m-d');
+
+        $amount_in_words='';
+
+        if($request->get('currency')=='TZS'){
+            $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' TZS',' ');
+
+        }if ($request->get('currency')=='USD'){
+
+        $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' USD',' ');
+    }
+
+    else{
+
+
+    }
+
+
+        $period= date("d/m/Y",strtotime($request->get('invoicing_period_start_date'))).' to  '. date("d/m/Y",strtotime($request->get('invoicing_period_end_date')));
+
+
+        $invoice_to_be_created=DB::select('call invoice_exists_insurance (?,?,?)',[$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date'),$request->get('debtor_name')]);
+
+
+        if(count($invoice_to_be_created)==0){
+
+            DB::table('insurance_invoices')->insert(
+                ['contract_id' => '', 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A']
+            );
+
+            $invoice_number_created=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance']
+            );
+
+
+        }else{
+
+
+        }
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Insurance invoice created Successfully');
+
+
+
+
+    }
+
+
+
+
+
+
+
 
 
     public function sendInvoiceInsurance(Request $request,$id)
@@ -535,7 +744,7 @@ class InvoicesController extends Controller
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-            Notification::route('mail','samforbuilding@gmail.com')
+            Notification::route('mail','upmistesting@gmail.com')
                 ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'UDIA','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Insurance Monthly Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('insurance_invoices')
@@ -685,7 +894,7 @@ class InvoicesController extends Controller
                         if(count($invoice_to_be_created)==0){
 
                             DB::table('electricity_bill_invoices')->insert(
-                                ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'Renting space','debtor_account_code' => '','debtor_name' => $var->full_name,'debtor_address' => '','debt' => $amount_not_paid,'currency'=>$var->currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'electricity bill','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Electricity bill','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                                ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'Renting space','debtor_account_code' => '','debtor_name' => $var->full_name,'debtor_address' => '','debt' => $amount_not_paid,'currency_invoice'=>$var->currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'electricity bill','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Electricity bill','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
                             );
 
 
@@ -727,6 +936,74 @@ class InvoicesController extends Controller
 
 
 
+    public function CreateElectricityBillInvoiceManually(Request $request)
+    {
+
+
+
+        if ($request->get('invoicing_period_start_date')>$request->get('invoicing_period_end_date')) {
+
+            return redirect()->back()->with("error","Invoice start date cannot be greater than invoice end date. Please try again");
+        }
+
+
+
+        $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+        $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+        $today=date('Y-m-d');
+
+        $amount_in_words='';
+
+        if($request->get('currency')=='TZS'){
+            $amount_in_words=Terbilang::make($request->get('cumulative_amount'),' TZS',' ');
+
+        }if ($request->get('currency')=='USD'){
+
+        $amount_in_words=Terbilang::make($request->get('cumulative_amount'),' USD',' ');
+    }
+
+    else{
+
+
+    }
+
+
+        $period= date("d/m/Y",strtotime($request->get('invoicing_period_start_date'))).' to  '. date("d/m/Y",strtotime($request->get('invoicing_period_end_date')));
+
+
+        $invoice_to_be_created=DB::select('call invoice_exists_electricity (?,?,?)',[$request->get('contract_id'),$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date')]);
+
+
+        if(count($invoice_to_be_created)==0){
+
+            DB::table('electricity_bill_invoices')->insert(
+                ['contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'current_amount' => $request->get('current_amount'),'cumulative_amount' => $request->get('cumulative_amount'),'debt' => $request->get('debt'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Electricity','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A']
+            );
+
+            $invoice_number_created=DB::table('electricity_bill_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'electricity bill']
+            );
+
+
+        }else{
+
+
+        }
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Electricity bill invoice created Successfully');
+
+
+
+
+    }
+
+
+
+
     public function sendInvoiceElectricityBills(Request $request,$id)
     {
 
@@ -757,7 +1034,7 @@ class InvoicesController extends Controller
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-            Notification::route('mail','samforbuilding@gmail.com')
+            Notification::route('mail','upmistesting@gmail.com')
                 ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Electricity bill',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('electricity_bill_invoices')
@@ -789,7 +1066,7 @@ class InvoicesController extends Controller
 
             DB::table('electricity_bill_invoices')
                 ->where('invoice_number', $id)
-                ->update(['currency' => $request->get('currency')]);
+                ->update(['currency_invoice' => $request->get('currency')]);
 
 
 
@@ -903,7 +1180,7 @@ class InvoicesController extends Controller
                 if(count($invoice_to_be_created)==0){
 
                     DB::table('water_bill_invoices')->insert(
-                        ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'Renting space','debtor_account_code' => '','debtor_name' => $var->full_name,'debtor_address' => '','debt' => $amount_not_paid,'currency'=>$var->currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'water bill','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Water bill','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                        ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'Renting space','debtor_account_code' => '','debtor_name' => $var->full_name,'debtor_address' => '','debt' => $amount_not_paid,'currency_invoice'=>$var->currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'water bill','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Water bill','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
                     );
 
 
@@ -945,6 +1222,76 @@ class InvoicesController extends Controller
 
 
 
+    public function CreateWaterBillInvoiceManually(Request $request)
+    {
+
+
+
+        if ($request->get('invoicing_period_start_date')>$request->get('invoicing_period_end_date')) {
+
+            return redirect()->back()->with("error","Invoice start date cannot be greater than invoice end date. Please try again");
+        }
+
+
+
+        $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+        $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+        $today=date('Y-m-d');
+
+        $amount_in_words='';
+
+        if($request->get('currency')=='TZS'){
+            $amount_in_words=Terbilang::make($request->get('cumulative_amount'),' TZS',' ');
+
+        }if ($request->get('currency')=='USD'){
+
+        $amount_in_words=Terbilang::make($request->get('cumulative_amount'),' USD',' ');
+    }
+
+    else{
+
+
+    }
+
+
+        $period= date("d/m/Y",strtotime($request->get('invoicing_period_start_date'))).' to  '. date("d/m/Y",strtotime($request->get('invoicing_period_end_date')));
+
+
+        $invoice_to_be_created=DB::select('call invoice_exists_water (?,?,?)',[$request->get('contract_id'),$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date')]);
+
+
+        if(count($invoice_to_be_created)==0){
+
+            DB::table('water_bill_invoices')->insert(
+                ['contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'current_amount' => $request->get('current_amount'),'cumulative_amount' => $request->get('cumulative_amount'),'debt' => $request->get('debt'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Water','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A']
+            );
+
+            $invoice_number_created=DB::table('water_bill_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'water bill']
+            );
+
+
+        }else{
+
+
+        }
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Water bill invoice created Successfully');
+
+
+
+
+    }
+
+
+
+
+
+
     public function sendInvoiceWaterBills(Request $request,$id)
     {
 
@@ -976,7 +1323,7 @@ class InvoicesController extends Controller
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-            Notification::route('mail','samforbuilding@gmail.com')
+            Notification::route('mail','upmistesting@gmail.com')
                 ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Water bill',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('water_bill_invoices')
@@ -1011,7 +1358,7 @@ class InvoicesController extends Controller
 
             DB::table('water_bill_invoices')
                 ->where('invoice_number', $id)
-                ->update(['currency' => $request->get('currency')]);
+                ->update(['currency_invoice' => $request->get('currency')]);
 
 
 

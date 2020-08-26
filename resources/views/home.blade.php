@@ -24,7 +24,7 @@
         <div class="form-group row">
           <label for="dept"  class="col-sm-3 col-form-label"><strong>Type:</strong></label>
           <div class="col-sm-7">
-            <select name="space_type" >
+            <select name="major_industry" >
 
               <option value="3" id="Option" >Mall-shop</option>
               <option value="1" id="Option">Villa</option>
@@ -38,7 +38,7 @@
         <div class="form-group row">
           <label for="course"  class="col-sm-3 col-form-label"><strong>Location:</strong></label>
           <div class="col-sm-7">
-            <select name="space_type" >
+            <select name="major_industry" >
               <option value="3" id="Option" >Mlimani City</option>
               <option value="1" id="Option">UDSM Main Campus</option>
             </select>
@@ -55,7 +55,7 @@
         <div class="form-group row">
           <label for="instructor"  class="col-sm-3 col-form-label"><strong>Rent Price Guide:</strong></label>
           <div class="col-sm-7">
-            <select name="space_type" >
+            <select name="major_industry" >
               <option value="3" id="Option" >200,000-500,000 TZS</option>
               <option value="1" id="Option">500,000-1000,000 TZS</option>
               <option value="1" id="Option">1000,000-2000,000 TZS</option>
@@ -100,7 +100,7 @@
               <div class="form-group row">
                 <label for="dept"  class="col-sm-3 col-form-label"><strong>Type:</strong></label>
                 <div class="col-sm-7">
-                  <select disabled name="space_type" >
+                  <select disabled name="major_industry" >
 
                     <option value="3" id="Option" >Mall-shop</option>
                     <option value="1" id="Option">Villa</option>
@@ -114,7 +114,7 @@
               <div class="form-group row">
                 <label for="course"  class="col-sm-3 col-form-label"><strong>Location:</strong></label>
                 <div class="col-sm-7">
-                  <select disabled name="space_type" >
+                  <select disabled name="major_industry" >
                     <option value="3" id="Option" >Mlimani City</option>
                     <option value="1" id="Option">UDSM Main Campus</option>
                   </select>
@@ -131,7 +131,7 @@
               <div class="form-group row">
                 <label for="instructor"  class="col-sm-3 col-form-label"><strong>Rent Price Guide:</strong></label>
                 <div class="col-sm-7">
-                  <select name="space_type" >
+                  <select name="major_industry" >
                     <option value="3" id="Option" >200,000-500,000 TZS</option>
                     <option value="1" id="Option">500,000-1000,000 TZS</option>
                     <option value="1" id="Option">1000,000-2000,000 TZS</option>

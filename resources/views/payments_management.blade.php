@@ -61,28 +61,8 @@
                 <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
                 <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
                 <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-                <div class="dropdown">
-                    <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-file-contract"></i> Contracts
-                    </li>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-                        <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
-                        <a class="dropdown-item" href="/space_contracts_management">Space</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fas fa-file-contract"></i> Invoices
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/invoice_management">Space</a>
-    <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
-<a class="dropdown-item" href="/water_bills_invoice_management">Water</a>
-<a class="dropdown-item" href="/electricity_bills_invoice_management">Electricity</a>
-  </div>
-</div>
+                <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+                <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
             <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
                 <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
             </ul>
@@ -97,6 +77,13 @@
                         <p>{{$message}}</p>
                     </div>
                 @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger row col-xs-12" style="margin-left: -13px; margin-bottom: -1px; margin-top: 4px;">
+                            {{ session('error') }}
+                            <br>
+                        </div>
+                    @endif
 
                     <div style="width:100%; text-align: center ">
                         <br>
@@ -121,6 +108,117 @@
                         <br>
                         <h5>1. SPACE PAYMENTS</h5>
                         <br>
+
+
+                        <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+
+                        <div class="modal fade" id="new_payment_space" role="dialog">
+
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">Record New Space Payment</h5></b>
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <form method="post" action="{{ route('create_space_payment_manually')}}"  id="form1" >
+                                            {{csrf_field()}}
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="invoice_number_space" name="invoice_number" value="" Required autocomplete="off">
+                                                        <p id="invoice_availability"></p>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="amount_paid_space" name="amount_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="not_paid_space" name="amount_not_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <label>Currency <span style="color: red;">*</span></label>
+                                                    <div  class="form-wrapper">
+                                                        <select id="currency_space" class="form-control" required name="currency_payments">
+                                                            <option value="" ></option>
+                                                            <option value="TZS" >TZS</option>
+                                                            <option value="USD" >USD</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="receipt_space" name="receipt_number" value="" required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+
+
+
+
+
+                                            </div>
+
+
+                                            <div align="right">
+                                                <button id="submit_space" class="btn btn-primary" type="submit">Submit</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
                         <?php
                         $i=1;
                         ?>
@@ -133,12 +231,14 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
+
                                     <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
+                                    <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+
 
                                 </tr>
                                 </thead>
@@ -147,13 +247,112 @@
                                 @foreach($space_payments as $var)
                                     <tr>
 
-                                        <td class="counterCell text-center"></td>
-                                        <td><center>{{$var->invoice_number}}</center></td>
+                                        <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
                                         <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
+                                        <td><center>
+
+
+
+                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <table style="width: 100%">
+
+                                                                    <tr>
+                                                                        <td>Client:</td>
+                                                                        <td>{{$var->debtor_name}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Number:</td>
+                                                                        <td>{{$var->invoice_number}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Start Date:</td>
+                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> End Date:</td>
+                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Period:</td>
+                                                                        <td> {{$var->period}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> Project ID:</td>
+                                                                        <td> {{$var->project_id}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Amount:</td>
+                                                                        <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>GEPG Control Number:</td>
+                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Payment Status:</td>
+                                                                        <td>{{$var->payment_status}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                    </tr>
+
+
+
+                                                                    <tr>
+                                                                        <td>Comments:</td>
+                                                                        <td>{{$var->user_comments}}</td>
+                                                                    </tr>
+
+
+
+
+
+
+                                                                </table>
+                                                                <br>
+                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </center></td>
+
+
+
+
 
                                     </tr>
                                     <?php
@@ -181,6 +380,115 @@
                         <br>
                         <h5>2. CAR RENTAL PAYMENTS</h5>
                         <br>
+
+                        <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_car" title="Record new car rental payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+
+                        <div class="modal fade" id="new_payment_car" role="dialog">
+
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">Record New Car Rental Payment</h5></b>
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <form method="post" action="{{ route('create_car_payment_manually')}}"  id="form1" >
+                                            {{csrf_field()}}
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="invoice_number_car" name="invoice_number" value="" Required autocomplete="off">
+                                                        <p id="invoice_availability_car" ></p>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="votebook_car" name="invoice_number_votebook" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="amount_paid_car" name="amount_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="not_paid_car" name="amount_not_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <label>Currency <span style="color: red;">*</span></label>
+                                                    <div  class="form-wrapper">
+                                                        <select id="currency_car" class="form-control" required name="currency_payments">
+                                                            <option value="" ></option>
+                                                            <option value="TZS" >TZS</option>
+                                                            <option value="USD" >USD</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="receipt_car" name="receipt_number" value="" required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+
+
+
+
+
+                                            </div>
+
+
+                                            <div align="right">
+                                                <button id="submit_car" class="btn btn-primary" type="submit">Submit</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
                         <?php
                         $i=1;
                         ?>
@@ -193,12 +501,13 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
+
                                     <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
+<th scope="col"  style="color:#3490dc;"><center>Action</center></th>
 
                                 </tr>
                                 </thead>
@@ -207,13 +516,112 @@
                                 @foreach($car_rental_payments as $var)
                                     <tr>
 
-                                        <td class="counterCell text-center"></td>
-                                        <td><center>{{$var->invoice_number}}</center></td>
+                                        <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
                                         <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
+                                        <td><center>
+
+
+
+                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <table style="width: 100%">
+
+                                                                    <tr>
+                                                                        <td>Client:</td>
+                                                                        <td>{{$var->debtor_name}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Number:</td>
+                                                                        <td>{{$var->invoice_number}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Start Date:</td>
+                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> End Date:</td>
+                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Period:</td>
+                                                                        <td> {{$var->period}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> Project ID:</td>
+                                                                        <td> {{$var->project_id}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Amount:</td>
+                                                                        <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>GEPG Control Number:</td>
+                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Payment Status:</td>
+                                                                        <td>{{$var->payment_status}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                    </tr>
+
+
+
+                                                                    <tr>
+                                                                        <td>Comments:</td>
+                                                                        <td>{{$var->user_comments}}</td>
+                                                                    </tr>
+
+
+
+
+
+
+                                                                </table>
+                                                                <br>
+                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </center></td>
+
+
+
+
 
                                     </tr>
                                     <?php
@@ -240,6 +648,113 @@
                         <br>
                         <h5>3. INSURANCE PAYMENTS</h5>
                         <br>
+                        <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+
+                        <div class="modal fade" id="new_payment_insurance" role="dialog">
+
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">Record New insurance Payment</h5></b>
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <form method="post" action="{{ route('create_insurance_payment_manually')}}"  id="form1" >
+                                            {{csrf_field()}}
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="invoice_number_insurance" name="invoice_number" value="" Required autocomplete="off">
+                                                        <p id="invoice_availability_insurance" ></p>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="votebook_insurance" name="invoice_number_votebook" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="amount_paid_insurance" name="amount_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="not_paid_insurance" name="amount_not_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <label>Currency <span style="color: red;">*</span></label>
+                                                    <div  class="form-wrapper">
+                                                        <select id="currency_insurance" class="form-control" required name="currency_payments">
+                                                            <option value="" ></option>
+                                                            <option value="TZS" >TZS</option>
+                                                            <option value="USD" >USD</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="receipt_insurance" name="receipt_number" value="" required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+
+
+
+
+
+                                            </div>
+
+
+                                            <div align="right">
+                                                <button id="submit_insurance" class="btn btn-primary" type="submit">Submit</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
                         <?php
                         $i=1;
                         ?>
@@ -252,12 +767,13 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
+
                                     <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
+<th scope="col"  style="color:#3490dc;"><center>Action</center></th>
 
                                 </tr>
                                 </thead>
@@ -266,13 +782,112 @@
                                 @foreach($insurance_payments as $var)
                                     <tr>
 
-                                        <td class="counterCell text-center"></td>
-                                        <td><center>{{$var->invoice_number}}</center></td>
+                                        <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
                                         <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
+                                        <td><center>
+
+
+
+                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <table style="width: 100%">
+
+                                                                    <tr>
+                                                                        <td>Client:</td>
+                                                                        <td>{{$var->debtor_name}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Number:</td>
+                                                                        <td>{{$var->invoice_number}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Start Date:</td>
+                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> End Date:</td>
+                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Period:</td>
+                                                                        <td> {{$var->period}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> Project ID:</td>
+                                                                        <td> {{$var->project_id}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Amount:</td>
+                                                                        <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>GEPG Control Number:</td>
+                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Payment Status:</td>
+                                                                        <td>{{$var->payment_status}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                    </tr>
+
+
+
+                                                                    <tr>
+                                                                        <td>Comments:</td>
+                                                                        <td>{{$var->user_comments}}</td>
+                                                                    </tr>
+
+
+
+
+
+
+                                                                </table>
+                                                                <br>
+                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </center></td>
+
+
+
+
 
                                     </tr>
                                     <?php
@@ -299,6 +914,115 @@
                         <br>
                         <h5>4. WATER BILL PAYMENTS</h5>
                         <br>
+
+                        <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+
+                        <div class="modal fade" id="new_payment_water" role="dialog">
+
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">Record New Water bill Payment</h5></b>
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <form method="post" action="{{ route('create_water_payment_manually')}}"  id="form1" >
+                                            {{csrf_field()}}
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="invoice_number_water" name="invoice_number" value="" Required autocomplete="off">
+                                                        <p id="invoice_availability_water" ></p>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="votebook_water" name="invoice_number_votebook" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="amount_paid_water" name="amount_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="not_paid_water" name="amount_not_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <label>Currency <span style="color: red;">*</span></label>
+                                                    <div  class="form-wrapper">
+                                                        <select id="currency_water" class="form-control" required name="currency_payments">
+                                                            <option value="" ></option>
+                                                            <option value="TZS" >TZS</option>
+                                                            <option value="USD" >USD</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="receipt_water" name="receipt_number" value="" required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+
+
+
+
+
+                                            </div>
+
+
+                                            <div align="right">
+                                                <button id="submit_water" class="btn btn-primary" type="submit">Submit</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
                         <?php
                         $i=1;
                         ?>
@@ -311,12 +1035,13 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
+
                                     <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
+                                    <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
 
                                 </tr>
                                 </thead>
@@ -325,13 +1050,131 @@
                                 @foreach($water_bill_payments as $var)
                                     <tr>
 
-                                        <td class="counterCell text-center"></td>
-                                        <td><center>{{$var->invoice_number}}</center></td>
+                                        <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
                                         <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
+                                        <td><center>
+
+
+
+                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <table style="width: 100%">
+
+                                                                    <tr>
+                                                                        <td>Client:</td>
+                                                                        <td>{{$var->debtor_name}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Number:</td>
+                                                                        <td>{{$var->invoice_number}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Start Date:</td>
+                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> End Date:</td>
+                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Period:</td>
+                                                                        <td> {{$var->period}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> Project ID:</td>
+                                                                        <td> {{$var->project_id}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Debt:</td>
+                                                                        <td>{{$var->debt}} {{$var->currency_invoice}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Current Amount:</td>
+                                                                        @if($var->current_amount==0)
+                                                                            <td>N/A</td>
+                                                                        @else
+                                                                            <td>{{$var->current_amount}} {{$var->currency_invoice}}</td>
+                                                                        @endif
+
+                                                                    </tr>
+
+                                                                    <tr>
+
+                                                                        <td>Cumulative Amount:</td>
+                                                                        @if($var->cumulative_amount==0)
+                                                                            <td>N/A</td>
+                                                                        @else
+                                                                            <td>{{$var->cumulative_amount}} {{$var->currency_invoice}}</td>
+                                                                        @endif
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>GEPG Control Number:</td>
+                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Payment Status:</td>
+                                                                        <td>{{$var->payment_status}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                    </tr>
+
+
+
+                                                                    <tr>
+                                                                        <td>Comments:</td>
+                                                                        <td>{{$var->user_comments}}</td>
+                                                                    </tr>
+
+
+
+
+
+
+                                                                </table>
+                                                                <br>
+                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </center></td>
+
+
+
+
 
                                     </tr>
                                     <?php
@@ -358,6 +1201,117 @@
                         <br>
                         <h5>5. ELECTRICITY BILL PAYMENTS</h5>
                         <br>
+
+
+                        <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_electricity" title="Record new electricity bill payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+
+                        <div class="modal fade" id="new_payment_electricity" role="dialog">
+
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">Record New Electricity bill Payment</h5></b>
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <form method="post" action="{{ route('create_electricity_payment_manually')}}"  id="form1" >
+                                            {{csrf_field()}}
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="invoice_number_electricity" name="invoice_number" value="" Required autocomplete="off">
+                                                        <p id="invoice_availability_electricity" ></p>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="votebook_electricity" name="invoice_number_votebook" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="amount_paid_electricity" name="amount_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-6">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="not_paid_electricity" name="amount_not_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <label>Currency <span style="color: red;">*</span></label>
+                                                    <div  class="form-wrapper">
+                                                        <select id="currency_electricity" class="form-control" required name="currency_payments">
+                                                            <option value="" ></option>
+                                                            <option value="TZS" >TZS</option>
+                                                            <option value="USD" >USD</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="receipt_electricity" name="receipt_number" value="" required  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+
+
+
+
+
+
+                                            </div>
+
+
+                                            <div align="right">
+                                                <button id="submit_electricity" class="btn btn-primary" type="submit">Submit</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
                         <?php
                         $i=1;
                         ?>
@@ -370,12 +1324,13 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
+
                                     <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
+<th scope="col"  style="color:#3490dc;"><center>Action</center></th>
 
                                 </tr>
                                 </thead>
@@ -384,13 +1339,132 @@
                                 @foreach($electricity_bill_payments as $var)
                                     <tr>
 
-                                        <td class="counterCell text-center"></td>
-                                        <td><center>{{$var->invoice_number}}</center></td>
+                                        <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
                                         <td><center>{{$var->amount_paid}}</center></td>
                                         <td><center>{{$var->amount_not_paid}}</center></td>
                                         <td><center> {{$var->currency_payments}}</center></td>
                                         <td><center>{{$var->receipt_number}}</center></td>
+                                        <td><center>
+
+
+
+                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <table style="width: 100%">
+
+                                                                    <tr>
+                                                                        <td>Client:</td>
+                                                                        <td>{{$var->debtor_name}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Number:</td>
+                                                                        <td>{{$var->invoice_number}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Start Date:</td>
+                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> End Date:</td>
+                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Period:</td>
+                                                                        <td> {{$var->period}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td> Project ID:</td>
+                                                                        <td> {{$var->project_id}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td> Debt:</td>
+                                                                        <td>{{$var->debt}} {{$var->currency_invoice}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Current Amount:</td>
+                                                                        @if($var->current_amount==0)
+                                                                            <td>N/A</td>
+                                                                        @else
+                                                                            <td>{{$var->current_amount}} {{$var->currency_invoice}}</td>
+                                                                        @endif
+
+                                                                    </tr>
+
+                                                                    <tr>
+
+                                                                        <td>Cumulative Amount:</td>
+                                                                        @if($var->cumulative_amount==0)
+                                                                            <td>N/A</td>
+                                                                        @else
+                                                                            <td>{{$var->cumulative_amount}} {{$var->currency_invoice}}</td>
+                                                                        @endif
+                                                                    </tr>
+
+
+
+                                                                    <tr>
+                                                                        <td>GEPG Control Number:</td>
+                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Payment Status:</td>
+                                                                        <td>{{$var->payment_status}}</td>
+                                                                    </tr>
+
+
+                                                                    <tr>
+                                                                        <td>Invoice Date:</td>
+                                                                        <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                    </tr>
+
+
+
+                                                                    <tr>
+                                                                        <td>Comments:</td>
+                                                                        <td>{{$var->user_comments}}</td>
+                                                                    </tr>
+
+
+
+
+
+
+                                                                </table>
+                                                                <br>
+                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </center></td>
+
+
+
+
 
                                     </tr>
                                     <?php
@@ -564,6 +1638,261 @@
         var table = $('#myTable5').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
         } );
+
+
+    </script>
+
+
+
+    <script>
+
+        $('#invoice_number_space').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('check_availability_space') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+                            $('#invoice_number_space').attr('style','border:1px solid #f00');
+                            $("#invoice_availability").css("color","red");
+                            $("#invoice_availability").html("Invoice number does not exist");
+
+                            $("#votebook_space").prop('disabled', true);
+                            $("#amount_paid_space").prop('disabled', true);
+                            $("#not_paid_space").prop('disabled', true);
+                            $("#currency_space").prop('disabled', true);
+                            $("#receipt_space").prop('disabled', true);
+                            $("#submit_space").prop('disabled', true);
+
+
+                        }
+                        else{
+                            $("#invoice_availability").html("");
+
+                            $('#invoice_number_space').attr('style','border:1px solid #ced4da');
+
+                            $("#votebook_space").prop('disabled', false);
+                            $("#amount_paid_space").prop('disabled', false);
+                            $("#not_paid_space").prop('disabled', false);
+                            $("#currency_space").prop('disabled', false);
+                            $("#receipt_space").prop('disabled', false);
+                            $("#submit_space").prop('disabled', false);
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#invoice_number_space').attr('style','border:1px solid #ced4da');
+            }
+        });
+
+
+
+        $('#invoice_number_insurance').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('check_availability_insurance') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+                            $('#invoice_number_insurance').attr('style','border:1px solid #f00');
+                            $("#invoice_availability_insurance").css("color","red");
+                            $("#invoice_availability_insurance").html("Invoice number does not exist");
+
+                            $("#votebook_insurance").prop('disabled', true);
+                            $("#amount_paid_insurance").prop('disabled', true);
+                            $("#not_paid_insurance").prop('disabled', true);
+                            $("#currency_insurance").prop('disabled', true);
+                            $("#receipt_insurance").prop('disabled', true);
+                            $("#submit_insurance").prop('disabled', true);
+
+
+                        }
+                        else{
+                            $("#invoice_availability_insurance").html("");
+
+                            $('#invoice_number_insurance').attr('style','border:1px solid #ced4da');
+
+                            $("#votebook_insurance").prop('disabled', false);
+                            $("#amount_paid_insurance").prop('disabled', false);
+                            $("#not_paid_insurance").prop('disabled', false);
+                            $("#currency_insurance").prop('disabled', false);
+                            $("#receipt_insurance").prop('disabled', false);
+                            $("#submit_insurance").prop('disabled', false);
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#invoice_number_insurance').attr('style','border:1px solid #ced4da');
+            }
+        });
+
+
+
+        $('#invoice_number_car').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('check_availability_car') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+                            $('#invoice_number_car').attr('style','border:1px solid #f00');
+                            $("#invoice_availability_car").css("color","red");
+                            $("#invoice_availability_car").html("Invoice number does not exist");
+
+                            $("#votebook_car").prop('disabled', true);
+                            $("#amount_paid_car").prop('disabled', true);
+                            $("#not_paid_car").prop('disabled', true);
+                            $("#currency_car").prop('disabled', true);
+                            $("#receipt_car").prop('disabled', true);
+                            $("#submit_car").prop('disabled', true);
+
+
+                        }
+                        else{
+                            $("#invoice_availability_car").html("");
+
+                            $('#invoice_number_car').attr('style','border:1px solid #ced4da');
+
+                            $("#votebook_car").prop('disabled', false);
+                            $("#amount_paid_car").prop('disabled', false);
+                            $("#not_paid_car").prop('disabled', false);
+                            $("#currency_car").prop('disabled', false);
+                            $("#receipt_car").prop('disabled', false);
+                            $("#submit_car").prop('disabled', false);
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#invoice_number_car').attr('style','border:1px solid #ced4da');
+            }
+        });
+
+
+
+        $('#invoice_number_water').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('check_availability_water') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+                            $('#invoice_number_water').attr('style','border:1px solid #f00');
+                            $("#invoice_availability_water").css("color","red");
+                            $("#invoice_availability_water").html("Invoice number does not exist");
+
+                            $("#votebook_water").prop('disabled', true);
+                            $("#amount_paid_water").prop('disabled', true);
+                            $("#not_paid_water").prop('disabled', true);
+                            $("#currency_water").prop('disabled', true);
+                            $("#receipt_water").prop('disabled', true);
+                            $("#submit_water").prop('disabled', true);
+
+
+                        }
+                        else{
+                            $("#invoice_availability_water").html("");
+                            $('#invoice_number_water').attr('style','border:1px solid #ced4da');
+
+                            $("#votebook_water").prop('disabled', false);
+                            $("#amount_paid_water").prop('disabled', false);
+                            $("#not_paid_water").prop('disabled', false);
+                            $("#currency_water").prop('disabled', false);
+                            $("#receipt_water").prop('disabled', false);
+                            $("#submit_water").prop('disabled', false);
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#invoice_number_water').attr('style','border:1px solid #ced4da');
+            }
+        });
+
+
+
+        $('#invoice_number_electricity').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('check_availability_electricity') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+                            $('#invoice_number_electricity').attr('style','border:1px solid #f00');
+                            $("#invoice_availability_electricity").css("color","red");
+                            $("#invoice_availability_electricity").html("Invoice number does not exist");
+
+                            $("#votebook_electricity").prop('disabled', true);
+                            $("#amount_paid_electricity").prop('disabled', true);
+                            $("#not_paid_electricity").prop('disabled', true);
+                            $("#currency_electricity").prop('disabled', true);
+                            $("#receipt_electricity").prop('disabled', true);
+                            $("#submit_electricity").prop('disabled', true);
+
+
+                        }
+                        else{
+                            $("#invoice_availability_electricity").html("");
+
+                            $('#invoice_number_electricity').attr('style','border:1px solid #ced4da');
+
+                            $("#votebook_electricity").prop('disabled', false);
+                            $("#amount_paid_electricity").prop('disabled', false);
+                            $("#not_paid_electricity").prop('disabled', false);
+                            $("#currency_electricity").prop('disabled', false);
+                            $("#receipt_electricity").prop('disabled', false);
+                            $("#submit_electricity").prop('disabled', false);
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#invoice_number_electricity').attr('style','border:1px solid #ced4da');
+            }
+        });
+
 
 
     </script>

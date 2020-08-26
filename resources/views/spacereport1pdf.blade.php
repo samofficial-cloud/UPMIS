@@ -27,10 +27,10 @@ table {
       use App\space_contract;
       $today= date('Y-m-d');
       if($_GET['module']=='space'){
-      	if($_GET['space_type']=='list'){
+      	if($_GET['major_industry']=='list'){
       		if(($_GET['space_prize']=='true') && ($_GET['status']=='true') &&($_GET['location_status']=='true')){
             if($_GET['space_status']=='1'){
-            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
+            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
             }
             elseif($_GET['space_status']=='0'){
           $spaces= DB::table('spaces')
@@ -50,7 +50,7 @@ table {
 
             if(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true')){
                if($_GET['space_status']=='1'){
-            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->orderby('space_id','asc')->distinct()->get();
+            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->orderby('space_id','asc')->distinct()->get();
         
             }
             elseif($_GET['space_status']=='0'){
@@ -72,7 +72,7 @@ table {
       		
           if(($_GET['space_prize']!='true') && ($_GET['location_status']=='true') && ($_GET['status']=='true')){
             if($_GET['space_status']=='1'){
-            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
+            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
             }
 
             elseif($_GET['space_status']=='0'){
@@ -91,7 +91,7 @@ table {
 
           if(($_GET['space_prize']!='true')&&($_GET['location_status']!='true') && ($_GET['status']=='true')){
             if($_GET['space_status']=='1'){    
-           $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','space_type')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->orderBy('space_id','asc')->distinct()->get();
+           $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->orderBy('space_id','asc')->distinct()->get();
             }
 
             elseif($_GET['space_status']=='0'){
@@ -116,7 +116,7 @@ table {
      <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
     </b>
     @if($_GET['module']=='space')
-    @if($_GET['space_type']=='list')
+    @if($_GET['major_industry']=='list')
     @if(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true'))
     @if($_GET['space_status']=='1')
     <br><br><strong>List of Occupied Spaces at {{$_GET['location']}}Whose Price Range Between{{$_GET['min_price']}} and {{$_GET['max_price']}}</strong>
@@ -183,7 +183,7 @@ table {
 
             <td class="counterCell text-center">.</td>
             <td><center>{{$var->space_id}}</center></td>
-            <td><center>{{$var->space_type}}</center></td>
+            <td><center>{{$var->major_industry}}</center></td>
             <td><center>{{$var->location}}</center></td>
 
             <td><center>  @if($var->size==null)

@@ -60,7 +60,7 @@ table {
         	@foreach($space as $space)
         	<tr>
         		<td class="counterCell">.</td>
-        		<td><center>{{$space->space_type}}</center></td>
+        		<td><center>{{$space->major_industry}}</center></td>
               <td><center>{{$space->location}}</center></td>
               <td>{{$space->full_name}}</td>
               <td>{{$space->start_date}} to {{$space->end_date}}</td>

@@ -652,7 +652,7 @@
                 {
                     var _token = $('input[name="_token"]').val();
 
-                    var space_type=document.getElementById("space_type").value;
+                    var major_industry=document.getElementById("major_industry").value;
                     var space_location=document.getElementById("space_location").value;
 
 
@@ -660,7 +660,7 @@
                     $.ajax({
                         url:"{{ route('autocomplete.space_id') }}",
                         method:"GET",
-                        data:{query:query,space_type:space_type,space_location:space_location, _token:_token},
+                        data:{query:query,major_industry:major_industry,space_location:space_location, _token:_token},
                         success:function(data){
                             if(data=='0'){
                                 $('#space_id_contract').attr('style','border:1px solid #f00');
