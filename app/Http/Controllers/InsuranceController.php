@@ -35,16 +35,21 @@ class InsuranceController extends Controller
     {
 
         DB::table('insurance')->insert(
-            ['insurance_company' => $request->get('insurance_company'),'insurance_type' => $request->get('insurance_type'), 'price' => $request->get('price'), 'commission' => $request->get('commission')]
+            ['class' => $request->get('class'),'insurance_company' => $request->get('insurance_company'),'insurance_type' => $request->get('insurance_type'), 'price' => $request->get('price'), 'commission' => $request->get('commission')]
         );
 
 
         return redirect('/insurance')
-            ->with('success', 'New Insurance added successfully');
+            ->with('success', 'New Insurance package added successfully');
     }
 
     public function editInsurance(Request $request,$id)
     {
+
+
+        DB::table('insurance')
+            ->where('id', $id)
+            ->update(['class' => $request->get('class')]);
 
 
         DB::table('insurance')
@@ -71,7 +76,7 @@ class InsuranceController extends Controller
 
 
         return redirect('/insurance')
-            ->with('success', 'Insurance details edited successfully');
+            ->with('success', 'Insurance package details edited successfully');
     }
 
     public function deactivateInsurance(Request $request,$id)

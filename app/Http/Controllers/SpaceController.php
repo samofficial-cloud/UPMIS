@@ -46,6 +46,16 @@ class SpaceController extends Controller
 
         }
 
+        $comments='';
+
+        if($request->get('comments')!=null){
+            $comments=$request->get('comments');
+
+        }else{
+
+            $comments='None';
+        }
+
 
 
 
@@ -53,10 +63,10 @@ class SpaceController extends Controller
         if($request->get('rent_price_guide_checkbox')==null){
 
         DB::table('spaces')->insert(
-            ['space_id' => $request->get('space_id'),'space_type' => $request->get('space_type'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => '','rent_price_guide_to' => '','rent_price_guide_currency' => '','rent_price_guide_checkbox' => 0]);
+            ['space_id' => $request->get('space_id'),'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => '','rent_price_guide_to' => '','rent_price_guide_currency' => '','rent_price_guide_checkbox' => 0,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]);
         }else{
         DB::table('spaces')->insert(
-            ['space_id' => $request->get('space_id'),'space_type' => $request->get('space_type'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => $request->get('rent_price_guide_from'),'rent_price_guide_to' => $request->get('rent_price_guide_to'),'rent_price_guide_currency' => $request->get('rent_price_guide_currency'),'rent_price_guide_checkbox' => 1]
+            ['space_id' => $request->get('space_id'),'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => $request->get('rent_price_guide_from'),'rent_price_guide_to' => $request->get('rent_price_guide_to'),'rent_price_guide_currency' => $request->get('rent_price_guide_currency'),'rent_price_guide_checkbox' => 1,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]
         );
     }
 
@@ -87,7 +97,7 @@ class SpaceController extends Controller
 
         DB::table('spaces')
             ->where('id', $id)
-            ->update(['space_type' => $request->get('space_type')]);
+            ->update(['major_industry' => $request->get('major_industry')]);
 
 
         DB::table('spaces')
@@ -96,7 +106,43 @@ class SpaceController extends Controller
 
         DB::table('spaces')
             ->where('id', $id)
+            ->update(['sub_location' => $request->get('space_sub_location')]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
             ->update(['size' => $request->get('space_size')]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['minor_industry' => $request->get('minor_industry')]);
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['has_water_bill_space' => $request->get('has_water_bill')]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['has_electricity_bill_space' => $request->get('has_electricity_bill')]);
+
+
+        $comments='';
+
+        if($request->get('comments')!=null){
+            $comments=$request->get('comments');
+
+        }else{
+
+            $comments='None';
+        }
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['comments' => $comments]);
+
 
 
         if($request->get('rent_price_guide_checkbox')==null) {
@@ -154,7 +200,7 @@ class SpaceController extends Controller
     }
 
 
-    public function autoCompleteSpaceId(Request $request)
+    public function spaceIdSuggestions(Request $request)
     {
 
 
@@ -162,10 +208,9 @@ class SpaceController extends Controller
         if($request->get('query'))
         {
             $query = $request->get('query');
-            $space_type=$request->get('space_type');
-            $space_location=$request->get('space_location');
 
-        $space_id=DB::table('spaces')->where('space_type',$space_type)->where('location',$space_location)->where('space_id', 'LIKE', "%{$query}%")->where('status',1)->get();
+
+        $space_id=DB::table('spaces')->where('space_id', 'LIKE', "%{$query}%")->where('status',1)->get();
 
 
 
@@ -192,7 +237,7 @@ class SpaceController extends Controller
 
 
 
-    public function autoCompleteSpaceSize(Request $request)
+    public function autoCompleteSpaceFields(Request $request)
     {
 
 
@@ -202,13 +247,32 @@ class SpaceController extends Controller
             $selected_space_id = $request->get('selected_space_id');
 
 
-            $space_size=DB::table('spaces')->where('space_id',$selected_space_id)->value('size');
+            $space_fields=DB::table('spaces')->where('space_id',$selected_space_id)->get();
 
 
 
-            if($space_size!=null){
+            if($space_fields!=null){
 
-                echo $space_size;
+                foreach ($space_fields as $space_field) {
+
+                    $data = [
+                        'major_industry'   => $space_field->major_industry,
+                        'minor_industry'   => $space_field->minor_industry,
+                        'location'   => $space_field->location,
+                        'sub_location'   => $space_field->sub_location,
+                        'size'   => $space_field->size,
+                        'has_electricity_bill'   => $space_field->has_electricity_bill_space,
+                        'has_water_bill'   => $space_field->has_water_bill_space,
+
+
+
+                    ];
+
+                }
+
+
+
+                echo json_encode($data);
             }
             else{
                 echo "0";
@@ -218,6 +282,30 @@ class SpaceController extends Controller
 
 
     }
+
+
+
+
+    public function generateMinorList(Request $request) {
+
+
+        $minor_industries= DB::table('space_classification')->where('major_industry',$request->get('major'))->get();
+        $output='';
+
+foreach($minor_industries as $minor_industry) {
+
+    $output .= '<option value="'.$minor_industry->minor_industry.'">'.$minor_industry->minor_industry.'</option>';
+
+
+}
+
+        echo $output;
+
+
+    }
+
+
+
 
     public function fetchspaceid(Request $request)
     {

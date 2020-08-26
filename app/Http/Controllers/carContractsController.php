@@ -80,32 +80,32 @@ class carContractsController extends Controller
 
     public function addContractFormA(){
         
-         return view('carRentalForm2');        	
+         return view('CarRentalForm2');
     }
 
     public function addContractFormB($id){
         $contract=carContract::find($id);
-         return view('carRentalFormB1')->with('contract',$contract);         
+         return view('CarRentalFormB1')->with('contract',$contract);
     }
 
     public function addContractFormC($id){
         $contract=carContract::find($id);
-         return view('carRentalFormB2')->with('contract',$contract);         
+         return view('CarRentalFormB2')->with('contract',$contract);
     }
 
     public function addContractFormD($id){
         $contract=carContract::find($id);
-         return view('carRentalFormB3')->with('contract',$contract);         
+         return view('CarRentalFormB3')->with('contract',$contract);
     }
 
     public function addContractFormD1($id){
         $contract=carContract::find($id);
-         return view('carRentalFormB31')->with('contract',$contract);         
+         return view('CarRentalFormB31')->with('contract',$contract);
     }
 
     public function addContractFormE($id){
         $contract=carContract::find($id);
-         return view('carRentalFormB4')->with('contract',$contract);         
+         return view('CarRentalFormB4')->with('contract',$contract);
     }
 
     // public function addContractForm(){

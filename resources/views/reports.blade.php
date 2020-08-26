@@ -124,28 +124,8 @@ $year=$current-3;
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-            <div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <i class="fas fa-file-contract"></i> Contracts
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
-    <a class="dropdown-item" href="/space_contracts_management">Space</a>
-  </div>
-</div>
-<div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fas fa-file-contract"></i> Invoices
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/invoice_management">Space</a>
-    <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
-<a class="dropdown-item" href="/water_bills_invoice_management">Water</a>
-<a class="dropdown-item" href="/electricity_bills_invoice_management">Electricity</a>
-  </div>
-</div>
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul>
@@ -183,9 +163,9 @@ $year=$current-3;
 
     <div class="form-group" id="spacetypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="space_type">Select Report Type*</label>
+          <label for="major_industry">Select Report Type*</label>
           <span id="spacetypemsg"></span>
-            <select class="form-control" id="space_type" name="space_type">
+            <select class="form-control" id="major_industry" name="major_industry">
               <option value=" " disabled selected hidden>Select Report Type</option>
               <option value="list">List of Spaces</option>
               <option value="history">Space History</option>
@@ -523,7 +503,7 @@ $year=$current-3;
         </div>
     </div>
 
-    
+
 
     <div class="form-group" id="cartypediv" style="display: none;">
           <div class="form-wrapper">
@@ -1045,7 +1025,7 @@ $year=$current-3;
        $('#businesstypediv').hide();
        $('#contractstatusdiv').hide();
        $('#paymentstatusdiv').hide();
-       $('#space_type').val(" ");
+       $('#major_industry').val(" ");
        $('#space_id').val(" ");
        $('#start_date').val(" ");
        $('#end_date').val(" ");
@@ -1147,7 +1127,7 @@ $year=$current-3;
        $('#InsurancefilterBydiv').hide();
        $('#principaltypediv').hide();
        $('#insurancetypediv').hide();
-       $('#space_type').val(" ");
+       $('#major_industry').val(" ");
        $('#space_id').val(" ");
        $('#start_date').val(" ");
        $('#end_date').val(" ");
@@ -1246,7 +1226,7 @@ $year=$current-3;
        $('#contractstatusdiv').hide();
        $('#paymentstatusdiv').hide();
        $('#tenanttypediv').hide();
-       $('#space_type').val(" ");
+       $('#major_industry').val(" ");
        $('#space_id').val(" ");
        $('#start_date').val(" ");
        $('#end_date').val(" ");
@@ -1375,7 +1355,7 @@ $year=$current-3;
        $('#spacepricediv').hide();
        $('#Locationtypediv').hide();
        $('#spaceoccupationdiv').hide();
-       $('#space_type').val(" ");
+       $('#major_industry').val(" ");
        $('#space_id').val(" ");
        $('#start_date').val(" ");
        $('#end_date').val(" ");
@@ -1652,7 +1632,7 @@ $year=$current-3;
     });
 
 
-   $("#space_type").click(function(){
+   $("#major_industry").click(function(){
      var query = $(this).val();
      if(query=='list'){
       $('#space_idDiv').hide();
@@ -2152,14 +2132,14 @@ $("#rentstatus_filter").click(function(){
        var query = $("#module").val();
 
        if(query=='space'){
-        var query2 = $("#space_type").val();
+        var query2 = $("#major_industry").val();
         if(query2==null){
           p1=0;
           $('#spacetypemsg').show();
              var message=document.getElementById('spacetypemsg');
              message.style.color='red';
              message.innerHTML="Required";
-             $('#space_type').attr('style','border:1px solid #f00');
+             $('#major_industry').attr('style','border:1px solid #f00');
         }
 
         else if(query2=='list'){
@@ -2251,7 +2231,7 @@ $("#rentstatus_filter").click(function(){
     });
 
           var _token = $('input[name="_token"]').val();
-          var postData = "module="+ query+ "&space_type="+ query2+ "&min_price=" + query3 + "&max_price=" +query4 + "&space_status=" +query5+"&space_prize="+$('#space_prize').val()+"&status="+ $('#Status').val()+"&location="+queryA+"&location_status="+$('#location_filter').val();
+          var postData = "module="+ query+ "&major_industry="+ query2+ "&min_price=" + query3 + "&max_price=" +query4 + "&space_status=" +query5+"&space_prize="+$('#space_prize').val()+"&status="+ $('#Status').val()+"&location="+queryA+"&location_status="+$('#location_filter').val();
 
             $.ajax({
             url: "{{ route('spacereport1') }}",
@@ -2352,7 +2332,7 @@ $("#rentstatus_filter").click(function(){
        else{
         p1=0;
                 $('#spacetypemsg').hide();
-                $('#space_type').attr('style','border: 1px solid #ccc');
+                $('#major_industry').attr('style','border: 1px solid #ccc');
         }
     }
     else if(query=='insurance'){
@@ -2782,7 +2762,7 @@ $("#rentstatus_filter").click(function(){
         });
         }
           }
-        
+
     }
 
     else if(query=='car'){

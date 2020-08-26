@@ -89,7 +89,9 @@ table {
         <tbody>
         	@foreach($space as $space)
         	<tr>
+
         		<th scope="row" class="counterCell">.</th>
+
               <td>{{$space->full_name}}</td>
               <td><center>{{date("d/m/Y",strtotime($space->start_date))}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($space->end_date))}}</center></td>

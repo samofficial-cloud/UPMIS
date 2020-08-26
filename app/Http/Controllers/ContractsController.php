@@ -23,14 +23,26 @@ class ContractsController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function SpaceContractsManagement()
+    public function ContractsManagement()
     {
-        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',1)->WhereDate('end_date','>',date('Y-m-d'))->get();
-        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
+        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->get();
+//        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
+        $insurance_contracts=DB::table('insurance_contracts')->where('contract_status',1)->where('expiry_status',1)->get();
 
-        return view('space_contracts_management')->with('space_contracts',$space_contracts)->with('space_contracts_inactive',$space_contracts_inactive);
+        return view('contracts_management')->with('space_contracts',$space_contracts)->with('insurance_contracts',$insurance_contracts);
 
     }
+
+
+    public function ContractDetails($contract_id)
+    {
+        $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id',$contract_id)->get();
+        $associated_invoices=DB::table('invoices')->where('contract_id',$contract_id)->get();
+
+        return view('contract_details')->with('space_contract',$space_contract)->with('associated_invoices',$associated_invoices)->with('contract_id',$contract_id);
+
+    }
+
 
     public function SpaceContractForm()
     {
@@ -51,26 +63,39 @@ class ContractsController extends Controller
 
     public function CreateSpaceContract(Request $request)
     {
-    $programming_end_date='';
-        //for programming purposes
-        if($request->get('payment_cycle')=='Monthly') {
+        $end_date="";
+        if($request->get('duration_period')=="Months"){
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $monthsToAdd = $request->get('duration');
+            $end_date = $end_date->addMonths($monthsToAdd);
 
-            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $daysToAdd = 30;
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+        }elseif($request->get('duration_period')=="Years"){
 
-
-        }elseif($request->get('payment_cycle')=='Yearly'){
-
-            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $daysToAdd = 365;
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
-
-
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $yearsToAdd = $request->get('duration');
+            $end_date = $end_date->addYears($yearsToAdd);
         }else{
 
 
         }
+
+
+
+
+    $programming_end_date='';
+        //for programming purposes
+
+
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+
+            $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+
+
+
+
 
 
         if($request->get('client_type')==1){
@@ -105,7 +130,7 @@ class ContractsController extends Controller
 
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date')]
+                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
             );
 
         }else {
@@ -115,20 +140,20 @@ class ContractsController extends Controller
 
 
                 DB::table('clients')->insert(
-                    ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
+                    ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
                 );
 
 
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date')]
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
                 );
 
             } else {
 
                 DB::table('clients')->insert(
-                    ['first_name' => $request->get('company_name'), 'last_name' => '', 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
+                    ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
                 );
 
 
@@ -136,7 +161,7 @@ class ContractsController extends Controller
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date')]
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
                 );
 
 
@@ -145,7 +170,7 @@ class ContractsController extends Controller
 
 
 
-        return redirect('/space_contracts_management')
+        return redirect('/contracts_management')
             ->with('success', 'Contract created successfully');
     }
 
@@ -158,29 +183,35 @@ class ContractsController extends Controller
     public function RenewSpaceContract(Request $request,$id)
     {
 
+        $end_date="";
+        if($request->get('duration_period')=="Months"){
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $monthsToAdd = $request->get('duration');
+            $end_date = $end_date->addMonths($monthsToAdd);
+
+        }elseif($request->get('duration_period')=="Years"){
+
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $yearsToAdd = $request->get('duration');
+            $end_date = $end_date->addYears($yearsToAdd);
+        }else{
+
+
+        }
+
+
+
+
         DB::table('space_contracts')->where('contract_id', $id)->delete();
 
 
         $programming_end_date='';
         //for programming purposes
-        if($request->get('payment_cycle')=='Monthly') {
+        $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
-            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $daysToAdd = 30;
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+        $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
+        $programming_end_date = $programming_end_date->addDays($daysToAdd);
 
-
-        }elseif($request->get('payment_cycle')=='Yearly'){
-
-            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $daysToAdd = 365;
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
-
-
-        }else{
-
-
-        }
 
 
         if($request->get('client_type')==1){
@@ -215,7 +246,7 @@ class ContractsController extends Controller
 
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date')]
+                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
             );
 
         }else {
@@ -225,20 +256,20 @@ class ContractsController extends Controller
 
 
                 DB::table('clients')->insert(
-                    ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
+                    ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
                 );
 
 
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date')]
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
                 );
 
             } else {
 
                 DB::table('clients')->insert(
-                    ['first_name' => $request->get('company_name'), 'last_name' => '', 'type' => $request->get('type'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
+                    ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
                 );
 
 
@@ -246,7 +277,7 @@ class ContractsController extends Controller
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $request->get('end_date'),'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date')]
+                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
                 );
 
 
@@ -255,7 +286,7 @@ class ContractsController extends Controller
 
 
 
-        return redirect('/space_contracts_management')
+        return redirect('/contracts_management')
             ->with('success', 'Contract created successfully');
     }
 
@@ -271,7 +302,7 @@ class ContractsController extends Controller
                 ->where('contract_id', $id)
                 ->update(['contract_status' => 0]);
 
-            return redirect('/space_contracts_management')
+            return redirect('/contracts_management')
                 ->with('success', 'Contract terminated successfully');
 
 
@@ -288,8 +319,35 @@ class ContractsController extends Controller
     }
 
 
+
+    public function OnFlySpaceContractForm(Request $request,$id)
+    {
+
+        $space_info=DB::table('spaces')->where('id',$id)->get();
+
+        return view('space_contract_form_onfly')->with('space_info',$space_info);
+    }
+
+
     public function EditSpaceContractFinalProcessing(Request $request,$contract_id,$client_id)
     {
+
+        $end_date="";
+        if($request->get('duration_period')=="Months"){
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $monthsToAdd = $request->get('duration');
+            $end_date = $end_date->addMonths($monthsToAdd);
+
+        }elseif($request->get('duration_period')=="Years"){
+
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $yearsToAdd = $request->get('duration');
+            $end_date = $end_date->addYears($yearsToAdd);
+        }else{
+
+
+        }
+
 
         if($request->get('company_name')=="") {
 
@@ -393,49 +451,42 @@ class ContractsController extends Controller
 
         DB::table('space_contracts')
             ->where('contract_id', $contract_id)
-            ->update(['end_date' => $request->get('end_date')]);
+            ->update(['end_date' => $end_date]);
+
+        DB::table('space_contracts')
+            ->where('contract_id', $contract_id)
+            ->update(['duration' => $request->get('duration')]);
+
+
+        DB::table('space_contracts')
+            ->where('contract_id', $contract_id)
+            ->update(['duration_period' => $request->get('duration_period')]);
+
+
+        DB::table('space_contracts')
+            ->where('contract_id', $contract_id)
+            ->update(['has_water_bill' => $request->get('has_water_bill')]);
+
+
+        DB::table('space_contracts')
+            ->where('contract_id', $contract_id)
+            ->update(['has_electricity_bill' => $request->get('has_electricity_bill')]);
 
 //for programming purposes
-        if($request->get('payment_cycle')=='Monthly') {
 
-            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $daysToAdd = 30;
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+        $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
+        $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
+        $programming_end_date = $programming_end_date->addDays($daysToAdd);
 
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['programming_end_date' => $programming_end_date]);
-
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['programming_start_date' => $request->get('start_date')]);
+        DB::table('space_contracts')
+            ->where('contract_id', $contract_id)
+            ->update(['programming_end_date' => $programming_end_date]);
 
 
-
-        }elseif($request->get('payment_cycle')=='Yearly'){
-
-            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $daysToAdd = 365;
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
-
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['programming_end_date' => $programming_end_date]);
-
-
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['programming_start_date' => $request->get('start_date')]);
-
-
-
-
-
-        }else{
-
-
-        }
+        DB::table('space_contracts')
+            ->where('contract_id', $contract_id)
+            ->update(['programming_start_date' => $request->get('start_date')]);
 
 
 
@@ -447,7 +498,7 @@ class ContractsController extends Controller
 
 
 
-        return redirect('/space_contracts_management')
+        return redirect('/contracts_management')
             ->with('success', 'Contract details edited successfully');
     }
 
@@ -455,12 +506,12 @@ class ContractsController extends Controller
 
     //insurance contracts
 
-    public function InsuranceContractsManagement()
-    {
-        $insurance_contracts=DB::table('insurance_contracts')->where('contract_status',1)->where('expiry_status',1)->get();
-
-        return view('insurance_contracts_management')->with('insurance_contracts',$insurance_contracts);
-    }
+//    public function InsuranceContractsManagement()
+//    {
+//        $insurance_contracts=DB::table('insurance_contracts')->where('contract_status',1)->where('expiry_status',1)->get();
+//
+//        return view('insurance_contracts_management')->with('insurance_contracts',$insurance_contracts);
+//    }
 
 
 
@@ -475,7 +526,7 @@ class ContractsController extends Controller
             ->where('id', $id)
             ->update(['contract_status' => 0]);
 
-        return redirect('/insurance_contracts_management')
+        return redirect('/contracts_management')
             ->with('success', 'Contract terminated successfully');
 
 
@@ -493,16 +544,33 @@ class ContractsController extends Controller
     public function CreateInsuranceContract(Request $request)
     {
 
+        $end_date="";
+        if($request->get('duration_period')=="Months"){
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $monthsToAdd = $request->get('duration');
+            $end_date = $end_date->addMonths($monthsToAdd);
+
+        }elseif($request->get('duration_period')=="Years"){
+
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $yearsToAdd = $request->get('duration');
+            $end_date = $end_date->addYears($yearsToAdd);
+        }else{
+
+
+        }
+
+
 
         DB::table('insurance_contracts')->insert(
-            ['vehicle_registration_no' => $request->get('vehicle_registration_no'), 'vehicle_use' => $request->get('vehicle_use'), 'principal' => $request->get('principal'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $request->get('end_date'), 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name')]
+            ['vehicle_registration_no' => $request->get('vehicle_registration_no'), 'vehicle_use' => $request->get('vehicle_use'), 'principal' => $request->get('principal'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name')]
         );
 
 
 
 
 
-        return redirect('/insurance_contracts_management')
+        return redirect('/contracts_management')
             ->with('success', 'Contract created successfully');
     }
 
@@ -520,6 +588,21 @@ class ContractsController extends Controller
 
     public function EditInsuranceContractFinalProcessing(Request $request,$contract_id)
     {
+        $end_date="";
+        if($request->get('duration_period')=="Months"){
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $monthsToAdd = $request->get('duration');
+            $end_date = $end_date->addMonths($monthsToAdd);
+
+        }elseif($request->get('duration_period')=="Years"){
+
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $yearsToAdd = $request->get('duration');
+            $end_date = $end_date->addYears($yearsToAdd);
+        }else{
+
+
+        }
 
         DB::table('insurance_contracts')
             ->where('id', $contract_id)
@@ -543,7 +626,7 @@ class ContractsController extends Controller
 
         DB::table('insurance_contracts')
             ->where('id', $contract_id)
-            ->update(['end_date' => $request->get('end_date')]);
+            ->update(['end_date' => $end_date]);
 
         DB::table('insurance_contracts')
             ->where('id', $contract_id)
@@ -575,7 +658,7 @@ class ContractsController extends Controller
 
 
 
-        return redirect('/insurance_contracts_management')
+        return redirect('/contracts_management')
             ->with('success', 'Contract details edited successfully');
     }
 

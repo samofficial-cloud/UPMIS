@@ -61,28 +61,8 @@
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-            <div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <i class="fas fa-file-contract"></i> Contracts
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
-    <a class="dropdown-item" href="/space_contracts_management">Space</a>
-  </div>
-</div>
-<div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fas fa-file-contract"></i> Invoices
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/invoice_management">Space</a>
-    <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
-<a class="dropdown-item" href="/water_bills_invoice_management">Water</a>
-<a class="dropdown-item" href="/electricity_bills_invoice_management">Electricity</a>
-  </div>
-</div>
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+          <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul>
@@ -98,12 +78,20 @@
           </div>
         @endif
 
+        <div>
+
+          <br>
+          <h3 style="text-align: center;">INSURANCE PACKAGES</h3>
+
+
+        </div>
+
         <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="    background-color: lightgrey;
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true">New Insurance</a>
-  <br>
+    margin-top: 4px;" role="button" aria-pressed="true">New insurance package</a>
+
 
   <div class="">
     <div class="modal fade" id="add_insurance" role="dialog">
@@ -111,7 +99,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <b><h5 class="modal-title">New Insurance Informantion</h5></b>
+            <b><h5 class="modal-title">New Insurance Package</h5></b>
 
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
@@ -119,6 +107,17 @@
           <div class="modal-body">
             <form method="post" action="{{ route('add_insurance')}}"  id="form1" >
               {{csrf_field()}}
+
+
+              <div class="form-group">
+                <div class="form-wrapper">
+                  <label for="insurance_company"  ><strong>Class  </strong></label>
+                  <input type="text" class="form-control" id="class" name="class"  Required autocomplete="off">
+                </div>
+              </div>
+              <br>
+
+
               <div class="form-group">
                 <div class="form-wrapper">
                   <label for="insurance_company"  ><strong>Insurance Company  </strong></label>
@@ -129,7 +128,7 @@
 
               <div class="form-group">
                 <div class="form-wrapper">
-                  <label for="insurance_type"  ><strong>Insurance Type</strong></label>
+                  <label for="insurance_type"  ><strong>Type</strong></label>
                   <select id="insurance_type" class="form-control" name="insurance_type" >
                     <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
                     <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
@@ -145,10 +144,47 @@
                 </div>
               </div>
               <br>
+
+
               <div class="form-group">
                 <div class="form-wrapper">
-                  <label for="commission"  ><strong>Commission<span style="color: red;"></span></strong></label>
-                  <input type="number" min="1" class="form-control" id="commission" name="commission"  required autocomplete="off">
+                  <label  style="display: inline-block;">Commission</label>
+                  <div  id="" style="display: none;" class="form-group row">
+
+                    <div class="col-6 inline_block form-wrapper">
+                      <label  for="commission_percentage" class=" col-form-label">Percentage:</label>
+                      <div class="">
+                        <input type="number" min="1"  step="0.01" class="form-control"  name="commission_percentage" required value=""  id="commission_percentage" autocomplete="off">
+                      </div>
+                    </div>
+
+                    <div class="col-6 inline_block form-wrapper">
+                      <label  for="commission" class=" col-form-label">Amount:</label>
+                      <div  class="">
+                        <input type="number" min="10" id="commission"  class="form-control" name="commission" value="" required autocomplete="off">
+                      </div>
+                    </div>
+
+
+
+
+                  </div>
+
+
+
+
+                </div>
+              </div>
+              <br>
+
+              <div class="form-group">
+                <div class="form-wrapper">
+                  <label for="price"  ><strong>Currency</strong></label>
+                  <select id="insurance_currency" class="form-control" name="insurance_currency" >
+                    <option value=""></option>
+                    <option value="TZS" >TZS</option>
+                    <option value="USD" >USD</option>
+                  </select>
                 </div>
               </div>
               <br>
@@ -178,8 +214,9 @@
         <thead class="thead-dark">
         <tr>
           <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
+          <th scope="col" style="color:#3490dc;"><center>Class</center></th>
           <th scope="col" style="color:#3490dc;"><center>Insurance Company</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Insurance Type</center></th>
+          <th scope="col" style="color:#3490dc;"><center>Type</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Price (TZS)</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Commission (TZS)</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
@@ -191,6 +228,7 @@
           <tr>
 
             <td class="counterCell text-center"></td>
+            <td><center>{{$var->class}}</center></td>
             <td><center>{{$var->insurance_company}}</center></td>
             <td><center>{{$var->insurance_type}}</center></td>
             <td><center>{{$var->price}}</center></td>
@@ -203,7 +241,7 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <b><h5 class="modal-title">Edit Insurance Informantion</h5></b>
+                        <b><h5 class="modal-title">Edit insurance package informantion</h5></b>
 
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                       </div>
@@ -211,6 +249,18 @@
                       <div class="modal-body">
                         <form method="post" action="{{ route('edit_insurance',$var->id)}}"  id="form1" >
                           {{csrf_field()}}
+
+
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="class"  ><strong>Class  </strong></label>
+                              <input type="text" class="form-control" id="class" name="class"  value="{{$var->class}}"   Required autocomplete="off">
+                            </div>
+                          </div>
+                          <br>
+
+
+
                           <div class="form-group">
                             <div class="form-wrapper">
                               <label for="insurance_company"  ><strong>Insurance Company  </strong></label>
@@ -221,7 +271,7 @@
 
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="insurance_type"  ><strong>Insurance Type</strong></label>
+                              <label for="insurance_type"  ><strong>Type</strong></label>
                               <select id="insurance_type" class="form-control" name="insurance_type" >
 
                                 @if($var->insurance_type=='THIRD PARTY')

@@ -61,28 +61,9 @@
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-            <div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <i class="fas fa-file-contract"></i> Contracts
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
-    <a class="dropdown-item" href="/space_contracts_management">Space</a>
-  </div>
-</div>
-<div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fas fa-file-contract"></i> Invoices
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/invoice_management">Space</a>
-    <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a> 
-<a class="dropdown-item" href="/water_bills_invoice_management">Water</a>
-<a class="dropdown-item" href="/electricity_bills_invoice_management">Electricity</a>
-  </div>
-</div>
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
+
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul>
@@ -127,46 +108,117 @@
 
                    <form method="post" action="{{ route('add_space')}}"  id="form1" >
                      {{csrf_field()}}
-                     <div class="form-group">
-                       <div class="form-wrapper">
-                         <label for=""  ><strong>Space Id  </strong></label>
-                         <input type="text" class="form-control" id="" name="space_id" value="" Required autocomplete="off">
-                       </div>
-                     </div>
-                     <br>
+
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="space_type"  ><strong>Type</strong></label>
-                         <select id="space_type" class="form-control" name="space_type" >
+                         <label for="major_industry"  ><strong>Major industry</strong></label>
+                         <select id="getMajor"  class="form-control" name="major_industry" required>
+                             <option value="" selected></option>
 
-                           <option value="Mall-shop" id="Option" >Mall-shop</option>
-                           <option value="Villa" id="Option">Villa</option>
-                           <option value="Office block" id="Option">Office block</option>
-                           <option value="Cafeteria" id="Option">Cafeteria</option>
-                           <option value="Stationery" id="Option">Stationery</option>
+                             <?php
+                                $major_industries=DB::table('space_classification')->get();
+
+
+                             $tempOut = array();
+                             foreach($major_industries as $values){
+                                 $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                 $val = (iterator_to_array($iterator,true));
+                                 $tempoIn=$val['major_industry'];
+
+                                 if(!in_array($tempoIn, $tempOut))
+                                 {
+                                     print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
+                                     array_push($tempOut,$tempoIn);
+                                 }
+
+                             }
+                             ?>
                          </select>
                        </div>
                      </div>
                      <br>
 
+
+                     <div id="descriptionDiv"  class="form-group">
+                       <div class="form-wrapper">
+                         <label for=""  ><strong>Minor industry</strong></label>
+                           <select id="minor_list" required class="form-control" name="minor_industry" >
+
+
+                           </select>
+                       </div>
+                     </div>
+                     <br>
+
+
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for=""  ><strong>Space Number  </strong></label>
+                         <input type="text" class="form-control" id="" name="space_id" value="" Required autocomplete="off">
+                       </div>
+                     </div>
+                     <br>
+
+
+
                      <div class="form-group">
                        <div class="form-wrapper">
                          <label for="space_location"  ><strong>Location</strong></label>
-                         <select class="form-control" id="space_location" name="space_location" >
+                         <select class="form-control" id="space_location" required name="space_location" >
+                             <option value="" selected></option>
                            <option value="Mlimani City" id="Option" >Mlimani City</option>
                            <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
                          </select>
                        </div>
                      </div>
                      <br>
+
+
+
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                         <input type="number" min="1" class="form-control" id="" name="space_size" value=""  autocomplete="off">
+                         <label for="space_location"  ><strong>Sub location</strong></label>
+                         <input type="text"  class="form-control" id="" name="space_sub_location" value=""  autocomplete="off">
                        </div>
                      </div>
                      <br>
+
+
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                         <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value=""  autocomplete="off">
+                       </div>
+                     </div>
+                     <br>
+
+
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for="has_water_bill"  ><strong>Need to also pay Water bill</strong></label>
+                         <select class="form-control" id="has_water_bill" required name="has_water_bill" >
+                           <option value="" selected></option>
+                           <option value="No" id="Option" >No</option>
+                           <option value="Yes" id="Option">Yes</option>
+                         </select>
+                       </div>
+                     </div>
+                     <br>
+
+
+                     <div class="form-group">
+                       <div class="form-wrapper">
+                         <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
+                         <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
+                           <option value="" selected></option>
+                           <option value="No" id="Option" >No</option>
+                           <option value="Yes" id="Option">Yes</option>
+                         </select>
+                       </div>
+                     </div>
+                     <br>
+
 
                      <div class="form-group">
                        <div class="form-wrapper">
@@ -177,14 +229,14 @@
                          <div class="col-4 inline_block form-wrapper">
                            <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
                            <div class="">
-                             <input type="number" min="1" class="form-control" id="rent_price_guide_from" name="rent_price_guide_from" value=""  autocomplete="off">
+                             <input type="number" min="5" class="form-control" id="rent_price_guide_from" name="rent_price_guide_from" value=""  autocomplete="off">
                            </div>
                          </div>
 
                          <div class="col-4 inline_block form-wrapper">
                            <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
                            <div  class="">
-                             <input type="number" min="1" class="form-control" id="rent_price_guide_to" name="rent_price_guide_to" value=""  autocomplete="off">
+                             <input type="number" min="10" class="form-control" id="rent_price_guide_to" name="rent_price_guide_to" value=""  autocomplete="off">
                            </div>
                          </div>
 
@@ -208,6 +260,15 @@
 
                        </div>
                      </div>
+
+
+                       <div class="form-group">
+                           <div class="form-wrapper">
+                               <label for=""  ><strong>Comments  </strong></label>
+                               <input type="text" class="form-control" id="" name="comments" value=""  autocomplete="off">
+                           </div>
+                       </div>
+                       <br>
 
 
                      <div align="right">
@@ -239,11 +300,17 @@
         <thead class="thead-dark">
         <tr>
           <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Space Id</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Type</center></th>
+          <th scope="col" style="color:#3490dc;"><center>Major Industry</center></th>
+          <th scope="col" style="color:#3490dc;"><center>Minor Industry</center></th>
+          <th scope="col" style="color:#3490dc;"><center>Space Number</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Location</center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Sub Location</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Size (SQM)</center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Has Water bill</center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Has Electricity bill</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Status</center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Comments</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
         </tr>
         </thead>
@@ -253,9 +320,11 @@
           <tr>
 
             <td class="counterCell text-center"></td>
+            <td><center>{{$var->major_industry}}</center></td>
+            <td><center>{{$var->minor_industry}}</center></td>
             <td><center>{{$var->space_id}}</center></td>
-            <td><center>{{$var->space_type}}</center></td>
             <td><center>{{$var->location}}</center></td>
+            <td><center>{{$var->sub_location}}</center></td>
 
             <td><center>  @if($var->size==null)
                   N/A
@@ -264,6 +333,10 @@
                             @endif
 
               </center></td>
+
+            <td><center>{{$var->has_water_bill_space}}</center></td>
+            <td><center>{{$var->has_electricity_bill_space}}</center></td>
+
             <td><center>
 
                 @if($var->rent_price_guide_from==null)
@@ -273,11 +346,22 @@
                 @endif
 
                 </center></td>
+
+              <td><center>
+                      @if($var->occupation_status==1)
+                          Occupied
+                      @else
+                          Vacant
+                      @endif
+
+
+                      </center></td>
+              <td><center>{{$var->comments}}</center></td>
             <td>
 
 
               <a data-toggle="modal" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
-
+              <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" aria-hidden="true"></i></a>
                 <a data-toggle="modal" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
                 <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
 
@@ -292,92 +376,83 @@
                       <div class="modal-body">
                         <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
                           {{csrf_field()}}
+
+
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="" ><strong>Space Id</strong></label>
-                              <input type="text" class="form-control" id="" name="space_id" value="{{$var->space_id}}" Required autocomplete="off">
+                              <label for="major_industry"  ><strong>Major industry</strong></label>
+                                <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
+
                             </div>
                           </div>
                           <br>
 
+
+                            <div id="descriptionDivEdit"  class="form-group">
+                              <div class="form-wrapper">
+                                <label for=""  ><strong>Minor industry</strong></label>
+                                <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+                              </div>
+                            </div>
+                            <br>
+
+
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="space_type"  ><strong>Type</strong></label>
-                              <select id="space_type" class="form-control" name="space_type" >
-
-                                @if($var->space_type=='Mall-shop')
-                                <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
-                                <option value="Villa" id="Option">Villa</option>
-                                <option value="Office block" id="Option">Office block</option>
-                                <option value="Cafeteria" id="Option">Cafeteria</option>
-                                <option value="Stationery" id="Option">Stationery</option>
-
-                                @elseif($var->space_type=='Villa')
-                                  <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
-                                  <option value="Mall-shop" id="Option" >Mall-shop</option>
-                                  <option value="Office block" id="Option">Office block</option>
-                                  <option value="Cafeteria" id="Option">Cafeteria</option>
-                                  <option value="Stationery" id="Option">Stationery</option>
-                                @elseif($var->space_type=='Office block')
-                                  <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
-                                  <option value="Mall-shop" id="Option">Mall-shop</option>
-                                  <option value="Villa" id="Option">Villa</option>
-                                  <option value="Cafeteria" id="Option">Cafeteria</option>
-                                  <option value="Stationery" id="Option">Stationery</option>
-                                @elseif($var->space_type=='Cafeteria')
-                                  <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
-                                  <option value="Mall-shop" id="Option" >Mall-shop</option>
-                                  <option value="Villa" id="Option">Villa</option>
-                                  <option value="Office block" id="Option">Office block</option>
-                                  <option value="Stationery" id="Option">Stationery</option>
-                                @elseif($var->space_type=='Stationery')
-                                  <option value=" {{$var->space_type}}" id="Option" >{{$var->space_type}}</option>
-                                  <option value="Mall-shop" id="Option" >Mall-shop</option>
-                                  <option value="Villa" id="Option">Villa</option>
-                                  <option value="Office block" id="Option">Office block</option>
-                                  <option value="Cafeteria" id="Option">Cafeteria</option>
-
-                                  @else
-
-                                  @endif
-
-
-
-
-
-
-
-
-
-                              </select>
+                              <label for="" ><strong>Space Number</strong></label>
+                              <input type="text" class="form-control" id="" name="space_id" value="{{$var->space_id}}" readonly Required autocomplete="off">
                             </div>
                           </div>
                           <br>
+
+
 
                           <div class="form-group">
                             <div class="form-wrapper">
                               <label for="space_location"  ><strong>Location</strong></label>
-                              <select class="form-control" id="space_location" name="space_location" >
-
-                                @if($var->location=='Mlimani City')
-                                  <option value="{{$var->location}}" id="Option" >{{$var->location}}</option>
-                                <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
-                                @elseif($var->location=='UDSM Main Campus')
-                                  <option value="Mlimani City" id="Option" >Mlimani City</option>
-                                @else
-
-                                @endif
-                              </select>
+                                <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
                             </div>
                           </div>
                           <br>
+
+
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="space_location"  ><strong>Sub location</strong></label>
+                              <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
+                            </div>
+                          </div>
+                          <br>
+
+
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="has_water_bill"  ><strong>Need to also pay Water bill</strong></label>
+                              <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
+                            </div>
+                          </div>
+                          <br>
+
+
+                          <div class="form-group">
+                            <div class="form-wrapper">
+                              <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
+                              <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
+                            </div>
+                          </div>
+                          <br>
+
+
+
                           <div class="form-group">
                             <div class="form-wrapper">
                               <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                              <input type="number" min="1" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                              <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
                             </div>
                           </div>
                           <br>
+
+
 
 
                           <div class="form-group">
@@ -391,14 +466,14 @@
                                 <div class="col-4 inline_block form-wrapper">
                                   <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
                                   <div class="">
-                                    <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                    <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
                                   </div>
                                 </div>
 
                                 <div class="col-4 inline_block  form-wrapper">
                                   <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
                                   <div  class="">
-                                    <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                    <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
                                   </div>
                                 </div>
 
@@ -468,8 +543,18 @@
                           </div>
                           <br>
 
+
+                            <div class="form-group">
+                                <div class="form-wrapper">
+                                    <label for=""  ><strong>Comments</strong></label>
+                                    <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                </div>
+                            </div>
+                            <br>
+
+
                           <div align="right">
-                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <button class="btn btn-primary" type="submit">Save</button>
                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                           </div>
                         </form>
@@ -535,6 +620,47 @@
 @endsection
 
 @section('pagescript')
+
+    <script type="text/javascript">
+        window.onload=function(){
+            $("#getMajor").trigger('change');
+        };
+    </script>
+
+
+<script>
+
+    $('#getMajor').on('change',function(e){
+        e.preventDefault();
+        var major = $(this).val();
+
+
+        if(major != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('generate_minor_list') }}",
+                method:"POST",
+                data:{major:major, _token:_token},
+                success:function(data){
+                    if(data=='0'){
+
+                    }
+                    else{
+
+
+                        $('#minor_list').html(data);
+                    }
+                }
+            });
+        }
+        else if(major==''){
+
+        }
+    });
+
+</script>
+
 <script>
 
 
