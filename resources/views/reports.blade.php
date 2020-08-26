@@ -108,6 +108,12 @@ select.list-dt:focus {
 @endsection
 
 @section('content')
+<?php
+$current=date('Y');
+$year=$current-3;
+    use App\hire_rate;
+      $model=hire_rate::select('vehicle_model')->get();
+    ?>
 <div class="wrapper">
 <div class="sidebar">
         <ul style="list-style-type:none;">
@@ -286,7 +292,7 @@ select.list-dt:focus {
         </div>
     </div>
 
-    <div class="form-group" id="InsurancefilterBydiv" style="display: none;">
+  <div class="form-group" id="InsurancefilterBydiv" style="display: none;">
       <div class="form-wrapper">
                   <label for="Criteria">Filter By</label>
                   <div class="row">
@@ -506,13 +512,126 @@ select.list-dt:focus {
             <select class="form-control" id="car_type" name="car_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
               {{-- <option value="car history">List of Car Rental History</option> --}}
-              <option value="cars">List of Rental Cars</option>
+              <option value="history">Car Rental History</option>
               <option value="clients">List of Clients</option>
+              <option value="cars">List of Rental Cars</option>
               <option value="revenue">Revenue Report From CPTU Vehicles</option>
               <option value="operational">Revenue Report For Service, Repairs and Fuel For Motor Vehicles</option>
             </select>
         </div>
     </div>
+
+    <div class="form-group" id="vehicleregdiv" style="display: none;">
+          <div class="form-wrapper">
+            <label for="vehicle_reg">Vehicle Reg. No*</label>
+            <span id="vehicleregmsg"></span>
+            <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
+            <span id="nameList"></span>
+          </div>
+        </div>
+
+
+    <div class="form-group" id="carsfilterBydiv" style="display: none;">
+      <div class="form-wrapper">
+                  <label for="Criteria">Filter By</label>
+                  <div class="row">
+
+                  <div class="form-wrapper col-3">
+                  <label for="carmodel_filter" style=" display: block;
+    white-space: nowrap;">Vehicle Model
+                  <input class="form-check-input" type="checkbox" name="carmodel_filter" id="carmodel_filter" value="">
+                </label>
+                 </div>
+
+                 <div class="form-wrapper col-3">
+                  <label for="carstatus_filter" style=" display: block;
+    white-space: nowrap;">Vehicle Status
+                   <input class="form-check-input" type="checkbox" name="carstatus_filter" id="carstatus_filter" value="">
+                   </label>
+                </div>
+
+                <div class="form-wrapper col-3">
+                  <label for="carrange_filter" style=" display: block;
+    white-space: nowrap;">Hire Range
+                   <input class="form-check-input" type="checkbox" name="carrange_filter" id="carrange_filter" value="">
+                   </label>
+                </div>
+
+                <div class="form-wrapper col-3">
+                  <label for="rentstatus_filter" style=" display: block;
+    white-space: nowrap;">Rent status
+                   <input class="form-check-input" type="checkbox" name="rentstatus_filter" id="rentstatus_filter" value="">
+                   </label>
+                </div>
+               </div>
+             </div>
+           </div>
+
+           <div class="form-group" id="carmodeldiv" style="display: none;">
+          <div class="form-wrapper">
+            <label for="model">Vehicle Model</label>
+             <span id="modelmsg"></span>
+            <select class="form-control" required="" id="model" name="model" required="">
+              <option value=""disabled selected hidden>Select Vehicle Model</option>
+              @foreach($model as $model) 
+              <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="carstatusdiv" style="display: none;">
+          <div class="form-wrapper" >
+          <label for="vehicle_status">Vehicle Status</label>
+           <span id="vehiclestatusmsg"></span>
+            <select class="form-control" required="" id="vehicle_status" name="vehicle_status" required="">
+              <option value=""disabled selected hidden>Select Vehicle status</option>
+              <option value="Running">Running</option>
+              <option value="Minor Repair">Minor Repair</option>
+              <option value="Grounded">Grounded</option>
+            </select>
+
+        </div>
+    </div>
+
+    <div class="form-group row" id="carrangediv" style="display: none;">
+            <div class="form-wrapper col-6">
+              <label for="carmin_price">Min Price*</label>
+              <span id="carminpricemsg"></span>
+              <input type="number" id="carmin_price" name="carmin_price" class="form-control" value="">
+            </div>
+            <div class="form-wrapper col-6">
+              <label for="carmax_price">Max Price*</label>
+              <span id="carmaxpricemsg"></span>
+              <input type="number" id="carmax_price" name="carmax_price" class="form-control" value="" >
+            </div>
+          </div>
+
+    <div class="form-group" id="rentstatusdiv" style="display: none;">
+          <div class="form-wrapper" >
+          <label for="rent_status">Rent Status</label>
+           <span id="rentstatusmsg"></span>
+            <select class="form-control" required="" id="rent_status" name="rent_status" required="">
+              <option value=""disabled selected hidden>Select Rent Status</option>
+              <option value="Rented">Rented</option>
+              <option value="Available">Available</option>
+            </select>
+
+        </div>
+    </div>
+
+     <div class="form-group row" id="rent_durationdiv" style="display: none;">
+            <div class="form-wrapper col-6">
+              <label for="rent_start_date">From*</label>
+              <span id="rent_startdatemsg"></span>
+              <input type="date" id="rent_start_date" name="rent_start_date" class="form-control" >
+            </div>
+            <div class="form-wrapper col-6">
+              <label for="rent_end_date">To*</label>
+              <span id="rent_enddatemsg"></span>
+              <input type="date" id="rent_end_date" name="rent_end_date" class="form-control" >
+            </div>
+          </div>
 
     <div class="form-group row" id="revenue_durationdiv" style="display: none;">
             <div class="form-wrapper col-6">
@@ -556,12 +675,33 @@ select.list-dt:focus {
                   <label for="Criteria">Filter By</label>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
+                 {{--  <div class="form-wrapper col-3">
                   <label for="client_filter" style=" display: block;
     white-space: nowrap;">Client Type
                   <input class="form-check-input" type="checkbox" name="client_filter" id="client_filter" value="">
                 </label>
+                 </div> --}}
+
+                 <div class="form-wrapper col-3">
+                  <label for="Con_client_filter" style=" display: block;
+    white-space: nowrap;">Client Name
+                  <input class="form-check-input" type="checkbox" name="Con_client_filter" id="Con_client_filter" value="">
+                </label>
                  </div>
+
+                 <div class="form-wrapper col-3">
+                  <label for="Con_payment_filter" style=" display: block;
+    white-space: nowrap;">Contract Status
+                   <input class="form-check-input" type="checkbox" name="Con_payment_filter" id="Con_payment_filter" value="">
+                   </label>
+                </div>
+
+                 <div class="form-wrapper col-3">
+                  <label for="Con_year_filter" style=" display: block;
+    white-space: nowrap;">Lease Year
+                   <input class="form-check-input" type="checkbox" name="Con_year_filter" id="Con_year_filter" value="">
+                   </label>
+                </div>
 
                </div>
              </div>
@@ -578,6 +718,184 @@ select.list-dt:focus {
             </select>
         </div>
     </div>
+
+     <div class="form-group" id="Con_clientnamediv" style="display: none;">
+          <div class="form-wrapper">
+            <label for="Con_clientname">Client Name*</label>
+            <span id="Conclientnamemsg"></span>
+            <input type="text" id="Con_clientname" name="Con_clientname" class="form-control" autocomplete="off">
+            <span id="ConnameList"></span>
+          </div>
+        </div> 
+
+        <div class="form-group" id="Conpaymentstatusdiv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="Con_payment_status">Select Contract Status*</label>
+          <span id="Conpaymentstatusmsg"></span>
+            <select class="form-control" id="Con_payment_status" name="Con_payment_status">
+              <option value=" " disabled selected hidden>Select Contract Status</option>
+              <option value="Active">Active</option>
+              <option value="Expired">Expired</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" id="Conyearcategorydiv" style="display: none;">
+      <div class="form-wrapper">
+                  <label for="Conyearcategory">Lease Year Category</label>
+                  <span id="Conyearcategorymsg"></span>
+                  <div class="row">
+
+                  <div class="form-wrapper col-3">
+                  <label for="Con_start_year" style=" display: block;
+    white-space: nowrap;">Lease Start
+                  <input class="form-check-input" type="radio" name="Conyearcategory" id="Con_start_year" value="start" checked="">
+                </label>
+                 </div>
+
+                 <div class="form-wrapper col-3">
+                  <label for="electricity_bill" style=" display: block;
+    white-space: nowrap;">Lease End
+                   <input class="form-check-input" type="radio" name="Conyearcategory" id="Con_end_year" value="end" >
+                   </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    <div class="form-group" id="Conyeardiv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="Con_year">Select Payment Status*</label>
+          <span id="Conyearmsg"></span>
+            <select class="form-control" id="Con_year" name="Con_year">
+            <option value=" " disabled selected hidden>Select Year</option>
+            @for($x=0;$x<=5; $x++)
+              <option value="{{$year + $x}}">{{$year + $x}}</option>
+              @endfor
+            </select>
+        </div>
+    </div> 
+
+    <div class="form-group" id="invoicetypediv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="invoice_type">Select Report Type*</label>
+          <span id="invoicetypemsg"></span>
+            <select class="form-control" id="invoice_type" name="invoice_type">
+              <option value=" " disabled selected hidden>Select Report Type</option>
+              <option value="list">List of Invoices</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" id="Inbusinesstypediv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="Inbusiness_type">Select Business Type*</label>
+          <span id="Inbusinesstypemsg"></span>
+            <select class="form-control" id="Inbusiness_type" name="Inbusiness_type">
+              <option value=" " disabled selected hidden>Select Business Type</option>
+              <option value="Space">SPACE</option>
+              <option value="Insurance">INSURANCE</option>
+              <option value="Car Rental">CAR RENTAL</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" id="InSpaceCriteriadiv" style="display: none;">
+      <div class="form-wrapper">
+                  <label for="InCriteria">Invoice Criteria</label>
+                  <span id="InspaceCriteriamsg"></span>
+                  <div class="row">
+
+                  <div class="form-wrapper col-3">
+                  <label for="In_space_rent" style=" display: block;
+    white-space: nowrap;">Space Rent
+                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="space_rent" value="rent" checked="">
+                </label>
+                 </div>
+
+                 <div class="form-wrapper col-3">
+                  <label for="electricity_bill" style=" display: block;
+    white-space: nowrap;">Electricity Bill
+                   <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="electricity_bill" value="electricity" >
+                   </label>
+                </div>
+
+                <div class="form-wrapper col-3">
+                  <label for="water_bill" style=" display: block;
+    white-space: nowrap;">Water Bill
+                   <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="water_bill" value="water">
+                   </label>
+                </div>
+               </div>
+             </div>
+           </div>
+
+    <div class="form-group" id="InvoicefilterBydiv" style="display: none;">
+      <div class="form-wrapper">
+                  <label for="Criteria">Filter By</label>
+                  <div class="row">
+
+                  <div class="form-wrapper col-3">
+                  <label for="In_client_filter" style=" display: block;
+    white-space: nowrap;">Client Name
+                  <input class="form-check-input" type="checkbox" name="In_client_filter" id="In_client_filter" value="">
+                </label>
+                 </div>
+
+                 <div class="form-wrapper col-3">
+                  <label for="In_payment_filter" style=" display: block;
+    white-space: nowrap;">Payment Status
+                   <input class="form-check-input" type="checkbox" name="In_payment_filter" id="In_payment_filter" value="">
+                   </label>
+                </div>
+
+                 <div class="form-wrapper col-3">
+                  <label for="In_year_filter" style=" display: block;
+    white-space: nowrap;">Year
+                   <input class="form-check-input" type="checkbox" name="In_year_filter" id="In_year_filter" value="">
+                   </label>
+                </div>
+
+                
+               </div>
+             </div>
+           </div>
+
+           
+
+         <div class="form-group" id="In_clientnamediv" style="display: none;">
+          <div class="form-wrapper">
+            <label for="In_clientname">Client Name*</label>
+            <span id="Inclientnamemsg"></span>
+            <input type="text" id="In_clientname" name="In_clientname" class="form-control" autocomplete="off">
+            <span id="nameListClient"></span>
+          </div>
+        </div> 
+
+        <div class="form-group" id="Inpaymentstatusdiv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="In_payment_status">Select Payment Status*</label>
+          <span id="Inpaymentstatusmsg"></span>
+            <select class="form-control" id="In_payment_status" name="In_payment_status">
+              <option value=" " disabled selected hidden>Select Payment Status</option>
+              <option value="Paid">Paid</option>
+              <option value="Not Paid">Not Paid</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" id="Inyeardiv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="In_year">Select Payment Status*</label>
+          <span id="Inyearmsg"></span>
+            <select class="form-control" id="In_year" name="In_year">
+            <option value=" " disabled selected hidden>Select Year</option>
+            @for($x=0;$x<=5; $x++)
+              <option value="{{$year + $x}}">{{$year + $x}}</option>
+              @endfor
+            </select>
+        </div>
+    </div> 
 
 
   </div>
@@ -601,6 +919,7 @@ select.list-dt:focus {
 @section('pagescript')
 <script type="text/javascript">
   $(document).ready(function(){
+    var az,bz,cz;
    $("#module").click(function(){
      var query = $(this).val();
      if(query=='space'){
@@ -634,6 +953,25 @@ select.list-dt:focus {
        $('#contract_status').val(" ");
        $('#payment_status').val(" ");
        $('#cartypediv').hide();
+       $('#carsfilterBydiv').hide();
+   $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+    $('#vehicleregdiv').hide();
+    $('#rent_durationdiv').hide();
+    $('#vehicle_reg').val("");
+    $('#rent_start_date').val("");
+    $('#rent_end_date').val("");
+    $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
        $('#revenue_durationdiv').hide();
        $('#car_type').val(" ");
        $('#tenanttypediv').hide();
@@ -645,6 +983,33 @@ select.list-dt:focus {
        $('#contract_type').val(" ");
        $('#contractbusiness_type').val(" ");
        $('#client_type').val(" ");
+       $('#invoicetypediv').hide();
+       $('#InvoicefilterBydiv').hide();
+       $('#Inbusinesstypediv').hide();
+       $('#In_clientnamediv').hide();
+       $('#Inpaymentstatusdiv').hide();
+       $('#Inyeardiv').hide();
+       $('#invoice_type').val(" ");
+       $('#Inbusiness_type').val(" ");
+       $('#In_clientname').val("");
+       $('#In_payment_status').val(" ");
+       $('#In_year').val(" ");
+       $("input[name='In_client_filter']:checked").prop("checked", false);
+       $("input[name='In_payment_filter']:checked").prop("checked", false);
+       $("input[name='In_year_filter']:checked").prop("checked", false);
+    $('#contractbusinesstypediv').hide();
+    $('#contractbusiness_type').val();
+    $('#ContractfilterBydiv').hide();
+    $('#Con_clientnamediv').hide();
+    $('#Con_clientname').val("");
+    $('#Conpaymentstatusdiv').hide();
+    $('#Con_payment_status').val(" ");
+    $('#Conyeardiv').hide();
+    $('#Con_year').val(" ");
+    $('#Conyearcategorydiv').hide();
+    $("input[name='Con_client_filter']:checked").prop("checked", false);
+    $("input[name='Con_payment_filter']:checked").prop("checked", false);
+    $("input[name='Con_year_filter']:checked").prop("checked", false);
      }
      else if(query=='insurance'){
        $('#spacetypediv').hide();
@@ -688,6 +1053,25 @@ select.list-dt:focus {
        $('#payment_status').val(" ");
        $('#tenant_type').val(" ");
        $('#cartypediv').hide();
+       $('#carsfilterBydiv').hide();
+   $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+    $('#vehicleregdiv').hide();
+    $('#rent_durationdiv').hide();
+    $('#vehicle_reg').val("");
+    $('#rent_start_date').val("");
+    $('#rent_end_date').val("");
+    $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
        $('#revenue_durationdiv').hide();
        $('#car_type').val(" ");
       $('#insurancereporttypediv').show();
@@ -700,6 +1084,33 @@ select.list-dt:focus {
        $('#contract_type').val(" ");
        $('#contractbusiness_type').val(" ");
        $('#client_type').val(" ");
+       $('#invoicetypediv').hide();
+       $('#InvoicefilterBydiv').hide();
+       $('#Inbusinesstypediv').hide();
+       $('#In_clientnamediv').hide();
+       $('#Inpaymentstatusdiv').hide();
+       $('#Inyeardiv').hide();
+       $('#invoice_type').val(" ");
+       $('#Inbusiness_type').val(" ");
+       $('#In_clientname').val("");
+       $('#In_payment_status').val(" ");
+       $('#In_year').val(" ");
+       $("input[name='In_client_filter']:checked").prop("checked", false);
+       $("input[name='In_payment_filter']:checked").prop("checked", false);
+       $("input[name='In_year_filter']:checked").prop("checked", false);
+       $('#contractbusinesstypediv').hide();
+    $('#contractbusiness_type').val();
+    $('#ContractfilterBydiv').hide();
+    $('#Con_clientnamediv').hide();
+    $('#Con_clientname').val("");
+    $('#Conpaymentstatusdiv').hide();
+    $('#Con_payment_status').val(" ");
+    $('#Conyeardiv').hide();
+    $('#Con_year').val(" ");
+    $('#Conyearcategorydiv').hide();
+    $("input[name='Con_client_filter']:checked").prop("checked", false);
+    $("input[name='Con_payment_filter']:checked").prop("checked", false);
+    $("input[name='Con_year_filter']:checked").prop("checked", false);
      }
      else if(query=='tenant'){
        $('#tenanttypediv').show();
@@ -734,6 +1145,25 @@ select.list-dt:focus {
        $('#insurancetypediv').hide();
        $('#cartypediv').hide();
        $('#car_type').val(" ");
+       $('#carsfilterBydiv').hide();
+   $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+    $('#vehicleregdiv').hide();
+    $('#rent_durationdiv').hide();
+    $('#vehicle_reg').val("");
+    $('#rent_start_date').val("");
+    $('#rent_end_date').val("");
+    $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
        $("input[name='principal_filter']:checked").prop("checked", false);
        $("input[name='insurance_typefilter']:checked").prop("checked", false);
        $('#insurance_reporttype').val(" ");
@@ -748,8 +1178,39 @@ select.list-dt:focus {
        $('#contractbusiness_type').val(" ");
        $('#client_type').val(" ");
        $('#revenue_durationdiv').hide();
+       $('#invoicetypediv').hide();
+       $('#InvoicefilterBydiv').hide();
+       $('#Inbusinesstypediv').hide();
+       $('#In_clientnamediv').hide();
+       $('#Inpaymentstatusdiv').hide();
+       $('#Inyeardiv').hide();
+       $('#invoice_type').val(" ");
+       $('#Inbusiness_type').val(" ");
+       $('#In_clientname').val("");
+       $('#In_payment_status').val(" ");
+       $('#In_year').val(" ");
+       $("input[name='In_client_filter']:checked").prop("checked", false);
+       $("input[name='In_payment_filter']:checked").prop("checked", false);
+       $("input[name='In_year_filter']:checked").prop("checked", false);
+       $('#contractbusinesstypediv').hide();
+    $('#contractbusiness_type').val();
+    $('#ContractfilterBydiv').hide();
+    $('#Con_clientnamediv').hide();
+    $('#Con_clientname').val("");
+    $('#Conpaymentstatusdiv').hide();
+    $('#Con_payment_status').val(" ");
+    $('#Conyeardiv').hide();
+    $('#Con_year').val(" ");
+    $('#Conyearcategorydiv').hide();
+    $("input[name='Con_client_filter']:checked").prop("checked", false);
+    $("input[name='Con_payment_filter']:checked").prop("checked", false);
+    $("input[name='Con_year_filter']:checked").prop("checked", false);
      }
      else if(query=='car'){
+      $('#insurancereporttypediv').hide();
+       $('#InsurancefilterBydiv').hide();
+       $('#principaltypediv').hide();
+       $('#insurancetypediv').hide();
       $('#cartypediv').show();
        $('#spacetypediv').hide();
        $('#spacefilterdiv').hide();
@@ -805,6 +1266,33 @@ select.list-dt:focus {
        $('#contract_type').val(" ");
        $('#contractbusiness_type').val(" ");
        $('#client_type').val(" ");
+       $('#invoicetypediv').hide();
+       $('#InvoicefilterBydiv').hide();
+       $('#Inbusinesstypediv').hide();
+       $('#In_clientnamediv').hide();
+       $('#Inpaymentstatusdiv').hide();
+       $('#Inyeardiv').hide();
+       $('#invoice_type').val(" ");
+       $('#Inbusiness_type').val(" ");
+       $('#In_clientname').val("");
+       $('#In_payment_status').val(" ");
+       $('#In_year').val(" ");
+       $("input[name='In_client_filter']:checked").prop("checked", false);
+       $("input[name='In_payment_filter']:checked").prop("checked", false);
+       $("input[name='In_year_filter']:checked").prop("checked", false);
+       $('#contractbusinesstypediv').hide();
+    $('#contractbusiness_type').val();
+    $('#ContractfilterBydiv').hide();
+    $('#Con_clientnamediv').hide();
+    $('#Con_clientname').val("");
+    $('#Conpaymentstatusdiv').hide();
+    $('#Con_payment_status').val(" ");
+    $('#Conyeardiv').hide();
+    $('#Con_year').val(" ");
+    $('#Conyearcategorydiv').hide();
+    $("input[name='Con_client_filter']:checked").prop("checked", false);
+    $("input[name='Con_payment_filter']:checked").prop("checked", false);
+    $("input[name='Con_year_filter']:checked").prop("checked", false);
      }
      else if(query=='contract'){
       $('#contracttypediv').show();
@@ -838,6 +1326,25 @@ select.list-dt:focus {
        $('#payment_status').val(" ");
        $('#cartypediv').hide();
        $('#car_type').val(" ");
+       $('#carsfilterBydiv').hide();
+   $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+    $('#vehicleregdiv').hide();
+    $('#rent_durationdiv').hide();
+    $('#vehicle_reg').val("");
+    $('#rent_start_date').val("");
+    $('#rent_end_date').val("");
+    $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
        $('#tenanttypediv').hide();
        $('#spacetypediv').hide();
        $('#spacefilterdiv').hide();
@@ -860,9 +1367,269 @@ select.list-dt:focus {
        $("input[name='space_filter_date']:checked").prop("checked", false);
        $("input[name='space_prize']:checked").prop("checked", false);
        $("input[name='location_filter']:checked").prop("checked", false);
+       $('#invoicetypediv').hide();
+       $('#InvoicefilterBydiv').hide();
+       $('#Inbusinesstypediv').hide();
+       $('#In_clientnamediv').hide();
+       $('#Inpaymentstatusdiv').hide();
+       $('#Inyeardiv').hide();
+       $('#invoice_type').val(" ");
+       $('#Inbusiness_type').val(" ");
+       $('#In_clientname').val("");
+       $('#In_payment_status').val(" ");
+       $('#In_year').val(" ");
+       $("input[name='In_client_filter']:checked").prop("checked", false);
+       $("input[name='In_payment_filter']:checked").prop("checked", false);
+       $("input[name='In_year_filter']:checked").prop("checked", false);
+     }
+     else if(query=='invoice'){
+      $('#invoicetypediv').show();
+      $('#contracttypediv').hide();
+      $('#insurancereporttypediv').hide();
+       $('#InsurancefilterBydiv').hide();
+       $('#principaltypediv').hide();
+       $('#insurancetypediv').hide();
+       $('#TenantfilterBydiv').hide();
+       $('#businesstypediv').hide();
+       $('#contractstatusdiv').hide();
+       $('#paymentstatusdiv').hide();
+       $("input[name='principal_filter']:checked").prop("checked", false);
+       $("input[name='insurance_typefilter']:checked").prop("checked", false);
+       $("input[name='business_filter']:checked").prop("checked", false);
+       $("input[name='contract_filter']:checked").prop("checked", false);
+       $("input[name='payment_filter']:checked").prop("checked", false);
+       $('#TenantInvoiceCriteriadiv').hide();
+       $('#t_invoicedurationdiv').hide();
+       $('#TenantInvoicefilterBydiv').hide();
+      $('#tInvoicepaymentstatusdiv').hide();
+      $("input[name='t_invoice_payment_filter']:checked").prop("checked", false);
+  $('#t_Invoice_start_date').val('');
+  $('#t_invoice_end_date').val('');
+  $('#t_invoicepayment_status').val(' ');
+       $('#insurance_reporttype').val(" ");
+       $('#principaltype').val(" ");
+       $('#insurance_type').val(" ");
+       $('#tenant_type').val(" ");
+       $('#business_type').val(" ");
+       $('#contract_status').val(" ");
+       $('#payment_status').val(" ");
+       $('#cartypediv').hide();
+       $('#car_type').val(" ");
+       $('#carsfilterBydiv').hide();
+   $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+    $('#vehicleregdiv').hide();
+    $('#rent_durationdiv').hide();
+    $('#vehicle_reg').val("");
+    $('#rent_start_date').val("");
+    $('#rent_end_date').val("");
+    $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
+       $('#tenanttypediv').hide();
+       $('#spacetypediv').hide();
+       $('#spacefilterdiv').hide();
+       $('#space_idDiv').hide();
+       $('#spacefilterBydate').hide();
+       $('#spacefilterBydiv').hide();
+       $('#spacedatediv').hide();
+       $('#spacepricediv').hide();
+       $('#Locationtypediv').hide();
+       $('#spaceoccupationdiv').hide();
+       $('#space_type').val(" ");
+       $('#space_id').val(" ");
+       $('#start_date').val(" ");
+       $('#end_date').val(" ");
+       $('#min_price').val(" ");
+       $('#max_price').val(" ");
+       $('#space_status').val("");
+       $('#Locationtype').val("");
+       $('#revenue_durationdiv').hide();
+       $("input[name='space_filter_date']:checked").prop("checked", false);
+       $("input[name='space_prize']:checked").prop("checked", false);
+       $("input[name='location_filter']:checked").prop("checked", false);
+       $('#contractbusinesstypediv').hide();
+    $('#contractbusiness_type').val();
+    $('#ContractfilterBydiv').hide();
+    $('#Con_clientnamediv').hide();
+    $('#Con_clientname').val("");
+    $('#Conpaymentstatusdiv').hide();
+    $('#Con_payment_status').val(" ");
+    $('#Conyeardiv').hide();
+    $('#Con_year').val(" ");
+    $('#Conyearcategorydiv').hide();
+    $("input[name='Con_client_filter']:checked").prop("checked", false);
+    $("input[name='Con_payment_filter']:checked").prop("checked", false);
+    $("input[name='Con_year_filter']:checked").prop("checked", false);
      }
     });
 
+    $("#invoice_type").click(function(){
+     var query = $(this).val();
+     if(query=='list'){
+      $('#Inbusinesstypediv').show();
+     }
+     else{
+      $('#InvoicefilterBydiv').hide();
+      $('#Inbusinesstypediv').hide();
+     }
+     });
+
+    $("#Inbusiness_type").click(function(){
+      var query=$(this).val();
+      $('#In_clientname').val("");
+      bz=1;
+      if(query!=null){
+       $('#InvoicefilterBydiv').show();
+      }
+      else{
+        $('#InvoicefilterBydiv').hide();
+        if(query=='Space'){
+        $('#InSpaceCriteriadiv').show();
+      }
+      else{
+         $('#InSpaceCriteriadiv').hide();
+      }
+      }
+      
+       });
+
+
+    $("#In_client_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#In_clientnamediv').show();
+    }
+    else{
+      $('#In_clientnamediv').hide();
+      $('#In_clientname').val("");
+    }
+    });
+
+    $("#In_payment_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#Inpaymentstatusdiv').show();
+    }
+    else{
+      $('#Inpaymentstatusdiv').hide();
+      $('#In_payment_status').val(" ");
+    }
+    });
+
+    $("#In_year_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#Inyeardiv').show();
+    }
+    else{
+      $('#Inyeardiv').hide();
+      $('#In_year').val(" ");
+    }
+    });
+
+        
+          $('#In_clientname').keyup(function(e){
+    //e.preventDefault();
+    var queryy=$('#Inbusiness_type').val();
+        var query = $(this).val();
+        if(query != ''){
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.client_name') }}",
+          method:"POST",
+          data:{query:query, _token:_token,queryy:queryy},
+          success:function(data){
+            if(data=='0'){
+             $('#In_clientname').attr('style','border-bottom:1px solid #f00');
+             bz = '0';
+            }
+            else{
+              bz ='1';
+              //$('#message2').hide();
+              $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
+              $('#nameListClient').fadeIn();
+              $('#nameListClient').html(data);
+          }
+        }
+         });
+        }
+        else if(query==''){
+          bz ='1';
+              //$('#message2').hide();
+              $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
+        }
+
+
+    });
+
+  $(document).on('click', '#list', function(){
+   bz ='1';
+   //$('#message2').hide();
+  $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
+
+        $('#In_clientname').val($(this).text());
+        $('#nameListClient').fadeOut();
+
+        });
+
+   $(document).on('click', 'form', function(){
+     $('#nameListClient').fadeOut();
+    });
+
+
+   $('#Con_clientname').keyup(function(e){
+    //e.preventDefault();
+    var query = $(this).val();
+    var queryy=$('#contractbusiness_type').val();     
+        if(query != ''){
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.client_name') }}",
+          method:"POST",
+          data:{query:query, _token:_token,queryy:queryy},
+          success:function(data){
+            if(data=='0'){
+             $('#Con_clientname').attr('style','border-bottom:1px solid #f00');
+             cz = '0';
+            }
+            else{
+              cz ='1';
+              //$('#message2').hide();
+              $('#Con_clientname').attr('style','border-bottom:1px solid #ced4da');
+              $('#ConnameList').fadeIn();
+              $('#ConnameList').html(data);
+          }
+        }
+         });
+        }
+        else if(query==''){
+          cz ='1';
+              //$('#message2').hide();
+              $('#Con_clientname').attr('style','border-bottom:1px solid #ced4da');
+        }
+
+
+    });
+
+   $(document).on('click', '#list', function(){
+   cz ='1';
+   //$('#message2').hide();
+  $('#Con_clientname').attr('style','border-bottom:1px solid #ced4da');
+
+        $('#Con_clientname').val($(this).text());
+        $('#ConnameList').fadeOut();
+
+        });
+
+   $(document).on('click', 'form', function(){
+     $('#ConnameList').fadeOut();
+    });
 
 
    $("#major_industry").click(function(){
@@ -1032,28 +1799,61 @@ select.list-dt:focus {
 
      });
 
+
    $('#contract_type').click(function(){
     var query=$(this).val();
     if(query=='list'){
       $('#contractbusinesstypediv').show();
-      //$('#ContractfilterBydiv').show();
     }
     else{
       $('#contractbusinesstypediv').hide();
+      $('#contractbusiness_type').val();
     }
    });
 
    $('#contractbusiness_type').click(function(){
      var query=$(this).val();
-     if(query=='Space'){
+     if(query!=null){
       $('#ContractfilterBydiv').show();
      }
      else{
       $('#ContractfilterBydiv').hide();
-      $('#clienttypediv').hide();
-      $("input[name='client_filter']:checked").prop("checked", false);
      }
    });
+
+   $("#Con_client_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#Con_clientnamediv').show();
+    }
+    else{
+      $('#Con_clientnamediv').hide();
+      $('#Con_clientname').val("");
+    }
+    });
+
+    $("#Con_payment_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#Conpaymentstatusdiv').show();
+    }
+    else{
+      $('#Conpaymentstatusdiv').hide();
+      $('#Con_payment_status').val(" ");
+    }
+    });
+
+    $("#Con_year_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#Conyeardiv').show();
+      $('#Conyearcategorydiv').show();
+    }
+    else{
+      $('#Conyeardiv').hide();
+      $('#Con_year').val(" ");
+      $('#Conyearcategorydiv').hide();
+    }
+    });
+
+   
 
 
 var a;
@@ -1145,26 +1945,190 @@ $("#tenant_type").click(function(){
 $("#t_invoice_payment_filter").click(function(){
     if($(this).is(":checked")){
       $('#tInvoicepaymentstatusdiv').show();
+      $('#t_invoice_payment_filter').val('true');
     }
     else{
+      $('#t_invoice_payment_filter').val('');
       $('#tInvoicepaymentstatusdiv').hide();
       $('#t_invoicepayment_status').val(" ");
     }
     });
 
+$('#vehicle_reg').keyup(function(e){ 
+        console.log(4);
+        
+        e.preventDefault();
+        var query = $(this).val();
+        if(query != ''){
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.fetch') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            if(data=='0'){
+             $('#vehicle_reg').attr('style','border:1px solid #f00');
+             az = '0';
+            }
+            else{
+              az ='1';
+              //$('#message2').hide();
+              $('#vehicle_reg').attr('style','border:1px solid #ced4da'); 
+              $('#nameList').fadeIn();  
+              $('#nameList').html(data);
+          }
+        }
+         });
+        }
+        else if(query==''){
+          az ='1';
+              //$('#message2').hide();
+              $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+        }
+     });
+
+$(document).on('click', '#list', function(){
+   az ='1';
+   //$('#message2').hide();
+  $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+
+        $('#vehicle_reg').val($(this).text());      
+        $('#nameList').fadeOut();
+   
+    });
+
+   $(document).on('click', 'form', function(){
+     $('#nameList').fadeOut();  
+    }); 
+
 $("#car_type").click(function(){
     var query= $(this).val();
  if(query=='revenue'){
    $('#revenue_durationdiv').show();
+    $('#carsfilterBydiv').hide();
+     $('#vehicleregdiv').hide();
+     $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+    $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+    $('#vehicle_reg').val("");
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
+ }
+ else if(query=='cars'){
+  $('#carsfilterBydiv').show();
+  $('#revenue_durationdiv').hide();
+   $('#vehicleregdiv').hide();
+   $('#rev_start_date').val("");
+   $('#rev_end_date').val("");
+   $('#vehicle_reg').val("");
+ }
+ else if(query=='history'){
+  $('#carsfilterBydiv').hide();
+  $('#revenue_durationdiv').hide();
+  $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+  $('#vehicleregdiv').show();
+  $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+    $('#rev_start_date').val("");
+   $('#rev_end_date').val("");
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
  }
  else{
   $('#revenue_durationdiv').hide();
+   $('#carsfilterBydiv').hide();
+   $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+     $('#vehicleregdiv').hide();
+    $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+    $('#rev_start_date').val("");
+   $('#rev_end_date').val("");
+   $('#vehicle_reg').val("");
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
  }
   });
 
+$("#carmodel_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#carmodeldiv').show();
+      $('#carmodel_filter').val('true');
+    }
+    else{
+    $('#carmodel_filter').val('');
+     $('#carmodeldiv').hide();
+      $('#model').val(""); 
+    }
+    });
+
+$("#carstatus_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#carstatusdiv').show();
+      $('#carstatus_filter').val('true');
+    }
+    else{
+     $('#carstatus_filter').val('');
+     $('#carstatusdiv').hide();
+     $('#vehicle_status').val("");
+    }
+    });
+
+$("#carrange_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#carrangediv').show();
+      $('#carrange_filter').val('true');
+    }
+    else{
+      $('#carrange_filter').val('');
+     $('#carrangediv').hide();
+     $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    }
+    });
+
+$("#rentstatus_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#rentstatusdiv').show();
+      $('#rent_durationdiv').show();
+      $('#rentstatus_filter').val('true');
+    }
+    else{
+     $('#rentstatus_filter').val('');
+     $('#rentstatusdiv').hide();
+     $('#rent_durationdiv').hide();
+     $('#rent_start_date').val("");
+     $('#rent_end_date').val("");
+     $('#rent_status').val("");
+    }
+    });
+
    $("#submitbutton").click(function(e){
        e.preventDefault();
-       var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24;
+       var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32,p33,p34,p35,p36;
        var query = $("#module").val();
 
        if(query=='space'){
@@ -1465,6 +2429,116 @@ $("#car_type").click(function(){
         });
       }
     }
+    else if(query=='invoice'){
+      var query34=$('#invoice_type').val();
+      if(query34=='list'){
+        var query35=$('#Inbusiness_type').val();
+        if(query35==null){
+          p32=0;
+          $('#Inbusinesstypemsg').show();
+          var message=document.getElementById('Inbusinesstypemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#Inbusiness_type').attr('style','border:1px solid #f00');
+        }
+        else{
+          p32=1;
+           $('#Inbusinesstypemsg').hide();
+           $('#Inbusiness_type').attr('style','border:1px solid #ccc');
+        }
+      }
+       if($('#In_client_filter').is(":checked")){
+        $("#In_client_filter").val("true");
+        var query36=$('#In_clientname').val();
+        if(query36==""){
+          p33=0;
+           $('#Inclientnamemsg').show();
+          var message=document.getElementById('Inclientnamemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#In_clientname').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+         p33=1;
+          $('#Inclientnamemsg').hide();
+           $('#In_clientname').attr('style','border-bottom:1px solid #ccc');
+        }
+        if(bz==0){
+          p33=0;
+           $('#Inclientnamemsg').show();
+          var message=document.getElementById('Inclientnamemsg');
+           message.style.color='red';
+           message.innerHTML="This client does not exists in the system";
+           $('#In_clientname').attr('style','border-bottom:1px solid #f00');
+        }
+        else if(bz==1){
+           p33=1;
+          $('#Inclientnamemsg').hide();
+           $('#In_clientname').attr('style','border-bottom:1px solid #ccc');
+        }
+      }
+      else{
+        p33=1;
+      }
+
+      if($('#In_payment_filter').is(":checked")){
+        $("#In_payment_filter").val("true");
+        var query37=$('#In_payment_status').val();
+        if(query37==null){
+          p34=0;
+           $('#Inpaymentstatusmsg').show();
+          var message=document.getElementById('Inpaymentstatusmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#In_payment_status').attr('style','border:1px solid #f00');
+        }
+        else{
+         p34=1;
+          $('#Inpaymentstatusmsg').hide();
+           $('#In_payment_status').attr('style','border:1px solid #ccc');
+        }
+      }
+      else{
+        p34=1;
+      }
+      if($('#In_year_filter').is(":checked")){
+        $("#In_year_filter").val("true");
+        var query38=$('#In_year').val();
+        if(query38==null){
+          p35=0;
+           $('#Inyearmsg').show();
+          var message=document.getElementById('Inyearmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#In_year').attr('style','border:1px solid #f00');
+        }
+        else{
+         p35=1;
+          $('#Inyearmsg').hide();
+           $('#In_year').attr('style','border:1px solid #ccc');
+        }
+      }
+      else{
+        p35=1;
+      }
+      if(p32==1 && p33==1 && p34==1 && p35==1){
+          var _token = $('input[name="_token"]').val();
+          var postData7 = "report_type="+ query34+ "&b_type="+ query35+ "&c_filter=" + $("#In_client_filter").val() + "&c_name=" + query36 +"&payment_filter="+$('#In_payment_filter').val()+"&payment_status="+query37+"&year_filter="+ $("#In_year_filter").val()+"&year="+query38+"&In_type="+$('input[name="In_SpaceCriteria"]:checked').val();
+
+            $.ajax({
+            url: "{{ route('spacereport1') }}",
+            method:"GET",
+            data: postData7,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(data) {
+                window.location.href = "/reports/invoice/pdf?"+postData7;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        }
+    }
     else if(query=='tenant'){
       var query12=$('#tenant_type').val();
       if(query12==null){
@@ -1762,6 +2836,194 @@ $("#car_type").click(function(){
         });
         }
       }
+      else if(query16=='history'){
+        var reg=$('#vehicle_reg').val();
+         if(az=="0"){
+          var message=document.getElementById('vehicleregmsg');
+           message.style.color='red';
+           message.innerHTML="This Vehicle does not exists";
+           $('#vehicle_reg').attr('style','border-bottom:1px solid #f00'); 
+        }
+        if(reg==""){
+          var message=document.getElementById('vehicleregmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#vehicle_reg').attr('style','border-bottom:1px solid #f00'); 
+        }
+        if(az=='1' && reg!=""){
+          $('#vehicleregmsg').hide();
+        $('#vehicle_reg').attr('style','border-bottom: 1px solid #ccc');
+         var _token = $('input[name="_token"]').val();
+          var postData5 = "report_type="+ query16+"&reg="+reg;
+
+            $.ajax({
+            url: "{{ route('spacereport1') }}",
+            method:"GET",
+            data: postData5,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(data) {
+                window.location.href = "/reports/car_rental3/pdf?"+postData5;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        }
+      }
+      else if(query16=='cars'){
+        if($('#carmodel_filter').is(":checked")){
+          var query25=$('#model').val();
+          if(query25==null){
+            p25=0;
+            $('#modelmsg').show();
+          var message=document.getElementById('modelmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#model').attr('style','border:1px solid #f00');
+          }
+           else{
+            p25=1;
+          $('#modelmsg').hide();
+          $('#model').attr('style','border:1px solid #ccc');
+        }
+        }
+        else{
+          p25=1;
+        }
+       
+
+        if($('#carstatus_filter').is(":checked")){
+          var query26=$('#vehicle_status').val();
+          if(query26==null){
+            p26=0;
+            $('#vehiclestatusmsg').show();
+          var message=document.getElementById('vehiclestatusmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#vehicle_status').attr('style','border:1px solid #f00');
+          }
+          else{
+            p26=1;
+          $('#vehiclestatusmsg').hide();
+          $('#vehicle_status').attr('style','border:1px solid #ccc');
+        }
+        }
+        else{
+          p26=1;
+        }
+        
+        if($('#carrange_filter').is(":checked")){
+          var query27=$('#carmin_price').val();
+          var query28=$('#carmax_price').val();
+          if(query27==""){
+            p27=0;
+            $('#carminpricemsg').show();
+          var message=document.getElementById('carminpricemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#carmin_price').attr('style','border-bottom:1px solid #f00');
+          }
+          else{
+            p27=1;
+          $('#carminpricemsg').hide();
+          $('#carmin_price').attr('style','border-bottom:1px solid #ccc');
+        }
+
+        if(query28==""){
+          p28=0;
+            $('#carmaxpricemsg').show();
+          var message=document.getElementById('carmaxpricemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#carmax_price').attr('style','border-bottom:1px solid #f00');
+          }
+          else{
+            p28=1;
+          $('#carmaxpricemsg').hide();
+          $('#carmax_price').attr('style','border-bottom:1px solid #ccc');
+        }
+        if(query28<query27){
+          var query29=query28;
+          query28=query27;
+          query27=query29;
+        }
+        }
+        else{
+          p27=1; p28=1;
+        }
+
+        if($('#rentstatus_filter').is(":checked")){
+          var query30=$('#rent_status').val();
+          var query31=$('#rent_start_date').val();
+          var query32=$('#rent_end_date').val();
+          if(query30==null){
+            p29=0;
+            $('#rentstatusmsg').show();
+          var message=document.getElementById('rentstatusmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#rent_status').attr('style','border:1px solid #f00');
+          }
+          else{
+            p29=1;
+          $('#rentstatusmsg').hide();
+          $('#rent_status').attr('style','border:1px solid #ccc');
+        }
+        if(query31==""){
+          p30=0;
+          $('#rent_startdatemsg').show();
+          var message=document.getElementById('rent_startdatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+        $('#rent_start_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p30=1;
+          $('#rent_startdatemsg').hide();
+          $('#rent_start_date').attr('style','border:1px solid #ccc');
+        }
+        if(query32==""){
+          p31=0;
+          $('#rent_enddatemsg').show();
+          var message=document.getElementById('rent_enddatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+        $('#rent_end_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p31=1;
+          $('#rent_enddatemsg').hide();
+          $('#rent_end_date').attr('style','border-bottom:1px solid #ccc');
+        }
+        if(new Date(query32) < new Date(query31)){
+           var query33=query32;
+           query32=query31;
+           query31=query33;
+        }
+        }
+        else{
+          p29=1; p30=1; p31=1;
+        }
+
+        if(p25==1 && p26==1 && p27==1 &&p28==1 && p29==1&&p30==1&&p31==1){
+          var _token = $('input[name="_token"]').val();
+          var postData5 = "report_type="+ query16 +"&model_fil="+$('#carmodel_filter').val()+"&stat_fil="+$('#carstatus_filter').val()+"&range_fil="+$('#carrange_filter').val()+"&rent_fil="+$('#rentstatus_filter').val()+"&model="+query25+"&status="+query26+"&min="+query27+"&max="+query28+"&rent="+query30+"&start="+query31+"&end="+query32;
+
+            $.ajax({
+            url: "{{ route('spacereport1') }}",
+            method:"GET",
+            data: postData5,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(data) {
+                window.location.href = "/reports/car_rental/pdf?"+postData5;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+          }
+        
+      }
       else{
             p18=1;
            $('#cartypemsg').hide();
@@ -1813,36 +3075,88 @@ $("#car_type").click(function(){
         else{
           p20=1;
           $('#contractbusinesstypemsg').hide();
-          $('#contractbusiness_type').attr('style','border: 1px solid #ccc');
+        $('#contractbusiness_type').attr('style','border: 1px solid #ccc');
+
+        if($('#Con_client_filter').is(":checked")){
+        $("#Con_client_filter").val("true");
+        var query36=$('#Con_clientname').val();
+        if(query36==""){
+          p33=0;
+           $('#Conclientnamemsg').show();
+          var message=document.getElementById('Conclientnamemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#Con_clientname').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+         p33=1;
+          $('#Conclientnamemsg').hide();
+           $('#Con_clientname').attr('style','border-bottom:1px solid #ccc');
+        }
+        if(cz==0){
+          p33=0;
+           $('#Conclientnamemsg').show();
+          var message=document.getElementById('Conclientnamemsg');
+           message.style.color='red';
+           message.innerHTML="This client does not exists in the system";
+           $('#Con_clientname').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+         p33=1;
+          $('#Conclientnamemsg').hide();
+           $('#Con_clientname').attr('style','border-bottom:1px solid #ccc');
+        }
+      }
+      else{
+        p33=1;
+      }
+
+      if($('#Con_payment_filter').is(":checked")){
+        $("#Con_payment_filter").val("true");
+        var query37=$('#Con_payment_status').val();
+        if(query37==null){
+          p34=0;
+           $('#Conpaymentstatusmsg').show();
+          var message=document.getElementById('Conpaymentstatusmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#Con_payment_status').attr('style','border:1px solid #f00');
+        }
+        else{
+         p34=1;
+          $('#Conpaymentstatusmsg').hide();
+           $('#Con_payment_status').attr('style','border:1px solid #ccc');
+        }
+      }
+      else{
+        p34=1;
+      }
+      if($('#Con_year_filter').is(":checked")){
+        $("#Con_year_filter").val("true");
+        var query38=$('#Con_year').val();
+        if(query38==null){
+          p35=0;
+           $('#Conyearmsg').show();
+          var message=document.getElementById('Conyearmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#Con_year').attr('style','border:1px solid #f00');
+        }
+        else{
+         p35=1;
+          $('#Conyearmsg').hide();
+           $('#Con_year').attr('style','border:1px solid #ccc');
+        }
+      }
+      else{
+        p35=1;
+      }
         }
       }
 
-
-
-
-        if($('#client_filter').is(":checked")){
-          var query19 =$('#client_type').val();
-          if(query19==null){
-            p21=0;
-          $('#clienttypemsg').show();
-          var message=document.getElementById('clienttypemsg');
-           message.style.color='red';
-           message.innerHTML="Required";
-           $('#client_type').attr('style','border:1px solid #f00');
-          }
-          else{
-            p21=1;
-           $('#clienttypemsg').hide();
-          $('#client_type').attr('style','border: 1px solid #ccc');
-          }
-        }
-        else{
-          p21=1;
-        }
-
-        if(p19==1 && p20==1 && p21==1){
+        if(p19==1 && p20==1 && p33==1 && p34==1 &&p35==1){
           var _token = $('input[name="_token"]').val();
-          var postData6 = "report_type="+ query17 + "&business_type="+query18 + "&client_filter=" + $('#client_filter').val() + "&client_type="+ query19;
+          var postData6 = "report_type="+ query17 + "&business_type="+query18 + "&c_filter=" + $('#Con_client_filter').val() + "&c_name="+ $('#Con_clientname').val()+ "&con_filter=" +$('#Con_payment_filter').val()+"&con_status="+$('#Con_payment_status').val()+"&y_filter="+$('#Con_year_filter').val()+"&year="+$('#Con_year').val()+"&lease="+$('input[name="Conyearcategory"]:checked').val();
 
             $.ajax({
             url: "{{ route('spacereport1') }}",

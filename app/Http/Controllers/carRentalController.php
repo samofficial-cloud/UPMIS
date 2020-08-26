@@ -6,18 +6,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\carRental;
 use App\operational_expenditure;
+use App\hire_rate;
+use App\carContract;
 
 class carRentalController extends Controller
 {
     //
     public function index(){
-    	$cars=carRental::where('flag','1')->get();
+    	$cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
       $operational=operational_expenditure::where('flag','1')->get();
-    	return view('car')->with('cars',$cars)->with('operational',$operational);
+      $rate=hire_rate::get();
+    	return view('car')->with('cars',$cars)->with('operational',$operational)->with('rate',$rate);
     }
 
     public function newcar(Request $request){
     $vehicle_reg_no = $request->input('vehicle_reg_no');
+
+    $validate=carRental::where('vehicle_reg_no',$vehicle_reg_no)->where('flag','1')->get();
+    if(count($validate)>=0){
+      return redirect()->back()->with('errors', "This vehicle '$vehicle_reg_no'  could not be added because it already exists in the system");
+    }
+    else{
     $vehicle_model = $request->input('model');
     $vehicle_status = $request->input('vehicle_status');
     $hire_rate = $request->input('hire_rate');
@@ -27,6 +36,7 @@ class carRentalController extends Controller
     DB::table('car_rentals')->insert($data);
 
     return redirect()->back()->with('success', 'Car Details Added Successfully');
+  }
 
 }
 
@@ -150,12 +160,20 @@ public function deletecar($id){
      if($request->get('query'))
      {
       $query = $request->get('query');
-      $data = carRental::select('hire_rate')->where('vehicle_reg_no',$query)->value('hire_rate');
+      $data = hire_rate::select('hire_rate')->where('vehicle_model',$query)->value('hire_rate');
      
        $output = $data;
      
       echo $output;
      
    }
+ }
+
+ public function viewMore(){
+  $ops=operational_expenditure::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->get();
+  $bookings=carContract::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->whereDate('end_date','>=',date('Y-m-d'))->get();
+  $bookings2=carContract::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->whereDate('end_date','<',date('Y-m-d'))->get();
+  $details=carRental::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->get();
+  return view('car_view_more')->with('ops',$ops)->with('bookings',$bookings)->with('details',$details)->with('bookings2',$bookings2);
  }
 }

@@ -242,17 +242,18 @@ $i='1';
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
         </ul>
     </div>
+    <?php
+    use App\hire_rate;
+    use App\operational_expenditure;
+      $model=hire_rate::select('vehicle_model')->get();
+      $model1=hire_rate::select('vehicle_model')->get();
+    ?>
 <div class="main_content">
 	<div class="container" style="max-width: 1308px;">
     <br>
-		@if ($errors->any())
+		@if ($message = Session::get('errors'))
           <div class="alert alert-danger">
-            <strong>Sorry!!</strong> Something went Wrong<br>
-            <ul>
-              @foreach ($errors as $error)
-                <li>{{$error}}</li>
-              @endforeach
-            </ul>
+            <p>{{$message}}</p>
           </div>
         @endif
 
@@ -264,7 +265,8 @@ $i='1';
 <br>
     <div class="tab">
             <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>CAR RENTAL LIST</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button>
+            {{-- <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button> --}}
+            <button class="tablinks" onclick="openContracts(event, 'hire')"><strong>HIRE RATE</strong></button>
              <button class="tablinks" onclick="openContracts(event, 'availability')"><strong>CAR AVAILABILITY</strong></button>
         </div>
         <div id="car_list" class="tabcontent">
@@ -293,14 +295,19 @@ $i='1';
 					<div class="form-group" id="regNodiv">
 					<div class="form-wrapper">
 						<label for="reg_no">Vehicle Registration No</label>
-						<input type="text" id="reg_no" name="vehicle_reg_no" class="form-control" required="">
+						<input type="text" id="reg_no" name="vehicle_reg_no" class="form-control" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
 					</div>
 				</div>
 
 				<div class="form-group" id="modeldiv">
 					<div class="form-wrapper">
 						<label for="model">Vehicle Model</label>
-						<input type="text" id="model" name="model" class="form-control" required="">
+            <select class="form-control" required="" id="model" name="model" required="">
+              <option value=""disabled selected hidden>select Vehicle Model</option>
+              @foreach($model as $model) 
+              <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
+              @endforeach
+            </select>
 					</div>
 				</div>
 
@@ -308,7 +315,7 @@ $i='1';
 					<div class="form-wrapper" id="clientdiv">
           <label for="vehicle_status">Vehicle Status</label>
             <select class="form-control" required="" id="vehicle_status" name="vehicle_status" required="">
-              <option value=""disabled selected hidden>select type</option>
+              <option value=""disabled selected hidden>select Vehicle status</option>
               <option value="Running">Running</option>
               <option value="Minor Repair">Minor Repair</option>
               <option value="Grounded">Grounded</option>
@@ -319,8 +326,8 @@ $i='1';
 
 				<div class="form-group" id="hirediv">
 					<div class="form-wrapper">
-						<label for="hire_rate">Hire Rate</label>
-						<input type="text" id="hire_rate" name="hire_rate" class="form-control" required="">
+						<label for="hire_rate">Hire Rate/KM</label>
+						<input type="text" id="hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 					</div>
 				</div>
 
@@ -343,7 +350,7 @@ $i='1';
       <th scope="col" style="color:#3490dc;"><center>Vehicle Registration No.</center></th>
       <th scope="col" style="color:#3490dc;"><center>Vehicle Model</center></th>
       <th scope="col" style="color:#3490dc;"><center>Vehicle Status</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Hire Rate</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Hire Rate/KM</center></th>
       <th scope="col" style="color:#3490dc;"><center>Action</center></th>
     </tr>
   </thead>
@@ -354,7 +361,7 @@ $i='1';
       <td><center>{{ $cars->vehicle_reg_no}}</center></td>
       <td><center>{{$cars->vehicle_model}}</center></td>
       <td><center>{{ $cars->vehicle_status}}</center></td>
-      <td><center>{{ $cars->hire_rate}}</center></td>
+      <td><center>{{ number_format($cars->hire_rate)}}</center></td>
       <td>
       	<a data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
       	 <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
@@ -373,7 +380,7 @@ $i='1';
 					<div class="form-group">
 					<div class="form-wrapper">
 						<label for="reg_no">Vehicle Registration No</label>
-						<input type="text" id="reg_no{{$cars->id}}" name="vehicle_reg_no" class="form-control" value="{{$cars->vehicle_reg_no}}" required="">
+						<input type="text" id="reg_no{{$cars->id}}" name="vehicle_reg_no" class="form-control" value="{{$cars->vehicle_reg_no}}" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
 					</div>
 				</div>
 				<br>
@@ -381,7 +388,14 @@ $i='1';
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="model">Vehicle Model</label>
-						<input type="text" id="model{{$cars->id}}" name="model" class="form-control" value="{{$cars->vehicle_model}}" required="">
+            <select class="form-control" required="" id="model{{$cars->id}}" name="model" required="">
+              <option value="{{$cars->vehicle_model}}">{{$cars->vehicle_model}}</option>
+              @foreach($model1 as $model)
+              @if($model->vehicle_model != $cars->vehicle_model) 
+              <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
+              @endif
+              @endforeach
+            </select>
 					</div>
 				</div>
                 <br>
@@ -389,10 +403,16 @@ $i='1';
 					<div class="form-wrapper">
           <label for="vehicle_status">Vehicle Status</label>
             <select class="form-control" required="" id="vehicle_status{{$cars->id}}" name="vehicle_status" required="">
-              <option value=""disabled selected hidden>select type</option>
+              <option value="{{$cars->vehicle_status}}">{{$cars->vehicle_status}}</option>
+              @if($cars->vehicle_status != 'Running')
               <option value="Running">Running</option>
+              @endif
+              @if($cars->vehicle_status != 'Minor Repair')
               <option value="Minor Repair">Minor Repair</option>
+              @endif
+              @if($cars->vehicle_status != 'Grounded')
               <option value="Grounded">Grounded</option>
+              @endif
             </select>
 
         </div>
@@ -400,8 +420,8 @@ $i='1';
 <br>
 				<div class="form-group">
 					<div class="form-wrapper">
-						<label for="hire_rate">Hire Rate</label>
-						<input type="text" id="hire_rate{{$cars->id}}" name="hire_rate" class="form-control" value="{{$cars->hire_rate}}" required="">
+						<label for="hire_rate">Hire Rate/KM</label>
+						<input type="text" id="hire_rate{{$cars->id}}" name="hire_rate" class="form-control" value="{{$cars->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 					</div>
 				</div>
 <br>
@@ -416,6 +436,8 @@ $i='1';
              </div>
          </div>
      </div>
+
+     <a role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:25px; color:#3490dc;"></i></a>
 
      <a data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
 <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
@@ -439,6 +461,7 @@ $i='1';
 </div>
 </div>
 </div>
+
       </td>
   </tr>
   <?php
@@ -449,85 +472,40 @@ $i='1';
   </tbody>
 </table>
 </div>
-<div id="Operational" class="tabcontent">
 
+  <div id="hire" class="tabcontent">
   <br>
-  <h3>2. OPERATIONAL EXPENDITURE</h3>
-  <br>
-   <a data-toggle="modal" data-target="#car_operational" class="btn btn-success button_color active" style="
+  <h3>2. HIRE RATES</h3>
+          <a data-toggle="modal" data-target="#hiree" class="btn btn-success button_color active" style="
     padding: 10px;
 
     margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add</a>
+    margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 
-    <div class="modal fade" id="car_operational" role="dialog">
+    <div class="modal fade" id="hiree" role="dialog">
 
-              <div class="modal-dialog   modal-dialog-scrollable" role="document">
+              <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                <b><h5 class="modal-title">Fill the form below to add operational expenditures</h5></b>
+                <b><h5 class="modal-title">Fill the form below to add new hire rate</h5></b>
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                  <div class="modal-body">
-                  <form method="post" action="{{ route('addOperational') }}">
+                  <form method="post" action="{{ route('addhirerate') }}">
         {{csrf_field()}}
-        <div class="form-group" id="OpregNodiv">
+        <div class="form-group" id="modeldiv">
           <div class="form-wrapper">
-            <label for="op_vehicle_reg_no">Vehicle Registration No</label>
-            <input type="text" id="op_vehicle_reg_no" name="op_vehicle_reg_no" class="form-control" required="" autocomplete="off">
-            <div id="nameList"></div>
+            <label for="model">Vehicle Model</label>
+            <input type="text" id="hire_model" name="vehicle_model" class="form-control" required="">
           </div>
         </div>
 
-        <div class="form-group" id="lpodiv">
+        <div class="form-group" id="hirediv">
           <div class="form-wrapper">
-            <label for="model">LPO Number</label>
-            <input type="text" id="lpo_no" name="lpo_no" class="form-control" required="">
-          </div>
-        </div>
-
-        <div class="form-group" id="datediv">
-          <div class="form-wrapper">
-            <label for="date_received">Date Received</label>
-            <input type="date" id="date_received" name="date_received" class="form-control" required="">
-          </div>
-        </div>
-
-        <div class="form-group" id="providerdiv">
-          <div class="form-wrapper">
-            <label for="model">Service Provider</label>
-            <input type="text" id="provider" name="provider" class="form-control" required="">
-          </div>
-        </div>
-
-
-        <div class="form-group" id="fueldiv">
-          <div class="form-wrapper">
-            <label for="model">Fuel Consumed</label>
-            <input type="text" id="fuel" name="fuel" class="form-control" required="">
-          </div>
-        </div>
-
-        <div class="form-group" id="amountdiv">
-          <div class="form-wrapper">
-            <label for="amount">Amount</label>
-            <input type="text" id="amount" name="amount" class="form-control" required="">
-          </div>
-        </div>
-
-        <div class="form-group" id="totaldiv">
-          <div class="form-wrapper">
-            <label for="total">Total</label>
-            <input type="text" id="total" name="total" class="form-control" required="">
-          </div>
-        </div>
-
-        <div class="form-group" id="descriptiondiv">
-          <div class="form-wrapper">
-            <label for="description">Description of Work</label>
-            <textarea type="text" id="description" name="description" class="form-control" maxlength="100" required=""></textarea>
+            <label for="hire_hire_rate">Hire Rate/Km</label>
+            <input type="text" id="hire_hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 
@@ -535,120 +513,58 @@ $i='1';
   <button class="btn btn-primary" type="submit">Submit</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
-
-      </form>
-
+  </form>
                  </div>
-               </div>
              </div>
-           </div>
-           <table class="hover table table-striped table-bordered" id="myTable1">
+         </div>
+     </div>
+     <br><br>
+     <table class="hover table table-striped table-bordered" id="myTable2" style="width: 90%">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Vehicle No.</center></th>
-      <th scope="col" style="color:#3490dc;"><center>LPO No.</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Date Received</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Description of Work</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Service Provider</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Fuel Consumed</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Amount</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Total</center></th>
+      <th scope="col" style="color:#3490dc; width: 3%;"><center>S/N</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Vehicle Model</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Hire Rate</center></th>
       <th scope="col" style="color:#3490dc;"><center>Action</center></th>
     </tr>
   </thead>
   <tbody>
-    @foreach($operational as $operational)
-      <tr>
-        <td class="counterCell text-center">.</td>
-        <td>{{$operational->vehicle_reg_no}}</td>
-        <td>{{$operational->lpo_no}}</td>
-        <td><center>{{$operational->date_received}}</center></td>
-        <td>{{$operational->description}}</td>
-        <td>{{$operational->service_provider}}</td>
-        <td>{{$operational->fuel_consumed}}</td>
-        <td>{{$operational->amount}}</td>
-        <td>{{$operational->total}}</td>
-        <td>
-          <a data-toggle="modal" data-target="#editops{{$operational->id}}" role="button" aria-pressed="true" id="{{$operational->id}}"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
-         <div class="modal fade" id="editops{{$operational->id}}" role="dialog">
+    @foreach($rate as $rate)
+    <tr>
+    <th scope="row" class="counterCell text-center">.</th>
+    <td>{{$rate->vehicle_model}}</td>
+    <td><center>{{number_format($rate->hire_rate)}}</center></td>
+    <td>
+      <a data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+         <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
 
               <div class="modal-dialog modal-dialog-scrollable" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                <b><h5 class="modal-title">Fill the form below to edit car details</h5></b>
+                <b><h5 class="modal-title">Fill the form below to edit hire rate details</h5></b>
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                  <div class="modal-body">
-                  <form method="post" action="#">
+                  <form method="post" action="{{ route('edithirerate') }}">
         {{csrf_field()}}
-        <div class="form-group" id="OpregNodiv">
+        <div class="form-group">
           <div class="form-wrapper">
-            <label for="op_vehicle_reg_no{{$operational->id}}">Vehicle Registration No</label>
-            <input type="text" id="op_vehicle_reg_no{{$operational->id}}" name="op_vehicle_reg_no" class="form-control" required="" autocomplete="off" value="{{$operational->vehicle_reg_no}}">
-            <div id="nameList2"></div>
+            <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model</label>
+            <input type="text" id="hire_vehicle_model{{$rate->id}}" name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
           </div>
         </div>
         <br>
 
-        <div class="form-group" id="lpodiv">
+        <div class="form-group">
           <div class="form-wrapper">
-            <label for="lpo_no{{$operational->id}}">LPO Number</label>
-            <input type="text" id="lpo_no{{$operational->id}}" name="lpo_no" class="form-control" required="" value="{{$operational->lpo_no}}">
+            <label for="hire_hire_rate{{$rate->id}}">Hire Rate</label>
+            <input type="text" id="hire_hire_rate{{$rate->id}}" name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
         <br>
-
-        <div class="form-group" id="datediv">
-          <div class="form-wrapper">
-            <label for="date_received{{$operational->id}}">Date Received</label>
-            <input type="date" id="date_received{{$operational->id}}" name="date_received" class="form-control" required="" value="{{$operational->date_received}}">
-          </div>
-        </div>
-        <br>
-
-        <div class="form-group" id="providerdiv">
-          <div class="form-wrapper">
-            <label for="provider{{$operational->id}}">Service Provider</label>
-            <input type="text" id="provider{{$operational->id}}" name="provider" class="form-control" required="" value="{{$operational->service_provider}}">
-          </div>
-        </div>
-        <br>
-
-
-        <div class="form-group" id="fueldiv">
-          <div class="form-wrapper">
-            <label for="fuel{{$operational->id}}">Fuel Consumed</label>
-            <input type="text" id="fuel{{$operational->id}}" name="fuel" class="form-control" required="" value="{{$operational->fuel_consumed}}">
-          </div>
-        </div>
-        <br>
-
-        <div class="form-group" id="amountdiv">
-          <div class="form-wrapper">
-            <label for="amount{{$operational->id}}">Amount</label>
-            <input type="text" id="amount{{$operational->id}}" name="amount" class="form-control" required="" value="{{$operational->amount}}">
-          </div>
-        </div>
-        <br>
-
-        <div class="form-group" id="totaldiv">
-          <div class="form-wrapper">
-            <label for="total{{$operational->id}}">Total</label>
-            <input type="text" id="total{{$operational->id}}" name="total" class="form-control" required="" value="{{$operational->total}}">
-          </div>
-        </div>
-        <br>
-
-        <div class="form-group" id="descriptiondiv">
-          <div class="form-wrapper">
-            <label for="description{{$operational->id}}">Description of Work</label>
-            <textarea type="text" id="description{{$operational->id}}" name="description" class="form-control" maxlength="100" required="" value="{{$operational->description}}"></textarea>
-          </div>
-        </div>
-        <br>
+        <input type="text" name="id" value="{{$rate->id}}" hidden="">
 
         <div align="right">
   <button class="btn btn-primary" type="submit">Submit</button>
@@ -662,9 +578,8 @@ $i='1';
              </div>
            </div>
 
-            <a data-toggle="modal" data-target="#Deactivateop{{$operational->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
-<div class="modal fade" id="Deactivateop{{$operational->id}}" role="dialog">
-
+           <a data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
+<div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
         <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -673,10 +588,10 @@ $i='1';
           </div>
 
            <div class="modal-body">
-            <p style="font-size: 20px;">Are you sure you want to delete this operational expenditure?</p>
+            <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
             <br>
             <div align="right">
-      <a class="btn btn-info" href="{{route('deleteops',$operational->id)}}">Proceed</a>
+      <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>
       <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 </div>
 
@@ -684,13 +599,12 @@ $i='1';
 </div>
 </div>
 </div>
-
-        </td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  </div>
+    </td>
+  </tr>
+    @endforeach
+  </tbody>
+</table>
+</div>
 
   <?php
   $today=date('Y-m-d');
@@ -705,11 +619,11 @@ $i='1';
    {{--  <h4 class="fs-title">Please fill the form below</h4> --}}
       <div class="form-group row">
             <div class="form-wrapper col-6">
-              <label for="start_date">Start Date*</label>
+              <label for="start_date">Start Date<span style="color: red;">*</span></label>
               <input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
             </div>
             <div class="form-wrapper col-6">
-              <label for="end_date">End Date*</label>
+              <label for="end_date">End Date<span style="color: red;">*</span></label>
               <input type="date" id="end_date" name="end_date" class="form-control" required="" min="{{$today}}">
             </div>
           </div>
@@ -719,7 +633,7 @@ $i='1';
   </form>
   <br>
   <div id="content">
-    <div id="loading"></div>
+    <center><div id="loading"></div></center>
   </div>
 
 </div>
@@ -737,7 +651,11 @@ $i='1';
     } );
 
   var table = $('#myTable1').DataTable( {
-        dom: '<"top"fl>rt<"bottom"pi>'
+        dom: '<"top"l>rt<"bottom"pi>'
+    } );
+
+  var table = $('#myTable2').DataTable( {
+        dom: '<"top"l>rt<"bottom"pi>'
     } );
 
 
@@ -745,6 +663,11 @@ $i='1';
 </script>
 
 <script type="text/javascript">
+
+  function removeSpaces(string) {
+ return string.split(' ').join('');
+}
+
   function openContracts(evt, evtName) {
   // Declare all variables
   var i, tabcontent, tablinks;
@@ -842,7 +765,7 @@ $("#check").click(function(e){
     .done(function(fragment) {
       $("#content").html(fragment);
       var table = $('#myTable4').DataTable( {
-        dom: '<"top"fl>rt<"bottom"pi>'
+        dom: '<"top"l>rt<"bottom"pi>'
     });
     });
     return false;
@@ -850,6 +773,41 @@ $("#check").click(function(e){
   }
 
 });
+
+$("#model").click(function(){
+        var query = $(this).val();
+        if(query!=''){
+        var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.hirerate') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            $('#hire_rate').val(data);
+          }
+          });
+    } 
+   
+    });
+
+$('#myTable').on('click', '[name="model"]', function(e){
+        e.preventDefault();
+        var query = $(this).val();
+        var id = $("#"+e.target.id).val();
+      let reg = e.target.id.replace(/\D/g,'');
+
+      if(query!=''){
+        var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.hirerate') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            $('#hire_rate'+reg).val(data);
+          }
+          });
+    } 
+      });
 
     });
 

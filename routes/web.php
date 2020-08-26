@@ -127,10 +127,17 @@
         Route::post('/change_payment_status_electricity_bills/{id}', 'InvoicesController@changePaymentStatusElectricityBills')->name('change_payment_status_electricity_bills');
         Route::post('/create_electricity_invoice_manually', 'InvoicesController@CreateElectricityBillInvoiceManually')->name('create_electricity_invoice_manually');
 
-        Route::get('/clients', 'clientsController@index')->name('clients');
+Route::get('/clients', 'clientsController@index')->name('clients');
 
+Route::post('/clients/Space/edit', 'clientsController@edit')->name('editclients');
 
-Route::get('/clients/edit', 'clientsController@edit')->name('editclients');
+Route::post('/clients/Car/edit', 'clientsController@editCarclients')->name('editCarclients');
+
+Route::get('/clients/Space/view_more/{id}','clientsController@ClientViewMore')->name('ClientViewMore');
+
+Route::get('/clients/car_rental/view_more/{name}/{email}/{centre}','clientsController@CarViewMore')->name('CarClientsViewMore');
+
+Route::post('/clients/Space/SendMessage', 'clientsController@SendMessage')->name('SendMessage');
 
 
 Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
@@ -139,11 +146,23 @@ Route::get('/car','carRentalController@index');
 
 Route::post('/car/operational_expenditure/add','operational_expenditureController@addOperational')->name('addOperational');
 
-Route::get('/car/edit_car','carRentalController@editcar')->name('editcar');
-
-Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('deletecar');
+Route::get('/car/operational_expenditure/edit', 'operational_expenditureController@editoperational')->name('editoperational');
 
 Route::get('/car/operational_expenditure/delete/{id}', 'operational_expenditureController@deleteoperational')->name('deleteops');
+
+Route::get('/car/edit_car','carRentalController@editcar')->name('editcar');
+
+Route::get('/car/view_more','carRentalController@viewMore')->name('CarViewMore');
+
+
+
+Route::post('/car/hire_rate/add','hireRateController@addhirerate')->name('addhirerate');
+
+Route::post('/car/hire_rate/edit','hireRateController@edithirerate')->name('edithirerate');
+
+Route::get('/car/hire_rate/delete/{id}','hireRateController@deletehirerate')->name('deletehirerate');
+
+Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('deletecar');
 
 Route::get('/contracts/car_rental','carContractsController@index')->name('carContracts');
 
@@ -195,6 +214,8 @@ Route::post('/autocomplete/hirerate', 'carRentalController@hirerate')->name('aut
 
 Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('autocomplete.spaces');
 
+Route::post('/autocomplete/client_name', 'clientsController@fetchclient_name')->name('autocomplete.client_name');
+
 Route::get('/reports', 'HomeController@report')->name('reports');
 
 Route::get('/reports/space1', 'HomeController@spacereport1')->name('spacereport1');
@@ -211,13 +232,20 @@ Route::get('/reports/car_rental/pdf','HomeController@carreportPDF')->name('carre
 
 Route::get('/reports/car_rental2/pdf','HomeController@carreportPDF2')->name('carreportpdf2');
 
+Route::get('/reports/car_rental3/pdf','HomeController@carreportPDF3')->name('carreportpdf3');
+
 Route::get('/reports/contracts/pdf','HomeController@contractreportPDF')->name('contractreportpdf');
+
+Route::get('/reports/invoice/pdf','HomeController@invoicereportPDF')->name('invoicereportpdf');
 
 Route::get('/notification/{id}', 'notificationsController@ShowNotifications')->name('ShowNotifications');
 
 Route::get('/car/available_cars', function () {
         return View::make('available_cars');
     });
+
+Route::get('/uploadfile','UploadFileController@index');
+Route::post('/uploadfile','UploadFileController@showUploadFile');
 
 });
 

@@ -38,6 +38,7 @@ hr {
 }
 .form-inline .form-control {
     width: 100%;
+    height: 100%;
 }
 
 .form-wrapper{
@@ -77,14 +78,9 @@ a.title{
 <div class="container" style="max-width: 1308px;">
   <br>
   <br>
-  @if ($errors->any())
+  @if ($message = Session::get('errors'))
           <div class="alert alert-danger">
-            <strong>Sorry!!</strong> Something went Wrong<br>
-            <ul>
-              @foreach ($errors as $error)
-                <li>{{$error}}</li>
-              @endforeach
-            </ul>
+            <p>{{$message}}</p>
           </div>
         @endif
 
@@ -93,57 +89,51 @@ a.title{
         <p>{{$message}}</p>
       </div>
     @endif
-     <table class="hover table table-striped table-bordered" id="myTable">
+    <br>
+    <div class="tab">
+            <button class="tablinks" onclick="openClients(event, 'space')" id="defaultOpen"><strong>Space</strong></button>
+            <button class="tablinks" onclick="openClients(event, 'car')"><strong>Car Rental</strong></button>
+             <button class="tablinks" onclick="openClients(event, 'insurance')"><strong>Insurance</strong></button>
+        </div>
+
+  <div id="space" class="tabcontent">
+  <br>
+  <h3>1. Space Clients</h3>
+  
+  <a class="btn btn-success btn-sm" style="
+    padding: 10px;
+    color: #fff;font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 4px;" href="/space_contract_form">Add Client</a>
+    <br><br>
+  <div class="tab2">
+            <button class="tablinks2" onclick="openSpace(event, 'sp_current')" id="defaultOpen2"><strong>Active</strong></button>
+            <button class="tablinks2" onclick="openSpace(event, 'Sp_previous')"><strong>Inactive</strong></button>
+        </div>
+        <div id="sp_current" class="tabcontent2">
+          <br>
+          <center><h4>Active Space Clients</h4></center>
+ <table class="hover table table-striped table-bordered" id="myTable">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Client Type</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Contract Type</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Phone Number</center></th>
+  <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Phone Number</center></th>
       <th scope="col" style="color:#3490dc;"><center>Email</center></th>
       <th scope="col" style="color:#3490dc;"><center>Address</center></th>
       <th scope="col" style="color:#3490dc;"><center>Action</center></th>
     </tr>
   </thead>
   <tbody>
-    @foreach($clients as $client)
+    @foreach($SCclients as $client)
     <tr>
-      <td>{{$i}}.</td>
+      <th scope="row" class="counterCell text-center">.</th>
       <td>{{$client->full_name}}</td>
-      <td>{{$client->type}}</td>
-      <td>
-        <?php $j='1';
-                    $contract=client::select('contract')->where('full_name',$client->full_name)->get()?>
-
-        <center><a data-toggle="modal" data-target="#contracts{{$client->client_id}}" role="button" aria-pressed="true" id="{{$client->client_id}}" class="btn btn-info">View</a></center>
-         <div class="modal fade" id="contracts{{$client->client_id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">This Client has the Following Contracts</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-
-                    @foreach($contract as $contract)
-                      <ol><li>{{$contract->contract}}</li></ol>
-                    @endforeach
-                  <br>
-                   <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button></center>
-                 </div>
-               </div>
-             </div>
-           </div>
-        </td>
       <td>{{$client->phone_number}}</td>
       <td>{{$client->email}}</td>
       <td>{{$client->address}}</td>
       <td>
-        <a data-toggle="modal" data-target="#edit{{$client->client_id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><center><i class="fa fa-edit" style="font-size:30px; color: green;"></i></center></a>
+        <a data-toggle="modal" data-target="#edit{{$client->client_id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:30px; color: green; cursor: pointer;"></i></a>
          <div class="modal fade" id="edit{{$client->client_id}}" role="dialog">
 
               <div class="modal-dialog" role="document">
@@ -155,11 +145,11 @@ a.title{
                 </div>
 
                  <div class="modal-body">
-                  <form method="get" action="{{ route('editclients') }}">
+                  <form method="post" action="{{ route('editclients') }}">
         {{csrf_field()}}
           <div class="form-group">
           <div class="form-wrapper">
-            <label for="client_name">Client Name</label>
+            <label for="client_name{{$client->client_id}}">Client Name</label>
             <input type="text" id="client_name{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
           </div>
         </div>
@@ -167,7 +157,7 @@ a.title{
 
         <div class="form-group">
           <div class="form-wrapper">
-            <label for="client_type">Client Type</label>
+            <label for="client_type{{$client->client_id}}">Client Type</label>
             <input type="text" id="client_type{{$client->client_id}}" name="client_type" class="form-control" value="{{$client->type}}" readonly="">
           </div>
         </div>
@@ -175,11 +165,10 @@ a.title{
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="phone_number">Phone Number</label>
+            <label for="phone_number{{$client->client_id}}">Phone Number</label>
 
-
-
-            <input type="text" id="phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+            <input type="text" id="phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+           maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
 
           </div>
         </div>
@@ -187,7 +176,7 @@ a.title{
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="email">Email</label>
+            <label for="email{{$client->client_id}}">Email</label>
             <input type="text" id="email{{$client->client_id}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
           </div>
         </div>
@@ -195,7 +184,7 @@ a.title{
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="address">Address</label>
+            <label for="address{{$client->client_id}}">Address</label>
             <input type="text" id="address{{$client->client_id}}" name="address" class="form-control" value="{{$client->address}}" required="">
           </div>
         </div>
@@ -211,6 +200,67 @@ a.title{
              </div>
          </div>
      </div>
+      <a role="button" href="{{ route('ClientViewMore',$client->client_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:30px; color:#3490dc;"></i></a>
+
+      <a data-toggle="modal" data-target="#mail{{$client->client_id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:25px; color: #3490dc; cursor: pointer;"></i></a>
+      <div class="modal fade" id="mail{{$client->client_id}}" role="dialog">
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">New Message</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
+        {{csrf_field()}}
+          <div class="form-group row">
+            <label for="client_names{{$client->client_id}}" class="col-sm-2">To</label>
+            <div class="col-sm-9">
+            <input type="text" id="client_names{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="subject{{$client->client_id}}" class="col-sm-2">Subject</label>
+            <div class="col-sm-9">
+            <input type="text" id="subject{{$client->client_id}}" name="subject" class="form-control" value="" >
+          </div>
+        </div>
+         <br>
+         
+        <div class="form-group row">
+            <label for="message{{$client->client_id}}" class="col-sm-2">Message</label>
+            <div class="col-sm-9">
+              <textarea type="text" id="message{{$client->client_id}}" name="message" class="form-control" value="" rows="7"></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="attachment{{$client->client_id}}" class="col-sm-3">Attachments</label>
+            <div class="col-sm-8">
+              <?php
+         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
+         //echo 'Select the file to upload.';
+         echo Form::file('image');
+         //echo Form::submit('Upload File');
+         //echo Form::close();
+      ?>
+          </div>
+        </div>
+        <br>
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Send</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
       </td>
     </tr>
     <?php $i=$i+1;?>
@@ -219,15 +269,355 @@ a.title{
 </table>
 </div>
 
-	</div>
+ <div id="Sp_previous" class="tabcontent2">
+  <br>
+  <center><h4>Inactive Space Clients</h4></center>
+   <table class="hover table table-striped table-bordered" id="myTable1">
+  <thead class="thead-dark">
+    <tr>
+  <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Phone Number</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Email</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Address</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Remarks</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($SPclients as $client)
+    <tr>
+     <th scope="row" class="counterCell text-center">.</th>
+      <td>{{$client->full_name}}</td>
+      <td>{{$client->phone_number}}</td>
+      <td>{{$client->email}}</td>
+      <td>{{$client->address}}</td>
+      @if($client->contract_status==0)
+      <td>Terminated</td>
+      @else
+      <td>Expired</td>
+      @endif
+      <td>
+         <a role="button" href="{{ route('ClientViewMore',$client->client_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:30px; color:#3490dc;"></i></a>
+        <a data-toggle="modal" data-target="#mail{{$client->client_id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:25px; color: #3490dc; cursor: pointer;"></i></a>
+      <div class="modal fade" id="mail{{$client->client_id}}" role="dialog">
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">New Message</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
+        {{csrf_field()}}
+          <div class="form-group row">
+            <label for="client_names{{$client->client_id}}" class="col-sm-2">To</label>
+            <div class="col-sm-9">
+            <input type="text" id="client_names{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="subject{{$client->client_id}}" class="col-sm-2">Subject</label>
+            <div class="col-sm-9">
+            <input type="text" id="subject{{$client->client_id}}" name="subject" class="form-control" value="" >
+          </div>
+        </div>
+         <br>
+         
+        <div class="form-group row">
+            <label for="message{{$client->client_id}}" class="col-sm-2">Message</label>
+            <div class="col-sm-9">
+              <textarea type="text" id="message{{$client->client_id}}" name="message" class="form-control" value="" rows="7"></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="attachment{{$client->client_id}}" class="col-sm-3">Attachments</label>
+            <div class="col-sm-8">
+              <?php
+         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
+         //echo 'Select the file to upload.';
+         echo Form::file('image');
+         //echo Form::submit('Upload File');
+         //echo Form::close();
+      ?>
+          </div>
+        </div>
+        <br>
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Send</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+      </td>
+    </tr>
+    @endforeach
+  </tbody>
+</table>
+</div>
 </div>
 
-@endsection
+<div id="car" class="tabcontent">
+  <br>
+<h3>2. CPTU Clients</h3>
+<a class="btn btn-success btn-sm" style="
+    padding: 10px;
+    color: #fff;font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 4px;" href="{{ route('carRentalForm') }}">Add Client</a>
+    <br>
+<table class="hover table table-striped table-bordered" id="myTable2">
+  <thead class="thead-dark">
+    <tr>
+  <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Cost Center</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Email</center></th>
+  {{-- <th scope="col" style="color:#3490dc;"><center>Start Date</center></th>
+  <th scope="col" style="color:#3490dc;"><center>End Date</center></th> --}}
+      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($carclients as $client)
+    <tr>
+      <th scope="row" class="counterCell text-center">.</th>
+      <td>{{$client->fullName}}</td>
+      <td><center>{{$client->cost_centre}}</center></td>
+      <td>{{$client->email}}</td>
+      <td>
+        <a data-toggle="modal" data-target="#Caredit{{$i}}" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:30px; color: green; cursor: pointer;"></i></a>
+         <div class="modal fade" id="Caredit{{$i}}" role="dialog">
 
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('editCarclients') }}">
+        {{csrf_field()}}
+          <div class="form-group">
+          <div class="form-wrapper">
+            <label for="carclient_name{{$i}}">Client Name</label>
+            <input type="text" id="carclient_name{{$i}}" name="client_name" class="form-control" value="{{$client->fullName}}" readonly="">
+          </div>
+        </div>
+        <br>
+
+<div class="form-group">
+          <div class="form-wrapper">
+            <label for="Caremail{{$i}}">Email</label>
+            <input type="text" id="Caremail{{$i}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+          </div>
+        </div>
+<br>
+
+<div class="form-group">
+          <div class="form-wrapper">
+            <label for="Carcentre{{$i}}">Cost Centre</label>
+            <input type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" value="{{$client->cost_centre}}" required="">
+          </div>
+        </div>
+<br>
+<input type="text" name="Caremail" value="{{$client->email}}" hidden="">
+<input type="text" name="Carcostcentre" value="{{$client->cost_centre}}" hidden="">
+<input type="text" name="Carfullname" value="{{$client->fullName}}" hidden="">
+
+     <div align="right">
+  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+        <a role="button" href="{{ route('CarClientsViewMore',[$client->fullName,$client->email,$client->cost_centre])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:30px; color:#3490dc;"></i></a>
+        <a data-toggle="modal" data-target="#carmail{{$i}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:25px; color: #3490dc; cursor: pointer;"></i></a>
+      <div class="modal fade" id="carmail{{$i}}" role="dialog">
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">New Message</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
+        {{csrf_field()}}
+          <div class="form-group row">
+            <label for="carclient_names{{$i}}" class="col-sm-2">To</label>
+            <div class="col-sm-9">
+            <input type="text" id="carclient_names{{$i}}" name="client_name" class="form-control" value="{{$client->fullName}}" readonly="">
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="carsubject{{$i}}" class="col-sm-2">Subject</label>
+            <div class="col-sm-9">
+            <input type="text" id="carsubject{{$i}}" name="subject" class="form-control" value="" >
+          </div>
+        </div>
+         <br>
+         
+        <div class="form-group row">
+            <label for="carmessage{{$i}}" class="col-sm-2">Message</label>
+            <div class="col-sm-9">
+              <textarea type="text" id="carmessage{{$i}}" name="message" class="form-control" value="" rows="7"></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="carattachment{{$i}}" class="col-sm-3">Attachments</label>
+            <div class="col-sm-8">
+              <?php
+         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
+         echo Form::file('image');
+      ?>
+          </div>
+        </div>
+        <br>
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Send</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+      </td>
+    </tr>
+    <?php $i=$i+1;?>
+    @endforeach
+  </tbody>
+</table>
+</div>
+
+<div id="insurance" class="tabcontent">
+  <br>
+  <h3>3. Insurance Clients</h3>
+  <a class="btn btn-success btn-sm" style="
+    padding: 10px;
+    color: #fff;font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 4px;" href="/insurance_contract_form">Add Client</a>
+    <br>
+<table class="hover table table-striped table-bordered" id="myTable3">
+  <thead class="thead-dark">
+    <tr>
+  <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
+   <th scope="col" style="color:#3490dc;"><center>Vehicle Reg No</center></th>
+  <th scope="col" style="color:#3490dc;"><center>Principal</center></th>
+<th scope="col"  style="color:#3490dc;"><center>Insurance Type</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Amount</center></th>
+      <th scope="col"  style="color:#3490dc;"><center>Date</center></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($insuranceclients as $client)
+    <tr>
+      <th scope="row" class="counterCell text-center">.</th>
+      <td>{{$client->full_name}}</td>
+      <td>{{$client->vehicle_registration_no}}</td>
+      <td>{{ucfirst(strtolower($client->principal))}}</td>
+      <td>{{ucfirst(strtolower($client->insurance_type))}}</td>
+      <td>{{number_format($client->sum_insured)}}</td>
+      <td><center>{{date("d/m/Y",strtotime($client->commission_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td>
+    </tr>
+    @endforeach
+  </tbody>
+</table>
+</div>
+
+  </div>
+</div>
+</div>
+@endsection
 @section('pagescript')
 <script type="text/javascript">
-   var table = $('#myTable').DataTable( {
+
+  function openClients(evt, evtName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(evtName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+document.getElementById("defaultOpen").click();
+</script>
+
+<script type="text/javascript">
+
+  function openSpace(evt, evtName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent2");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks2");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(evtName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+document.getElementById("defaultOpen2").click();
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+  var table = $('#myTable').DataTable( {
         dom: '<"top"fl>rt<"bottom"pi>'
     } );
+
+  var table = $('#myTable1').DataTable( {
+        dom: '<"top"fl>rt<"bottom"pi>'
+    } );
+
+  var table = $('#myTable2').DataTable( {
+        dom: '<"top"fl>rt<"bottom"pi>'
+    } );
+
+var table = $('#myTable3').DataTable( {
+        dom: '<"top"fl>rt<"bottom"pi>'
+    } );
+});
 </script>
 @endsection

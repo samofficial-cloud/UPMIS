@@ -20,7 +20,8 @@
     	?>
     
 	<div class="container">
-<h4>Available Car(s) for Hire From {{$_GET['start_date']}} To {{$_GET['end_date']}}</h4>
+<h4>Available Car(s) for Hire from {{date("d/m/Y",strtotime($_GET['start_date']))}} to {{date("d/m/Y",strtotime($_GET['end_date']))}}</h4>
+<br>
 <table class="hover table table-striped table-bordered" id="myTable4">
   <thead class="thead-dark">
     <tr>
@@ -38,7 +39,7 @@
       <td><center>{{ $cars->vehicle_reg_no}}</center></td>
       <td><center>{{$cars->vehicle_model}}</center></td>
       <td><center>{{ $cars->vehicle_status}}</center></td>
-      <td><center>{{ $cars->hire_rate}}</center></td>
+      <td><center>{{ number_format($cars->hire_rate)}}</center></td>
       </tr>
       @endforeach
   </tbody>
