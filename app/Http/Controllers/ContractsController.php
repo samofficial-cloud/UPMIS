@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Auth;
+use App\carContract;
 
 class ContractsController extends Controller
 {
@@ -29,7 +31,68 @@ class ContractsController extends Controller
 //        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
         $insurance_contracts=DB::table('insurance_contracts')->where('contract_status',1)->where('expiry_status',1)->get();
 
-        return view('contracts_management')->with('space_contracts',$space_contracts)->with('insurance_contracts',$insurance_contracts);
+        if(Auth::user()->role=='CPTU staff'){
+        $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','0')->orderBy('id','dsc')->get();
+        $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','0')->orderBy('id','dsc')->get();
+        $closed=carContract::where('form_completion','1')->orderBy('id','dsc')->get();
+        foreach ($inbox as $msg) {
+            # code...
+             DB::table('notifications')
+                ->where('contract_id', $msg->id)
+                ->update(['flag' => '0']);
+
+        }
+     }
+     elseif(Auth::user()->role=='Vote Holder'){
+        $inbox=carContract::where('head_msg_status','inbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
+        $outbox=carContract::where('head_msg_status','outbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
+         $closed=carContract::where('cost_centre',Auth::user()->cost_centre)->where('form_completion','1')->orderBy('id','dsc')->get();
+        foreach ($inbox as $msg) {
+            # code...
+             DB::table('notifications')
+                ->where('contract_id', $msg->id)
+                ->update(['flag' => '0']);
+
+        }
+     }
+      elseif(Auth::user()->role=='Accountant'){
+         $inbox=carContract::where('acc_msg_status','inbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
+        $outbox=carContract::where('acc_msg_status','outbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
+         $closed=carContract::where('cost_centre',Auth::user()->cost_centre)->where('form_completion','1')->orderBy('id','dsc')->get();
+        foreach ($inbox as $msg) {
+            # code...
+             DB::table('notifications')
+                ->where('contract_id', $msg->id)
+                ->update(['flag' => '0']);
+
+        }
+      }
+      elseif(Auth::user()->role=='Head of CPTU'){
+         $inbox=carContract::where('head_cptu_msg_status','inbox')->where('form_completion','0')->orderBy('id','dsc')->get();
+        $outbox=carContract::where('head_cptu_msg_status','outbox')->where('form_completion','0')->orderBy('id','dsc')->get();
+        $closed=carContract::where('form_completion','1')->orderBy('id','dsc')->get();
+        foreach ($inbox as $msg) {
+            # code...
+             DB::table('notifications')
+                ->where('contract_id', $msg->id)
+                ->update(['flag' => '0']);
+
+        }
+      }
+      elseif(Auth::user()->role=='DVC Administrator'){
+         $inbox=carContract::where('dvc_msg_status','inbox')->where('form_completion','0')->orderBy('id','dsc')->get();
+        $outbox=carContract::where('dvc_msg_status','outbox')->where('form_completion','0')->orderBy('id','dsc')->get();
+        $closed=carContract::where('form_completion','1')->orderBy('id','dsc')->get();
+        foreach ($inbox as $msg) {
+            # code...
+             DB::table('notifications')
+                ->where('contract_id', $msg->id)
+                ->update(['flag' => '0']);
+
+        }
+      }
+
+        return view('contracts_management')->with('space_contracts',$space_contracts)->with('insurance_contracts',$insurance_contracts)->with('outbox',$outbox)->with('inbox',$inbox)->with('closed',$closed);
 
     }
 

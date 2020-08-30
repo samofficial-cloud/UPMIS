@@ -78,18 +78,18 @@
           </div>
         @endif
 
-            {{--<div style="width:100%; text-align: center ">--}}
-                {{--<br>--}}
-                {{--<h2>CONTRACTS</h2>--}}
+            <div style="width:100%; text-align: center ">
+                <br>
+                <h2>CONTRACTS MANAGEMENT</h2>
 
-                {{--<br>--}}
+                <br>
 
-            {{--</div>--}}
+            </div>
 
             <div class="tab">
                 <button class="tablinksOuter" onclick="openContractType(event, 'space_contracts')"  id="defaultContract"><strong>SPACE CONTRACTS</strong></button>
                 <button class="tablinksOuter" onclick="openContractType(event, 'insurance_contracts')"><strong>INSURANCE CONTRACTS</strong></button>
-                <button class="tablinksOuter" onclick="openContractType(event, 'car_contracts')" ><strong>CAR RENTAL CONTRACTS</strong></button>
+                <button class="tablinksOuter" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>CAR RENTAL CONTRACTS</strong></button>
             </div>
 
 
@@ -447,16 +447,508 @@
 
             </div>
 
+            <div id="car_contracts" class="tabcontentOuter">
+                <br>
+                <h4 style="text-align: center">CAR RENTAL CONTRACTS</h4>
+                <br>
+                @if(Auth::user()->role=='CPTU staff')
+  <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
+    padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
+  </a>
+<br>
+<br>
+
+  <div class="tab">
+            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Contract</strong></button>
+        </div>
+<div id="inbox" class="tabcontent">
+  <br>
+  @if(count($inbox)>0)
+<table>
+    <thead>
+      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Initiated By</center></th>
+      <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 16%"><center>Trip Date</center></th>
+      <th style="width: 16%"><center>Destination</center></th>
+    </thead>
+    <tbody>
+      @foreach($inbox as $inbox)
+      <tr>
+        <td><center><a href="{{ route('carRentalFormE',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        <td><center>{{$inbox->form_initiator}}</center></td>
+        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
+        <td><center>{{$inbox->destination}}</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+  @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+
+<div id="outbox" class="tabcontent">
+  <br>
+  @if(count($outbox)>0)
+  <table>
+    <thead>
+      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Initiated By</center></th>
+      <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 15%"><center>Trip Date</center></th>
+      <th style="width: 14%"><center>Destination</center></th>
+      <th style="width: 14%"><center>Form Status</center></th>
+    </thead>
+    <tbody>
+      @foreach($outbox as $outbox)
+      <tr>
+        <td><center><a href="#">{{$outbox->id}}</a></center></td>
+        <td><center>{{$outbox->form_initiator}}</center></td>
+        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
+         <td><center>{{$outbox->destination}}</center></td>
+        <td><center>{{$outbox->form_status}} Stage</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+  @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+
+</div>
+<div id="closed" class="tabcontent">
+   <br>
+<table class="hover table table-striped table-bordered" id="myTablecar">
+    <thead class="thead-dark">
+      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+    </thead>
+    <tbody>
+      @foreach($closed as $closed)
+      <tr>
+        <th scope="row" class="counterCell text-center">.</th>
+        <td><center>{{$closed->id}}</center></td>
+        <td>{{$closed->designation}} {{$closed->fullName}}</td>
+        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+         <td><center>{{$closed->destination}}</center></td>
+         <td>{{number_format($closed->grand_total)}}</td>
+         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+@elseif(Auth::user()->role=='Vote Holder')
+  <div class="tab">
+            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Contract</strong></button>
+        </div>
+<div id="inbox" class="tabcontent">
+  <br>
+  @if(count($inbox)>0)
+<table>
+    <thead>
+      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Initiated By</center></th>
+      <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 16%"><center>Trip Date</center></th>
+      <th style="width: 16%"><center>Destination</center></th>
+    </thead>
+    <tbody>
+      @foreach($inbox as $inbox)
+      <tr>
+        <td><center><a href="{{ route('carRentalFormB',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        <td><center>{{$inbox->form_initiator}}</center></td>
+        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
+         <td><center>{{$inbox->destination}}</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+   @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+
+<div id="outbox" class="tabcontent">
+  <br>
+  @if(count($outbox)>0)
+<table>
+   <thead>
+      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Initiated By</center></th>
+      <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 15%"><center>Trip Date</center></th>
+      <th style="width: 14%"><center>Destination</center></th>
+      <th style="width: 14%"><center>Form Status</center></th>
+    </thead>
+    <tbody>
+      @foreach($outbox as $outbox)
+      <tr>
+        <td><center><a href="#">{{$outbox->id}}</a></center></td>
+        <td><center>{{$outbox->form_initiator}}</center></td>
+        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
+         <td><center>{{$outbox->destination}}</center></td>
+        <td><center>{{$outbox->form_status}} Stage</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+   @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+<div id="closed" class="tabcontent">
+   <br>
+<table class="hover table table-striped table-bordered" id="myTablecar">
+    <thead class="thead-dark">
+      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+    </thead>
+    <tbody>
+      @foreach($closed as $closed)
+      <tr>
+        <th scope="row" class="counterCell text-center">.</th>
+        <td><center>{{$closed->id}}</center></td>
+        <td>{{$closed->designation}} {{$closed->fullName}}</td>
+        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+         <td><center>{{$closed->destination}}</center></td>
+         <td>{{number_format($closed->grand_total)}}</td>
+         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+@elseif(Auth::user()->role=='Accountant')
+  <div class="tab">
+            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Contract</strong></button>
+        </div>
+<div id="inbox" class="tabcontent">
+  <br>
+  @if(count($inbox)>0)
+<table>
+    <thead>
+      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Initiated By</center></th>
+      <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 16%"><center>Trip Date</center></th>
+      <th style="width: 16%"><center>Destination</center></th>
+    </thead>
+    <tbody>
+      @foreach($inbox as $inbox)
+      <tr>
+        <td><center><a href="{{ route('carRentalFormC',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        <td><center>{{$inbox->form_initiator}}</center></td>
+        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
+         <td><center>{{$inbox->destination}}</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+   @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+
+<div id="outbox" class="tabcontent">
+  <br>
+  @if(count($outbox)>0)
+<table>
+   <thead>
+      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Initiated By</center></th>
+      <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 15%"><center>Trip Date</center></th>
+      <th style="width: 14%"><center>Destination</center></th>
+      <th style="width: 14%"><center>Form Status</center></th>
+    </thead>
+    <tbody>
+      @foreach($outbox as $outbox)
+      <tr>
+        <td><center><a href="#">{{$outbox->id}}</a></center></td>
+        <td><center>{{$outbox->form_initiator}}</center></td>
+        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
+         <td><center>{{$outbox->destination}}</center></td>
+        <td><center>{{$outbox->form_status}} Stage</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+   @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+<div id="closed" class="tabcontent">
+   <br>
+<table class="hover table table-striped table-bordered" id="myTablecar">
+    <thead class="thead-dark">
+      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+    </thead>
+    <tbody>
+      @foreach($closed as $closed)
+      <tr>
+        <th scope="row" class="counterCell text-center">.</th>
+        <td><center>{{$closed->id}}</center></td>
+        <td>{{$closed->designation}} {{$closed->fullName}}</td>
+        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+         <td><center>{{$closed->destination}}</center></td>
+         <td>{{number_format($closed->grand_total)}}</td>
+         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+@elseif(Auth::user()->role=='Head of CPTU')
+<a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
+    padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
+  </a>
+  <br><br>
+  <div class="tab">
+            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Contract</strong></button>
+        </div>
+<div id="inbox" class="tabcontent">
+  <br>
+  @if(count($inbox)>0)
+<table>
+    <thead>
+      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Initiated By</center></th>
+      <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 16%"><center>Trip Date</center></th>
+      <th style="width: 16%"><center>Destination</center></th>
+    </thead>
+    <tbody>
+      @foreach($inbox as $inbox)
+      <tr>
+        <td><center><a href="{{ route('carRentalFormD',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        <td><center>{{$inbox->form_initiator}}</center></td>
+        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
+        <td><center>{{$inbox->destination}}</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+   @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+
+<div id="outbox" class="tabcontent">
+  <br>
+  @if(count($outbox)>0)
+<table>
+   <thead>
+      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Initiated By</center></th>
+      <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 15%"><center>Trip Date</center></th>
+      <th style="width: 14%"><center>Destination</center></th>
+      <th style="width: 14%"><center>Form Status</center></th>
+    </thead>
+    <tbody>
+      @foreach($outbox as $outbox)
+      <tr>
+        <td><center><a href="#">{{$outbox->id}}</a></center></td>
+        <td><center>{{$outbox->form_initiator}}</center></td>
+        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
+         <td><center>{{$outbox->destination}}</center></td>
+        <td><center>{{$outbox->form_status}} Stage</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+   @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+<div id="closed" class="tabcontent">
+   <br>
+<table class="hover table table-striped table-bordered" id="myTablecar">
+    <thead class="thead-dark">
+      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+    </thead>
+    <tbody>
+      @foreach($closed as $closed)
+      <tr>
+        <th scope="row" class="counterCell text-center">.</th>
+        <td><center>{{$closed->id}}</center></td>
+        <td>{{$closed->designation}} {{$closed->fullName}}</td>
+        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+         <td><center>{{$closed->destination}}</center></td>
+         <td>{{number_format($closed->grand_total)}}</td>
+         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+@elseif(Auth::user()->role=='DVC Administrator')
+  <div class="tab">
+            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Contract</strong></button>
+        </div>
+<div id="inbox" class="tabcontent">
+  <br>
+  @if(count($inbox)>0)
+<table>
+    <thead>
+      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Initiated By</center></th>
+      <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 16%"><center>Trip Date</center></th>
+      <th style="width: 16%"><center>Destination</center></th>
+    </thead>
+    <tbody>
+      @foreach($inbox as $inbox)
+      <tr>
+        <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        <td><center>{{$inbox->form_initiator}}</center></td>
+        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
+         <td><center>{{$inbox->destination}}</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+   @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+
+<div id="outbox" class="tabcontent">
+  <br>
+  @if(count($outbox)>0)
+<table>
+   <thead>
+      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Initiated By</center></th>
+      <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
+      <th style="width: 15%"><center>Trip Date</center></th>
+      <th style="width: 14%"><center>Destination</center></th>
+      <th style="width: 14%"><center>Form Status</center></th>
+    </thead>
+    <tbody>
+      @foreach($outbox as $outbox)
+      <tr>
+        <td><center><a href="#">{{$outbox->id}}</a></center></td>
+        <td><center>{{$outbox->form_initiator}}</center></td>
+        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
+         <td><center>{{$outbox->destination}}</center></td>
+        <td><center>{{$outbox->form_status}} Stage</center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+   @else
+  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+  @endif
+</div>
+<div id="closed" class="tabcontent">
+   <br>
+<table class="hover table table-striped table-bordered" id="myTablecar">
+    <thead class="thead-dark">
+      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+    </thead>
+    <tbody>
+      @foreach($closed as $closed)
+      <tr>
+        <th scope="row" class="counterCell text-center">.</th>
+        <td><center>{{$closed->id}}</center></td>
+        <td>{{$closed->designation}} {{$closed->fullName}}</td>
+        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+         <td><center>{{$closed->destination}}</center></td>
+         <td>{{number_format($closed->grand_total)}}</td>
+         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+    @endif
+
+  </div>
 
 
-            {{--<div id="car_contracts" class="tabcontent">--}}
-                {{--<br>--}}
-                {{--<h3>CAR RENTAL CONTRACTS</h3>--}}
-                {{--<br>--}}
 
-
-
-            {{--</div>--}}
+            
 
 
 
@@ -471,6 +963,15 @@
 @endsection
 
 @section('pagescript')
+<script type="text/javascript">
+   $(document).ready(function(){
+    var cid = location.search.split('cid=')[1];
+    if(cid==31){
+    var tablink = document.getElementById("carss");
+       tablink.click();
+     }
+     });
+</script>
     <script type="text/javascript">
         function openContracts(evt, evtName) {
             // Declare all variables
@@ -532,6 +1033,10 @@
 
 
         var table2 = $('#myTableInsurance').DataTable( {
+            dom: '<"top"fl>rt<"bottom"pi>'
+        } );
+
+        var table3 = $('#myTablecar').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
         } );
     </script>

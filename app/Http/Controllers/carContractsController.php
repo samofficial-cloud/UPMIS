@@ -8,6 +8,8 @@ use App\carContract;
 use App\client;
 use PDF;
 use Auth;
+use App\cost_centre;
+use Riskihajar\Terbilang\Facades\Terbilang;
 
 class carContractsController extends Controller
 {
@@ -79,8 +81,8 @@ class carContractsController extends Controller
     }
 
     public function addContractFormA(){
-        
-         return view('CarRentalForm2');
+        $cost_centres=cost_centre::orderBy('costcentre_id','asc')->get();
+         return view('CarRentalForm2')->with('cost_centres',$cost_centres);
     }
 
     public function addContractFormB($id){
@@ -95,12 +97,22 @@ class carContractsController extends Controller
 
     public function addContractFormD($id){
         $contract=carContract::find($id);
-         return view('CarRentalFormB3')->with('contract',$contract);
+         $start_date=carContract::select('start_date')->where('id',$id)->value('start_date');
+         $data= DB::table('car_rentals')
+        ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')->where('vehicle_reg_no','!=',null)->whereDate('end_date','>=', $start_date)->pluck('vehicle_reg_no')->toArray())
+        ->where('vehicle_status','!=','Grounded')
+        ->get();
+         return view('CarRentalFormB3')->with('contract',$contract)->with('data',$data);
     }
 
     public function addContractFormD1($id){
         $contract=carContract::find($id);
-         return view('CarRentalFormB31')->with('contract',$contract);
+        $start_date=carContract::select('start_date')->where('id',$id)->value('start_date');
+         $data= DB::table('car_rentals')
+        ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')->where('vehicle_reg_no','!=',null)->whereDate('end_date','>=', $start_date)->pluck('vehicle_reg_no')->toArray())
+        ->where('vehicle_status','!=','Grounded')
+        ->get();
+         return view('CarRentalFormB31')->with('contract',$contract)->with('data',$data);
     }
 
     public function addContractFormE($id){
@@ -116,11 +128,21 @@ class carContractsController extends Controller
     $first_name = $request->input('first_name');
     $last_name = $request->input('last_name');
     $full_name=$first_name. ' '.$last_name;
+    $start_date=strtotime($request->input('start_date'));
+    $end_date=strtotime($request->input('end_date'));
+    if($start_date>$end_date){
+        $start_date=$request->input('end_date');
+        $end_date=$request->input('start_date');
+    }
+    else{
+      $start_date=$request->input('start_date');
+      $end_date=$request->input('end_date');  
+    }
         DB::table('car_contracts')->insert(
-                    ['fullName' => $full_name, 'area_of_travel' => $request->get('area'), 'faculty' => $request->get('faculty_name'), 'cost_centre' => $request->get('centre_name'),'designation' => $request->get('designation'), 'start_date' => $request->get('start_date'), 'end_date' => $request->get('end_date'), 'start_time' => $request->get('start_time'), 'end_time' => $request->get('end_time'),'overtime'=>$request->get('overtime'), 'destination'=>$request->get('destination'), 'purpose'=>$request->get('purpose'), 'trip_nature'=>$request->get('trip_nature'), 'estimated_distance'=>$request->get('estimated_distance'), 'estimated_cost'=>$request->get('estimated_cost'), 'form_initiator' => Auth::user()->name, 'cptu_msg_status'=>'outbox', 'form_status'=>'Vote Holder', 'head_msg_status'=> 'inbox', 'form_completion'=>'0', 'email'=> $request->get('email'), 'first_name'=> $request->input('first_name'), 'last_name'=> $request->input('last_name')]
+                    ['fullName' => $full_name, 'area_of_travel' => $request->get('area'), 'faculty' => $request->get('faculty_name'), 'cost_centre' => $request->get('centre_name'),'designation' => $request->get('designation'), 'start_date' => $start_date, 'end_date' => $end_date, 'start_time' => $request->get('start_time'), 'end_time' => $request->get('end_time'),'overtime'=>$request->get('overtime'), 'destination'=>$request->get('destination'), 'purpose'=>$request->get('purpose'), 'trip_nature'=>$request->get('trip_nature'), 'estimated_distance'=>$request->get('estimated_distance'), 'estimated_cost'=>$request->get('estimated_cost'), 'form_initiator' => Auth::user()->name, 'cptu_msg_status'=>'outbox', 'form_status'=>'Vote Holder', 'head_msg_status'=> 'inbox', 'form_completion'=>'0', 'email'=> $request->get('email'), 'first_name'=> $request->input('first_name'), 'last_name'=> $request->input('last_name')]
                 );
         DB::table('notifications')->insert(['role'=>'Vote Holder', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract']);
-        return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+        return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
     }
 
     public function newContractB(Request $request){
@@ -172,7 +194,7 @@ class carContractsController extends Controller
                  DB::table('notifications')->insert(['role'=>'Accountant', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
 
-                 return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+                 return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
     }
 
     public function newContractC(Request $request){
@@ -251,7 +273,7 @@ class carContractsController extends Controller
                 }
                 
 
-                return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+               return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
 
       }
 
@@ -287,7 +309,7 @@ class carContractsController extends Controller
 
                  DB::table('notifications')->insert(['role'=>'CPTU Staff', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
-                return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+                return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
 
               }
 
@@ -323,7 +345,7 @@ class carContractsController extends Controller
 
                  DB::table('notifications')->insert(['role'=>'CPTU Staff', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
-                return redirect()->route('carContracts')->with('success', 'Details Forwaded Successfully');
+                return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
 
               }
 
@@ -389,12 +411,12 @@ class carContractsController extends Controller
            ->where('id', $id)
            ->update(['grand_total' => $request->get('grand_total')]);
 
+           if(($request->get('button_value'))=='save_close'){
             DB::table('car_contracts')
            ->where('id', $id)
            ->update(['form_completion' => '1']);
 
-
-            $inserted_contract=DB::table('car_contracts')->where('id',$id)->get();
+           $inserted_contract=DB::table('car_contracts')->where('id',$id)->get();
 
             foreach($inserted_contract as $var) {
 
@@ -406,18 +428,8 @@ class carContractsController extends Controller
 
                 $amount_in_words='';
 
-                if($var->currency=='TZS'){
                     $amount_in_words=Terbilang::make($var->amount,' TZS',' ');
-
-                }if ($var->currency=='USD'){
-
-                    $amount_in_words=Terbilang::make($var->amount,' USD',' ');
-                }
-
-                else{
-
-
-                }
+               
 
                 $today=date('Y-m-d');
 
@@ -425,7 +437,7 @@ class carContractsController extends Controller
 
 
             DB::table('car_rental_invoices')->insert(
-                ['contract_id' => $var->id, 'invoicing_period_start_date' => $var->start_date,'invoicing_period_end_date' => $var->end_date,'period' => $period,'project_id' => 'Car rental','debtor_account_code' => '','debtor_name' => $var->fullName,'debtor_address' => '','amount_to_be_paid' => $var->amount,'currency'=>$var->currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Car Rental','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Car Rental','prepared_by'=>'Name','approved_by'=>'Name']
+                ['contract_id' => $var->id, 'invoicing_period_start_date' => $var->start_date,'invoicing_period_end_date' => $var->end_date,'period' => $period,'project_id' => 'Car rental','debtor_account_code' => '','debtor_name' => $var->fullName,'debtor_address' => '','amount_to_be_paid' => $var->grand_total,'currency_invoice'=>'TZS','gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Car Rental','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Car Rental','prepared_by'=>'Name','approved_by'=>'Name']
             );
 
             }
@@ -436,8 +448,11 @@ class carContractsController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'car_rental']
             );
 
-
-           return redirect()->route('carContracts')->with('success', 'Details submitted Successfully');
+             return redirect()->route('contracts_management')->with('success', 'Details Saved and Closed Successfully');
+       }
+       else{
+          return redirect()->route('contracts_management')->with('success', 'Details Saved Successfully');
+       }
 
               }
 

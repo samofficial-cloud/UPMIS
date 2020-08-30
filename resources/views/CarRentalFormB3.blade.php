@@ -394,12 +394,12 @@ $today=date('Y-m-d');
     <div class="form-group row" id="estimationdiv">
 						<div class="form-wrapper col-6">
 							<label for="estimated_distance">Estimated Distance in Kms</label>
-							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{$contract->estimated_distance}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{number_format($contract->estimated_distance)}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="estimated_cost">Estimated Cost in Tshs.</label>
                             <span id="estimated_costmsg"></span>
-							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{$contract->estimated_cost}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{number_format($contract->estimated_cost)}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
@@ -425,7 +425,7 @@ $today=date('Y-m-d');
                 <div class="form-group">
                     <div class="form-wrapper">
                         <label for="fund_available">Funds Available for Further use in Tshs.</label>
-                        <input type="text" id="fund_available" name="fund_available" class="form-control" value="{{$contract->funds_available}}" readonly="">
+                        <input type="text" id="fund_available" name="fund_available" class="form-control" value="{{number_format($contract->funds_available)}}" readonly="">
                     </div>
                 </div>
 
@@ -447,7 +447,7 @@ $today=date('Y-m-d');
                 <div class="form-group">
                     <div class="form-wrapper">
                         <label for="commited_fund">Fund to commit</label>
-                         <input type="text" id="commited_fund" name="commited_fund" class="form-control" value="{{$contract->fund_committed}}" readonly="">
+                         <input type="text" id="commited_fund" name="commited_fund" class="form-control" value="{{number_format($contract->fund_committed)}}" readonly="">
                     </div>
                 </div>
 
@@ -472,7 +472,7 @@ $today=date('Y-m-d');
                     <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">C. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
                     <div id="collapse3" class="collapse show">
                         <div class="form-card" style="padding: 4px;">
-                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{$contract->funds_available}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
+                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
                         <form id="msform" method="post" action="#" style="font-size: 17px;">
                             {{csrf_field()}}
                             <fieldset>
@@ -535,22 +535,36 @@ $today=date('Y-m-d');
                     </div>
                 </div>
                             </div> --}}
-                            <div class="form-group">
+                           {{--  <div class="form-group">
                     <div class="form-wrapper">
                         <label for="vehicle_reg">Vehicle Reg. No*</label>
                          <span id="vehiclemsg"></span>
                         <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
                          <span id="nameList"></span>
                     </div>
+                </div> --}}
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
+                         <span id="vehiclemsg"></span>
+                        {{-- <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
+                         <span id="nameList"></span> --}}
+                         <select id="vehicle_reg" name="vehicle_reg" class="form-control" required="">
+                        <option value="" disabled selected hidden>Select Vehicle Reg No</option>
+                        @foreach($data as $data)
+                        <option value="{{$data->vehicle_reg_no}}">{{$data->vehicle_reg_no}} - {{$data->vehicle_model}}</option>
+                        @endforeach
+                         </select>
+                    </div>
                 </div>
                 <div class="form-group row" id="approvedbydiv">
                         <div class="form-wrapper col-6">
-                            <label for="approve_name">Name*</label>
+                            <label for="approve_name">Name<span style="color: red;">*</span></label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="head_cptu_name" name="head_cptu_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="approve_date">Date*</label>
+                            <label for="approve_date">Date<span style="color: red;">*</span></label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$today}}" readonly="">
                         </div>

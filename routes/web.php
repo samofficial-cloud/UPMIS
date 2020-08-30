@@ -28,7 +28,7 @@
     Route::get('/space_id_suggestions', 'SpaceController@spaceIdSuggestions')->name('space_id_suggestions');
     Route::get('/autocomplete.space_fields', 'SpaceController@autoCompleteSpaceFields')->name('autocomplete.space_fields');
     Route::get('/space_contract_form', 'ContractsController@SpaceContractForm');
-    Route::get('/contracts_management', 'ContractsController@ContractsManagement');
+    Route::get('/contracts_management', 'ContractsController@ContractsManagement')->name('contracts_management');
     Route::get('/contract_details/{contract_id}', 'ContractsController@ContractDetails')->name('contract_details');
     Route::get('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
     Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');

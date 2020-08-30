@@ -56,6 +56,18 @@
     letter-spacing: 1px
 }
 
+#msform input[type=checkbox]{
+  width: 30%;
+  float: left;
+  margin-bottom: 0px;
+}
+
+#msform input[type=radio]{
+  width: 30%;
+  float: left;
+  margin-bottom: 0px;
+}
+
 #msform input:focus,
 #msform textarea:focus {
     -moz-box-shadow: none !important;
@@ -132,11 +144,24 @@ $year=$current-3;
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
+  <br>
+    @if ($message = Session::get('errors'))
+          <div class="alert alert-danger">
+            <p>{{$message}}</p>
+          </div>
+        @endif
+
+      @if ($message = Session::get('success'))
+      <div class="alert alert-success">
+        <p>{{$message}}</p>
+      </div>
+    @endif
+    <br>
     <div class="row justify-content-center mt-0">
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2><strong>Report Generation</strong></h2>
-                <p>Fill all form field with (*)</p>
+                <p>Fill all form field with (<span style="color: red;">*</span>)</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
                         <form id="msform" method="post" action="#">
@@ -147,7 +172,7 @@ $year=$current-3;
                                 <div class="form-card">
                           <div class="form-group" id="modulediv">
           <div class="form-wrapper" >
-          <label for="module">Module*</label>
+          <label for="module">Module<span style="color: red;">*</span></label>
             <select class="form-control" required="" id="module" name="module">
               <option value="" disabled selected hidden>Select Module</option>
               <option value="car">Car Rental Module</option>
@@ -163,7 +188,7 @@ $year=$current-3;
 
     <div class="form-group" id="spacetypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="major_industry">Select Report Type*</label>
+          <label for="major_industry">Select Report Type<span style="color: red;">*</span></label>
           <span id="spacetypemsg"></span>
             <select class="form-control" id="major_industry" name="major_industry">
               <option value=" " disabled selected hidden>Select Report Type</option>
@@ -184,18 +209,17 @@ $year=$current-3;
 
     <div class="form-group" id="space_idDiv" style="display: none;">
       <div class="form-wrapper">
-      <label for="space_id"  >Space Id*</label>
+      <label for="space_id"  >Space Id<span style="color: red;">*</span></label>
       <span id="spaceidmsg"></span>
       <input type="text" class="form-control" id="space_id" name="space_id" value="" autocomplete="off">
       <div id="nameListSpaceId"></div>
       </div>
     </div>
 
-    <div class="form-group" id="spacefilterBydate" style="display: none;">
-        <div class="form-wrapper">
-      <label for="space_filter_date" style=" display: inline-block; white-space: nowrap;">Filter By Date
-      <input id="space_filter_date" type="checkbox" name="space_filter_date" style="margin-bottom: 15px;" value=""></label>
-
+    <div class="form-group row" id="spacefilterBydate" style="display: none;">
+        <div class="col-3 form-check form-check-inline">
+       <input id="space_filter_date" type="checkbox" name="space_filter_date" value="" class="form-check-input">
+      <label for="space_filter_date" class="form-check-label">Filter By Date</label>
       </div>
     </div>
 
@@ -213,25 +237,18 @@ $year=$current-3;
                 </label>
                  </div> --}}
 
-                  <div class="form-wrapper col-2" id="spacefilterprize">
-                  <label for="prize" style=" display: block;
-    white-space: nowrap;">Price
+                  <div class="col-3 form-check form-check-inline" id="spacefilterprize">
                   <input class="form-check-input" type="checkbox" name="space_prize" id="space_prize" value="">
-                </label>
-                 </div>
+                  <label for="space_prize" class="form-check-label">Price</label> </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="Status" style=" display: block;
-    white-space: nowrap;">Occupation
-    <input class="form-check-input" type="checkbox" name="status" id="Status" value="">
-                   </label>
-                </div>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="status" id="Status" value="">
+                  <label for="Status" class="form-check-label">Occupation</label>
+                  </div>
 
-                <div class="form-wrapper col-3">
-                  <label for="location_filter" style=" display: block;
-    white-space: nowrap;">Location
-                   <input class="form-check-input" type="checkbox" name="location_filter" id="location_filter" value="">
-                   </label>
+                <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="location_filter" id="location_filter" value="">
+                  <label for="location_filter" class="form-check-label">Location</label>
                 </div>
 
 
@@ -242,12 +259,12 @@ $year=$current-3;
 
            <div class="form-group row" id="spacedatediv" style="display: none;">
             <div class="form-wrapper col-6">
-              <label for="start_date">From*</label>
+              <label for="start_date">From<span style="color: red;">*</span></label>
               <span id="startdatemsg"></span>
               <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
             </div>
             <div class="form-wrapper col-6">
-              <label for="end_date">To*</label>
+              <label for="end_date">To<span style="color: red;">*</span></label>
               <span id="enddatemsg"></span>
               <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
             </div>
@@ -255,12 +272,12 @@ $year=$current-3;
 
           <div class="form-group row" id="spacepricediv" style="display: none;">
             <div class="form-wrapper col-6">
-              <label for="min_price">Min Price*</label>
+              <label for="min_price">Min Price<span style="color: red;">*</span></label>
               <span id="minpricemsg"></span>
               <input type="number" id="min_price" name="min_price" class="form-control" value="">
             </div>
             <div class="form-wrapper col-6">
-              <label for="max_price">Max Price*</label>
+              <label for="max_price">Max Price<span style="color: red;">*</span></label>
               <span id="maxpricemsg"></span>
               <input type="number" id="max_price" name="max_price" class="form-control" value=" " >
             </div>
@@ -268,7 +285,7 @@ $year=$current-3;
 
           <div class="form-group" id="spaceoccupationdiv" style="display: none;">
           <div class="form-wrapper">
-          <label for="space_status">Occupation Status*</label>
+          <label for="space_status">Occupation Status<span style="color: red;">*</span></label>
           <span id="spacestatusmsg"></span>
             <select class="form-control" id="space_status" name="space_status">
               <option value="" disabled selected hidden> Select Occupation Status</option>
@@ -281,7 +298,7 @@ $year=$current-3;
 
     <div class="form-group" id="insurancereporttypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="insurance_reporttype">Select Report Type*</label>
+          <label for="insurance_reporttype">Select Report Type<span style="color: red;">*</span></label>
           <span id="insurancereporttypemsg"></span>
             <select class="form-control" id="insurance_reporttype" name="insurance_reporttype">
               <option value=" " disabled selected hidden>Select Report Type</option>
@@ -297,18 +314,14 @@ $year=$current-3;
                   <label for="Criteria">Filter By</label>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
-                  <label for="principal_filter" style=" display: block;
-    white-space: nowrap;">Principal
+                  <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="principal_filter" id="principal_filter" value="">
-                </label>
+                  <label for="principal_filter" id="principal_filter" class="form-check-label">Principal</label>
                  </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="insurance_typefilter" style=" display: block;
-    white-space: nowrap;">Insurance Type
-                   <input class="form-check-input" type="checkbox" name="insurance_typefilter" id="insurance_typefilter" value="">
-                   </label>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="insurance_typefilter" id="insurance_typefilter"  value="">
+                  <label for="insurance_typefilter" id="insurance_typefilter" class="form-check-label">Insurance Type</label>
                 </div>
                </div>
              </div>
@@ -316,7 +329,7 @@ $year=$current-3;
 
            <div class="form-group" id="Locationtypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="Locationtype">Select Location*</label>
+          <label for="Locationtype">Select Location<span style="color: red;">*</span></label>
           <span id="Locationtypemsg"></span>
             <select class="form-control" id="Locationtype" name="Locationtype">
               <option value="" disabled selected hidden>Select Location</option>
@@ -328,7 +341,7 @@ $year=$current-3;
 
            <div class="form-group" id="principaltypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="principaltype">Select Principal*</label>
+          <label for="principaltype">Select Principal<span style="color: red;">*</span></label>
           <span id="principaltypemsg"></span>
             <select class="form-control" id="principaltype" name="principaltype">
               <option value=" " disabled selected hidden>Select Principal</option>
@@ -341,7 +354,7 @@ $year=$current-3;
 
     <div class="form-group" id="insurancetypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="insurance_type">Select Insurance Type*</label>
+          <label for="insurance_type">Select Insurance Type<span style="color: red;">*</span></label>
           <span id="insurancetypemsg"></span>
             <select class="form-control" id="insurance_type" name="insurance_type">
               <option value=" " disabled selected hidden>Select Insurance Type</option>
@@ -353,7 +366,7 @@ $year=$current-3;
 
     <div class="form-group" id="tenanttypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="tenant_type">Select Report Type*</label>
+          <label for="tenant_type">Select Report Type<span style="color: red;">*</span></label>
           <span id="tenanttypemsg"></span>
             <select class="form-control" id="tenant_type" name="tenant_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
@@ -368,25 +381,19 @@ $year=$current-3;
                   <label for="Criteria">Filter By</label>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
-                  <label for="business_filter" style=" display: block;
-    white-space: nowrap;">Business Type
+                  <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="business_filter" id="business_filter" value="">
-                </label>
+                  <label for="business_filter" class="form-check-label">Business Type</label>
                  </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="contract_filter" style=" display: block;
-    white-space: nowrap;">Contract Status
+                 <div class="col-3 form-check form-check-inline">
                    <input class="form-check-input" type="checkbox" name="contract_filter" id="contract_filter" value="">
-                   </label>
+                  <label for="contract_filter" class="form-check-label">Contract Status</label> 
                 </div>
 
-                <div class="form-wrapper col-3">
-                  <label for="payment_filter" style=" display: block;
-    white-space: nowrap;">Payment Status
+                <div class="col-3 form-check form-check-inline">
                    <input class="form-check-input" type="checkbox" name="payment_filter" id="payment_filter" value="">
-                   </label>
+                  <label for="payment_filter" class="form-check-label">Payment Status</label>
                 </div>
                </div>
              </div>
@@ -395,22 +402,28 @@ $year=$current-3;
 
            <div class="form-group" id="businesstypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="business_type">Select Business Type*</label>
+          <label for="business_type">Select Business Type<span style="color: red;">*</span></label>
           <span id="businesstypemsg"></span>
             <select class="form-control" id="business_type" name="business_type">
               <option value=" " disabled selected hidden>Select Business Type</option>
-              <option value="Cafeteria">CAFETERIA</option>
+              <?php
+              $major_industries=DB::table('space_classification')->select('major_industry')->distinct()->orderBy('major_industry','asc')->get();
+              ?>
+              @foreach($major_industries as $var)
+              <option value="{{$var->major_industry}}">{{$var->major_industry}}</option>
+              @endforeach
+              {{-- <option value="Cafeteria">CAFETERIA</option>
               <option value="Mall-Shop">MALL SHOP</option>
               <option value="Office block">OFFICE BLOCK</option>
               <option value="Stationery">STATIONERY</option>
-              <option value="Villa">VILLA</option>
+              <option value="Villa">VILLA</option> --}}
             </select>
         </div>
     </div>
 
     <div class="form-group" id="contractstatusdiv" style="display: none;">
           <div class="form-wrapper">
-          <label for="contract_status">Select Contract Status*</label>
+          <label for="contract_status">Select Contract Status<span style="color: red;">*</span></label>
           <span id="contractstatusmsg"></span>
             <select class="form-control" id="contract_status" name="contract_status">
               <option value=" " disabled selected hidden>Select Contract Status</option>
@@ -423,7 +436,7 @@ $year=$current-3;
 
     <div class="form-group" id="paymentstatusdiv" style="display: none;">
           <div class="form-wrapper">
-          <label for="payment_status">Select Payment Status*</label>
+          <label for="payment_status">Select Payment Status<span style="color: red;">*</span></label>
           <span id="paymentstatusmsg"></span>
             <select class="form-control" id="payment_status" name="payment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
@@ -439,25 +452,20 @@ $year=$current-3;
                   <span id="t_invoiceCriteriamsg"></span>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
-                  <label for="space_rent" style=" display: block;
-    white-space: nowrap;">Space Rent
+                  <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="space_rent" value="rent" checked="">
-                </label>
+                  <label for="space_rent" class="form-check-label">Space Rent</label>
+                
                  </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="electricity_bill" style=" display: block;
-    white-space: nowrap;">Electricity Bill
-                   <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="electricity_bill" value="electricity" >
-                   </label>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="electricity_bill" value="electricity" >
+                  <label for="electricity_bill" class="form-check-label">Electricity Bill</label>
                 </div>
 
-                <div class="form-wrapper col-3">
-                  <label for="water_bill" style=" display: block;
-    white-space: nowrap;">Water Bill
+                <div class="col-3 form-check form-check-inline">
                    <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="water_bill" value="water">
-                   </label>
+                  <label for="water_bill" class="form-check-label">Water Bill</label>
                 </div>
                </div>
              </div>
@@ -465,12 +473,12 @@ $year=$current-3;
 
            <div class="form-group row" id="t_invoicedurationdiv" style="display: none;">
             <div class="form-wrapper col-6">
-              <label for="t_Invoice_start_date">From*</label>
+              <label for="t_Invoice_start_date">From<span style="color: red;">*</span></label>
               <span id="t_Invoice_startdatemsg"></span>
               <input type="date" id="t_Invoice_start_date" name="t_Invoice_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
             </div>
             <div class="form-wrapper col-6">
-              <label for="t_Invoice_end_date">To*</label>
+              <label for="t_Invoice_end_date">To<span style="color: red;">*</span></label>
               <span id="t_invoice_enddatemsg"></span>
               <input type="date" id="t_invoice_end_date" name="t_invoice_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
             </div>
@@ -481,11 +489,9 @@ $year=$current-3;
                   <label for="Criteria">Filter By</label>
                   <div class="row">
 
-                <div class="form-wrapper col-3">
-                  <label for="t_invoice_payment_filter" style=" display: block;
-    white-space: nowrap;">Payment Status
-                   <input class="form-check-input" type="checkbox" name="t_invoice_payment_filter" id="t_invoice_payment_filter" value="">
-                   </label>
+                <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="t_invoice_payment_filter" id="t_invoice_payment_filter" value="">
+                  <label for="t_invoice_payment_filter" class="form-check-label">Payment Status</label>
                 </div>
                </div>
              </div>
@@ -493,7 +499,7 @@ $year=$current-3;
 
             <div class="form-group" id="tInvoicepaymentstatusdiv" style="display: none;">
           <div class="form-wrapper">
-          <label for="t_invoicepayment_status">Select Payment Status*</label>
+          <label for="t_invoicepayment_status">Select Payment Status<span style="color: red;">*</span></label>
           <span id="t_invoicepaymentstatusmsg"></span>
             <select class="form-control" id="t_invoicepayment_status" name="t_invoicepayment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
@@ -507,7 +513,7 @@ $year=$current-3;
 
     <div class="form-group" id="cartypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="car_type">Select Report Type*</label>
+          <label for="car_type">Select Report Type<span style="color: red;">*</span></label>
           <span id="cartypemsg"></span>
             <select class="form-control" id="car_type" name="car_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
@@ -523,7 +529,7 @@ $year=$current-3;
 
     <div class="form-group" id="vehicleregdiv" style="display: none;">
           <div class="form-wrapper">
-            <label for="vehicle_reg">Vehicle Reg. No*</label>
+            <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
             <span id="vehicleregmsg"></span>
             <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
             <span id="nameList"></span>
@@ -536,31 +542,27 @@ $year=$current-3;
                   <label for="Criteria">Filter By</label>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
-                  <label for="carmodel_filter" style=" display: block;
-    white-space: nowrap;">Vehicle Model
-                  <input class="form-check-input" type="checkbox" name="carmodel_filter" id="carmodel_filter" value="">
+                  <div class="col-3 form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="carmodel_filter" id="carmodel_filter" value="">
+                  <label class="form-check-label" for="carmodel_filter" id="carmodel_filter">Vehicle Model
                 </label>
                  </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="carstatus_filter" style=" display: block;
-    white-space: nowrap;">Vehicle Status
-                   <input class="form-check-input" type="checkbox" name="carstatus_filter" id="carstatus_filter" value="">
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="carstatus_filter" id="carstatus_filter" value="">
+                  <label class="form-check-label" for="carstatus_filter" id="carstatus_filter">Vehicle Status
                    </label>
                 </div>
 
-                <div class="form-wrapper col-3">
-                  <label for="carrange_filter" style=" display: block;
-    white-space: nowrap;">Hire Range
-                   <input class="form-check-input" type="checkbox" name="carrange_filter" id="carrange_filter" value="">
+                <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="carrange_filter" id="carrange_filter" value="">
+                  <label class="form-check-label" for="carrange_filter" id="carrange_filter">Hire Range
                    </label>
                 </div>
 
-                <div class="form-wrapper col-3">
-                  <label for="rentstatus_filter" style=" display: block;
-    white-space: nowrap;">Rent status
-                   <input class="form-check-input" type="checkbox" name="rentstatus_filter" id="rentstatus_filter" value="">
+                <div class="col-2 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="rentstatus_filter" id="rentstatus_filter" value="">
+                  <label class="form-check-label" for="rentstatus_filter" id="rentstatus_filter">Rent status
                    </label>
                 </div>
                </div>
@@ -569,7 +571,7 @@ $year=$current-3;
 
            <div class="form-group" id="carmodeldiv" style="display: none;">
           <div class="form-wrapper">
-            <label for="model">Vehicle Model</label>
+            <label for="model">Vehicle Model<span style="color: red;">*</span></label>
              <span id="modelmsg"></span>
             <select class="form-control" required="" id="model" name="model" required="">
               <option value=""disabled selected hidden>Select Vehicle Model</option>
@@ -582,7 +584,7 @@ $year=$current-3;
 
         <div class="form-group" id="carstatusdiv" style="display: none;">
           <div class="form-wrapper" >
-          <label for="vehicle_status">Vehicle Status</label>
+          <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
            <span id="vehiclestatusmsg"></span>
             <select class="form-control" required="" id="vehicle_status" name="vehicle_status" required="">
               <option value=""disabled selected hidden>Select Vehicle status</option>
@@ -596,12 +598,12 @@ $year=$current-3;
 
     <div class="form-group row" id="carrangediv" style="display: none;">
             <div class="form-wrapper col-6">
-              <label for="carmin_price">Min Price*</label>
+              <label for="carmin_price">Min Price<span style="color: red;">*</span></label>
               <span id="carminpricemsg"></span>
               <input type="number" id="carmin_price" name="carmin_price" class="form-control" value="">
             </div>
             <div class="form-wrapper col-6">
-              <label for="carmax_price">Max Price*</label>
+              <label for="carmax_price">Max Price<span style="color: red;">*</span></label>
               <span id="carmaxpricemsg"></span>
               <input type="number" id="carmax_price" name="carmax_price" class="form-control" value="" >
             </div>
@@ -609,7 +611,7 @@ $year=$current-3;
 
     <div class="form-group" id="rentstatusdiv" style="display: none;">
           <div class="form-wrapper" >
-          <label for="rent_status">Rent Status</label>
+          <label for="rent_status">Rent Status<span style="color: red;">*</span></label>
            <span id="rentstatusmsg"></span>
             <select class="form-control" required="" id="rent_status" name="rent_status" required="">
               <option value=""disabled selected hidden>Select Rent Status</option>
@@ -622,12 +624,12 @@ $year=$current-3;
 
      <div class="form-group row" id="rent_durationdiv" style="display: none;">
             <div class="form-wrapper col-6">
-              <label for="rent_start_date">From*</label>
+              <label for="rent_start_date">From<span style="color: red;">*</span></label>
               <span id="rent_startdatemsg"></span>
               <input type="date" id="rent_start_date" name="rent_start_date" class="form-control" >
             </div>
             <div class="form-wrapper col-6">
-              <label for="rent_end_date">To*</label>
+              <label for="rent_end_date">To<span style="color: red;">*</span></label>
               <span id="rent_enddatemsg"></span>
               <input type="date" id="rent_end_date" name="rent_end_date" class="form-control" >
             </div>
@@ -635,12 +637,12 @@ $year=$current-3;
 
     <div class="form-group row" id="revenue_durationdiv" style="display: none;">
             <div class="form-wrapper col-6">
-              <label for="rev_start_date">From*</label>
+              <label for="rev_start_date">From<span style="color: red;">*</span></label>
               <span id="rev_startdatemsg"></span>
               <input type="date" id="rev_start_date" name="rev_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
             </div>
             <div class="form-wrapper col-6">
-              <label for="rev_end_date">To*</label>
+              <label for="rev_end_date">To<span style="color: red;">*</span></label>
               <span id="rev_enddatemsg"></span>
               <input type="date" id="rev_end_date" name="rev_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
             </div>
@@ -648,7 +650,7 @@ $year=$current-3;
 
     <div class="form-group" id="contracttypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="contract_type">Select Report Type*</label>
+          <label for="contract_type">Select Report Type<span style="color: red;">*</span></label>
           <span id="contracttypemsg"></span>
             <select class="form-control" id="contract_type" name="contract_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
@@ -659,7 +661,7 @@ $year=$current-3;
 
     <div class="form-group" id="contractbusinesstypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="contractbusiness_type">Select Business Type*</label>
+          <label for="contractbusiness_type">Select Business Type<span style="color: red;">*</span></label>
           <span id="contractbusinesstypemsg"></span>
             <select class="form-control" id="contractbusiness_type" name="contractbusiness_type">
               <option value=" " disabled selected hidden>Select Business Type</option>
@@ -681,26 +683,21 @@ $year=$current-3;
                   <input class="form-check-input" type="checkbox" name="client_filter" id="client_filter" value="">
                 </label>
                  </div> --}}
+                 
 
-                 <div class="form-wrapper col-3">
-                  <label for="Con_client_filter" style=" display: block;
-    white-space: nowrap;">Client Name
+                 <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="Con_client_filter" id="Con_client_filter" value="">
-                </label>
+                  <label class="form-check-label" id="Con_client_filter" for="Con_client_filter">Client Name</label>
                  </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="Con_payment_filter" style=" display: block;
-    white-space: nowrap;">Contract Status
+                 <div class="col-3 form-check form-check-inline">
                    <input class="form-check-input" type="checkbox" name="Con_payment_filter" id="Con_payment_filter" value="">
-                   </label>
+                  <label class="form-check-label" id="Con_payment_filter" for="Con_payment_filter">Contract Status</label>
                 </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="Con_year_filter" style=" display: block;
-    white-space: nowrap;">Lease Year
-                   <input class="form-check-input" type="checkbox" name="Con_year_filter" id="Con_year_filter" value="">
-                   </label>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="Con_year_filter" id="Con_year_filter" value="">
+                  <label class="form-check-label" id="Con_year_filter" for="Con_year_filter">Lease Year</label>
                 </div>
 
                </div>
@@ -709,7 +706,7 @@ $year=$current-3;
 
            <div class="form-group" id="clienttypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="client_type">Select Client Type*</label>
+          <label for="client_type">Select Client Type<span style="color: red;">*</span></label>
           <span id="clienttypemsg"></span>
             <select class="form-control" id="client_type" name="client_type">
               <option value=" " disabled selected hidden>Select Client Type</option>
@@ -721,7 +718,7 @@ $year=$current-3;
 
      <div class="form-group" id="Con_clientnamediv" style="display: none;">
           <div class="form-wrapper">
-            <label for="Con_clientname">Client Name*</label>
+            <label for="Con_clientname">Client Name<span style="color: red;">*</span></label>
             <span id="Conclientnamemsg"></span>
             <input type="text" id="Con_clientname" name="Con_clientname" class="form-control" autocomplete="off">
             <span id="ConnameList"></span>
@@ -730,7 +727,7 @@ $year=$current-3;
 
         <div class="form-group" id="Conpaymentstatusdiv" style="display: none;">
           <div class="form-wrapper">
-          <label for="Con_payment_status">Select Contract Status*</label>
+          <label for="Con_payment_status">Select Contract Status<span style="color: red;">*</span></label>
           <span id="Conpaymentstatusmsg"></span>
             <select class="form-control" id="Con_payment_status" name="Con_payment_status">
               <option value=" " disabled selected hidden>Select Contract Status</option>
@@ -746,18 +743,14 @@ $year=$current-3;
                   <span id="Conyearcategorymsg"></span>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
-                  <label for="Con_start_year" style=" display: block;
-    white-space: nowrap;">Lease Start
-                  <input class="form-check-input" type="radio" name="Conyearcategory" id="Con_start_year" value="start" checked="">
-                </label>
+                  <div class="col-3 form-check-inline">
+                    <input class="form-check-input" type="radio" name="Conyearcategory" id="Con_start_year" value="start" checked="">
+                  <label for="Con_start_year" class="form-check-label">Lease Start</label>
                  </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="electricity_bill" style=" display: block;
-    white-space: nowrap;">Lease End
-                   <input class="form-check-input" type="radio" name="Conyearcategory" id="Con_end_year" value="end" >
-                   </label>
+                 <div class="col-3 form-check-inline">
+                  <input class="form-check-input" type="radio" name="Conyearcategory" id="Con_end_year" value="end" >
+                  <label for="electricity_bill" class="form-check-label">Lease End</label>
                 </div>
               </div>
             </div>
@@ -765,7 +758,7 @@ $year=$current-3;
 
     <div class="form-group" id="Conyeardiv" style="display: none;">
           <div class="form-wrapper">
-          <label for="Con_year">Select Payment Status*</label>
+          <label for="Con_year">Select Payment Status<span style="color: red;">*</span></label>
           <span id="Conyearmsg"></span>
             <select class="form-control" id="Con_year" name="Con_year">
             <option value=" " disabled selected hidden>Select Year</option>
@@ -778,7 +771,7 @@ $year=$current-3;
 
     <div class="form-group" id="invoicetypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="invoice_type">Select Report Type*</label>
+          <label for="invoice_type">Select Report Type<span style="color: red;">*</span></label>
           <span id="invoicetypemsg"></span>
             <select class="form-control" id="invoice_type" name="invoice_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
@@ -789,7 +782,7 @@ $year=$current-3;
 
     <div class="form-group" id="Inbusinesstypediv" style="display: none;">
           <div class="form-wrapper">
-          <label for="Inbusiness_type">Select Business Type*</label>
+          <label for="Inbusiness_type">Select Business Type<span style="color: red;">*</span></label>
           <span id="Inbusinesstypemsg"></span>
             <select class="form-control" id="Inbusiness_type" name="Inbusiness_type">
               <option value=" " disabled selected hidden>Select Business Type</option>
@@ -835,28 +828,21 @@ $year=$current-3;
                   <label for="Criteria">Filter By</label>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
-                  <label for="In_client_filter" style=" display: block;
-    white-space: nowrap;">Client Name
+                  <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="In_client_filter" id="In_client_filter" value="">
-                </label>
+                  <label for="In_client_filter" class="form-check-label">Client Name</label>
                  </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="In_payment_filter" style=" display: block;
-    white-space: nowrap;">Payment Status
+                 <div class="col-3 form-check form-check-inline">
                    <input class="form-check-input" type="checkbox" name="In_payment_filter" id="In_payment_filter" value="">
-                   </label>
+                  <label for="In_payment_filter" class="form-check-label">Payment Status</label>
                 </div>
 
-                 <div class="form-wrapper col-3">
-                  <label for="In_year_filter" style=" display: block;
-    white-space: nowrap;">Year
-                   <input class="form-check-input" type="checkbox" name="In_year_filter" id="In_year_filter" value="">
-                   </label>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="In_year_filter" id="In_year_filter" value="">
+                  <label for="In_year_filter" class="form-check-label">Year</label>
                 </div>
-
-                
+             
                </div>
              </div>
            </div>
@@ -865,7 +851,7 @@ $year=$current-3;
 
          <div class="form-group" id="In_clientnamediv" style="display: none;">
           <div class="form-wrapper">
-            <label for="In_clientname">Client Name*</label>
+            <label for="In_clientname">Client Name<span style="color: red;">*</span></label>
             <span id="Inclientnamemsg"></span>
             <input type="text" id="In_clientname" name="In_clientname" class="form-control" autocomplete="off">
             <span id="nameListClient"></span>
@@ -874,7 +860,7 @@ $year=$current-3;
 
         <div class="form-group" id="Inpaymentstatusdiv" style="display: none;">
           <div class="form-wrapper">
-          <label for="In_payment_status">Select Payment Status*</label>
+          <label for="In_payment_status">Select Payment Status<span style="color: red;">*</span></label>
           <span id="Inpaymentstatusmsg"></span>
             <select class="form-control" id="In_payment_status" name="In_payment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
@@ -886,7 +872,7 @@ $year=$current-3;
 
     <div class="form-group" id="Inyeardiv" style="display: none;">
           <div class="form-wrapper">
-          <label for="In_year">Select Payment Status*</label>
+          <label for="In_year">Select Payment Status<span style="color: red;">*</span></label>
           <span id="Inyearmsg"></span>
             <select class="form-control" id="In_year" name="In_year">
             <option value=" " disabled selected hidden>Select Year</option>

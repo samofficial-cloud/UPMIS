@@ -44,18 +44,18 @@ table {
       <th scope="col"><center>Date Received</center></th>
       <th scope="col"><center>Description of Work</center></th>
       <th scope="col"><center>Service Provider</center></th>
-      <th scope="col"><center>Fuel Consumed</center></th>
-      <th scope="col"><center>Amount</center></th>
-      <th scope="col"><center>Total</center></th>
+      <th scope="col"><center>Fuel Consumed (Ltrs)</center></th>
+      <th scope="col"><center>Amount (TZS)</center></th>
+      <th scope="col"><center>Total (TZS)</center></th>
     </tr>
   </thead>
   <tbody>
   	@foreach($operational as $operational)
   	<tr>
-  	 <td class="counterCell text-center">.</td>
+  	 <th scope="row" class="counterCell text-center">.</th>
         <td>{{$operational->vehicle_reg_no}}</td>
         <td>{{$operational->lpo_no}}</td>
-        <td><center>{{$operational->date_received}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($operational->date_received))}}</center></td>
         <td>{{$operational->description}}</td>
         <td>{{$operational->service_provider}}</td>
         <td>{{$operational->fuel_consumed}}</td>

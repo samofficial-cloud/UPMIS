@@ -102,7 +102,7 @@ public function deletecar($id){
       foreach($data as $row)
       {
        $output .= '
-       <li id="list" style="margin-left: -3%;">'.$row->vehicle_reg_no.'</li>
+       <li id="list" style="margin-left: -3%;">'.$row->vehicle_reg_no.' - '.$row->vehicle_model.'</li>
        ';
       }
       $output .= '</ul>';
