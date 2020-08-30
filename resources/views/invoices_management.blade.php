@@ -95,11 +95,11 @@
 
 
                 <div class="tab">
-                    <button class="tablinks" onclick="openInvoices(event, 'space_invoices')" id="defaultOpen"><strong>REAL ESTATE</strong></button>
-                    <button class="tablinks" onclick="openInvoices(event, 'insurance_invoices')"><strong>INSURANCE</strong></button>
-                    <button class="tablinks" onclick="openInvoices(event, 'car_invoices')"><strong>CAR RENTAL</strong></button>
-                    <button class="tablinks" onclick="openInvoices(event, 'water_invoices')"><strong>WATER BILLS</strong></button>
-                    <button class="tablinks" onclick="openInvoices(event, 'electricity_invoices')"><strong>ELECTRICITY BILLS</strong></button>
+                    <button class="tablinks" onclick="openInvoices(event, 'space_invoices')" id="defaultOpen"><strong>Real Estate</strong></button>
+                    <button class="tablinks" onclick="openInvoices(event, 'insurance_invoices')"><strong>Insurance</strong></button>
+                    <button class="tablinks" onclick="openInvoices(event, 'car_invoices')"><strong>Car Rental</strong></button>
+                    <button class="tablinks" onclick="openInvoices(event, 'water_invoices')"><strong>Water Bills</strong></button>
+                    <button class="tablinks" onclick="openInvoices(event, 'electricity_invoices')"><strong>Electricity Bills</strong></button>
 
                 </div>
 
@@ -332,7 +332,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                            <a  title="View invoice" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                             <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -426,7 +426,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-file-text" aria-hidden="true"></i></center></a>
+                                            <a title="View contract" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-file-text" aria-hidden="true"></i></center></a>
                                             <div class="modal fade" id="contract{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -508,7 +508,7 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
-                                                <a data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
 
                                                 <div class="modal fade" id="send_invoice{{$var->invoice_number}}" role="dialog">
@@ -528,7 +528,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="number" min="12" max="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -564,7 +564,7 @@
 
 
 
-                                            <a data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
 
 
                                             <div class="modal fade" id="add_comment{{$var->invoice_number}}" role="dialog">
@@ -891,7 +891,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                            <a title="View invoice" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true" style="font-size: 20px;"></i></center></a>
                                             <div class="modal fade" id="invoice_insurance{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -990,7 +990,7 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
-                                                <a data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
 
                                                 <div class="modal fade" id="send_invoice_insurance{{$var->invoice_number}}" role="dialog">
@@ -1010,7 +1010,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="text" min="12" max="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -1046,7 +1046,7 @@
 
 
 
-                                            <a data-toggle="modal" data-target="#add_comment_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
 
 
                                             <div class="modal fade" id="add_comment_insurance{{$var->invoice_number}}" role="dialog">
@@ -1354,7 +1354,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_car{{$var->invoice_number}}"  aria-pressed="true"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            <a title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_car{{$var->invoice_number}}"  aria-pressed="true"><i class="fa fa-eye" style="font-size: 20px;" aria-hidden="true"></i></a>
                                             <div class="modal fade" id="invoice_car{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -1448,7 +1448,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract_car{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><i class="fa fa-file-text" aria-hidden="true"></i></a>
+                                            <a title="View contract" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract_car{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><i class="fa fa-file-text" aria-hidden="true"></i></a>
                                             <div class="modal fade" id="contract_car{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -1547,7 +1547,7 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
-                                                <a data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
 
                                                 <div class="modal fade" id="send_invoice_car{{$var->invoice_number}}" role="dialog">
@@ -1567,7 +1567,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="text" min="12" max="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -1603,7 +1603,7 @@
 
 
 
-                                            <a data-toggle="modal" data-target="#add_comment_car{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_car{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
 
 
                                             <div class="modal fade" id="add_comment_car{{$var->invoice_number}}" role="dialog">
@@ -1949,7 +1949,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                            <a title="View invoice" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" style="font-size: 20px;" aria-hidden="true"></i></center></a>
                                             <div class="modal fade" id="invoice_water{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -2062,7 +2062,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-file-text" aria-hidden="true"></i></center></a>
+                                            <a title="View contract" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-file-text" aria-hidden="true"></i></center></a>
                                             <div class="modal fade" id="contract_water{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -2149,7 +2149,7 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
-                                                <a data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
 
                                                 <div class="modal fade" id="send_invoice_water{{$var->invoice_number}}" role="dialog">
@@ -2190,7 +2190,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="text" min="12" max="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -2228,7 +2228,7 @@
 
 
 
-                                            <a data-toggle="modal" data-target="#add_comment_water{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_water{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
 
 
                                             <div class="modal fade" id="add_comment_water{{$var->invoice_number}}" role="dialog">
@@ -2564,7 +2564,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important;  "  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                            <a title="View invoice" style="color:#3490dc !important;  "  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" style="font-size: 20px;" aria-hidden="true"></i></center></a>
                                             <div class="modal fade" id="invoice_electricity{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -2678,7 +2678,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block;     margin-top: 3px;
+                                            <a title="View contract" style="color:#3490dc !important; display:inline-block;     margin-top: 3px;
     "  class="" data-toggle="modal" data-target="#contract_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-file-text" aria-hidden="true"></i></center></a>
                                             <div class="modal fade" id="contract_electricity{{$var->invoice_number}}" role="dialog">
 
@@ -2766,7 +2766,7 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
-                                                <a data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
 
                                                 <div class="modal fade" id="send_invoice_electricity{{$var->invoice_number}}" role="dialog">
@@ -2809,7 +2809,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="text" min="12" max="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -2845,7 +2845,7 @@
 
 
 
-                                            <a data-toggle="modal" data-target="#add_comment_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
 
 
                                             <div class="modal fade" id="add_comment_electricity{{$var->invoice_number}}" role="dialog">

@@ -87,7 +87,7 @@
             {{--</div>--}}
 
             <div class="tab">
-                <button class="tablinksOuter" onclick="openContractType(event, 'space_contracts')"  id="defaultContract"><strong>SPACE CONTRACTS</strong></button>
+                <button class="tablinksOuter" onclick="openContractType(event, 'space_contracts')"  id="defaultContract"><strong>REAL ESTATE CONTRACTS</strong></button>
                 <button class="tablinksOuter" onclick="openContractType(event, 'insurance_contracts')"><strong>INSURANCE CONTRACTS</strong></button>
                 <button class="tablinksOuter" onclick="openContractType(event, 'car_contracts')" ><strong>CAR RENTAL CONTRACTS</strong></button>
             </div>
@@ -280,7 +280,7 @@
                         @endif
                     </center></td>
             <td><center>
-                    <a  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',$var->contract_id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                    <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',$var->contract_id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
 
 
 
@@ -288,8 +288,8 @@
 
 
                     @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
-                    <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
-                        <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+                        <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                        <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
                     @else
                     @endif
 
@@ -324,7 +324,7 @@
                     @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
 
 {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
-                        <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:36px;"></i></center></a>
+                        <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
                         @else
 
                     @endif
@@ -402,8 +402,8 @@
                                 <td><center>{{$var->commission}}</center></td>
                                 <td><center>{{$var->receipt_no}}</center></td>
                                 <td><center>
-                                        <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
-                                        <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+                                        <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                                        <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
 
                                         <div class="modal fade" id="terminate{{$var->id}}" role="dialog">
 
