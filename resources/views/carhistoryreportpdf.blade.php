@@ -23,13 +23,7 @@ table {
 </style>
 <body>
 	<?php
-    use App\carRental;
-    use App\carContract;
-    use App\operational_expenditure;
-
-    $details=carRental::where('vehicle_reg_no',$_GET['reg'])->get();
-    $bookings=carContract::where('vehicle_reg_no',$_GET['reg'])->orderby('start_date','asc')->get();
-    $operations=operational_expenditure::where('vehicle_reg_no',$_GET['reg'])->orderby('date_received','asc')->get();
+    
     $i=1;
 	?>
 <center>
@@ -40,7 +34,7 @@ table {
     </b> 
 </center>
 <br>
-<h4>Vehicle Details</h4>
+<h3>Vehicle Details</h3>
 		<table style="font-size: 18px;width: 50%" id="t_id">
 			@foreach($details as $details)
 			<tr>
@@ -59,7 +53,7 @@ table {
 		</table>
 		<br>
 		<hr>
-	<h4>Bookings</h4>
+	<h3>Bookings</h3>
 	@if(count($bookings)>0)
 	<table class="hover table table-striped table-bordered" id="myTable1">
   <thead class="thead-dark">
@@ -86,11 +80,11 @@ table {
   </tbody>
 </table>
 @else
-<h3>Sorry No data found for the specified parameters</h3>
+<h4>No bookings has been made yet for this vehicle</h4>
 @endif
 <br>
 <hr>
-<h4>Operational Expenditure</h4>
+<h3>Operational Expenditure</h3>
 @if(count($operations)>0)
 <table class="hover table table-striped table-bordered" id="myTable">
   <thead class="thead-dark">
@@ -124,7 +118,7 @@ table {
 </tbody>
 </table>
 @else
-<h3>Sorry No data found for the specified parameters</h3>
+<h4>No operational expenditure has been addded yet for this vehicle</h4>
 @endif
 </body>
 </html>

@@ -23,36 +23,13 @@ table {
 </style>
 <body>
 	<?php
-    use App\insurance_contract;
-    use App\insurance;
-    if($_GET['report_type']=='sales'){
-    	if(($_GET['principal_filter']=='true') && ($_GET['insurance_typefilter']=='true')){
-    		$insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_type',$_GET['insurance_type'])->get();
-    	}
-    	if(($_GET['principal_filter']=='true') && ($_GET['insurance_typefilter']!='true')){
-    		$insurance=insurance_contract::where('principal',$_GET['principaltype'])->get();
-    	}
-    	if(($_GET['insurance_typefilter']=='true') && ($_GET['principal_filter']!='true')){
-    		$insurance=insurance_contract::where('insurance_type',$_GET['insurance_type'])->get();
-    	}
-
-    	if(($_GET['insurance_typefilter']!='true') && ($_GET['principal_filter']!='true')){
-    		$insurance=insurance_contract::get();
-    	}
-    }
-    else if($_GET['report_type']=='principals'){
-    	$principal=insurance::where('status','1')->get();
-    }
-     else if($_GET['report_type']=='clients'){
-      $clients=insurance_contract::get();
-    }
 
 	?>
 
 	<center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
-     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
+     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT  
     </b>
     @if($_GET['report_type']=='sales')
     @if(($_GET['principal_filter']=='true') && ($_GET['insurance_typefilter']=='true'))
@@ -79,15 +56,15 @@ table {
 <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
-          <th scope="col"><center>S/N</center></th>
-          <th scope="col"><center>Vehicle Reg No</center></th>
-          <th scope="col" ><center>Commission Date</center></th>
-          <th scope="col" ><center>End Date</center></th>
-           <th scope="col" ><center>Receipt No </center></th>
-            <th scope="col" ><center>Currency </center></th>
-          <th scope="col" ><center>Sum Insured</center></th>
-          <th scope="col" ><center>Premium</center></th>
-            <th scope="col" ><center>Actual(Excluding VAT) </center></th>
+          <th scope="col" style="width: 4%;"><center>S/N</center></th>
+          <th scope="col" style="width: 14%;"><center>Vehicle Reg No</center></th>
+          <th scope="col" style="width: 12%;"><center>Commission Date</center></th>
+          <th scope="col" style="width: 12%;"><center>End Date</center></th>
+           <th scope="col" style="width: 12%;"><center>Receipt No </center></th>
+            <th scope="col" style="width: 9%;"><center>Currency </center></th>
+          <th scope="col" style="width: 12%;"><center>Sum Insured</center></th>
+          <th scope="col" style="width: 12%;"><center>Premium</center></th>
+            <th scope="col" style="width: 14%;"><center>Actual(Excluding VAT) </center></th>
            
            
         </tr>
@@ -97,15 +74,15 @@ table {
         @foreach($insurance as $var)
           <tr>
 
-            <td class="counterCell">.</td>
-            <td><center>{{$var->vehicle_registration_no}}</center></td>
-            <td><center>{{$var->commission_date}}</center></td>
-            <td><center>{{$var->end_date}}</center></td>
+            <th scope="row" class="counterCell text-center">.</th>
+            <td>{{$var->vehicle_registration_no}}</td>
+            <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
+            <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
             <td><center>{{$var->receipt_no}}</center></td>
              <td><center>{{$var->currency}}</center></td>
-              <td><center>{{$var->sum_insured}}</center></td>
-              <td><center>{{$var->premium}}</center></td>
-            <td><center>{{$var->actual_ex_vat}}</center></td>   
+              <td><center>{{number_format($var->sum_insured)}}</center></td>
+              <td><center>{{number_format($var->premium)}}</center></td>
+            <td><center>{{number_format($var->actual_ex_vat)}}</center></td>   
           </tr>
           @endforeach
       </tbody>
@@ -123,10 +100,10 @@ table {
       <tbody>
       	 @foreach($principal as $var)
           <tr>
-          	<td class="counterCell">.</td>
+          	<th scope="row" class="counterCell">.</th>
           	<td>{{$var->insurance_company}}</td>
           	<td>{{$var->insurance_type}}</td>
-          	<td><center>{{$var->commission}}</center></td>
+          	<td>{{number_format($var->commission)}}</td>
 
           </tr>
           @endforeach
@@ -151,13 +128,13 @@ table {
         @foreach($clients as $var)
           <tr>
 
-            <td class="counterCell">.</td>
+            <th scope="row" class="counterCell">.</th>
             <td>{{$var->full_name}}</td>
-            <td><center>{{$var->vehicle_registration_no}}</center></td>
-            <td><center>{{$var->commission_date}}</center></td>
-            <td><center>{{$var->end_date}}</center></td>
-            <td><center>{{$var->receipt_no}}</center></td>
-            <td><center>{{$var->currency}} {{$var->sum_insured}}</center></td>   
+            <td>{{$var->vehicle_registration_no}}</td>
+            <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
+            <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
+            <td>{{$var->receipt_no}}</td>
+            <td>{{$var->currency}} {{number_format($var->sum_insured)}}</td>   
           </tr>
           @endforeach
       </tbody>

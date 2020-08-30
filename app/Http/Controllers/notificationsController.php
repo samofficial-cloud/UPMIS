@@ -13,7 +13,8 @@ class notificationsController extends Controller
     $notification->flag='0';
     $notification->save();
     if($notification->type=='car contract'){
-     return redirect()->route('carContracts');
+     //return redirect()->route('contracts_management');
+     return redirect('/contracts_management?cid=31');
     }
     }
 }

@@ -394,12 +394,12 @@ $today=date('Y-m-d');
     <div class="form-group row" id="estimationdiv">
 						<div class="form-wrapper col-6">
 							<label for="estimated_distance">Estimated Distance in Kms</label>
-							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{$contract->estimated_distance}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{number_format($contract->estimated_distance)}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="estimated_cost">Estimated Cost in Tshs.</label>
                             <span id="estimated_costmsg"></span>
-							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{$contract->estimated_cost}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{number_format($contract->estimated_cost)}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
@@ -425,7 +425,7 @@ $today=date('Y-m-d');
                 <div class="form-group">
                     <div class="form-wrapper">
                         <label for="fund_available">Funds Available for Further use in Tshs.</label>
-                        <input type="text" id="fund_available" name="fund_available" class="form-control" value="{{$contract->funds_available}}" readonly="">
+                        <input type="text" id="fund_available" name="fund_available" class="form-control" value="{{number_format($contract->funds_available)}}" readonly="">
                     </div>
                 </div>
 
@@ -447,7 +447,7 @@ $today=date('Y-m-d');
                 <div class="form-group">
                     <div class="form-wrapper">
                         <label for="commited_fund">Fund to commit</label>
-                         <input type="text" id="commited_fund" name="commited_fund" class="form-control" value="{{$contract->fund_committed}}" readonly="">
+                         <input type="text" id="commited_fund" name="commited_fund" class="form-control" value="{{number_format($contract->fund_committed)}}" readonly="">
                     </div>
                 </div>
 
@@ -472,7 +472,7 @@ $today=date('Y-m-d');
                     <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">C. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
                     <div id="collapse3" class="collapse">
                         <div class="form-card" style="padding: 4px;">
-                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{$contract->funds_available}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
+                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
                         <form id="msform" method="post" action="#" style="font-size: 17px;">
                             {{csrf_field()}}
                             <fieldset>
@@ -585,58 +585,64 @@ $today=date('Y-m-d');
                     @endif
                     <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse5">E. MILEAGE COVERAGE AFTER THE TRIP</a></h2>
                     <div id="collapse5" class="collapse show">
-                        <form id="msform" method="post" action="{{ route('newCarcontractE') }}">
+                        <form id="msform" method="post" action="{{ route('newCarcontractE') }}" onsubmit="return validation()">
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
 
                                     <div class="form-group row">
                         <div class="form-wrapper col-6">
-                            <label for="speedmeter_km">Beginning Speedmeter Reading in Kms*</label>
-                            <input type="text" id="speedmeter_km" name="speedmeter_km" class="form-control" required="" value="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <label for="speedmeter_km">Beginning Speedmeter Reading in Kms<span style="color: red;">*</span></label>
+                            <span id="speedmeter_kmmsg"></span>
+                            <input type="text" id="speedmeter_km" name="speedmeter_km" class="form-control" value="{{$contract->initial_speedmeter}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="speedmeter_time">Time*</label>
-                            <input type="time" id="speedmeter_time" name="speedmeter_time" class="form-control" value="" required="">
+                            <label for="speedmeter_time">Time<span style="color: red;">*</span></label>
+                            <span id="speedmeter_timemsg"></span>
+                            <input type="time" id="speedmeter_time" name="speedmeter_time" class="form-control" value="{{$contract->initial_speedmeter_time}}">
                         </div>
                     </div>
 
                      <div class="form-group row">
                         <div class="form-wrapper col-6">
-                            <label for="end_speedmeter_km">Ending Speedmeter Reading in Kms*</label>
-                            <input type="text" id="end_speedmeter_km" name="end_speedmeter_km" class="form-control" required value="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <label for="end_speedmeter_km">Ending Speedmeter Reading in Kms<span style="color: red;">*</span></label>
+                            <span id="end_speedmeter_kmmsg"></span>
+                            <input type="text" id="end_speedmeter_km" name="end_speedmeter_km" class="form-control" value="{{$contract->ending_speedmeter}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="end_speedmeter_time">Time*</label>
-                            <input type="time" id="end_speedmeter_time" name="end_speedmeter_time" class="form-control" value="" required="">
+                            <label for="end_speedmeter_time">Time<span style="color: red;">*</span></label>
+                            <span id="end_speedmeter_timemsg"></span>
+                            <input type="time" id="end_speedmeter_time" name="end_speedmeter_time" class="form-control" value="{{$contract->ending_speedmeter_time}}">
                         </div>
                     </div>
 
                     <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="end_overtime">Overtime hours</label>
-                        <input type="text" id="end_overtime" name="end_overtime" required="" class="form-control" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                        <label for="end_overtime">Overtime hours<span style="color: red;">*</span></label>
+                        <span id="end_overtimemsg"></span>
+                        <input type="text" id="end_overtime" name="end_overtime" class="form-control" value="{{$contract->overtime_hrs}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
 
                  <div class="form-group row" >
                         <div class="form-wrapper col-6">
-                            <label for="user_name">Name of user*</label>
+                            <label for="user_name">Name of user<span style="color: red;">*</span></label>
                             <input type="text" id="user_name" name="user_name" class="form-control" value="{{$contract->fullName }}" readonly="">
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="user_date">Date*</label>
+                            <label for="user_date">Date<span style="color: red;">*</span></label>
                             <input type="date" id="user_date" name="user_date" class="form-control" value="{{$today}}" readonly="">
                         </div>
                     </div>
 
                     <div class="form-group row" >
                         <div class="form-wrapper col-6">
-                            <label for="driver_name">Name of driver*</label>
-                            <input type="text" id="driver_name" name="driver_name" class="form-control" required value="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
+                            <label for="driver_name">Name of driver<span style="color: red;">*</span></label>
+                            <span id="driver_namemsg"></span>
+                            <input type="text" id="driver_name" name="driver_name" class="form-control" value="{{$contract->driver_name}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="driver_date">Date*</label>
+                            <label for="driver_date">Date<span style="color: red;">*</span></label>
                             <input type="date" id="driver_date" name="driver_date" class="form-control" value="{{$today}}" readonly="">
                         </div>
                     </div>
@@ -654,57 +660,68 @@ $today=date('Y-m-d');
 
                                     <div class="form-group row">
                         <div class="form-wrapper col-4">
-                            <label for="charge_km">Charge per mile/Km*</label>
-                            <input type="text" id="charge_km" name="charge_km" class="form-control" value="" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <label for="charge_km">Charge per mile/Km<span style="color: red;">*</span></label>
+                            <span id="charge_kmmsg"></span>
+                            <input type="text" id="charge_km" name="charge_km" class="form-control" value="{{$contract->charge_km}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-4">
-                            <label for="mileage_km">Mileage covered in Km*</label>
-                            <input type="text" id="mileage_km" name="mileage_km" class="form-control" value="" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <label for="mileage_km">Mileage covered in Km<span style="color: red;">*</span></label>
+                            <span id="mileage_kmmsg"></span>
+                            <input type="text" id="mileage_km" name="mileage_km" class="form-control" value="{{$contract->mileage_km}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-4">
-                            <label for="mileage_tshs">Mileage charges Tshs*</label>
-                            <input type="text" id="mileage_tshs" name="mileage_tshs" class="form-control" value="" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <label for="mileage_tshs">Mileage charges Tshs<span style="color: red;">*</span></label>
+                            <span id="mileage_tshsmsg"></span>
+                            <input type="text" id="mileage_tshs" name="mileage_tshs" class="form-control" value="{{$contract->mileage_tshs}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                     </div>
 
                      <div class="form-group row">
                         <div class="form-wrapper col-6">
-                            <label for="penalty_hrs">Penalty hours*</label>
-                            <input type="text" id="penalty_hrs" name="penalty_hrs" class="form-control" value="" onkeypress="if((this.value.length<3)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <label for="penalty_hrs">Penalty hours<span style="color: red;">*</span></label>
+                            <span id="penalty_hrsmsg"></span>
+                            <input type="text" id="penalty_hrs" name="penalty_hrs" class="form-control" value="{{$contract->penalty_hrs}}" onkeypress="if((this.value.length<3)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="penalty_amount">Amount*</label>
-                            <input type="text" id="penalty_amount" name="penalty_amount" class="form-control" value="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <label for="penalty_amount">Amount<span style="color: red;">*</span></label>
+                            <span id="penalty_amountmsg"></span>
+                            <input type="text" id="penalty_amount" name="penalty_amount" class="form-control" value="{{$contract->penalty_amount}}"  onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="form-wrapper col-6">
-                            <label for="overtime_charges">Overtime charges Tshs*</label>
-                            <input type="text" id="overtime_charges" name="overtime_charges" class="form-control" value="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <label for="overtime_charges">Overtime charges Tshs<span style="color: red;">*</span></label>
+                            <span id="overtime_chargesmsg"></span>
+                            <input type="text" id="overtime_charges" name="overtime_charges" class="form-control" value="{{$contract->overtime_charges}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-6">
-                           <label for="total_charges">Total charges</label>
-                        <input type="text" id="total_charges" name="total_charges" class="form-control" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                           <label for="total_charges">Total charges<span style="color: red;">*</span></label>
+                           <span id="total_chargesmsg"></span>
+                        <input type="text" id="total_charges" name="total_charges" class="form-control" value="{{$contract->total_charges}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                     </div>
 
                     <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="standing_charges">Vehicle Standing charge</label>
-                        <input type="text" id="standing_charges" name="standing_charges" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                        <label for="standing_charges">Vehicle Standing charge<span style="color: red;">*</span></label>
+                        <span id="standing_chargesmsg"></span>
+                        <input type="text" id="standing_charges" name="standing_charges" class="form-control" value="{{$contract->standing_charges}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="grand_total"><b>GRAND TOTAL</b></label>
-                        <input type="text" id="grand_total" name="grand_total" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                        <label for="grand_total"><b>GRAND TOTAL<span style="color: red;">*</span></b></label>
+                        <span id="grand_totalmsg"></span>
+                        <input type="text" id="grand_total" name="grand_total" class="form-control" value="{{$contract->grand_total}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
                 <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
+                <input type="text" name="button_value" value="" id="button_value" hidden="">
             </div>
-             <button class="btn btn-primary" type="submit">Save</button>
+            <button name="submit-button" id="submit-button" class="btn btn-primary" type="submit" value="save">Save</button>
+             <button name="submit-button" id="submit-button" class="btn btn-danger" type="submit" value="save_close">Save and Close</button>
         </fieldset>
     </form>
 
@@ -724,76 +741,284 @@ $today=date('Y-m-d');
 
 @section('pagescript')
 <script type="text/javascript">
+    var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15;
     $(document).ready(function(){
-     $('#vehicle_reg').keyup(function(e){ 
-        console.log(4);
-        
-        e.preventDefault();
-        var query = $(this).val();
-        if(query != ''){
-         var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.fetch') }}",
-          method:"POST",
-          data:{query:query, _token:_token},
-          success:function(data){
-            if(data=='0'){
-             $('#vehicle_reg').attr('style','border:1px solid #f00');
-             a = '0';
+     $('button[name="submit-button"]').click(function(e){
+        var query=$(this).val();
+        $('#button_value').val(query);
+        if(query=='save_close'){
+            var query1=$('#speedmeter_km').val();
+            if(query1==""){
+                p1=0;
+           $('#speedmeter_kmmsg').show();
+          var message=document.getElementById('speedmeter_kmmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#speedmeter_km').attr('style','border-bottom:1px solid #f00');
             }
             else{
-              a ='1';
-              //$('#message2').hide();
-              $('#vehicle_reg').attr('style','border:1px solid #ced4da'); 
-              $('#nameList').fadeIn();  
-              $('#nameList').html(data);
-          }
+                p1=1;
+        $('#speedmeter_kmmsg').hide();
+        $('#speedmeter_km').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            var query2=$('#speedmeter_time').val();
+            if(query2==""){
+                p2=0;
+                 $('#speedmeter_timemsg').show();
+          var message=document.getElementById('speedmeter_timemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#speedmeter_time').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p2=1;
+        $('#speedmeter_timemsg').hide();
+        $('#speedmeter_time').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            var query3=$('#end_speedmeter_km').val();
+            if(query3==""){
+                p3=0;
+               $('#end_speedmeter_kmmsg').show();
+          var message=document.getElementById('end_speedmeter_kmmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#end_speedmeter_km').attr('style','border-bottom:1px solid #f00'); 
+            }
+            else{
+                p3=1;
+        $('#end_speedmeter_kmmsg').hide();
+        $('#end_speedmeter_km').attr('style','border-bottom: 1px solid #ccc');  
+            }
+
+            var query4=$('#end_speedmeter_time').val();
+            if(query4==""){
+                p4=0;
+              $('#end_speedmeter_timemsg').show();
+          var message=document.getElementById('end_speedmeter_timemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#end_speedmeter_time').attr('style','border-bottom:1px solid #f00');   
+            }
+            else{
+                p4=1;
+            $('#end_speedmeter_timemsg').hide();
+            $('#end_speedmeter_time').attr('style','border-bottom: 1px solid #ccc');  
+            }
+
+            var query5=$('#end_overtime').val();
+            if(query5==""){
+                p5=0;
+               $('#end_overtimemsg').show();
+          var message=document.getElementById('end_overtimemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#end_overtime').attr('style','border-bottom:1px solid #f00');   
+            }
+            else{
+                p5=1;
+            $('#end_overtimemsg').hide();
+            $('#end_overtime').attr('style','border-bottom: 1px solid #ccc');}
+
+
+            var query6=$('#driver_name').val();
+            if(query6==""){
+                p6=0;
+            $('#driver_namemsg').show();
+          var message=document.getElementById('driver_namemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#driver_name').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p6=1;
+            $('#driver_namemsg').hide();
+            $('#driver_name').attr('style','border-bottom: 1px solid #ccc');
         }
-         });
+
+        var query7=$('#charge_km').val();
+         if(query7==""){
+            p7=0;
+            $('#charge_kmmsg').show();
+          var message=document.getElementById('charge_kmmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#charge_km').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p7=1;
+            $('#charge_kmmsg').hide();
+            $('#charge_km').attr('style','border-bottom: 1px solid #ccc');
         }
-        else if(query==''){
-          a ='1';
-              //$('#message2').hide();
-              $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+
+        var query8=$('#mileage_km').val();
+        if(query8==""){
+            p8=0;
+            $('#mileage_kmmsg').show();
+          var message=document.getElementById('mileage_kmmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#mileage_km').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p8=1;
+            $('#mileage_kmmsg').hide();
+            $('#mileage_km').attr('style','border-bottom: 1px solid #ccc');
         }
-     });
-      
-  $(document).on('click', '#list', function(){
-   a ='1';
-   //$('#message2').hide();
-  $('#vehicle_reg').attr('style','border:1px solid #ced4da');
 
-        $('#vehicle_reg').val($(this).text());      
-        $('#nameList').fadeOut();
 
-        var query = $('#vehicle_reg').val();
-        console.log(query);
-        if(query!=''){
-       var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.model') }}",
-          method:"POST",
-          data:{query:query, _token:_token},
-          success:function(data){
-            $('#vehiclemodel').val(data);
-          }
-          });
+        var query9=$('#mileage_tshs').val();
+        if(query9==""){
+            p9=0;
+            $('#mileage_tshsmsg').show();
+          var message=document.getElementById('mileage_tshsmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#mileage_tshs').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p9=1;
+            $('#mileage_tshsmsg').hide();
+            $('#mileage_tshs').attr('style','border-bottom: 1px solid #ccc');
+        }
 
-         $.ajax({
-          url:"{{ route('autocomplete.hirerate') }}",
-          method:"POST",
-          data:{query:query, _token:_token},
-          success:function(data){
-            $('#hirerate').val(data);
-          }
-          });
-    } 
-   
-    });
 
-   $(document).on('click', 'form', function(){
-     $('#nameList').fadeOut();  
+        var query10=$('#penalty_hrs').val();
+        if(query10==""){
+            p10=0;
+            $('#penalty_hrsmsg').show();
+          var message=document.getElementById('penalty_hrsmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#penalty_hrs').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p10=1;
+            $('#penalty_hrsmsg').hide();
+            $('#penalty_hrs').attr('style','border-bottom: 1px solid #ccc');
+        }
+
+        var query11=$('#penalty_amount').val();
+        if(query11==""){
+            p11=0;
+           $('#penalty_amountmsg').show();
+          var message=document.getElementById('penalty_amountmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#penalty_amount').attr('style','border-bottom:1px solid #f00'); 
+        }
+        else{
+            p11=1;
+            $('#penalty_amountmsg').hide();
+            $('#penalty_amount').attr('style','border-bottom: 1px solid #ccc');
+        }
+
+        var query12=$('#overtime_charges').val();
+        if(query12==""){
+            p12=0;
+           $('#overtime_chargesmsg').show();
+          var message=document.getElementById('overtime_chargesmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#overtime_charges').attr('style','border-bottom:1px solid #f00'); 
+        }
+        else{
+            p12=1;
+            $('#overtime_chargesmsg').hide();
+            $('#overtime_charges').attr('style','border-bottom: 1px solid #ccc');
+        }
+
+        var query13=$('#total_charges').val();
+         if(query13==""){
+            p13=0;
+           $('#total_chargesmsg').show();
+          var message=document.getElementById('total_chargesmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#total_charges').attr('style','border-bottom:1px solid #f00'); 
+        }
+        else{
+            p13=1;
+            $('#total_chargesmsg').hide();
+            $('#total_charges').attr('style','border-bottom: 1px solid #ccc');
+        }
+
+        var query14=$('#standing_charges').val();
+         if(query14==""){
+            p14=0;
+           $('#standing_chargesmsg').show();
+          var message=document.getElementById('standing_chargesmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#standing_charges').attr('style','border-bottom:1px solid #f00'); 
+        }
+        else{
+            p14=1;
+            $('#standing_chargesmsg').hide();
+            $('#standing_charges').attr('style','border-bottom: 1px solid #ccc');
+        }
+
+        var query15=$('#grand_total').val();
+        if(query15==""){
+            p15=0;
+           $('#grand_totalmsg').show();
+          var message=document.getElementById('grand_totalmsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#grand_total').attr('style','border-bottom:1px solid #f00'); 
+        }
+        else{
+            p15=1;
+            $('#grand_totalmsg').hide();
+            $('#grand_total').attr('style','border-bottom: 1px solid #ccc');
+        }
+        }
+        else{
+            p1=1, p2=1,p3=1,p4=1,p5=1,p6=1,p7=1,p8=1,p9=1,p10=1,p11=1,p12=1,p13=1,p14=1,p15=1;
+            $('#grand_totalmsg').hide();
+            $('#grand_total').attr('style','border-bottom: 1px solid #ccc');
+             $('#standing_chargesmsg').hide();
+            $('#standing_charges').attr('style','border-bottom: 1px solid #ccc');
+             $('#total_chargesmsg').hide();
+            $('#total_charges').attr('style','border-bottom: 1px solid #ccc');
+            $('#overtime_chargesmsg').hide();
+            $('#overtime_charges').attr('style','border-bottom: 1px solid #ccc');
+            $('#penalty_amountmsg').hide();
+            $('#penalty_amount').attr('style','border-bottom: 1px solid #ccc');
+            $('#penalty_hrsmsg').hide();
+            $('#penalty_hrs').attr('style','border-bottom: 1px solid #ccc');
+            $('#mileage_tshsmsg').hide();
+            $('#mileage_tshs').attr('style','border-bottom: 1px solid #ccc');
+            $('#mileage_kmmsg').hide();
+            $('#mileage_km').attr('style','border-bottom: 1px solid #ccc');
+             $('#charge_kmmsg').hide();
+            $('#charge_km').attr('style','border-bottom: 1px solid #ccc');
+            $('#driver_namemsg').hide();
+            $('#driver_name').attr('style','border-bottom: 1px solid #ccc');
+            $('#end_overtimemsg').hide();
+            $('#end_overtime').attr('style','border-bottom: 1px solid #ccc');
+            $('#end_overtimemsg').hide();
+            $('#end_overtime').attr('style','border-bottom: 1px solid #ccc');
+             $('#end_speedmeter_timemsg').hide();
+            $('#end_speedmeter_time').attr('style','border-bottom: 1px solid #ccc');
+            $('#end_speedmeter_kmmsg').hide();
+            $('#end_speedmeter_km').attr('style','border-bottom: 1px solid #ccc');
+            $('#speedmeter_timemsg').hide();
+           $('#speedmeter_time').attr('style','border-bottom: 1px solid #ccc');
+           $('#speedmeter_kmmsg').hide();
+        $('#speedmeter_km').attr('style','border-bottom: 1px solid #ccc');
+        }
     });
    });
+
+  function validation(){
+ if( p1==1&&p2==1&&p3==1&&p4==1&&p5==1&&p6==1&&p7==1&&p8==1&&p9==1&&p10==1&&p11==1&&p12==1&&p13==1&&p14==1&&p15==1){
+    return true;
+ }
+ else{
+    return false;
+ }
+  }
 </script>
 @endsection

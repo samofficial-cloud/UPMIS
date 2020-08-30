@@ -26,16 +26,7 @@ table {
 	use App\space_contract;
   use App\space;
 
-  $details=space::where('space_id',$_GET['space_id'])->get();
-	if($_GET['filter_date']=='true'){
-      $space=space_contract::join('spaces', 'spaces.space_id', '=', 'space_contracts.space_id_contract')->where('space_contracts.space_id_contract',$_GET['space_id'])->whereDate('space_contracts.start_date','>=', $_GET['start_date'])->whereDate('space_contracts.end_date','>=',$_GET['end_date'])->get();
-      $invoices=space_contract::join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->where('space_contracts.space_id_contract',$_GET['space_id'])->whereDate('space_contracts.start_date','>=', $_GET['start_date'])->whereDate('space_contracts.end_date','>=',$_GET['end_date'])->where('invoices.payment_status','Not Paid')->get();
-	}
-	else{
-		 $space=space_contract::join('spaces', 'spaces.space_id', '=', 'space_contracts.space_id_contract')->where('space_contracts.space_id_contract',$_GET['space_id'])->get();
-
-     $invoices=space_contract::join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->where('space_contracts.space_id_contract',$_GET['space_id'])->where('invoices.payment_status','Not Paid')->get();
-	}
+  
   $i=1;
 	?>
 	<center>
@@ -44,7 +35,7 @@ table {
      <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
     </b>
     @if($_GET['filter_date']=='true')
-    <br><br><strong>{{$_GET['space_id']}} Renting History Report for the Duration from {{$_GET['start_date']}} to {{$_GET['end_date']}}</strong>
+    <br><br><strong>{{$_GET['space_id']}} Renting History Report for the Duration from {{date("d/m/Y",strtotime($_GET['start_date']))}} to {{date("d/m/Y",strtotime($_GET['end_date']))}}</strong>
      @else
      <br><br><strong>{{$_GET['space_id']}} Renting History Report</strong>
     @endif
@@ -55,7 +46,7 @@ table {
   @foreach($details as $details)
   <tr>
     <td>Space Type</td>
-    <td>{{$details->space_type}}</td>
+    <td>{{$details->major_industry}}</td>
   </tr>
   <tr>
     <td>Location</td>
@@ -104,7 +95,7 @@ table {
         </tbody>
 </table>
 @else
-<h3>This space has not been lease yet</h3>
+<h3>This space has/was not been lease yet for the specified duration</h3>
 @endif
 <br>
 <hr>

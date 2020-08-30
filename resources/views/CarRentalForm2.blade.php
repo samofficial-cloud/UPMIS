@@ -283,10 +283,10 @@ $today=date('Y-m-d');
                             <fieldset>
                                 <div class="form-card">
                                    <h2 class="fs-title">A. APPLICATION DETAILS</h2>
-                                   <p>Fill all form field with (*)</p>
+                                   <p>Fill all form field with (<span style="color: red;">*</span>)</p>
                                    <div class="form-group">
 					<div class="form-wrapper" id="areadiv">
-          <label for="area">Area of Travel*</label>
+          <label for="area">Area of Travel<span style="color: red;">*</span></label>
           <span id="areamsg"></span>
             <select class="form-control" required="" id="area" name="area" required="">
               <option value="" disabled selected hidden>select area of travel</option>
@@ -299,7 +299,7 @@ $today=date('Y-m-d');
 
     <div class="form-group row" id="namediv">
                         <div class="form-wrapper col-2">
-                            <label for="designation">Designation*</label>
+                            <label for="designation">Designation<span style="color: red;">*</span></label>
                             <span id="designationmsg"></span>
                             <select class="form-control" required="" id="designation" name="designation">
               <option value="" disabled selected hidden> </option>
@@ -313,12 +313,12 @@ $today=date('Y-m-d');
                         </div>
 
 						<div class="form-wrapper col-5">
-							<label for="first_name">First Name*</label>
+							<label for="first_name">First Name<span style="color: red;">*</span></label>
                             <span id="name1msg"></span>
 							<input type="text" id="first_name" name="first_name" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
 						</div>
 						<div class="form-wrapper col-5">
-							<label for="last_name">Last Name*</label>
+							<label for="last_name">Last Name<span style="color: red;">*</span></label>
                             <span id="name2msg"></span>
 							<input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
@@ -326,70 +326,77 @@ $today=date('Y-m-d');
 
                     <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="email">Email</label>
+                        <label for="email">Email<span style="color: red;">*</span></label>
                         <input type="text" name="email" id="email" class="form-control" required placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
                     </div>
                 </div>
 
 					<div class="form-group row" id="facultydiv">
 						<div class="form-wrapper col-6">
-							<label for="faculty_name">Faculty/Department/Unit*</label>
+							<label for="faculty_name">Faculty/Department/Unit<span style="color: red;">*</span></label>
                             <span id="name1msg"></span>
 							<input type="text" id="faculty_name" name="faculty_name" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="centre_name">Cost Centre No.*</label>
+							<label for="centre_name">Cost Centre No.<span style="color: red;">*</span></label>
                             <span id="name2msg"></span>
-							<input type="text" id="centre_name" name="centre_name" class="form-control" required="">
+                            <div id="myDropdown">
+                            <select type="text" id="centre_name" name="centre_name" class="form-control" required="" onkeyup="filterFunction()">
+							<option value="" disabled selected hidden> </option>
+                            @foreach($cost_centres as $cost_centre)
+                            <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}-{{$cost_centre->costcentre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<div class="form-wrapper col-6">
-							<label for="start_date">Start Date*</label>
+							<label for="start_date">Start Date<span style="color: red;">*</span></label>
 							<input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="end_date">End Date*</label>
+							<label for="end_date">End Date<span style="color: red;">*</span></label>
 							<input type="date" id="end_date" name="end_date" class="form-control" required="" min="{{$today}}">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<div class="form-wrapper col-6">
-							<label for="start_time">Start Time*</label>
+							<label for="start_time">Start Time<span style="color: red;">*</span></label>
 							<input type="time" id="start_time" name="start_time" class="form-control" required="">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="end_time">End Time*</label>
+							<label for="end_time">End Time<span style="color: red;">*</span></label>
 							<input type="time" id="end_time" name="end_time" class="form-control" required="">
 						</div>
 					</div>
 
 					<div class="form-group">
 					<div class="form-wrapper">
-						<label for="overtime">Estimate Overtime in Hrs</label>
+						<label for="overtime">Estimate Overtime in Hrs<span style="color: red;">*</span></label>
 						<input type="text" id="overtime" name="overtime" class="form-control" required="" onkeypress="if((this.value.length<=2) && ((event.charCode >= 48 && event.charCode <= 57)||(event.charCode==46))){return true} else return false;">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
-						<label for="destination">Destination</label>
+						<label for="destination">Destination<span style="color: red;">*</span></label>
 						<input type="text" id="destination" name="destination" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
-						<label for="purpose">Purpose/reason of the trip</label>
+						<label for="purpose">Purpose/reason of the trip<span style="color: red;">*</span></label>
 						<input type="text" id="purpose" name="purpose" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 					</div>
 				</div>
 
                <div class="form-group">
 					<div class="form-wrapper" id="naturediv">
-          <label for="trip_nature">Nature of the trip*</label>
+          <label for="trip_nature">Nature of the trip<span style="color: red;">*</span></label>
           <span id="trip_naturemsg"></span>
             <select class="form-control" required="" id="trip_nature" name="trip_nature" required=""> 
               <option value="" disabled selected hidden>select nature of the trip</option>
@@ -403,12 +410,12 @@ $today=date('Y-m-d');
 
     <div class="form-group row" id="estimationdiv">
 						<div class="form-wrapper col-6">
-							<label for="estimated_distance">Estimated Distance in Kms*</label>
+							<label for="estimated_distance">Estimated Distance in Kms<span style="color: red;">*</span></label>
                             <span id="estimated_distancemsg"></span>
 							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="estimated_cost">Estimated Cost in Tshs.*</label>
+							<label for="estimated_cost">Estimated Cost in Tshs.<span style="color: red;">*</span></label>
                             <span id="estimated_costmsg"></span>
 							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 						</div>
@@ -427,4 +434,24 @@ $today=date('Y-m-d');
 </div>
 </div>
 </div>
+@endsection
+
+@section('pagescript')
+<script type="text/javascript">
+    function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("centre_name");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("option");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
 @endsection

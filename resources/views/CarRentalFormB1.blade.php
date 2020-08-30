@@ -382,12 +382,12 @@ $today=date('Y-m-d');
     <div class="form-group row" id="estimationdiv">
 						<div class="form-wrapper col-6">
 							<label for="estimated_distance">Estimated Distance in Kms</label>
-							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{$contract->estimated_distance}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{number_format($contract->estimated_distance)}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="estimated_cost">Estimated Cost in Tshs.</label>
                             <span id="estimated_costmsg"></span>
-							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{$contract->estimated_cost}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{number_format($contract->estimated_cost)}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
@@ -412,21 +412,32 @@ $today=date('Y-m-d');
 
                 <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="code_no">Travel/Transport Activity Code No.</label>
+                        <label for="code_no">Travel/Transport Activity Code No.<span style="color: red;">*</span></label>
                         <input type="text" id="code_no" name="code_no" class="form-control" value="{{$contract->transport_code}}" required onkeypress="if((this.value.length<=5)){return true} else{return false}" onblur="javascript:this.value=this.value.toUpperCase();">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="fund_available">Funds Available for Further use in Tshs.</label>
-                        <input type="text" id="fund_available" name="fund_available" class="form-control" value="{{$contract->funds_available}}" required onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                        <label for="fund_available">Funds Available for Further use in Tshs.<span style="color: red;">*</span></label>
+                        <input type="text" id="fund_available" name="fund_available" class="form-control" value="{{$contract->funds_available}}" required autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;" onblur="
+                        var query=document.getElementById('fund_available').value;
+                        query2={{$contract->estimated_cost}};
+                        if(query<query2){
+                            let element = document.getElementById('balance_status');
+                            element.value = 'Not Sufficient';
+                        }
+                        else{
+                          let element = document.getElementById('balance_status');
+                            element.value = 'Sufficient';
+                        }
+                        ">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper" id="balance_statusdiv">
-          <label for="balance_status">Balance Status*</label>
+          <label for="balance_status">Balance Status<span style="color: red;">*</span></label>
           <span id="balance_statusmsg"></span>
             <select class="form-control" required="" id="balance_status" name="balance_status">
               <option value="" disabled selected hidden>Select balance status</option>
@@ -439,14 +450,14 @@ $today=date('Y-m-d');
 
                 <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="vote_holder">Vote Holder Title</label>
+                        <label for="vote_holder">Vote Holder Title<span style="color: red;">*</span></label>
                         <input type="text" id="vote_holder" name="vote_holder" required="{{$contract->vote_title}}" class="form-control" value="{{$contract->vote_title}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="commited_fund">Fund to commit</label>
+                        <label for="commited_fund">Fund to commit<span style="color: red;">*</span></label>
                          <input type="text" id="commited_fund" name="commited_fund" required class="form-control" value="{{$contract->fund_committed}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
@@ -460,12 +471,12 @@ $today=date('Y-m-d');
 
     <div class="form-group row" id="approvedbydiv">
                         <div class="form-wrapper col-6">
-                            <label for="approve_name">Name*</label>
+                            <label for="approve_name">Name<span style="color: red;">*</span></label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="approve_name" name="approve_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="approve_date">Date*</label>
+                            <label for="approve_date">Date<span style="color: red;">*</span></label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$today}}" readonly="">
                         </div>
@@ -484,21 +495,32 @@ $today=date('Y-m-d');
 
                     <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="code_no">Travel/Transport Activity Code No.</label>
+                        <label for="code_no">Travel/Transport Activity Code No.<span style="color: red;">*</span></label>
                         <input type="text" id="code_no" name="code_no" class="form-control" required onkeypress="if((this.value.length<=5)){return true} else{return false}" onblur="javascript:this.value=this.value.toUpperCase();">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="fund_available">Funds Available for Further use in Tshs.</label>
-                        <input type="text" id="fund_available" name="fund_available" class="form-control" required onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                        <label for="fund_available">Funds Available for Further use in Tshs.<span style="color: red;">*</span></label>
+                        <input type="text" id="fund_available" name="fund_available" class="form-control" required autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;" onblur="
+                        var query=document.getElementById('fund_available').value;
+                        query2={{$contract->estimated_cost}};
+                        if(query<query2){
+                            let element = document.getElementById('balance_status');
+                            element.value = 'Not Sufficient';
+                        }
+                        else{
+                          let element = document.getElementById('balance_status');
+                            element.value = 'Sufficient';
+                        }
+                        ">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper" id="balance_statusdiv">
-          <label for="balance_status">Balance Status*</label>
+          <label for="balance_status">Balance Status<span style="color: red;">*</span></label>
           <span id="balance_statusmsg"></span>
             <select class="form-control" required="" id="balance_status" name="balance_status">
               <option value="" disabled selected hidden>Select balance status</option>
@@ -511,26 +533,26 @@ $today=date('Y-m-d');
 
                 <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="vote_holder">Vote Holder Title</label>
+                        <label for="vote_holder">Vote Holder Title<span style="color: red;">*</span></label>
                         <input type="text" id="vote_holder" name="vote_holder" required="" class="form-control" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-wrapper">
-                        <label for="commited_fund">Fund to commit</label>
-                         <input type="text" id="commited_fund" name="commited_fund" required class="form-control" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                        <label for="commited_fund">Fund to commit<span style="color: red;">*</span></label>
+                         <input type="text" id="commited_fund" name="commited_fund" required class="form-control" value="{{$contract->estimated_cost}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
 
     <div class="form-group row" id="approvedbydiv">
                         <div class="form-wrapper col-6">
-                            <label for="approve_name">Name*</label>
+                            <label for="approve_name">Name<span style="color: red;">*</span></label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="approve_name" name="approve_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
                         </div>
                         <div class="form-wrapper col-6">
-                            <label for="approve_date">Date*</label>
+                            <label for="approve_date">Date<span style="color: red;">*</span></label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$today}}" readonly="">
                         </div>
