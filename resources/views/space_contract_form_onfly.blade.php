@@ -278,7 +278,7 @@
                     <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
                         <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                             <h2><strong>Renting Space Contract Information</strong></h2>
-                            <p>Fill all form field with (*) to go to the next step</p>
+                            <p>Fill all form fields with (*) to go to the next step</p>
                             <div class="row">
                                 <div class="col-md-12 mx-0">
                                     <form id="msform" METHOD="GET" action="{{ route('create_space_contract')}}">
@@ -306,47 +306,49 @@
 
                                                 <div class="form-group row" id="namediv" style="display: none;">
                                                     <div class="form-wrapper col-6">
-                                                        <label for="first_name">First Name*</label>
+                                                        <label for="first_name">First Name <span style="color: red;"> *</span></label>
                                                         <span id="name1msg"></span>
-                                                        <input type="text" id="first_name" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                                        <input type="text" id="first_name" required name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                                     </div>
                                                     <div class="form-wrapper col-6">
-                                                        <label for="last_name">Last Name*</label>
+                                                        <label for="last_name">Last Name <span style="color: red;"> *</span></label>
                                                         <span id="name2msg"></span>
-                                                        <input type="text" id="last_name" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                                        <input type="text" id="last_name" name="last_name" class="form-control" required onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group" id="companydiv" style="display: none;">
                                                     <div class="form-wrapper">
-                                                        <label for="company_name">Company Name*</label>
+                                                        <label for="company_name">Company Name <span style="color: red;"> *</span></label>
                                                         <span id="cnamemsg"></span>
-                                                        <input type="text" id="company_name" name="company_name" class="form-control">
+                                                        <input type="text" id="company_name" required name="company_name" class="form-control">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="form-wrapper">
                                                         <label for="email">Email</label>
-                                                        <input type="text" name="email" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                                        <input type="text" name="email" id="email" required class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="form-wrapper">
                                                         <label for="phone_number">Phone Number</label>
-                                                        <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                        <span id="phone_msg"></span>
+                                                        <input type="text" id="phone_number" required name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="form-wrapper">
                                                         <label for="address">Address</label>
-                                                        <input type="text" id="address" name="address" class="form-control">
+                                                        <input type="text" id="address" name="address" required class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
                                             <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
+                                            <a href="/Space" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
                                         {{-- Second Form --}}
                                         <fieldset>
@@ -401,12 +403,12 @@
                                                 <div class="form-group row">
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="has_water_bill"  ><strong>Need to also pay Water bill</strong></label>
+                                                        <label for="has_water_bill"  ><strong>Required to also pay Water bill</strong></label>
                                                         <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
+                                                        <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill</strong></label>
                                                         <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
                                                     </div>
                                                 </div>
@@ -425,6 +427,7 @@
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                             <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
+                                                <a href="/Space" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                             @endforeach
                                         </fieldset>
                                         {{-- Third Form --}}
@@ -433,17 +436,17 @@
                                                 <h2 class="fs-title">Payment Information</h2>
                                                 <div class="form-group row">
                                                     <div class="form-wrapper col-12">
-                                                        <label for="start_date">Start Date *</label>
+                                                        <label for="start_date">Start Date  <span style="color: red;"> *</span></label>
                                                         <input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="duration">Duration *</label>
+                                                        <label for="duration">Duration <span style="color: red;"> *</span></label>
                                                         <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control" required="" >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="currency">Period *</label>
+                                                        <label for="currency">Period <span style="color: red;"> *</span></label>
                                                         <select id="currency" class="form-control" name="duration_period" required>
                                                             <option value="" ></option>
                                                             <option value="Months" >Months</option>
@@ -455,13 +458,14 @@
                                                 <div class="form-group row">
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="amount">Amount *</label>
+                                                        <label for="amount">Amount <span style="color: red;"> *</span></label>
                                                         <input type="number" min="0" id="amount" name="amount" class="form-control" required="">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="currency">Currency</label>
-                                                        <select id="currency" class="form-control" name="currency" >
+                                                        <label for="currency">Currency <span style="color: red;"> *</span></label>
+                                                        <select id="currency" class="form-control" required name="currency" >
+                                                            <option value="" ></option>
                                                             <option value="TZS" >TZS</option>
                                                             <option value="USD" >USD</option>
                                                         </select>
@@ -474,25 +478,25 @@
                                                 <div class="form-group row">
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="payment_cycle">Payment cycle</label>
-                                                        <select id="payment_cycle" class="form-control" name="payment_cycle" >
+                                                        <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
+                                                        <select id="payment_cycle" class="form-control" required name="payment_cycle" >
+
+
+
                                                             <?php
                                                             $payment_cycles=DB::table('payment_cycle_settings')->get();
                                                             ?>
-
-                                                            <option value="{{$var->payment_cycle}}" selected>{{$var->payment_cycle}}</option>
-
+                                                            <option value=""></option>
                                                             @foreach($payment_cycles as $payment_cycle)
-                                                                @if($payment_cycle->cycle!=$var->payment_cycle)
+
                                                                     <option value="{{$payment_cycle->cycle}}" >{{$payment_cycle->cycle}}</option>
-                                                                @else
-                                                                @endif
+
                                                             @endforeach
                                                         </select>
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="escalation_rate">Escalation Rate</label>
+                                                        <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                                         <input type="text" id="escalation_rate" name="escalation_rate" class="form-control" required>
                                                     </div>
 
@@ -505,6 +509,7 @@
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                             <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
+                                            <a href="/Space" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
                                     </form>
                                 </div>
@@ -565,9 +570,7 @@
                         $('#last_name').attr('style','border-bottom: 1px solid #ccc');
 
                     }
-                    if(p1=='1' & p2=='1'){
-                        gonext();
-                    }
+
 
                 }
 
@@ -582,9 +585,11 @@
                         $('#company_name').attr('style','border-bottom:1px solid #f00');
                     }
                     else{
+                        p1=1;
+                        p2=1;
                         $('#cnamemsg').hide();
                         $('#company_name').attr('style','border-bottom: 1px solid #ccc');
-                        gonext();
+
                     }
                 }
 
@@ -597,6 +602,27 @@
 
 
                 }
+                var phone_digits=$('#phone_number').val().length;
+
+                if(phone_digits<10) {
+                    p2=0;
+                    $('#phone_msg').show();
+                    var message = document.getElementById('phone_msg');
+                    message.style.color = 'red';
+                    message.innerHTML = "Digits cannot be less than 10";
+                    $('#phone_number').attr('style', 'border-bottom:1px solid #f00');
+
+                }else{
+                    $('#phone_msg').hide();
+                    $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
+                }
+
+
+                if(p1=='1' & p2=='1'){
+                    gonext();
+                }
+
+
 
             });
 
@@ -701,12 +727,29 @@
                     $('#namediv').show();
                     $('#companydiv').hide();
                     $('#company_name').val("");
+                    var ele4 = document.getElementById("company_name");
+                    ele4.required = false;
+
+                    var ele5 = document.getElementById("first_name");
+                    ele5.required = true;
+
+                    var ele6 = document.getElementById("last_name");
+                    ele6.required = true;
                 }
                 else if(query=='2'){
                     $('#companydiv').show();
                     $('#namediv').hide();
                     $('#first_name').val("");
                     $('#last_name').val("");
+                    var ele4 = document.getElementById("company_name");
+                    ele4.required = true;
+
+                    var ele5 = document.getElementById("first_name");
+                    ele5.required = false;
+
+                    var ele6 = document.getElementById("last_name");
+                    ele6.required = false;
+
                 }
                 else{
                     $('#namediv').hide();

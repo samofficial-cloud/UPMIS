@@ -51,7 +51,7 @@
     Route::post('/add_insurance', 'InsuranceController@addInsurance')->name('add_insurance');
     Route::post('/edit_insurance/{id}', 'InsuranceController@editInsurance')->name('edit_insurance');
     Route::get('/deactivate_insurance/{id}', 'InsuranceController@deactivateInsurance')->name('deactivate_insurance');
-
+    Route::get('/generate_type_list', 'InsuranceController@generateTypes')->name('generate_type_list');
 
     //Insurance contracts
     Route::get('/terminate_insurance_contract/{id}', 'ContractsController@terminateInsuranceContract')->name('terminate_insurance_contract');
@@ -60,6 +60,7 @@
     Route::get('/insurance_contracts_management', 'ContractsController@InsuranceContractsManagement');
     Route::get('/insurance_contract_form', 'ContractsController@InsuranceContractForm');
     Route::get('/create_insurance_contract', 'ContractsController@CreateInsuranceContract')->name('create_insurance_contract');
+    Route::get('/insurance_contract_on_fly/{id}/', 'ContractsController@OnFlyInsuranceContractForm')->name('insurance_contract_on_fly');
 
     Route::get('/edit_space_contract/{id}/', 'ContractsController@EditSpaceContractForm')->name('edit_contract');
     Route::get('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
@@ -67,6 +68,7 @@
     Route::post('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
     Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
     Route::post('/generate_minor_list', 'SpaceController@generateMinorList')->name('generate_minor_list');
+
 
 
 

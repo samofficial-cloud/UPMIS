@@ -638,6 +638,17 @@ class ContractsController extends Controller
     }
 
 
+    public function OnFlyInsuranceContractForm(Request $request,$id)
+    {
+
+        $insurance_data=DB::table('insurance')->where('status',1)->get();
+        return view('insurance_contract_form_onfly')->with('insurance_data',$insurance_data);
+
+
+    }
+
+
+
     public function EditInsuranceContractForm(Request $request,$id)
     {
 

@@ -95,18 +95,18 @@
 
 
                     <div class="tab">
-                        <button class="tablinks" onclick="openInvoices(event, 'space_payments')" id="defaultOpen"><strong>SPACE</strong></button>
-                        <button class="tablinks" onclick="openInvoices(event, 'car_rental_payments')"><strong>CAR RENTAL</strong></button>
-                        <button class="tablinks" onclick="openInvoices(event, 'insurance_payments')"><strong>INSURANCE</strong></button>
-                        <button class="tablinks" onclick="openInvoices(event, 'water_payments')"><strong>WATER BILLS</strong></button>
-                        <button class="tablinks" onclick="openInvoices(event, 'electricity_payments')"><strong>ELECTRICITY BILLS</strong></button>
+                        <button class="tablinks" onclick="openInvoices(event, 'space_payments')" id="defaultOpen"><strong>Real Estate</strong></button>
+                        <button class="tablinks" onclick="openInvoices(event, 'car_rental_payments')"><strong>Car Rental</strong></button>
+                        <button class="tablinks" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
+                        <button class="tablinks" onclick="openInvoices(event, 'water_payments')"><strong>Water Bills</strong></button>
+                        <button class="tablinks" onclick="openInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
 
                     </div>
 
 
                     <div id="space_payments" class="tabcontent">
                         <br>
-                        <h5>1. SPACE PAYMENTS</h5>
+                        <h5>1. Real Estate Payments</h5>
                         <br>
 
 
@@ -257,13 +257,13 @@
 
 
 
-                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -378,7 +378,7 @@
 
                     <div id="car_rental_payments" class="tabcontent">
                         <br>
-                        <h5>2. CAR RENTAL PAYMENTS</h5>
+                        <h5>2. Car Rental Payments</h5>
                         <br>
 
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_car" title="Record new car rental payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
@@ -526,13 +526,13 @@
 
 
 
-                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -646,7 +646,7 @@
 
                     <div id="insurance_payments" class="tabcontent">
                         <br>
-                        <h5>3. INSURANCE PAYMENTS</h5>
+                        <h5>3. Insurance Payments</h5>
                         <br>
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
 
@@ -792,13 +792,13 @@
 
 
 
-                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -912,7 +912,7 @@
 
                     <div id="water_payments" class="tabcontent">
                         <br>
-                        <h5>4. WATER BILL PAYMENTS</h5>
+                        <h5>4. Water Bill Payments</h5>
                         <br>
 
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
@@ -1060,13 +1060,13 @@
 
 
 
-                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -1199,7 +1199,7 @@
 
                     <div id="electricity_payments" class="tabcontent">
                         <br>
-                        <h5>5. ELECTRICITY BILL PAYMENTS</h5>
+                        <h5>5. Electricity Bill Payments</h5>
                         <br>
 
 
@@ -1349,13 +1349,13 @@
 
 
 
-                                                <a  style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Invoice Details</h5></b>
+                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>

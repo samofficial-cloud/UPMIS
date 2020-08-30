@@ -77,6 +77,12 @@
             <p>{{$message}}</p>
           </div>
         @endif
+            @if (session('error'))
+                <div class="alert alert-danger row col-xs-12" style="margin-left: -13px; margin-bottom: -1px; margin-top: 4px;">
+                   <p> {{ session('error') }}</p>
+                    <br>
+                </div>
+            @endif
 
         <div>
 
@@ -111,57 +117,96 @@
 
               <div class="form-group">
                 <div class="form-wrapper">
-                  <label for="insurance_company"  ><strong>Class  </strong></label>
-                  <input type="text" class="form-control" id="class" name="class"  Required autocomplete="off">
+                  <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
+
+
+                  <select id="insurance_class" class="form-control" Required name="class">
+                    <?php
+                    $classes=DB::table('insurance_parameters')->get();
+                    ?>
+                      <option value=""></option>
+                    @foreach($classes as $class)
+
+                      <option value="{{$class->classes}}">{{$class->classes}}</option>
+
+                    @endforeach
+                  </select>
+
+
                 </div>
               </div>
-              <br>
 
 
-              <div class="form-group">
+
+              <div  id="insurance_companyDiv" class="form-group" style="display: none;" >
                 <div class="form-wrapper">
-                  <label for="insurance_company"  ><strong>Insurance Company  </strong></label>
-                  <input type="text" class="form-control" id="insurance_company" name="insurance_company"  Required autocomplete="off">
+                  <label for="insurance_company"  ><strong>Insurance Company <span style="color: red;"> *</span></strong></label>
+<?php
+$companies=DB::table('insurance_parameters')->get();
+?>
+                  <select id="insurance_company" class="form-control" required name="insurance_company">
+                    <option value=""></option>
+                    @foreach($companies as $var)
+                      @if($var->company!=null)
+                    <option value="{{$var->company}}" >{{$var->company}}</option>
+                      @else
+                      @endif
+                    @endforeach
+                  </select>
+
+
                 </div>
               </div>
-              <br>
 
-              <div class="form-group">
+
+              <div id="TypeDiv" class="form-group" style="display: none;">
                 <div class="form-wrapper">
-                  <label for="insurance_type"  ><strong>Type</strong></label>
-                  <select id="insurance_type" class="form-control" name="insurance_type" >
+                  <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
+                  <select id="insurance_type"  class="form-control" name="insurance_type" required>
+                    <option value=""></option>
                     <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
                     <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
                   </select>
                 </div>
               </div>
-              <br>
 
-              <div class="form-group">
+
+              <div id="TypeDivNA" class="form-group" style="display: none;">
                 <div class="form-wrapper">
-                  <label for="price"  ><strong>Price</strong></label>
-                  <input type="number" min="1" class="form-control" id="price" name="price"  required  autocomplete="off">
+                  <label for="insurance_type_na"  ><strong>Type <span style="color: red;"> *</span></strong></label>
+
+                  <input type="text" class="form-control" id="insurance_type_na" name="insurance_type" readonly  value="N/A" autocomplete="off">
+
                 </div>
               </div>
-              <br>
 
 
-              <div class="form-group">
+              <div id="priceDiv" class="form-group" style="display: none;">
                 <div class="form-wrapper">
-                  <label  style="display: inline-block;">Commission</label>
-                  <div  id="" style="display: none;" class="form-group row">
+                  <label for="price"  ><strong>Price <span style="color: red;"> *</span></strong></label>
+                  <input type="number" min="1" step="0.01" class="form-control" id="price" name="price"  required  autocomplete="off">
+                </div>
+              </div>
+
+
+
+              <div id="commissionDiv" class="form-group"  style="display: none;">
+                <div class="form-wrapper">
+                  <label><strong>Commission</strong></label>
+
+                  <div  id=""  class="form-group row">
 
                     <div class="col-6 inline_block form-wrapper">
-                      <label  for="commission_percentage" class=" col-form-label">Percentage:</label>
+                      <label  for="commission_percentage" class=" col-form-label">Percentage (%) <strong><span style="color: red;"> *</span></strong></label>
                       <div class="">
                         <input type="number" min="1"  step="0.01" class="form-control"  name="commission_percentage" required value=""  id="commission_percentage" autocomplete="off">
                       </div>
                     </div>
 
                     <div class="col-6 inline_block form-wrapper">
-                      <label  for="commission" class=" col-form-label">Amount:</label>
+                      <label  for="commission" class=" col-form-label">Amount <strong><span style="color: red;"> *</span></strong></label>
                       <div  class="">
-                        <input type="number" min="10" id="commission"  class="form-control" name="commission" value="" required autocomplete="off">
+                        <input type="number" min="10" step="0.01" id="commission"  class="form-control" name="commission" value="" required autocomplete="off">
                       </div>
                     </div>
 
@@ -175,19 +220,31 @@
 
                 </div>
               </div>
-              <br>
 
-              <div class="form-group">
+
+              <div id="insurance_currencyDiv" class="form-group" style="display: none;">
                 <div class="form-wrapper">
-                  <label for="price"  ><strong>Currency</strong></label>
-                  <select id="insurance_currency" class="form-control" name="insurance_currency" >
+                  <label for="insurance_currency"><strong>Currency <span style="color: red;"> *</span></strong></label>
+                  <select id="insurance_currency" class="form-control" required name="insurance_currency" >
                     <option value=""></option>
                     <option value="TZS" >TZS</option>
                     <option value="USD" >USD</option>
                   </select>
                 </div>
               </div>
-              <br>
+
+                <div id="billing" class="form-group" style="display: none;">
+                    <div class="form-wrapper">
+                        <label for="billing"><strong>Billing <span style="color: red;"> *</span></strong></label>
+                        <select id="billing" class="form-control" required name="billing">
+                            <option value=""></option>
+                            <option value="N/A">N/A</option>
+                            <option value="Single billing" >Single billing</option>
+                            <option value="Multiple billing" >Multiple billing</option>
+                        </select>
+                    </div>
+                </div>
+
 
 
 
@@ -217,8 +274,10 @@
           <th scope="col" style="color:#3490dc;"><center>Class</center></th>
           <th scope="col" style="color:#3490dc;"><center>Insurance Company</center></th>
           <th scope="col" style="color:#3490dc;"><center>Type</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Price (TZS)</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Commission (TZS)</center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Price </center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Commission(%)</center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Commission</center></th>
+          <th scope="col"  style="color:#3490dc;"><center>Billing</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
         </tr>
         </thead>
@@ -231,11 +290,18 @@
             <td><center>{{$var->class}}</center></td>
             <td><center>{{$var->insurance_company}}</center></td>
             <td><center>{{$var->insurance_type}}</center></td>
-            <td><center>{{$var->price}}</center></td>
-            <td><center>{{$var->commission}}</center></td>
-            <td><center><a data-toggle="modal" data-target="#edit_insurance{{$var->id}}" role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+            <td><center>{{$var->price}} {{$var->insurance_currency}}</center></td>
+            <td><center>{{$var->commission_percentage}}%</center></td>
+            <td><center>{{$var->commission}} {{$var->insurance_currency}} </center></td>
+            <td><center> {{$var->billing}} </center></td>
+            <td><center>
 
-                <a data-toggle="modal" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
+
+
+                <a data-toggle="modal" data-target="#edit_insurance{{$var->id}}" role="button" aria-pressed="true" title="Edit insurance information" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                    <a href="/insurance_contract_on_fly/{{$var->id}}" title="Sell insurance"><i class="fa fa-file-text" aria-hidden="true" style="font-size:20px;"></i></a>
+
+                <a data-toggle="modal" title="Delete insurance package" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
                 <div class="modal fade" id="edit_insurance{{$var->id}}" role="dialog">
 
                   <div class="modal-dialog" role="document">
@@ -251,68 +317,134 @@
                           {{csrf_field()}}
 
 
-                          <div class="form-group">
-                            <div class="form-wrapper">
-                              <label for="class"  ><strong>Class  </strong></label>
-                              <input type="text" class="form-control" id="class" name="class"  value="{{$var->class}}"   Required autocomplete="off">
+                            <div class="form-group">
+                                <div class="form-wrapper">
+                                    <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
+
+                                    <input type="text" id="insurance_class_edit" class="form-control" Required name="class" readonly  value="{{$var->class}}" autocomplete="off">
+
+                                </div>
                             </div>
-                          </div>
-                          <br>
+                            <br>
 
 
 
-                          <div class="form-group">
-                            <div class="form-wrapper">
-                              <label for="insurance_company"  ><strong>Insurance Company  </strong></label>
-                              <input type="text" class="form-control" id="insurance_company" name="insurance_company" value="{{$var->insurance_company}}" Required autocomplete="off">
+                            <div   class="form-group"  >
+                                <div class="form-wrapper">
+                                    <label for="insurance_company"><strong>Insurance Company <span style="color: red;"> *</span></strong></label>
+
+                                    <input type="text" id="insurance_company_edit" class="form-control" required name="insurance_company" readonly  value="{{$var->insurance_company}}" autocomplete="off">
+
+                                </div>
                             </div>
-                          </div>
-                          <br>
-
-                          <div class="form-group">
-                            <div class="form-wrapper">
-                              <label for="insurance_type"  ><strong>Type</strong></label>
-                              <select id="insurance_type" class="form-control" name="insurance_type" >
-
-                                @if($var->insurance_type=='THIRD PARTY')
-                                  <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
-                                  <option value=" {{$var->insurance_type}}" id="Option" selected >{{$var->insurance_type}}</option>
-                                  @elseif($var->insurance_type=='COMPREHENSIVE')
-                                  <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                                  <option value=" {{$var->insurance_type}}" id="Option" selected >{{$var->insurance_type}}</option>
-
-                                  @else
-
-                                  @endif
+                            <br>
 
 
-                              </select>
+                            <div  class="form-group" >
+                                <div class="form-wrapper">
+                                    <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
+                                    <input type="text" id="insurance_type_edit"  class="form-control" name="insurance_type" readonly  value="{{$var->insurance_type}}" autocomplete="off">
+                                </div>
                             </div>
-                          </div>
-                          <br>
+                            <br>
 
-                          <div class="form-group">
-                            <div class="form-wrapper">
-                              <label for="price"  ><strong>Price</strong></label>
-                              <input type="number" min="1" class="form-control" id="price" name="price" value="{{$var->price}}" required  autocomplete="off">
+
+
+
+
+                            <div  class="form-group" >
+                                <div class="form-wrapper">
+                                    <label for="price"  ><strong>Price <span style="color: red;"> *</span></strong></label>
+                                    <input type="number" min="10" step="0.01" class="form-control" id="price_edit" name="price"  required value="{{$var->price}}" autocomplete="off">
+                                </div>
                             </div>
-                          </div>
-                          <br>
-                          <div class="form-group">
-                            <div class="form-wrapper">
-                              <label for="commission"  ><strong>Commission<span style="color: red;"></span></strong></label>
-                              <input type="number" min="1" class="form-control" id="commission" name="commission" value="{{$var->commission}}" required autocomplete="off">
+                            <br>
+
+
+
+                            <div  class="form-group"  >
+                                <div class="form-wrapper">
+                                    <label  ><strong>Commission</strong></label>
+
+                                    <div  id=""  class="form-group row">
+
+                                        <div class="col-6 inline_block form-wrapper">
+                                            <label  for="commission_percentage" class=" col-form-label">Percentage (%) <strong> <span style="color: red;"> *</span></strong></label>
+                                            <div class="">
+                                                <input type="number" min="1"  step="0.01" class="form-control"  name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage_edit" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 inline_block form-wrapper">
+                                            <label  for="commission" class=" col-form-label">Amount <strong> <span style="color: red;">  *</span></strong></label>
+                                            <div  class="">
+                                                <input type="number" min="10" step="0.01" id="commission_edit"  class="form-control" name="commission" value="{{$var->commission}}" required autocomplete="off">
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+
+
+
+
+                                </div>
                             </div>
-                          </div>
-                          <br>
+                            <br>
+
+
+                            <div class="form-group" >
+                                <div class="form-wrapper">
+                                    <label for="insurance_currency"><strong>Currency <span style="color: red;"> *</span></strong></label>
+                                    <select id="insurance_currency_edit" class="form-control" required name="insurance_currency" >
+                                        @if($var->insurance_currency=="TZS")
+                                            <option value="USD" >USD</option>
+                                            <option value="{{$var->insurance_currency}}" selected>{{$var->insurance_currency}}</option>
+                                        @elseif($var->insurance_currency=="USD")
+                                        <option value="TZS" >TZS</option>
+                                            <option value="{{$var->insurance_currency}}" selected>{{$var->insurance_currency}}</option>
+                                            @else
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div id="billing_edit" class="form-group" >
+                                <div class="form-wrapper">
+                                    <label for="billing"><strong>Billing <span style="color: red;"> *</span></strong></label>
+                                    <select id="billing" class="form-control" required name="billing" >
+
+                                        @if($var->billing=="Single billing")
+                                            <option value="{{$var->billing}}" selected >{{$var->billing}}</option>
+                                            <option value="Multiple billing" >Multiple billing</option>
+                                            <option value="N/A" >N/A</option>
+                                            @elseif($var->billing=="Multiple billing")
+                                            <option value="{{$var->billing}}" selected>{{$var->billing}}</option>
+                                            <option value="Single billing" >Single billing</option>
+                                            <option value="N/A" >N/A</option>
+                                        @elseif($var->billing=="N/A")
+                                            <option value="{{$var->billing}}" selected>{{$var->billing}}</option>
+                                            <option value="Single billing" >Single billing</option>
+                                            <option value="Multiple billing" >Multiple billing</option>
+                                            @else
+                                        @endif
+
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
 
 
 
 
-                          <div align="right">
-                            <button class="btn btn-primary" type="submit">Submit</button>
-                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                          </div>
+
+                            <div align="right">
+                                <button class="btn btn-primary" type="submit">Save</button>
+                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                            </div>
                         </form>
 
 
@@ -373,6 +505,144 @@
   </div>
 </div>
 </div>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $('#insurance_class').click(function(){
+      var query3=$(this).val();
+      if(query3!=''){
+
+        $('#insurance_companyDiv').show();
+
+      }
+      else{
+        $('#insurance_companyDiv').hide();
+        $('#TypeDiv').hide();
+
+        var ele4 = document.getElementById("insurance_type");
+        ele4.required = false;
+        $('#TypeDivNA').hide();
+        document.getElementById("insurance_type_na").disabled = true;
+        $('#priceDiv').hide();
+        $('#commissionDiv').hide();
+        $('#insurance_currencyDiv').hide();
+
+      }
+
+      if($('#TypeDivNA:visible').length!=0) {
+        var query=$('#insurance_class').val();
+        if(query=='MOTOR'){
+          $('#TypeDiv').show();
+          $('#TypeDivNA').hide();
+          document.getElementById("insurance_type_na").disabled = true;
+      }else{
+          $('#TypeDiv').hide();
+          var ele5 = document.getElementById("insurance_type");
+          ele5.required = false;
+          $('#TypeDivNA').show();
+          document.getElementById("insurance_type_na").disabled = false;
+
+        }
+      }else if($('#TypeDiv:visible').length!=0){
+        //starts
+        var query=$('#insurance_class').val();
+        if(query=='MOTOR'){
+          $('#TypeDiv').show();
+          $('#TypeDivNA').hide();
+          document.getElementById("insurance_type_na").disabled = true;
+        }else{
+          $('#TypeDiv').hide();
+          var ele6 = document.getElementById("insurance_type");
+          ele6.required = false;
+          $('#TypeDivNA').show();
+          document.getElementById("insurance_type_na").disabled = false;
+
+        }
+        //ends
+      }else{
+
+
+      }
+
+    });
+
+    $('#insurance_company').click(function(){
+      var query3=$(this).val();
+      if(query3!=''){
+        var insurance_class=document.getElementById("insurance_class").value;
+        if(insurance_class=='MOTOR'){
+          $('#TypeDiv').show();
+        }else{
+          $('#TypeDivNA').show();
+          document.getElementById("insurance_type_na").disabled = false;
+        }
+
+        $('#priceDiv').show();
+        $('#commissionDiv').show();
+        $('#insurance_currencyDiv').show();
+        $('#billing').show();
+      }
+      else{
+        $('#TypeDiv').hide();
+        var ele7 = document.getElementById("insurance_type");
+        ele7.required = false;
+        $('#priceDiv').hide();
+        $('#commissionDiv').hide();
+        $('#insurance_currencyDiv').hide();
+        $('#TypeDivNA').hide();
+          $('#billing').hide();
+        document.getElementById("insurance_type_na").disabled = true;
+      }
+    });
+
+  });
+
+
+</script>
+
+
+
+{{--<script>--}}
+
+{{--  $('#insurance_company').on('change',function(e){--}}
+{{--    e.preventDefault();--}}
+{{--    // var company_value = $(this).val();--}}
+{{--    const insurance_company=document.getElementById("insurance_company").value;--}}
+{{--    const insurance_class=document.getElementById("insurance_class").value;--}}
+{{--    // var class_name= $('#insurance_class').val();--}}
+
+
+{{--    if(insurance_company != '')--}}
+{{--    {--}}
+{{--      // var _token = $('input[name="_token"]').val();--}}
+{{--      $.ajax({--}}
+{{--        url:"{{ route('generate_type_list') }}",--}}
+{{--        method:"GET",--}}
+{{--        data:{insurance_company:insurance_company,insurance_class:insurance_class},--}}
+{{--        success:function(data){--}}
+{{--          if(data=='0'){--}}
+
+{{--          }--}}
+{{--          else{--}}
+{{--console.log(data);--}}
+
+{{--            $('#insurance_type').html(data);--}}
+{{--          }--}}
+{{--        }--}}
+{{--      });--}}
+{{--    }--}}
+{{--    else if(insurance_company==''){--}}
+
+{{--    }--}}
+
+{{--    else{--}}
+
+{{--    }--}}
+{{--  });--}}
+
+{{--</script>--}}
 
 
 <script type="text/javascript">
