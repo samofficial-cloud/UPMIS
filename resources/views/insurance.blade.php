@@ -65,6 +65,9 @@
           <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 
@@ -92,12 +95,14 @@
 
         </div>
 
-        <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="    background-color: lightgrey;
+            @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+            @else
+        <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="  color: white;  background-color: #38c172;
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">New insurance package</a>
-
+            @endif
 
   <div class="">
     <div class="modal fade" id="add_insurance" role="dialog">
@@ -278,7 +283,10 @@ $companies=DB::table('insurance_parameters')->get();
           <th scope="col"  style="color:#3490dc;"><center>Commission(%)</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Commission</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Billing</center></th>
+            @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+            @else
           <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                @endif
         </tr>
         </thead>
         <tbody>
@@ -294,6 +302,8 @@ $companies=DB::table('insurance_parameters')->get();
             <td><center>{{$var->commission_percentage}}%</center></td>
             <td><center>{{$var->commission}} {{$var->insurance_currency}} </center></td>
             <td><center> {{$var->billing}} </center></td>
+              @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+              @else
             <td><center>
 
 
@@ -490,6 +500,7 @@ $companies=DB::table('insurance_parameters')->get();
 
               </center>
             </td>
+              @endif
           </tr>
         @endforeach
 

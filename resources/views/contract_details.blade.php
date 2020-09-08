@@ -65,6 +65,9 @@
                 <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
                 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
                 <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
             </ul>
         </div>
 
@@ -87,7 +90,11 @@
 
                     @foreach($space_contract as $var)
 
-<h2 style="text-align: center;">Contract details</h2>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h2 style="text-align: center;">Contract details</h2>
+                                <hr>
                     <table class="table table-striped table-bordered" style="width: 100%">
 
                         <tr>
@@ -149,19 +156,23 @@
 
 
                     </table>
+                            </div>
+                            </div>
                 @endforeach
 
+<br>
 
-
-                <div id="space_invoices" class="">
+                    <div class="card">
+                        <div class="card-body">
                     <br>
-                    <h5> Invoices</h5>
+                    <h2 style="text-align: center">Associated Invoices</h2>
                     <br>
 
 
-
+                            @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                            @else
                     <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice" title="Add new space invoice" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
-
+@endif
                     <div class="modal fade" id="new_invoice" role="dialog">
 
                         <div class="modal-dialog" role="document">
@@ -382,7 +393,7 @@
 
 
 
-                                            <a  style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                            <a  style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" style="font-size: 20px;" aria-hidden="true"></i></center></a>
                                             <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -483,8 +494,10 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
-                                                <a data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI')
+                                                @else
+                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                                @endif
 
                                                 <div class="modal fade" id="send_invoice{{$var->invoice_number}}" role="dialog">
 
@@ -538,9 +551,10 @@
                                             @if($var->email_sent_status=='SENT')
 
 
-
-                                            <a data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
-
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
+@endif
 
                                             <div class="modal fade" id="add_comment{{$var->invoice_number}}" role="dialog">
 
@@ -627,6 +641,7 @@
                     @endif
 
                 </div>
+            </div>
 
 
 

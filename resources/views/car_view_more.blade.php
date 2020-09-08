@@ -94,6 +94,9 @@ hr {
 
             <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -381,7 +384,7 @@ hr {
             <button class="tablinks" onclick="openbookings(event, 'previous')"><strong>Previous</strong></button>
         </div>
      <div id="upcoming" class="tabcontent">
-     <br> 
+     <br>
     <table class="hover table table-striped table-bordered" id="myTable1">
   <thead class="thead-dark">
     <tr>

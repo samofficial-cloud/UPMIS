@@ -241,7 +241,7 @@ select.list-dt:focus {
 </style>
 @endsection
 @section('content')
-<?php 
+<?php
 $today=date('Y-m-d');
 ?>
 <div class="wrapper">
@@ -267,7 +267,10 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -293,9 +296,9 @@ $today=date('Y-m-d');
               <option value="Within">Within Dar es Salaam/Kibaha</option>
               <option value="Outside">Outside Dar es Salaam/Kibaha</option>
             </select>
-        
+
         </div>
-    </div> 
+    </div>
 
     <div class="form-group row" id="namediv">
                         <div class="form-wrapper col-2">
@@ -398,13 +401,13 @@ $today=date('Y-m-d');
 					<div class="form-wrapper" id="naturediv">
           <label for="trip_nature">Nature of the trip<span style="color: red;">*</span></label>
           <span id="trip_naturemsg"></span>
-            <select class="form-control" required="" id="trip_nature" name="trip_nature" required=""> 
+            <select class="form-control" required="" id="trip_nature" name="trip_nature" required="">
               <option value="" disabled selected hidden>select nature of the trip</option>
               <option value="Departmental">Department/Unit Duty</option>
               <option value="Private">Private</option>
               <option value="Emergency">Emergency</option>
             </select>
-        
+
         </div>
     </div>
 
@@ -421,7 +424,7 @@ $today=date('Y-m-d');
 						</div>
 					</div>
 
-                                </div> 
+                                </div>
  <button class="btn btn-primary" type="submit">Forward</button>
                             </fieldset>
 

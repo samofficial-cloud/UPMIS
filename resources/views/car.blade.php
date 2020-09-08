@@ -240,6 +240,9 @@ $i='1';
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
     <?php
@@ -304,7 +307,7 @@ $i='1';
 						<label for="model">Vehicle Model</label>
             <select class="form-control" required="" id="model" name="model" required="">
               <option value=""disabled selected hidden>select Vehicle Model</option>
-              @foreach($model as $model) 
+              @foreach($model as $model)
               <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
               @endforeach
             </select>
@@ -391,7 +394,7 @@ $i='1';
             <select class="form-control" required="" id="model{{$cars->id}}" name="model" required="">
               <option value="{{$cars->vehicle_model}}">{{$cars->vehicle_model}}</option>
               @foreach($model1 as $model)
-              @if($model->vehicle_model != $cars->vehicle_model) 
+              @if($model->vehicle_model != $cars->vehicle_model)
               <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
               @endif
               @endforeach
@@ -786,8 +789,8 @@ $("#model").click(function(){
             $('#hire_rate').val(data);
           }
           });
-    } 
-   
+    }
+
     });
 
 $('#myTable').on('click', '[name="model"]', function(e){
@@ -806,7 +809,7 @@ $('#myTable').on('click', '[name="model"]', function(e){
             $('#hire_rate'+reg).val(data);
           }
           });
-    } 
+    }
       });
 
     });
