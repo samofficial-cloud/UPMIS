@@ -253,7 +253,7 @@ select.list-dt:focus {
 </style>
 @endsection
 @section('content')
-<?php 
+<?php
 $today=date('Y-m-d');
 ?>
 <div class="wrapper">
@@ -279,7 +279,10 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -297,13 +300,13 @@ $today=date('Y-m-d');
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
-                                   
+
                                    <div class="form-group">
 					<div class="form-wrapper" id="areadiv">
           <label for="area">Area of Travel*</label>
-            <input type="text" class="form-control" required="" id="area" name="area" value="{{$contract->area_of_travel}} Dar es Salaam/Kibaha" readonly="">    
+            <input type="text" class="form-control" required="" id="area" name="area" value="{{$contract->area_of_travel}} Dar es Salaam/Kibaha" readonly="">
         </div>
-    </div> 
+    </div>
 
     <div class="form-group row" id="namediv">
                         <div class="form-wrapper col-2">
@@ -387,7 +390,7 @@ $today=date('Y-m-d');
 					<div class="form-wrapper" id="naturediv">
           <label for="trip_nature">Nature of the trip</label>
           <span id="trip_naturemsg"></span>
-            <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">    
+            <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">
         </div>
     </div>
 
@@ -403,7 +406,7 @@ $today=date('Y-m-d');
 						</div>
 					</div>
 
-                                </div> 
+                                </div>
                             </fieldset>
 
                         </form>
@@ -463,7 +466,7 @@ $today=date('Y-m-d');
                             <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$contract->acc_date}}" readonly="">
                         </div>
                     </div>
-                                </div> 
+                                </div>
                             </fieldset>
 
                         </form>
@@ -477,7 +480,7 @@ $today=date('Y-m-d');
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
-                                   <div class="form-group"> 
+                                   <div class="form-group">
                                     <div class="form-wrapper">
                             <label for="head_approval_status">This Application is therefore</label>
                              <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_approval_status}}" readonly="">
@@ -494,12 +497,12 @@ $today=date('Y-m-d');
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_date" name="head_date" class="form-control" value="{{$contract->head_date}}" readonly="">
                         </div>
-                    </div> 
+                    </div>
                         </div>
                             </fieldset>
                         </form>
 
- 
+
                     </div>
 
                     </div>
@@ -519,12 +522,12 @@ $today=date('Y-m-d');
                 </label>
                  </div>
 
-                 <div class="form-wrapper col-2"> 
+                 <div class="form-wrapper col-2">
                   <label for="contract_filter" style=" display: block;
     white-space: nowrap;">Not Approve
                    <input class="form-check-input" type="radio" name="head_cptu_approval_status" id="Rejected" value="Rejected">
-                   </label>           
-                </div> 
+                   </label>
+                </div>
                </div>
                                 </div>
 <br>
@@ -568,7 +571,7 @@ $today=date('Y-m-d');
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$today}}" readonly="">
                         </div>
-                    </div> 
+                    </div>
                     <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
                             </div>
                              <button class="btn btn-primary" type="submit">Forward</button>
@@ -591,9 +594,9 @@ $today=date('Y-m-d');
 @section('pagescript')
 <script type="text/javascript">
     $(document).ready(function(){
-     $('#vehicle_reg').keyup(function(e){ 
+     $('#vehicle_reg').keyup(function(e){
         console.log($('#start_date').val());
-        
+
         e.preventDefault();
         var query = $(this).val();
         if(query != ''){
@@ -610,8 +613,8 @@ $today=date('Y-m-d');
             else{
               a ='1';
               //$('#message2').hide();
-              $('#vehicle_reg').attr('style','border:1px solid #ced4da'); 
-              $('#nameList').fadeIn();  
+              $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+              $('#nameList').fadeIn();
               $('#nameList').html(data);
           }
         }
@@ -623,13 +626,13 @@ $today=date('Y-m-d');
               $('#vehicle_reg').attr('style','border:1px solid #ced4da');
         }
      });
-      
+
   $(document).on('click', '#list', function(){
    a ='1';
    //$('#message2').hide();
   $('#vehicle_reg').attr('style','border:1px solid #ced4da');
 
-        $('#vehicle_reg').val($(this).text());      
+        $('#vehicle_reg').val($(this).text());
         $('#nameList').fadeOut();
 
         var query = $('#vehicle_reg').val();
@@ -653,12 +656,12 @@ $today=date('Y-m-d');
             $('#hirerate').val(data);
           }
           });
-    } 
-   
+    }
+
     });
 
    $(document).on('click', 'form', function(){
-     $('#nameList').fadeOut();  
+     $('#nameList').fadeOut();
     });
    $('[name="head_cptu_approval_status"]').click(function(){
        var query=$(this).val();

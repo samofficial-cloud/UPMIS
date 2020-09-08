@@ -58,6 +58,7 @@
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
@@ -66,15 +67,16 @@
 
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 
     <div class="main_content">
       <div class="container " style="max-width: 1308px;">
         @if ($message = Session::get('success'))
-          <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
-    margin-bottom: -1px;
-    margin-top: 4px;">
+          <div class="alert alert-success row col-xs-12" style="margin-left: -13px; margin-bottom: -1px; margin-top: 4px;">
             <p>{{$message}}</p>
           </div>
         @endif
@@ -86,11 +88,15 @@
             </div>
           @endif
 
-        <a data-toggle="modal" data-target="#space" class="btn button_color active" style="    background-color: lightgrey;
+
+          @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+          @else
+        <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172;
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">Add New Space</a>
+          @endif
   <br>
 
   <div class="">
@@ -355,7 +361,7 @@
 
                       </center></td>
 
-            <td>
+            <td><center>
             <a title="View more information" class="link_style" data-toggle="modal" data-target="#space_id{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer; display: inline-block" aria-pressed="true"><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
               <div class="modal fade" id="space_id{{$var->id}}" role="dialog">
 
@@ -452,11 +458,14 @@
                 </div>
               </div>
 
-
-              <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
-              <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+              @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                @else
+                <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
                 <a data-toggle="modal" title="Delete space" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-                <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
+              @endif
+
+              <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
 
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -693,7 +702,7 @@
                 </div>
 
 
-
+              </center>
             </td>
           </tr>
         @endforeach

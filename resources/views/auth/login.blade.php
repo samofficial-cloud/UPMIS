@@ -25,6 +25,12 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<style>
+
+		::placeholder {
+			color:white !important;
+		}
+	</style>
 <!--===============================================================================================-->
     
 </head>
@@ -32,7 +38,7 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('images/bg-02.png');">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
+				<form class="login100-form " method="POST" action="{{ route('login.custom')}}">
 					 @csrf
 					<span class="login100-form-logo">
 						<img src="images/login.jpg" height="50px" width="50px">
@@ -42,39 +48,72 @@
 						UPMIS Login
 					</span>
 
-					<div class="wrap-input100 validate-input" data-validate = "Enter username">
-						<input id="email" type="email" class="{{ $errors->has('email') ? ' is-invalid' : '' }} input100" name="email" value="{{ old('email') }}" placeholder="Email" required autofocus>
+{{--					<div class="wrap-input100 validate-input" data-validate = "Enter username">--}}
+{{--						<input id="user_name" type="text" class="{{ $errors->has('user_name') ? ' is-invalid' : '' }} input100" name="user_name" value="{{ old('user_name') }}" placeholder="User name  e.g  jmassawe" required autofocus>--}}
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
+{{--                                @if ($errors->has('user_name'))--}}
+{{--                                    <span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $errors->first('user_name') }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                @endif--}}
+
+
+{{--						<span class="focus-input100" data-placeholder="&#xf207;"></span>--}}
+{{--					</div>--}}
+
+{{--					<div class="wrap-input100 form-group row validate-input" data-validate="Enter password">--}}
+{{--						<input class="input100" id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>--}}
+
+{{--						@if ($errors->has('password'))--}}
+{{--							<span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $errors->first('password') }}</strong>--}}
+{{--                                    </span>--}}
+{{--						@endif--}}
+{{--						<span class="focus-input100" data-placeholder="&#xf191;"></span>--}}
+{{--					</div>--}}
+					<div class="wrap-input100  " >
+
+
+						<input id="user_name" type="text" class="form-control{{ $errors->has('user_name') ? ' is-invalid' : '' }} input100" placeholder="User name  e.g  jmassawe" name="user_name" value="" required>
+
+						@if ($errors->has('user_name'))
+							<span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('user_name') }}</strong>
                                     </span>
-                                @endif
+						@endif
 						<span class="focus-input100" data-placeholder="&#xf207;"></span>
 					</div>
 
-					<div class="wrap-input100 validate-input" data-validate="Enter password">
-						<input class="input100" id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
+					<div class="wrap-input100  ">
 
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
+
+							<input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} input100" placeholder="Password" name="password" required>
+
+							@if ($errors->has('password'))
+								<span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                @endif
+							@endif
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
 
-					<div class="contact100-form-checkbox">
-						<input class="input-checkbox100" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-						<label class="label-checkbox100" for="remember">
-							Remember me
-						</label>
-					</div>
+{{--					<div class="contact100-form-checkbox">--}}
+{{--						<input class="input-checkbox100" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>--}}
+{{--						<label class="label-checkbox100" for="remember">--}}
+{{--							Remember me--}}
+{{--						</label>--}}
+{{--					</div>--}}
+
+
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							Login
-						</button>
+
+							<button type="submit" class="login100-form-btn">
+								Login
+							</button>
+
+
+
 					</div>
 
 					<div class="text-center p-t-90">

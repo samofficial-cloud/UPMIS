@@ -253,7 +253,7 @@ select.list-dt:focus {
 </style>
 @endsection
 @section('content')
-<?php 
+<?php
 $today=date('Y-m-d');
 ?>
 <div class="wrapper">
@@ -279,7 +279,10 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -297,13 +300,13 @@ $today=date('Y-m-d');
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
-                                   
+
                                    <div class="form-group">
 					<div class="form-wrapper" id="areadiv">
           <label for="area">Area of Travel</label>
-            <input type="text" class="form-control" required="" id="area" name="area" value="{{$contract->area_of_travel}} Dar es Salaam/Kibaha" readonly="">    
+            <input type="text" class="form-control" required="" id="area" name="area" value="{{$contract->area_of_travel}} Dar es Salaam/Kibaha" readonly="">
         </div>
-    </div> 
+    </div>
 
     <div class="form-group row" id="namediv">
                         <div class="form-wrapper col-2">
@@ -387,7 +390,7 @@ $today=date('Y-m-d');
 					<div class="form-wrapper" id="naturediv">
           <label for="trip_nature">Nature of the trip</label>
           <span id="trip_naturemsg"></span>
-            <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">    
+            <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">
         </div>
     </div>
 
@@ -403,7 +406,7 @@ $today=date('Y-m-d');
 						</div>
 					</div>
 
-                                </div> 
+                                </div>
                             </fieldset>
 
                         </form>
@@ -463,7 +466,7 @@ $today=date('Y-m-d');
                             <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$contract->acc_date}}" readonly="">
                         </div>
                     </div>
-                                </div> 
+                                </div>
                             </fieldset>
 
                         </form>
@@ -477,7 +480,7 @@ $today=date('Y-m-d');
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
-                                   <div class="form-group"> 
+                                   <div class="form-group">
                                     <div class="form-wrapper">
                             <label for="head_approval_status">This Application is therefore</label>
                              <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_approval_status}}" readonly="">
@@ -494,12 +497,12 @@ $today=date('Y-m-d');
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_date" name="head_date" class="form-control" value="{{$contract->head_date}}" readonly="">
                         </div>
-                    </div> 
+                    </div>
                         </div>
                             </fieldset>
                         </form>
 
- 
+
                     </div>
 
                     </div>
@@ -511,13 +514,13 @@ $today=date('Y-m-d');
                             <fieldset>
                                 <div class="form-card">
 
-                                    {{-- <div class="form-group"> 
+                                    {{-- <div class="form-group">
                                     <div class="form-wrapper">
                             <label for="head_approval_status">This Application is therefore</label>
                              <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_cptu_approval_status}}" readonly="">
                         </div>
                     </div> --}}
-                                    
+
                             <div class="form-group">
                     <div class="form-wrapper">
                         <label for="vehicle_reg">Vehicle Reg. No</label>
@@ -536,7 +539,7 @@ $today=date('Y-m-d');
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$contract->head_cptu_date}}" readonly="">
                         </div>
-                    </div> 
+                    </div>
                             </div>
                         </fieldset>
                     </form>
@@ -550,13 +553,13 @@ $today=date('Y-m-d');
                             <fieldset>
                                 <div class="form-card">
 
-                                    {{-- <div class="form-group"> 
+                                    {{-- <div class="form-group">
                                     <div class="form-wrapper">
                             <label for="head_approval_status">This Application is therefore</label>
                              <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_cptu_approval_status}}" readonly="">
                         </div>
                     </div> --}}
-                                    
+
                             <div class="form-group">
                     <div class="form-wrapper">
                         <label for="vehicle_reg">Vehicle Reg. No</label>
@@ -575,7 +578,7 @@ $today=date('Y-m-d');
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$contract->dvc_date}}" readonly="">
                         </div>
-                    </div> 
+                    </div>
                             </div>
                         </fieldset>
                     </form>
@@ -784,12 +787,12 @@ $today=date('Y-m-d');
           var message=document.getElementById('end_speedmeter_kmmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#end_speedmeter_km').attr('style','border-bottom:1px solid #f00'); 
+           $('#end_speedmeter_km').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p3=1;
         $('#end_speedmeter_kmmsg').hide();
-        $('#end_speedmeter_km').attr('style','border-bottom: 1px solid #ccc');  
+        $('#end_speedmeter_km').attr('style','border-bottom: 1px solid #ccc');
             }
 
             var query4=$('#end_speedmeter_time').val();
@@ -799,12 +802,12 @@ $today=date('Y-m-d');
           var message=document.getElementById('end_speedmeter_timemsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#end_speedmeter_time').attr('style','border-bottom:1px solid #f00');   
+           $('#end_speedmeter_time').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p4=1;
             $('#end_speedmeter_timemsg').hide();
-            $('#end_speedmeter_time').attr('style','border-bottom: 1px solid #ccc');  
+            $('#end_speedmeter_time').attr('style','border-bottom: 1px solid #ccc');
             }
 
             var query5=$('#end_overtime').val();
@@ -814,7 +817,7 @@ $today=date('Y-m-d');
           var message=document.getElementById('end_overtimemsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#end_overtime').attr('style','border-bottom:1px solid #f00');   
+           $('#end_overtime').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p5=1;
@@ -906,7 +909,7 @@ $today=date('Y-m-d');
           var message=document.getElementById('penalty_amountmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#penalty_amount').attr('style','border-bottom:1px solid #f00'); 
+           $('#penalty_amount').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p11=1;
@@ -921,7 +924,7 @@ $today=date('Y-m-d');
           var message=document.getElementById('overtime_chargesmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#overtime_charges').attr('style','border-bottom:1px solid #f00'); 
+           $('#overtime_charges').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p12=1;
@@ -936,7 +939,7 @@ $today=date('Y-m-d');
           var message=document.getElementById('total_chargesmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#total_charges').attr('style','border-bottom:1px solid #f00'); 
+           $('#total_charges').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p13=1;
@@ -951,7 +954,7 @@ $today=date('Y-m-d');
           var message=document.getElementById('standing_chargesmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#standing_charges').attr('style','border-bottom:1px solid #f00'); 
+           $('#standing_charges').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p14=1;
@@ -966,7 +969,7 @@ $today=date('Y-m-d');
           var message=document.getElementById('grand_totalmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#grand_total').attr('style','border-bottom:1px solid #f00'); 
+           $('#grand_total').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p15=1;

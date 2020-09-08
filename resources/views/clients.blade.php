@@ -69,6 +69,9 @@ a.title{
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -99,7 +102,7 @@ a.title{
   <div id="space" class="tabcontent">
   <br>
   <h3>1. Space Clients</h3>
-  
+
   <a class="btn btn-success btn-sm" style="
     padding: 10px;
     color: #fff;font-size: 16px;
@@ -229,7 +232,7 @@ a.title{
           </div>
         </div>
          <br>
-         
+
         <div class="form-group row">
             <label for="message{{$client->client_id}}" class="col-sm-2">Message</label>
             <div class="col-sm-9">
@@ -326,7 +329,7 @@ a.title{
           </div>
         </div>
          <br>
-         
+
         <div class="form-group row">
             <label for="message{{$client->client_id}}" class="col-sm-2">Message</label>
             <div class="col-sm-9">
@@ -473,7 +476,7 @@ a.title{
           </div>
         </div>
          <br>
-         
+
         <div class="form-group row">
             <label for="carmessage{{$i}}" class="col-sm-2">Message</label>
             <div class="col-sm-9">

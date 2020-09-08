@@ -243,7 +243,7 @@ select.list-dt:focus {
 @endsection
 
 @section('content')
-<?php 
+<?php
 $today=date('Y-m-d');
 ?>
 <!-- MultiStep Form -->
@@ -270,7 +270,10 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -286,8 +289,8 @@ $today=date('Y-m-d');
                             <!-- progressbar -->
                             <ul id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>
-                                <li  id="account"><strong>Car</strong></li>  
-                                <li id="payment"><strong>Payment</strong></li>    
+                                <li  id="account"><strong>Car</strong></li>
+                                <li id="payment"><strong>Payment</strong></li>
                             </ul>
                              <!-- fieldsets -->
                             <fieldset>
@@ -301,7 +304,7 @@ $today=date('Y-m-d');
               <option value="1">Individual</option>
               <option value="2">Company/Organization</option>
             </select>
-        
+
         </div>
     </div>
 
@@ -346,13 +349,13 @@ $today=date('Y-m-d');
 						<input type="text" id="address" name="address" class="form-control">
 					</div>
 				</div>
-                                </div> 
+                                </div>
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
                             </fieldset>
                             {{-- Second Form --}}
                             <fieldset>
                                 <div class="form-card">
-                                  <h2 class="fs-title">Car Information</h2> 
+                                  <h2 class="fs-title">Car Information</h2>
 					<div class="form-group">
 					<div class="form-wrapper">
 						<label for="vehicle_reg">Vehicle Reg. No*</label>
@@ -383,9 +386,9 @@ $today=date('Y-m-d');
 					</div>
 				</div>
 
-				
-                                </div> 
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
                             </fieldset>
                             {{-- Third Form --}}
@@ -411,21 +414,21 @@ $today=date('Y-m-d');
                          <option value="USD">USD</option>
                         </select>
                     </div>
-				      
-                             
+
+
 					<div class="form-wrapper col-6">
 						<label for="amount">Amount*</label>
 						<input type="text" id="amount" name="amount" class="form-control" required="">
 					</div>
-				</div>  
+				</div>
                 <div class="form-group">
                     <div class="form-wrapper">
                         <label for="condition">Rate*</label>
                         <input type="text" id="rate" name="rate" class="form-control" value=" " required="">
                     </div>
-                </div>      
-                                </div> 
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                </div>
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
                             </fieldset>
                         </form>
@@ -468,7 +471,7 @@ next_fs = $(this).parent().next();
             else{
                 p1=1;
                 $('#name1msg').hide();
-                $('#first_name').attr('style','border-bottom: 1px solid #ccc');     
+                $('#first_name').attr('style','border-bottom: 1px solid #ccc');
             }
 
             if(lastName==""){
@@ -484,7 +487,7 @@ next_fs = $(this).parent().next();
                 p2=1;
                 $('#name2msg').hide();
                 $('#last_name').attr('style','border-bottom: 1px solid #ccc');
-                
+
             }
             if(p1=='1' & p2=='1'){
                 gonext();
@@ -508,7 +511,7 @@ next_fs = $(this).parent().next();
              gonext();
             }
             }
-        
+
         else{
              $('#ctypemsg').show();
              var message=document.getElementById('ctypemsg');
@@ -516,14 +519,14 @@ next_fs = $(this).parent().next();
              message.innerHTML="Required";
              $('#client_type').attr('style','border:1px solid #f00');
 
-            
+
         }
 
 });
 
- $('#vehicle_reg').keyup(function(e){ 
+ $('#vehicle_reg').keyup(function(e){
         console.log(4);
-        
+
         e.preventDefault();
         var query = $(this).val();
         if(query != ''){
@@ -540,8 +543,8 @@ next_fs = $(this).parent().next();
             else{
               a ='1';
               //$('#message2').hide();
-              $('#vehicle_reg').attr('style','border:1px solid #ced4da'); 
-              $('#nameList').fadeIn();  
+              $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+              $('#nameList').fadeIn();
               $('#nameList').html(data);
           }
         }
@@ -553,13 +556,13 @@ next_fs = $(this).parent().next();
               $('#vehicle_reg').attr('style','border:1px solid #ced4da');
         }
      });
-      
+
   $(document).on('click', '#list', function(){
    a ='1';
    //$('#message2').hide();
   $('#vehicle_reg').attr('style','border:1px solid #ced4da');
 
-        $('#vehicle_reg').val($(this).text());      
+        $('#vehicle_reg').val($(this).text());
         $('#nameList').fadeOut();
 
         var query = $('#vehicle_reg').val();
@@ -583,13 +586,13 @@ next_fs = $(this).parent().next();
             $('#hirerate').val(data);
           }
           });
-    } 
-   
+    }
+
     });
 
    $(document).on('click', 'form', function(){
-     $('#nameList').fadeOut();  
-    }); 
+     $('#nameList').fadeOut();
+    });
 
 $("#next2").click(function(){
     console.log(a);
@@ -604,23 +607,23 @@ $("#next2").click(function(){
      $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
     }
     else{
-        
+
         $('#vehiclemsg').hide();
         $('#vehicle_reg').attr('style','border-bottom: 1px solid #ccc');
         if(a=='1'){
-         gonext();   
+         gonext();
         }
         else{
           $('#vehiclemsg').show();
           var message=document.getElementById('vehiclemsg');
          message.style.color='red';
          message.innerHTML="Invalid Vehicle Number";
-         $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');  
+         $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
         }
-        
+
     }
 
-  });  
+  });
 
 function gonext(){
 //Add Class Active

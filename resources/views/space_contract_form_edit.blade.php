@@ -243,7 +243,7 @@ select.list-dt:focus {
 @endsection
 
 @section('content')
-<?php 
+<?php
 $today=date('Y-m-d');
 ?>
 <!-- MultiStep Form -->
@@ -270,7 +270,10 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -288,7 +291,7 @@ $today=date('Y-m-d');
                             <ul id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>
                                 <li  id="account"><strong>Renting Space</strong></li>
-                                <li id="payment"><strong>Payment</strong></li>    
+                                <li id="payment"><strong>Payment</strong></li>
                             </ul>
                              <!-- fieldsets -->
                             <fieldset>
@@ -311,7 +314,7 @@ $today=date('Y-m-d');
                 @endif
 
             </select>
-        
+
         </div>
     </div>
 
@@ -357,7 +360,7 @@ $today=date('Y-m-d');
 						<input type="text" required id="address" name="address" value="{{$var->address}}" class="form-control">
 					</div>
 				</div>
-                                </div> 
+                                </div>
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
                                     <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>
@@ -427,8 +430,8 @@ $today=date('Y-m-d');
 
 
 
-                                </div> 
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
                                 <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>
@@ -524,8 +527,8 @@ $today=date('Y-m-d');
 
 
                                     @endforeach
-                                </div> 
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
                                 <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>

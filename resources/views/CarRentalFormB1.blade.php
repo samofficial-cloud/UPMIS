@@ -241,7 +241,7 @@ select.list-dt:focus {
 </style>
 @endsection
 @section('content')
-<?php 
+<?php
 $today=date('Y-m-d');
 ?>
 <div class="wrapper">
@@ -267,7 +267,10 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -285,13 +288,13 @@ $today=date('Y-m-d');
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
-                                   
+
                                    <div class="form-group">
 					<div class="form-wrapper" id="areadiv">
           <label for="area">Area of Travel*</label>
-            <input type="text" class="form-control" required="" id="area" name="area" value="{{$contract->area_of_travel}} Dar es Salaam/Kibaha" readonly="">    
+            <input type="text" class="form-control" required="" id="area" name="area" value="{{$contract->area_of_travel}} Dar es Salaam/Kibaha" readonly="">
         </div>
-    </div> 
+    </div>
 
     <div class="form-group row" id="namediv">
                         <div class="form-wrapper col-2">
@@ -375,7 +378,7 @@ $today=date('Y-m-d');
 					<div class="form-wrapper" id="naturediv">
           <label for="trip_nature">Nature of the trip</label>
           <span id="trip_naturemsg"></span>
-            <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">    
+            <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">
         </div>
     </div>
 
@@ -391,7 +394,7 @@ $today=date('Y-m-d');
 						</div>
 					</div>
 
-                                </div> 
+                                </div>
                             </fieldset>
 
                         </form>
@@ -444,7 +447,7 @@ $today=date('Y-m-d');
               <option value="Sufficient">Sufficient</option>
               <option value="Not Sufficient">Not Sufficient</option>
             </select>
-        
+
         </div>
     </div>
 
@@ -527,7 +530,7 @@ $today=date('Y-m-d');
               <option value="Sufficient">Sufficient</option>
               <option value="Not Sufficient">Not Sufficient</option>
             </select>
-        
+
         </div>
     </div>
 
@@ -559,7 +562,7 @@ $today=date('Y-m-d');
                     </div>
                     <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
 
-                                </div> 
+                                </div>
  <button class="btn btn-primary" type="submit">Forward</button>
                             </fieldset>
 

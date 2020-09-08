@@ -65,6 +65,9 @@
                 <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
                 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
                 <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
             </ul>
         </div>
 
@@ -95,11 +98,57 @@
 
 
                 <div class="tab">
-                    <button class="tablinks" onclick="openInvoices(event, 'space_invoices')" id="defaultOpen"><strong>Real Estate</strong></button>
-                    <button class="tablinks" onclick="openInvoices(event, 'insurance_invoices')"><strong>Insurance</strong></button>
-                    <button class="tablinks" onclick="openInvoices(event, 'car_invoices')"><strong>Car Rental</strong></button>
-                    <button class="tablinks" onclick="openInvoices(event, 'water_invoices')"><strong>Water Bills</strong></button>
-                    <button class="tablinks" onclick="openInvoices(event, 'electricity_invoices')"><strong>Electricity Bills</strong></button>
+                    <?php
+                    $space_agents=DB::table('general_settings')->where('category','Space')->orwhere('category','All')->get();
+
+                    ?>
+
+
+                    <?php
+                    $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
+
+                    ?>
+
+                    <?php
+                    $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
+
+                    ?>
+
+
+
+                        @foreach($space_agents as $space_agent)
+                            @if(Auth::user()->role!=$space_agent->user_roles)
+                            @else
+                                <button class="tablinks space_identity" onclick="openInvoices(event, 'space_invoices')" ><strong>Real Estate</strong></button>
+                            @endif
+                        @endforeach
+
+                        @foreach($insurance_agents as $insurance_agent)
+                            @if(Auth::user()->role!=$insurance_agent->user_roles)
+                            @else
+                                <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_invoices')"><strong>Insurance</strong></button>
+
+                            @endif
+                        @endforeach
+
+                        @foreach($car_agents as $car_agent)
+                            @if(Auth::user()->role!=$car_agent->user_roles)
+                            @else
+                                <button class="tablinks car_identity" onclick="openInvoices(event, 'car_invoices')"><strong>Car Rental</strong></button>
+
+                            @endif
+                        @endforeach
+
+                        @foreach($space_agents as $space_agent)
+                            @if(Auth::user()->role!=$space_agent->user_roles)
+                            @else
+                                <button class="tablinks bills" onclick="openInvoices(event, 'water_invoices')"><strong>Water Bills</strong></button>
+                                <button class="tablinks bills" onclick="openInvoices(event, 'electricity_invoices')"><strong>Electricity Bills</strong></button>
+                            @endif
+                        @endforeach
+
+
+
 
                 </div>
 
@@ -110,9 +159,10 @@
                     <br>
 
 
-
+                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                    @else
                     <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice" title="Add new space invoice" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
-
+                    @endif
                     <div class="modal fade" id="new_invoice" role="dialog">
 
                         <div class="modal-dialog" role="document">
@@ -508,8 +558,10 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
                                                 <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-
+                                                @endif
 
                                                 <div class="modal fade" id="send_invoice{{$var->invoice_number}}" role="dialog">
 
@@ -562,10 +614,11 @@
 
                                             @if($var->email_sent_status=='SENT')
 
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
 
-
-                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
-
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true"   name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
+                                            @endif
 
                                             <div class="modal fade" id="add_comment{{$var->invoice_number}}" role="dialog">
 
@@ -661,9 +714,11 @@
                     <?php
                     $i=1;
                     ?>
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
 
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice_insurance" title="Add new insurance invoice" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
-
+@endif
                         <div class="modal fade" id="new_invoice_insurance" role="dialog">
 
                             <div class="modal-dialog" role="document">
@@ -990,8 +1045,11 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
-                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
+                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                                @endif
 
                                                 <div class="modal fade" id="send_invoice_insurance{{$var->invoice_number}}" role="dialog">
 
@@ -1044,10 +1102,11 @@
 
                                             @if($var->email_sent_status=='SENT')
 
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
 
-
-                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
-
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true"   name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
+                                                @endif
 
                                             <div class="modal fade" id="add_comment_insurance{{$var->invoice_number}}" role="dialog">
 
@@ -1139,8 +1198,10 @@
                     <br>
                     <h5>3. Car Rental Invoices</h5>
                     <br>
-
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice_car" title="Add new car rental invoice" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+                        @endif
 
                         <div class="modal fade" id="new_invoice_car" role="dialog">
 
@@ -1547,8 +1608,10 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
                                                 <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-
+                                                @endif
 
                                                 <div class="modal fade" id="send_invoice_car{{$var->invoice_number}}" role="dialog">
 
@@ -1601,10 +1664,11 @@
 
                                             @if($var->email_sent_status=='SENT')
 
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
 
-
-                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_car{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
-
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_car{{$var->invoice_number}}"  role="button" aria-pressed="true"   name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
+                                            @endif
 
                                             <div class="modal fade" id="add_comment_car{{$var->invoice_number}}" role="dialog">
 
@@ -1699,8 +1763,10 @@
 
 
 
-
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice_water" title="Add new water bill invoice" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+                        @endif
 
                         <div class="modal fade" id="new_invoice_water" role="dialog">
 
@@ -2149,8 +2215,10 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
                                                 <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-
+                                                @endif
 
                                                 <div class="modal fade" id="send_invoice_water{{$var->invoice_number}}" role="dialog">
 
@@ -2226,10 +2294,11 @@
 
                                             @if($var->email_sent_status=='SENT')
 
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
 
-
-                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_water{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
-
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_water{{$var->invoice_number}}"  role="button" aria-pressed="true"   name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
+                                            @endif
 
                                             <div class="modal fade" id="add_comment_water{{$var->invoice_number}}" role="dialog">
 
@@ -2319,8 +2388,10 @@
                     <br>
                     <h5>5. Electricity Invoices</h5>
                     <br>
-
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice_electricity" title="Add new electricity bill invoice" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+                        @endif
 
                         <div class="modal fade" id="new_invoice_electricity" role="dialog">
 
@@ -2766,8 +2837,10 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
                                                 <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-
+                                                @endif
 
                                                 <div class="modal fade" id="send_invoice_electricity{{$var->invoice_number}}" role="dialog">
 
@@ -2844,9 +2917,10 @@
                                             @if($var->email_sent_status=='SENT')
 
 
-
-                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC">Receive Payment</a>
-
+                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @else
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true"   name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
+                                            @endif
 
                                             <div class="modal fade" id="add_comment_electricity{{$var->invoice_number}}" role="dialog">
 
@@ -2951,6 +3025,74 @@
 @section('pagescript')
 
     <script type="text/javascript">
+        window.onload=function(){
+                <?php
+                $space_agents=DB::table('general_settings')->where('category','!=','')->where('category','Space')->orwhere('category','All')->get();
+                $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
+                $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
+                $space_status=0;
+                $insurance_status=0;
+                $car_status=0;
+
+                foreach ($space_agents as $space_agent){
+                    if (Auth::user()->role==$space_agent->user_roles) {
+                        $space_status=1;
+                    }
+
+                }
+
+                foreach ($car_agents as $car_agent){
+                    if (Auth::user()->role==$car_agent->user_roles) {
+                        $car_status=1;
+                    }
+
+                }
+
+                foreach ($insurance_agents as $insurance_agent){
+                    if (Auth::user()->role==$insurance_agent->user_roles) {
+                        $insurance_status=1;
+                    }
+
+                }
+
+
+                ?>
+
+            var space_x={!! json_encode($space_status) !!};
+            var insurance_x={!! json_encode($insurance_status) !!};
+            var car_x={!! json_encode($car_status) !!};
+
+            if(space_x==1){
+
+                $(".insurance_identity").removeClass("defaultInvoice");
+                $(".car_identity").removeClass("defaultInvoice");
+                $('.space_identity').addClass('defaultInvoice');
+
+
+            }else if(insurance_x==1){
+                $(".space_identity").removeClass("defaultInvoice");
+                $(".car_identity").removeClass("defaultInvoice");
+                $('.insurance_identity').addClass('defaultInvoice');
+
+            }else if(car_x==1){
+                $(".space_identity").removeClass("defaultInvoice");
+                $(".insurance_identity").removeClass("defaultInvoice");
+                $('.car_identity').addClass('defaultInvoice');
+
+            }else{
+
+            }
+
+console.log(space_x);
+
+            document.querySelector('.defaultInvoice').click();
+
+        };
+    </script>
+
+
+
+    <script type="text/javascript">
         function openInvoices(evt, evtName) {
             // Declare all variables
             var i, tabcontent, tablinks;
@@ -2972,7 +3114,7 @@
             document.getElementById(evtName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-        document.getElementById("defaultOpen").click();
+
     </script>
 
 

@@ -65,6 +65,9 @@
                 <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
             <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
                 <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
             </ul>
         </div>
 
@@ -95,6 +98,7 @@
 
 
                     <div class="tab">
+
                         <button class="tablinks" onclick="openInvoices(event, 'space_payments')" id="defaultOpen"><strong>Real Estate</strong></button>
                         <button class="tablinks" onclick="openInvoices(event, 'car_rental_payments')"><strong>Car Rental</strong></button>
                         <button class="tablinks" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
@@ -109,8 +113,11 @@
                         <h5>1. Real Estate Payments</h5>
                         <br>
 
-
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+                        @endif
+
 
                         <div class="modal fade" id="new_payment_space" role="dialog">
 
@@ -381,7 +388,10 @@
                         <h5>2. Car Rental Payments</h5>
                         <br>
 
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_car" title="Record new car rental payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+                        @endif
 
                         <div class="modal fade" id="new_payment_car" role="dialog">
 
@@ -648,7 +658,11 @@
                         <br>
                         <h5>3. Insurance Payments</h5>
                         <br>
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+                        @endif
+
 
                         <div class="modal fade" id="new_payment_insurance" role="dialog">
 
@@ -915,7 +929,11 @@
                         <h5>4. Water Bill Payments</h5>
                         <br>
 
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+                        @endif
+
 
                         <div class="modal fade" id="new_payment_water" role="dialog">
 
@@ -1060,8 +1078,8 @@
 
 
 
-                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                                <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <div class="modal fade" id="invoice_water{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
@@ -1202,8 +1220,11 @@
                         <h5>5. Electricity Bill Payments</h5>
                         <br>
 
-
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
                         <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_electricity" title="Record new electricity bill payment" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+                        @endif
+
 
                         <div class="modal fade" id="new_payment_electricity" role="dialog">
 
@@ -1349,8 +1370,8 @@
 
 
 
-                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                                <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <div class="modal fade" id="invoice_electricity{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">

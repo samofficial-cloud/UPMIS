@@ -237,7 +237,7 @@ class PaymentController extends Controller
 
 
 
-    public function CreateElectrictyPaymentManually(Request $request)
+    public function CreateElectricityPaymentManually(Request $request)
     {
 
 
