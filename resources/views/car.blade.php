@@ -230,16 +230,31 @@ $i='1';
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
-<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
     <?php
@@ -304,7 +319,7 @@ $i='1';
 						<label for="model">Vehicle Model</label>
             <select class="form-control" required="" id="model" name="model" required="">
               <option value=""disabled selected hidden>select Vehicle Model</option>
-              @foreach($model as $model) 
+              @foreach($model as $model)
               <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
               @endforeach
             </select>
@@ -391,7 +406,7 @@ $i='1';
             <select class="form-control" required="" id="model{{$cars->id}}" name="model" required="">
               <option value="{{$cars->vehicle_model}}">{{$cars->vehicle_model}}</option>
               @foreach($model1 as $model)
-              @if($model->vehicle_model != $cars->vehicle_model) 
+              @if($model->vehicle_model != $cars->vehicle_model)
               <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
               @endif
               @endforeach
@@ -786,8 +801,8 @@ $("#model").click(function(){
             $('#hire_rate').val(data);
           }
           });
-    } 
-   
+    }
+
     });
 
 $('#myTable').on('click', '[name="model"]', function(e){
@@ -806,7 +821,7 @@ $('#myTable').on('click', '[name="model"]', function(e){
             $('#hire_rate'+reg).val(data);
           }
           });
-    } 
+    }
       });
 
     });

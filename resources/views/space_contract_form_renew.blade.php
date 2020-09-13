@@ -250,8 +250,14 @@ $today=date('Y-m-d');
 <div class="wrapper">
 <div class="sidebar">
         <ul style="list-style-type:none;">
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
             <li><a href="#"><i class="fas fa-address-card"></i>Insurance</a></li>
             <li><a href="#"><i class="fas fa-car-side"></i>Car Rental</a></li>
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
@@ -267,7 +273,7 @@ $today=date('Y-m-d');
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2><strong>Renting Space Contract Information</strong></h2>
-                <p>Fill all form field with (*) to go to the next step</p>
+                <p>Fill all form fields with (*) to go to the next step</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
 
@@ -306,12 +312,12 @@ $today=date('Y-m-d');
 
         <div class="form-group row" id="namediv" style="display: none;">
 						<div class="form-wrapper col-6">
-							<label for="first_name">First Name*</label>
+							<label for="first_name">First Name</label>
                             <span id="name1msg"></span>
 							<input type="text" readonly id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="last_name">Last Name*</label>
+							<label for="last_name">Last Name</label>
                             <span id="name2msg"></span>
 							<input type="text" id="last_name" readonly value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
@@ -319,7 +325,7 @@ $today=date('Y-m-d');
 
 					<div class="form-group" id="companydiv" style="display: none;">
 					<div class="form-wrapper">
-						<label for="company_name">Company Name*</label>
+						<label for="company_name">Company Name</label>
                         <span id="cnamemsg"></span>
 						<input type="text" readonly id="company_name" name="company_name" value="{{$var->first_name}}" class="form-control">
 					</div>
@@ -335,7 +341,8 @@ $today=date('Y-m-d');
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="phone_number">Phone Number</label>
-						<input type="text" id="phone_number" readonly name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                        <span id="phone_msg"></span>
+                        <input type="text" id="phone_number" required name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
 					</div>
 				</div>
 
@@ -347,6 +354,7 @@ $today=date('Y-m-d');
 				</div>
                                 </div>
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
+                                    <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>
                             {{-- Second Form --}}
                             <fieldset>
@@ -415,6 +423,7 @@ $today=date('Y-m-d');
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
+                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>
                             {{-- Third Form --}}
                             <fieldset>
@@ -422,17 +431,17 @@ $today=date('Y-m-d');
                                     <h2 class="fs-title">Payment Information</h2>
                                     <div class="form-group row">
                                         <div class="form-wrapper col-12">
-                                            <label for="start_date">Start Date *</label>
+                                            <label for="start_date">Start Date <span style="color: red;"> *</span></label>
                                             <input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
                                         </div>
 
                                         <div class="form-wrapper col-6">
-                                            <label for="duration">Duration *</label>
+                                            <label for="duration">Duration <span style="color: red;"> *</span></label>
                                             <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control" required="" >
                                         </div>
 
                                         <div class="form-wrapper col-6">
-                                            <label for="currency">Period *</label>
+                                            <label for="currency">Period <span style="color: red;"> *</span></label>
                                             <select id="currency" class="form-control" name="duration_period" required>
                                                 <option value="" ></option>
                                                 <option value="Months" >Months</option>
@@ -444,13 +453,14 @@ $today=date('Y-m-d');
 					<div class="form-group row">
 
 					<div class="form-wrapper col-6">
-						<label for="amount">Amount *</label>
+						<label for="amount">Amount <span style="color: red;"> *</span></label>
 						<input type="number" min="1" id="amount" name="amount" value="" class="form-control" required="">
 					</div>
 
                         <div class="form-wrapper col-6">
                             <label for="currency">Currency</label>
                             <select id="currency" class="form-control" name="currency" >
+                                <option value="" ></option>
                                 <option value="TZS" >TZS</option>
                                 <option value="USD" >USD</option>
 
@@ -464,11 +474,12 @@ $today=date('Y-m-d');
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
-                                            <label for="payment_cycle">Payment cycle</label>
-                                            <select id="payment_cycle" class="form-control" name="payment_cycle" >
+                                            <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
+                                            <select id="payment_cycle" class="form-control" name="payment_cycle" required>
                                                 <?php
                                                 $payment_cycles=DB::table('payment_cycle_settings')->get();
                                                 ?>
+                                                    <option value=""></option>
 
                                                 @foreach($payment_cycles as $payment_cycle)
 
@@ -480,7 +491,7 @@ $today=date('Y-m-d');
                                         </div>
 
                                         <div class="form-wrapper col-6">
-                                            <label for="escalation_rate">Escalation Rate</label>
+                                            <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                             <input type="text" id="escalation_rate" name="escalation_rate" value="" class="form-control" required>
                                         </div>
 
@@ -492,6 +503,7 @@ $today=date('Y-m-d');
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
+                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>
                         </form>
                     </div>
@@ -512,119 +524,140 @@ $today=date('Y-m-d');
         };
     </script>
 
-<script type="text/javascript">
-$(document).ready(function(){
+    <script type="text/javascript">
+        $(document).ready(function(){
 
-var current_fs, next_fs, previous_fs; //fieldsets
-var opacity;
-var p1, p2;
-$("#next1").click(function(){
-current_fs = $(this).parent();
-next_fs = $(this).parent().next();
-    var clientType=$("#client_type").val(),
-        firstName=$("#first_name").val(),
-        lastName=$("#last_name").val(),
-        companyName=$("#company_name").val();
+            var current_fs, next_fs, previous_fs; //fieldsets
+            var opacity;
+            var p1, p2;
+            $("#next1").click(function(){
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
+                var clientType=$("#client_type").val(),
+                    firstName=$("#first_name").val(),
+                    lastName=$("#last_name").val(),
+                    companyName=$("#company_name").val();
 
-        if(clientType=="1"){
-            $('#ctypemsg').hide();
-            $('#client_type').attr('style','border: 1px solid #ccc');
-            if(firstName==""){
-                p1=0;
-             $('#name1msg').show();
-             var message=document.getElementById('name1msg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#first_name').attr('style','border-bottom:1px solid #f00');
-            }
-            else{
-                p1=1;
-                $('#name1msg').hide();
-                $('#first_name').attr('style','border-bottom: 1px solid #ccc');
+                if(clientType=="1"){
+                    $('#ctypemsg').hide();
+                    $('#client_type').attr('style','border: 1px solid #ccc');
+                    if(firstName==""){
+                        p1=0;
+                        $('#name1msg').show();
+                        var message=document.getElementById('name1msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#first_name').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+                        p1=1;
+                        $('#name1msg').hide();
+                        $('#first_name').attr('style','border-bottom: 1px solid #ccc');
 
-            }
+                    }
 
-            if(lastName==""){
-                p2=0;
-                $('#name2msg').show();
-             var message=document.getElementById('name2msg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#last_name').attr('style','border-bottom:1px solid #f00');
-            }
+                    if(lastName==""){
+                        p2=0;
+                        $('#name2msg').show();
+                        var message=document.getElementById('name2msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#last_name').attr('style','border-bottom:1px solid #f00');
+                    }
 
-            else{
-                p2=1;
-                $('#name2msg').hide();
-                $('#last_name').attr('style','border-bottom: 1px solid #ccc');
+                    else{
+                        p2=1;
+                        $('#name2msg').hide();
+                        $('#last_name').attr('style','border-bottom: 1px solid #ccc');
 
-            }
-            if(p1=='1' & p2=='1'){
+                    }
+
+
+                }
+
+                else if(clientType=="2"){
+                    $('#ctypemsg').hide();
+                    $('#client_type').attr('style','border: 1px solid #ccc');
+                    if(companyName==""){
+                        $('#cnamemsg').show();
+                        var message=document.getElementById('cnamemsg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#company_name').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+                        p1=1;
+                        p2=1;
+                        $('#cnamemsg').hide();
+                        $('#company_name').attr('style','border-bottom: 1px solid #ccc');
+
+                    }
+                }
+
+                else{
+                    $('#ctypemsg').show();
+                    var message=document.getElementById('ctypemsg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#client_type').attr('style','border:1px solid #f00');
+
+
+                }
+                var phone_digits=$('#phone_number').val().length;
+
+                if(phone_digits<10) {
+                    p2=0;
+                    $('#phone_msg').show();
+                    var message = document.getElementById('phone_msg');
+                    message.style.color = 'red';
+                    message.innerHTML = "Digits cannot be less than 10";
+                    $('#phone_number').attr('style', 'border-bottom:1px solid #f00');
+
+                }else{
+                    $('#phone_msg').hide();
+                    $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
+                }
+
+
+                if(p1=='1' & p2=='1'){
+                    gonext();
+                }
+
+
+
+            });
+
+            $("#next2").click(function(){
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
                 gonext();
-            }
 
-        }
+            });
 
-        else if(clientType=="2"){
-            $('#ctypemsg').hide();
-            $('#client_type').attr('style','border: 1px solid #ccc');
-            if(companyName==""){
-             $('#cnamemsg').show();
-             var message=document.getElementById('cnamemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#company_name').attr('style','border-bottom:1px solid #f00');
-            }
-            else{
-             $('#cnamemsg').hide();
-             $('#company_name').attr('style','border-bottom: 1px solid #ccc');
-             gonext();
-            }
-            }
-
-        else{
-             $('#ctypemsg').show();
-             var message=document.getElementById('ctypemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#client_type').attr('style','border:1px solid #f00');
-
-
-        }
-
-});
-
-$("#next2").click(function(){
-    current_fs = $(this).parent();
-    next_fs = $(this).parent().next();
-    gonext();
-
-  });
-
-function gonext(){
-    console.log(3);
+            function gonext(){
+                console.log(3);
 
 
 //Add Class Active
-$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 
 //show the next fieldset
-next_fs.show();
+                next_fs.show();
 //hide the current fieldset with style
-current_fs.animate({opacity: 0}, {
-step: function(now) {
+                current_fs.animate({opacity: 0}, {
+                    step: function(now) {
 // for making fielset appear animation
-opacity = 1 - now;
+                        opacity = 1 - now;
 
-current_fs.css({
-'display': 'none',
-'position': 'relative'
-});
-next_fs.css({'opacity': opacity});
-},
-duration: 600
-});
-}
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        next_fs.css({'opacity': opacity});
+                    },
+                    duration: 600
+                });
+            }
 
 // $(".next").click(function(){
 
@@ -652,40 +685,40 @@ duration: 600
 // });
 // });
 
-$(".previous").click(function(){
+            $(".previous").click(function(){
 
-current_fs = $(this).parent();
-previous_fs = $(this).parent().prev();
+                current_fs = $(this).parent();
+                previous_fs = $(this).parent().prev();
 
 //Remove class active
-$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
 //show the previous fieldset
-previous_fs.show();
+                previous_fs.show();
 
 //hide the current fieldset with style
-current_fs.animate({opacity: 0}, {
-step: function(now) {
+                current_fs.animate({opacity: 0}, {
+                    step: function(now) {
 // for making fielset appear animation
-opacity = 1 - now;
+                        opacity = 1 - now;
 
-current_fs.css({
-'display': 'none',
-'position': 'relative'
-});
-previous_fs.css({'opacity': opacity});
-},
-duration: 600
-});
-});
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        previous_fs.css({'opacity': opacity});
+                    },
+                    duration: 600
+                });
+            });
 
-$(".submit").click(function(){
-	console.log(2);
-return true;
-})
+            $(".submit").click(function(){
+                console.log(2);
+                return true;
+            })
 
-});
-</script>
+        });
+    </script>
 
 <script type="text/javascript">
 	$(document).ready(function() {

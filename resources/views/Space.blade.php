@@ -55,26 +55,40 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 
     <div class="main_content">
       <div class="container " style="max-width: 1308px;">
         @if ($message = Session::get('success'))
-          <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
-    margin-bottom: -1px;
-    margin-top: 4px;">
+          <div class="alert alert-success row col-xs-12" style="margin-left: -13px; margin-bottom: -1px; margin-top: 4px;">
             <p>{{$message}}</p>
           </div>
         @endif
@@ -86,11 +100,15 @@
             </div>
           @endif
 
-        <a data-toggle="modal" data-target="#space" class="btn button_color active" style="    background-color: lightgrey;
+
+          @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+          @else
+        <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172;
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">Add New Space</a>
+          @endif
   <br>
 
   <div class="">
@@ -112,7 +130,7 @@
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="major_industry"  ><strong>Major industry</strong></label>
+                         <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
                          <select id="getMajor"  class="form-control" name="major_industry" required>
                              <option value="" selected></option>
 
@@ -142,7 +160,7 @@
 
                      <div id="descriptionDiv"  class="form-group">
                        <div class="form-wrapper">
-                         <label for=""  ><strong>Minor industry</strong></label>
+                         <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
                            <select id="minor_list" required class="form-control" name="minor_industry" >
 
 
@@ -154,7 +172,7 @@
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for=""  ><strong>Space Number  </strong></label>
+                         <label for=""  ><strong>Space Number <span style="color: red;"> *</span></strong></label>
                          <input type="text" class="form-control" id="" name="space_id" value="" Required autocomplete="off">
                        </div>
                      </div>
@@ -164,7 +182,7 @@
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="space_location"  ><strong>Location</strong></label>
+                         <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
                          <select class="form-control" id="space_location" required name="space_location" >
                              <option value="" selected></option>
                            <option value="Mlimani City" id="Option" >Mlimani City</option>
@@ -178,8 +196,8 @@
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="space_location"  ><strong>Sub location</strong></label>
-                         <input type="text"  class="form-control" id="" name="space_sub_location" value=""  autocomplete="off">
+                         <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                         <input type="text"  class="form-control" id="" name="space_sub_location" value="" required autocomplete="off">
                        </div>
                      </div>
                      <br>
@@ -187,7 +205,7 @@
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                         <label for=""  ><strong>Size (SQM)</strong></label>
                          <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value=""  autocomplete="off">
                        </div>
                      </div>
@@ -196,7 +214,7 @@
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="has_water_bill"  ><strong>Need to also pay Water bill</strong></label>
+                         <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
                          <select class="form-control" id="has_water_bill" required name="has_water_bill" >
                            <option value="" selected></option>
                            <option value="No" id="Option" >No</option>
@@ -209,7 +227,7 @@
 
                      <div class="form-group">
                        <div class="form-wrapper">
-                         <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
+                         <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
                          <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
                            <option value="" selected></option>
                            <option value="No" id="Option" >No</option>
@@ -306,11 +324,10 @@
           <th scope="col"  style="color:#3490dc;"><center>Location</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Sub Location</center></th>
           <th scope="col"  style="color:#3490dc;"><center>Size (SQM)</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Has Water bill</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Has Electricity bill</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>
+
+{{--          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>--}}
           <th scope="col"  style="color:#3490dc;"><center>Status</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Comments</center></th>
+
           <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
         </tr>
         </thead>
@@ -334,18 +351,17 @@
 
               </center></td>
 
-            <td><center>{{$var->has_water_bill_space}}</center></td>
-            <td><center>{{$var->has_electricity_bill_space}}</center></td>
 
-            <td><center>
 
-                @if($var->rent_price_guide_from==null)
-                  N/A
-                @else
-                  {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}
-                @endif
+{{--            <td><center>--}}
 
-                </center></td>
+{{--                @if($var->rent_price_guide_from==null)--}}
+{{--                  N/A--}}
+{{--                @else--}}
+{{--                  {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}--}}
+{{--                @endif--}}
+
+{{--                </center></td>--}}
 
               <td><center>
                       @if($var->occupation_status==1)
@@ -356,14 +372,112 @@
 
 
                       </center></td>
-              <td><center>{{$var->comments}}</center></td>
-            <td>
+
+            <td><center>
+            <a title="View more information" class="link_style" data-toggle="modal" data-target="#space_id{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer; display: inline-block" aria-pressed="true"><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+              <div class="modal fade" id="space_id{{$var->id}}" role="dialog">
+
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <b><h5 class="modal-title">Full Space Details</h5></b>
+
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                      <table style="width: 100%">
+                        <tr>
+                          <td>Space number:</td>
+                          <td>{{$var->space_id}}</td>
+                        </tr>
+
+                        <tr>
+                          <td>Major industry :</td>
+                          <td>{{$var->major_industry}}</td>
+                        </tr>
+
+                        <tr>
+                          <td>Minor industry :</td>
+                          <td>{{$var->minor_industry}}</td>
+                        </tr>
+
+                        <tr>
+                          <td>Location:</td>
+                          <td>{{$var->location}}</td>
+                        </tr>
+
+                        <tr>
+                          <td>Sub location:</td>
+                          <td>{{$var->sub_location}}</td>
+                        </tr>
+
+                        <tr>
+                          <td>Size (SQM):</td>
+                          <td>{{$var->size}}</td>
+                        </tr>
+
+                        <tr>
+                          <td>Rent price guide:</td>
+                          <td>
+
+                            @if($var->rent_price_guide_from==null)
+                              N/A
+                            @else
+                              {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}
+                            @endif
+
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>Status:</td>
+                          <td>
+
+                            @if($var->occupation_status==1)
+                              Occupied
+                            @else
+                              Vacant
+                            @endif
+
+                            </td>
+                        </tr>
 
 
-              <a data-toggle="modal" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
-              <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" aria-hidden="true"></i></a>
-                <a data-toggle="modal" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
-                <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
+                        <tr>
+                          <td>Required to also pay electricity bill:</td>
+                          <td>{{$var->has_electricity_bill_space}}</td>
+                        </tr>
+
+                        <tr>
+                          <td>Required to also pay water bill:</td>
+                          <td>{{$var->has_water_bill_space}}</td>
+                        </tr>
+
+                        <tr>
+                          <td>Comments:</td>
+                          <td>{{$var->comments}}</td>
+                        </tr>
+
+
+
+
+                      </table>
+                      <br>
+                      <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                @else
+                <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+                <a data-toggle="modal" title="Delete space" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+              @endif
+
+              <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
 
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -380,7 +494,7 @@
 
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="major_industry"  ><strong>Major industry</strong></label>
+                              <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
                                 <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
 
                             </div>
@@ -390,7 +504,7 @@
 
                             <div id="descriptionDivEdit"  class="form-group">
                               <div class="form-wrapper">
-                                <label for=""  ><strong>Minor industry</strong></label>
+                                <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
                                 <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
                               </div>
                             </div>
@@ -399,7 +513,7 @@
 
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="" ><strong>Space Number</strong></label>
+                              <label for="" ><strong>Space Number <span style="color: red;"> *</span></strong></label>
                               <input type="text" class="form-control" id="" name="space_id" value="{{$var->space_id}}" readonly Required autocomplete="off">
                             </div>
                           </div>
@@ -409,7 +523,7 @@
 
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="space_location"  ><strong>Location</strong></label>
+                              <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
                                 <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
                             </div>
                           </div>
@@ -418,7 +532,7 @@
 
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="space_location"  ><strong>Sub location</strong></label>
+                              <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
                               <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
                             </div>
                           </div>
@@ -427,7 +541,7 @@
 
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="has_water_bill"  ><strong>Need to also pay Water bill</strong></label>
+                              <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
                               <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
                             </div>
                           </div>
@@ -436,7 +550,7 @@
 
                           <div class="form-group">
                             <div class="form-wrapper">
-                              <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
+                              <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
                               <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
                             </div>
                           </div>
@@ -574,7 +688,7 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <b><h5 class="modal-title">Are you sure you want to delete the space with space id {{$var->space_id}}?</h5></b>
+                        <b><h5 class="modal-title">Are you sure you want to delete the space with space number {{$var->space_id}}?</h5></b>
 
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                       </div>
@@ -600,7 +714,7 @@
                 </div>
 
 
-
+              </center>
             </td>
           </tr>
         @endforeach

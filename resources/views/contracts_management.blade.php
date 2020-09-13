@@ -55,16 +55,31 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
-<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 
@@ -87,9 +102,47 @@
             </div>
 
             <div class="tab">
-                <button class="tablinksOuter" onclick="openContractType(event, 'space_contracts')"  id="defaultContract"><strong>SPACE CONTRACTS</strong></button>
-                <button class="tablinksOuter" onclick="openContractType(event, 'insurance_contracts')"><strong>INSURANCE CONTRACTS</strong></button>
-                <button class="tablinksOuter" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>CAR RENTAL CONTRACTS</strong></button>
+                <?php
+                $space_agents=DB::table('general_settings')->where('category','Space')->orwhere('category','All')->get();
+
+                ?>
+
+
+                <?php
+                $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
+
+                ?>
+
+                <?php
+                $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
+
+                ?>
+
+                @foreach($space_agents as $space_agent)
+                    @if(Auth::user()->role!=$space_agent->user_roles)
+                        @else
+                <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate Contracts</strong></button>
+                        @endif
+                    @endforeach
+
+                    @foreach($insurance_agents as $insurance_agent)
+                        @if(Auth::user()->role!=$insurance_agent->user_roles)
+                        @else
+                        <button class="tablinksOuter insurance_identity" onclick="openContractType(event, 'insurance_contracts')"><strong>Insurance Contracts</strong></button>
+
+                        @endif
+                    @endforeach
+
+                    @foreach($car_agents as $car_agent)
+                        @if(Auth::user()->role!=$car_agent->user_roles)
+                        @else
+                            <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental Contracts</strong></button>
+
+                        @endif
+                    @endforeach
+
+
+
             </div>
 
 
@@ -98,16 +151,17 @@
 
             <div id="space_contracts" class="tabcontentOuter">
                 <br>
-                <h4 style="text-align: center">REAL ESTATE CONTRACTS</h4>
+                <h4 style="text-align: center">Real Estate Contracts</h4>
 
 
-
+                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                @else
         <a href="/space_contract_form" class="btn button_color active" style="    background-color: lightgrey;
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true" title="Add new Space Contract"><i  class="fa fa-plus" aria-hidden="true"></i></a>
-
+                @endif
 
 
       <table class="hover table table-striped table-bordered" id="myTable">
@@ -280,7 +334,7 @@
                         @endif
                     </center></td>
             <td><center>
-                    <a  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',$var->contract_id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                    <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',$var->contract_id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
 
 
 
@@ -288,8 +342,12 @@
 
 
                     @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
-                    <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
-                        <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @else
+                        <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                        <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                        @endif
+
                     @else
                     @endif
 
@@ -322,12 +380,16 @@
                     </div>
 
                     @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
-
 {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
-                        <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:36px;"></i></center></a>
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI')
                         @else
+                        <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+                        @endif
 
+                        @else
                     @endif
+
+
               </center>
             </td>
           </tr>
@@ -347,16 +409,17 @@
 
             <div id="insurance_contracts" class="tabcontentOuter">
                 <br>
-                <h4 style="text-align: center">INSURANCE CONTRACTS</h4>
+                <h4 style="text-align: center">Insurance Contracts</h4>
 
 
-
+                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                @else
                 <a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="     background-color: lightgrey;
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
-
+                @endif
 
                 <div class="">
 
@@ -402,8 +465,12 @@
                                 <td><center>{{$var->commission}}</center></td>
                                 <td><center>{{$var->receipt_no}}</center></td>
                                 <td><center>
-                                        <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
-                                        <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+
+                                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                        @else
+                                        <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                                        <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                        @endif
 
                                         <div class="modal fade" id="terminate{{$var->id}}" role="dialog">
 
@@ -449,7 +516,7 @@
 
             <div id="car_contracts" class="tabcontentOuter">
                 <br>
-                <h4 style="text-align: center">CAR RENTAL CONTRACTS</h4>
+                <h4 style="text-align: center">Car Rental Contracts</h4>
                 <br>
                 @if(Auth::user()->role=='CPTU staff')
   <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
@@ -948,7 +1015,7 @@
 
 
 
-            
+
 
 
 
@@ -993,8 +1060,71 @@
             document.getElementById(evtName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-        document.getElementById("defaultOpen").click();
+
     </script>
+
+
+<script type="text/javascript">
+    window.onload=function(){
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            $space_status=0;
+            $insurance_status=0;
+            $car_status=0;
+
+            if ($category=='Real Estate only' OR $category=='All') {
+                $space_status=1;
+            }
+            else{
+
+            }
+
+            if ($category=='CPTU only' OR $category=='All') {
+                $car_status=1;
+            }
+            else{
+
+            }
+
+            if ($category=='Insurance only' OR $category=='All') {
+                $insurance_status=1;
+            }
+            else{
+
+            }
+
+            ?>
+
+        var space_x={!! json_encode($space_status) !!};
+        var insurance_x={!! json_encode($insurance_status) !!};
+        var car_x={!! json_encode($car_status) !!};
+
+        if(space_x==1){
+
+            $(".insurance_identity").removeClass("defaultContract");
+            $(".car_identity").removeClass("defaultContract");
+            $('.space_identity').addClass('defaultContract');
+
+
+        }else if(insurance_x==1){
+            $(".space_identity").removeClass("defaultContract");
+            $(".car_identity").removeClass("defaultContract");
+            $('.insurance_identity').addClass('defaultContract');
+
+        }else if(car_x==1){
+            $(".space_identity").removeClass("defaultContract");
+            $(".insurance_identity").removeClass("defaultContract");
+            $('.car_identity').addClass('defaultContract');
+
+        }else{
+
+        }
+
+
+        document.querySelector('.defaultContract').click();
+
+    };
+</script>
 
 
     <script type="text/javascript">
@@ -1018,8 +1148,14 @@
             document.getElementById(evtName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-        document.getElementById("defaultContract").click();
+
+
+
+
+
     </script>
+
+
 
 
 

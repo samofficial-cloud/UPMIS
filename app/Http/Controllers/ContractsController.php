@@ -31,7 +31,7 @@ class ContractsController extends Controller
 //        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
         $insurance_contracts=DB::table('insurance_contracts')->where('contract_status',1)->where('expiry_status',1)->get();
 
-        if(Auth::user()->role=='CPTU staff'){
+        if(Auth::user()->role=='Director DPDI'){
         $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','0')->orderBy('id','dsc')->get();
         $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','0')->orderBy('id','dsc')->get();
         $closed=carContract::where('form_completion','1')->orderBy('id','dsc')->get();
@@ -650,6 +650,17 @@ class ContractsController extends Controller
         return redirect('/contracts_management')
             ->with('success', 'Contract created successfully');
     }
+
+
+    public function OnFlyInsuranceContractForm(Request $request,$id)
+    {
+
+        $insurance_data=DB::table('insurance')->where('status',1)->get();
+        return view('insurance_contract_form_onfly')->with('insurance_data',$insurance_data);
+
+
+    }
+
 
 
     public function EditInsuranceContractForm(Request $request,$id)

@@ -130,16 +130,31 @@ $year=$current-3;
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
-<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -388,7 +403,7 @@ $year=$current-3;
 
                  <div class="col-3 form-check form-check-inline">
                    <input class="form-check-input" type="checkbox" name="contract_filter" id="contract_filter" value="">
-                  <label for="contract_filter" class="form-check-label">Contract Status</label> 
+                  <label for="contract_filter" class="form-check-label">Contract Status</label>
                 </div>
 
                 <div class="col-3 form-check form-check-inline">
@@ -455,7 +470,7 @@ $year=$current-3;
                   <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="space_rent" value="rent" checked="">
                   <label for="space_rent" class="form-check-label">Space Rent</label>
-                
+
                  </div>
 
                  <div class="col-3 form-check form-check-inline">
@@ -575,7 +590,7 @@ $year=$current-3;
              <span id="modelmsg"></span>
             <select class="form-control" required="" id="model" name="model" required="">
               <option value=""disabled selected hidden>Select Vehicle Model</option>
-              @foreach($model as $model) 
+              @foreach($model as $model)
               <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
               @endforeach
             </select>
@@ -683,7 +698,7 @@ $year=$current-3;
                   <input class="form-check-input" type="checkbox" name="client_filter" id="client_filter" value="">
                 </label>
                  </div> --}}
-                 
+
 
                  <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="Con_client_filter" id="Con_client_filter" value="">
@@ -723,7 +738,7 @@ $year=$current-3;
             <input type="text" id="Con_clientname" name="Con_clientname" class="form-control" autocomplete="off">
             <span id="ConnameList"></span>
           </div>
-        </div> 
+        </div>
 
         <div class="form-group" id="Conpaymentstatusdiv" style="display: none;">
           <div class="form-wrapper">
@@ -767,7 +782,7 @@ $year=$current-3;
               @endfor
             </select>
         </div>
-    </div> 
+    </div>
 
     <div class="form-group" id="invoicetypediv" style="display: none;">
           <div class="form-wrapper">
@@ -842,12 +857,12 @@ $year=$current-3;
                   <input class="form-check-input" type="checkbox" name="In_year_filter" id="In_year_filter" value="">
                   <label for="In_year_filter" class="form-check-label">Year</label>
                 </div>
-             
+
                </div>
              </div>
            </div>
 
-           
+
 
          <div class="form-group" id="In_clientnamediv" style="display: none;">
           <div class="form-wrapper">
@@ -856,7 +871,7 @@ $year=$current-3;
             <input type="text" id="In_clientname" name="In_clientname" class="form-control" autocomplete="off">
             <span id="nameListClient"></span>
           </div>
-        </div> 
+        </div>
 
         <div class="form-group" id="Inpaymentstatusdiv" style="display: none;">
           <div class="form-wrapper">
@@ -881,7 +896,7 @@ $year=$current-3;
               @endfor
             </select>
         </div>
-    </div> 
+    </div>
 
 
   </div>
@@ -1485,7 +1500,7 @@ $year=$current-3;
          $('#InSpaceCriteriadiv').hide();
       }
       }
-      
+
        });
 
 
@@ -1519,7 +1534,7 @@ $year=$current-3;
     }
     });
 
-        
+
           $('#In_clientname').keyup(function(e){
     //e.preventDefault();
     var queryy=$('#Inbusiness_type').val();
@@ -1572,7 +1587,7 @@ $year=$current-3;
    $('#Con_clientname').keyup(function(e){
     //e.preventDefault();
     var query = $(this).val();
-    var queryy=$('#contractbusiness_type').val();     
+    var queryy=$('#contractbusiness_type').val();
         if(query != ''){
          var _token = $('input[name="_token"]').val();
          $.ajax({
@@ -1839,7 +1854,7 @@ $year=$current-3;
     }
     });
 
-   
+
 
 
 var a;
@@ -1940,9 +1955,9 @@ $("#t_invoice_payment_filter").click(function(){
     }
     });
 
-$('#vehicle_reg').keyup(function(e){ 
+$('#vehicle_reg').keyup(function(e){
         console.log(4);
-        
+
         e.preventDefault();
         var query = $(this).val();
         if(query != ''){
@@ -1959,8 +1974,8 @@ $('#vehicle_reg').keyup(function(e){
             else{
               az ='1';
               //$('#message2').hide();
-              $('#vehicle_reg').attr('style','border:1px solid #ced4da'); 
-              $('#nameList').fadeIn();  
+              $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+              $('#nameList').fadeIn();
               $('#nameList').html(data);
           }
         }
@@ -1978,14 +1993,14 @@ $(document).on('click', '#list', function(){
    //$('#message2').hide();
   $('#vehicle_reg').attr('style','border:1px solid #ced4da');
 
-        $('#vehicle_reg').val($(this).text());      
+        $('#vehicle_reg').val($(this).text());
         $('#nameList').fadeOut();
-   
+
     });
 
    $(document).on('click', 'form', function(){
-     $('#nameList').fadeOut();  
-    }); 
+     $('#nameList').fadeOut();
+    });
 
 $("#car_type").click(function(){
     var query= $(this).val();
@@ -2067,7 +2082,7 @@ $("#carmodel_filter").click(function(){
     else{
     $('#carmodel_filter').val('');
      $('#carmodeldiv').hide();
-      $('#model').val(""); 
+      $('#model').val("");
     }
     });
 
@@ -2828,13 +2843,13 @@ $("#rentstatus_filter").click(function(){
           var message=document.getElementById('vehicleregmsg');
            message.style.color='red';
            message.innerHTML="This Vehicle does not exists";
-           $('#vehicle_reg').attr('style','border-bottom:1px solid #f00'); 
+           $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
         }
         if(reg==""){
           var message=document.getElementById('vehicleregmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#vehicle_reg').attr('style','border-bottom:1px solid #f00'); 
+           $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
         }
         if(az=='1' && reg!=""){
           $('#vehicleregmsg').hide();
@@ -2876,7 +2891,7 @@ $("#rentstatus_filter").click(function(){
         else{
           p25=1;
         }
-       
+
 
         if($('#carstatus_filter').is(":checked")){
           var query26=$('#vehicle_status').val();
@@ -2897,7 +2912,7 @@ $("#rentstatus_filter").click(function(){
         else{
           p26=1;
         }
-        
+
         if($('#carrange_filter').is(":checked")){
           var query27=$('#carmin_price').val();
           var query28=$('#carmax_price').val();
@@ -3008,7 +3023,7 @@ $("#rentstatus_filter").click(function(){
             }
         });
           }
-        
+
       }
       else{
             p18=1;

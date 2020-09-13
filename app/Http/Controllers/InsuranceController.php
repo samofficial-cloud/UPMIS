@@ -34,8 +34,22 @@ class InsuranceController extends Controller
     public function addinsurance(Request $request)
     {
 
+        if(DB::table('insurance')->where('class',$request->get('class'))->where('insurance_company',$request->get('insurance_company'))->where('insurance_type',$request->get('insurance_type'))->where('billing',$request->get('billing'))->exists()){
+
+
+            return redirect()->back()->with("error","Insurance package already exists. Please try again ");
+
+        }
+
+
+        if ($request->get('price')<=$request->get('commission')) {
+
+            return redirect()->back()->with("error","Commission cannot be greater than price. Please try again");
+        }
+
+
         DB::table('insurance')->insert(
-            ['class' => $request->get('class'),'insurance_company' => $request->get('insurance_company'),'insurance_type' => $request->get('insurance_type'), 'price' => $request->get('price'), 'commission' => $request->get('commission')]
+            ['class' => $request->get('class'),'insurance_company' => $request->get('insurance_company'),'insurance_type' => $request->get('insurance_type'), 'price' => $request->get('price'), 'commission' => $request->get('commission'),'commission_percentage'=>$request->get('commission_percentage'),'insurance_currency' => $request->get('insurance_currency'),'billing' => $request->get('billing')]
         );
 
 
@@ -46,6 +60,10 @@ class InsuranceController extends Controller
     public function editInsurance(Request $request,$id)
     {
 
+        if ($request->get('price')<=$request->get('commission')) {
+
+            return redirect()->back()->with("error","Commission cannot be greater than price. Please try again");
+        }
 
         DB::table('insurance')
             ->where('id', $id)
@@ -71,7 +89,17 @@ class InsuranceController extends Controller
             ->where('id', $id)
             ->update(['commission' => $request->get('commission')]);
 
+        DB::table('insurance')
+            ->where('id', $id)
+            ->update(['commission_percentage' => $request->get('commission_percentage')]);
 
+        DB::table('insurance')
+            ->where('id', $id)
+            ->update(['insurance_currency' => $request->get('insurance_currency')]);
+
+        DB::table('insurance')
+            ->where('id', $id)
+            ->update(['billing' => $request->get('billing')]);
 
 
 
@@ -91,6 +119,37 @@ class InsuranceController extends Controller
         return redirect('/insurance')
             ->with('success', 'Insurance deactivated successfully');
     }
+
+
+
+    public function generateTypes(Request $request)
+    {
+
+        $insurance_types= DB::table('insurance')->where('insurance_company',$request->get(' insurance_company'))->where('class',$request->get(' insurance_class'))->get();
+        $output='';
+
+
+        $tempOut = array();
+        foreach ($insurance_types as $values) {
+            $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+            $val = (iterator_to_array($iterator, true));
+            $tempoIn = $val['insurance_type'];
+
+            if (!in_array($tempoIn, $tempOut)) {
+                $output .= '<option value="'.$val['insurance_type'].'">'.$val['insurance_type'].'</option>';
+                array_push($tempOut, $tempoIn);
+            }
+
+        }
+
+
+        echo $request->get(' insurance_company');
+
+
+
+
+    }
+
 
 
     public function autoCompleteinsuranceId(Request $request)

@@ -11,10 +11,10 @@ div.dataTables_length label {
     font-weight: normal;
     text-align: left;
     white-space: nowrap;
-    display: inline-block;  
+    display: inline-block;
 }
 
-div.dataTables_length select { 
+div.dataTables_length select {
   height:25px;
   width:10px;
   font-size: 70%;
@@ -22,9 +22,9 @@ div.dataTables_length select {
 table.dataTable {
 font-family: "Nunito", sans-serif;
     font-size: 15px;
-    
 
-    
+
+
   }
   table.dataTable.no-footer {
     border-bottom: 0px solid #111;
@@ -65,11 +65,23 @@ $i=1;
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <div class="dropdown">
   <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -84,7 +96,10 @@ $i=1;
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
     </div>
 <div class="main_content">
   <br>
@@ -105,7 +120,7 @@ $i=1;
       </div>
     @endif
 
-   
+
 <br>
 <br>
 

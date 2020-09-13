@@ -243,7 +243,7 @@ select.list-dt:focus {
 @endsection
 
 @section('content')
-<?php 
+<?php
 $today=date('Y-m-d');
 ?>
 <!-- MultiStep Form -->
@@ -251,11 +251,23 @@ $today=date('Y-m-d');
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <div class="dropdown">
   <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -270,7 +282,10 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-        </ul> 
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
     </div>
 <div class="main_content">
 <div class="container-fluid" id="grad1">
@@ -278,7 +293,7 @@ $today=date('Y-m-d');
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2><strong>Renting Space Contract Information</strong></h2>
-                <p>Fill all form field with (*) to go to the next step</p>
+                <p>Fill all form fields with (*) to go to the next step</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
 
@@ -288,7 +303,7 @@ $today=date('Y-m-d');
                             <ul id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>
                                 <li  id="account"><strong>Renting Space</strong></li>
-                                <li id="payment"><strong>Payment</strong></li>    
+                                <li id="payment"><strong>Payment</strong></li>
                             </ul>
                              <!-- fieldsets -->
                             <fieldset>
@@ -311,53 +326,55 @@ $today=date('Y-m-d');
                 @endif
 
             </select>
-        
+
         </div>
     </div>
 
         <div class="form-group row" id="namediv" style="display: none;">
 						<div class="form-wrapper col-6">
-							<label for="first_name">First Name*</label>
+							<label for="first_name">First Name <span style="color: red;"> *</span></label>
                             <span id="name1msg"></span>
-							<input type="text" id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" required id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
-							<label for="last_name">Last Name*</label>
+							<label for="last_name">Last Name <span style="color: red;"> *</span></label>
                             <span id="name2msg"></span>
-							<input type="text" id="last_name" value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="last_name" required value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
 					<div class="form-group" id="companydiv" style="display: none;">
 					<div class="form-wrapper">
-						<label for="company_name">Company Name*</label>
+						<label for="company_name">Company Name <span style="color: red;"> *</span></label>
                         <span id="cnamemsg"></span>
-						<input type="text" id="company_name" name="company_name" value="{{$var->first_name}}" class="form-control">
+						<input type="text" id="company_name" required name="company_name" value="{{$var->first_name}}" class="form-control">
 					</div>
 				</div>
 
     <div class="form-group">
 					<div class="form-wrapper">
-						<label for="email">Email</label>
-						<input type="text" name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+						<label for="email">Email <span style="color: red;"> *</span></label>
+						<input type="text" required name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
-						<label for="phone_number">Phone Number</label>
-						<input type="text" id="phone_number" name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+						<label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
+                        <span id="phone_msg"></span>
+                        <input type="text" id="phone_number" required name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="form-wrapper">
-						<label for="address">Address</label>
-						<input type="text" id="address" name="address" value="{{$var->address}}" class="form-control">
+						<label for="address">Address <span style="color: red;"> *</span></label>
+						<input type="text" required id="address" name="address" value="{{$var->address}}" class="form-control">
 					</div>
 				</div>
-                                </div> 
+                                </div>
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
+                                    <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>
                             {{-- Second Form --}}
                             <fieldset>
@@ -411,12 +428,12 @@ $today=date('Y-m-d');
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
-                                            <label for="has_water_bill"  ><strong>Need to also pay Water bill</strong></label>
+                                            <label for="has_water_bill"  ><strong>Required to also pay Water bill</strong></label>
                                             <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
                                         </div>
 
                                         <div class="form-wrapper col-6">
-                                            <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
+                                            <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill</strong></label>
                                             <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
                                         </div>
                                     </div>
@@ -425,9 +442,10 @@ $today=date('Y-m-d');
 
 
 
-                                </div> 
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
+                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>
                             {{-- Third Form --}}
                             <fieldset>
@@ -438,17 +456,17 @@ $today=date('Y-m-d');
 
                                     <div class="form-group row">
                                         <div class="form-wrapper col-12">
-                                            <label for="start_date">Start Date *</label>
-                                            <input type="date" id="start_date" name="start_date" value="{{$var->start_date}}" class="form-control" required="" min="{{$var->start_date}}">
+                                            <label for="start_date">Start Date <span style="color: red;"> *</span></label>
+                                            <input type="date" id="start_date"  name="start_date" value="{{$var->start_date}}" class="form-control" required="" min="{{$var->start_date}}">
                                         </div>
 
                                         <div class="form-wrapper col-6">
-                                            <label for="duration">Duration *</label>
-                                            <input type="number"  min="1" max="50" id="duration" name="duration" value="{{$var->duration}}" class="form-control" required="" >
+                                            <label for="duration">Duration <span style="color: red;"> *</span></label>
+                                            <input type="number"  min="1" max="50"  id="duration" name="duration" value="{{$var->duration}}" class="form-control" required="" >
                                         </div>
 
                                         <div class="form-wrapper col-6">
-                                            <label for="currency">Period *</label>
+                                            <label for="currency">Period <span style="color: red;"> *</span></label>
                                             <select id="currency" class="form-control" name="duration_period"  required>
                                                @if($var->duration_period=="Months")
                                                     <option value="Years" >Years</option>
@@ -464,13 +482,13 @@ $today=date('Y-m-d');
 					<div class="form-group row">
 
 					<div class="form-wrapper col-6">
-						<label for="amount">Amount *</label>
+						<label for="amount">Amount <span style="color: red;"> *</span></label>
 						<input type="number" min="0" id="amount" name="amount" value="{{$var->amount}}" class="form-control" required="">
 					</div>
 
                         <div class="form-wrapper col-6">
-                            <label for="currency">Currency</label>
-                            <select id="currency" class="form-control" name="currency" >
+                            <label for="currency">Currency <span style="color: red;"> *</span></label>
+                            <select id="currency" class="form-control" name="currency" required>
 
                                 @if($var->currency=="TZS")
                                     <option value="USD" >USD</option>
@@ -491,8 +509,8 @@ $today=date('Y-m-d');
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
-                                            <label for="payment_cycle">Payment cycle</label>
-                                            <select id="payment_cycle" class="form-control" name="payment_cycle" >
+                                            <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
+                                            <select id="payment_cycle" class="form-control" name="payment_cycle" required>
                                                 <?php
                                                 $payment_cycles=DB::table('payment_cycle_settings')->get();
                                                 ?>
@@ -512,7 +530,7 @@ $today=date('Y-m-d');
                                         </div>
 
                                         <div class="form-wrapper col-6">
-                                            <label for="escalation_rate">Escalation Rate</label>
+                                            <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                             <input type="text" id="escalation_rate" name="escalation_rate" value="{{$var->escalation_rate}}" class="form-control" required>
                                         </div>
 
@@ -521,9 +539,10 @@ $today=date('Y-m-d');
 
 
                                     @endforeach
-                                </div> 
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
+                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                             </fieldset>
                         </form>
                     </div>
@@ -544,119 +563,140 @@ $today=date('Y-m-d');
         };
     </script>
 
-<script type="text/javascript">
-$(document).ready(function(){
+    <script type="text/javascript">
+        $(document).ready(function(){
 
-var current_fs, next_fs, previous_fs; //fieldsets
-var opacity;
-var p1, p2;
-$("#next1").click(function(){
-current_fs = $(this).parent();
-next_fs = $(this).parent().next();
-    var clientType=$("#client_type").val(),
-        firstName=$("#first_name").val(),
-        lastName=$("#last_name").val(),
-        companyName=$("#company_name").val();
+            var current_fs, next_fs, previous_fs; //fieldsets
+            var opacity;
+            var p1, p2;
+            $("#next1").click(function(){
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
+                var clientType=$("#client_type").val(),
+                    firstName=$("#first_name").val(),
+                    lastName=$("#last_name").val(),
+                    companyName=$("#company_name").val();
 
-        if(clientType=="1"){
-            $('#ctypemsg').hide();
-            $('#client_type').attr('style','border: 1px solid #ccc');
-            if(firstName==""){
-                p1=0;
-             $('#name1msg').show();
-             var message=document.getElementById('name1msg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#first_name').attr('style','border-bottom:1px solid #f00');
-            }
-            else{
-                p1=1;
-                $('#name1msg').hide();
-                $('#first_name').attr('style','border-bottom: 1px solid #ccc');
-                
-            }
+                if(clientType=="1"){
+                    $('#ctypemsg').hide();
+                    $('#client_type').attr('style','border: 1px solid #ccc');
+                    if(firstName==""){
+                        p1=0;
+                        $('#name1msg').show();
+                        var message=document.getElementById('name1msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#first_name').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+                        p1=1;
+                        $('#name1msg').hide();
+                        $('#first_name').attr('style','border-bottom: 1px solid #ccc');
 
-            if(lastName==""){
-                p2=0;
-                $('#name2msg').show();
-             var message=document.getElementById('name2msg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#last_name').attr('style','border-bottom:1px solid #f00');
-            }
+                    }
 
-            else{
-                p2=1;
-                $('#name2msg').hide();
-                $('#last_name').attr('style','border-bottom: 1px solid #ccc');
-                
-            }
-            if(p1=='1' & p2=='1'){
+                    if(lastName==""){
+                        p2=0;
+                        $('#name2msg').show();
+                        var message=document.getElementById('name2msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#last_name').attr('style','border-bottom:1px solid #f00');
+                    }
+
+                    else{
+                        p2=1;
+                        $('#name2msg').hide();
+                        $('#last_name').attr('style','border-bottom: 1px solid #ccc');
+
+                    }
+
+
+                }
+
+                else if(clientType=="2"){
+                    $('#ctypemsg').hide();
+                    $('#client_type').attr('style','border: 1px solid #ccc');
+                    if(companyName==""){
+                        $('#cnamemsg').show();
+                        var message=document.getElementById('cnamemsg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#company_name').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+                        p1=1;
+                        p2=1;
+                        $('#cnamemsg').hide();
+                        $('#company_name').attr('style','border-bottom: 1px solid #ccc');
+
+                    }
+                }
+
+                else{
+                    $('#ctypemsg').show();
+                    var message=document.getElementById('ctypemsg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#client_type').attr('style','border:1px solid #f00');
+
+
+                }
+                var phone_digits=$('#phone_number').val().length;
+
+                if(phone_digits<10) {
+                    p2=0;
+                    $('#phone_msg').show();
+                    var message = document.getElementById('phone_msg');
+                    message.style.color = 'red';
+                    message.innerHTML = "Digits cannot be less than 10";
+                    $('#phone_number').attr('style', 'border-bottom:1px solid #f00');
+
+                }else{
+                    $('#phone_msg').hide();
+                    $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
+                }
+
+
+                if(p1=='1' & p2=='1'){
+                    gonext();
+                }
+
+
+
+            });
+
+            $("#next2").click(function(){
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
                 gonext();
-            }
 
-        }
+            });
 
-        else if(clientType=="2"){
-            $('#ctypemsg').hide();
-            $('#client_type').attr('style','border: 1px solid #ccc');
-            if(companyName==""){
-             $('#cnamemsg').show();
-             var message=document.getElementById('cnamemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#company_name').attr('style','border-bottom:1px solid #f00');
-            }
-            else{
-             $('#cnamemsg').hide();
-             $('#company_name').attr('style','border-bottom: 1px solid #ccc');
-             gonext();
-            }
-            }
-        
-        else{
-             $('#ctypemsg').show();
-             var message=document.getElementById('ctypemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#client_type').attr('style','border:1px solid #f00');
-
-            
-        }
-
-});
-
-$("#next2").click(function(){
-    current_fs = $(this).parent();
-    next_fs = $(this).parent().next();
-    gonext();
-
-  });  
-
-function gonext(){
-    console.log(3);
+            function gonext(){
+                console.log(3);
 
 
 //Add Class Active
-$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 
 //show the next fieldset
-next_fs.show();
+                next_fs.show();
 //hide the current fieldset with style
-current_fs.animate({opacity: 0}, {
-step: function(now) {
+                current_fs.animate({opacity: 0}, {
+                    step: function(now) {
 // for making fielset appear animation
-opacity = 1 - now;
+                        opacity = 1 - now;
 
-current_fs.css({
-'display': 'none',
-'position': 'relative'
-});
-next_fs.css({'opacity': opacity});
-},
-duration: 600
-});
-}
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        next_fs.css({'opacity': opacity});
+                    },
+                    duration: 600
+                });
+            }
 
 // $(".next").click(function(){
 
@@ -684,40 +724,40 @@ duration: 600
 // });
 // });
 
-$(".previous").click(function(){
+            $(".previous").click(function(){
 
-current_fs = $(this).parent();
-previous_fs = $(this).parent().prev();
+                current_fs = $(this).parent();
+                previous_fs = $(this).parent().prev();
 
 //Remove class active
-$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
 //show the previous fieldset
-previous_fs.show();
+                previous_fs.show();
 
 //hide the current fieldset with style
-current_fs.animate({opacity: 0}, {
-step: function(now) {
+                current_fs.animate({opacity: 0}, {
+                    step: function(now) {
 // for making fielset appear animation
-opacity = 1 - now;
+                        opacity = 1 - now;
 
-current_fs.css({
-'display': 'none',
-'position': 'relative'
-});
-previous_fs.css({'opacity': opacity});
-},
-duration: 600
-});
-});
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        previous_fs.css({'opacity': opacity});
+                    },
+                    duration: 600
+                });
+            });
 
-$(".submit").click(function(){
-	console.log(2);
-return true;
-})
+            $(".submit").click(function(){
+                console.log(2);
+                return true;
+            })
 
-});
-</script>
+        });
+    </script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -727,12 +767,32 @@ return true;
         $('#namediv').show();
         $('#companydiv').hide();
         $('#company_name').val("");
+           var ele4 = document.getElementById("company_name");
+           ele4.required = false;
+
+           var ele5 = document.getElementById("first_name");
+           ele5.required = true;
+
+           var ele6 = document.getElementById("last_name");
+           ele6.required = true;
+
+
        }
        else if(query=='2'){
         $('#companydiv').show();
         $('#namediv').hide();
         $('#first_name').val("");
         $('#last_name').val("");
+           var ele4 = document.getElementById("company_name");
+           ele4.required = true;
+
+           var ele5 = document.getElementById("first_name");
+           ele5.required = false;
+
+           var ele6 = document.getElementById("last_name");
+           ele6.required = false;
+
+
        }
        else{
         $('#namediv').hide();
