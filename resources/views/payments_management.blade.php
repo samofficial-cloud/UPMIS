@@ -55,15 +55,27 @@
         <div class="sidebar">
             <ul style="list-style-type:none;">
 
-                <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+                <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
+            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
-                <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-                <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-                <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+                @if($category=='Real Estate only' OR $category=='All')
+            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+                @if($category=='Insurance only' OR $category=='All')
+            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+                @if($category=='CPTU only' OR $category=='All')
+            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
                 <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
                 <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
                 <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
-            <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
+            <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
                 <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
             <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
@@ -98,19 +110,59 @@
 
 
                     <div class="tab">
+                        <?php
+                        $space_agents=DB::table('general_settings')->where('category','Space')->orwhere('category','All')->get();
 
-                        <button class="tablinks" onclick="openInvoices(event, 'space_payments')" id="defaultOpen"><strong>Real Estate</strong></button>
-                        <button class="tablinks" onclick="openInvoices(event, 'car_rental_payments')"><strong>Car Rental</strong></button>
-                        <button class="tablinks" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
-                        <button class="tablinks" onclick="openInvoices(event, 'water_payments')"><strong>Water Bills</strong></button>
-                        <button class="tablinks" onclick="openInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
+                        ?>
+
+
+                        <?php
+                        $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
+
+                        ?>
+
+                        <?php
+                        $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
+
+                        ?>
+
+
+
+                            @foreach($space_agents as $space_agent)
+                                @if(Auth::user()->role!=$space_agent->user_roles)
+                                @else
+                        <button class="tablinks space_identity" onclick="openInvoices(event, 'space_payments')" ><strong>Real Estate</strong></button>
+                                @endif
+                            @endforeach
+
+                            @foreach($car_agents as $car_agent)
+                                @if(Auth::user()->role!=$car_agent->user_roles)
+                                @else
+                        <button class="tablinks car_identity" onclick="openInvoices(event, 'car_rental_payments')"><strong>Car Rental</strong></button>
+                                @endif
+                            @endforeach
+
+                            @foreach($insurance_agents as $insurance_agent)
+                                @if(Auth::user()->role!=$insurance_agent->user_roles)
+                                @else
+                        <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
+                                @endif
+                            @endforeach
+
+                            @foreach($space_agents as $space_agent)
+                                @if(Auth::user()->role!=$space_agent->user_roles)
+                                @else
+                        <button class="tablinks bills" onclick="openInvoices(event, 'water_payments')"><strong>Water Bills</strong></button>
+                        <button class="tablinks bills" onclick="openInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
+                                @endif
+                            @endforeach
 
                     </div>
 
 
                     <div id="space_payments" class="tabcontent">
                         <br>
-                        <h5>1. Real Estate Payments</h5>
+                        <h5>Real Estate Payments</h5>
                         <br>
 
                         @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
@@ -385,7 +437,7 @@
 
                     <div id="car_rental_payments" class="tabcontent">
                         <br>
-                        <h5>2. Car Rental Payments</h5>
+                        <h5>Car Rental Payments</h5>
                         <br>
 
                         @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
@@ -656,7 +708,7 @@
 
                     <div id="insurance_payments" class="tabcontent">
                         <br>
-                        <h5>3. Insurance Payments</h5>
+                        <h5>Insurance Payments</h5>
                         <br>
                         @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
                         @else
@@ -926,7 +978,7 @@
 
                     <div id="water_payments" class="tabcontent">
                         <br>
-                        <h5>4. Water Bill Payments</h5>
+                        <h5>Water Bill Payments</h5>
                         <br>
 
                         @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
@@ -1217,7 +1269,7 @@
 
                     <div id="electricity_payments" class="tabcontent">
                         <br>
-                        <h5>5. Electricity Bill Payments</h5>
+                        <h5>Electricity Bill Payments</h5>
                         <br>
 
                         @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
@@ -1518,6 +1570,70 @@
 @endsection
 
 @section('pagescript')
+    <script type="text/javascript">
+        window.onload=function(){
+                <?php
+                $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+                $space_status=0;
+                $insurance_status=0;
+                $car_status=0;
+
+                if ($category=='Real Estate only' OR $category=='All') {
+                    $space_status=1;
+                }
+                else{
+
+                }
+
+                if ($category=='CPTU only' OR $category=='All') {
+                    $car_status=1;
+                }
+                else{
+
+                }
+
+                if ($category=='Insurance only' OR $category=='All') {
+                    $insurance_status=1;
+                }
+                else{
+
+                }
+
+                ?>
+
+            var space_x={!! json_encode($space_status) !!};
+            var insurance_x={!! json_encode($insurance_status) !!};
+            var car_x={!! json_encode($car_status) !!};
+
+            if(space_x==1){
+
+                $(".insurance_identity").removeClass("defaultPayment");
+                $(".car_identity").removeClass("defaultPayment");
+                $('.space_identity').addClass('defaultPayment');
+
+
+            }else if(insurance_x==1){
+                $(".space_identity").removeClass("defaultPayment");
+                $(".car_identity").removeClass("defaultPayment");
+                $('.insurance_identity').addClass('defaultPayment');
+
+            }else if(car_x==1){
+                $(".space_identity").removeClass("defaultPayment");
+                $(".insurance_identity").removeClass("defaultPayment");
+                $('.car_identity').addClass('defaultPayment');
+
+            }else{
+
+            }
+
+            console.log(space_x);
+
+            document.querySelector('.defaultPayment').click();
+
+        };
+    </script>
+
+
 
     <script type="text/javascript">
         function openInvoices(evt, evtName) {
@@ -1541,7 +1657,7 @@
             document.getElementById(evtName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-        document.getElementById("defaultOpen").click();
+
     </script>
 
 

@@ -65,11 +65,23 @@ $i=1;
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <div class="dropdown">
   <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

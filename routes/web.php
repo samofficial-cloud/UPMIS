@@ -177,10 +177,16 @@ Route::post('/uploadfile','UploadFileController@showUploadFile');
 Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/system_settings', 'SystemSettingsController@index');
     Route::get('/user_role_management', 'SystemSettingsController@userRoleManagement')->name('user_role_management');
+    Route::get('/role_management', 'SystemSettingsController@roleManagement')->name('role_management');
     Route::get('/deactivate_user/{id}', 'SystemSettingsController@deactivateUser')->name('deactivate_user');
     Route::get('/activate_user/{id}', 'SystemSettingsController@activateUser')->name('activate_user');
     Route::post('/edit_user/{id}', 'SystemSettingsController@editUser')->name('edit_user');
     Route::post('/add_user', 'SystemSettingsController@addUser')->name('add_user');
+
+    Route::post('/edit_role/{id}', 'SystemSettingsController@editRole')->name('edit_role');
+    Route::post('/add_role', 'SystemSettingsController@addRole')->name('add_role');
+    Route::get('/delete_role/{id}', 'SystemSettingsController@deleteRole')->name('delete_role');
+
 
 });
 
@@ -269,6 +275,14 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::post('/create_insurance_invoice_manually', 'InvoicesController@CreateInsuranceInvoiceManually')->name('create_insurance_invoice_manually');
 
 
+
+
+
+
+});
+
+
+Route::group(['middleware' => ['auth', 'car']], function() {
 
 
 

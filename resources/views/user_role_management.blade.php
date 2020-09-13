@@ -61,16 +61,28 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
             <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
@@ -104,8 +116,13 @@
 
 
 <br>
+            <a style="cursor: pointer;" data-toggle="modal" title="Add new user" data-target="#add_user"  role="button" aria-pressed="true" name="editC"><div style="float:left; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;"><i class="fas fa-user-plus " style="font-size:20px; color: black;     "></i>
+</div></a>
+            <a style="cursor: pointer; color: black !important; font-weight: bold; text-decoration: none;" href="/role_management"> <div style="float:right;      background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Role management
+            </div>
+            </a>
 
-          <a style="cursor: pointer;" data-toggle="modal" title="Add new user" data-target="#add_user"  role="button" aria-pressed="true" name="editC"> <i class="fas fa-user-plus " style="font-size:20px; color: black;     background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;"></i></a>
+            <div style="clear: both;"></div>
 
           <div class="modal fade" id="add_user" role="dialog">
 
@@ -167,7 +184,7 @@
                     <div class="form-group">
                       <div class="form-wrapper">
                         <label for="space_location"  ><strong>Role <span style="color: red;"> *</span></strong></label>
-                        <select required class="form-control" name="role" >
+                        <select required class="form-control" name="role" onchange="SelectCheck(this)" >
                           <?php
                           $roles=DB::table('general_settings')->get();
                           ?>
@@ -185,6 +202,26 @@
                     <br>
 
 
+                      <div id="cost_centreDiv" class="form-group" style="display: none;">
+                          <div class="form-wrapper">
+                              <label for="cost_centre"  ><strong>Cost Centre <span style="color: red;"> *</span></strong></label>
+                              <select id="cost_centre_id"  class="form-control" name="cost_centre">
+                                  <?php
+                                  $cost_centres=DB::table('cost_centres')->get();
+                                  ?>
+                                  <option value=""></option>
+                                  @foreach($cost_centres as $cost_centre )
+
+
+                                      <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}</option>
+
+
+                                  @endforeach
+                              </select>
+                          </div>
+                      </div>
+                      <br>
+
 
                     <div align="right">
                       <button class="btn btn-primary" type="submit" onsubmit="check_phone();">Submit</button>
@@ -201,7 +238,8 @@
           </div>
 
         <div style="margin-top: 2%;">
-
+            <?php $i=1;
+            ?>
             <table class="hover table table-striped table-bordered" id="myTable">
 
 
@@ -213,6 +251,7 @@
                 <th scope="col"  style="color:#3490dc;">Email</th>
                 <th scope="col"  style="color:#3490dc;">Phone</th>
                 <th scope="col"  style="color:#3490dc;">Role</th>
+                <th scope="col"  style="color:#3490dc;">Cost Centre</th>
                 <th scope="col"  style="color:#3490dc;">Status</th>
                 <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
 
@@ -224,12 +263,13 @@
               @foreach($users as $var)
                 <tr>
 
-                  <td class="counterCell text-center"></td>
+                  <td class=" text-center">{{$i}}</td>
                   <td>{{$var->name}}</td>
                   <td>{{$var->user_name}}</td>
                   <td>{{$var->email}}</td>
                   <td>{{$var->phone_number}}</td>
                   <td>{{$var->role}}</td>
+                  <td><center>{{$var->cost_centre}}</center></td>
 
                   <td>  @if($var->status==0)
                        <p style="background-color: #b9b8b8; color:white; border-radius: 4px; text-align: center;">DISABLED</p>
@@ -316,16 +356,16 @@
 
 
 
-
+                                @if($var->cost_centre!='N/A')
                               <div class="form-group">
                                 <div class="form-wrapper">
                                   <label for="space_location"  ><strong>Role <span style="color: red;"> *</span></strong></label>
-                                  <select required class="form-control" name="role" >
+                                  <select required class="form-control" name="role"  onchange="SelectCheckEdit(this,{{$var->id}})" >
                                     <?php
                                     $roles=DB::table('general_settings')->get();
                                     ?>
                                       <option value="{{$var->role}}" selected >{{$var->role}}</option>
-@foreach($roles as $role )
+@foreach($roles as $role)
 
                                     @if($role->user_roles!=$var->role)
                                     <option value="{{$role->user_roles}}" >{{$role->user_roles}}</option>
@@ -337,6 +377,78 @@
                                 </div>
                               </div>
                               <br>
+                                @else
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="space_location"  ><strong>Role <span style="color: red;"> *</span></strong></label>
+                                            <select required class="form-control" name="role"  onchange="SelectCheckEditHidden(this,{{$var->id}})">
+                                                <?php
+                                                $roles=DB::table('general_settings')->get();
+                                                ?>
+                                                <option value="{{$var->role}}" selected>{{$var->role}}</option>
+                                                @foreach($roles as $role)
+
+                                                    @if($role->user_roles!=$var->role)
+                                                        <option value="{{$role->user_roles}}" >{{$role->user_roles}}</option>
+
+                                                    @else
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                @endif
+
+
+
+                                @if($var->cost_centre!='N/A')
+                                <div id="cost_centreDivEdit{{$var->id}}" class="form-group" >
+                                    <div class="form-wrapper">
+                                        <label for="cost_centre"  ><strong>Cost Centre <span style="color: red;"> *</span></strong></label>
+                                        <select id="cost_centre_idEdit{{$var->id}}"  class="form-control" name="cost_centre">
+                                            <?php
+                                            $cost_centres=DB::table('cost_centres')->get();
+                                            ?>
+                                            <option value="{{$var->cost_centre}}" selected>{{$var->cost_centre}}</option>
+                                            @foreach($cost_centres as $cost_centre )
+
+                                                @if($cost_centre->costcentre_id!=$var->cost_centre)
+                                                <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}</option>
+                                                    @else
+                                                    @endif
+
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                @else
+
+
+                                    <div id="cost_centreDivEditHidden{{$var->id}}" class="form-group" style="display: none;">
+                                        <div class="form-wrapper">
+                                            <label for="cost_centre"  ><strong>Cost Centre <span style="color: red;"> *</span></strong></label>
+                                            <select id="cost_centre_idEditHidden{{$var->id}}"  class="form-control" name="cost_centre">
+                                                <?php
+                                                $cost_centres=DB::table('cost_centres')->get();
+                                                ?>
+                                                <option value=""></option>
+                                                @foreach($cost_centres as $cost_centre )
+
+
+                                                    <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}</option>
+
+
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+
+
+                                    @endif
+
 
 
 
@@ -423,6 +535,7 @@
                     </center>
                   </td>
                 </tr>
+                <?php $i=$i+1;?>
               @endforeach
 
 
@@ -443,7 +556,121 @@
 @section('pagescript')
 <script>
 
-  function check_phone{
+    function SelectCheck(nameSelect) {
+
+        if (nameSelect.value =='Vote Holder') {
+            document.getElementById("cost_centreDiv").style.display = "block";
+            document.getElementById("cost_centre_id").disabled=false;
+            var ele7 = document.getElementById("cost_centre_id");
+
+
+            ele7.required = true;
+
+        }else if(nameSelect.value =='Accountant'){
+
+            document.getElementById("cost_centreDiv").style.display = "block";
+            document.getElementById("cost_centre_id").disabled=false;
+            var ele7 = document.getElementById("cost_centre_id");
+
+
+            ele7.required = true;
+
+        }
+        else{
+            var ele7 = document.getElementById("cost_centre_id");
+            ele7.required = false;
+            document.getElementById("cost_centre_id").disabled=true;
+            document.getElementById("cost_centreDiv").style.display = "none";
+        }
+
+    }
+
+
+    function SelectCheckEdit(nameSelect,id) {
+console.log('edit function called');
+        if (nameSelect.value =='Vote Holder') {
+            document.getElementById("cost_centreDivEdit"+id).style.display = "block";
+
+            document.getElementById("cost_centre_idEdit"+id).disabled=false;
+            var ele7 = document.getElementById("cost_centre_idEdit"+id);
+            ele7.required = true;
+
+            var ele8 = document.getElementById("cost_centre_idEditHidden"+id);
+            ele8.required = true;
+            document.getElementById("cost_centreDivEditHidden"+id).style.display = "block";
+            document.getElementById("cost_centre_idEditHidden"+id).disabled=false;
+
+
+
+            console.log('vote holder called');
+
+        }else if(nameSelect.value =='Accountant'){
+
+            document.getElementById("cost_centreDivEdit"+id).style.display = "block";
+
+            document.getElementById("cost_centre_idEdit"+id).disabled=false;
+            var ele7 = document.getElementById("cost_centre_idEdit"+id);
+            ele7.required = true;
+
+            var ele8 = document.getElementById("cost_centre_idEditHidden"+id);
+            ele8.required = true;
+            document.getElementById("cost_centreDivEditHidden"+id).style.display = "block";
+            document.getElementById("cost_centre_idEditHidden"+id).disabled=false;
+
+
+        }
+        else{
+            var ele7 = document.getElementById("cost_centre_idEdit"+id);
+            ele7.required = false;
+            document.getElementById("cost_centre_idEdit"+id).disabled=true;
+            document.getElementById("cost_centreDivEdit"+id).style.display = "none";
+
+            var ele9 = document.getElementById("cost_centre_idEditHidden"+id);
+            ele9.required = false;
+            document.getElementById("cost_centre_idEditHidden"+id).disabled=true;
+            document.getElementById("cost_centreDivEditHidden"+id).style.display = "none";
+        }
+
+    }
+
+
+
+    function SelectCheckEditHidden(nameSelect,id) {
+        console.log('edit function called');
+        if (nameSelect.value =='Vote Holder') {
+
+
+            var ele8 = document.getElementById("cost_centre_idEditHidden"+id);
+            ele8.required = true;
+            document.getElementById("cost_centreDivEditHidden"+id).style.display = "block";
+            document.getElementById("cost_centre_idEditHidden"+id).disabled=false;
+
+
+
+            console.log('vote holder called');
+
+        }else if(nameSelect.value =='Accountant'){
+
+            var ele8 = document.getElementById("cost_centre_idEditHidden"+id);
+            ele8.required = true;
+            document.getElementById("cost_centreDivEditHidden"+id).style.display = "block";
+            document.getElementById("cost_centre_idEditHidden"+id).disabled=false;
+
+
+        }
+        else{
+
+            var ele9 = document.getElementById("cost_centre_idEditHidden"+id);
+            ele9.required = false;
+            document.getElementById("cost_centre_idEditHidden"+id).disabled=true;
+            document.getElementById("cost_centreDivEditHidden"+id).style.display = "none";
+        }
+
+    }
+
+
+
+  function check_phone(){
 
     var phone_digits=$('#phone_number').val().length;
 

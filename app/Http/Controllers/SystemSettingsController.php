@@ -41,6 +41,12 @@ class SystemSettingsController extends Controller
     }
 
 
+    public function roleManagement()
+    {
+        $roles=DB::table('general_settings')->get();
+        return view('role_management')->with('roles',$roles);
+    }
+
     public function deactivateUser($id)
     {
 
@@ -74,6 +80,13 @@ class SystemSettingsController extends Controller
         $user_name=strtolower($request->get('first_name')[0]).strtolower($request->get('last_name'));
 
 
+        $cost_centre=$request->get('cost_centre');
+if($request->get('cost_centre')=='')
+    {
+        $cost_centre='N/A';
+
+    }
+
 
         DB::table('users')
             ->where('id', $id)
@@ -105,6 +118,9 @@ class SystemSettingsController extends Controller
             ->where('id', $id)
             ->update(['role' => $request->get('role')]);
 
+        DB::table('users')
+            ->where('id', $id)
+            ->update(['cost_centre' => $cost_centre]);
 
 
 
@@ -139,6 +155,7 @@ class SystemSettingsController extends Controller
             'email' => $request->get('email'),
             'phone_number' => $request->get('phone_number'),
             'role' => $request->get('role'),
+            'cost_centre' => $request->get('cost_centre'),
             'password' => Hash::make($default_password)
 
         ]);
@@ -149,6 +166,67 @@ class SystemSettingsController extends Controller
             ->with('success', 'User added successfully');
     }
 
+
+
+
+    public function addRole(Request $request)
+    {
+
+
+        if(DB::table('general_settings')->where('user_roles',$request->get('user_roles'))->exists()){
+
+
+            return redirect()->back()->with("error","Role already exists, please try again");
+
+        }
+
+
+
+        DB::table('general_settings')->insert([
+
+            'user_roles' => $request->get('user_roles'),
+            'category' => $request->get('category'),
+
+        ]);
+
+
+
+        return redirect('/role_management')
+            ->with('success', 'Role added successfully');
+    }
+
+
+
+    public function editRole(Request $request,$id)
+    {
+
+
+        DB::table('general_settings')
+            ->where('id', $id)
+            ->update(['user_roles' => $request->get('user_roles')]);
+
+
+        DB::table('general_settings')
+            ->where('id', $id)
+            ->update(['category' => $request->get('category')]);
+
+
+        return redirect('/role_management')
+            ->with('success', 'Role information edited successfully');
+    }
+
+
+    public function deleteRole($id)
+    {
+
+
+        DB::table('general_settings')
+            ->where('id', $id)->delete();
+
+
+        return redirect('/role_management')
+            ->with('success', 'Role deleted successfully');
+    }
 
 
 
