@@ -92,6 +92,20 @@ class ContractsController extends Controller
         }
       }
 
+      else{
+         $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','1')->orderBy('id','dsc')->get();
+        $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','1')->orderBy('id','dsc')->get();
+        $closed=carContract::where('form_completion','1')->orderBy('id','dsc')->get();
+        foreach ($inbox as $msg) {
+            # code...
+             DB::table('notifications')
+                ->where('contract_id', $msg->id)
+                ->update(['flag' => '0']);
+
+        }
+
+      }
+
         return view('contracts_management')->with('space_contracts',$space_contracts)->with('insurance_contracts',$insurance_contracts)->with('outbox',$outbox)->with('inbox',$inbox)->with('closed',$closed);
 
     }

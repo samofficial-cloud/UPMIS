@@ -22,7 +22,17 @@ Route::post('/login/custom', [
 
     Route::group(['middleware' => 'auth'], function(){
 
-    Route::get('/', 'HomeController@index')->name('home');
+
+    Route::get('/', 'ChartController@index')->name('home');
+    Route::get('/Space', 'SpaceController@index');
+    Route::get('/space_contract_on_fly/{id}/', 'ContractsController@OnFlySpaceContractForm')->name('space_contract_on_fly');
+
+
+
+    Route::get('/space_id_suggestions', 'SpaceController@spaceIdSuggestions')->name('space_id_suggestions');
+    Route::get('/autocomplete.space_fields', 'SpaceController@autoCompleteSpaceFields')->name('autocomplete.space_fields');
+    Route::get('/space_contract_form', 'ContractsController@SpaceContractForm');
+
     Route::get('/contracts_management', 'ContractsController@ContractsManagement')->name('contracts_management');
 
         Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
@@ -169,6 +179,28 @@ Route::get('/car/available_cars', function () {
 
 Route::get('/uploadfile','UploadFileController@index');
 Route::post('/uploadfile','UploadFileController@showUploadFile');
+
+Route::get('/login2', function () {
+        return View('login2');
+    });
+
+Route::get('/edit_profile','HomeController@editprofile');
+
+Route::get('/edit_profile_details','HomeController@editprofiledetails');
+
+Route::get('/view_profile','HomeController@viewprofile');
+
+Route::get('/change_password','HomeController@changepassword');
+
+Route::get('/system_chats','systemChatController@index')->name('chatindex');
+
+Route::post('/system_chats/send','systemChatController@sendMessage')->name('sendchat');
+
+Route::post('/change_password_details','HomeController@changepassworddetails')->name('changepassword_details');
+
+Route::get('/system_chats/view/{name}','systemChatController@viewchat')->name('viewchat');
+
+//Route::get('chart', 'ChartController@index');
 
 });
 
