@@ -12,6 +12,9 @@ use App\space_contract;
 use App\insurance_contract;
 use App\insurance;
 use App\space;
+Use App\User;
+use Hash;
+use Auth;
 
 
 class HomeController extends Controller
@@ -44,6 +47,61 @@ class HomeController extends Controller
     public function spacereport1(){
          
          return view('reports');
+    }
+
+    public function editprofile(){
+         
+         return view('edit_profile');
+    }
+
+    public function viewprofile(){
+         
+         return view('view_profile');
+    }
+
+    public function changepassword(){
+         
+         return view('change_password');
+    }
+
+    
+
+     public function editprofiledetails(Request $request){
+
+    $users = User::where('id',$request->get('user_id'))->first();
+    $users->email = $request->get('email');
+    $users->phone_number = $request->get('phoneNumber');
+    $users->save();
+    return redirect()->back()
+                    ->with('success', 'Profile Details Updated Successfully');
+    }
+
+    public function changepassworddetails(Request $request){
+
+        if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
+            // The passwords matches
+            return redirect()->back()->with("error","Your current password does not matches with the password you provided. Please try again.");
+        }
+
+        if(strcmp($request->get('current-password'), $request->get('new-password')) == 0){
+            //Current password and new password are same
+            return redirect()->back()->with("error","New Password cannot be same as your current password. Please choose a different password.");
+        }
+
+        else{
+           $validatedData = $request->validate([
+            'current-password' => 'required',
+            'new-password' => 'required|string|min:6|confirmed',
+        ]);
+
+        //Change Password
+        $user = Auth::user();
+        $user->password = bcrypt($request->get('new-password'));
+        $user->save();
+
+        return redirect()->back()->with("success","Password changed successfully !");
+        }
+
     }
 
     public function spacereport1PDF(){

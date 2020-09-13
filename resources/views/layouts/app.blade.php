@@ -10,13 +10,14 @@
    <!--  <title>{{ config('app.name', 'Laravel') }}</title> -->
    <title> @yield('title')</title>
 
-   <link rel="icon" type="image.jpg" href="{{ asset('img/logo_udsm.jpg') }}"></link>
+   <link rel="icon" type="image.jpg" href="{{ asset('images/logo_udsm.jpg') }}"></link>
 
     <!-- Scripts -->
  <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
  <script src="{{ asset('js/app.js') }}" ></script>
  <script src="{{ asset('js/tablesorter.js') }}" defer></script>
  <script src="{{ asset('js/jquery.filter_input.js') }}" ></script>
+ <script src="{{ asset('js/Chart.min.js') }}" ></script>
 
 <script src="{{ asset('js/jquery.dataTables.min.js') }}" ></script>
 <script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
@@ -40,6 +41,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/free.min.css') }}" rel="stylesheet">
 
      @yield('style')
 </head>
@@ -48,17 +50,18 @@
     <div id="app">
         <nav class="navbar navbar-expand-sm navbar-dark color_navbar navbar-laravel" style="width: 100%">
             <div class="container" style="max-width: 1534px;">
-                <a class="navbar-brand" href="{{ url('/') }}">
+               
                     {{-- {{ config('app.name', 'Laravel') }} --}}
                     <div class="d-flex flex-row">
                      <div class="pl-2">
-                      <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" />
+                         <a class="navbar-brand" href="{{ url('/') }}">
+                      <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
                     </div>
-                    <div class="pl-3 pt-3" style="color: #111;"><h2 style="font-size: 2vw">UDSM PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
+                    <div class="pl-3 pt-3" style="color: #111;"><h2 style="font-size: 2vw">UDSM's PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
 
                     </div>
                 </div>
-                </a>
+                
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -72,7 +75,10 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+                       
                         <?php
+
+                        $chats=DB::table('system_chats')->where('receiver',Auth::user()->name)->where('flag','1')->count('id');
 
                         $insurance_invoice_notifications_count_total=0;
                         $car_invoice_notifications_count_total=0;
@@ -115,6 +121,9 @@
                         $total_invoice_notifications=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
 
                         ?>
+
+                         <a class="nav-link " href="/system_chats?id=" role="button"><i class='fas fa-comment-dots' style='font-size:26px;color:#282727'></i> <span class="badge badge-danger">{{$chats}}</span>
+                        </a>
 
 
                         @if(Auth::user()->invoice_notification_flag==1)
@@ -277,9 +286,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/profile">View Profile</a>
-                                    <a class="dropdown-item" href="/edit">Edit Profile</a>
-                                    <a class="dropdown-item" href="/Password">Change Password</a>
+                                    <a class="dropdown-item" href="/view_profile">Profile Details</a>
+                                    {{-- <a class="dropdown-item" href="/edit">Edit Profile</a> --}}
+                                    <a class="dropdown-item" href="/change_password">Change Password</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
