@@ -29,12 +29,16 @@ class SpaceMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $space_agents=DB::table('general_settings')->where('category','Space')->orwhere('category','All')->get();
-foreach ($space_agents as $space_agent){
-        if ($this->auth->getUser()->role !=$space_agent->user_roles) {
-            abort(403, 'Unauthorized action.');
+        $category=DB::table('general_settings')->where('user_roles',$this->auth->getUser()->role)->value('category');
+
+
+        if ($category=='Real Estate only' OR $category=='All') {
+
         }
-}
+        else{
+            abort(403, 'Unauthorized action');
+        }
+
         return $next($request);
     }
 }

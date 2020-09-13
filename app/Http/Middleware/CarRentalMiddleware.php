@@ -29,11 +29,14 @@ class CarRentalMiddleware
     {
 
 
-        $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
-        foreach ($car_agents as $car_agent){
-            if ($this->auth->getUser()->role !=$car_agent->user_roles) {
-                abort(403, 'Unauthorized action.');
-            }
+        $category=DB::table('general_settings')->where('user_roles',$this->auth->getUser()->role)->value('category');
+
+
+        if ($category=='CPTU only' OR $category=='All') {
+
+        }
+        else{
+            abort(403, 'Unauthorized action');
         }
 
         return $next($request);

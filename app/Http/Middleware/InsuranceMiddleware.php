@@ -29,11 +29,14 @@ class InsuranceMiddleware
     public function handle($request, Closure $next)
     {
 
-        $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
-        foreach ($insurance_agents as $insurance_agent){
-            if ($this->auth->getUser()->role !=$insurance_agent->user_roles) {
-                abort(403, 'Unauthorized action.');
-            }
+        $category=DB::table('general_settings')->where('user_roles',$this->auth->getUser()->role)->value('category');
+
+
+        if ($category=='Insurance only' OR $category=='All') {
+
+        }
+        else{
+            abort(403, 'Unauthorized action');
         }
 
         return $next($request);

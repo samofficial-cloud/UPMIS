@@ -55,15 +55,27 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if($category=='CPTU only' OR $category=='All')
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
+    @else
+    @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
-<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
             <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
@@ -1055,34 +1067,31 @@
 <script type="text/javascript">
     window.onload=function(){
             <?php
-            $space_agents=DB::table('general_settings')->where('category','Space')->orwhere('category','All')->get();
-            $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
-            $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             $space_status=0;
             $insurance_status=0;
             $car_status=0;
 
-            foreach ($space_agents as $space_agent){
-                if (Auth::user()->role==$space_agent->user_roles) {
-                    $space_status=1;
-                }
+            if ($category=='Real Estate only' OR $category=='All') {
+                $space_status=1;
+            }
+            else{
 
             }
 
-            foreach ($car_agents as $car_agent){
-                if (Auth::user()->role==$car_agent->user_roles) {
-                    $car_status=1;
-                }
+            if ($category=='CPTU only' OR $category=='All') {
+                $car_status=1;
+            }
+            else{
 
             }
 
-            foreach ($insurance_agents as $insurance_agent){
-                if (Auth::user()->role==$insurance_agent->user_roles) {
-                    $insurance_status=1;
-                }
+            if ($category=='Insurance only' OR $category=='All') {
+                $insurance_status=1;
+            }
+            else{
 
             }
-
 
             ?>
 
