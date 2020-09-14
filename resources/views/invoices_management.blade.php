@@ -110,54 +110,34 @@
 
 
                 <div class="tab">
-                    <?php
-                    $space_agents=DB::table('general_settings')->where('category','Space')->orwhere('category','All')->get();
-
-                    ?>
-
-
-                    <?php
-                    $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
-
-                    ?>
-
-                    <?php
-                    $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
-
-                    ?>
 
 
 
-                        @foreach($space_agents as $space_agent)
-                            @if(Auth::user()->role!=$space_agent->user_roles)
-                            @else
-                                <button class="tablinks space_identity" onclick="openInvoices(event, 'space_invoices')" ><strong>Real Estate</strong></button>
-                            @endif
-                        @endforeach
 
-                        @foreach($insurance_agents as $insurance_agent)
-                            @if(Auth::user()->role!=$insurance_agent->user_roles)
-                            @else
-                                <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_invoices')"><strong>Insurance</strong></button>
+                        @if ($category=='Real Estate only' OR $category=='All')
+                            <button class="tablinks space_identity" onclick="openInvoices(event, 'space_invoices')" ><strong>Real Estate</strong></button>
+                        @else
+                        @endif
 
-                            @endif
-                        @endforeach
 
-                        @foreach($car_agents as $car_agent)
-                            @if(Auth::user()->role!=$car_agent->user_roles)
-                            @else
-                                <button class="tablinks car_identity" onclick="openInvoices(event, 'car_invoices')"><strong>Car Rental</strong></button>
+                        @if($category=='Insurance only' OR $category=='All')
+                            <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_invoices')"><strong>Insurance</strong></button>
 
-                            @endif
-                        @endforeach
+                        @else
+                        @endif
 
-                        @foreach($space_agents as $space_agent)
-                            @if(Auth::user()->role!=$space_agent->user_roles)
-                            @else
-                                <button class="tablinks bills" onclick="openInvoices(event, 'water_invoices')"><strong>Water Bills</strong></button>
-                                <button class="tablinks bills" onclick="openInvoices(event, 'electricity_invoices')"><strong>Electricity Bills</strong></button>
-                            @endif
-                        @endforeach
+
+                        @if ($category=='CPTU only' OR $category=='All')
+                            <button class="tablinks car_identity" onclick="openInvoices(event, 'car_invoices')"><strong>Car Rental</strong></button>
+                        @else
+                        @endif
+
+
+                        @if ($category=='Real Estate only' OR $category=='All')
+                            <button class="tablinks bills" onclick="openInvoices(event, 'water_invoices')"><strong>Water Bills</strong></button>
+                            <button class="tablinks bills" onclick="openInvoices(event, 'electricity_invoices')"><strong>Electricity Bills</strong></button>
+                        @else
+                        @endif
 
 
 
@@ -3067,32 +3047,41 @@
 
                 ?>
 
+
+
             var space_x={!! json_encode($space_status) !!};
             var insurance_x={!! json_encode($insurance_status) !!};
             var car_x={!! json_encode($car_status) !!};
+
+            console.log('space'+space_x);
+            console.log('insurance'+insurance_x);
+            console.log('car'+car_x);
 
             if(space_x==1){
 
                 $(".insurance_identity").removeClass("defaultInvoice");
                 $(".car_identity").removeClass("defaultInvoice");
                 $('.space_identity').addClass('defaultInvoice');
-
+                console.log('insuracne executed');
 
             }else if(insurance_x==1){
                 $(".space_identity").removeClass("defaultInvoice");
                 $(".car_identity").removeClass("defaultInvoice");
                 $('.insurance_identity').addClass('defaultInvoice');
+                console.log('insuracne executed');
 
             }else if(car_x==1){
                 $(".space_identity").removeClass("defaultInvoice");
                 $(".insurance_identity").removeClass("defaultInvoice");
                 $('.car_identity').addClass('defaultInvoice');
+                console.log('car executed');
+
 
             }else{
 
             }
 
-console.log(space_x);
+
 
             document.querySelector('.defaultInvoice').click();
 
