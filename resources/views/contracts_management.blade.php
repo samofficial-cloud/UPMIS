@@ -102,44 +102,36 @@
             </div>
 
             <div class="tab">
-                <?php
-                $space_agents=DB::table('general_settings')->where('category','Space')->orwhere('category','All')->get();
-
-                ?>
 
 
-                <?php
-                $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
-
-                ?>
-
-                <?php
-                $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
-                $CPTU=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
 
 
-                ?>
+                    @if ($category=='Real Estate only' OR $category=='All')
+                        <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate Contracts</strong></button>
 
-                @foreach($space_agents as $space_agent)
-                    @if(Auth::user()->role!=$space_agent->user_roles)
-                        @else
-                <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate Contracts</strong></button>
-                        @endif
-                    @endforeach
 
-                    @foreach($insurance_agents as $insurance_agent)
-                        @if(Auth::user()->role!=$insurance_agent->user_roles)
-                        @else
-                        <button class="tablinksOuter insurance_identity" onclick="openContractType(event, 'insurance_contracts')"><strong>Insurance Contracts</strong></button>
+                
 
-                        @endif
-                    @endforeach
 
-                    @if(($CPTU=='CPTU only')||($CPTU=='All'))
-                        <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental Contracts</strong></button>
-                        @else
+                    @else
                     @endif
-                    
+
+
+
+
+                        @if($category=='Insurance only' OR $category=='All')
+                            <button class="tablinksOuter insurance_identity" onclick="openContractType(event, 'insurance_contracts')"><strong>Insurance Contracts</strong></button>
+
+                        @else
+                        @endif
+
+
+
+                        @if ($category=='CPTU only' OR $category=='All')
+                            <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental Contracts</strong></button>
+                        @else
+                        @endif
+
 
 
 

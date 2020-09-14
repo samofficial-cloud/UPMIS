@@ -110,52 +110,31 @@
 
 
                     <div class="tab">
-                        <?php
-                        $space_agents=DB::table('general_settings')->where('category','Space')->orwhere('category','All')->get();
 
-                        ?>
-
-
-                        <?php
-                        $insurance_agents=DB::table('general_settings')->where('category','Insurance')->orwhere('category','All')->get();
-
-                        ?>
-
-                        <?php
-                        $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
-
-                        ?>
+                            @if ($category=='Real Estate only' OR $category=='All')
+                                <button class="tablinks space_identity" onclick="openInvoices(event, 'space_payments')" ><strong>Real Estate</strong></button>
+                            @else
+                            @endif
 
 
+                            @if ($category=='CPTU only' OR $category=='All')
+                                <button class="tablinks car_identity" onclick="openInvoices(event, 'car_rental_payments')"><strong>Car Rental</strong></button>
+                            @else
+                            @endif
 
-                            @foreach($space_agents as $space_agent)
-                                @if(Auth::user()->role!=$space_agent->user_roles)
-                                @else
-                        <button class="tablinks space_identity" onclick="openInvoices(event, 'space_payments')" ><strong>Real Estate</strong></button>
-                                @endif
-                            @endforeach
 
-                            @foreach($car_agents as $car_agent)
-                                @if(Auth::user()->role!=$car_agent->user_roles)
-                                @else
-                        <button class="tablinks car_identity" onclick="openInvoices(event, 'car_rental_payments')"><strong>Car Rental</strong></button>
-                                @endif
-                            @endforeach
+                            @if($category=='Insurance only' OR $category=='All')
+                                <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
+                            @else
+                            @endif
 
-                            @foreach($insurance_agents as $insurance_agent)
-                                @if(Auth::user()->role!=$insurance_agent->user_roles)
-                                @else
-                        <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
-                                @endif
-                            @endforeach
 
-                            @foreach($space_agents as $space_agent)
-                                @if(Auth::user()->role!=$space_agent->user_roles)
-                                @else
-                        <button class="tablinks bills" onclick="openInvoices(event, 'water_payments')"><strong>Water Bills</strong></button>
-                        <button class="tablinks bills" onclick="openInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
-                                @endif
-                            @endforeach
+                            @if ($category=='Real Estate only' OR $category=='All')
+                                <button class="tablinks bills" onclick="openInvoices(event, 'water_payments')"><strong>Water Bills</strong></button>
+                                <button class="tablinks bills" onclick="openInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
+                            @else
+                            @endif
+
 
                     </div>
 
@@ -1626,7 +1605,7 @@
 
             }
 
-            console.log(space_x);
+
 
             document.querySelector('.defaultPayment').click();
 
