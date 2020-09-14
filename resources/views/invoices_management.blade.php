@@ -1112,7 +1112,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" maxlength="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="number" maxlength="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -1726,7 +1726,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" maxlength="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="number" maxlength="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -2405,7 +2405,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" maxlength="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="number" maxlength="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -3081,7 +3081,7 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="text" maxlength="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <input type="number" maxlength="12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
