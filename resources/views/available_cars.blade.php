@@ -25,11 +25,11 @@
 <table class="hover table table-striped table-bordered" id="myTable4">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Vehicle Registration No.</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Vehicle Model</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Vehicle Status</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Hire Rate</center></th>
+      <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+      <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
+      <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
+      <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
+      <th scope="col" style="color:#fff;"><center>Hire Rate</center></th>
     </tr>
   </thead>
   <tbody>

@@ -19,6 +19,13 @@ td{
     background-color: #38c172;
     float: right;
 }
+#content_intro.centered{
+  position: absolute; /* or absolute */
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
 </style>
 @endsection
 
@@ -44,6 +51,10 @@ td{
 <div class="main_content">
     <br>
     <div class="container">
+       <?php
+  $localtime = new DateTime("now", new DateTimeZone('Africa/Dar_es_Salaam'));
+  $time=$localtime->format('H:i');
+  ?>
         <div class="row2">
           <div class="col-3">
 
@@ -96,11 +107,12 @@ td{
         <div class="form-group row">
             <label for="message" class="col-sm-2">Message</label>
             <div class="col-sm-9">
-              <textarea type="text" id="message" name="content" class="form-control" value="" rows="7"></textarea>
+              <textarea type="text" id="message" name="mcontent" class="form-control" value="" rows="7"></textarea>
           </div>
         </div>
         <br>
-        <input type="text" name="sender_name" hidden="" value="{{ Auth::user()->name }}">
+      <input type="text" name="sender_name" hidden="" value="{{ Auth::user()->name }}">
+       <input type="text" name="time" value="{{$time}}" hidden="">
         
 
         <div align="right">
@@ -144,6 +156,14 @@ td{
       <input type="text" name="cid" id="cid" value="{{$_GET['id']}}" hidden="">
       {{-- <div id="loading" style="margin: auto;"></div> --}}
     <div id="content">
+      <div id="content_intro" class="centered card" style="opacity: .4; width: 70%">
+        <div class="card-body">
+      <center><h3 class="card-title"><strong>Welcome to Chat Portal</strong></h3></center>
+     <center><img src="/images/intro-chat.jpg" alt="welcome image" width="42" height="42">
+      <p class="card-text"><strong>Start Conversation</strong></p>
+      </center>
+    </div>
+      </div>
     </div>
          
     </div>
@@ -160,6 +180,7 @@ td{
    $(".chatz").click(function(e){
   e.preventDefault();
      theurl=$(this).attr('href');
+     $('#content_intro').hide();
     $.ajax({
       url: theurl,
       context: document.body
@@ -175,7 +196,7 @@ td{
   var nid = $('#cid').val();
   console.log(nid);
   if(nid!=""){
-
+   $('#content_intro').hide();
     var tablink = document.getElementById(nid).href;
     location.search.split('id=')[1]="3";
        //tablink.click();

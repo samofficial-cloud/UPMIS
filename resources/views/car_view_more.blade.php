@@ -64,10 +64,12 @@ hr {
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+
             @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
             @else
             @endif
+
             @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
     @else
@@ -77,34 +79,10 @@ hr {
     @else
     @endif
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-            <div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <i class="fas fa-file-contract"></i> Contracts
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
-    <a class="dropdown-item" href="/space_contracts_management">Space</a>
-  </div>
-</div>
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-          <div class="dropdown">
-            <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-file-contract"></i> Invoices
-            </li>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="/invoice_management">Space</a>
-              <a class="dropdown-item" href="/car_rental_invoice_management">Car Rental</a>
-              <a class="dropdown-item" href="/insurance_invoice_management">Insurance</a>
-
-              <a class="dropdown-item" href="/water_bills_invoice_management">Water</a>
-              <a class="dropdown-item" href="/electricity_bills_invoice_management">Electricity</a>
-
-            </div>
-          </div>
-
-
-            <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
             <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
@@ -154,6 +132,7 @@ hr {
 			 <div class="card-body">
           <b><h3>Operational Expenditures</h3></b>
           <hr>
+          @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
             <a title="Add Operational Expenditure" data-toggle="modal" data-target="#car_operational" class="btn btn-success btn-sm" style="
     padding: 10px;
     color: #fff;font-size: 16px;
@@ -237,20 +216,23 @@ hr {
                </div>
              </div>
            </div>
+           @endif
            <br><br>
            <table class="hover table table-striped table-bordered" id="myTable">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
-      {{-- <th scope="col" style="color:#3490dc;"><center>Vehicle No.</center></th> --}}
-      <th scope="col" style="color:#3490dc;"><center>LPO No.</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Date Received</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Description of Work</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Service Provider</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Fuel Consumed (litres)</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Amount</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Total</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+      <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+      {{-- <th scope="col" style="color:#fff;"><center>Vehicle No.</center></th> --}}
+      <th scope="col" style="color:#fff;"><center>LPO No.</center></th>
+      <th scope="col" style="color:#fff;"><center>Date Received</center></th>
+      <th scope="col" style="color:#fff;"><center>Description of Work</center></th>
+      <th scope="col" style="color:#fff;"><center>Service Provider</center></th>
+      <th scope="col" style="color:#fff;"><center>Fuel Consumed (litres)</center></th>
+      <th scope="col" style="color:#fff;"><center>Amount</center></th>
+      <th scope="col" style="color:#fff;"><center>Total</center></th>
+      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
+      @endif
     </tr>
   </thead>
   <tbody>
@@ -265,6 +247,7 @@ hr {
         <td>{{$operational->fuel_consumed}}</td>
         <td>{{number_format($operational->amount)}}</td>
         <td>{{number_format($operational->total)}}</td>
+        @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
         <td>
           <a title="Edit Operational Expenditure" data-toggle="modal" data-target="#editops{{$operational->id}}" role="button" aria-pressed="true" id="{{$operational->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
          <div class="modal fade" id="editops{{$operational->id}}" role="dialog">
@@ -374,6 +357,7 @@ hr {
 </div>
 </div>
 </td>
+@endif
 </tr>
 @endforeach
 </tbody>
@@ -385,11 +369,13 @@ hr {
 <div class="card-body">
 <h3>Bookings</h3>
 <hr>
+@if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
 <a title="Book Vehicle" class="btn btn-success btn-sm" style="
     padding: 10px;
     color: #fff;font-size: 16px;
     margin-bottom: 5px;
     margin-top: 4px;" href="{{ route('carRentalForm') }}">New Booking</a>
+    @endif
     <br><br>
     <div class="tab">
             <button class="tablinks" onclick="openbookings(event, 'upcoming')" id="defaultOpen"><strong>Upcoming</strong></button>
@@ -400,13 +386,13 @@ hr {
     <table class="hover table table-striped table-bordered" id="myTable1">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
-     {{--  <th scope="col" style="color:#3490dc;"><center>Vehicle No.</center></th> --}}
-      <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
-       <th scope="col" style="color:#3490dc;"><center>Cost Center</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Trip Start Date</center></th>
-       <th scope="col" style="color:#3490dc;"><center>Trip End Date</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Destination</center></th>
+      <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+     {{--  <th scope="col" style="color:#fff;"><center>Vehicle No.</center></th> --}}
+      <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+       <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
+      <th scope="col" style="color:#fff;"><center>Trip Start Date</center></th>
+       <th scope="col" style="color:#fff;"><center>Trip End Date</center></th>
+      <th scope="col" style="color:#fff;"><center>Destination</center></th>
     </tr>
   </thead>
   <tbody>
@@ -429,13 +415,13 @@ hr {
 <table class="hover table table-striped table-bordered" id="myTable2">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
-      {{-- <th scope="col" style="color:#3490dc;"><center>Vehicle No.</center></th> --}}
-      <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
-       <th scope="col" style="color:#3490dc;"><center>Cost Center</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Trip Start Date</center></th>
-       <th scope="col" style="color:#3490dc;"><center>Trip End Date</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Destination</center></th>
+      <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+      {{-- <th scope="col" style="color:#fff;"><center>Vehicle No.</center></th> --}}
+      <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+       <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
+      <th scope="col" style="color:#fff;"><center>Trip Start Date</center></th>
+       <th scope="col" style="color:#fff;"><center>Trip End Date</center></th>
+      <th scope="col" style="color:#fff;"><center>Destination</center></th>
     </tr>
   </thead>
   <tbody>

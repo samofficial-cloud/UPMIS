@@ -159,17 +159,17 @@
       <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
-          <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Space Number</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Amount</center></th>
+          <th scope="col" style="color:#fff;"><center>S/N</center></th>
+          <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+          <th scope="col" style="color:#fff;"><center>Space Number</center></th>
+          <th scope="col" style="color:#fff;"><center>Amount</center></th>
 
 
-          <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
+          <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+          <th scope="col"  style="color:#fff;"><center>End Date</center></th>
 
-          <th scope="col"  style="color:#3490dc;"><center>Status</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+          <th scope="col"  style="color:#fff;"><center>Status</center></th>
+          <th scope="col"  style="color:#fff;"><center>Action</center></th>
         </tr>
         </thead>
         <tbody>
@@ -420,21 +420,21 @@
                     <table class="hover table table-striped table-bordered" id="myTableInsurance">
                         <thead class="thead-dark">
                         <tr>
-                            <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                            <th scope="col" style="color:#3490dc;"><center>Client Name</center></th>
-                            <th scope="col" style="color:#3490dc;"><center>Vehicle Reg No</center></th>
-                            <th scope="col" style="color:#3490dc;"><center>Vehicle Use</center></th>
-                            <th scope="col" style="color:#3490dc;"><center>Principal</center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Insurance Type</center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Commission Date</center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Sum Insured</center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Premium</center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Actual(Excluding VAT) </center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Currency </center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Commission </center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Receipt No </center></th>
-                            <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                            <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                            <th scope="col" style="color:#fff;"><center>Vehicle Reg No</center></th>
+                            <th scope="col" style="color:#fff;"><center>Vehicle Use</center></th>
+                            <th scope="col" style="color:#fff;"><center>Principal</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Insurance Type</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Commission Date</center></th>
+                            <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Sum Insured</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Premium</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Actual(Excluding VAT) </center></th>
+                            <th scope="col"  style="color:#fff;"><center>Currency </center></th>
+                            <th scope="col"  style="color:#fff;"><center>Commission </center></th>
+                            <th scope="col"  style="color:#fff;"><center>Receipt No </center></th>
+                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -506,12 +506,14 @@
 
             </div>
 
-@if(($category=='CPTU only')||($category=='All'))
+
+ @if ($category=='CPTU only' OR $category=='All')
+
             <div id="car_contracts" class="tabcontentOuter">
                 <br>
                 <h4 style="text-align: center">Car Rental Contracts</h4>
                 <br>
-                @if(Auth::user()->role=='CPTU staff')
+                @if(Auth::user()->role=='Transport Officer-CPTU')
   <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
     padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
   </a>
@@ -589,14 +591,14 @@
    <br>
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
-      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
     </thead>
     <tbody>
       @foreach($closed as $closed)
@@ -685,14 +687,14 @@
    <br>
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
-      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
     </thead>
     <tbody>
       @foreach($closed as $closed)
@@ -703,8 +705,53 @@
         <td><center>{{$closed->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
          <td><center>{{$closed->destination}}</center></td>
-         <td>{{number_format($closed->grand_total)}}</td>
-         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+         <td>TZS {{number_format($closed->grand_total)}}</td>
+         <td><center>
+          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>
+           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
+
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <table style="width: 100%;">
+                                   <tr>
+                                          <td>Client Name:</td>
+                                          <td>{{$closed->debtor_name}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Start Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>End Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Amount:</td>
+                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Payment Status:</td>
+                                          <td>{{$closed->payment_status}}</td>
+                                      </tr>
+                  </table>
+                  <br>
+                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
+                 </div>
+               </div>
+             </div>
+           </div>
+          <a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -781,14 +828,14 @@
    <br>
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
-      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
     </thead>
     <tbody>
       @foreach($closed as $closed)
@@ -799,8 +846,53 @@
         <td><center>{{$closed->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
          <td><center>{{$closed->destination}}</center></td>
-         <td>{{number_format($closed->grand_total)}}</td>
-         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+         <td>TZS {{number_format($closed->grand_total)}}</td>
+         <td><center>
+          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>
+           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
+
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <table style="width: 100%;">
+                                   <tr>
+                                          <td>Client Name:</td>
+                                          <td>{{$closed->debtor_name}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Start Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>End Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Amount:</td>
+                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Payment Status:</td>
+                                          <td>{{$closed->payment_status}}</td>
+                                      </tr>
+                  </table>
+                  <br>
+                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
+                 </div>
+               </div>
+             </div>
+           </div>
+          <a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -881,14 +973,14 @@
    <br>
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
-      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
     </thead>
     <tbody>
       @foreach($closed as $closed)
@@ -899,8 +991,53 @@
         <td><center>{{$closed->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
          <td><center>{{$closed->destination}}</center></td>
-         <td>{{number_format($closed->grand_total)}}</td>
-         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+         <td>TZS {{number_format($closed->grand_total)}}</td>
+         <td><center>
+          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>
+           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
+
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <table style="width: 100%;">
+                                   <tr>
+                                          <td>Client Name:</td>
+                                          <td>{{$closed->debtor_name}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Start Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>End Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Amount:</td>
+                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Payment Status:</td>
+                                          <td>{{$closed->payment_status}}</td>
+                                      </tr>
+                  </table>
+                  <br>
+                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
+                 </div>
+               </div>
+             </div>
+           </div>
+          <a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -977,14 +1114,14 @@
    <br>
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
-      <th scope="col" style="color:#3490dc; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc; width: 10%"><center>Form Id</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#3490dc; width: 14%"><center>Trip Date</center></th>
-      <th scope="col" style="color:#3490dc; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#3490dc; width: 16%"><center>Grand Total</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
     </thead>
     <tbody>
       @foreach($closed as $closed)
@@ -995,14 +1132,133 @@
         <td><center>{{$closed->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
          <td><center>{{$closed->destination}}</center></td>
-         <td>{{number_format($closed->grand_total)}}</td>
-         <td><center><a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:25px; color:red;"></i></a></center></td>
+         <td>TZS {{number_format($closed->grand_total)}}</td>
+         <td><center>
+          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>
+           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
+
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <table style="width: 100%;">
+                                   <tr>
+                                          <td>Client Name:</td>
+                                          <td>{{$closed->debtor_name}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Start Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>End Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Amount:</td>
+                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Payment Status:</td>
+                                          <td>{{$closed->payment_status}}</td>
+                                      </tr>
+                  </table>
+                  <br>
+                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
+                 </div>
+               </div>
+             </div>
+           </div>
+          <a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
   </table>
 </div>
-    @endif
+@elseif((Auth::user()->role!='DVC Administrator')&&($category=='All')||(Auth::user()->role!='Accountant')&&($category=='All'))
+<div>
+  <table class="hover table table-striped table-bordered" id="myTablecar">
+    <thead class="thead-dark">
+      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
+      <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
+       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total</center></th>
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
+    </thead>
+    <tbody>
+      @foreach($closed as $closed)
+      <tr>
+        <th scope="row" class="counterCell text-center">.</th>
+        <td><center>{{$closed->id}}</center></td>
+        <td>{{$closed->designation}} {{$closed->fullName}}</td>
+        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+         <td><center>{{$closed->destination}}</center></td>
+         <td>TZS {{number_format($closed->grand_total)}}</td>
+         <td><center>
+          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>
+           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
+
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <table style="width: 100%;">
+                                   <tr>
+                                          <td>Client Name:</td>
+                                          <td>{{$closed->debtor_name}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Start Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>End Date:</td>
+                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Amount:</td>
+                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>Payment Status:</td>
+                                          <td>{{$closed->payment_status}}</td>
+                                      </tr>
+                  </table>
+                  <br>
+                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
+                 </div>
+               </div>
+             </div>
+           </div>
+          <a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+@endif
 
   </div>
 @endif
@@ -1056,6 +1312,7 @@
             document.getElementById(evtName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+        document.getElementById("defaultOpen").click();
 
     </script>
 

@@ -206,10 +206,12 @@ hr {
     margin-top: 0rem;
     margin-bottom: 2rem;
     border: 0;
-    border: 2px solid #505559;
+    border: 1px solid #505559;
 }
+
 .form-inline .form-control {
     width: 100%;
+    height: auto;
 }
 
 .form-wrapper{
@@ -286,8 +288,10 @@ $i='1';
         </div>
         <div id="car_list" class="tabcontent">
   <br>
-  <h3>1. LIST OF VEHICLE FLEET</h3>
+ <center><h3><strong>Vehicle Fleet</strong></h3></center>
+  <hr>
   <br>
+   @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
         <a title="Add a Vehicle" data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -357,16 +361,18 @@ $i='1';
      </div>
      <br>
      <br>
+     @endif
+     
 
      <table class="hover table table-striped table-bordered" id="myTable">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" style="color:#3490dc; width: 5%;"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Vehicle Registration No.</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Vehicle Model</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Vehicle Status</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Hire Rate/KM</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+      <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+      <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
+      <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
+      <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
+      <th scope="col" style="color:#fff;"><center>Hire Rate/KM</center></th>
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
     </tr>
   </thead>
   <tbody>
@@ -377,8 +383,9 @@ $i='1';
       <td>{{$cars->vehicle_model}}</td>
       <td>{{ $cars->vehicle_status}}</td>
       <td><center>TZS {{ number_format($cars->hire_rate)}}</center></td>
-      <td>
+        <td><center>
          <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+          @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
       	<a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
       	 <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
 
@@ -477,8 +484,10 @@ $i='1';
 </div>
 </div>
 </div>
+@endif</center>
+</td>
 
-      </td>
+      
   </tr>
   <?php
    $i= $i+1;
@@ -491,7 +500,9 @@ $i='1';
 
   <div id="hire" class="tabcontent" >
   <br>
-  <h3>2. HIRE RATES</h3>
+  <center><h3><strong>Hire Rates</strong></h3></center>
+  <hr>
+  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
           <a data-toggle="modal" data-target="#hiree" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -535,14 +546,17 @@ $i='1';
          </div>
      </div>
      <br><br>
+     @endif
      <div class="container" style="width: 80%">
      <table class="hover table table-striped table-bordered" id="myTable2" style="width: 90%">
   <thead class="thead-dark">
     <tr>
-      <th scope="col" style="color:#3490dc; width: 3%;"><center>S/N</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Vehicle Model</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Hire Rate</center></th>
-      <th scope="col" style="color:#3490dc;"><center>Action</center></th>
+      <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
+      <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
+      <th scope="col" style="color:#fff;"><center>Hire Rate</center></th>
+      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
+      @endif
     </tr>
   </thead>
   <tbody>
@@ -551,6 +565,7 @@ $i='1';
     <th scope="row" class="counterCell text-center">.</th>
     <td>{{$rate->vehicle_model}}</td>
     <td><center>{{number_format($rate->hire_rate)}}</center></td>
+    @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
     <td><center>
       <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
          <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
@@ -617,6 +632,7 @@ $i='1';
 </div>
 </div></center>
     </td>
+    @endif
   </tr>
     @endforeach
   </tbody>
@@ -630,7 +646,8 @@ $i='1';
 
     <div id="availability" class="tabcontent">
   <br>
-  <h3>3. VEHICLE AVAILABILITY</h3>
+  <center><h3><strong>Vehicle Availability</strong></h3></center>
+  <hr>
   <form id="msform">
     <fieldset>
     <div class="form-card">

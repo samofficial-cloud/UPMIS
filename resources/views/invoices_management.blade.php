@@ -341,15 +341,15 @@
                         <table class="hover table table-striped  table-bordered" id="myTable">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Client</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Payment Status</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -957,15 +957,15 @@
                         <table class="hover table table-striped  table-bordered" id="myTableInsurance">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Client</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Payment Status</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -1477,15 +1477,15 @@
                         <table class="hover table table-striped  table-bordered" id="myTableCar">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Client</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Payment Status</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -2117,17 +2117,17 @@
                         <table class="hover table table-striped  table-bordered" id="myTableWater">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Client</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Debt</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Current Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Cumulative Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Payment Status</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Debt</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Current Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Cumulative Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -2789,17 +2789,17 @@
                         <table class="hover table table-striped  table-bordered" id="myTableElectricity">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Client</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Debt</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Current Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Cumulative Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Payment Status</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Debt</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Current Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Cumulative Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
                             </tr>
                             </thead>
                             <tbody>

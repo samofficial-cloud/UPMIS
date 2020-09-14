@@ -159,12 +159,12 @@ hr {
     <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
-        <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-        <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
-        <th scope="col" style="color:#3490dc;"><center>Destination</center></th>
-        <th scope="col" style="color:#3490dc;"><center>Vehicle Reg. No</center></th>
-        <th scope="col" style="color:#3490dc;"><center>Date</center></th>
-        <th scope="col" style="color:#3490dc;"><center>Grand Total</center></th>
+        <th scope="col" style="color:#fff;"><center>S/N</center></th>
+        <th scope="col" style="color:#fff;"><center>Contract Id</center></th>
+        <th scope="col" style="color:#fff;"><center>Destination</center></th>
+        <th scope="col" style="color:#fff;"><center>Vehicle Reg. No</center></th>
+        <th scope="col" style="color:#fff;"><center>Date</center></th>
+        <th scope="col" style="color:#fff;"><center>Grand Total</center></th>
       </tr>
     </thead>
     <tbody>
@@ -220,16 +220,16 @@ hr {
         <table class="hover table table-striped  table-bordered" id="myTable1">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>End date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Period</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Created Date</center></th>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>End date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Period</center></th>
+                                <th scope="col" style="color:#fff;"><center>Contract Id</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Created Date</center></th>
 
-                                <th scope="col"  style="color:#3490dc;"><center>Remarks</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Remarks</center></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -242,7 +242,7 @@ hr {
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                     <td><center>{{$var->period}}</center></td>
                                     <td><center>{{$var->contract_id}}</center></td>
-                                    <td><center>{{$var->currency}} {{number_format($var->amount_to_be_paid)}} </center></td>
+                                    <td><center>{{$var->currency_invoice}} {{number_format($var->amount_to_be_paid)}} </center></td>
 
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     @if($var->payment_status=='Paid')

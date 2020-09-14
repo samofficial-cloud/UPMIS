@@ -110,7 +110,13 @@ table {
                             @endif
 
               </center></td>
-            <td><center>{{$var->rent_price_guide_currency}} {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}}</center></td>
+            <td><center>
+              @if($var->rent_price_guide_currency==null OR $var->rent_price_guide_to==null)
+              N/A
+              @else
+              {{$var->rent_price_guide_currency}} {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}}
+              @endif
+            </center></td>
         </tr>
         @endforeach
     </tbody>
