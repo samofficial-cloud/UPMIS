@@ -86,10 +86,10 @@ class InvoicesController extends Controller
 
             $amount_in_words='';
 
-            if($var->currency=='TZS'){
+            if($var->currency_invoice=='TZS'){
                 $amount_in_words=Terbilang::make(($var->amount+$amount_not_paid),' TZS',' ');
 
-            }if ($var->currency=='USD'){
+            }if ($var->currency_invoice=='USD'){
 
                 $amount_in_words=Terbilang::make(($var->amount+$amount_not_paid),' USD',' ');
             }
@@ -112,7 +112,7 @@ class InvoicesController extends Controller
             if(count($invoice_to_be_created)==0){
 
                 DB::table('invoices')->insert(
-                    ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $var->programming_start_date,'invoicing_period_end_date' => $var->programming_end_date,'period' => $period,'project_id' => 'renting_space','debtor_account_code' => $var->client_id,'debtor_name' => $var->full_name,'debtor_address' => $var->address,'amount_to_be_paid' => ($var->amount+$amount_not_paid),'currency_invoice'=>$var->currency,'gepg_control_no'=>'','tin'=>$var->tin,'vrn'=>$var->vrn,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Space Rent','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                    ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $var->programming_start_date,'invoicing_period_end_date' => $var->programming_end_date,'period' => $period,'project_id' => 'renting_space','debtor_account_code' => $var->client_id,'debtor_name' => $var->full_name,'debtor_address' => $var->address,'amount_to_be_paid' => ($var->amount+$amount_not_paid),'currency_invoice'=>$var->currency_invoice,'gepg_control_no'=>'','tin'=>$var->tin,'vrn'=>$var->vrn,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Space Rent','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
                 );
 
                 $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
@@ -238,29 +238,42 @@ class InvoicesController extends Controller
 
     public function changePayementStatusSpace(Request $request,$id)
     {
-
-        DB::table('invoices')
-            ->where('invoice_number', $id)
-            ->update(['payment_status' => $request->get('payment_status')]);
-
-        if($request->get('payment_status')=='Paid'){
+        $payment_status='';
+        $amount_to_be_paid=DB::table('invoices')->where('invoice_number', $id)->value('amount_to_be_paid');
+        $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
 
 
-        }else {
+        if($request->get('amount_paid')<$amount_to_be_paid){
+        $payment_status='Partially Paid';
 
+
+        }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+            $payment_status='Paid';
+
+
+        }else{
 
 
         }
 
 
+        DB::table('invoices')
+            ->where('invoice_number', $id)
+            ->update(['payment_status' => $payment_status]);
 
         DB::table('invoices')
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
 
+        DB::table('space_payments')->insert(
+            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
+        );
+
+
+
         return redirect('/invoice_management')
-            ->with('success', 'Changes saved Successfully');
+            ->with('success', 'Payment received successfully');
 
     }
 
@@ -279,10 +292,10 @@ class InvoicesController extends Controller
 
             $amount_in_words='';
 
-            if($var->currency=='TZS'){
+            if($var->currency_invoice=='TZS'){
                 $amount_in_words=Terbilang::make($var->amount_to_be_paid,' TZS',' ');
 
-            }if ($var->currency=='USD'){
+            }if ($var->currency_invoice=='USD'){
 
                 $amount_in_words=Terbilang::make($var->amount_to_be_paid,' USD',' ');
             }
@@ -297,7 +310,7 @@ class InvoicesController extends Controller
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'5647768',$max_no_of_days_to_pay,'OK','7868',$amount_in_words,'4353',$today,$financial_year,'4th Quarter','Renting Space Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),'5647768',$max_no_of_days_to_pay,'OK','7868',$amount_in_words,'4353',$today,$financial_year,'4th Quarter','Renting Space Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('invoices')
                 ->where('invoice_number', $id)
@@ -342,10 +355,10 @@ class InvoicesController extends Controller
 
     $amount_in_words='';
 
-    if($var->currency=='TZS'){
+    if($var->currency_invoice=='TZS'){
         $amount_in_words=Terbilang::make($var->amount_to_be_paid,' TZS',' ');
 
-    }if ($var->currency=='USD'){
+    }if ($var->currency_invoice=='USD'){
 
         $amount_in_words=Terbilang::make($var->amount_to_be_paid,' USD',' ');
     }
@@ -360,7 +373,7 @@ class InvoicesController extends Controller
 
 
     Notification::route('mail','upmistesting@gmail.com')
-        ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Car Rental','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'78775',$max_no_of_days_to_pay,'OK','5654',$amount_in_words,'1234',$today,$financial_year,'3rd Quarter','Car Rental Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+        ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Car Rental','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),'78775',$max_no_of_days_to_pay,'OK','5654',$amount_in_words,'1234',$today,$financial_year,'3rd Quarter','Car Rental Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
     DB::table('car_rental_invoices')
         ->where('invoice_number', $id)
@@ -386,7 +399,7 @@ class InvoicesController extends Controller
 
         DB::table('invoice_notifications')->where('invoice_category',  'car_rental')->where('invoice_id',$id)->delete();
 
-        return redirect('/car_rental_invoice_management')
+        return redirect('/invoice_management')
             ->with('success', 'Email Sent Successfully');
 
     }
@@ -485,17 +498,40 @@ class InvoicesController extends Controller
     public function changePayementStatusCarRental(Request $request,$id)
     {
 
+        $payment_status='';
+        $amount_to_be_paid=DB::table('car_rental_invoices')->where('invoice_number', $id)->value('amount_to_be_paid');
+        $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+        if($request->get('amount_paid')<$amount_to_be_paid){
+            $payment_status='Partially Paid';
+
+
+        }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+            $payment_status='Paid';
+
+
+        }else{
+
+
+        }
+
+
         DB::table('car_rental_invoices')
             ->where('invoice_number', $id)
-            ->update(['payment_status' => $request->get('payment_status')]);
+            ->update(['payment_status' => $payment_status]);
 
         DB::table('car_rental_invoices')
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
 
-        return redirect('/car_rental_invoice_management')
-            ->with('success', 'Changes saved Successfully');
+        DB::table('car_rental_payments')->insert(
+            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
+        );
+
+        return redirect('/invoice_management')
+            ->with('success', 'Payment received successfully');
 
     }
 
@@ -726,10 +762,10 @@ class InvoicesController extends Controller
 
             $amount_in_words='';
 
-            if($var->currency=='TZS'){
+            if($var->currency_invoice=='TZS'){
                 $amount_in_words=Terbilang::make($var->amount_to_be_paid,' TZS',' ');
 
-            }if ($var->currency=='USD'){
+            }if ($var->currency_invoice=='USD'){
 
                 $amount_in_words=Terbilang::make($var->amount_to_be_paid,' USD',' ');
             }
@@ -745,7 +781,7 @@ class InvoicesController extends Controller
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'UDIA','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Insurance Monthly Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'UDIA','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Insurance Monthly Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('insurance_invoices')
                 ->where('invoice_number', $id)
@@ -767,7 +803,7 @@ class InvoicesController extends Controller
         DB::table('invoice_notifications')->where('invoice_category',  'insurance')->where('invoice_id',$id)->delete();
 
 
-        return redirect('/insurance_invoice_management')
+        return redirect('/invoice_management')
             ->with('success', 'Invoice Sent Successfully');
 
     }
@@ -776,17 +812,41 @@ class InvoicesController extends Controller
     public function changePayementStatusInsurance(Request $request,$id)
     {
 
+        $payment_status='';
+        $amount_to_be_paid=DB::table('insurance_invoices')->where('invoice_number', $id)->value('amount_to_be_paid');
+        $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+        if($request->get('amount_paid')<$amount_to_be_paid){
+            $payment_status='Partially Paid';
+
+
+        }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+            $payment_status='Paid';
+
+
+        }else{
+
+
+        }
+
+
         DB::table('insurance_invoices')
             ->where('invoice_number', $id)
-            ->update(['payment_status' => $request->get('payment_status')]);
+            ->update(['payment_status' => $payment_status]);
 
         DB::table('insurance_invoices')
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
+        );
 
-        return redirect('/insurance_invoice_management')
-            ->with('success', 'Changes saved Successfully');
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Payment received successfully');
 
     }
 
@@ -861,10 +921,10 @@ class InvoicesController extends Controller
 
                         $amount_in_words='';
 
-//                        if($var->currency=='TZS'){
+//                        if($var->currency_invoice=='TZS'){
 //                            $amount_in_words=Terbilang::make(($var->amount+$amount_not_paid),' TZS',' ');
 //
-//                        }if ($var->currency=='USD'){
+//                        }if ($var->currency_invoice=='USD'){
 //
 //                            $amount_in_words=Terbilang::make(($var->amount+$amount_not_paid),' USD',' ');
 //                        }
@@ -894,7 +954,7 @@ class InvoicesController extends Controller
                         if(count($invoice_to_be_created)==0){
 
                             DB::table('electricity_bill_invoices')->insert(
-                                ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'Renting space','debtor_account_code' => '','debtor_name' => $var->full_name,'debtor_address' => '','debt' => $amount_not_paid,'currency_invoice'=>$var->currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'electricity bill','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Electricity bill','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                                ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'Renting space','debtor_account_code' => '','debtor_name' => $var->full_name,'debtor_address' => '','debt' => $amount_not_paid,'currency_invoice'=>$var->currency_invoice,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'electricity bill','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Electricity bill','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
                             );
 
 
@@ -1035,7 +1095,7 @@ class InvoicesController extends Controller
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Electricity bill',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency_invoice,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Electricity bill',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('electricity_bill_invoices')
                 ->where('invoice_number', $id)
@@ -1075,7 +1135,7 @@ class InvoicesController extends Controller
         DB::table('invoice_notifications')->where('invoice_category',  'electricity bill')->where('invoice_id',$id)->delete();
 
 
-        return redirect('/electricity_bills_invoice_management')
+        return redirect('/invoice_management')
             ->with('success', 'Invoice Sent Successfully');
 
     }
@@ -1084,16 +1144,41 @@ class InvoicesController extends Controller
     public function changePaymentStatusElectricityBills(Request $request,$id)
     {
 
+        $payment_status='';
+        $amount_to_be_paid=DB::table('electricity_bill_invoices')->where('invoice_number', $id)->value('cumulative_amount');
+        $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+        if($request->get('amount_paid')<$amount_to_be_paid){
+            $payment_status='Partially Paid';
+
+
+        }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+            $payment_status='Paid';
+
+
+        }else{
+
+
+        }
+
+
         DB::table('electricity_bill_invoices')
             ->where('invoice_number', $id)
-            ->update(['payment_status' => $request->get('payment_status')]);
+            ->update(['payment_status' => $payment_status]);
 
         DB::table('electricity_bill_invoices')
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
-        return redirect('/electricity_bills_invoice_management')
-            ->with('success', 'Changes saved Successfully');
+
+        DB::table('electricity_bill_payments')->insert(
+            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
+        );
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Payment received Successfully');
 
     }
 
@@ -1180,7 +1265,7 @@ class InvoicesController extends Controller
                 if(count($invoice_to_be_created)==0){
 
                     DB::table('water_bill_invoices')->insert(
-                        ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'Renting space','debtor_account_code' => '','debtor_name' => $var->full_name,'debtor_address' => '','debt' => $amount_not_paid,'currency_invoice'=>$var->currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'water bill','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Water bill','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                        ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $from,'invoicing_period_end_date' => $to,'period' => $period,'project_id' => 'Renting space','debtor_account_code' => '','debtor_name' => $var->full_name,'debtor_address' => '','debt' => $amount_not_paid,'currency_invoice'=>$var->currency_invoice,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'water bill','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Water bill','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
                     );
 
 
@@ -1324,7 +1409,7 @@ class InvoicesController extends Controller
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Water bill',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency_invoice,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Water bill',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('water_bill_invoices')
                 ->where('invoice_number', $id)
@@ -1367,7 +1452,7 @@ class InvoicesController extends Controller
         DB::table('invoice_notifications')->where('invoice_category',  'water bill')->where('invoice_id',$id)->delete();
 
 
-        return redirect('/water_bills_invoice_management')
+        return redirect('/invoice_management')
             ->with('success', 'Invoice Sent Successfully');
 
     }
@@ -1376,16 +1461,40 @@ class InvoicesController extends Controller
     public function changePaymentStatusWaterBills(Request $request,$id)
     {
 
+        $payment_status='';
+        $amount_to_be_paid=DB::table('water_bill_invoices')->where('invoice_number', $id)->value('cumulative_amount');
+        $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+        if($request->get('amount_paid')<$amount_to_be_paid){
+            $payment_status='Partially Paid';
+
+
+        }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+            $payment_status='Paid';
+
+
+        }else{
+
+
+        }
+
+
         DB::table('water_bill_invoices')
             ->where('invoice_number', $id)
-            ->update(['payment_status' => $request->get('payment_status')]);
+            ->update(['payment_status' => $payment_status]);
 
         DB::table('water_bill_invoices')
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
-        return redirect('/water_bills_invoice_management')
-            ->with('success', 'Changes saved Successfully');
+        DB::table('water_bill_payments')->insert(
+            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
+        );
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Payment received successfully');
 
     }
 

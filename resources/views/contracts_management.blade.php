@@ -110,7 +110,7 @@
                         <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate Contracts</strong></button>
 
 
-                
+
 
 
                     @else
@@ -310,7 +310,7 @@
                       </div>
                   </div>
               </td>
-            <td><center>{{$var->amount}} {{$var->currency}}</center></td>
+            <td><center>{{number_format($var->amount)}} {{$var->currency}}</center></td>
 
 
             <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
@@ -448,13 +448,13 @@
                                 <td><center>{{$var->vehicle_use}}</center></td>
                                 <td><center>{{$var->principal}}</center></td>
                                 <td><center>{{$var->insurance_type}}</center></td>
-                                <td><center>{{$var->commission_date}}</center></td>
-                                <td><center>{{$var->end_date}}</center></td>
-                                <td><center>{{$var->sum_insured}}</center></td>
-                                <td><center>{{$var->premium}}</center></td>
-                                <td><center>{{$var->actual_ex_vat}}</center></td>
+                                <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
+                                <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
+                                <td><center>{{number_format($var->sum_insured)}}</center></td>
+                                <td><center>{{number_format($var->premium)}}</center></td>
+                                <td><center>{{number_format($var->actual_ex_vat)}}</center></td>
                                 <td><center>{{$var->currency}}</center></td>
-                                <td><center>{{$var->commission}}</center></td>
+                                <td><center>{{number_format($var->commission)}}</center></td>
                                 <td><center>{{$var->receipt_no}}</center></td>
                                 <td><center>
 
@@ -506,7 +506,9 @@
 
             </div>
 
+
  @if ($category=='CPTU only' OR $category=='All')
+
             <div id="car_contracts" class="tabcontentOuter">
                 <br>
                 <h4 style="text-align: center">Car Rental Contracts</h4>

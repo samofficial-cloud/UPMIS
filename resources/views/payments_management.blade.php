@@ -185,7 +185,7 @@
 
 
 
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
                                                         <label for=""> Amount paid <span style="color: red;">*</span></label>
                                                         <input type="number" min="0" class="form-control" id="amount_paid_space" name="amount_paid" value="" Required  autocomplete="off">
@@ -194,13 +194,7 @@
                                                 <br>
 
 
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="not_paid_space" name="amount_not_paid" value="" Required  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
+
 
 
                                                 <div class="form-group col-md-12">
@@ -270,12 +264,14 @@
                                 <tr>
                                     <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
+
                                     <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
 
 
                                 </tr>
@@ -287,21 +283,21 @@
 
                                         <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
-                                        <td><center>{{$var->amount_paid}}</center></td>
-                                        <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center> {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
                                         <td><center>{{$var->receipt_number}}</center></td>
                                         <td><center>
 
 
 
-                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
+                                                                <b><h5 class="modal-title">Invoice Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -322,13 +318,13 @@
 
                                                                     <tr>
                                                                         <td> Start Date:</td>
-                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
                                                                     </tr>
 
 
                                                                     <tr>
                                                                         <td> End Date:</td>
-                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
                                                                     </tr>
 
                                                                     <tr>
@@ -459,7 +455,7 @@
 
 
 
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
                                                         <label for=""> Amount paid <span style="color: red;">*</span></label>
                                                         <input type="number" min="0" class="form-control" id="amount_paid_car" name="amount_paid" value="" Required  autocomplete="off">
@@ -468,13 +464,7 @@
                                                 <br>
 
 
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="not_paid_car" name="amount_not_paid" value="" Required  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
+
 
 
                                                 <div class="form-group col-md-12">
@@ -543,12 +533,14 @@
                                 <tr>
                                     <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
+
                                     <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
 <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
 
                                 </tr>
                                 </thead>
@@ -559,21 +551,21 @@
 
                                         <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
-                                        <td><center>{{$var->amount_paid}}</center></td>
-                                        <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center> {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
                                         <td><center>{{$var->receipt_number}}</center></td>
                                         <td><center>
 
 
 
-                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
+                                                                <b><h5 class="modal-title">Invoice Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -594,13 +586,13 @@
 
                                                                     <tr>
                                                                         <td> Start Date:</td>
-                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
                                                                     </tr>
 
 
                                                                     <tr>
                                                                         <td> End Date:</td>
-                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
                                                                     </tr>
 
                                                                     <tr>
@@ -730,7 +722,7 @@
 
 
 
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
                                                         <label for=""> Amount paid <span style="color: red;">*</span></label>
                                                         <input type="number" min="0" class="form-control" id="amount_paid_insurance" name="amount_paid" value="" Required  autocomplete="off">
@@ -739,13 +731,7 @@
                                                 <br>
 
 
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="not_paid_insurance" name="amount_not_paid" value="" Required  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
+
 
 
                                                 <div class="form-group col-md-12">
@@ -813,12 +799,14 @@
                                 <tr>
                                     <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
+
                                     <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
 <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
 
                                 </tr>
                                 </thead>
@@ -829,21 +817,21 @@
 
                                         <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
-                                        <td><center>{{$var->amount_paid}}</center></td>
-                                        <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center> {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
                                         <td><center>{{$var->receipt_number}}</center></td>
                                         <td><center>
 
 
 
-                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                                <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+                                                <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <div class="modal fade" id="invoice_insurance{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
+                                                                <b><h5 class="modal-title">Invoice Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -864,13 +852,13 @@
 
                                                                     <tr>
                                                                         <td> Start Date:</td>
-                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
                                                                     </tr>
 
 
                                                                     <tr>
                                                                         <td> End Date:</td>
-                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
                                                                     </tr>
 
                                                                     <tr>
@@ -1001,7 +989,7 @@
 
 
 
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
                                                         <label for=""> Amount paid <span style="color: red;">*</span></label>
                                                         <input type="number" min="0" class="form-control" id="amount_paid_water" name="amount_paid" value="" Required  autocomplete="off">
@@ -1010,13 +998,7 @@
                                                 <br>
 
 
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="not_paid_water" name="amount_not_paid" value="" Required  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
+
 
 
                                                 <div class="form-group col-md-12">
@@ -1085,12 +1067,14 @@
                                 <tr>
                                     <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
+
                                     <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                     <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
 
                                 </tr>
                                 </thead>
@@ -1101,21 +1085,21 @@
 
                                         <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
-                                        <td><center>{{$var->amount_paid}}</center></td>
-                                        <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center> {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
                                         <td><center>{{$var->receipt_number}}</center></td>
                                         <td><center>
 
 
 
-                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice_water{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
+                                                                <b><h5 class="modal-title">Invoice Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -1136,13 +1120,13 @@
 
                                                                     <tr>
                                                                         <td> Start Date:</td>
-                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
                                                                     </tr>
 
 
                                                                     <tr>
                                                                         <td> End Date:</td>
-                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
                                                                     </tr>
 
                                                                     <tr>
@@ -1158,14 +1142,14 @@
 
                                                                     <tr>
                                                                         <td> Debt:</td>
-                                                                        <td>{{$var->debt}} {{$var->currency_invoice}}</td>
+                                                                        <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Current Amount:</td>
                                                                         @if($var->current_amount==0)
                                                                             <td>N/A</td>
                                                                         @else
-                                                                            <td>{{$var->current_amount}} {{$var->currency_invoice}}</td>
+                                                                            <td>{{number_format($var->current_amount)}} {{$var->currency_invoice}}</td>
                                                                         @endif
 
                                                                     </tr>
@@ -1176,7 +1160,7 @@
                                                                         @if($var->cumulative_amount==0)
                                                                             <td>N/A</td>
                                                                         @else
-                                                                            <td>{{$var->cumulative_amount}} {{$var->currency_invoice}}</td>
+                                                                            <td>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
                                                                         @endif
                                                                     </tr>
 
@@ -1292,7 +1276,7 @@
 
 
 
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
                                                         <label for=""> Amount paid <span style="color: red;">*</span></label>
                                                         <input type="number" min="0" class="form-control" id="amount_paid_electricity" name="amount_paid" value="" Required  autocomplete="off">
@@ -1301,13 +1285,7 @@
                                                 <br>
 
 
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""> Amount not paid <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="not_paid_electricity" name="amount_not_paid" value="" Required  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
+
 
 
                                                 <div class="form-group col-md-12">
@@ -1375,6 +1353,7 @@
                             <table class="hover table table-striped  table-bordered" id="myTable5">
                                 <thead class="thead-dark">
                                 <tr>
+
                                     <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
                                     <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
@@ -1383,6 +1362,7 @@
                                     <th scope="col"  style="color:#fff;"><center>Currency</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
 <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
 
                                 </tr>
                                 </thead>
@@ -1393,21 +1373,21 @@
 
                                         <td><center>{{$i}}</center></td>
                                         <td><center>{{$var->invoice_number_votebook}}</center></td>
-                                        <td><center>{{$var->amount_paid}}</center></td>
-                                        <td><center>{{$var->amount_not_paid}}</center></td>
-                                        <td><center> {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
                                         <td><center>{{$var->receipt_number}}</center></td>
                                         <td><center>
 
 
 
-                                                <a title="View more details" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
                                                 <div class="modal fade" id="invoice_electricity{{$var->invoice_number}}" role="dialog">
 
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
+                                                                <b><h5 class="modal-title">Invoice Details</h5></b>
 
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
@@ -1428,13 +1408,13 @@
 
                                                                     <tr>
                                                                         <td> Start Date:</td>
-                                                                        <td> {{$var->invoicing_period_start_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
                                                                     </tr>
 
 
                                                                     <tr>
                                                                         <td> End Date:</td>
-                                                                        <td> {{$var->invoicing_period_end_date}}</td>
+                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
                                                                     </tr>
 
                                                                     <tr>
@@ -1450,14 +1430,14 @@
 
                                                                     <tr>
                                                                         <td> Debt:</td>
-                                                                        <td>{{$var->debt}} {{$var->currency_invoice}}</td>
+                                                                        <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Current Amount:</td>
                                                                         @if($var->current_amount==0)
                                                                             <td>N/A</td>
                                                                         @else
-                                                                            <td>{{$var->current_amount}} {{$var->currency_invoice}}</td>
+                                                                            <td>{{number_format($var->current_amount)}} {{$var->currency_invoice}}</td>
                                                                         @endif
 
                                                                     </tr>
@@ -1468,7 +1448,7 @@
                                                                         @if($var->cumulative_amount==0)
                                                                             <td>N/A</td>
                                                                         @else
-                                                                            <td>{{$var->cumulative_amount}} {{$var->currency_invoice}}</td>
+                                                                            <td>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
                                                                         @endif
                                                                     </tr>
 

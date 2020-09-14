@@ -310,9 +310,9 @@ $companies=DB::table('insurance_parameters')->get();
             <td><center>{{$var->class}}</center></td>
             <td><center>{{$var->insurance_company}}</center></td>
             <td><center>{{$var->insurance_type}}</center></td>
-            <td><center>{{$var->price}} {{$var->insurance_currency}}</center></td>
+            <td><center>{{number_format($var->price)}} {{$var->insurance_currency}}</center></td>
             <td><center>{{$var->commission_percentage}}%</center></td>
-            <td><center>{{$var->commission}} {{$var->insurance_currency}} </center></td>
+            <td><center>{{number_format($var->commission)}} {{$var->insurance_currency}} </center></td>
             <td><center> {{$var->billing}} </center></td>
               @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
               @else
@@ -377,7 +377,7 @@ $companies=DB::table('insurance_parameters')->get();
                             <div  class="form-group" >
                                 <div class="form-wrapper">
                                     <label for="price"  ><strong>Price <span style="color: red;"> *</span></strong></label>
-                                    <input type="number" min="10" step="0.01" class="form-control" id="price_edit" name="price"  required value="{{$var->price}}" autocomplete="off">
+                                    <input type="number" min="10" step="0.01" class="form-control" id="price_edit" name="price"  required value="{{number_format($var->price)}}" autocomplete="off">
                                 </div>
                             </div>
                             <br>
