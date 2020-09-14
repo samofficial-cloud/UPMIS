@@ -424,7 +424,7 @@
                             @if($var->rent_price_guide_from==null)
                               N/A
                             @else
-                              {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}
+                              {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}} {{$var->rent_price_guide_currency}}
                             @endif
 
                           </td>

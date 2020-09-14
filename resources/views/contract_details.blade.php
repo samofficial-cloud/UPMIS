@@ -127,7 +127,7 @@
 
                         <tr>
                             <td> Amount:</td>
-                            <td> {{$var->amount}} {{$var->currency}}</td>
+                            <td> {{number_format($var->amount)}} {{$var->currency}}</td>
                         </tr>
 
 
@@ -393,7 +393,7 @@
                                     <td><center>{{$var->invoice_number}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                    <td><center>{{$var->amount_to_be_paid}} {{$var->currency_invoice}}</center></td>
+                                    <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
                                     <td><center>{{$var->payment_status}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
 
@@ -432,13 +432,13 @@
 
                                                                 <tr>
                                                                     <td> Start Date:</td>
-                                                                    <td> {{$var->invoicing_period_start_date}}</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
                                                                     <td> End Date:</td>
-                                                                    <td> {{$var->invoicing_period_end_date}}</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -454,7 +454,7 @@
 
                                                                 <tr>
                                                                     <td> Amount:</td>
-                                                                    <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                    <td> {{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
                                                                 </tr>
 
 
