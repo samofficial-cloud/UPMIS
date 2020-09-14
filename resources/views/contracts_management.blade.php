@@ -109,8 +109,13 @@
                     @if ($category=='Real Estate only' OR $category=='All')
                         <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate Contracts</strong></button>
 
+
+                
+
+
                     @else
                     @endif
+
 
 
 
@@ -121,10 +126,12 @@
                         @endif
 
 
+
                         @if ($category=='CPTU only' OR $category=='All')
                             <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental Contracts</strong></button>
                         @else
                         @endif
+
 
 
 
@@ -499,6 +506,7 @@
 
             </div>
 
+@if(($CPTU=='CPTU only')||($CPTU=='All'))
             <div id="car_contracts" class="tabcontentOuter">
                 <br>
                 <h4 style="text-align: center">Car Rental Contracts</h4>
@@ -997,7 +1005,7 @@
     @endif
 
   </div>
-
+@endif
 
 
 
@@ -1019,8 +1027,11 @@
    $(document).ready(function(){
     var cid = location.search.split('cid=')[1];
     if(cid==31){
+      <?php $CPTU=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category'); ?>
+      if($CPTU=='CPTU only'|| $CPTU=='All'){
     var tablink = document.getElementById("carss");
        tablink.click();
+     }
      }
      });
 </script>

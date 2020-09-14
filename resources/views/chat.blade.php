@@ -59,9 +59,22 @@ sub{
     </div>
         <table id="tid">
             <tbody id="tbid" style="display: block; overflow-y:hidden;">
+              {{-- <tr class="classtr header"><td style="width: 100%; text-align: center; display: inline-block; cursor: pointer;"><strong>Older Chats<span style="font-size: 15px;"> + </span></strong></td>
+                </tr>  
+                @foreach($chat as $chat)
+               <tr class="classtr">
+                @if($chat->receiver != Auth::user()->name)
+                <td style="background-color:#dcdcdc; float: right; color: black;">{{$chat->content}}<sub>{{$chat->time}}</sub></td>
+                @else
+                <td style="float: left; background-color:#6cb2eb; color: white; ">{{$chat->content}}<sub>{{$chat->time}}</sub></td>
+                @endif
+            </tr>
+              @endforeach --}}
+              
+              
 
 @if(count((array)$chat3)!=0)
-             <tr class="classtr"><td style="width: 100%; text-align: center; display: inline-block;"><strong>{{date('d/m/Y', strtotime("-2 days"))}}</strong></td></tr>
+             <tr class="classtr header3"><td style="width: 100%; text-align: center; display: inline-block;"><strong>{{date('l', strtotime("-2 days"))}}</strong></td></tr>
 
               @foreach($chat3 as $chat)
                <tr class="classtr">
@@ -88,7 +101,7 @@ sub{
               @endforeach
               @endif
 
-              @if(count((array)$chat1)!=0)
+@if(count((array)$chat1)!=0)
 <tr class="classtr"><td style="width: 100%; text-align: center; display: inline-block;"><strong>Today</strong></td></tr>
 
             @foreach($chat1 as $chat)
@@ -101,6 +114,7 @@ sub{
             </tr>
             @endforeach
 @endif
+
             </tbody>    
         </table>
         <div id="footer">
@@ -156,5 +170,11 @@ sub{
          });
 
     });
+
+ $('.header').click(function(){
+   $(this).find('span').text(function(_, value){return value=='-'?'+':'-'});
+    $(this).nextUntil('tr.header3').slideToggle(100, function(){
+    });
+});
  });
 </script>

@@ -27,7 +27,7 @@ class systemChatController extends Controller
         $chats2=system_chat::select('receiver')->where('sender',Auth::user()->name)
          ->whereNotIn('receiver',DB::table('system_chats')->select('sender')->where('receiver',Auth::user()->name)->distinct()->pluck('sender')->toArray())->distinct()->get();
 
-        $received='Arnold Matemu';
+        $received=Auth::user()->name;
                 //dd($chats);
          
          return view('notifications',compact('name','chats','received','chats1','chats2'));
@@ -55,13 +55,39 @@ class systemChatController extends Controller
         $today=date('Y-m-d');
         $dates=system_chat::select('date')->where('receiver',$name)->where('sender',Auth::user()->name)->orwhere('sender',$name)->where('receiver',Auth::user()->name)->distinct()->orderBy('date','dsc')->get();
 
-    	$chat=system_chat::where('receiver',$name)->where('sender',Auth::user()->name)->orwhere('sender',$name)->where('receiver',Auth::user()->name)->get();
+    	$chat=system_chat::where('receiver',$name)
+        ->where('sender',Auth::user()->name)
+        ->wheredate('date','!=',$today)
+        ->wheredate('date','!=',date('Y-m-d', strtotime("-1 days")))
+        ->wheredate('date','!=',date('Y-m-d', strtotime("-2 days")))
+        ->orwhere('sender',$name)->where('receiver',Auth::user()->name)
+        ->wheredate('date','!=',$today)
+        ->wheredate('date','!=',date('Y-m-d', strtotime("-1 days")))
+        ->wheredate('date','!=',date('Y-m-d', strtotime("-2 days")))
+        ->get();
 
-        $chat1=system_chat::where('receiver',$name)->where('sender',Auth::user()->name)->wheredate('date',$today)->orwhere('sender',$name)->where('receiver',Auth::user()->name)->wheredate('date',$today)->get();
+        $chat1=system_chat::where('receiver',$name)
+        ->where('sender',Auth::user()->name)
+        ->wheredate('date',$today)
+        ->orwhere('sender',$name)
+        ->where('receiver',Auth::user()->name)
+        ->wheredate('date',$today)
+        ->get();
 
-        $chat2=system_chat::where('receiver',$name)->where('sender',Auth::user()->name)->wheredate('date',date('Y-m-d', strtotime("-1 days")))->orwhere('sender',$name)->where('receiver',Auth::user()->name)->wheredate('date',date('Y-m-d', strtotime("-1 days")))->get();
+        $chat2=system_chat::where('receiver',$name)
+        ->where('sender',Auth::user()->name)
+        ->wheredate('date',date('Y-m-d', strtotime("-1 days")))
+        ->orwhere('sender',$name)->where('receiver',Auth::user()->name)
+        ->wheredate('date',date('Y-m-d', strtotime("-1 days")))
+        ->get();
 
-        $chat3=system_chat::where('receiver',$name)->where('sender',Auth::user()->name)->wheredate('date',date('Y-m-d', strtotime("-2 days")))->orwhere('sender',$name)->where('receiver',Auth::user()->name)->wheredate('date',date('Y-m-d', strtotime("-2 days")))->get();
+        $chat3=system_chat::where('receiver',$name)
+        ->where('sender',Auth::user()->name)
+        ->wheredate('date',date('Y-m-d', strtotime("-2 days")))
+        ->orwhere('sender',$name)->where('receiver',Auth::user()->name)
+        ->wheredate('date',date('Y-m-d', strtotime("-2 days")))
+        ->get();
+
         foreach ($chat1 as $chat) {
             # code...
             DB::table('system_chats')
@@ -92,6 +118,7 @@ class systemChatController extends Controller
         // }
 
     	$receiver=$name;
+        
     	return view('chat',compact('chat','receiver','chat1','chat2','chat3'));
     }
 }
