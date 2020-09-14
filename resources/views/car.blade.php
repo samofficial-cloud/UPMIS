@@ -279,27 +279,27 @@ $i='1';
     @endif
 <br>
     <div class="tab">
-            <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>CAR RENTAL LIST</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>VEHICLE FLEET</strong></button>
             {{-- <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button> --}}
             <button class="tablinks" onclick="openContracts(event, 'hire')"><strong>HIRE RATE</strong></button>
-             <button class="tablinks" onclick="openContracts(event, 'availability')"><strong>CAR AVAILABILITY</strong></button>
+             <button class="tablinks" onclick="openContracts(event, 'availability')"><strong>VEHICLE AVAILABILITY</strong></button>
         </div>
         <div id="car_list" class="tabcontent">
   <br>
-  <h3>1. LIST OF CARS</h3>
+  <h3>1. LIST OF VEHICLE FLEET</h3>
   <br>
-        <a data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="
+        <a title="Add a Vehicle" data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="
     padding: 10px;
 
     margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add Car</a>
+    margin-top: 4px;" role="button" aria-pressed="true">Add Vehicle</a>
 
     <div class="modal fade" id="car" role="dialog">
 
               <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                <b><h5 class="modal-title">Fill the form below to add new car</h5></b>
+                <b><h5 class="modal-title">Fill the form below to add new vehicle</h5></b>
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
@@ -374,11 +374,12 @@ $i='1';
       <tr>
       <th scope="row">{{ $i }}.</th>
       <td><center>{{ $cars->vehicle_reg_no}}</center></td>
-      <td><center>{{$cars->vehicle_model}}</center></td>
-      <td><center>{{ $cars->vehicle_status}}</center></td>
-      <td><center>{{ number_format($cars->hire_rate)}}</center></td>
+      <td>{{$cars->vehicle_model}}</td>
+      <td>{{ $cars->vehicle_status}}</td>
+      <td><center>TZS {{ number_format($cars->hire_rate)}}</center></td>
       <td>
-      	<a data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+         <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+      	<a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
       	 <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
 
               <div class="modal-dialog" role="document">
@@ -452,9 +453,9 @@ $i='1';
          </div>
      </div>
 
-     <a role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:25px; color:#3490dc;"></i></a>
+    
 
-     <a data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
+     <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
 
         <div class="modal-dialog" role="document">
@@ -488,7 +489,7 @@ $i='1';
 </table>
 </div>
 
-  <div id="hire" class="tabcontent">
+  <div id="hire" class="tabcontent" >
   <br>
   <h3>2. HIRE RATES</h3>
           <a data-toggle="modal" data-target="#hiree" class="btn btn-success button_color active" style="
@@ -534,6 +535,7 @@ $i='1';
          </div>
      </div>
      <br><br>
+     <div class="container" style="width: 80%">
      <table class="hover table table-striped table-bordered" id="myTable2" style="width: 90%">
   <thead class="thead-dark">
     <tr>
@@ -549,8 +551,8 @@ $i='1';
     <th scope="row" class="counterCell text-center">.</th>
     <td>{{$rate->vehicle_model}}</td>
     <td><center>{{number_format($rate->hire_rate)}}</center></td>
-    <td>
-      <a data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+    <td><center>
+      <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
          <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
 
               <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -593,7 +595,7 @@ $i='1';
              </div>
            </div>
 
-           <a data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
+           <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
         <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -613,12 +615,13 @@ $i='1';
 </div>
 </div>
 </div>
-</div>
+</div></center>
     </td>
   </tr>
     @endforeach
   </tbody>
 </table>
+</div>
 </div>
 
   <?php
@@ -627,7 +630,7 @@ $i='1';
 
     <div id="availability" class="tabcontent">
   <br>
-  <h3>3. CAR AVAILABILITY</h3>
+  <h3>3. VEHICLE AVAILABILITY</h3>
   <form id="msform">
     <fieldset>
     <div class="form-card">

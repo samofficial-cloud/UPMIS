@@ -115,6 +115,8 @@
 
                 <?php
                 $car_agents=DB::table('general_settings')->where('category','Car rental')->orwhere('category','All')->get();
+                $CPTU=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+
 
                 ?>
 
@@ -133,13 +135,11 @@
                         @endif
                     @endforeach
 
-                    @foreach($car_agents as $car_agent)
-                        @if(Auth::user()->role!=$car_agent->user_roles)
+                    @if(($CPTU=='CPTU only')||($CPTU=='All'))
+                        <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental Contracts</strong></button>
                         @else
-                            <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental Contracts</strong></button>
-
-                        @endif
-                    @endforeach
+                    @endif
+                    
 
 
 
@@ -514,6 +514,7 @@
 
             </div>
 
+@if(($CPTU=='CPTU only')||($CPTU=='All'))
             <div id="car_contracts" class="tabcontentOuter">
                 <br>
                 <h4 style="text-align: center">Car Rental Contracts</h4>
@@ -1012,7 +1013,7 @@
     @endif
 
   </div>
-
+@endif
 
 
 
@@ -1034,8 +1035,11 @@
    $(document).ready(function(){
     var cid = location.search.split('cid=')[1];
     if(cid==31){
+      <?php $CPTU=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category'); ?>
+      if($CPTU=='CPTU only'|| $CPTU=='All'){
     var tablink = document.getElementById("carss");
        tablink.click();
+     }
      }
      });
 </script>

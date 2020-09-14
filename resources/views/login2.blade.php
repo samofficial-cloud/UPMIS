@@ -114,7 +114,7 @@
     text-indent: 100px;
 }
 
-input#email {
+input#user_name {
     background-image: url(images/username.png);
      background-size: 24px 24px;
     background-repeat: no-repeat;
@@ -217,13 +217,13 @@ input#search:focus {
                             <label for="email" class="col-md-3 col-form-label">{{ __('Username') }}</label>
 
                             <div class="col-md-8">
-                                <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus autocomplete="off">
+                                <input id="user_name" type="text" class="form-control{{ $errors->has('user_name') ? ' is-invalid' : '' }}" placeholder="" name="user_name" value="" required>
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                @if ($errors->has('user_name'))
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('user_name') }}</strong>
                                     </span>
-                                @endif
+                              @endif
                             </div>
                         </div>
 

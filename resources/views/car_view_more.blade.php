@@ -154,11 +154,11 @@ hr {
 			 <div class="card-body">
           <b><h3>Operational Expenditures</h3></b>
           <hr>
-            <a data-toggle="modal" data-target="#car_operational" class="btn btn-success btn-sm" style="
+            <a title="Add Operational Expenditure" data-toggle="modal" data-target="#car_operational" class="btn btn-success btn-sm" style="
     padding: 10px;
     color: #fff;font-size: 16px;
     margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add new</a>
+    margin-top: 4px; cursor: pointer;" role="button" aria-pressed="true">Add new</a>
 
     <div class="modal fade" id="car_operational" role="dialog">
 
@@ -207,14 +207,14 @@ hr {
 
         <div class="form-group" id="amountdiv">
           <div class="form-wrapper">
-            <label for="amount">Amount</label>
+            <label for="amount">Amount (TZS)</label>
             <input type="text" id="amount" name="amount" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 
         <div class="form-group" id="totaldiv">
           <div class="form-wrapper">
-            <label for="total">Total</label>
+            <label for="total">Total (TZS)</label>
             <input type="text" id="total" name="total" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
@@ -266,7 +266,7 @@ hr {
         <td>{{number_format($operational->amount)}}</td>
         <td>{{number_format($operational->total)}}</td>
         <td>
-          <a data-toggle="modal" data-target="#editops{{$operational->id}}" role="button" aria-pressed="true" id="{{$operational->id}}"><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
+          <a title="Edit Operational Expenditure" data-toggle="modal" data-target="#editops{{$operational->id}}" role="button" aria-pressed="true" id="{{$operational->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
          <div class="modal fade" id="editops{{$operational->id}}" role="dialog">
 
               <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -352,7 +352,7 @@ hr {
              </div>
            </div>
 
-            <a data-toggle="modal" data-target="#Deactivateop{{$operational->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
+            <a title="Delete this Expenditure" data-toggle="modal" data-target="#Deactivateop{{$operational->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 <div class="modal fade" id="Deactivateop{{$operational->id}}" role="dialog">
         <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -385,7 +385,7 @@ hr {
 <div class="card-body">
 <h3>Bookings</h3>
 <hr>
-<a class="btn btn-success btn-sm" style="
+<a title="Book Vehicle" class="btn btn-success btn-sm" style="
     padding: 10px;
     color: #fff;font-size: 16px;
     margin-bottom: 5px;
