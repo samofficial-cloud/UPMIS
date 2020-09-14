@@ -118,7 +118,7 @@ table {
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col"><center>S/N</center></th>
-                                <th scope="col" ><center>Debtor Name</center></th>
+                                <th scope="col" style="width: 16%;"><center>Debtor Name</center></th>
                                 <th scope="col"><center>Invoice Number</center></th>
                                 <th scope="col" ><center>Start Date</center></th>
                                 <th scope="col" ><center>End date</center></th>

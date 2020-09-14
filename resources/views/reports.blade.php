@@ -190,13 +190,19 @@ $year=$current-3;
           <label for="module">Module<span style="color: red;">*</span></label>
             <select class="form-control" required="" id="module" name="module">
               <option value="" disabled selected hidden>Select Module</option>
+              @if ($category=='CPTU only' OR $category=='All')
               <option value="car">Car Rental Module</option>
+              @endif
               <option value="contract">Contracts Module</option>
+              @if ($category=='Insurance only' OR $category=='All')
               <option value="insurance">Insurance Module</option>
+              @endif
               <option value="invoice">Invoice Module</option>
-              <option value="payment">Payments Module</option>
+              {{-- <option value="payment">Payments Module</option> --}}
+              @if ($category=='Real Estate only' OR $category=='All')
               <option value="space">Space Module</option>
               <option value="tenant">Tenants Module</option>
+              @endif
             </select>
         </div>
     </div>
@@ -680,9 +686,15 @@ $year=$current-3;
           <span id="contractbusinesstypemsg"></span>
             <select class="form-control" id="contractbusiness_type" name="contractbusiness_type">
               <option value=" " disabled selected hidden>Select Business Type</option>
+               @if ($category=='Real Estate only' OR $category=='All')
               <option value="Space">SPACE</option>
+              @endif
+              @if($category=='Insurance only' OR $category=='All')
               <option value="Insurance">INSURANCE</option>
+              @endif
+              @if ($category=='CPTU only' OR $category=='All')
               <option value="Car Rental">CAR RENTAL</option>
+              @endif
             </select>
         </div>
     </div>
@@ -801,9 +813,15 @@ $year=$current-3;
           <span id="Inbusinesstypemsg"></span>
             <select class="form-control" id="Inbusiness_type" name="Inbusiness_type">
               <option value=" " disabled selected hidden>Select Business Type</option>
+              @if ($category=='Real Estate only' OR $category=='All')
               <option value="Space">SPACE</option>
+              @endif
+              @if($category=='Insurance only' OR $category=='All')
               <option value="Insurance">INSURANCE</option>
+              @endif
+              @if ($category=='CPTU only' OR $category=='All')
               <option value="Car Rental">CAR RENTAL</option>
+              @endif
             </select>
         </div>
     </div>

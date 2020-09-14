@@ -305,9 +305,9 @@ class carContractsController extends Controller
 
                  DB::table('car_contracts')
                 ->where('id', $id)
-                ->update(['form_status' => 'CPTU Staff']);
+                ->update(['form_status' => 'Transport Officer-CPTU']);
 
-                 DB::table('notifications')->insert(['role'=>'CPTU Staff', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+                 DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
                 return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
 
@@ -341,9 +341,9 @@ class carContractsController extends Controller
 
                  DB::table('car_contracts')
                 ->where('id', $id)
-                ->update(['form_status' => 'CPTU Staff']);
+                ->update(['form_status' => 'Transport Officer-CPTU']);
 
-                 DB::table('notifications')->insert(['role'=>'CPTU Staff', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+                 DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
                 return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
 

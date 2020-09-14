@@ -268,14 +268,14 @@
                             <table class="hover table table-striped  table-bordered" id="myTable">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
+                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                    <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Currency</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
 
                                 </tr>
@@ -541,14 +541,14 @@
                             <table class="hover table table-striped  table-bordered" id="myTable2">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
+                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                    <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
-<th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Currency</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+<th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                 </tr>
                                 </thead>
@@ -811,14 +811,14 @@
                             <table class="hover table table-striped  table-bordered" id="myTable3">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
+                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                    <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
-<th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Currency</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+<th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                 </tr>
                                 </thead>
@@ -1083,14 +1083,14 @@
                             <table class="hover table table-striped  table-bordered" id="myTable4">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
+                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                    <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Currency</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                 </tr>
                                 </thead>
@@ -1375,14 +1375,14 @@
                             <table class="hover table table-striped  table-bordered" id="myTable5">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
+                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                    <th scope="col" style="color:#3490dc;"><center>Votebook Invoice Number</center></th>
-                                    <th scope="col" style="color:#3490dc;"><center>Amount Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Amount Not Paid</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
-                                    <th scope="col"  style="color:#3490dc;"><center>Receipt Number</center></th>
-<th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Currency</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+<th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                 </tr>
                                 </thead>

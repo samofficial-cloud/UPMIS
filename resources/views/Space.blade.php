@@ -317,18 +317,18 @@
       <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
-          <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Major Industry</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Minor Industry</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Space Number</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Location</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Sub Location</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Size (SQM)</center></th>
+          <th scope="col" style="color:#fff;"><center>S/N</center></th>
+          <th scope="col" style="color:#fff;"><center>Major Industry</center></th>
+          <th scope="col" style="color:#fff;"><center>Minor Industry</center></th>
+          <th scope="col" style="color:#fff;"><center>Space Number</center></th>
+          <th scope="col"  style="color:#fff;"><center>Location</center></th>
+          <th scope="col"  style="color:#fff;"><center>Sub Location</center></th>
+          <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
 
 {{--          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>--}}
-          <th scope="col"  style="color:#3490dc;"><center>Status</center></th>
+          <th scope="col"  style="color:#fff;"><center>Status</center></th>
 
-          <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+          <th scope="col"  style="color:#fff;"><center>Action</center></th>
         </tr>
         </thead>
         <tbody>

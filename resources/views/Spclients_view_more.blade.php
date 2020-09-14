@@ -43,7 +43,7 @@ hr {
 
 .form-inline .form-control {
     width: 100%;
-    height: 103%;
+    height: auto;
 }
 
 .form-wrapper{
@@ -162,16 +162,18 @@ hr {
     <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
-        <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-        <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
-        <th scope="col" style="color:#3490dc;"><center>Space Id</center></th>
-        <th scope="col" style="color:#3490dc;"><center>Amount</center></th>
-       <th scope="col"  style="color:#3490dc;"><center>Currency</center></th>
-       <th scope="col"  style="color:#3490dc;"><center>Payment Cycle</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Escalation Rate</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+        <th scope="col" style="color:#fff;"><center>S/N</center></th>
+        <th scope="col" style="color:#fff;"><center>Contract Id</center></th>
+        <th scope="col" style="color:#fff;"><center>Space Id</center></th>
+        <th scope="col" style="color:#fff;"><center>Amount</center></th>
+       <th scope="col"  style="color:#fff;"><center>Currency</center></th>
+       <th scope="col"  style="color:#fff;"><center>Payment Cycle</center></th>
+          <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+          <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+          <th scope="col"  style="color:#fff;"><center>Escalation Rate</center></th>
+          @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator')
+          <th scope="col"  style="color:#fff;"><center>Action</center></th>
+          @endif
         </tr>
         </thead>
         <tbody>
@@ -237,23 +239,25 @@ hr {
             <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
             <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
             <td><center>{{$var->escalation_rate}}</center></td>
+            @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator')
             <td><center>
               @if($var->contract_status==0 or $var->end_date<date('Y-m-d'))
-               <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" title="Click to Renew Contract"><center><i class="fa fa-refresh" style="font-size:36px;"></i></center></a>
+               <a title="Renew this Contract" href="{{ route('renew_space_contract_form',$var->contract_id) }}" title="Click to Renew Contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
               @else
-                    <a data-toggle="modal" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:30px; color:red;"></i></a>
-                    <a href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:30px; color: green;"></i></a>
-
+              <a title="Edit this Contract Details" href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                <a title="Terminate this Contract" data-toggle="modal" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                    
                     <div class="modal fade" id="terminate{{$var->contract_id}}" role="dialog">
 
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                        <b><h5 class="modal-title">Are you sure you want to terminate {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}?</h5></b>
+                                     <h5 style="color: red;">WARNING !!!</h5>   
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
 
                                 <div class="modal-body">
+                                  <b><h5 class="modal-title">Are you sure you want to terminate {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}?</h5></b>
                                     <form method="get" action="{{ route('terminate_space_contract',$var->contract_id)}}" >
                                         {{csrf_field()}}
 
@@ -272,6 +276,7 @@ hr {
                     @endif
               </center>
             </td>
+            @endif
           </tr>
           @endforeach
         </tbody>
@@ -286,16 +291,16 @@ hr {
         <table class="hover table table-striped  table-bordered" id="myTable1">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>End date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Period</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Contract Id</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Created Date</center></th>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>End date</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Period</center></th>
+                                <th scope="col" style="color:#fff;"><center>Contract Id</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Amount</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Created Date</center></th>
 
-                                <th scope="col"  style="color:#3490dc;"><center>Remarks</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Remarks</center></th>
                             </tr>
                             </thead>
                             <tbody>

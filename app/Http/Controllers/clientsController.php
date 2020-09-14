@@ -109,7 +109,7 @@ class clientsController extends Controller
     $data = insurance_contract::select('full_name')->where('full_name', 'LIKE', "%{$query}%")->distinct()->orderBy('full_name','asc')->get();
   }
   elseif($queryy=='Car Rental'){
-    $data = carContract::select('fullName')->where('fullName', 'LIKE', "%{$query}%")->distinct()->orderBy('fullName','asc')->get();
+    $data = carContract::select('fullName')->where('form_completion','1')->where('fullName', 'LIKE', "%{$query}%")->distinct()->orderBy('fullName','asc')->get();
   }
       if(count($data)!=0){
       $output = '<ul class="dropdown-menu form-card" style="display: block;

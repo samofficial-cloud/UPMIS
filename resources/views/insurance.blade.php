@@ -287,17 +287,17 @@ $companies=DB::table('insurance_parameters')->get();
       <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
-          <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Class</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Insurance Company</center></th>
-          <th scope="col" style="color:#3490dc;"><center>Type</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Price </center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Commission(%)</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Commission</center></th>
-          <th scope="col"  style="color:#3490dc;"><center>Billing</center></th>
+          <th scope="col" style="color:#fff;"><center>S/N</center></th>
+          <th scope="col" style="color:#fff;"><center>Class</center></th>
+          <th scope="col" style="color:#fff;"><center>Insurance Company</center></th>
+          <th scope="col" style="color:#fff;"><center>Type</center></th>
+          <th scope="col"  style="color:#fff;"><center>Price </center></th>
+          <th scope="col"  style="color:#fff;"><center>Commission(%)</center></th>
+          <th scope="col"  style="color:#fff;"><center>Commission</center></th>
+          <th scope="col"  style="color:#fff;"><center>Billing</center></th>
             @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
             @else
-          <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+          <th scope="col"  style="color:#fff;"><center>Action</center></th>
                 @endif
         </tr>
         </thead>
