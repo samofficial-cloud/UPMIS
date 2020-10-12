@@ -20,8 +20,39 @@ table {
   content: counter(tableCount);
   counter-increment: tableCount;
   }
+
+  #header,
+#footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+#header {
+  top: 0;
+  border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+  text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px 75px  !important;
+            padding: 0px 0px 0px 0px !important;
+        }
 </style>
 <body>
+  <div id="footer">
+  <div class="page-number"></div>
+</div>
 	<?php
 	Use App\operational_expenditure;
     $operational=operational_expenditure::where('flag',1)->get();
@@ -52,15 +83,15 @@ table {
   <tbody>
   	@foreach($operational as $operational)
   	<tr>
-  	 <th scope="row" class="counterCell text-center">.</th>
+  	 <td scope="row" class="counterCell" style="text-align: center;" >.</td>
         <td>{{$operational->vehicle_reg_no}}</td>
-        <td>{{$operational->lpo_no}}</td>
+        <td style="text-align: right;">{{$operational->lpo_no}}</td>
         <td><center>{{date("d/m/Y",strtotime($operational->date_received))}}</center></td>
         <td>{{$operational->description}}</td>
         <td>{{$operational->service_provider}}</td>
-        <td>{{$operational->fuel_consumed}}</td>
-        <td>{{number_format($operational->amount)}}</td>
-        <td>{{number_format($operational->total)}}</td>	
+        <td style="text-align: right;">{{$operational->fuel_consumed}}</td>
+        <td style="text-align: right;">{{number_format($operational->amount)}}</td>
+        <td style="text-align: right;">{{number_format($operational->total)}}</td>	
   	</tr>
   	@endforeach
   </tbody>

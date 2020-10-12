@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\client;
 use App\space_contract;
 use App\Notifications\SendMessage;
+use App\Notifications\SendMessage2;
 use DB;
 use App\Http\Controllers\Controller;
 use App\carContract;
@@ -20,9 +21,17 @@ class clientsController extends Controller
       ->where('contract','Space')
       ->orderBy('clients.full_name','asc')->get();
   $SPclients=client::join('space_contracts', 'space_contracts.full_name','=','clients.full_name')->where('contract','Space')->whereDate('end_date','<',date('Y-m-d'))->orwhere('contract_status','0')->orderBy('clients.full_name','asc')->get();
-  $carclients=carContract::select('fullName','email','cost_centre')->distinct()->orderBy('fullName','asc')->get();
+  $active_carclients=carContract::select('fullName','email','cost_centre')->whereDate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
+  $inactive_carclients=carContract::select('fullName','email','cost_centre')->whereDate('end_date','<',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
    $insuranceclients=insurance_contract::orderBy('full_name','asc')->get();
-    return view('clients')->with('SCclients',$SCclients)->with('SPclients',$SPclients)->with('carclients',$carclients)->with('insuranceclients',$insuranceclients);
+   $active_insuranceclients=insurance_contract::select('full_name','email','phone_number')->whereDate('end_date','>=',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
+   $inactive_insuranceclients=insurance_contract::select('full_name','email','phone_number')->whereDate('end_date','<',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
+
+   $Spemails=client::whereIn('full_name',space_contract::select('full_name')->where('contract_status','1')->distinct()->pluck('full_name')->toArray())
+      ->where('contract','Space')
+      ->orderBy('clients.full_name','asc')->get();
+
+    return view('clients')->with('SCclients',$SCclients)->with('SPclients',$SPclients)->with('active_carclients',$active_carclients)->with('inactive_carclients',$inactive_carclients)->with('insuranceclients',$insuranceclients)->with('active_insuranceclients',$active_insuranceclients)->with('inactive_insuranceclients',$inactive_insuranceclients)->with('Spemails',$Spemails);
     }
 
     public function edit(Request $request){
@@ -46,6 +55,25 @@ class clientsController extends Controller
          return redirect()->back()->with('success', 'Client Details Edited Successfully');  
     }
 
+
+    public function editIns(Request $request){
+        $full_name=$request->get('client_name');
+        $email=$request->get('email');
+        $phone_number=$request->get('phone_number');
+        //$address=$request->get('address');
+      DB::table('insurance_contracts')
+                ->where('full_name', $full_name)
+                ->update(['email' => $email]);
+
+
+            DB::table('insurance_contracts')
+                ->where('full_name', $full_name)
+                ->update(['phone_number' => $phone_number]);
+
+
+         return redirect()->back()->with('success', 'Client Details Edited Successfully');  
+    }
+
     public function ClientViewMore($id){
     $clientname=client::select('full_name')->where('client_id',$id)->value('full_name');
     $details=client::where('client_id',$id)->get();
@@ -59,13 +87,23 @@ class clientsController extends Controller
         $invoices= DB::table('car_rental_invoices')
                    ->whereIn('contract_id',DB::table('car_contracts')->select('id')->where('email',$email)->where('fullName',$name)->where('cost_centre',$centre)->pluck('id')->toArray())
                    ->get();
-       return view('CarClients_view_more')->with('clientname',$name)->with('clientemail',$email)->with('clientcentre',$centre)->with('contracts',$contracts)->with('invoices',$invoices);  
+       return view('carClients_view_more')->with('clientname',$name)->with('clientemail',$email)->with('clientcentre',$centre)->with('contracts',$contracts)->with('invoices',$invoices);  
+    }
+
+    public function InsuranceViewMore($name, $email, $phone_number){
+      $contracts=insurance_contract::where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->get();
+      $total_commision_tzs=insurance_contract::select('commission')->where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->where('currency','TZS')->sum('commission');
+      $total_commision_usd=insurance_contract::select('commission')->where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->where('currency','USD')->sum('commission');
+      $total_premium_tzs=insurance_contract::select('premium')->where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->where('currency','TZS')->sum('premium');
+      $total_premium_usd=insurance_contract::select('premium')->where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->where('currency','USD')->sum('premium');
+       return view('insurance_view_more')->with('clientname',$name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('total_commision_tzs',$total_commision_tzs)->with('total_commision_usd',$total_commision_usd)->with('total_premium_tzs',$total_premium_tzs)->with('total_premium_usd',$total_premium_usd);  
     }
 
     public function SendMessage(Request $request){
         $name=$request->get('client_name');
         $subject=$request->get('subject');
         $message=$request->get('message');
+        $type=$request->get('type');
         if ($request->hasFile('image')) {
         $file = $request->file('image');
         $destinationPath = 'uploads';
@@ -74,12 +112,82 @@ class clientsController extends Controller
         $mime=$file->getMimeType();
         $path=$file->getRealPath();
         $file->move($destinationPath,$filename);
-    $client=client::where('full_name',$name)->first();
+        if($type=='space'){
+           $client=client::where('full_name',$name)->first();
+        }
+        elseif ($type=='car') {
+          $client=carContract::where('fullName',$name)->first();
+          dd("Ignored");
+        }
+        elseif($type=='udia'){
+           $client=insurance_contract::where('full_name',$name)->first();
+        }
+    // \Notification::send($recipients, new Announcement($centre));
       $client->notify(new SendMessage($name, $subject, $message, $file,$extension,$filename,$mime,$path));
       return redirect()->back()->with('success', 'Message Sent Successfully');
       }
       else{
-        return redirect()->back()->with('errors', 'Could not attach file');
+        if($type=='space'){
+           $client=client::where('full_name',$name)->first();
+        }
+        elseif ($type=='car') {
+          $client=carContract::where('fullName',$name)->first();
+        }
+        elseif($type=='udia'){
+           $client=insurance_contract::where('full_name',$name)->first();
+        }
+         $client->notify(new SendMessage2($name, $subject, $message));
+         return redirect()->back()->with('success', 'Message Sent Successfully');
+      } 
+    }
+
+    public function SendMessage2(Request $request){
+        $raw_names=$request->get('client_name');
+        $names = explode (",", $raw_names);  
+        $subject=$request->get('subject');
+        $message=$request->get('message');
+        $type=$request->get('type');
+        if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $destinationPath = 'uploads';
+        $filename=$file->getClientOriginalName();
+        $extension=$file->getClientOriginalExtension();
+        $mime=$file->getMimeType();
+        $path=$file->getRealPath();
+        $file->move($destinationPath,$filename);
+        foreach($names as $name){
+          if($type=='space'){
+           $client=client::where('full_name',$name)->first();
+        }
+        elseif ($type=='car') {
+          $client=carContract::where('fullName',$name)->first();
+          dd("Ignored");
+        }
+        elseif($type=='udia'){
+           $client=insurance_contract::where('full_name',$name)->first();
+        }
+    // \Notification::send($recipients, new Announcement($centre));
+      $client->notify(new SendMessage($name, $subject, $message, $file,$extension,$filename,$mime,$path));
+        }
+    
+      return redirect()->back()->with('success', 'Message Sent Successfully');
+      }
+      else{
+        foreach($names as $name){
+          if($type=='space'){
+           $client=client::where('full_name',$name)->first();
+        }
+        elseif ($type=='car') {
+          $client=carContract::where('fullName',$name)->first();
+          dd("Ignored");
+        }
+        elseif($type=='udia'){
+           $client=insurance_contract::where('full_name',$name)->first();
+        }
+    // \Notification::send($recipients, new Announcement($centre));
+       $client->notify(new SendMessage2($name, $subject, $message));
+        }
+         return redirect()->back()->with('success', 'Message Sent Successfully');
       } 
     }
     public function editCarclients(Request $request){

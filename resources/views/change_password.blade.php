@@ -5,18 +5,54 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
-            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
+            
+            @if($category=='All')
+           <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Insurance only')
+          <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Real Estate only')
+          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+           @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
+            <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+
+            @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+            @else
+            @endif
+
+            @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
+    @else
+    @endif
+            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
+    @else
+    @endif
+    @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+    
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+    @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-          <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
-
-
-            <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payment</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+ @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+  @endif
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -46,7 +82,7 @@
           {{ csrf_field() }}
 
                   <div class="form-group{{ $errors->has('current-password') ? ' has-error' : '' }} row">
-            <label for="new-password" class="col-sm-3 control-label"><strong>Current Password :</strong></label>
+            <label for="new-password" class="col-sm-3 control-label"><strong>Current Password: <span style="color: red;">*</span></strong></label>
 
             <div class="col-sm-7">
               <input id="current-password" type="password" class="form-control" name="current-password" required>
@@ -60,7 +96,7 @@
           </div>
 
           <div class="form-group{{ $errors->has('new-password') ? ' has-error' : '' }} row">
-            <label for="new-password" class="col-sm-3 control-label"><strong>New Password :</strong></label>
+            <label for="new-password" class="col-sm-3 control-label"><strong>New Password: <span style="color: red;">*</span></strong></label>
 
             <div class="col-sm-7">
               <input id="new-password" type="password" class="form-control" name="new-password" required>
@@ -74,17 +110,17 @@
           </div>
 
           <div class="form-group row">
-            <label for="new-password-confirm" class="col-sm-3 control-label"><strong>Confirm Password :</strong></label>
+            <label for="new-password-confirm" class="col-sm-3 control-label"><strong>Confirm Password: <span style="color: red;">*</span></strong></label>
 
             <div class="col-sm-7">
               <input id="new-password-confirm" type="password" class="form-control" name="new-password_confirmation" required>
             </div>
           </div>
 
-           <div class="form-group">
-              <center><button type="submit" class="btn btn-primary">Submit</button>
-              </center>
-          </div>
+          <center><div class="form-group">
+            <input type="button" class="btn btn-primary" value="Back" onclick="history.back()">
+              <button type="submit" class="btn btn-danger">Change</button>
+          </div></center>
         </form>
   </div>
 </div>

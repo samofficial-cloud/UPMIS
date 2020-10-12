@@ -20,12 +20,43 @@ table {
   content: counter(tableCount);
   counter-increment: tableCount;
   }
+
+  #header,
+#footer {
+  position: fixed;
+  left: 0;
+    right: 0;
+    color: #aaa;
+    font-size: 0.9em;
+}
+#header {
+  top: 0;
+    border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+    text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px  !important;
+            padding: 0px 0px 0px 0px !important;
+        }
 </style>
 <body>
 	<?php
 	$i=1;
 	
 	?>
+    <div id="footer">
+  <div class="page-number"></div>
+</div>
   <center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
@@ -124,7 +155,7 @@ table {
                                 <th scope="col" ><center>End date</center></th>
                                {{--  <th scope="col" ><center>Period</center></th> --}}
                                 <th scope="col"><center>Contract Id</center></th>
-                                <th scope="col" ><center>Amount</center></th>
+                                <th scope="col" style="width: 13%;"><center>Amount</center></th>
                                 <th scope="col" ><center>GEPG Control No</center></th>
                                 <th scope="col" ><center>Invoice Date</center></th>
                                 @if($_GET['payment_filter']=='')
@@ -135,7 +166,7 @@ table {
                             <tbody>
                             @foreach($invoices as $var)
                                 <tr>
-                                    <th scope="row">{{ $i }}.</th>
+                                    <td scope="row" style="text-align: center;">{{ $i }}.</td>
                                     <td>{{$var->debtor_name}}</td>
                                     <td><center>{{$var->invoice_number}}</center></td>
 

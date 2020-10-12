@@ -12,19 +12,51 @@ table {
 table, td, th {
   border: 1px solid black;
 }
-table {
+/*table {
   counter-reset: tableCount;
-  }
+  }*/
 
-  .counterCell:before {
+ /* .counterCell:before {
   content: counter(tableCount);
   counter-increment: tableCount;
-  }
+  }*/
+
+  #header,
+#footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+#header {
+  top: 0;
+  border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+  text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px 75px  !important;
+            padding: 0px 0px 0px 0px !important;
+        }
 </style>
 <body>
+  <div id="footer">
+  <div class="page-number"></div>
+</div>
 	<?php
       
       $today= date('Y-m-d');
+      $i=1;
       
 	?>
 	<center>
@@ -85,12 +117,13 @@ table {
     <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
-          <th scope="col"><center>S/N</center></th>
+          <th scope="col" style="width: 5%;"><center>S/N</center></th>
           <th scope="col"><center>Space Id</center></th>
           <th scope="col"><center>Type</center></th>
-          <th scope="col" ><center>Location</center></th>
+          <th scope="col" style="width: 20%"><center>Location</center></th>
           <th scope="col" ><center>Size (SQM)</center></th>
-          <th scope="col" ><center>Rent Price Guide</center></th>
+          <th scope="col" ><center>Currency</center></th>
+          <th scope="col" style="width: 20%"><center>Rent Price Guide</center></th>
         </tr>
         </thead>
         <tbody>
@@ -98,10 +131,10 @@ table {
         @foreach($spaces as $var)
           <tr>
 
-            <th scope="row" class="counterCell text-center">.</th>
-            <td><center>{{$var->space_id}}</center></td>
-            <td><center>{{$var->major_industry}}</center></td>
-            <td><center>{{$var->location}}</center></td>
+            <td scope="row" style="text-align: center;">{{$i}}.</td>
+            <td>{{$var->space_id}}</td>
+            <td>{{$var->major_industry}}</td>
+            <td>{{$var->location}}</td>
 
             <td><center>  @if($var->size==null)
                   N/A
@@ -110,14 +143,16 @@ table {
                             @endif
 
               </center></td>
-            <td><center>
-              @if($var->rent_price_guide_currency==null OR $var->rent_price_guide_to==null)
-              N/A
+              <td><center>{{$var->rent_price_guide_currency}}</center></td>
+            <td style="text-align: center;">
+              @if($var->rent_price_guide_from==null OR $var->rent_price_guide_to==null)
+             <center> N/A</center>
               @else
-              {{$var->rent_price_guide_currency}} {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}}
+               {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}}
               @endif
-            </center></td>
+            </td>
         </tr>
+        <?php $i=$i+1;?>
         @endforeach
     </tbody>
 </table>

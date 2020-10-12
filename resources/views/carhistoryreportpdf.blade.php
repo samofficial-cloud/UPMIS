@@ -20,12 +20,41 @@ table {
   content: counter(tableCount);
   counter-increment: tableCount;
   }
+  #footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+#header {
+  top: 0;
+  border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+  text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px 75px  !important;
+            padding: 0px 0px 0px 0px !important;
+            }
 </style>
 <body>
 	<?php
     
     $i=1;
 	?>
+  <div id="footer">
+  <div class="page-number"></div>
+</div>
 <center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
@@ -33,7 +62,7 @@ table {
      <br><br>History Report for <strong>{{$_GET['reg']}}</strong> 
     </b> 
 </center>
-<br>
+
 <h3>Vehicle Details</h3>
 		<table style="font-size: 18px;width: 50%" id="t_id">
 			@foreach($details as $details)
@@ -47,7 +76,7 @@ table {
 			</tr>
 			<tr>
 				<td>Hire rate</td>
-				<td>{{number_format($details->hire_rate)}}</td>
+				<td>TZS {{number_format($details->hire_rate)}}</td>
 			</tr>
 			@endforeach
 		</table>
@@ -59,7 +88,7 @@ table {
   <thead class="thead-dark">
     <tr>
       <th scope="col" style="width: 5%;"><center>S/N</center></th>
-      <th scope="col"><center>Client Name</center></th>
+      <th scope="col" style="width: 25%;"><center>Client Name</center></th>
        <th scope="col"><center>Cost Center</center></th>
       <th scope="col"><center>Trip Start Date</center></th>
        <th scope="col"><center>Trip End Date</center></th>
@@ -69,7 +98,7 @@ table {
   <tbody>
     @foreach($bookings as $bookings)
       <tr>
-      	<th scope="row" class="counterCell text-center">.</th>
+      	<td scope="row" class="counterCell" style="text-align: center;">.</td>
       	<td>{{$bookings->fullName}}</td>
       	<td><center>{{$bookings->cost_centre}}</center></td>
       	<td><center>{{date("d/m/Y",strtotime($bookings->start_date))}}</center></td>
@@ -102,14 +131,14 @@ table {
   <tbody>
     @foreach($operations as $operational)
       <tr>
-        <th scope="row">{{$i}}.</th>
+        <td scope="row" style="text-align: center;">{{$i}}.</td>
         <td>{{$operational->lpo_no}}</td>
         <td><center>{{date("d/m/Y",strtotime($operational->date_received))}}</center></td>
-        <td>{{$operational->description}}</td>
+        <td style="width: 28%;">{{$operational->description}}</td>
         <td>{{$operational->service_provider}}</td>
         <td>{{$operational->fuel_consumed}}</td>
-        <td>{{number_format($operational->amount)}}</td>
-        <td>{{number_format($operational->total)}}</td>
+        <td style="text-align: right;">{{number_format($operational->amount)}}</td>
+        <td style="text-align: right;">{{number_format($operational->total)}}</td>
     </tr>
     <?php
     $i=$i+1;

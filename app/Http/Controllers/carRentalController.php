@@ -8,6 +8,7 @@ use App\carRental;
 use App\operational_expenditure;
 use App\hire_rate;
 use App\carContract;
+use App\cost_centre;
 
 class carRentalController extends Controller
 {
@@ -161,6 +162,20 @@ public function deletecar($id){
      {
       $query = $request->get('query');
       $data = hire_rate::select('hire_rate')->where('vehicle_model',$query)->value('hire_rate');
+     
+       $output = $data;
+     
+      echo $output;
+     
+   }
+ }
+
+ public function faculty(Request $request){
+
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = cost_centre::select('costcentre')->where('costcentre_id',$query)->value('costcentre');
      
        $output = $data;
      

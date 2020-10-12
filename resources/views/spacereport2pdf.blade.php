@@ -81,13 +81,12 @@ table {
         	@foreach($space as $space)
         	<tr>
 
-        		<th scope="row" class="counterCell">.</th>
-
+        		<td scope="row" class="counterCell" style="text-align: center;">.</td>
               <td>{{$space->full_name}}</td>
               <td><center>{{date("d/m/Y",strtotime($space->start_date))}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($space->end_date))}}</center></td>
               <td>{{$space->currency}} {{number_format($space->amount)}}</td>
-              <td>{{$space->escalation_rate}}</td>
+              <td><center>{{$space->escalation_rate}}</center></td>
         	</tr>
 
         	@endforeach
@@ -115,7 +114,7 @@ table {
                             <tbody>
                             @foreach($invoices as $var)
                                 <tr>
-                                    <th scope="row">{{ $i }}.</th>
+                                    <td scope="row" style="text-align: center;">{{ $i }}.</td>
                                     <td>{{$var->debtor_name}}</td>
                                     <td><center>{{$var->invoice_number}}</center></td>
 
