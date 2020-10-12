@@ -79,7 +79,8 @@
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -106,99 +107,162 @@
 
 
           <div class="row">
+<div class="col-12">
+              <form method="post" action="{{ route('edit_system_changes')}}"  id="form1" >
+                  {{csrf_field()}}
+
+@foreach($system_settings as $var)
+
+<h4 style="margin-top: 1.3%;">General</h4>
+                  <div class="settings_group">
+
+
+                  <div class="group_children">
+                      <div class="form-wrapper">
+                          <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Financial year</strong></label>
+                          <input type="text"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->financial_year}}" id="input_financial_year" name="financial_year" autocomplete="off" required>
+                          <p style="display: none;" class="mt-2 p-1"  id="messageFinancialYear"></p>
+                      </div>
+                  </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>System's default password</strong></label>
+                              <input type="text"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->default_password}}" id="rent_price_guide_checkbox" name="default_password" required autocomplete="off">
+
+                          </div>
+                      </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Maximum number of days to pay invoice</strong></label>
+                              <input type="number" min="1" max="90"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->max_no_of_days_to_pay_invoice}}" id="rent_price_guide_checkbox" name="max_no_of_days_to_pay_invoice" required autocomplete="off">
+
+                          </div>
+                      </div>
+
+                  </div>
+
+
+                  <h4 style="margin-top: 1.3%;">Insurance</h4>
+                  <div class="settings_group">
 
 
 
-            <div style="    padding-left: 7px; padding-right: 7px;" class="col-xl-4 col-lg-4 col-md-4 mt-2 col-sm-12">
-              <a style="width: 100% !important; text-decoration:none;"  href="#" class="hvr-icon-wobble-horizontal">
-                <div class="card " style="flex-direction: row; padding: 9%; color:black;">
-                  <div  style="padding-right: 22%;"> <h3 >REAL ESTATE</h3>
-
-                  </div>     <div  ><i class="fas fa-building hvr-icon" style="font-size: 50px;" aria-hidden="true"></i></div>
-
-                </div>
-              </a>
-
-            </div>
 
 
-            <div style="    padding-left: 7px; padding-right: 7px;" class="col-xl-4 col-lg-4 col-md-4 mt-2 col-sm-12">
-              <a style="width: 100% !important; text-decoration:none;" href="#" class="hvr-icon-wobble-horizontal">
-                <div class="card " style="flex-direction: row; padding: 9%; color:black;">
-                  <div  style="padding-right: 22%;"> <h3 >INSURANCE</h3>
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Percentage used when generating invoice to principals</strong></label>
+                              <input type="number" min="1" max="100" style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" required value="{{($var->insurance_percentage)*100}}" id="rent_price_guide_checkbox" name="insurance_percentage" autocomplete="off">
 
-                  </div>     <div  ><i class="fas fa-address-card hvr-icon" style="font-size: 50px;" aria-hidden="true"></i></div>
+                          </div>
+                      </div>
 
-                </div>
-              </a>
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
 
-            </div>
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Day in a month for the system to generate insurance invoices automatically</strong></label>
+                              <input type="number" min="1"  max="31" style="display: inline-block; float: right; clear: both;  max-width: 110px; text-align: center;" required value="{{$var->day_for_insurance_invoice}}" id="rent_price_guide_checkbox" name="day_for_insurance_invoice" autocomplete="off">
 
+                          </div>
+                      </div>
 
-            <div style=" padding-left: 7px; padding-right: 7px;" class="col-xl-4 col-lg-4 col-md-4 mt-2 col-sm-12">
-              <a style="width: 100% !important; text-decoration:none;" href="#" class="hvr-icon-wobble-horizontal">
-                <div class="card " style="flex-direction: row; padding: 9%; color:black;">
-                  <div  style="padding-right: 22%;"> <h3 >CAR RENTAL</h3>
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
 
-                  </div>     <div  ><i class="fas fa-car-side hvr-icon" style="font-size: 50px;" aria-hidden="true"></i></div>
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Invoice start day(Day in a month)</strong></label>
+                              <input type="number" min="1"  max="31" required style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->insurance_invoice_start_day}}" id="rent_price_guide_checkbox" name="insurance_invoice_start_day" autocomplete="off">
 
-                </div>
-              </a>
+                          </div>
+                      </div>
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
 
-            </div>
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Invoice end day(Day in a month)</strong></label>
+                              <input type="number" min="1"  max="31"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->insurance_invoice_end_day}}" id="rent_price_guide_checkbox" name="insurance_invoice_end_day" required autocomplete="off">
+                          </div>
+                      </div>
 
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
 
-            <div style="    padding-left: 7px; padding-right: 7px;" class="col-xl-4 col-lg-4 col-md-4 mt-2 col-sm-12">
-              <a style="width: 100% !important; text-decoration:none;" href="#" class="hvr-icon-wobble-horizontal">
-                <div class="card " style="flex-direction: row; padding: 9%; color:black;">
-                  <div  style="padding-right: 22%;"> <h3 >CAR RENTAL</h3>
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Insurance Companies</strong></label>
+                              <a style="float: right;  " href="/insurance_companies">Change</a>
 
-                  </div>     <div  ><i class="fas fa-car-side hvr-icon" style="font-size: 50px;" aria-hidden="true"></i></div>
+                          </div>
+                      </div>
 
-                </div>
-              </a>
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
 
-            </div>
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Insurance Classes</strong></label>
+                              <a style="float: right;  " href="/insurance_classes">Change</a>
 
-
-            <div style="    padding-left: 7px; padding-right: 7px;" class="col-xl-4 col-lg-4 col-md-4 mt-2 col-sm-12">
-              <a style="width: 100% !important; text-decoration:none;" href="#" class="hvr-icon-wobble-horizontal">
-                <div class="card " style="flex-direction: row; padding: 9%; color:black;">
-                  <div  style="padding-right: 22%;"> <h3 >CLIENTS</h3>
-
-                  </div>     <div  ><i class="fas fa-user-tie hvr-icon" style="font-size: 50px;" aria-hidden="true"></i></div>
-
-                </div>
-              </a>
-
-            </div>
-
-
-            <div style="    padding-left: 7px; padding-right: 7px;" class="col-xl-4 col-lg-4 col-md-4 mt-2  col-sm-12">
-              <a style="width: 100% !important; text-decoration:none;" href="#" class="hvr-icon-wobble-horizontal">
-                <div class="card " style="flex-direction: row; padding: 9%; color:black;">
-                  <div  style="padding-right: 22%;"> <h3 >REPORTS</h3>
-
-                  </div>     <div  ><i class="fas fa-file-pdf hvr-icon" style="font-size: 50px;" aria-hidden="true"></i></div>
-
-                </div>
-              </a>
-
-            </div>
+                          </div>
+                      </div>
 
 
 
-            <div style="    padding-left: 7px; padding-right: 7px;" class="col-xl-4 col-lg-4 col-md-4 mt-2 col-sm-12">
-              <a style="width: 100% !important; text-decoration:none;" href="/user_role_management" class="hvr-icon-wobble-horizontal">
-                <div class="card " style="flex-direction: row; padding: 9%; color:black;">
-                  <div  > <h3 >USERS AND ROLE MANAGEMENT</h3>
 
-                  </div>     <div  ><i class="fas fa-user-friends hvr-icon" style="font-size: 50px;" aria-hidden="true"></i></div>
 
-                </div>
-              </a>
+                  </div>
 
-            </div>
+<br>
+
+                  <h4>Real Estate</h4>
+                  <div class="settings_group">
+
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Days before the payment cycle ends for which the system will create space invoices automatically</strong></label>
+                              <input type="number" min="1"  max="27"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->days_in_advance_for_invoices}}" id="rent_price_guide_checkbox" name="days_in_advance_for_invoices" required autocomplete="off">
+
+                          </div>
+                      </div>
+
+{{--                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">--}}
+
+{{--                      <div class="group_children">--}}
+{{--                          <div class="form-wrapper">--}}
+{{--                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Bills invoice start day</strong></label>--}}
+{{--                              <input type="text"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="1" id="rent_price_guide_checkbox" name="default_password" autocomplete="off">--}}
+
+{{--                          </div>--}}
+{{--                      </div>--}}
+
+{{--                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">--}}
+
+{{--                      <div class="group_children">--}}
+{{--                          <div class="form-wrapper">--}}
+{{--                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Bills invoice end day</strong></label>--}}
+{{--                              <input type="text"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="20" id="rent_price_guide_checkbox" name="default_password" autocomplete="off">--}}
+
+{{--                          </div>--}}
+{{--                      </div>--}}
+
+                  </div>
+
+
+<br>
+
+                  @endforeach
+                  <div align="right">
+                      <button class="btn btn-primary" id="save_btn" type="submit">Save changes</button>
+                      <a href="/"  class="btn btn-danger" >Cancel</a>
+                  </div>
+              </form>
+</div>
 
           </div>
 
@@ -209,8 +273,116 @@
 @endsection
 
 @section('pagescript')
+<script>
+
+    $(document).ready(function() {
+
+    //Put our input DOM element into a jQuery Object
+    var $input = jQuery('input[name="financial_year"]');
+
+    //Bind keyup/keydown to the input
+    $input.bind('keyup','keydown', function(e){
+
+    //To accomdate for backspacing, we detect which key was pressed - if backspace, do nothing:
+    if(e.which !== 8) {
+    var value=$input.val();
+
+    if(value.charAt(0)==0 ||value.charAt(0)==1){
+
+    document.getElementById("messageFinancialYear").style.display ='block';
+    document.getElementById("messageFinancialYear").style.backgroundColor ='#ccd8e263';
+    document.getElementById("messageFinancialYear").style.color ='red';
+    document.getElementById("messageFinancialYear").innerHTML ='Invalid input';
+    document.getElementById("save_btn").disabled=true;
+
+
+    }
+
+    else{
+        document.getElementById("messageFinancialYear").style.display ='none';
+    document.getElementById("messageFinancialYear").innerHTML ='';
+    document.getElementById("save_btn").disabled=false;
+    document.getElementById("messageFinancialYear").style.backgroundColor ='';
+
+    if(value.length===4){
+
+    var year=document.getElementById('input_financial_year').value;
+
+    var current_year=new Date().getFullYear();
+    var diff;
+
+    if (current_year > year) {
+    diff=current_year-year;
+    } else {
+    diff=year-current_year;
+    }
+
+    if (diff===0 || diff===1 ){
+
+    document.getElementById("input_financial_year").setAttribute("maxlength", "9");
+    document.getElementById("input_financial_year").value =value+'/';
+        document.getElementById("messageFinancialYear").style.display ='none';
+
+    }else{
+    document.getElementById("input_financial_year").setAttribute("maxlength", "4");
+        document.getElementById("messageFinancialYear").style.display ='block';
+    document.getElementById("messageFinancialYear").style.backgroundColor ='#ccd8e263';
+    document.getElementById("messageFinancialYear").style.color ='red';
+    document.getElementById("messageFinancialYear").innerHTML ='Invalid input';
+    document.getElementById("save_btn").disabled=true;
+
+    }
+
+    // document.getElementById("input_financial_year").value =value+'/';
+    }
+
+    if(value.length<9){
+    // document.getElementById("messageFinancialYear").style.backgroundColor ='#ccd8e263';
+    // document.getElementById("messageFinancialYear").style.color ='red';
+    // document.getElementById("messageFinancialYear").innerHTML ='Invalid input';
+    document.getElementById("save_btn").disabled=true;
+
+    }
+
+
+    if(value.length===9){
+
+    var value2=$input.val();
+    var small=Number(value2.slice(0, 4));
+    var big=Number(value2.slice(-4));
+    var difference=big-small;
+
+
+    if (difference===1){
+        document.getElementById("messageFinancialYear").style.display ='none';
+    document.getElementById("messageFinancialYear").innerHTML ='';
+    document.getElementById("save_btn").disabled=false;
+    document.getElementById("messageFinancialYear").style.backgroundColor ='';
+
+
+    }
+    else {
+        document.getElementById("messageFinancialYear").style.display ='block';
+    document.getElementById("messageFinancialYear").style.backgroundColor ='#ccd8e263';
+    document.getElementById("messageFinancialYear").style.color ='red';
+    document.getElementById("messageFinancialYear").innerHTML ='Invalid input';
+    document.getElementById("save_btn").disabled=true;
+
+
+    }
+
+    }
+
+
+    }
 
 
 
 
+    }
+    });
+
+
+    });
+</script>
 @endsection

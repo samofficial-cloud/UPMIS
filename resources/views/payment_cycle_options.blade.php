@@ -116,7 +116,7 @@
 
 
 <br>
- <a style="cursor: pointer; color: black; font-weight: bold; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal" title="Add new role" data-target="#add_role"  role="button" aria-pressed="true" name="editC">Add New Role </a>
+ <a style="cursor: pointer;" data-toggle="modal" title="Add new role" data-target="#add_role"  role="button" aria-pressed="true" name="editC"> <i class="fa fa-plus " style="font-size:20px; color: black;     background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;"></i></a>
 
 
 
@@ -195,12 +195,12 @@
 
               <tbody>
 
-              @foreach($roles as $var)
+              @foreach($payment_cycle_options as $var)
                 <tr>
 
                   <td class="text-center">{{$i}}</td>
-                  <td>{{$var->user_roles}}</td>
-                  <td>{{$var->category}}</td>
+                  <td>{{$var->cycle}}</td>
+                  <td>{{$var->days}}</td>
                   <td><center>
 
 

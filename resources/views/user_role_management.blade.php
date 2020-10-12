@@ -85,7 +85,8 @@
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -116,11 +117,18 @@
 
 
 <br>
-            <a style="cursor: pointer;" data-toggle="modal" title="Add new user" data-target="#add_user"  role="button" aria-pressed="true" name="editC"><div style="float:left; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;"><i class="fas fa-user-plus " style="font-size:20px; color: black;     "></i>
+            <a style="cursor: pointer;" data-toggle="modal" title="Add new user" data-target="#add_user"  role="button" aria-pressed="true" name="editC"><div style="float:left; font-weight: bold; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Add New User
 </div></a>
+
+{{--            <a title="Other settings" style="cursor: pointer;  color: black !important; font-weight: bold; text-decoration: none;" href="/role_management"> <div style="float:right;      background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;"><i class="fas fa-cog"></i>--}}
+{{--                </div>--}}
+{{--            </a>--}}
+
             <a style="cursor: pointer; color: black !important; font-weight: bold; text-decoration: none;" href="/role_management"> <div style="float:right;      background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Role management
             </div>
             </a>
+
+
 
             <div style="clear: both;"></div>
 
@@ -245,15 +253,15 @@
 
               <thead class="thead-dark">
               <tr>
-                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                <th scope="col" style="color:#3490dc;">Full Name</th>
-                <th scope="col" style="color:#3490dc;">User Name</th>
-                <th scope="col"  style="color:#3490dc;">Email</th>
-                <th scope="col"  style="color:#3490dc;">Phone</th>
-                <th scope="col"  style="color:#3490dc;">Role</th>
-                <th scope="col"  style="color:#3490dc;">Cost Centre</th>
-                <th scope="col"  style="color:#3490dc;">Status</th>
-                <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                <th scope="col" style="color:#fff;">Full Name</th>
+                <th scope="col" style="color:#fff;">User Name</th>
+                <th scope="col"  style="color:#fff;">Email</th>
+                <th scope="col"  style="color:#fff;">Phone</th>
+                <th scope="col"  style="color:#fff;">Role</th>
+                <th scope="col"  style="color:#fff;">Cost Centre</th>
+                <th scope="col"  style="color:#fff;">Status</th>
+                <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
               </tr>
               </thead>

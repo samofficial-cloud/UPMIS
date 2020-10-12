@@ -78,7 +78,8 @@
                 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
                 <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
             </ul>
         </div>
@@ -149,6 +150,8 @@
                         </tr>
 
 
+
+
                         <tr>
                             <td>Payment Cycle:</td>
                             <td>{{$var->payment_cycle}}</td>
@@ -162,7 +165,22 @@
                             <td>{{$var->escalation_rate}} </td>
                         </tr>
 
+                        <tr>
+                            <td>Contract Creation Date:</td>
+                            <td>{{date("d/m/Y",strtotime($var->creation_date))}}</td>
+                        </tr>
 
+
+                        <tr>
+                            <td>Contract Status:</td>
+                            <td>@if($var->contract_status==0)
+                                    TERMINATED
+                                @elseif($var->end_date<date('Y-m-d'))
+                                    EXPIRED
+                                @else
+                                    ACTIVE
+                                @endif</td>
+                        </tr>
 
 
 
@@ -565,7 +583,7 @@
 
                                                 @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
                                                 @else
-                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class=""  name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
 @endif
 
                                             <div class="modal fade" id="add_comment{{$var->invoice_number}}" role="dialog">

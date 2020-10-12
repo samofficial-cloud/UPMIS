@@ -107,7 +107,7 @@
           @endif
 
 
-        <p class="mt-1" style="font-size:30px !important; ">Role Management</p>
+        <p class="mt-1" style="font-size:30px !important; ">Insurance Companies</p>
         <hr style="    border-bottom: 1px solid #e5e5e5 !important;">
 
 
@@ -116,50 +116,33 @@
 
 
 <br>
- <a style="cursor: pointer; color: black; font-weight: bold; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal" title="Add new role" data-target="#add_role"  role="button" aria-pressed="true" name="editC">Add New Role </a>
+ <a style="cursor: pointer; color: black; font-weight: bold; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal"  data-target="#add_company"  role="button" aria-pressed="true" name="editC">New Insurance Company</a>
 
 
 
-          <div class="modal fade" id="add_role" role="dialog">
+          <div class="modal fade" id="add_company" role="dialog">
 
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <b><h5 class="modal-title">Adding new role</h5></b>
+                  <b><h5 class="modal-title">Adding new insurance company</h5></b>
 
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <div class="modal-body">
-                  <form method="post" action="{{ route('add_role')}}"  id="form1" >
+                  <form method="post" action="{{ route('add_insurance_company')}}"  id="form1">
                     {{csrf_field()}}
 
 
                       <div class="form-group">
                           <div class="form-wrapper">
-                              <label for=""  ><strong>Role<span style="color: red;"> *</span> </strong></label>
-                              <input type="text" class="form-control"   name="user_roles" value="" required autocomplete="off">
+                              <label for=""  ><strong>Company Name<span style="color: red;"> *</span> </strong></label>
+                              <input type="text" class="form-control"   name="company" value="" required autocomplete="off">
 
                           </div>
                       </div>
                       <br>
-
-
-                      <div  class="form-group">
-                          <div class="form-wrapper">
-                              <label for=""><strong>Privilege<span style="color: red;"> *</span></strong></label>
-
-                              <select id="" class="form-control" name="category" required>
-                                  <option value="" ></option>
-                                      <option value="CPTU only" >CPTU only</option>
-                                      <option value="Insurance only" >Insurance only</option>
-                                      <option value="Real Estate only" >Real Estate only</option>
-                                      <option value="All">All</option>
-                              </select>
-                          </div>
-                      </div>
-                      <br>
-
 
                     <div align="right">
                       <button class="btn btn-primary" type="submit" >Submit</button>
@@ -186,8 +169,7 @@
               <thead class="thead-dark">
               <tr>
                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                <th scope="col" style="color:#fff;">Role</th>
-                <th scope="col" style="color:#fff;">Privilege</th>
+                <th scope="col" style="color:#fff;">Insurance company</th>
                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
               </tr>
@@ -195,80 +177,47 @@
 
               <tbody>
 
-              @foreach($roles as $var)
+              @foreach($insurance_companies as $var)
                 <tr>
 
                   <td class="text-center">{{$i}}</td>
-                  <td>{{$var->user_roles}}</td>
-                  <td>{{$var->category}}</td>
+                  <td>{{$var->company}}</td>
                   <td><center>
 
 
-                    <a style="cursor: pointer;" data-toggle="modal" title="Edit role information" data-target="#edit_role{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:25px; color: green;"></i></a>
+                    <a style="cursor: pointer;" data-toggle="modal" title="Edit company information" data-target="#edit_company{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:25px; color: green;"></i></a>
 
-                    <a style="cursor: pointer;" data-toggle="modal" title="Delete role" data-target="#delete_role{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:25px; color:red;"></i></a>
-
-
+                    <a style="cursor: pointer;" data-toggle="modal" title="Delete company" data-target="#delete_company{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:25px; color:red;"></i></a>
 
 
-                      <div class="modal fade" id="edit_role{{$var->id}}" role="dialog">
+
+
+                      <div class="modal fade" id="edit_company{{$var->id}}" role="dialog">
 
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <b><h5 class="modal-title">Editing "{{$var->user_roles}}" role</h5></b>
+                            <b><h5 class="modal-title">Editing {{$var->company}}'s information</h5></b>
 
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                           </div>
 
                           <div class="modal-body">
-                            <form method="post" action="{{ route('edit_role',$var->id)}}"  id="form1" >
+                            <form method="post" action="{{ route('edit_insurance_company',$var->id)}}"  id="form1" >
                               {{csrf_field()}}
 
 
                               <div class="form-group">
                                 <div class="form-wrapper">
-                                  <label for="first_name"  ><strong>Role </strong></label>
-                                  <input type="text" class="form-control" readonly  name="user_roles" value="{{$var->user_roles}}"  autocomplete="off">
+                                  <label for="first_name"  ><strong>Company name </strong></label>
+                                  <input type="text" class="form-control" required  name="company" value="{{$var->company}}"  autocomplete="off">
 
                                 </div>
                               </div>
-                              <br>
 
-
-                              <div  class="form-group">
-                                <div class="form-wrapper">
-                                  <label for=""  ><strong>Privilege<span style="color: red;"> *</span></strong></label>
-
-                                    <select id="" class="form-control" name="category" required>
-                                        <option value="{{$var->category}}" selected>{{$var->category}}</option>
-                                        @if($var->category=='CPTU only')
-                                            <option value="Insurance only" >Insurance only</option>
-                                            <option value="Real Estate only" >Real Estate only</option>
-                                            <option value="All">All</option>
-                                        @elseif($var->category=='Insurance only')
-                                            <option value="CPTU only" >CPTU only</option>
-                                            <option value="Real Estate only" >Real Estate only</option>
-                                            <option value="All">All</option>
-                                        @elseif($var->category=='Real Estate only')
-                                            <option value="CPTU only" >CPTU only</option>
-                                            <option value="Insurance only" >Insurance only</option>
-                                            <option value="All">All</option>
-                                        @elseif($var->category=='All')
-                                            <option value="CPTU only" >CPTU only</option>
-                                            <option value="Insurance only" >Insurance only</option>
-                                            <option value="Real Estate only" >Real Estate only</option>
-                                        @else
-                                            @endif
-
-                                    </select>
-                                </div>
-                              </div>
-                              <br>
-
-
+                                <br>
                               <div align="right">
-                                <button class="btn btn-primary" type="submit" onsubmit="check_phone();">Save</button>
+                                <button class="btn btn-primary" type="submit" >Save</button>
                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                               </div>
                             </form>
@@ -283,18 +232,18 @@
 
 
 
-                    <div class="modal fade" id="delete_role{{$var->id}}" role="dialog">
+                    <div class="modal fade" id="delete_company{{$var->id}}" role="dialog">
 
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <b><h5 class="modal-title">Are you sure you want to delete "{{$var->user_roles}}" role?</h5></b>
+                            <b><h5 class="modal-title">Are you sure you want to delete {{$var->company}} company?</h5></b>
 
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                           </div>
 
                           <div class="modal-body">
-                            <form method="get" action="{{ route('delete_role',$var->id)}}" >
+                            <form method="get" action="{{ route('delete_insurance_company',$var->id)}}" >
                               {{csrf_field()}}
 
 

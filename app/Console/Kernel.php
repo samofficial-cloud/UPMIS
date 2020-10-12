@@ -26,6 +26,10 @@ class Kernel extends ConsoleKernel
     {
 //         $schedule->command('command:sendInvoices')
 //                  ->everyMinute();
+//
+//        $schedule->command('command:sendInsuranceInvoices')
+//            ->everyMinute();
+
     }
 
     /**

@@ -162,9 +162,9 @@
             position: relative
         }
 
-        #progressbar #account:before {
+        #progressbar #vehicle:before {
             font-family: FontAwesome;
-            content: "\f04d"
+            content: "\f1b9"
         }
 
         #progressbar #personal:before {
@@ -284,7 +284,8 @@
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -294,97 +295,146 @@
                     <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
                         <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                             <h2><strong>Insurance Contract Information</strong></h2>
-                            <p>Fill all form field with (*) to go to the next step</p>
+
                             <div class="row">
                                 <div class="col-md-12 mx-0">
                                     <form id="msform" METHOD="GET" action="{{ route('edit_insurance_contract_final',['contract_id'=>$contract_id])}}">
                                         <!-- progressbar -->
                                         <ul id="progressbar">
                                             <li class="active" id="personal"><strong>Insurance</strong></li>
-                                            <li  id="account"><strong>Vehicle</strong></li>
+                                            <li  id="vehicle"><strong>Vehicle</strong></li>
                                             <li id="payment"><strong>Payment</strong></li>
                                         </ul>
                                         <!-- fieldsets -->
+                                        @foreach($contract_data as $var)
+
                                         <fieldset>
                                             <div class="form-card">
                                                 <h2 style="text-align: center" class="fs-title">Insurance Information</h2>
                                                 <div class="form-group">
 
 
-
                                                     <div class="form-group row">
-                                                        @foreach($contract_data as $var)
+
                                                         <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="full_name"  ><strong>Client Name</strong></label>
-                                                            <input type="text" value="{{$var->full_name}}"  id="full_name" name="full_name" class="form-control" required>
+                                                            <label for="space_location"  ><strong>Client Name</strong> <span style="color: red;"> *</span></label>
+                                                            <span id="client_msg"></span>
+                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" class="form-control" required>
                                                         </div>
 
-                                                        <div class="form-wrapper col-6">
+
+                                                        <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="client_type"><strong>Principal</strong></label>
-
-                                                            <select class="form-control"  id="principal" name="principal">
-
+                                                            <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
+                                                            <span id="class_msg"></span>
+                                                            <select id="insurance_class" class="form-control"  Required name="insurance_class">
                                                                 <?php
-
-                                                                $tempOut = array();
-                                                                foreach($insurance_data as $values){
-                                                                    $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
-                                                                    $val = (iterator_to_array($iterator,true));
-                                                                    $tempoIn=$val['insurance_company'];
-
-                                                                    if(!in_array($tempoIn, $tempOut))
-                                                                    {
-                                                                        foreach($contract_data as $var){
-
-                                                                            if($val['insurance_company']==$var->principal){
-
-                                                                            }else{
-
-                                                                                print('<option value="'.$val['insurance_company'].'">'.$val['insurance_company'].'</option>');
-                                                                            }
-
-
-                                                                        array_push($tempOut,$tempoIn);
-                                                                        }
-                                                                    }
-
-                                                                }
+                                                                $classes=DB::table('insurance_parameters')->get();
                                                                 ?>
-                                                                    @foreach($contract_data as $var)
-                                                                        <option value="{{$var->principal}}" selected id="Option">{{$var->principal}}</option>
-                                                                        @endforeach
+                                                                <option value="{{$var->insurance_class}}" selected>{{$var->insurance_class}}</option>
+                                                                @foreach($classes as $class)
+                                                                    @if($class->classes!=$var->insurance_class)
 
+                                                                    <option value="{{$class->classes}}">{{$class->classes}}</option>
+                                                                        @else
+                                                                        @endif
+
+                                                                @endforeach
                                                             </select>
+
+
                                                         </div>
 
-                                                        <div class="form-wrapper col-6">
+
+
+                                                        <div class="form-wrapper col-6 pt-4">
+                                                            <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
+                                                            <span id="phone_msg"></span>
+                                                            <input type="text" id="phone_number"  value="{{$var->phone_number}}" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                        </div>
+
+                                                        <div class="form-wrapper col-6 pt-4">
+                                                            <label for="email">Email <span style="color: red;"> *</span></label>
+                                                            <span id="email_msg"></span>
+                                                            <input type="text" name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
+                                                        </div>
+
+
+
+
+
+
+                                                        <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="space_location"  ><strong>Insurance Type</strong></label>
-                                                            <select class="form-control" id="insurance_type" name="insurance_type" >
-
-                                                                @if($var->insurance_type=='THIRD PARTY')
-                                                                    <option value="COMPREHENSIVE" id="Option">COMPREHENSIVE</option>
-                                                                    <option value="{{$var->insurance_type}}" selected id="Option">{{$var->insurance_type}}</option>
-                                                                    @elseif($var->insurance_type=='COMPREHENSIVE')
-                                                                <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                                                                <option value="{{$var->insurance_type}}" selected id="Option">{{$var->insurance_type}}</option>
+                                                            <label for="client_type"><strong>Principal <span style="color: red;"> *</span></strong></label>
+                                                            <span id="principal_msg"></span>
+                                                            <?php
+                                                            $companies=DB::table('insurance_parameters')->get();
+                                                            ?>
+                                                            <select id="insurance_company" class="form-control"  name="insurance_company">
+                                                                <option value="{{$var->principal}}">{{$var->principal}}</option>
+                                                                @foreach($companies as $company)
+                                                                    @if($company->company!=null AND $company->company!=$var->principal)
+                                                                        <option value="{{$company->company}}">{{$company->company}}</option>
+                                                                    @else
                                                                     @endif
+                                                                @endforeach
                                                             </select>
                                                         </div>
+
+
+
+                                                        <div id="TypeDiv" style="display: none;" class="form-wrapper col-12">
+                                                            <br>
+                                                            <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
+                                                            <span id="itype_msg"></span>
+                                                            <select id="insurance_type"  class="form-control" name="insurance_type" >
+
+                                                                @if($var->insurance_type=="N/A")
+                                                                    <option value="" id="Option" ></option>
+                                                                    <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
+                                                                    <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
+                                                                @elseif($var->insurance_type=="THIRD PARTY")
+                                                                <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
+                                                                    <option value="{{$var->insurance_type}}" id="Option" selected>{{$var->insurance_type}}</option>
+                                                                @elseif($var->insurance_type=="COMPREHENSIVE")
+                                                                    <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
+                                                                    <option value="{{$var->insurance_type}}" id="Option" selected>{{$var->insurance_type}}</option>
+                                                                @else
+                                                                @endif
+
+                                                            </select>
+                                                        </div>
+
+                                                        <div id="TypeDivNA" style="display: none;" class="form-wrapper col-12">
+                                                            <br>
+                                                            <label for="insurance_type_na"><strong>Type <span style="color: red;"> *</span></strong></label>
+                                                            <input type="text" class="form-control" id="insurance_type_na" name="insurance_type" readonly  value="N/A" autocomplete="off">
+
+                                                        </div>
+
+
+
                                                     </div>
+
+
+
 
 
                                                 </div>
 
-
+                                                <p id="availability_status"></p>
                                                 <br>
                                                 <br>
 
                                             </div>
                                             <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
+                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
+
+
+
                                         {{-- Second Form --}}
                                         <fieldset>
                                             <div class="form-card">
@@ -397,13 +447,15 @@
                                                     <div class="form-wrapper col-12">
                                                         <br>
                                                         <label for="client_type"><strong>Vehicle Registration Number</strong></label>
+                                                        <span id="v_regno_msg"></span>
 
-                                                        <input type="text" id="vehicle_registration_no" value="{{$var->vehicle_registration_no}}" name="vehicle_registration_no" class="form-control" required>
+                                                        <input type="text" id="vehicle_registration_no" value="{{$var->vehicle_registration_no}}" name="vehicle_registration_no" class="form-control" >
                                                     </div>
 
                                                     <br>
                                                     <div class="form-wrapper col-12">
                                                         <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
+                                                        <span id="v_use_msg"></span>
                                                         <select class="form-control" id="vehicle_use" name="vehicle_use">
 
                                                             @if($var->vehicle_use=='PRIVATE')
@@ -413,7 +465,9 @@
                                                             <option value="PRIVATE" id="Option" >PRIVATE</option>
                                                             <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
                                                                 @else
-
+                                                                <option value="" id="Option"></option>
+                                                                <option value="PRIVATE" id="Option" >PRIVATE</option>
+                                                                <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
                                                                 @endif
 
                                                         </select>
@@ -427,62 +481,57 @@
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                             <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
+                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
                                         {{-- Third Form --}}
+
                                         <fieldset>
                                             <div class="form-card">
                                                 <h2 class="fs-title">Payment Information</h2>
                                                 <div class="form-group row">
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="start_date">Commission Date *</label>
-                                                        <input type="date" id="commission_date" name="commission_date"  value="{{$var->commission_date}}" class="form-control" required="" min="{{$var->commission_date}}">
+                                                    <div class="form-wrapper col-12">
+                                                        <label for="start_date">Commission Date <span style="color: red;"> *</span></label>
+                                                        <input type="date" id="commission_date" value="{{$var->commission_date}}" name="commission_date" class="form-control" required="" >
                                                     </div>
                                                     <div class="form-wrapper col-6">
-                                                        <label for="end_date">End Date *</label>
-                                                        <input type="date" id="end_date" name="end_date" value="{{$var->end_date}}" class="form-control" required="" min="{{$today}}">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Sum Insured *</label>
-                                                        <input type="number" min="0" id="sum_insured"  value="{{$var->sum_insured}}" name="sum_insured" class="form-control" required="">
+                                                        <label for="duration">Duration <span style="color: red;"> *</span></label>
+                                                        <input type="number"  min="1" max="50" id="duration" value="{{$var->duration}}" name="duration" class="form-control" required="" >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="amount">Premium *</label>
-                                                        <input type="number"  min="0" id="premium" name="premium" value="{{$var->premium}}" class="form-control" required="">
-                                                    </div>
+                                                        <label for="cur">Period <span style="color: red;"> *</span></label>
+                                                        <select id="cur" class="form-control" name="duration_period"  required>
 
 
+                                                            @if($var->duration_period=='Months')
+                                                                <option value="Years" >Years</option>
+                                                                <option value="{{$var->duration_period}}" selected id="Option">{{$var->duration_period}}</option>
+                                                            @elseif($var->duration_period=='Years')
+                                                                <option value="Months" >Months</option>
+                                                                <option value="{{$var->duration_period}}" selected id="Option">{{$var->duration_period}}</option>
+                                                            @else
 
+                                                            @endif
 
-
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Actual (Excluding VAT) *</label>
-                                                        <input type="number" min="0" id="actual_ex_vat"  value="{{$var->actual_ex_vat}}" name="actual_ex_vat" class="form-control" required="">
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="currency">Currency</label>
-                                                        <select id="currency" class="form-control" name="currency" >
-                                                            @if($var->currency=='TZS')
-                                                                <option value="{{$var->currency}}" selected>{{$var->currency}}</option>
-                                                                <option value="USD" >USD</option>
-                                                            @elseif($var->currency=='USD')
-                                                                <option value="{{$var->currency}}" selected>{{$var->currency}}</option>
-                                                                <option value="TZS">TZS</option>
-                                                                @else
-
-                                                                @endif
 
                                                         </select>
                                                     </div>
+                                                </div>
+
+                                                <div class="form-group row">
+
+                                                    <div class="form-wrapper col-6">
+                                                        <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="20" id="sum_insured" name="sum_insured"  value="{{$var->sum_insured}}" class="form-control" required="">
+                                                    </div>
+
+                                                    <div class="form-wrapper col-6">
+                                                        <label for="amount">Premium <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="0"  id="premium" readonly name="premium" value="{{$var->premium}}" class="form-control" required="">
+                                                    </div>
+
+
+
 
 
                                                 </div>
@@ -490,23 +539,49 @@
                                                 <div class="form-group row">
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="amount">Commission * </label>
-                                                        <input type="number" min="0" id="commission" name="commission" value="{{$var->commission}}" class="form-control" required="">
+                                                        <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" value="{{$var->actual_ex_vat}}" class="form-control" required="">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="amount">Receipt Number *</label>
-                                                        <input type="text" id="receipt_no" name="receipt_no" value="{{$var->receipt_no}}" class="form-control" required="">
+                                                        <label for="currency">Currency <span style="color: red;"> *</span></label>
+
+                                                        <input type="text" id="currency" class="form-control" value="{{$var->currency}}" readonly required name="currency">
                                                     </div>
 
-@endforeach
+
+                                                </div>
+
+                                                <div class="form-group row">
+
+                                                    <div class="form-wrapper col-6">
+                                                        <label for="amount">Commission(%) <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="1"  step="0.01" class="form-control"  readonly name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage" autocomplete="off">
+                                                    </div>
+
+                                                    <div class="form-wrapper col-6">
+                                                        <label for="amount">Commission <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value="{{$var->commission}}" required autocomplete="off">
+                                                    </div>
+
+
+
+                                                    <div class="form-wrapper col-12">
+                                                        <label for="amount">Receipt Number <span style="color: red;"> *</span></label>
+                                                        <input type="text" id="receipt_no" name="receipt_no" class="form-control" value="{{$var->receipt_no}}" required="">
+                                                    </div>
+
+
                                                 </div>
 
 
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
+                                            <input type="submit" name="make_payment" class="submit action-button" value="Confirm"/>
+                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
+                                        @endforeach
+
                                     </form>
                                 </div>
                             </div>
@@ -519,29 +594,626 @@
 @endsection
 
 @section('pagescript')
+
     <script type="text/javascript">
+        window.onload=function(){
+
+
+            var query=$('#insurance_class').val();
+            if(query=='MOTOR'){
+                $('#vehicle').show();
+                properNextZero();
+            }else{
+                $('#vehicle').hide();
+                properNext();
+                $('#vehicle_registration_no').val("");
+                $('#vehicle_use').val("");
+            }
+
+
+
+                var query3=$('#insurance_class').val();
+                if(query3!=''){
+
+                    $('#insurance_companyDiv').show();
+
+                }
+                else{
+                    $('#insurance_companyDiv').hide();
+                    $('#TypeDiv').hide();
+
+                    var ele4 = document.getElementById("insurance_type");
+                    ele4.required = false;
+                    $('#TypeDivNA').hide();
+                    document.getElementById("insurance_type_na").disabled = true;
+                    $('#priceDiv').hide();
+                    $('#commissionDiv').hide();
+                    $('#insurance_currencyDiv').hide();
+
+                }
+
+                if($('#TypeDivNA:visible').length!=0) {
+                    var query=$('#insurance_class').val();
+                    if(query=='MOTOR'){
+                        $('#TypeDiv').show();
+                        $('#TypeDivNA').hide();
+
+                        document.getElementById("insurance_type_na").disabled = true;
+                    }else{
+                        $('#TypeDiv').hide();
+                        var ele5 = document.getElementById("insurance_type");
+                        ele5.required = false;
+                        $('#TypeDivNA').show();
+                        document.getElementById("insurance_type_na").disabled = false;
+
+
+                    }
+                }else if($('#TypeDiv:visible').length!=0){
+                    //starts
+                    var query=$('#insurance_class').val();
+                    if(query=='MOTOR'){
+                        $('#TypeDiv').show();
+                        $('#TypeDivNA').hide();
+                        document.getElementById("insurance_type_na").disabled = true;
+
+                    }else{
+                        $('#TypeDiv').hide();
+                        var ele6 = document.getElementById("insurance_type");
+                        ele6.required = false;
+                        $('#TypeDivNA').show();
+                        document.getElementById("insurance_type_na").disabled = false;
+
+
+                    }
+                    //ends
+                }else{
+
+
+                }
+
+
+
+
+                var query5=$('#insurance_company').val();
+                if(query5!=''){
+                    var insurance_class=document.getElementById("insurance_class").value;
+                    if(insurance_class=='MOTOR'){
+
+
+                        $('#TypeDiv').show();
+
+                    }else{
+
+                        $('#TypeDivNA').show();
+                        document.getElementById("insurance_type_na").disabled = false;
+                    }
+
+                    $('#priceDiv').show();
+                    $('#commissionDiv').show();
+                    $('#insurance_currencyDiv').show();
+                    $('#billing').show();
+                }
+                else{
+                    $('#TypeDiv').hide();
+                    var ele7 = document.getElementById("insurance_type");
+                    ele7.required = false;
+                    $('#priceDiv').hide();
+                    $('#commissionDiv').hide();
+                    $('#insurance_currencyDiv').hide();
+                    $('#TypeDivNA').hide();
+                    $('#billing').hide();
+                    document.getElementById("insurance_type_na").disabled = true;
+                }
+
+
+
+
+        };
+    </script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#insurance_class').click(function(){
+                var query3=$(this).val();
+                if(query3!=''){
+
+                    $('#insurance_companyDiv').show();
+
+                }
+                else{
+                    $('#insurance_companyDiv').hide();
+                    $('#TypeDiv').hide();
+
+                    var ele4 = document.getElementById("insurance_type");
+                    ele4.required = false;
+                    $('#TypeDivNA').hide();
+                    document.getElementById("insurance_type_na").disabled = true;
+                    $('#priceDiv').hide();
+                    $('#commissionDiv').hide();
+                    $('#insurance_currencyDiv').hide();
+
+                }
+
+                if($('#TypeDivNA:visible').length!=0) {
+                    var query=$('#insurance_class').val();
+                    if(query=='MOTOR'){
+                        $('#TypeDiv').show();
+                        $('#TypeDivNA').hide();
+
+                        document.getElementById("insurance_type_na").disabled = true;
+                    }else{
+                        $('#TypeDiv').hide();
+                        var ele5 = document.getElementById("insurance_type");
+                        ele5.required = false;
+                        $('#TypeDivNA').show();
+                        document.getElementById("insurance_type_na").disabled = false;
+
+
+                    }
+                }else if($('#TypeDiv:visible').length!=0){
+                    //starts
+                    var query=$('#insurance_class').val();
+                    if(query=='MOTOR'){
+                        $('#TypeDiv').show();
+                        $('#TypeDivNA').hide();
+                        document.getElementById("insurance_type_na").disabled = true;
+
+                    }else{
+                        $('#TypeDiv').hide();
+                        var ele6 = document.getElementById("insurance_type");
+                        ele6.required = false;
+                        $('#TypeDivNA').show();
+                        document.getElementById("insurance_type_na").disabled = false;
+
+
+                    }
+                    //ends
+                }else{
+
+
+                }
+
+            });
+
+            $('#insurance_company').click(function(){
+                var query3=$(this).val();
+                if(query3!=''){
+                    var insurance_class=document.getElementById("insurance_class").value;
+                    if(insurance_class=='MOTOR'){
+
+
+                        $('#TypeDiv').show();
+
+                    }else{
+
+                        $('#TypeDivNA').show();
+                        document.getElementById("insurance_type_na").disabled = false;
+                    }
+
+                    $('#priceDiv').show();
+                    $('#commissionDiv').show();
+                    $('#insurance_currencyDiv').show();
+                    $('#billing').show();
+                }
+                else{
+                    $('#TypeDiv').hide();
+                    var ele7 = document.getElementById("insurance_type");
+                    ele7.required = false;
+                    $('#priceDiv').hide();
+                    $('#commissionDiv').hide();
+                    $('#insurance_currencyDiv').hide();
+                    $('#TypeDivNA').hide();
+                    $('#billing').hide();
+                    document.getElementById("insurance_type_na").disabled = true;
+                }
+            });
+
+
+            $('#insurance_class').click(function() {
+                var query=$(this).val();
+                if(query=='MOTOR'){
+                    $('#vehicle').show();
+                    properNextZero();
+                }else{
+                    $('#vehicle').hide();
+                    properNext();
+                    $('#vehicle_registration_no').val("");
+                    $('#vehicle_use').val("");
+
+                }
+
+
+            });
+
+        });
+
+
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        var current_fs, next_fs, previous_fs; //fieldsets
+        var opacity;
+        var p1, p2,p3,p4;
+        var temp;
+
+        function properNext(){
+            temp=1;
+        }
+
+        function properNextZero(){
+            temp=0;
+        }
+
         $(document).ready(function(){
 
-            var current_fs, next_fs, previous_fs; //fieldsets
-            var opacity;
-            var p1, p2;
+
             $("#next1").click(function(){
+
+                if(temp==1) {
+                    next_fs = $(this).parent().next().next();
+                }else{
+                    next_fs = $(this).parent().next();
+                }
+
                 current_fs = $(this).parent();
-                next_fs = $(this).parent().next();
-                gonext();
+
+
+                var client_name=document.getElementById('full_name').value;
+                var insurance_class=document.getElementById('insurance_class').value;
+                var insurance_company=document.getElementById('insurance_company').value;
+                var insurance_type=document.getElementById('insurance_type').value;
+                var insurance_type_na=document.getElementById('insurance_type_na').value;
+                var email=$("#email").val();
+                var insurance_typ=$("#insurance_type").val();
+
+
+                if (client_name==""){
+                    p1=0;
+                    $('#client_msg').show();
+                    var message=document.getElementById('client_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#full_name').attr('style','border-bottom:1px solid #f00');
+
+                }else{
+                    p1=1;
+                    $('#client_msg').hide();
+                    $('#full_name').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+                if (insurance_class==""){
+                    p2=0;
+                    $('#class_msg').show();
+                    var message=document.getElementById('class_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#insurance_class').attr('style','border-bottom:1px solid #f00');
+
+                }else{
+                    p2=1;
+                    $('#class_msg').hide();
+                    $('#insurance_class').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if (insurance_company==""){
+                    p3=0;
+                    $('#principal_msg').show();
+                    var message=document.getElementById('principal_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#insurance_company').attr('style','border-bottom:1px solid #f00');
+
+                }else{
+                    p3=1;
+                    $('#principal_msg').hide();
+                    $('#insurance_company').attr('style','border-bottom: 1px solid #ccc');
+
+
+
+                }
+
+
+                if(email==""){
+                    p4=0;
+                    $('#email_msg').show();
+                    var message=document.getElementById('email_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#email').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p4=1;
+                    $('#email_msg').hide();
+                    $('#email').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+
+
+
+
+                var phone_digits=$('#phone_number').val().length;
+
+                if(phone_digits<10) {
+                    p6=0;
+                    $('#phone_msg').show();
+                    var message = document.getElementById('phone_msg');
+                    message.style.color = 'red';
+                    message.innerHTML = "Digits cannot be less than 10";
+                    $('#phone_number').attr('style', 'border-bottom:1px solid #f00');
+
+                }else{
+                    p6=1;
+                    $('#phone_msg').hide();
+                    $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
+                }
+
+
+                if($('#TypeDiv:visible').length!=0) {
+
+                    if (insurance_typ == "") {
+                        p5 = 0;
+                        $('#itype_msg').show();
+                        var message = document.getElementById('itype_msg');
+                        message.style.color = 'red';
+                        message.innerHTML = "Required";
+                        $('#insurance_type').attr('style', 'border-bottom:1px solid #f00');
+                    } else {
+                        p5 = 1;
+                        $('#itype_msg').hide();
+                        $('#insurance_type').attr('style', 'border-bottom: 1px solid #ccc');
+
+                    }
+
+                    var visible_status=$('#TypeDivNA:visible').length;
+
+                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1'){
+
+
+                        var type_var= document.getElementById("insurance_type").value;
+                        var type_na_var=document.getElementById("insurance_type_na").value;
+
+                        var _token = $('input[name="_token"]').val();
+
+                        if(visible_status!=0) {
+                            console.log('type_na');
+                            var type_var
+                            $.ajax({
+                                url: "{{ route('autofill_insurance_parameters') }}",
+                                method: "GET",
+                                data: {
+                                    insurance_class: insurance_class,
+                                    insurance_company: insurance_company,
+                                    insurance_type_na: insurance_type_na,
+                                    _token: _token
+                                },
+                                success: function (data) {
+                                    if(data!=""){
+                                        gonext();
+                                        document.getElementById("premium").value=data[0].price;
+                                        document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                        document.getElementById("commission").value=data[0].commission;
+                                        document.getElementById("currency").value=data[0].insurance_currency;
+                                        document.getElementById("availability_status").innerHTML ='';
+
+                                    }else{
+                                        document.getElementById("availability_status").style.color='Red';
+                                        document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                    }
+                                },
+
+                                error : function(data) {
+
+
+
+                                }
+                            });
+                        }else {
+                            console.log('type');
+                            $.ajax({
+                                url: "{{ route('autofill_insurance_parameters') }}",
+                                method: "GET",
+                                data: {
+                                    insurance_class: insurance_class,
+                                    insurance_company: insurance_company,
+                                    insurance_type: insurance_type,
+                                    _token: _token
+                                },
+                                success: function (data) {
+
+                                    if(data!=""){
+                                        gonext();
+                                        document.getElementById("premium").value=data[0].price;
+                                        document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                        document.getElementById("commission").value=data[0].commission;
+                                        document.getElementById("currency").value=data[0].insurance_currency;
+                                        document.getElementById("availability_status").innerHTML ='';
+
+                                    }else{
+
+                                        document.getElementById("availability_status").style.color='Red';
+                                        document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                    }
+
+                                },
+
+                                error : function(data) {
+
+
+
+                                }
+                            });
+
+                        }
+
+
+
+                    }
+
+
+
+
+
+
+                }else{
+
+
+                    var visible_status=$('#TypeDivNA:visible').length;
+
+                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1'){
+
+
+                        var type_var= document.getElementById("insurance_type").value;
+                        var type_na_var=document.getElementById("insurance_type_na").value;
+
+                        var _token = $('input[name="_token"]').val();
+
+                        if(visible_status!=0) {
+                            console.log('type_na');
+                            var type_var
+                            $.ajax({
+                                url: "{{ route('autofill_insurance_parameters') }}",
+                                method: "GET",
+                                data: {
+                                    insurance_class: insurance_class,
+                                    insurance_company: insurance_company,
+                                    insurance_type_na: insurance_type_na,
+                                    _token: _token
+                                },
+                                success: function (data) {
+                                    if(data!=""){
+                                        gonext();
+                                        document.getElementById("premium").value=data[0].price;
+                                        document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                        document.getElementById("commission").value=data[0].commission;
+                                        document.getElementById("currency").value=data[0].insurance_currency;
+                                        document.getElementById("availability_status").innerHTML ='';
+
+                                    }else{
+                                        document.getElementById("availability_status").style.color='Red';
+                                        document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                    }
+                                },
+
+                                error : function(data) {
+
+
+
+                                }
+                            });
+                        }else {
+                            console.log('type');
+                            $.ajax({
+                                url: "{{ route('autofill_insurance_parameters') }}",
+                                method: "GET",
+                                data: {
+                                    insurance_class: insurance_class,
+                                    insurance_company: insurance_company,
+                                    insurance_type: insurance_type,
+                                    _token: _token
+                                },
+                                success: function (data) {
+
+                                    if(data!=""){
+                                        gonext();
+                                        document.getElementById("premium").value=data[0].price;
+                                        document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                        document.getElementById("commission").value=data[0].commission;
+                                        document.getElementById("currency").value=data[0].insurance_currency;
+                                        document.getElementById("availability_status").innerHTML ='';
+
+                                    }else{
+
+                                        document.getElementById("availability_status").style.color='Red';
+                                        document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                    }
+
+                                },
+
+                                error : function(data) {
+
+
+
+                                }
+                            });
+
+                        }
+
+
+
+                    }
+
+
+                }
+
+
+
+
 
             });
 
             $("#next2").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
-                gonext();
+                var vehicle_registration_no=$("#vehicle_registration_no").val();
+                var vehicle_use=$("#vehicle_use").val();
+                var p1,p2;
+
+                if(vehicle_registration_no==""){
+                    p1=0;
+                    $('#v_regno_msg').show();
+                    var message=document.getElementById('v_regno_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#vehicle_registration_no').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p1=1;
+                    $('#v_regno_msg').hide();
+                    $('#vehicle_registration_no').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(vehicle_use==""){
+                    p2=0;
+                    $('#v_use_msg').show();
+                    var message=document.getElementById('v_use_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#vehicle_use').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p2=1;
+                    $('#v_use_msg').hide();
+                    $('#vehicle_use').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(p1=='1' & p2=='1' ) {
+                    gonext();
+                }
 
             });
 
             function gonext(){
                 console.log(3);
-
 
 //Add Class Active
                 $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
@@ -592,8 +1264,15 @@
 
             $(".previous").click(function(){
 
+                if(temp==1) {
+                    previous_fs = $(this).parent().prev().prev();
+                }else{
+                    previous_fs = $(this).parent().prev();
+                }
+
+
                 current_fs = $(this).parent();
-                previous_fs = $(this).parent().prev();
+
 
 //Remove class active
                 $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
@@ -653,100 +1332,6 @@
     </script>
 
 
-    <script>
-        $( document ).ready(function() {
 
-
-            $('#space_id_contract').keyup(function(e){
-                e.preventDefault();
-                var query = $(this).val();
-
-
-
-                if(query != '')
-                {
-                    var _token = $('input[name="_token"]').val();
-
-                    var major_industry=document.getElementById("major_industry").value;
-                    var space_location=document.getElementById("space_location").value;
-
-
-
-                    $.ajax({
-                        url:"{{ route('autocomplete.space_id') }}",
-                        method:"GET",
-                        data:{query:query,major_industry:major_industry,space_location:space_location, _token:_token},
-                        success:function(data){
-                            if(data=='0'){
-                                $('#space_id_contract').attr('style','border:1px solid #f00');
-
-                            }
-                            else{
-
-                                $('#space_id_contract').attr('style','border:1px solid #ced4da');
-                                $('#nameListSpaceId').fadeIn();
-                                $('#nameListSpaceId').html(data);
-                            }
-                        }
-                    });
-                }
-                else if(query==''){
-
-                    $('#space_id_contract').attr('style','border:1px solid #ced4da');
-                }
-            });
-
-            $(document).on('click', '#listSpacePerTypeLocation', function(){
-
-
-                $('#space_id_contract').attr('style','border:1px solid #ced4da');
-
-                $('#space_id_contract').val($(this).text());
-
-
-
-                $('#nameListSpaceId').fadeOut();
-
-                //space already selected, fill size automatically
-                var selected_space_id=$(this).text();
-
-                $.ajax({
-                    url:"{{ route('autocomplete.space_size') }}",
-                    method:"get",
-                    data:{selected_space_id:selected_space_id},
-                    success:function(data){
-                        if(data=='0'){
-                            $('#space_size').attr('style','border:1px solid #f00');
-
-
-                        }
-                        else{
-
-
-
-
-                            $('#space_size').attr('style','border:1px solid #ced4da');
-                            $('#space_size').val(data);
-
-                        }
-                    }
-                });
-
-
-
-
-            });
-
-
-
-
-
-
-
-
-        });
-
-
-    </script>
 
 @endsection

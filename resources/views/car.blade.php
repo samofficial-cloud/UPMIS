@@ -255,7 +255,8 @@ $i='1';
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -362,7 +363,7 @@ $i='1';
      <br>
      <br>
      @endif
-     
+
 
      <table class="hover table table-striped table-bordered" id="myTable">
   <thead class="thead-dark">
@@ -460,7 +461,7 @@ $i='1';
          </div>
      </div>
 
-    
+
 
      <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
@@ -487,7 +488,7 @@ $i='1';
 @endif</center>
 </td>
 
-      
+
   </tr>
   <?php
    $i= $i+1;
