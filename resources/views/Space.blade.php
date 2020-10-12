@@ -100,7 +100,8 @@
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -121,12 +122,20 @@
           @endif
 
 
+            <div>
+
+                <br>
+                <h3 style="text-align: center;">RENTING SPACES</h3>
+
+
+            </div>
+<br>
+
           @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
           @else
-        <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172;
-    padding: 10px;
+        <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
     margin-left: -2px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true">Add New Space</a>
           @endif
   <br>
@@ -330,7 +339,9 @@
 
     </div>
 
-
+<?php
+$i=1;
+?>
 
 
 
@@ -356,7 +367,7 @@
         @foreach($spaces as $var)
           <tr>
 
-            <td class="counterCell text-center"></td>
+            <td class=""><center>{{$i}}co</center></td>
             <td><center>{{$var->major_industry}}</center></td>
             <td><center>{{$var->minor_industry}}</center></td>
             <td><center>{{$var->space_id}}</center></td>
@@ -444,7 +455,7 @@
                             @if($var->rent_price_guide_from==null)
                               N/A
                             @else
-                              {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}
+                              {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}} {{$var->rent_price_guide_currency}}
                             @endif
 
                           </td>
@@ -493,7 +504,15 @@
               @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
                 @else
                 <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
-                <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+
+                        @if($var->occupation_status==1)
+
+                        @else
+                            <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+                        @endif
+
+
+
                 <a data-toggle="modal" title="Delete space" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
               @endif
 
@@ -737,6 +756,10 @@
               </center>
             </td>
           </tr>
+
+            <?php
+            $i=$i+1;
+            ?>
         @endforeach
 
 

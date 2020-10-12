@@ -29,7 +29,7 @@ class ContractsController extends Controller
     {
         $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->get();
 //        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
-        $insurance_contracts=DB::table('insurance_contracts')->where('contract_status',1)->where('expiry_status',1)->get();
+        $insurance_contracts=DB::table('insurance_contracts')->get();
 
         if(Auth::user()->role=='Transport Officer-CPTU'){
         $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','0')->orderBy('id','dsc')->get();
@@ -132,6 +132,37 @@ class ContractsController extends Controller
         return view('contract_details')->with('space_contract',$space_contract)->with('associated_invoices',$associated_invoices)->with('contract_id',$contract_id);
 
     }
+
+    public function ContractDetailsInsurance($contract_id)
+    {
+        $insurance_contract=DB::table('insurance_contracts')->where('id',$contract_id)->get();
+//        $associated_invoices=DB::table('insurance_invoices')->where('contract_id',$contract_id)->get();
+
+        return view('contract_details_insurance')->with('insurance_contract',$insurance_contract)->with('contract_id',$contract_id);
+
+    }
+
+
+
+    public function autofillParameters(Request $request)
+    {
+        $insurance_parameters='';
+        if($request->get('insurance_type')!=''){
+
+            $insurance_parameters=DB::table('insurance')->select('price','commission','commission_percentage','insurance_currency')->where('class',$request->get('insurance_class'))->where('insurance_company',$request->get('insurance_company'))->where('insurance_type',$request->get('insurance_type'))->get();
+
+        }elseif($request->get('insurance_type_na')!=''){
+            $insurance_parameters=DB::table('insurance')->select('price','commission','commission_percentage','insurance_currency')->where('class',$request->get('insurance_class'))->where('insurance_company',$request->get('insurance_company'))->where('insurance_type',$request->get('insurance_type_na'))->get();
+
+        }else{
+
+
+        }
+
+        return $insurance_parameters;
+
+    }
+
 
 
     public function SpaceContractForm()
@@ -636,13 +667,13 @@ class ContractsController extends Controller
 
         $end_date="";
         if($request->get('duration_period')=="Months"){
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
             $monthsToAdd = $request->get('duration');
             $end_date = $end_date->addMonths($monthsToAdd);
 
         }elseif($request->get('duration_period')=="Years"){
 
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
             $yearsToAdd = $request->get('duration');
             $end_date = $end_date->addYears($yearsToAdd);
         }else{
@@ -651,12 +682,33 @@ class ContractsController extends Controller
         }
 
 
+        $vehicle_reg_var="";
+        $vehicle_use_var="";
+
+
+        if($request->get('vehicle_registration_no')==""){
+            $vehicle_reg_var='N/A';
+
+        }else{
+
+            $vehicle_reg_var=$request->get('vehicle_registration_no');
+
+        }
+
+
+        if($request->get('vehicle_use')==""){
+            $vehicle_use_var='N/A';
+
+        }else{
+
+            $vehicle_use_var=$request->get('vehicle_use');
+
+        }
+
 
         DB::table('insurance_contracts')->insert(
-            ['vehicle_registration_no' => $request->get('vehicle_registration_no'), 'vehicle_use' => $request->get('vehicle_use'), 'principal' => $request->get('principal'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name')]
+            ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email')]
         );
-
-
 
 
 
@@ -668,7 +720,7 @@ class ContractsController extends Controller
     public function OnFlyInsuranceContractForm(Request $request,$id)
     {
 
-        $insurance_data=DB::table('insurance')->where('status',1)->get();
+        $insurance_data=DB::table('insurance')->where('status',1)->where('id',$id)->get();
         return view('insurance_contract_form_onfly')->with('insurance_data',$insurance_data);
 
 
@@ -687,17 +739,29 @@ class ContractsController extends Controller
     }
 
 
+    public function RenewInsuranceContractForm($id)
+    {
+
+        $contract_data=DB::table('insurance_contracts')->where('id',$id)->get();
+
+        return view('insurance_contract_form_renew')->with('contract_id',$id)->with('contract_data',$contract_data);
+    }
+
+
     public function EditInsuranceContractFinalProcessing(Request $request,$contract_id)
     {
+
+
+
         $end_date="";
         if($request->get('duration_period')=="Months"){
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
             $monthsToAdd = $request->get('duration');
             $end_date = $end_date->addMonths($monthsToAdd);
 
         }elseif($request->get('duration_period')=="Years"){
 
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
             $yearsToAdd = $request->get('duration');
             $end_date = $end_date->addYears($yearsToAdd);
         }else{
@@ -705,17 +769,11 @@ class ContractsController extends Controller
 
         }
 
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['vehicle_registration_no' => $request->get('vehicle_registration_no')]);
+
 
         DB::table('insurance_contracts')
             ->where('id', $contract_id)
-            ->update(['vehicle_use' => $request->get('vehicle_use')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['principal' => $request->get('principal')]);
+            ->update(['principal' => $request->get('insurance_company')]);
 
         DB::table('insurance_contracts')
             ->where('id', $contract_id)
@@ -751,11 +809,72 @@ class ContractsController extends Controller
 
         DB::table('insurance_contracts')
             ->where('id', $contract_id)
+            ->update(['commission_percentage' => $request->get('commission_percentage')]);
+
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['duration' => $request->get('duration')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['duration_period' => $request->get('duration_period')]);
+
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['phone_number' => $request->get('phone_number')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['email' => $request->get('email')]);
+
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['insurance_class' => $request->get('insurance_class')]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
             ->update(['receipt_no' => $request->get('receipt_no')]);
 
         DB::table('insurance_contracts')
             ->where('id', $contract_id)
             ->update(['full_name' => $request->get('full_name')]);
+
+
+        $vehicle_reg_var="";
+        $vehicle_use_var="";
+
+
+        if($request->get('vehicle_registration_no')==""){
+            $vehicle_reg_var='N/A';
+
+        }else{
+
+            $vehicle_reg_var=$request->get('vehicle_registration_no');
+
+        }
+
+
+        if($request->get('vehicle_use')==""){
+            $vehicle_use_var='N/A';
+
+        }else{
+
+            $vehicle_use_var=$request->get('vehicle_use');
+
+        }
+
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['vehicle_use' => $vehicle_use_var]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['vehicle_registration_no' => $vehicle_reg_var]);
+
 
 
 

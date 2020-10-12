@@ -50,7 +50,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-sm navbar-dark color_navbar navbar-laravel" style="width: 100%">
             <div class="container" style="max-width: 1534px;">
-               
+
                     {{-- {{ config('app.name', 'Laravel') }} --}}
                     <div class="d-flex flex-row">
                      <div class="pl-2">
@@ -61,7 +61,7 @@
 
                     </div>
                 </div>
-                
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -75,11 +75,11 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                       
+
                         <?php
 
                         $chats=DB::table('system_chats')->where('receiver',Auth::user()->name)->where('flag','1')->count('id');
-
+                        $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
                         $insurance_invoice_notifications_count_total=0;
                         $car_invoice_notifications_count_total=0;
                         $space_invoice_notifications_count_total=0;
@@ -118,111 +118,87 @@
                         $total=count($notifications);
 
 
-                        $total_invoice_notifications=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
+                        $all_notifications_count=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
 
                         ?>
+
 
                          <a class="nav-link " href="/system_chats?id=" role="button"><i class='fas fa-comment-dots' style='font-size:26px;color:#282727'></i> <span class="badge badge-danger">{{$chats}}</span>
                         </a>
 
 
-                        @if(Auth::user()->invoice_notification_flag==1)
 
 
-                                @if($total_invoice_notifications==0)
+
+                                @if($all_notifications_count==0)
                             <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
                             </a>
 
-                                    @else
+                            @else
                                   <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger">{{$total_invoice_notifications}}</span>
+                                      <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger">{{$all_notifications_count}}</span>
                                 </a>
                                 @endif
-                                @else
-                            {{--other notifications--}}
-                            @if($total==0)
-                                <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
-                                </a>
-
-                            @else
-                                <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger">{{$total}}</span>
-                                </a>
-                            @endif
-
-                        @endif
-
-
-
-
 
 
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
-                                    @if($space_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
-
-
-
-                                        <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoice to review</a>
-                                    @elseif($space_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
+                                    @if($space_invoice_notifications_count==1 AND ($category=='Real Estate only' OR $category=='All'))
 
 
 
                                         <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
+
+                                        <?php
+                                        $i=$i+1;
+                                        ?>
+                                    @elseif($space_invoice_notifications_count!=0 AND ($category=='Real Estate only' OR $category=='All'))
+
+
+
+                                        <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
+
+                                        <?php
+                                        $i=$i+1;
+                                        ?>
+
                                     @else
                                     @endif
 
 
 
-                                        @if($car_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
+                                        @if($car_invoice_notifications_count==1 AND ($category=='CPTU only' OR $category=='All'))
 
 
 
 
-                                            <a class="dropdown-item" href="/car_rental_invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoice to review</a>
+                                            <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoice to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
 
 
-                                        @elseif($car_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
+                                        @elseif($car_invoice_notifications_count!=0 AND ($category=='CPTU only' OR $category=='All'))
 
 
-                                            <a class="dropdown-item" href="/car_rental_invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoices to review</a>
+                                            <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoices to review</a>
 
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-                                        @else
-                                        @endif
-
-                                        @if($insurance_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
-
-                                            <a class="dropdown-item" href="/insurance_invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-                                        @elseif($insurance_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
-
-                                            <a class="dropdown-item" href="/insurance_invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
                                         @else
                                         @endif
 
+                                        @if($insurance_invoice_notifications_count==1 AND ($category=='Insurance only' OR $category=='All'))
 
-                                        @if($water_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
-
-                                            <a class="dropdown-item" href="/water_bills_invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water invoice to review</a>
+                                            <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
-                                        @elseif($water_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
+                                        @elseif($insurance_invoice_notifications_count!=0 AND ($category=='Insurance only' OR $category=='All'))
 
-                                            <a class="dropdown-item" href="/water_bills_invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water invoices to review</a>
+                                            <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
@@ -230,20 +206,10 @@
                                         @endif
 
 
-                                        @if($electricity_invoice_notifications_count==1 AND (Auth::user()->invoice_notification_flag==1))
 
-                                            <a class="dropdown-item" href="/electricity_bills_invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity invoice to review</a>
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-                                        @elseif($electricity_invoice_notifications_count!=0 AND (Auth::user()->invoice_notification_flag==1))
 
-                                            <a class="dropdown-item" href="/electricity_bills_invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity invoices to review</a>
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-                                        @else
-                                        @endif
+
+
 
 
 
@@ -257,8 +223,7 @@
 
 
                                             @foreach($notifications as $notifications)
-                                                <a class="dropdown-item" href="{{ route('ShowNotifications',$notifications->id
-                                ) }}">{{$i}}. {{$notifications->message}}</a>
+                                                <a class="dropdown-item" href="{{ route('ShowNotifications',$notifications->id ) }}">{{$i}}. {{$notifications->message}}</a>
                                                 <?php
                                                 $i=$i+1;
                                                 ?>
@@ -281,9 +246,7 @@
                             @endif
                         @else --}}
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre> {{ Auth::user()->name }} <span class="caret"></span> </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="/view_profile">Profile Details</a>

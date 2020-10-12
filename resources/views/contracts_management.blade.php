@@ -101,7 +101,8 @@
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -133,7 +134,7 @@
                         <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate Contracts</strong></button>
 
 
-                
+
 
 
                     @else
@@ -171,25 +172,28 @@
 
                 @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
                 @else
-        <a href="/space_contract_form" class="btn button_color active" style="    background-color: lightgrey;
+        <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
     padding: 10px;
-    margin-left: -2px;
-    margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true" title="Add new Space Contract"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+    margin-left: 2px;
+    margin-bottom: 15px;
+    margin-top: 4px;" role="button" aria-pressed="true" title="Add new Space Contract">New Contract</a>
                 @endif
-
+<?php
+$i=1;
+?>
 
       <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
           <th scope="col" style="color:#fff;"><center>S/N</center></th>
-          <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+          <th scope="col" style="color:#fff;">Client Name</th>
           <th scope="col" style="color:#fff;"><center>Space Number</center></th>
           <th scope="col" style="color:#fff;"><center>Amount</center></th>
 
 
           <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
           <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+          <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
 
           <th scope="col"  style="color:#fff;"><center>Status</center></th>
           <th scope="col"  style="color:#fff;"><center>Action</center></th>
@@ -200,8 +204,8 @@
         @foreach($space_contracts as $var)
           <tr>
 
-            <td class="counterCell text-center"></td>
-              <td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->full_name}}</center></a>
+            <td><center>{{$i}}</center></td>
+              <td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->full_name}}</a>
                   <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
 
                       <div class="modal-dialog" role="document">
@@ -333,11 +337,12 @@
                       </div>
                   </div>
               </td>
-            <td><center>{{$var->amount}} {{$var->currency}}</center></td>
+            <td><center>{{number_format($var->amount)}} {{$var->currency}}</center></td>
 
 
             <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
             <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+            <td><center>{{date('d/m/Y',strtotime($var->creation_date))}}</center></td>
 
             <td><center>
                     @if($var->contract_status==0)
@@ -350,10 +355,6 @@
                     </center></td>
             <td><center>
                     <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',$var->contract_id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
-
-
-
-
 
 
                     @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
@@ -408,6 +409,11 @@
               </center>
             </td>
           </tr>
+
+          <?php
+          $i=$i+1;
+          ?>
+
         @endforeach
 
 
@@ -429,11 +435,11 @@
 
                 @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
                 @else
-                <a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="     background-color: lightgrey;
+                <a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
     padding: 10px;
-    margin-left: -2px;
-    margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+    margin-left: 2px;
+    margin-bottom: 15px;
+    margin-top: 4px;" role="button" aria-pressed="true">New Contract</a>
                 @endif
 
                 <div class="">
@@ -445,18 +451,18 @@
                         <tr>
                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
                             <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-                            <th scope="col" style="color:#fff;"><center>Vehicle Reg No</center></th>
-                            <th scope="col" style="color:#fff;"><center>Vehicle Use</center></th>
+
+                            <th scope="col" style="color:#fff;"><center>Class</center></th>
                             <th scope="col" style="color:#fff;"><center>Principal</center></th>
                             <th scope="col"  style="color:#fff;"><center>Insurance Type</center></th>
                             <th scope="col"  style="color:#fff;"><center>Commission Date</center></th>
                             <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Sum Insured</center></th>
                             <th scope="col"  style="color:#fff;"><center>Premium</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Actual(Excluding VAT) </center></th>
-                            <th scope="col"  style="color:#fff;"><center>Currency </center></th>
                             <th scope="col"  style="color:#fff;"><center>Commission </center></th>
-                            <th scope="col"  style="color:#fff;"><center>Receipt No </center></th>
+
+
+                            <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Contract Status</center></th>
                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
                         </tr>
                         </thead>
@@ -467,24 +473,47 @@
 
                                 <td class="counterCell text-center"></td>
                                 <td><center>{{$var->full_name}}</center></td>
-                                <td><center>{{$var->vehicle_registration_no}}</center></td>
-                                <td><center>{{$var->vehicle_use}}</center></td>
+                                <td><center>{{$var->insurance_class}}</center></td>
+
                                 <td><center>{{$var->principal}}</center></td>
                                 <td><center>{{$var->insurance_type}}</center></td>
-                                <td><center>{{$var->commission_date}}</center></td>
-                                <td><center>{{$var->end_date}}</center></td>
-                                <td><center>{{$var->sum_insured}}</center></td>
-                                <td><center>{{$var->premium}}</center></td>
-                                <td><center>{{$var->actual_ex_vat}}</center></td>
-                                <td><center>{{$var->currency}}</center></td>
-                                <td><center>{{$var->commission}}</center></td>
-                                <td><center>{{$var->receipt_no}}</center></td>
-                                <td><center>
+                                <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
+                                <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
 
-                                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                <td><center>{{number_format($var->premium)}} {{$var->currency}}</center></td>
+
+                                <td><center>{{number_format($var->commission)}} {{$var->currency}}</center></td>
+
+                                <td><center>{{date("d/m/Y",strtotime($var->created_at))}}</center></td>
+
+                                <td><center>
+                                        @if($var->contract_status==0)
+                                            TERMINATED
+                                        @elseif($var->end_date<date('Y-m-d'))
+                                            EXPIRED
                                         @else
-                                        <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
-                                        <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                            ACTIVE
+                                        @endif
+                                    </center></td>
+
+
+                                <td><center>
+                                        <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details_insurance',$var->id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
+
+                                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                        @else
+
+
+                                            @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
+                                                {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
+                                                    <a href="{{ route('renew_insurance_contract_form',$var->id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+
+                                            @else
+                                                <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                                                <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                            @endif
+
                                         @endif
 
                                         <div class="modal fade" id="terminate{{$var->id}}" role="dialog">
@@ -514,6 +543,9 @@
                                         </div>
 
 
+
+
+
                                     </center>
                                 </td>
                             </tr>
@@ -529,7 +561,9 @@
 
             </div>
 
+
  @if ($category=='CPTU only' OR $category=='All')
+
             <div id="car_contracts" class="tabcontentOuter">
                
                 {{-- <h4 style="text-align: center">Car Rental Contracts</h4> --}}
@@ -1627,6 +1661,7 @@
   </table>
 </div>
 @elseif((Auth::user()->role!='DVC Administrator')&&($category=='All')||(Auth::user()->role!='Accountant')&&($category=='All'))
+
 <div class="tab2">
             <button class="tablinks" onclick="openContracts(event, 'active')" id="defaultOpen"><strong>Active</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'inactive')"><strong>Inactive</strong></button>
@@ -1640,6 +1675,7 @@
   @endif
    <h4 style="text-align: center"><strong>Active Car Rental Contracts</strong></h4>
    <hr>
+
   <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>

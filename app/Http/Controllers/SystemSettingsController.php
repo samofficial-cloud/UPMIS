@@ -28,9 +28,9 @@ class SystemSettingsController extends Controller
     {
 
 
+        $system_settings=DB::table('system_settings')->where('id',1)->get();
 
-
-        return view('system_settings');
+        return view('system_settings')->with('system_settings',$system_settings);
     }
 
 
@@ -133,6 +133,16 @@ if($request->get('cost_centre')=='')
     public function addUser(Request $request)
     {
 
+        $cost_centre='';
+
+        if($request->get('cost_centre')==''){
+            $cost_centre='N/A';
+
+        }else{
+
+            $cost_centre=$request->get('cost_centre');
+        }
+
         $name=$request->get('first_name').' '.$request->get('last_name');
 
         $user_name=strtolower($request->get('first_name')[0]).strtolower($request->get('last_name'));
@@ -155,7 +165,7 @@ if($request->get('cost_centre')=='')
             'email' => $request->get('email'),
             'phone_number' => $request->get('phone_number'),
             'role' => $request->get('role'),
-            'cost_centre' => $request->get('cost_centre'),
+            'cost_centre' => $cost_centre,
             'password' => Hash::make($default_password)
 
         ]);
@@ -197,6 +207,63 @@ if($request->get('cost_centre')=='')
 
 
 
+    public function addInsuranceCompany(Request $request)
+    {
+
+
+        if(DB::table('insurance_parameters')->where('company',$request->get('company'))->exists()){
+
+
+            return redirect()->back()->with("error","Company already exists, please try again");
+
+        }
+
+
+
+        DB::table('insurance_parameters')->insert([
+
+            'company' => $request->get('company'),
+            'classes' => '',
+
+        ]);
+
+
+
+        return redirect('/insurance_companies')
+            ->with('success', 'Insurance company added successfully');
+    }
+
+
+
+
+    public function addInsuranceClass(Request $request)
+    {
+
+
+        if(DB::table('insurance_parameters')->where('classes',$request->get('classes'))->exists()){
+
+
+            return redirect()->back()->with("error","Insurance class already exists, please try again");
+
+        }
+
+
+
+        DB::table('insurance_parameters')->insert([
+
+            'classes' => $request->get('classes'),
+            'company' => '',
+
+        ]);
+
+
+
+        return redirect('/insurance_classes')
+            ->with('success', 'Insurance class added successfully');
+    }
+
+
+
     public function editRole(Request $request,$id)
     {
 
@@ -216,6 +283,37 @@ if($request->get('cost_centre')=='')
     }
 
 
+
+
+
+
+
+    public function editInsuranceCompany(Request $request,$id)
+    {
+
+
+        DB::table('insurance_parameters')
+            ->where('id', $id)
+            ->update(['company' => $request->get('company')]);
+
+
+        return redirect('/insurance_companies')
+            ->with('success', 'Insurance company information edited successfully');
+    }
+
+
+    public function editInsuranceClass(Request $request,$id)
+    {
+
+        DB::table('insurance_parameters')
+            ->where('id', $id)
+            ->update(['classes' => $request->get('classes')]);
+
+        return redirect('/insurance_classes')
+            ->with('success', 'Insurance class information edited successfully');
+    }
+
+
     public function deleteRole($id)
     {
 
@@ -226,6 +324,103 @@ if($request->get('cost_centre')=='')
 
         return redirect('/role_management')
             ->with('success', 'Role deleted successfully');
+    }
+
+
+    public function deleteInsuranceCompany($id)
+    {
+
+            DB::table('insurance_parameters')
+                ->where('id', $id)
+                ->delete();
+
+        return redirect('/insurance_companies')
+            ->with('success', 'Insurance company deleted successfully');
+    }
+
+
+    public function deleteInsuranceClass($id)
+    {
+
+            DB::table('insurance_parameters')
+                ->where('id', $id)
+                ->delete();
+
+
+        return redirect('/insurance_classes')
+            ->with('success', 'Insurance class deleted successfully');
+    }
+
+
+    public function EditSystemSettings(Request $request)
+    {
+        $insurance_percentage=$request->get('insurance_percentage')/100;
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['financial_year' => $request->get('financial_year')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['max_no_of_days_to_pay_invoice' => $request->get('max_no_of_days_to_pay_invoice')]);
+
+
+
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['insurance_percentage' => $insurance_percentage]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['insurance_invoice_start_day' => $request->get('insurance_invoice_start_day')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['insurance_invoice_end_day' => $request->get('insurance_invoice_end_day')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['day_for_insurance_invoice' => $request->get('day_for_insurance_invoice')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['default_password' => $request->get('default_password')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['days_in_advance_for_invoices' => $request->get('days_in_advance_for_invoices')]);
+
+
+
+        return redirect('/system_settings')
+            ->with('success', 'Changes saved successfully');
+    }
+
+
+    public function InsuranceClasses()
+    {
+
+
+    $insurance_classes=DB::table('insurance_parameters')->where('classes','!=','')->get();
+
+        return view('insurance_classes')->with('insurance_classes',$insurance_classes);
+    }
+
+
+    public function InsuranceCompanies()
+    {
+
+        $insurance_companies=DB::table('insurance_parameters')->where('company','!=','')->get();
+
+        return view('insurance_companies')->with('insurance_companies',$insurance_companies);
     }
 
 
