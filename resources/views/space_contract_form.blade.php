@@ -283,7 +283,8 @@ $today=date('Y-m-d');
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -343,6 +344,7 @@ $today=date('Y-m-d');
     <div class="form-group">
 					<div class="form-wrapper">
 						<label for="email">Email <span style="color: red;"> *</span></label>
+                        <span id="email_msg"></span>
 						<input type="text" name="email" required id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
 					</div>
 				</div>
@@ -548,6 +550,7 @@ next_fs = $(this).parent().next();
         firstName=$("#first_name").val(),
         lastName=$("#last_name").val(),
         companyName=$("#company_name").val();
+        var email=$("#email").val();
 
         if(clientType=="1"){
             $('#ctypemsg').hide();
@@ -584,6 +587,23 @@ next_fs = $(this).parent().next();
             }
 
 
+            if(email==""){
+                p1=0;
+                $('#email_msg').show();
+                var message=document.getElementById('email_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#email').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p1=1;
+                $('#email_msg').hide();
+                $('#email').attr('style','border-bottom: 1px solid #ccc');
+
+            }
+
+
+
         }
 
         else if(clientType=="2"){
@@ -603,6 +623,24 @@ next_fs = $(this).parent().next();
              $('#company_name').attr('style','border-bottom: 1px solid #ccc');
 
             }
+
+
+            if(email==""){
+                p1=0;
+                $('#email_msg').show();
+                var message=document.getElementById('email_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#email').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p1=1;
+                $('#email_msg').hide();
+                $('#email').attr('style','border-bottom: 1px solid #ccc');
+
+            }
+
+
             }
 
         else{
@@ -611,7 +649,6 @@ next_fs = $(this).parent().next();
              message.style.color='red';
              message.innerHTML="Required";
              $('#client_type').attr('style','border:1px solid #f00');
-
 
         }
 var phone_digits=$('#phone_number').val().length;
@@ -647,7 +684,6 @@ $("#next2").click(function(){
 
 function gonext(){
     console.log(3);
-
 
 //Add Class Active
 $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");

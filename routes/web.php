@@ -35,7 +35,7 @@ Route::post('/login/custom', [
 
     Route::get('/contracts_management', 'ContractsController@ContractsManagement')->name('contracts_management');
 
-        Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
+    Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
 
 
 
@@ -217,7 +217,24 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 
     Route::post('/edit_role/{id}', 'SystemSettingsController@editRole')->name('edit_role');
     Route::post('/add_role', 'SystemSettingsController@addRole')->name('add_role');
+
     Route::get('/delete_role/{id}', 'SystemSettingsController@deleteRole')->name('delete_role');
+    Route::get('/delete_insurance_company/{id}', 'SystemSettingsController@deleteInsuranceCompany')->name('delete_insurance_company');
+    Route::get('/delete_insurance_class/{id}', 'SystemSettingsController@deleteInsuranceClass')->name('delete_insurance_class');
+
+    Route::post('/edit_system_changes', 'SystemSettingsController@EditSystemSettings')->name('edit_system_changes');
+    Route::get('/insurance_companies', 'SystemSettingsController@insuranceCompanies')->name('insurance_companies');
+    Route::get('/insurance_classes', 'SystemSettingsController@insuranceClasses')->name('insurance_classes');
+
+    Route::post('/add_insurance_company', 'SystemSettingsController@addInsuranceCompany')->name('add_insurance_company');
+    Route::post('/add_insurance_class', 'SystemSettingsController@addInsuranceClass')->name('add_insurance_class');
+
+    Route::post('/edit_role/{id}', 'SystemSettingsController@editRole')->name('edit_role');
+    Route::post('/edit_insurance_company/{id}', 'SystemSettingsController@editInsuranceCompany')->name('edit_insurance_company');
+    Route::post('/edit_insurance_class/{id}', 'SystemSettingsController@editInsuranceClass')->name('edit_insurance_class');
+
+
+
 
 
 });
@@ -242,7 +259,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
     Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
-
+    Route::get('/contract_availability_space', 'InvoicesController@contractAvailabilitySpace')->name('contract_availability_space');
 
     // Water Bills
     Route::get('/create_water_bills_invoice', 'InvoicesController@CreateWaterBillsInvoice')->name('create_water_bills_invoice');
@@ -250,13 +267,17 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/send_invoice_water_bills/{id}', 'InvoicesController@sendInvoiceWaterBills')->name('send_invoice_water_bills');
     Route::post('/change_payment_status_water_bills/{id}', 'InvoicesController@changePaymentStatusWaterBills')->name('change_payment_status_water_bills');
     Route::post('/create_water_invoice_manually', 'InvoicesController@CreateWaterBillInvoiceManually')->name('create_water_invoice_manually');
-
+    Route::get('/contract_availability_water', 'InvoicesController@contractAvailabilityWater')->name('contract_availability_water');
     // Electricity Bills
-    Route::get('/create_electricity_bills_invoice', 'InvoicesController@CreateElectricityBillsInvoice')->name('create_electricity_bills_invoice');
+
     Route::get('/electricity_bills_invoice_management', 'InvoicesController@ElectricityBillsInvoiceManagement');
     Route::post('/send_invoice_electricity_bills/{id}', 'InvoicesController@sendInvoiceElectricityBills')->name('send_invoice_electricity_bills');
     Route::post('/change_payment_status_electricity_bills/{id}', 'InvoicesController@changePaymentStatusElectricityBills')->name('change_payment_status_electricity_bills');
     Route::post('/create_electricity_invoice_manually', 'InvoicesController@CreateElectricityBillInvoiceManually')->name('create_electricity_invoice_manually');
+    Route::get('/contract_availability_electricity', 'InvoicesController@contractAvailabilityElectricity')->name('contract_availability_electricity');
+
+
+
 
 //payments
     Route::post('/create_space_payment_manually', 'PaymentController@CreateSpacePaymentManually')->name('create_space_payment_manually');
@@ -286,7 +307,13 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::get('/insurance_contracts_management', 'ContractsController@InsuranceContractsManagement');
     Route::get('/insurance_contract_form', 'ContractsController@InsuranceContractForm');
     Route::get('/create_insurance_contract', 'ContractsController@CreateInsuranceContract')->name('create_insurance_contract');
+    Route::get('/renew_insurance_contract_form/{id}/', 'ContractsController@RenewInsuranceContractForm')->name('renew_insurance_contract_form');
     Route::get('/insurance_contract_on_fly/{id}/', 'ContractsController@OnFlyInsuranceContractForm')->name('insurance_contract_on_fly');
+    Route::get('/autofill_insurance_parameters/', 'ContractsController@autofillParameters')->name('autofill_insurance_parameters');
+    Route::get('/contract_details_insurance/{contract_id}', 'ContractsController@ContractDetailsInsurance')->name('contract_details_insurance');
+
+
+
 
 //Insurance
     Route::get('/insurance', 'InsuranceController@index');
@@ -316,6 +343,7 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
 
 Route::group(['middleware' => ['auth', 'car']], function() {
 
+    Route::get('/contract_availability_car', 'InvoicesController@contractAvailabilityCar')->name('contract_availability_car');
 
 
 

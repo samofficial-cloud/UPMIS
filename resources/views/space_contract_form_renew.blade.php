@@ -297,8 +297,6 @@ $today=date('Y-m-d');
           <span id="ctypemsg"></span>
             <select class="form-control" readonly id="client_type" name="client_type">
 
-              <option value="1">Individual</option>
-              <option value="2">Company/Organization</option>
                 @if($var->type=="Individual")
                     <option value="1" selected>{{$var->type}}</option>
                 @else
@@ -342,7 +340,7 @@ $today=date('Y-m-d');
 					<div class="form-wrapper">
 						<label for="phone_number">Phone Number</label>
                         <span id="phone_msg"></span>
-                        <input type="text" id="phone_number" required name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                        <input type="text" id="phone_number" required name="phone_number" value="{{$var->phone_number}}" readonly class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
 					</div>
 				</div>
 

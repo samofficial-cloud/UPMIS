@@ -171,8 +171,8 @@ a.ex1:hover, a.ex1:active {color: red;}
   padding: 15px 0px;
   text-align: center;
   display: inline-block;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
+
   cursor: pointer;
 }
 
@@ -193,7 +193,7 @@ a.ex1:hover, a.ex1:active {color: red;}
 }
 
 .hero {
-    position: relative; 
+    position: relative;
     /*height: 100vh;
     width: 100%;
     display: flex;
@@ -201,7 +201,7 @@ a.ex1:hover, a.ex1:active {color: red;}
     justify-content: center;*/
 }
 
-.hero::before {    
+.hero::before {
       content: "";
       background-image:url("/images/chats.png");
       background-size: cover;
@@ -275,12 +275,12 @@ background-color: #9561e2;
 }
 
 html{
-  position:relative; 
+  position:relative;
   min-height: 100%;
 }
 .pageContentWrapper{
   margin-bottom:100px;/* Height of footer*/
-} 
+}
 
 .wrapper .footer {
   /*position: absolute;*/
@@ -625,7 +625,7 @@ margin-left: 43.5%;
   border-bottom: 2px solid #bdb8d7;
   border-bottom: 2px solid rgba(0,0,0,0.05);
   border-top: 2px solid rgba(255,255,255,0.05);
-}    
+}
 
 .wrapper .sidebar ul li a{
   color: #111;
@@ -639,7 +639,7 @@ margin-left: 43.5%;
 .wrapper .sidebar ul li:hover{
   background-color: #594f8d;
 }
-    
+
 .wrapper .sidebar ul li:hover a{
   color: #fff;
 }
@@ -648,7 +648,7 @@ margin-left: 43.5%;
   width: 100%;
   margin-left: 200px;
 }
- 
+
 
 .counterCell:before {
     content: counter(tableCount);
@@ -796,3 +796,25 @@ margin-left: 43.5%;
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1;
 }
+
+
+
+.settings_group {
+
+    border: #dee2e6 2px solid;
+    border-radius: 2px;
+
+
+}
+
+.group_children {
+
+    padding:0.4%;
+}
+
+
+.label_styles {
+    margin-right: 5%;
+}
+
+

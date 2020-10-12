@@ -78,7 +78,8 @@
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -128,7 +129,7 @@
           </div>
 
           <div class="modal-body">
-            <form method="post" action="{{ route('add_insurance')}}"  id="form1" >
+            <form method="post" action="{{ route('add_insurance')}}"  id="form1">
               {{csrf_field()}}
 
 
@@ -377,7 +378,7 @@ $companies=DB::table('insurance_parameters')->get();
                             <div  class="form-group" >
                                 <div class="form-wrapper">
                                     <label for="price"  ><strong>Price <span style="color: red;"> *</span></strong></label>
-                                    <input type="number" min="10" step="0.01" class="form-control" id="price_edit" name="price"  required value="{{number_format($var->price)}}" autocomplete="off">
+                                    <input type="number" min="10" step="0.01" class="form-control" id="price_edit" name="price"  required value="{{$var->price}}" autocomplete="off">
                                 </div>
                             </div>
                             <br>
