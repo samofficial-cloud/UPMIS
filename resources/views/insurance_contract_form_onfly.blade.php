@@ -248,6 +248,7 @@
 @endsection
 
 @section('content')
+
     <?php
     $today=date('Y-m-d');
     ?>
@@ -299,6 +300,7 @@
                     <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
                         <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                             <h2><strong>Insurance Contract Information</strong></h2>
+
 
                             <div class="row">
                                 <div class="col-md-12 mx-0">

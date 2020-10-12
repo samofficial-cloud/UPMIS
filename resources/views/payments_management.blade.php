@@ -52,8 +52,9 @@
 
 @section('content')
     <div class="wrapper">
-        <div class="sidebar">
-            <ul style="list-style-type:none;">
+<div class="sidebar">
+        <ul style="list-style-type:none;">
+
 
                 <?php
                 $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
@@ -83,6 +84,7 @@
                 @endadmin
             </ul>
         </div>
+
 
         <div class="main_content">
             <div class="container " style="max-width: 1308px;">

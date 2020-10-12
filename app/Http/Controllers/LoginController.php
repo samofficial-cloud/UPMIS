@@ -6,6 +6,7 @@ use App\user;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Input;
+use DB;
 
 class LoginController extends Controller
 {
@@ -13,6 +14,7 @@ class LoginController extends Controller
 
 
     public function login(Request $request){
+      
 
       $errors = new MessageBag; // initiate MessageBag
       /*
@@ -30,9 +32,42 @@ class LoginController extends Controller
       */
       {
 
+          if(Auth::user()->password_flag=='0'){
+          return redirect()->route('changepasswordlogin');
+          }
+          elseif (Auth::user()->password_flag=='1') {
+        # code...
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+
+          if($category=='All'){
+           return redirect()->route('home'); 
+          }
+          
+          elseif($category=='Insurance only'){
+             return redirect()->route('home2');
+          }
+         
+          elseif($category=='Real Estate only'){
+            return redirect()->route('home4');
+          }
+          
+
+          if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre')){
+            return redirect()->route('home3');
+          }
+          
+          if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre')){
+            return redirect()->route('home5');
+          }
+
+          if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre')){
+            return redirect()->route('home5');
+          }
+
+          }
 
 
-          return redirect()->route('home');
+          //return redirect()->route('home');
 
 
       }

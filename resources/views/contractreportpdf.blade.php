@@ -20,8 +20,38 @@ table {
   content: counter(tableCount);
   counter-increment: tableCount;
   }
+  #header,
+#footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+#header {
+  top: 0;
+  border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+  text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px 75px  !important;
+            padding: 0px 0px 0px 0px !important;
+        }
 </style>
 <body>
+  <div id="footer">
+  <div class="page-number"></div>
+</div>
 <?php
 
 ?>
@@ -69,15 +99,21 @@ table {
 
         @foreach($contracts as $var)
           <tr>
-          	<th scope="row" class="counterCell text-center">.</th>
+          	<td scope="row" class="counterCell" style="text-align: center;">.</td>
           	<td>{{$var->full_name}}</td>
-          	<td><center>{{$var->space_id_contract}}</center></td>
+          	<td>{{$var->space_id_contract}}</td>
             <td><center>{{$var->currency}}</center></td>
-          	<td>{{number_format($var->amount)}}</td>
+          	<td style="text-align: right;">{{number_format($var->amount)}}</td>
           	<td><center>{{$var->payment_cycle}}</center></td>
           	<td><center>{{date("d/m/Y",strtotime($var->start_date))}}</center></td>
           	<td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
-          	<td><center>{{$var->escalation_rate}}</center></td>
+          	<td>
+              @if($var->escalation_rate==null)
+              <center>N/A</center>
+              @else
+              <center>{{$var->escalation_rate}}</center>
+              @endif
+            </td>
           </tr>
           @endforeach
       </tbody>
@@ -107,16 +143,16 @@ table {
         @foreach($contracts as $var)
           <tr>
 
-            <th scope="row" class="counterCell text-center">.</th>
+            <td scope="row" class="counterCell" style="text-align: center;">.</td>
             <td>{{$var->vehicle_registration_no}}</td>
             {{-- <td><center>{{$var->vehicle_use}}</center></td> --}}
             <td>{{$var->principal}}</td>
             <td>{{ucfirst(strtolower($var->insurance_type))}}</td>
             <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
             <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
-              <td><center>{{number_format($var->sum_insured)}}</center></td>
-              <td><center>{{number_format($var->premium)}}</center></td>
-            <td><center>{{number_format($var->actual_ex_vat)}}</center></td>
+              <td style="text-align: right;">{{number_format($var->sum_insured)}}</td>
+              <td style="text-align: right;">{{number_format($var->premium)}}</td>
+            <td style="text-align: right;">{{number_format($var->actual_ex_vat)}}</td>
             <td><center>{{$var->currency}}</center></td>
               {{-- <td>{{$var->commission}}</td> --}}
               <td><center>{{$var->receipt_no}}</center></td>
@@ -136,20 +172,20 @@ table {
       <th scope="col"><center>Destination</center></th>
       <th scope="col"><center>Start Date</center></th>
       <th scope="col"><center>End Date</center></th>
-      <th scope="col"><center>Amount</center></th>
+      <th scope="col"><center>Amount (TZS)</center></th>
     </tr>
   </thead>
   <tbody>
     @foreach($contracts as $var)
     <tr>
-    	<td class="counterCell text-center">.</td>
+    	<td class="counterCell" style="text-align: center;">.</td>
     	<td>{{$var->designation}} {{$var->fullName}}</td>
-      <td>{{$var->cost_centre}}</td>
+      <td><center>{{$var->cost_centre}}</center></td>
     	<td>{{$var->vehicle_reg_no}}</td>
       <td>{{$var->destination}}</td>
     	<td><center>{{date("d/m/Y",strtotime($var->start_date))}}</center></td>
     	<td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
-    	<td>TZS {{number_format($var->grand_total)}}</td>
+    	<td style="text-align: right;">{{number_format($var->grand_total)}}</td>
     </tr>
     @endforeach
 </tbody>

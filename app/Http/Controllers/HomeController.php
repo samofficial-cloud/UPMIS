@@ -64,6 +64,10 @@ class HomeController extends Controller
          return view('change_password');
     }
 
+    public function changepasswordlogin(){
+       return view('change_password_first_login');
+    }
+
     
 
      public function editprofiledetails(Request $request){
@@ -72,7 +76,7 @@ class HomeController extends Controller
     $users->email = $request->get('email');
     $users->phone_number = $request->get('phoneNumber');
     $users->save();
-    return redirect()->back()
+    return redirect()->route('viewprofile')
                     ->with('success', 'Profile Details Updated Successfully');
     }
 
@@ -100,6 +104,59 @@ class HomeController extends Controller
         $user->save();
 
         return redirect()->back()->with("success","Password changed successfully !");
+        }
+
+    }
+
+
+    public function changepassworddetailslogin(Request $request){
+
+        if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
+            // The passwords matches
+            return redirect()->back()->with("error","Your current password does not matches with the password you provided. Please try again.");
+        }
+
+        if(strcmp($request->get('current-password'), $request->get('new-password')) == 0){
+            //Current password and new password are same
+            return redirect()->back()->with("error","New Password cannot be same as your current password. Please choose a different password.");
+        }
+
+        else{
+           $validatedData = $request->validate([
+            'current-password' => 'required',
+            'new-password' => 'required|string|min:6|confirmed',
+        ]);
+
+        //Change Password
+        $user = Auth::user();
+        $user->password = bcrypt($request->get('new-password'));
+        $user->password_flag=1;
+        $user->save();
+        $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+        if($category=='All'){
+           return redirect()->route('home')->with("success","Password changed successfully !"); 
+          }
+          
+          elseif($category=='Insurance only'){
+             return redirect()->route('home2')->with("success","Password changed successfully !");
+          }
+         
+          elseif($category=='Real Estate only'){
+            return redirect()->route('home4')->with("success","Password changed successfully !");
+          }
+
+          if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre')){
+            return redirect()->route('home3')->with("success","Password changed successfully !");
+          }
+          
+          if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre')){
+            return redirect()->route('home5')->with("success","Password changed successfully !");
+          }
+
+          if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre')){
+            return redirect()->route('home5')->with("success","Password changed successfully !");
+          }
+        
         }
 
     }
@@ -193,7 +250,7 @@ class HomeController extends Controller
          return redirect()->back()->with('errors', "No data found to generate the requested report");
       }
       else{
-        $pdf = PDF::loadView('spacereport1pdf',['spaces'=>$spaces]);
+        $pdf = PDF::loadView('spacereport1pdf',['spaces'=>$spaces])->setPaper('a4', 'landscape');
   
         return $pdf->stream('List of Spaces.pdf');
       }
@@ -678,7 +735,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
        else{
-        $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations]);    
+        $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations])->setPaper('a4', 'landscape');    
          return $pdf->stream('Car History Report.pdf');
        }
       }    
@@ -911,59 +968,59 @@ elseif(($_GET['business_type']=='Car Rental')&&($_GET['lease']=='end')){
     if(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']!='true')){
   if($_GET['b_type']=='Space'){
     if($_GET['In_type']=='rent'){
-       $invoices=DB::table('invoices')->get();
+       $invoices=DB::table('invoices')->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='electricity'){
-      $invoices=DB::table('electricity_bill_invoices')->get();
+      $invoices=DB::table('electricity_bill_invoices')->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='water'){
-      $invoices=DB::table('water_bill_invoices')->get();
+      $invoices=DB::table('water_bill_invoices')->orderBy('invoice_date','dsc')->get();
     }
   }
   elseif($_GET['b_type']=='Insurance'){
-         $invoices=DB::table('insurance_invoices')->get();
+         $invoices=DB::table('insurance_invoices')->orderBy('invoice_date','dsc')->get();
   }
   elseif($_GET['b_type']=='Car Rental'){
-      $invoices=DB::table('car_rental_invoices')->get();
+      $invoices=DB::table('car_rental_invoices')->orderBy('invoice_date','dsc')->get();
   }
 }
 elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']=='true')){
   if($_GET['b_type']=='Space'){
     if($_GET['In_type']=='rent'){
-       $invoices=DB::table('invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->get();
+       $invoices=DB::table('invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='electricity'){
-      $invoices=DB::table('electricity_bill_invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->get();
+      $invoices=DB::table('electricity_bill_invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='water'){
-      $invoices=DB::table('water_bill_invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->get();
+      $invoices=DB::table('water_bill_invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->orderBy('invoice_date','dsc')->get();
     }
   }
   elseif($_GET['b_type']=='Insurance'){
-         $invoices=DB::table('insurance_invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->get();
+         $invoices=DB::table('insurance_invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->orderBy('invoice_date','dsc')->get();
   }
   elseif($_GET['b_type']=='Car Rental'){
-      $invoices=DB::table('car_rental_invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->get();
+      $invoices=DB::table('car_rental_invoices')->whereYear('invoicing_period_start_date',$_GET['year'])->orwhereYear('invoicing_period_end_date',$_GET['year'])->orderBy('invoice_date','dsc')->get();
   }
 
   }
   elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']!='true')){
     if($_GET['b_type']=='Space'){
     if($_GET['In_type']=='rent'){
-       $invoices=DB::table('invoices')->where('payment_status',$_GET['payment_status'])->get();
+       $invoices=DB::table('invoices')->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='electricity'){
-      $invoices=DB::table('electricity_bill_invoices')->where('payment_status',$_GET['payment_status'])->get();
+      $invoices=DB::table('electricity_bill_invoices')->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='water'){
-      $invoices=DB::table('water_bill_invoices')->where('payment_status',$_GET['payment_status'])->get();
+      $invoices=DB::table('water_bill_invoices')->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
     }
   }
   elseif($_GET['b_type']=='Insurance'){
-         $invoices=DB::table('insurance_invoices')->where('payment_status',$_GET['payment_status'])->get();
+         $invoices=DB::table('insurance_invoices')->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
   }
   elseif($_GET['b_type']=='Car Rental'){
-      $invoices=DB::table('car_rental_invoices')->where('payment_status',$_GET['payment_status'])->get();
+      $invoices=DB::table('car_rental_invoices')->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
   }
   }
   elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']=='true')){
@@ -972,18 +1029,21 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
        $invoices=DB::table('invoices')
        ->where('payment_status',$_GET['payment_status'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
        ->get();
     }
     elseif($_GET['In_type']=='electricity'){
       $invoices=DB::table('electricity_bill_invoices')
       ->where('payment_status',$_GET['payment_status'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
        ->get();
     }
     elseif($_GET['In_type']=='water'){
       $invoices=DB::table('water_bill_invoices')
       ->where('payment_status',$_GET['payment_status'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
        ->get();
     }
   }
@@ -991,32 +1051,34 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
          $invoices=DB::table('insurance_invoices')
          ->where('payment_status',$_GET['payment_status'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
        ->get();
   }
   elseif($_GET['b_type']=='Car Rental'){
       $invoices=DB::table('car_rental_invoices')
       ->where('payment_status',$_GET['payment_status'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
        ->get();
   }
   }
   elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']!='true')){
     if($_GET['b_type']=='Space'){
     if($_GET['In_type']=='rent'){
-       $invoices=DB::table('invoices')->where('debtor_name',$_GET['c_name'])->get();
+       $invoices=DB::table('invoices')->where('debtor_name',$_GET['c_name'])->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='electricity'){
-      $invoices=DB::table('electricity_bill_invoices')->where('debtor_name',$_GET['c_name'])->get();
+      $invoices=DB::table('electricity_bill_invoices')->where('debtor_name',$_GET['c_name'])->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='water'){
-      $invoices=DB::table('water_bill_invoices')->where('debtor_name',$_GET['c_name'])->get();
+      $invoices=DB::table('water_bill_invoices')->where('debtor_name',$_GET['c_name'])->orderBy('invoice_date','dsc')->get();
     }
   }
   elseif($_GET['b_type']=='Insurance'){
-         $invoices=DB::table('insurance_invoices')->where('debtor_name',$_GET['c_name'])->get();
+         $invoices=DB::table('insurance_invoices')->where('debtor_name',$_GET['c_name'])->orderBy('invoice_date','dsc')->get();
   }
   elseif($_GET['b_type']=='Car Rental'){
-      $invoices=DB::table('car_rental_invoices')->where('debtor_name',$_GET['c_name'])->get();
+      $invoices=DB::table('car_rental_invoices')->where('debtor_name',$_GET['c_name'])->orderBy('invoice_date','dsc')->get();
   }
   }
   elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']=='true')){
@@ -1025,18 +1087,21 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
        $invoices=DB::table('invoices')
        ->where('debtor_name',$_GET['c_name'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])
+       ->orderBy('invoice_date','dsc')
        ->get();
     }
     elseif($_GET['In_type']=='electricity'){
       $invoices=DB::table('electricity_bill_invoices')
       ->where('debtor_name',$_GET['c_name'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])
+       ->orderBy('invoice_date','dsc')
       ->get();
     }
     elseif($_GET['In_type']=='water'){
       $invoices=DB::table('water_bill_invoices')
       ->where('debtor_name',$_GET['c_name'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])
+       ->orderBy('invoice_date','dsc')
       ->get();
     }
   }
@@ -1044,32 +1109,34 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
          $invoices=DB::table('insurance_invoices')
          ->where('debtor_name',$_GET['c_name'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])
+       ->orderBy('invoice_date','dsc')
          ->get();
   }
   elseif($_GET['b_type']=='Car Rental'){
       $invoices=DB::table('car_rental_invoices')
       ->where('debtor_name',$_GET['c_name'])->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])
+       ->orderBy('invoice_date','dsc')
       ->get();
   }
   }
   elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']!='true')){
     if($_GET['b_type']=='Space'){
     if($_GET['In_type']=='rent'){
-       $invoices=DB::table('invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->get();
+       $invoices=DB::table('invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='electricity'){
-      $invoices=DB::table('electricity_bill_invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->get();
+      $invoices=DB::table('electricity_bill_invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
     }
     elseif($_GET['In_type']=='water'){
-      $invoices=DB::table('water_bill_invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->get();
+      $invoices=DB::table('water_bill_invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
     }
   }
   elseif($_GET['b_type']=='Insurance'){
-         $invoices=DB::table('insurance_invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->get();
+         $invoices=DB::table('insurance_invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
   }
   elseif($_GET['b_type']=='Car Rental'){
-      $invoices=DB::table('car_rental_invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->get();
+      $invoices=DB::table('car_rental_invoices')->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])->orderBy('invoice_date','dsc')->get();
   }
 
   }
@@ -1080,6 +1147,7 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
        ->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
        ->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
        ->get();
     }
     elseif($_GET['In_type']=='electricity'){
@@ -1087,6 +1155,7 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
       ->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
        ->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
       ->get();
     }
     elseif($_GET['In_type']=='water'){
@@ -1094,6 +1163,7 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
       ->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
        ->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
       ->get();
     }
   }
@@ -1102,6 +1172,7 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
          ->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
        ->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
          ->get();
   }
   elseif($_GET['b_type']=='Car Rental'){
@@ -1109,6 +1180,7 @@ elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['y
       ->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
        ->whereYear('invoicing_period_start_date',$_GET['year'])
        ->orwhereYear('invoicing_period_end_date',$_GET['year'])->where('debtor_name',$_GET['c_name'])->where('payment_status',$_GET['payment_status'])
+       ->orderBy('invoice_date','dsc')
       ->get();
   }
   }

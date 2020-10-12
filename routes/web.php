@@ -24,6 +24,10 @@ Route::post('/login/custom', [
 
 
     Route::get('/', 'ChartController@index')->name('home');
+    Route::get('/home2', 'ChartController@udiaindex')->name('home2');
+    Route::get('/home9', 'ChartController@cptuindex')->name('home3');
+     Route::get('/home16', 'ChartController@spaceindex')->name('home4');
+     Route::get('/home23', 'ChartController@voteholderindex')->name('home5');
     Route::get('/Space', 'SpaceController@index');
     Route::get('/space_contract_on_fly/{id}/', 'ContractsController@OnFlySpaceContractForm')->name('space_contract_on_fly');
 
@@ -66,11 +70,18 @@ Route::post('/clients/Space/edit', 'clientsController@edit')->name('editclients'
 
 Route::post('/clients/Car/edit', 'clientsController@editCarclients')->name('editCarclients');
 
+Route::post('/clients/Insurance/edit', 'clientsController@editIns')->name('editInsclients');
+
 Route::get('/clients/Space/view_more/{id}','clientsController@ClientViewMore')->name('ClientViewMore');
 
 Route::get('/clients/car_rental/view_more/{name}/{email}/{centre}','clientsController@CarViewMore')->name('CarClientsViewMore');
 
+Route::get('/clients/insurance/view_more/{name}/{email}/{centre}','clientsController@InsuranceViewMore')->name('InsuranceClientsViewMore');
+
 Route::post('/clients/Space/SendMessage', 'clientsController@SendMessage')->name('SendMessage');
+
+Route::post('/clients/Space/SendMessage_2', 'clientsController@SendMessage2')->name('SendMessage2');
+
 
 
 Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
@@ -145,6 +156,9 @@ Route::post('/autocomplete/model', 'carRentalController@model')->name('autocompl
 
 Route::post('/autocomplete/hirerate', 'carRentalController@hirerate')->name('autocomplete.hirerate');
 
+Route::post('/autocomplete/faculty', 'carRentalController@faculty')->name('autocomplete.faculty');
+
+
 Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('autocomplete.spaces');
 
 Route::post('/autocomplete/client_name', 'clientsController@fetchclient_name')->name('autocomplete.client_name');
@@ -184,19 +198,24 @@ Route::get('/login2', function () {
         return View('login2');
     });
 
+
 Route::get('/edit_profile','HomeController@editprofile');
 
 Route::get('/edit_profile_details','HomeController@editprofiledetails');
 
-Route::get('/view_profile','HomeController@viewprofile');
+Route::get('/view_profile','HomeController@viewprofile')->name('viewprofile');
 
-Route::get('/change_password','HomeController@changepassword');
+Route::get('/change_password','HomeController@changepassword')->name('changepassword');
+
+Route::get('/change_password_login','HomeController@changepasswordlogin')->name('changepasswordlogin');
 
 Route::get('/system_chats','systemChatController@index')->name('chatindex');
 
 Route::post('/system_chats/send','systemChatController@sendMessage')->name('sendchat');
 
 Route::post('/change_password_details','HomeController@changepassworddetails')->name('changepassword_details');
+
+Route::post('/change_password_details_login','HomeController@changepassworddetailslogin')->name('changepassword_details_login');
 
 Route::get('/system_chats/view/{name}','systemChatController@viewchat')->name('viewchat');
 

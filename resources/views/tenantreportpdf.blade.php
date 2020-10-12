@@ -12,20 +12,45 @@ table {
 table, td, th {
   border: 1px solid black;
 }
-table {
-  counter-reset: tableCount;
-  }
 
-  .counterCell:before {
-  content: counter(tableCount);
-  counter-increment: tableCount;
-  }
+#header,
+#footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+#header {
+  top: 0;
+  border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+  text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px 75px  !important;
+            padding: 0px 0px 0px 0px !important;
+        }
+
 </style>
 <body>
+  <div id="footer">
+  <div class="page-number"></div>
+</div>
 <?php
 //use DB;
 $today=date('Y-m-d');
 $i='1';
+$j=1;
 ?>
 <center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
@@ -123,13 +148,13 @@ $i='1';
   <tbody>
     @foreach($tenants as $client)
     <tr>
-      <th scope="row" class="counterCell text-center">.</th>
+      <td scope="row"><center>{{$j}}.</center></td>
       <td>{{$client->full_name}}</td>
-      <td><center>{{$client->type}}</center></td>
-      <td><center>{{$client->space_id_contract}}</center></td>
+      <td>{{$client->type}}</td>
+      <td>{{$client->space_id_contract}}</td>
       <td><center>{{$client->phone_number}}</center></td>
-      <td><center>{{$client->email}}</center></td>
-      <td><center>{{$client->address}}</center></td>
+      <td>{{$client->email}}</td>
+      <td>{{$client->address}}</td>
       @if($_GET['contract_filter']!='true')
       @if($client->contract_status=='1' && $client->end_date<$today)
       <td><center>Expired</center></td>
@@ -140,6 +165,7 @@ $i='1';
       @endif
       @endif
       </tr>
+      <?php $j=$j+1; ?>
       @endforeach
   </tbody>
 </table>
@@ -169,7 +195,7 @@ $i='1';
                             <tbody>
                             @foreach($invoices as $var)
                                 <tr>
-                                    <th scope="row">{{ $i }}.</th>
+                                    <td scope="row"><center>{{ $i }}.</center></td>
                                     <td><center>{{$var->debtor_name}}</center></td>
                                     <td><center>{{$var->invoice_number}}</center></td>
 

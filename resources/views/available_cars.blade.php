@@ -29,7 +29,7 @@
       <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-      <th scope="col" style="color:#fff;"><center>Hire Rate</center></th>
+      <th scope="col" style="color:#fff;"><center>Hire Rate (TZS)</center></th>
     </tr>
   </thead>
   <tbody>
@@ -37,7 +37,7 @@
       <tr>
       <th class="counterCell text-center">.</th>
       <td><center>{{ $cars->vehicle_reg_no}}</center></td>
-      <td><center>{{$cars->vehicle_model}}</center></td>
+      <td>{{$cars->vehicle_model}}</td>
       <td><center>{{ $cars->vehicle_status}}</center></td>
       <td><center>{{ number_format($cars->hire_rate)}}</center></td>
       </tr>

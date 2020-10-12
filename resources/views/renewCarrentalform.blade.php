@@ -254,34 +254,48 @@ $today=date('Y-m-d');
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+            
+            @if($category=='All')
+           <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Insurance only')
+          <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Real Estate only')
+          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+           @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
+            <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
 
             @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
             @else
             @endif
+
             @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
     @else
     @endif
-            @if($category=='CPTU only' OR $category=='All')
+            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
     @else
     @endif
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-            <div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <i class="fas fa-file-contract"></i> Contracts
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
-    <a class="dropdown-item" href="/space_contracts_management">Space</a>
-  </div>
-</div>
-            <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
-            <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
+    @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+    
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+    @endif
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
+
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+ @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+  @endif
 @admin
             <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
 <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>

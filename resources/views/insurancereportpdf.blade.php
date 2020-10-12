@@ -20,8 +20,39 @@ table {
   content: counter(tableCount);
   counter-increment: tableCount;
   }
+
+  #header,
+#footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+#header {
+  top: 0;
+  border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+  text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px 75px  !important;
+            padding: 0px 0px 0px 0px !important;
+        }
 </style>
 <body>
+  <div id="footer">
+  <div class="page-number"></div>
+</div>
 	<?php
 
 	?>
@@ -74,15 +105,15 @@ table {
         @foreach($insurance as $var)
           <tr>
 
-            <th scope="row" class="counterCell text-center">.</th>
+            <td scope="row" class="counterCell" style="text-align: center;">.</td>
             <td>{{$var->vehicle_registration_no}}</td>
             <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
             <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
             <td><center>{{$var->receipt_no}}</center></td>
              <td><center>{{$var->currency}}</center></td>
-              <td><center>{{number_format($var->sum_insured)}}</center></td>
-              <td><center>{{number_format($var->premium)}}</center></td>
-            <td><center>{{number_format($var->actual_ex_vat)}}</center></td>   
+              <td style="text-align: right;">{{number_format($var->sum_insured)}}</td>
+              <td style="text-align: right;">{{number_format($var->premium)}}</td>
+            <td style="text-align: right;">{{number_format($var->actual_ex_vat)}}</td>   
           </tr>
           @endforeach
       </tbody>
@@ -94,16 +125,18 @@ table {
 	<th scope="col"><center>S/N</center></th>
           <th scope="col"><center>Principal</center></th>
           <th scope="col" ><center>Insurance Type</center></th>
+          <th scope="col" ><center>Currency</center></th>
           <th scope="col" ><center>Commision</center></th>
       </tr>
       </thead>
       <tbody>
       	 @foreach($principal as $var)
           <tr>
-          	<th scope="row" class="counterCell">.</th>
+          	<td scope="row" class="counterCell" style="text-align: center;">.</td>
           	<td>{{$var->insurance_company}}</td>
           	<td>{{$var->insurance_type}}</td>
-          	<td>{{number_format($var->commission)}}</td>
+            <td><center>{{$var->insurance_currency}}</center></td>
+          	<td style="text-align: right;">{{number_format($var->commission)}}</td>
 
           </tr>
           @endforeach
@@ -120,6 +153,7 @@ table {
           <th scope="col" style="width: 18%;" ><center>Commission Date</center></th>
           <th scope="col" ><center>End Date</center></th>
            <th scope="col" ><center>Receipt No </center></th>
+           <th scope="col" ><center>Currency </center></th>
           <th scope="col" ><center>Sum Insured</center></th>    
         </tr>
         </thead>
@@ -128,13 +162,14 @@ table {
         @foreach($clients as $var)
           <tr>
 
-            <th scope="row" class="counterCell">.</th>
+            <td scope="row" class="counterCell" style="text-align: center;">.</td>
             <td>{{$var->full_name}}</td>
             <td>{{$var->vehicle_registration_no}}</td>
             <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
             <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
             <td>{{$var->receipt_no}}</td>
-            <td>{{$var->currency}} {{number_format($var->sum_insured)}}</td>   
+            <td><center>{{$var->currency}}</center></td>
+            <td style="text-align: right;">{{number_format($var->sum_insured)}}</td>   
           </tr>
           @endforeach
       </tbody>

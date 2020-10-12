@@ -20,6 +20,34 @@ table {
   content: counter(tableCount);
   counter-increment: tableCount;
   }
+
+  #header,
+#footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+#header {
+  top: 0;
+  border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+  text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px 75px  !important;
+            padding: 0px 0px 0px 0px !important;
+        }
 </style>
 <body>
 <?php
@@ -30,6 +58,9 @@ use App\carContract;
         
         $total=0;
 ?>
+<div id="footer">
+  <div class="page-number"></div>
+</div>
 @if($_GET['report_type']=='cars')
 <center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
@@ -80,20 +111,20 @@ use App\carContract;
 <table class="hover table table-striped table-bordered" id="myTable">
   <thead class="thead-dark">
     <tr>
-      <th scope="col"><center>S/N</center></th>
+      <th scope="col" style="width: 5%;"><center>S/N</center></th>
       <th scope="col"><center>Vehicle Registration No.</center></th>
-      <th scope="col"><center>Vehicle Model</center></th>
+      <th scope="col" style="width: 40%;"><center>Vehicle Model</center></th>
       <th scope="col"><center>Vehicle Status</center></th>
-      <th scope="col"><center>Hire Rate</center></th>
+      <th scope="col" style="width: 15%;"><center>Hire Rate (TZS)</center></th>
     </tr>
   </thead>
   <tbody>
       <tr>
-      <th class="counterCell text-center">.</th>
+      <td class="counterCell" style="text-align: center;">.</td>
       <td><center>{{ $cars->vehicle_reg_no}}</center></td>
       <td>{{$cars->vehicle_model}}</td>
       <td><center>{{ $cars->vehicle_status}}</center></td>
-      <td><center>{{ number_format($cars->hire_rate)}}</center></td>
+      <td style="text-align: right;">{{ number_format($cars->hire_rate)}}</td>
       </tr>
   </tbody>
 </table>
@@ -112,8 +143,8 @@ Detailed Information:
 <table>
   <thead class="thead-dark">
     <tr>
-      <th scope="col"><center>S/N</center></th>
-      <th scope="col"><center>Client Name</center></th>
+      <th scope="col" style="width: 5%;"><center>S/N</center></th>
+      <th scope="col" style="width: 30%;"><center>Client Name</center></th>
       <th scope="col"><center>Start Date</center></th>
       <th scope="col"><center>End date</center></th>
       <th scope="col"><center>Destination</center></th>
@@ -122,7 +153,7 @@ Detailed Information:
   <tbody>
     @foreach($clients as $client)
       <tr>
-      <th>{{$j}}.</th>
+      <td style="text-align: center;">{{$j}}.</td>
       <td>{{ $client->fullName}}</td>
       <td><center>{{date("d/m/Y",strtotime($client->start_date))}}</center></td>
       <td><center>{{ date("d/m/Y",strtotime($client->end_date))}}</center></td>
@@ -142,20 +173,20 @@ Detailed Information:
   <thead class="thead-dark">
     <tr>
       <th scope="col"><center>S/N</center></th>
-      <th scope="col"><center>Vehicle Registration No.</center></th>
+      <th scope="col"><center>Vehicle Reg No.</center></th>
       <th scope="col"><center>Vehicle Model</center></th>
       <th scope="col"><center>Vehicle Status</center></th>
-      <th scope="col"><center>Hire Rate/Km</center></th>
+      <th scope="col"><center>Hire Rate/Km (TZS)</center></th>
     </tr>
   </thead>
   <tbody>
     @foreach($cars as $cars)
       <tr>
-      <th class="counterCell text-center">.</th>
+      <td class="counterCell" style="text-align: center;">.</td>
       <td><center>{{ $cars->vehicle_reg_no}}</center></td>
       <td><center>{{$cars->vehicle_model}}</center></td>
       <td><center>{{ $cars->vehicle_status}}</center></td>
-      <td><center>{{ number_format($cars->hire_rate)}}</center></td>
+      <td style="text-align: right;">{{ number_format($cars->hire_rate)}}</td>
       </tr>
       @endforeach
   </tbody>
@@ -165,21 +196,21 @@ Detailed Information:
 <table class="hover table table-striped table-bordered" id="myTable">
   <thead class="thead-dark">
     <tr>
-      <th scope="col"><center>S/N</center></th>
-      <th scope="col"><center>Vehicle Registration No.</center></th>
+      <th scope="col" style="width: 7%;"><center>S/N</center></th>
+      <th scope="col" style="width: 18%;"><center>Vehicle Reg No.</center></th>
       <th scope="col"><center>Vehicle Model</center></th>
-      <th scope="col"><center>Vehicle Status</center></th>
-      <th scope="col"><center>Hire Rate/Km</center></th>
+      <th scope="col" style="width: 18%;"><center>Vehicle Status</center></th>
+      <th scope="col" style="width: 15%;"><center>Hire Rate/Km (TZS)</center></th>
     </tr>
   </thead>
   <tbody>
     @foreach($cars as $cars)
       <tr>
-      <th class="counterCell text-center">.</th>
+      <td class="counterCell" style="text-align: center;">.</td>
       <td>{{ $cars->vehicle_reg_no}}</td>
       <td>{{$cars->vehicle_model}}</td>
-      <td>{{ $cars->vehicle_status}}</td>
-      <td>{{ number_format($cars->hire_rate)}}</td>
+      <td><center>{{ $cars->vehicle_status}}</center></td>
+      <td style="text-align: right;">{{ number_format($cars->hire_rate)}}</td>
       </tr>
       @endforeach
   </tbody>
@@ -204,16 +235,16 @@ Detailed Information:
     <tr>
       <th scope="col"style="width: 5%;"><center>S/N</center></th>
       <th scope="col"><center>Client Name</center></th>
-      <th scope="col" style="width: 17%;"><center>Vehicle Reg No.</center></th>
-      <th scope="col" style="width: 13%;"><center>Start Date</center></th>
-      <th scope="col" style="width: 13%;"><center>End Date</center></th>
+      <th scope="col" style="width: 16%;"><center>Vehicle Reg No.</center></th>
+      <th scope="col" style="width: 14%;"><center>Start Date</center></th>
+      <th scope="col" style="width: 14%;"><center>End Date</center></th>
       <th scope="col" style="width: 18%;"><center>Destination</center></th>
     </tr>
   </thead>
   <tbody>
     @foreach($clients as $client)
     <tr>
-    <th scope="row" class="counterCell text-center">.</th>
+    <td scope="row" class="counterCell" style="text-align: center;">.</td>
     <td>{{$client->designation}} {{$client->fullName}}</td>
     <td><center>{{$client->vehicle_reg_no}}</center></td>
     <td><center>{{date("d/m/Y",strtotime($client->start_date))}}</center></td>
@@ -233,7 +264,7 @@ Detailed Information:
   <img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
      <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
     </b>
-    <br><br><strong>CPTU Revenue Report For the Duration of {{date("d/m/Y",strtotime($_GET['start_date']))}} to {{date("d/m/Y",strtotime($_GET['end_date']))}}</strong>
+    <br><br>CPTU Revenue Report For the Duration of <strong>{{date("d/m/Y",strtotime($_GET['start_date']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end_date']))}}</strong>
 </center>
 <br>
 @if(count($revenues)>0)
@@ -251,7 +282,7 @@ Detailed Information:
   <tbody>
     @foreach($revenues as $client)
     <tr>
-    <th scope="row" class="counterCell text-center">.</th>
+    <td scope="row" class="counterCell" style="text-align: center;">.</td>
     <td>{{$client->fullName}}</td>
     <td><center>{{$client->vehicle_reg_no}}</center></td>
     <td><center>{{date("d/m/Y",strtotime($client->invoicing_period_start_date))}}</center></td>

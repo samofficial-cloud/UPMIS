@@ -235,25 +235,48 @@ $i='1';
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+            
+            @if($category=='All')
+           <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Insurance only')
+          <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Real Estate only')
+          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+           @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
+            <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
 
             @if($category=='Real Estate only' OR $category=='All')
             <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
             @else
             @endif
+
             @if($category=='Insurance only' OR $category=='All')
             <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
     @else
     @endif
-            @if($category=='CPTU only' OR $category=='All')
+            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
     @else
     @endif
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
+    @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+    
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+    @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
+
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+ @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+  @endif
 @admin
             <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
 <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
@@ -372,7 +395,7 @@ $i='1';
       <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-      <th scope="col" style="color:#fff;"><center>Hire Rate/KM</center></th>
+      <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
     </tr>
   </thead>
@@ -383,7 +406,7 @@ $i='1';
       <td><center>{{ $cars->vehicle_reg_no}}</center></td>
       <td>{{$cars->vehicle_model}}</td>
       <td>{{ $cars->vehicle_status}}</td>
-      <td><center>TZS {{ number_format($cars->hire_rate)}}</center></td>
+      <td><center>{{ number_format($cars->hire_rate)}}</center></td>
         <td><center>
          <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
@@ -554,7 +577,7 @@ $i='1';
     <tr>
       <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-      <th scope="col" style="color:#fff;"><center>Hire Rate</center></th>
+      <th scope="col" style="color:#fff;"><center>Hire Rate (TZS)</center></th>
       @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
       <th scope="col" style="color:#fff;"><center>Action</center></th>
       @endif

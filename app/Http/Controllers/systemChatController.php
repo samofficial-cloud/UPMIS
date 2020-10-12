@@ -12,6 +12,7 @@ class systemChatController extends Controller
 {
     //
     public function index(){
+         $today=date('Y-m-d');
     	$name=User::orderby('name','asc')->get();
     	//$chats=system_chat::select("IF('sender'= 'Arnold Matemu', 'receiver')")->get();
 
@@ -29,6 +30,20 @@ class systemChatController extends Controller
 
         $received=Auth::user()->name;
                 //dd($chats);
+
+        $chat_clear=system_chat::
+        where('receiver',Auth::user()->name)
+        ->wheredate('date','!=',$today)
+        ->wheredate('date','!=',date('Y-m-d', strtotime("-1 days")))
+        ->wheredate('date','!=',date('Y-m-d', strtotime("-2 days")))
+        ->get();
+
+        foreach ($chat_clear as $chat) {
+            # code...
+            DB::table('system_chats')
+                ->where('id', $chat->id)
+                ->update(['flag' => '0']);
+        }
          
          return view('notifications',compact('name','chats','received','chats1','chats2'));
     }
