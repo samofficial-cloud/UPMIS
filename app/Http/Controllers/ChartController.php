@@ -70,7 +70,7 @@ class ChartController extends Controller
         ->select(array(DB::raw('Month(commission_date) as month'),DB::raw('sum(premium) as total')))
         ->whereMonth('commission_date',$days_backwards)
         ->whereYear('commission_date',date('Y'))
-        ->where('insurance_class','FIDELITY')
+        ->where('insurance_class','FIDELTY GUARANTEE')
         ->groupBy('month')
         ->pluck('total'));
     }
@@ -266,12 +266,13 @@ class ChartController extends Controller
             "backgroundColor"=>'#3490dc'
         ]);
 
-        $contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->whereRaw('DATEDIFF(end_date,CURDATE()) < 15')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
+        // $contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->whereRaw('DATEDIFF(end_date,CURDATE()) < 15')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
+        $contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->whereRaw('DATEDIFF(end_date,CURDATE()) < 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
 
-        $invoices=DB::table('invoices')->join('clients','clients.full_name','=','invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+        $invoices=DB::table('invoices')->join('clients','clients.full_name','=','invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
 
-        $electric_invoices=DB::table('electricity_bill_invoices')->join('clients','clients.full_name','=','electricity_bill_invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
-        $water_invoices=DB::table('water_bill_invoices')->join('clients','clients.full_name','=','water_bill_invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+        $electric_invoices=DB::table('electricity_bill_invoices')->join('clients','clients.full_name','=','electricity_bill_invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+        $water_invoices=DB::table('water_bill_invoices')->join('clients','clients.full_name','=','water_bill_invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
 
 
         return view('dashboard_space',compact('chart','chart1','contracts','invoices','electric_invoices','water_invoices'));
@@ -491,7 +492,7 @@ class ChartController extends Controller
         ]);
         $today=date('Y-m-d');
 
-        $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->whereRaw('DATEDIFF(end_date,CURDATE()) < 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
+        $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->whereRaw('DATEDIFF(end_date,CURDATE()) < 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
 
         $invoices=DB::table('invoices')->join('clients','clients.full_name','=','invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
 

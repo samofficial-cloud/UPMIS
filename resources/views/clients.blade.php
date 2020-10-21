@@ -839,6 +839,7 @@ hr {
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
   <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
+  <th scope="col" style="color:#fff;"><center>Department</center></th>
   <th scope="col" style="color:#fff;"><center>Email</center></th>
  {{--  <th scope="col" style="color:#fff;"><center>Trip Date</center></th> --}}
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -850,6 +851,7 @@ hr {
       <th scope="row" class="counterCell text-center">.</th>
       <td>{{$client->fullName}}</td>
       <td><center>{{$client->cost_centre}}</center></td>
+      <td><center>{{$client->faculty}}</center></td>
       <td>{{$client->email}}</td>
       {{-- <td><center>{{date("d/m/Y",strtotime($client->start_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td> --}}
       <td><center>
@@ -1086,6 +1088,7 @@ hr {
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
   <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
+  <th scope="col" style="color:#fff;"><center>Department</center></th>
   <th scope="col" style="color:#fff;"><center>Email</center></th>
  {{--  <th scope="col" style="color:#fff;"><center>Trip Date</center></th> --}}
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1097,6 +1100,7 @@ hr {
       <th scope="row" class="counterCell text-center">.</th>
       <td>{{$client->fullName}}</td>
       <td><center>{{$client->cost_centre}}</center></td>
+      <td>{{$client->faculty}}</td>
       <td>{{$client->email}}</td>
       {{-- <td><center>{{date("d/m/Y",strtotime($client->start_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td> --}}
       <td><center>

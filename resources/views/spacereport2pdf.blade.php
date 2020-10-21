@@ -11,6 +11,7 @@ table {
 
 table, td, th {
   border: 1px solid black;
+  padding:4px;
 }
 table {
   counter-reset: tableCount;
@@ -20,8 +21,48 @@ table {
   content: counter(tableCount);
   counter-increment: tableCount;
   }
+  #header,
+#footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+#header {
+  top: 0;
+  border-bottom: 0.1pt solid #aaa;
+}
+#footer {
+  text-align: center;
+  bottom: 0;
+  color: black;
+  font-size: 15px;
+  /*border-top: 0.1pt solid #aaa;*/
+}
+.page-number:before {
+  content: counter(page);
+}
+
+@page {
+            margin: 77px 75px  !important;
+            padding: 0px 0px 0px 0px !important;
+        }
+
+  sub {
+   font-size: .50em;
+    line-height: 0.5em;
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0px;
+    float: right;
+    color: blue;
+}
 </style>
 <body>
+  <div id="footer">
+  <div class="page-number"></div>
+</div>
 	<?php
 	use App\space_contract;
   use App\space;
@@ -56,16 +97,21 @@ table {
     <td>Size in m2</td>
     <td>{{$details->size}}</td>
   </tr>
-  <tr>
+  {{-- <tr>
     <td>Rent Price Guide</td>
+    @if(empty($details->rent_price_guide_from) &&empty($details->rent_price_guide_to))
+    <td>{{$details->rent_price_guide_currency}} {{$details->rent_price_guide_from}} - {{$details->rent_price_guide_to}}</td>
+    @else
     <td>{{$details->rent_price_guide_currency}} {{number_format($details->rent_price_guide_from)}} - {{number_format($details->rent_price_guide_to)}}</td>
-  </tr>
+    @endif
+  </tr> --}}
   @endforeach
 </table>
 <br>
   <hr>
   <h3>2. Occupation History</h3>
 @if(count($space)>0)
+<p style="font-size: 13px;">Note: <span style="color: blue">(A.S)</span> - Academic Season <span style="color: blue">(V.S)</span> - Vacation Season</p>
 <table>
 	<thead class="thead-dark">
         <tr>
@@ -73,7 +119,8 @@ table {
           <th scope="col" style="width: 25%;"><center>Client</center></th>
           <th scope="col"><center>Lease Start</center></th>
           <th scope="col" ><center>Lease End</center></th>
-          <th scope="col" ><center>Rent Price</center></th>
+          <th scope="col" ><center>Currency</center></th>
+          <th scope="col" colspan="2"><center>Rent Price</center></th>
           <th scope="col" ><center>Escalation Rate</center></th>
         </tr>
         </thead>
@@ -85,7 +132,22 @@ table {
               <td>{{$space->full_name}}</td>
               <td><center>{{date("d/m/Y",strtotime($space->start_date))}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($space->end_date))}}</center></td>
-              <td>{{$space->currency}} {{number_format($space->amount)}}</td>
+              <td><center>{{$space->currency}}</center></td>
+              @if($space->academic_dependence=="Yes")
+              @if(empty($space->academic_season)&&empty($space->vacation_season))
+              <td>{{$space->academic_season}}<sub>(A.S)</sub></td>
+              <td>{{$space->vacation_season}}<sub>(V.S)</sub> </td>
+              @else
+              <td>{{number_format($space->academic_season)}}<sub>(A.S)</sub></td>
+              <td>{{number_format($space->vacation_season)}}<sub>(V.S)</sub> </td>
+              @endif
+              @else
+              @if(empty($space->amount))
+              <td colspan="2" style="text-align: right;">{{$space->amount}}</td>
+              @else
+               <td colspan="2" style="text-align: right;">{{number_format($space->amount)}}</td>
+              @endif
+              @endif
               <td><center>{{$space->escalation_rate}}</center></td>
         	</tr>
 

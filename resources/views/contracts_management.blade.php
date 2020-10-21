@@ -598,7 +598,7 @@ $i=1;
       <tr>
         <td><center><a href="{{ route('carRentalFormE',$inbox->id) }}">{{$inbox->id}}</a></center></td>
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
         <td><center>{{$inbox->destination}}</center></td>
@@ -629,7 +629,7 @@ $i=1;
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -661,11 +661,11 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
-         <td>{{number_format($closed->grand_total)}}</td>
+         <td>{{$closed->destination}}</td>
+         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
             <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
            <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
@@ -735,11 +735,11 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
-         <td>{{number_format($closed->grand_total)}}</td>
+         <td>{{$closed->destination}}</td>
+        <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
             <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
            <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
@@ -815,7 +815,7 @@ $i=1;
       <tr>
         <td><center><a href="{{ route('carRentalFormB',$inbox->id) }}">{{$inbox->id}}</a></center></td>
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
          <td><center>{{$inbox->destination}}</center></td>
@@ -846,7 +846,7 @@ $i=1;
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -877,10 +877,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
@@ -952,10 +952,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
@@ -1032,7 +1032,7 @@ $i=1;
       <tr>
         <td><center><a href="{{ route('carRentalFormC',$inbox->id) }}">{{$inbox->id}}</a></center></td>
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
          <td><center>{{$inbox->destination}}</center></td>
@@ -1063,7 +1063,7 @@ $i=1;
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -1094,10 +1094,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;cursor: pointer;"></i></a>
@@ -1168,10 +1168,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;cursor: pointer;"></i></a>
@@ -1252,7 +1252,7 @@ $i=1;
       <tr>
         <td><center><a href="{{ route('carRentalFormD',$inbox->id) }}">{{$inbox->id}}</a></center></td>
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
         <td><center>{{$inbox->destination}}</center></td>
@@ -1283,7 +1283,7 @@ $i=1;
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -1314,10 +1314,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
@@ -1388,10 +1388,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
@@ -1468,7 +1468,7 @@ $i=1;
       <tr>
         <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->designation}} {{$inbox->fullName}}</center></td>
+        <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
          <td><center>{{$inbox->destination}}</center></td>
@@ -1499,7 +1499,7 @@ $i=1;
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->designation}} {{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
         <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -1530,10 +1530,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
@@ -1604,10 +1604,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
@@ -1692,10 +1692,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>
@@ -1773,10 +1773,10 @@ $i=1;
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->designation}} {{$closed->fullName}}</td>
-        <td><center>{{$closed->faculty}}</center></td>
+        <td>{{$closed->fullName}}</td>
+        <td>{{$closed->faculty}}</td>
         <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
-         <td><center>{{$closed->destination}}</center></td>
+         <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>

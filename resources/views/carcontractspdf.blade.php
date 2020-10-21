@@ -93,7 +93,7 @@
 </div>
 
 <div>
-	<hr>
+	{{-- <hr> --}}
 	@if($contract->area_of_travel=='Within')
 	<strong>D. HEAD OF CPTU</strong>
 	<p style="font-size: 18px;line-height: 1.5;">
@@ -117,7 +117,7 @@
 		1. Beginning Speedmeter reading: <b>{{number_format($contract->initial_speedmeter)}} km</b><span style="padding-left: 10px"> Time: <b>{{$contract->initial_speedmeter_time}}</b> </span><br>
 		2. Ending Speedmeter reading: <b>{{number_format($contract->ending_speedmeter)}} km</b><span style="padding-left: 10px"> Time: <b>{{$contract->ending_speedmeter_time}}</b> </span><br>
 		3. Overtime Hours: <b>{{$contract->overtime_hrs}}</b><br>
-		4. Name of user: <b>{{$contract->fullName}}</b> <span style="padding-left: 30px;">Date: <b>{{$contract->driver_date}}</b></span><br>
+		4. Name of user: <b>{{$contract->fullName}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->driver_date))}}</b></span><br>
 		<span style="padding-left: 20px;">Name of driver: <b>{{$contract->driver_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->driver_date))}}</b></span></span>
 	</p>
 	<hr>

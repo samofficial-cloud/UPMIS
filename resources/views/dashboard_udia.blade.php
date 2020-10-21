@@ -140,7 +140,7 @@
   $motor_client=insurance_contract::where('insurance_class','MOTOR')->whereYear('commission_date',date('Y'))->count();
   $fire_client=insurance_contract::where('insurance_class','FIRE')->whereYear('commission_date',date('Y'))->count();
   $money_client=insurance_contract::where('insurance_class','MONEY')->whereYear('commission_date',date('Y'))->count();
-  $fidelity_client=insurance_contract::where('insurance_class','FIDELITY')->whereYear('commission_date',date('Y'))->count();
+  $fidelity_client=insurance_contract::where('insurance_class','FIDELTY GUARANTEE')->whereYear('commission_date',date('Y'))->count();
   $public_client=insurance_contract::where('insurance_class','PUBLIC LIABILITY')->whereYear('commission_date',date('Y'))->count();
   $marine_client=insurance_contract::where('insurance_class','MARINE HULL')->whereYear('commission_date',date('Y'))->count();
   $prof_client=insurance_contract::where('insurance_class','PROFFESIONAL INDEMNITY')->whereYear('commission_date',date('Y'))->count();
@@ -380,7 +380,7 @@
                   </div>
               </td>
             @endif
-             <td></td>
+             <td>{{$contract->cover_note}}</td>
             <td><center>{{date("d/m/Y",strtotime($contract->commission_date))}}</center></td>
             <td><center>{{date("d/m/Y",strtotime($contract->end_date))}}</center></td>
             <td>

@@ -624,7 +624,7 @@ $today=date('Y-m-d');
                         <div class="form-wrapper col-6">
                             <label for="speedmeter_km">Beginning Speedmeter Reading in Kms<span style="color: red;">*</span></label>
                             <span id="speedmeter_kmmsg"></span>
-                            <input type="text" id="speedmeter_km" name="speedmeter_km" class="form-control" value="{{$contract->initial_speedmeter}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <input type="text" id="speedmeter_km" name="speedmeter_km" class="form-control" value="{{$contract->initial_speedmeter}}" autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-6">
                             <label for="speedmeter_time">Time<span style="color: red;">*</span></label>
@@ -637,7 +637,7 @@ $today=date('Y-m-d');
                         <div class="form-wrapper col-6">
                             <label for="end_speedmeter_km">Ending Speedmeter Reading in Kms<span style="color: red;">*</span></label>
                             <span id="end_speedmeter_kmmsg"></span>
-                            <input type="text" id="end_speedmeter_km" name="end_speedmeter_km" class="form-control" value="{{$contract->ending_speedmeter}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <input type="text" id="end_speedmeter_km" name="end_speedmeter_km" class="form-control" value="{{$contract->ending_speedmeter}}" autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-6">
                             <label for="end_speedmeter_time">Time<span style="color: red;">*</span></label>
@@ -697,12 +697,12 @@ $today=date('Y-m-d');
                         <div class="form-wrapper col-4">
                             <label for="mileage_km">Mileage covered in Km<span style="color: red;">*</span></label>
                             <span id="mileage_kmmsg"></span>
-                            <input type="text" id="mileage_km" name="mileage_km" class="form-control" value="{{$contract->mileage_km}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <input type="text" id="mileage_km" name="mileage_km" class="form-control" value="{{$contract->mileage_km}}" autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                         <div class="form-wrapper col-4">
                             <label for="mileage_tshs">Mileage charges Tshs<span style="color: red;">*</span></label>
                             <span id="mileage_tshsmsg"></span>
-                            <input type="text" id="mileage_tshs" name="mileage_tshs" class="form-control" value="{{$contract->mileage_tshs}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                            <input type="text" id="mileage_tshs" name="mileage_tshs" class="form-control" value="{{$contract->mileage_tshs}}" autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                     </div>
 
@@ -773,6 +773,89 @@ $today=date('Y-m-d');
 <script type="text/javascript">
     var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15;
     $(document).ready(function(){
+        $('#mileage_km').click(function(e){
+            var initial=parseInt($('#speedmeter_km').val());
+            var end=parseInt($('#end_speedmeter_km').val());
+            if((initial!="") && (end!="")){
+                if(initial>end){
+                $('#speedmeter_km').val(end);
+                $('#end_speedmeter_km').val(initial);
+                var temp = end;
+                end = initial;
+                initial = temp;
+                var covered = end - initial;
+                $('#mileage_km').val(covered);
+            }
+            else{
+                var covered = end - initial;
+                $('#mileage_km').val(covered);
+            }
+                
+            }
+
+            var charge= parseInt($('#charge_km').val());
+            var mileage=parseInt($('#mileage_km').val());
+            if((charge!="")&&(mileage!="")){
+                var cost = charge * mileage;
+                $('#mileage_tshs').val(cost);
+            }              
+        });
+
+        $('#mileage_km').keyup(function(e){
+            var charge= parseInt($('#charge_km').val());
+            var mileage=parseInt($(this).val());
+            if((charge!="")&&(mileage!="")){
+                var cost = charge * mileage;
+                $('#mileage_tshs').val(cost);
+            }              
+         });   
+
+        $('#mileage_tshs').click(function(e){
+            var charge= parseInt($('#charge_km').val());
+            var mileage=parseInt($('#mileage_km').val());
+            if((charge!="")&&(mileage!="")){
+                var cost = charge * mileage;
+                $('#mileage_tshs').val(cost);
+            }    
+         });
+
+         $('#charge_km').keyup(function(e){
+            var charge= parseInt($(this).val());
+            var mileage=parseInt($('#mileage_km').val());
+            if((charge!="")&&(mileage!="")){
+                var cost = charge * mileage;
+                $('#mileage_tshs').val(cost);
+            }  
+
+         });      
+
+        $('#speedmeter_km').keyup(function(e){
+             $('#mileage_km').val("");
+             $('#mileage_tshs').val("");
+        });
+
+        $('#end_speedmeter_km').keyup(function(e){
+            var end = parseInt($(this).val());
+            var initial = parseInt($('#speedmeter_km').val());
+            if(initial!=""){
+                var covered = end - initial;
+                $('#mileage_km').val(covered);
+            
+            var charge= parseInt($('#charge_km').val());
+            var mileage= parseInt($('#mileage_km').val());
+            if((charge!="")&&(mileage!="")){
+                var cost = charge * mileage;
+                $('#mileage_tshs').val(cost);
+            }                  
+            }
+            else{
+             $('#mileage_km').val("");
+             $('#mileage_tshs').val("");
+            }
+            
+        });
+
+
      $('button[name="submit-button"]').click(function(e){
         var query=$(this).val();
         $('#button_value').val(query);

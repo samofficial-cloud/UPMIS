@@ -205,7 +205,7 @@
   <br>
     <div class="card">
     <div class="card-body">
-     <h4 class="card-title" style="font-family: sans-serif;">Contract(s) that are about to expire</h4>
+     <h4 class="card-title" style="font-family: sans-serif;">Contract(s) that are about to expire (Within 30 days prior to date)</h4>
      <hr>
      <a title="Send email to selected clients" href="#" id="notify_all" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inia_mail" role="button" aria-pressed="true" style="
     padding: 10px;
@@ -294,23 +294,23 @@
         <tr>
           <th scope="col" style="width: 5%;">S/N</th>
           <th scope="col" style="width: 25%;">Client</th>
-          <th scope="col">Lease Start</th>
-          <th scope="col" >Lease End</th>
-          <th scope="col" >Rent Price</th>
-          <th scope="col" >Escalation Rate</th>
+          <th scope="col">Contract ID</th>
+          <th scope="col">Major Industry</th>
+          <th scope="col" >MInor Industry</th>
+          <th scope="col" >Location</th>
           <th scope="col">Action</th>
         </tr>
         </thead>
+
         <tbody>
           @foreach($contracts as $space)
           <tr>
 
             <th scope="row" class="counterCell">.</th>
 
-              
-               <td>
-                                      <a title="View More Client Details" class="link_style" data-toggle="modal" data-target="#clientaz{{$space->contract_id}}" style="color: blue !important; cursor: pointer;" aria-pressed="true">{{$space->full_name}}</a>
-                  <div class="modal fade" id="clientaz{{$space->contract_id}}" role="dialog">
+                         <td>
+                                      <a title="View More Client Details" class="link_style" data-toggle="modal" data-target="#clienta{{$space->contract_id}}" style="color: blue !important; cursor: pointer;" aria-pressed="true">{{$space->full_name}}</a>
+                  <div class="modal fade" id="clienta{{$space->contract_id}}" role="dialog">
 
                       <div class="modal-dialog" role="document">
                           <div class="modal-content">
@@ -361,13 +361,82 @@
                       </div>
                   </div>
                                     </td>
-              <td><center>{{date("d/m/Y",strtotime($space->start_date))}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($space->end_date))}}</center></td>
-              <td>{{$space->currency}} {{number_format($space->amount)}}</td>
-              <td>{{$space->escalation_rate}}</td>
+                                    <td>
+                                      <a title="View More Contract Details" class="link_style" data-toggle="modal" data-target="#contracta{{$space->contract_id}}" style="color: blue !important; cursor: pointer;" aria-pressed="true"><center>{{$space->contract_id}}</center></a>
+                  <div class="modal fade" id="contracta{{$space->contract_id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">{{$space->full_name}} Contract Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                 <table style="width: 100%">
+                                      <tr>
+                                          <td>Contract ID</td>
+                                          <td colspan="2">{{$space->contract_id}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Space ID</td>
+                                          <td colspan="2">{{$space->space_id_contract}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Lease Start</td>
+                                          <td colspan="2">{{date("d/m/Y",strtotime($space->start_date))}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Lease End</td>
+                                          <td colspan="2">{{date("d/m/Y",strtotime($space->end_date))}}</td>
+                                      </tr>
+                                      @if($space->academic_dependence=="Yes")
+                                      <tr>
+                                          <td rowspan="3">Amount</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Academic Season</td>
+                                          <td>Vacation Season</td>
+                                        </tr>
+                                        <tr>
+                                          @if(empty($space->academic_season))
+                                          <td><center>-</center></td>
+                                          @else
+                                          <td>{{$space->currency}} {{number_format($space->academic_season)}}</td>
+                                          @endif
+                                      
+                                          
+                                           @if(empty($space->vacation_season))
+                                           <td><center>-</center></td>
+                                           @else
+                                          <td>{{$space->currency}} {{number_format($space->vacation_season)}}</td>
+                                          @endif
+                                      </tr>
+                                      @else
+                                      <tr>
+                                        <td>Amount</td>
+                                         @if(empty($space->amount))
+                                         <td>-</td>
+                                         @else
+                                        <td colspan="2">{{$space->currency}} {{number_format($space->amount)}}</td>
+                                        @endif
+                                      </tr>
+                                      @endif
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+              <td>{{$space->major_industry}}</td>
+              <td>{{$space->minor_industry}}</td>
+              <td>{{$space->location}}</td>
               <td><a href="{{ route('renew_space_contract_form',$space->contract_id) }}" title="Click to renew this contract"><i class="fa fa-refresh" style="font-size:25px;"></i></a>
-                 <a data-toggle="modal" data-target="#mail{{$space->client_id}}" role="button" aria-pressed="true" title="Click to notify this client"><i class="fa fa-envelope" aria-hidden="true" style="font-size:25px; color: #3490dc; cursor: pointer;"></i></a>
-      <div class="modal fade" id="mail{{$space->client_id}}" role="dialog">
+                 <a data-toggle="modal" data-target="#mail{{$space->contract_id}}" role="button" aria-pressed="true" title="Click to notify this client"><i class="fa fa-envelope" aria-hidden="true" style="font-size:25px; color: #3490dc; cursor: pointer;"></i></a>
+      <div class="modal fade" id="mail{{$space->contract_id}}" role="dialog">
               <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
@@ -380,30 +449,30 @@
                   <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
         {{csrf_field()}}
           <div class="form-group row">
-            <label for="client_names{{$space->client_id}}" class="col-sm-2">To</label>
+            <label for="client_names{{$space->contract_id}}" class="col-sm-2">To</label>
             <div class="col-sm-9">
-            <input type="text" id="client_names{{$space->client_id}}" name="client_name" class="form-control" value="{{$space->full_name}}" readonly="">
+            <input type="text" id="client_names{{$space->contract_id}}" name="client_name" class="form-control" value="{{$space->full_name}}" readonly="">
           </div>
         </div>
         <br>
         <div class="form-group row">
-            <label for="subject{{$space->client_id}}" class="col-sm-2">Subject</label>
+            <label for="subject{{$space->contract_id}}" class="col-sm-2">Subject</label>
             <div class="col-sm-9">
-            <input type="text" id="subject{{$space->client_id}}" name="subject" class="form-control" value="" >
+            <input type="text" id="subject{{$space->contract_id}}" name="subject" class="form-control" value="" >
           </div>
         </div>
          <br>
          
         <div class="form-group row">
-            <label for="message{{$space->client_id}}" class="col-sm-2">Message</label>
+            <label for="messages{{$space->contract_id}}" class="col-sm-2">Message</label>
             <div class="col-sm-9">
-              <textarea type="text" id="message{{$space->client_id}}" name="message" class="form-control" value="" rows="7"></textarea>
+              <textarea type="text" id="messages{{$space->contract_id}}" name="message" class="form-control" value="" rows="7"></textarea>
           </div>
         </div>
         <br>
 
         <div class="form-group row">
-            <label for="attachment{{$space->client_id}}" class="col-sm-3">Attachments</label>
+            <label for="attachment{{$space->contract_id}}" class="col-sm-3">Attachments</label>
             <div class="col-sm-8">
               <?php
          echo Form::open(array('url' => '/uploadfile','files'=>'true'));
@@ -603,7 +672,7 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <b><h5 class="modal-title">Contract Details.</h5></b>
+                                                            <b><h5 class="modal-title">{{$var->full_name}} Contract Details.</h5></b>
 
                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         </div>
@@ -612,57 +681,94 @@
                                                             <table style="width: 100%">
 
                                                                 <tr>
-                                                                    <td>Contract ID:</td>
-                                                                    <td>{{$var->contract_id}}</td>
+                                                                    <td>Contract ID</td>
+                                                                    <td colspan="2">{{$var->contract_id}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Client :</td>
-                                                                    <td>{{$var->full_name}}</td>
+                                                                    <td>Client </td>
+                                                                    <td colspan="2">{{$var->full_name}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Space Number:</td>
-                                                                    <td> {{$var->space_id_contract}}</td>
+                                                                    <td>Major Industry</td>
+                                                                    <td colspan="2">{{$var->major_industry}} </td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Amount:</td>
-                                                                    <td> {{$var->currency}} {{number_format($var->amount)}} </td>
+                                                                    <td>Minor Industry</td>
+                                                                    <td colspan="2">{{$var->minor_industry}} </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Space Number</td>
+                                                                    <td colspan="2"> {{$var->space_id_contract}}</td>
+                                                                </tr>
+                                                                @if($var->academic_dependence=="Yes")
+                                      <tr>
+                                          <td rowspan="3">Amount</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Academic Season</td>
+                                          <td>Vacation Season</td>
+                                        </tr>
+                                        <tr>
+                                          @if(empty($var->academic_season))
+                                          <td><center>-</center></td>
+                                          @else
+                                          <td>{{$var->currency}} {{number_format($var->academic_season)}}</td>
+                                          @endif
+                                      
+                                          
+                                           @if(empty($var->vacation_season))
+                                           <td><center>-</center></td>
+                                           @else
+                                          <td>{{$var->currency}} {{number_format($var->vacation_season)}}</td>
+                                          @endif
+                                      </tr>
+                                      @else
+                                      <tr>
+                                        <td>Amount</td>
+                                         @if(empty($var->amount))
+                                         <td>-</td>
+                                         @else
+                                        <td colspan="2">{{$var->currency}} {{number_format($var->amount)}}</td>
+                                        @endif
+                                      </tr>
+                                      @endif
+
+
+                                                                <tr>
+                                                                    <td>Payment Cycle</td>
+                                                                    <td colspan="2">{{$var->payment_cycle}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Contract Start Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->start_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Contract End Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->end_date))}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Payment Cycle:</td>
-                                                                    <td>{{$var->payment_cycle}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Contract Start Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->start_date))}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Contract End Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->end_date))}}</td>
+                                                                    <td>Payment Cycle Start Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->programming_start_date))}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Payment Cycle Start Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->programming_start_date))}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Payment Cycle End Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->programming_end_date))}}</td>
+                                                                    <td>Payment Cycle End Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->programming_end_date))}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Escalation Rate:</td>
-                                                                    <td>{{$var->escalation_rate}} </td>
+                                                                    <td>Escalation Rate</td>
+                                                                    <td colspan="2">{{$var->escalation_rate}} </td>
                                                                 </tr>
 
 
@@ -676,7 +782,7 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_to_be_paid)}}</td>
+                                    <td>{{$var->currency_invoice}} {{$var->amount_to_be_paid}}</td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td>
                                       <a title="Send Email to this Client" data-toggle="modal" data-target="#spacemail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
@@ -929,66 +1035,103 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <b><h5 class="modal-title">Contract Details.</h5></b>
+                                                            <b><h5 class="modal-title">{{$var->debtor_name}} Contract Details.</h5></b>
 
                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         </div>
 
                                                         <div class="modal-body">
-                                                            <table style="width: 100%">
+                                                              <table style="width: 100%">
 
                                                                 <tr>
-                                                                    <td>Contract ID:</td>
-                                                                    <td>{{$var->contract_id}}</td>
+                                                                    <td>Contract ID</td>
+                                                                    <td colspan="2">{{$var->contract_id}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Client :</td>
-                                                                    <td>{{$var->full_name}}</td>
+                                                                    <td>Client </td>
+                                                                    <td colspan="2">{{$var->full_name}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Space Number:</td>
-                                                                    <td> {{$var->space_id_contract}}</td>
+                                                                    <td>Major Industry</td>
+                                                                    <td colspan="2">{{$var->major_industry}} </td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Amount:</td>
-                                                                    <td> {{$var->currency}} {{number_format($var->amount)}} </td>
+                                                                    <td>Minor Industry</td>
+                                                                    <td colspan="2">{{$var->minor_industry}} </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Space Number</td>
+                                                                    <td colspan="2"> {{$var->space_id_contract}}</td>
+                                                                </tr>
+                                                                @if($var->academic_dependence=="Yes")
+                                      <tr>
+                                          <td rowspan="3">Amount</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Academic Season</td>
+                                          <td>Vacation Season</td>
+                                        </tr>
+                                        <tr>
+                                          @if(empty($var->academic_season))
+                                          <td><center>-</center></td>
+                                          @else
+                                          <td>{{$var->currency}} {{number_format($var->academic_season)}}</td>
+                                          @endif
+                                      
+                                          
+                                           @if(empty($var->vacation_season))
+                                           <td><center>-</center></td>
+                                           @else
+                                          <td>{{$var->currency}} {{number_format($var->vacation_season)}}</td>
+                                          @endif
+                                      </tr>
+                                      @else
+                                      <tr>
+                                        <td>Amount</td>
+                                         @if(empty($var->amount))
+                                         <td>-</td>
+                                         @else
+                                        <td colspan="2">{{$var->currency}} {{number_format($var->amount)}}</td>
+                                        @endif
+                                      </tr>
+                                      @endif
+
+
+                                                                <tr>
+                                                                    <td>Payment Cycle</td>
+                                                                    <td colspan="2">{{$var->payment_cycle}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Contract Start Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->start_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Contract End Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->end_date))}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Payment Cycle:</td>
-                                                                    <td>{{$var->payment_cycle}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Contract Start Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->start_date))}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Contract End Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->end_date))}}</td>
+                                                                    <td>Payment Cycle Start Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->programming_start_date))}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Payment Cycle Start Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->programming_start_date))}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Payment Cycle End Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->programming_end_date))}}</td>
+                                                                    <td>Payment Cycle End Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->programming_end_date))}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Escalation Rate:</td>
-                                                                    <td>{{$var->escalation_rate}} </td>
+                                                                    <td>Escalation Rate</td>
+                                                                    <td colspan="2">{{$var->escalation_rate}} </td>
                                                                 </tr>
 
 
@@ -1002,7 +1145,7 @@
                                                 </div>
                                             </div>
                                       </td>
-                                    <td>{{$var->currency_invoice}} {{number_format($var->cumulative_amount)}}</td>
+                                    <td>{{$var->currency_invoice}} {{$var->cumulative_amount}}</td>
                                    {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td>
@@ -1258,7 +1401,7 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <b><h5 class="modal-title">Contract Details.</h5></b>
+                                                            <b><h5 class="modal-title">{{$var->debtor_name}} Contract Details.</h5></b>
 
                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         </div>
@@ -1267,57 +1410,94 @@
                                                             <table style="width: 100%">
 
                                                                 <tr>
-                                                                    <td>Contract ID:</td>
-                                                                    <td>{{$var->contract_id}}</td>
+                                                                    <td>Contract ID</td>
+                                                                    <td colspan="2">{{$var->contract_id}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Client :</td>
-                                                                    <td>{{$var->full_name}}</td>
+                                                                    <td>Client </td>
+                                                                    <td colspan="2">{{$var->full_name}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Space Number:</td>
-                                                                    <td> {{$var->space_id_contract}}</td>
+                                                                    <td>Major Industry</td>
+                                                                    <td colspan="2">{{$var->major_industry}} </td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Amount:</td>
-                                                                    <td> {{$var->currency}} {{number_format($var->amount)}} </td>
+                                                                    <td>Minor Industry</td>
+                                                                    <td colspan="2">{{$var->minor_industry}} </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Space Number</td>
+                                                                    <td colspan="2"> {{$var->space_id_contract}}</td>
+                                                                </tr>
+                                                                @if($var->academic_dependence=="Yes")
+                                      <tr>
+                                          <td rowspan="3">Amount</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Academic Season</td>
+                                          <td>Vacation Season</td>
+                                        </tr>
+                                        <tr>
+                                          @if(empty($var->academic_season))
+                                          <td><center>-</center></td>
+                                          @else
+                                          <td>{{$var->currency}} {{number_format($var->academic_season)}}</td>
+                                          @endif
+                                      
+                                          
+                                           @if(empty($var->vacation_season))
+                                           <td><center>-</center></td>
+                                           @else
+                                          <td>{{$var->currency}} {{number_format($var->vacation_season)}}</td>
+                                          @endif
+                                      </tr>
+                                      @else
+                                      <tr>
+                                        <td>Amount</td>
+                                         @if(empty($var->amount))
+                                         <td>-</td>
+                                         @else
+                                        <td colspan="2">{{$var->currency}} {{number_format($var->amount)}}</td>
+                                        @endif
+                                      </tr>
+                                      @endif
+
+
+                                                                <tr>
+                                                                    <td>Payment Cycle</td>
+                                                                    <td colspan="2">{{$var->payment_cycle}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Contract Start Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->start_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Contract End Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->end_date))}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Payment Cycle:</td>
-                                                                    <td>{{$var->payment_cycle}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Contract Start Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->start_date))}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Contract End Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->end_date))}}</td>
+                                                                    <td>Payment Cycle Start Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->programming_start_date))}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
-                                                                    <td>Payment Cycle Start Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->programming_start_date))}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Payment Cycle End Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->programming_end_date))}}</td>
+                                                                    <td>Payment Cycle End Date</td>
+                                                                    <td colspan="2">{{date("d/m/Y",strtotime($var->programming_end_date))}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Escalation Rate:</td>
-                                                                    <td>{{$var->escalation_rate}} </td>
+                                                                    <td>Escalation Rate</td>
+                                                                    <td colspan="2">{{$var->escalation_rate}} </td>
                                                                 </tr>
 
 
@@ -1331,7 +1511,7 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td>{{$var->currency_invoice}} {{number_format($var->cumulative_amount)}}</td>
+                                    <td>{{$var->currency_invoice}} {{$var->cumulative_amount}}</td>
                                    {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td>
