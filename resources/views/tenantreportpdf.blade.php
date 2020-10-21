@@ -203,7 +203,11 @@ $j=1;
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                    {{--  <td><center>{{$var->period}}</center></td> --}}
                                     <td><center>{{$var->contract_id}}</center></td>
+                                    @if($_GET['criteria']=='rent')
                                     <td><center>{{$var->currency_invoice}} {{number_format($var->amount_to_be_paid)}}</center></td>
+                                    @else
+                                    <td><center>{{$var->currency_invoice}} {{number_format($var->cumulative_amount)}}</center></td>
+                                    @endif
                                     <td><center>{{$var->gepg_control_no}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                      @if($_GET['payment_filter']=='')

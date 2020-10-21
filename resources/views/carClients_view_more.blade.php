@@ -198,6 +198,8 @@ hr {
                                           <td>{{$var->vehicle_status}}</td>
                                       </tr>
                                     </table>
+                                    <br>
+                                     <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button></center>
                                   </div>
                                 </div>
                               </div>
@@ -223,7 +225,7 @@ hr {
                                 <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#fff;"><center>End date</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Period</center></th>
+                                {{-- <th scope="col"  style="color:#fff;"><center>Period</center></th> --}}
                                 <th scope="col" style="color:#fff;"><center>Contract Id</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Created Date</center></th>
@@ -239,7 +241,7 @@ hr {
                                     <td><center>{{$var->invoice_number}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                    <td><center>{{$var->period}}</center></td>
+                                   {{--  <td><center>{{$var->period}}</center></td> --}}
                                     <td><center>{{$var->contract_id}}</center></td>
                                     <td><center>{{$var->currency_invoice}} {{number_format($var->amount_to_be_paid)}} </center></td>
 

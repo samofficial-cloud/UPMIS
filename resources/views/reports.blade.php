@@ -376,8 +376,10 @@ $year=$current-3;
           <span id="Locationtypemsg"></span>
             <select class="form-control" id="Locationtype" name="Locationtype">
               <option value="" disabled selected hidden>Select Location</option>
+              <option value="Mabibo">Mabibo Campus</option>
+              <option value="Near Hill park">Mikocheni Campus</option>
               <option value="Mlimani City">Mlimani City</option>
-              <option value="UDSM Main Campus">UDSM Main Campus</option>
+              <option value="J.K Nyerere">J.K Nyerere Campus</option>
             </select>
         </div>
     </div>

@@ -23,12 +23,10 @@ class carRentalController extends Controller
     public function newcar(Request $request){
     $vehicle_reg_no = $request->input('vehicle_reg_no');
 
-    $validate=carRental::where('vehicle_reg_no',$vehicle_reg_no)->where('flag','1')->get();
-    if(count($validate)>=0){
-      return redirect()->back()->with('errors', "This vehicle '$vehicle_reg_no'  could not be added because it already exists in the system");
-    }
-    else{
-    $vehicle_model = $request->input('model');
+    $validate=carRental::select('vehicle_reg_no')->where('vehicle_reg_no',$vehicle_reg_no)->where('flag','1')->value('vehicle_reg_no');
+
+    if(is_null($validate)){
+      $vehicle_model = $request->input('model');
     $vehicle_status = $request->input('vehicle_status');
     $hire_rate = $request->input('hire_rate');
 
@@ -36,7 +34,10 @@ class carRentalController extends Controller
 
     DB::table('car_rentals')->insert($data);
 
-    return redirect()->back()->with('success', 'Car Details Added Successfully');
+    return redirect()->back()->with('success', 'Car Details Added Successfully'); 
+    }
+    else{
+    return redirect()->back()->with('errors', "This vehicle '$vehicle_reg_no'  could not be added because it already exists in the system");
   }
 
 }

@@ -10,6 +10,7 @@ use PDF;
 use Auth;
 use App\cost_centre;
 use Riskihajar\Terbilang\Facades\Terbilang;
+use App\carRental;
 
 class carContractsController extends Controller
 {
@@ -307,6 +308,14 @@ class carContractsController extends Controller
                 ->where('id', $id)
                 ->update(['form_status' => 'Transport Officer-CPTU']);
 
+                $hire_rate=carRental::
+                 where('vehicle_reg_no',$request->get('vehicle_reg'))
+                 ->value('hire_rate');
+
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['charge_km' => $hire_rate]);
+
                  DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
                 return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
@@ -342,6 +351,14 @@ class carContractsController extends Controller
                  DB::table('car_contracts')
                 ->where('id', $id)
                 ->update(['form_status' => 'Transport Officer-CPTU']);
+
+                $hire_rate=carRental::
+                 where('vehicle_reg_no',$request->get('vehicle_reg'))
+                 ->value('hire_rate');
+
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['charge_km' => $hire_rate]);
 
                  DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 

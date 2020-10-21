@@ -20,9 +20,9 @@ class clientsController extends Controller
   $SCclients=client::whereIn('full_name',space_contract::select('full_name')->whereDate('end_date','>=',date('Y-m-d'))->where('contract_status','1')->distinct()->pluck('full_name')->toArray())
       ->where('contract','Space')
       ->orderBy('clients.full_name','asc')->get();
-  $SPclients=client::join('space_contracts', 'space_contracts.full_name','=','clients.full_name')->where('contract','Space')->whereDate('end_date','<',date('Y-m-d'))->orwhere('contract_status','0')->orderBy('clients.full_name','asc')->get();
-  $active_carclients=carContract::select('fullName','email','cost_centre')->whereDate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
-  $inactive_carclients=carContract::select('fullName','email','cost_centre')->whereDate('end_date','<',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
+  $SPclients=client::select('client_id','email','phone_number','address','clients.full_name','contract_status')->join('space_contracts', 'space_contracts.full_name','=','clients.full_name')->where('contract','Space')->whereDate('end_date','<',date('Y-m-d'))->orwhere('contract_status','0')->orderBy('clients.full_name','asc')->distinct()->get();
+  $active_carclients=carContract::select('fullName','email','cost_centre','faculty')->whereDate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
+  $inactive_carclients=carContract::select('fullName','email','cost_centre','faculty')->whereDate('end_date','<',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
    $insuranceclients=insurance_contract::orderBy('full_name','asc')->get();
    $active_insuranceclients=insurance_contract::select('full_name','email','phone_number')->whereDate('end_date','>=',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
    $inactive_insuranceclients=insurance_contract::select('full_name','email','phone_number')->whereDate('end_date','<',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();

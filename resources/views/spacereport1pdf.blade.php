@@ -119,10 +119,11 @@ table, td, th {
         <tr>
           <th scope="col" style="width: 5%;"><center>S/N</center></th>
           <th scope="col"><center>Space Id</center></th>
-          <th scope="col"><center>Type</center></th>
+          <th scope="col"><center>Major Industry</center></th>
+           <th scope="col"><center>Minor Industry</center></th>
           <th scope="col" style="width: 20%"><center>Location</center></th>
           <th scope="col" ><center>Size (SQM)</center></th>
-          <th scope="col" ><center>Currency</center></th>
+         {{--  <th scope="col" ><center>Currency</center></th> --}}
           <th scope="col" style="width: 20%"><center>Rent Price Guide</center></th>
         </tr>
         </thead>
@@ -134,6 +135,7 @@ table, td, th {
             <td scope="row" style="text-align: center;">{{$i}}.</td>
             <td>{{$var->space_id}}</td>
             <td>{{$var->major_industry}}</td>
+            <td>{{$var->minor_industry}}</td>
             <td>{{$var->location}}</td>
 
             <td><center>  @if($var->size==null)
@@ -143,12 +145,12 @@ table, td, th {
                             @endif
 
               </center></td>
-              <td><center>{{$var->rent_price_guide_currency}}</center></td>
+              {{-- <td><center>{{$var->rent_price_guide_currency}}</center></td> --}}
             <td style="text-align: center;">
               @if($var->rent_price_guide_from==null OR $var->rent_price_guide_to==null)
              <center> N/A</center>
               @else
-               {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}}
+               {{$var->rent_price_guide_currency}} {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}}
               @endif
             </td>
         </tr>
