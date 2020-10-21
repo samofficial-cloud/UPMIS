@@ -351,11 +351,11 @@ class InvoicesController extends Controller
     public function invoiceManagement()
     {
 
-        $space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->get();
-        $insurance_invoices=DB::table('insurance_invoices')->get();
-        $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->get();
-        $water_bill_invoices=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->get();
-        $electricity_bill_invoices=DB::table('electricity_bill_invoices')->join('space_contracts','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->get();
+        $space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->orderBy('invoices.invoice_number','desc')->get();
+        $insurance_invoices=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->get();
+        $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get();
+        $water_bill_invoices=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->orderBy('water_bill_invoices.invoice_number','desc')->get();
+        $electricity_bill_invoices=DB::table('electricity_bill_invoices')->join('space_contracts','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->orderBy('electricity_bill_invoices.invoice_number','desc')->get();
 
 
 

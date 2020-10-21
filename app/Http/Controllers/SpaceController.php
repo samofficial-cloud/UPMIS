@@ -35,6 +35,11 @@ class SpaceController extends Controller
     public function addSpace(Request $request)
     {
 
+
+
+
+
+
         if ($request->get('rent_price_guide_from')>$request->get('rent_price_guide_to')) {
 
             return redirect()->back()->with("error","'From' field cannot be greater than 'To' field. Please try again");
@@ -45,6 +50,33 @@ class SpaceController extends Controller
 
 
         }
+
+
+        $code_name=DB::table('space_classification')->where('minor_industry',$request->get('minor_industry'))->value('code_name');
+
+        $space_id_number=DB::table('spaces')->where('space_id_code',$code_name)->orderBy('id','desc')->limit(1)->value('space_id_number');
+
+
+        $integer = '';
+        $incremented = '';
+        $new_space_id_number = '';
+
+        if($space_id_number!="") {
+
+
+            $integer = ltrim($space_id_number, '0');
+            $incremented = $integer + 1;
+            $new_space_id_number = sprintf("%04d", $incremented);
+
+        }else{
+
+
+            $incremented = 1;
+            $new_space_id_number = sprintf("%04d", $incremented);
+
+        }
+
+        $final_space_id=$code_name.''.$new_space_id_number;
 
         $comments='';
 
@@ -63,10 +95,10 @@ class SpaceController extends Controller
         if($request->get('rent_price_guide_checkbox')==null){
 
         DB::table('spaces')->insert(
-            ['space_id' => $request->get('space_id'),'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => '','rent_price_guide_to' => '','rent_price_guide_currency' => '','rent_price_guide_checkbox' => 0,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]);
+            ['space_id' => $final_space_id,'space_id_code'=>$code_name,'space_id_number'=>$new_space_id_number,'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => '','rent_price_guide_to' => '','rent_price_guide_currency' => '','rent_price_guide_checkbox' => 0,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]);
         }else{
         DB::table('spaces')->insert(
-            ['space_id' => $request->get('space_id'),'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => $request->get('rent_price_guide_from'),'rent_price_guide_to' => $request->get('rent_price_guide_to'),'rent_price_guide_currency' => $request->get('rent_price_guide_currency'),'rent_price_guide_checkbox' => 1,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]
+            ['space_id' => $final_space_id,'space_id_code'=>$code_name,'space_id_number'=>$new_space_id_number,'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => $request->get('rent_price_guide_from'),'rent_price_guide_to' => $request->get('rent_price_guide_to'),'rent_price_guide_currency' => $request->get('rent_price_guide_currency'),'rent_price_guide_checkbox' => 1,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]
         );
     }
 
@@ -210,7 +242,7 @@ class SpaceController extends Controller
             $query = $request->get('query');
 
 
-        $space_id=DB::table('spaces')->where('space_id', 'LIKE', "%{$query}%")->where('status',1)->get();
+        $space_id=DB::table('spaces')->where('space_id', 'LIKE', "%{$query}%")->where('status',1)->where('occupation_status',0)->get();
 
 
 

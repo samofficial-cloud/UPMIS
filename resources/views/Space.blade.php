@@ -179,13 +179,7 @@
                                         <br>
 
 
-                                        <div class="form-group">
-                                            <div class="form-wrapper">
-                                                <label for=""  ><strong>Space Number <span style="color: red;"> *</span></strong></label>
-                                                <input type="text" class="form-control" id="" name="space_id" value="" Required autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <br>
+
 
 
 
@@ -193,9 +187,13 @@
                                             <div class="form-wrapper">
                                                 <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
                                                 <select class="form-control" id="space_location" required name="space_location" >
-                                                    <option value="" selected></option>
-                                                    <option value="Mlimani City" id="Option" >Mlimani City</option>
-                                                    <option value="UDSM Main Campus" id="Option">UDSM Main Campus</option>
+                                                    <?php
+                                                    $locations=DB::table('space_locations')->get();
+                                                    ?>
+                                                    <option value=""></option>
+                                                    @foreach($locations as $location)
+                                                            <option value="{{$location->location}}">{{$location->location}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -530,13 +528,7 @@
                                                             <br>
 
 
-                                                            <div class="form-group">
-                                                                <div class="form-wrapper">
-                                                                    <label for="" ><strong>Space Number <span style="color: red;"> *</span></strong></label>
-                                                                    <input type="text" class="form-control" id="" name="space_id" value="{{$var->space_id}}" readonly Required autocomplete="off">
-                                                                </div>
-                                                            </div>
-                                                            <br>
+
 
 
 

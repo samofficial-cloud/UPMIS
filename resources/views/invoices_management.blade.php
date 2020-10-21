@@ -58,7 +58,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -90,8 +90,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -369,8 +369,8 @@
                         <table class="hover table table-striped  table-bordered" id="myTable">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col" style="color:#fff;">S/N</th>
+                                <th scope="col"  style="color:#fff;">Client</th>
                                 <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#fff;"><center>End Date</center></th>
@@ -385,15 +385,22 @@
                             @foreach($space_invoices as $var)
                                 <tr>
 
-                                    <td><center>
-                                                {{$i}} </center></td>
-                                    <td><center>{{$var->debtor_name}}</center></td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td>   </td>
+
+                                    <td>{{$var->debtor_name}}</td>
+                                    <td><center>{{$var->invoice_number}}
+                                        </center>
+                                    </td>
+
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                     <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
                                     <td><center>{{$var->payment_status}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')
+
+                                                    <span style="float: right !important; " class="badge badge-danger">New</span>
+                                            @else
+                                            @endif </td>
 
 
 
@@ -989,7 +996,7 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col"  style="color:#fff;">Client</th>
                                 <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#fff;"><center>End Date</center></th>
@@ -1004,13 +1011,17 @@
                             @foreach($insurance_invoices as $var)
                                 <tr>
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->debtor_name}}</center></td>
+                                    <td>{{$var->debtor_name}}</td>
                                     <td><center>{{$var->invoice_number}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                     <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
                                     <td><center>{{$var->payment_status}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')
+
+                                            <span style="float: right !important; " class="badge badge-danger">New</span>
+                                        @else
+                                        @endif</td>
 
 
 
@@ -1512,7 +1523,7 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col"  style="color:#fff;">Client</th>
                                 <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#fff;"><center>End Date</center></th>
@@ -1527,13 +1538,17 @@
                             @foreach($car_rental_invoices as $var)
                                 <tr>
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->debtor_name}}</center></td>
+                                    <td>{{$var->debtor_name}}</td>
                                     <td><center>{{$var->invoice_number}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                     <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
                                     <td><center>{{$var->payment_status}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')
+
+                                            <span style="float: right !important; " class="badge badge-danger">New</span>
+                                        @else
+                                        @endif </td>
 
 
 
@@ -2150,7 +2165,7 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col"  style="color:#fff;">Client</th>
                                 <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#fff;"><center>End Date</center></th>
@@ -2167,7 +2182,7 @@
                             @foreach($water_bill_invoices as $var)
                                 <tr>
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->debtor_name}}</center></td>
+                                    <td>{{$var->debtor_name}}</td>
                                     <td><center>{{$var->invoice_number}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
@@ -2183,7 +2198,11 @@
                                         <td><center>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</center></td>
                                     @endif
                                     <td><center>{{$var->payment_status}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')
+
+                                            <span style="float: right !important; " class="badge badge-danger">New</span>
+                                        @else
+                                        @endif</td>
 
 
 
@@ -2819,7 +2838,7 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Client</center></th>
+                                <th scope="col"  style="color:#fff;">Client</th>
                                 <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
                                 <th scope="col"  style="color:#fff;"><center>End Date</center></th>
@@ -2836,7 +2855,7 @@
                             @foreach($electricity_bill_invoices as $var)
                                 <tr>
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->debtor_name}}</center></td>
+                                    <td>{{$var->debtor_name}}</td>
                                     <td><center>{{$var->invoice_number}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
@@ -2852,7 +2871,11 @@
                                         <td><center>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</center></td>
                                     @endif
                                     <td><center>{{$var->payment_status}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')
+
+                                            <span style="float: right !important; " class="badge badge-danger">New</span>
+                                        @else
+                                        @endif</td>
 
 
 
@@ -3602,9 +3625,33 @@ if(value.length<12){
     </script>
 
     <script type="text/javascript">
-        var table = $('#myTable').DataTable( {
-            dom: '<"top"fl>rt<"bottom"pi>'
+
+            var table = $('#myTable').DataTable( {
+            dom: '<"top"fl>rt<"bottom"pi>',
+
+
+
         } );
+
+
+
+        // var t = $('#myTable').DataTable( {
+        //     dom: '<"top"fl>rt<"bottom"pi>',
+        //     "columnDefs": [ {
+        //         "searchable": false,
+        //         "orderable": false,
+        //         "targets": 0
+        //     } ],
+        //     "order": [[ 1, 'asc' ]]
+        //
+        //
+        // } );
+        //
+        // t.on( 'order.dt search.dt', function () {
+        //     t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+        //         cell.innerHTML = i+1;
+        //     } );
+        // } ).draw();
 
 
         var table = $('#myTableCar').DataTable( {

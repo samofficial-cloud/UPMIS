@@ -501,16 +501,19 @@
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-6">
+                                                    <div class="form-wrapper col-12">
                                                         <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
                                                         <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" value="" class="form-control" required="">
                                                     </div>
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="currency">Currency <span style="color: red;"> *</span></label>
+                                                    @if($var->value!='N/A')
 
-                                                        <input type="text" id="currency" class="form-control" value="{{$var->currency}}" readonly required name="currency">
+                                                    <div id="valueDiv" class="form-wrapper col-12">
+                                                        <label for="amount">Value <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="20" id="value" name="value" class="form-control"  required>
                                                     </div>
+                                                    @else
+                                                    @endif
 
 
                                                 </div>
@@ -527,6 +530,29 @@
                                                         <input type="number" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value="{{$var->commission}}" required autocomplete="off">
                                                     </div>
 
+                                                    <div class="form-wrapper col-12">
+                                                        <label for="currency">Currency <span style="color: red;"> *</span></label>
+
+                                                        <input type="text" id="currency" class="form-control" value="{{$var->currency}}" readonly required name="currency">
+                                                    </div>
+
+
+                                                    @if($var->cover_note!='N/A')
+                                                    <div id="cover_noteDiv" class="form-wrapper col-6">
+                                                        <label for="amount">Cover note<span style="color: red;"> *</span></label>
+                                                        <input type="text" id="cover_note" name="cover_note" class="form-control">
+                                                    </div>
+                                                    @else
+                                                    @endif
+
+
+                                                        @if($var->sticker_no!='N/A')
+                                                    <div id="sticker_noDiv"  class="form-wrapper col-6">
+                                                        <label for="amount">Sticker number <span style="color: red;"> *</span></label>
+                                                        <input type="text" id="sticker_no" name="sticker_no" class="form-control">
+                                                    </div>
+                                                    @else
+                                                    @endif
 
 
                                                     <div class="form-wrapper col-12">

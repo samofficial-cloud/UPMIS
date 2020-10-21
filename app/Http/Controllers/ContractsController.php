@@ -206,8 +206,6 @@ class ContractsController extends Controller
     $programming_end_date='';
         //for programming purposes
 
-
-
             $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
             $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
@@ -684,6 +682,9 @@ class ContractsController extends Controller
 
         $vehicle_reg_var="";
         $vehicle_use_var="";
+        $cover_note="";
+        $sticker_no="";
+        $value="";
 
 
         if($request->get('vehicle_registration_no')==""){
@@ -706,8 +707,39 @@ class ContractsController extends Controller
         }
 
 
+        if($request->get('cover_note')==""){
+            $cover_note='N/A';
+
+        }else{
+
+            $cover_note=$request->get('cover_note');
+
+        }
+
+
+        if($request->get('sticker_no')==""){
+            $sticker_no='N/A';
+
+        }else{
+
+            $sticker_no=$request->get('sticker_no');
+
+        }
+
+
+        if($request->get('value')==""){
+            $value='N/A';
+
+        }else{
+
+            $value=$request->get('value');
+
+        }
+
+
+
         DB::table('insurance_contracts')->insert(
-            ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email')]
+            ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value]
         );
 
 
@@ -846,6 +878,10 @@ class ContractsController extends Controller
         $vehicle_reg_var="";
         $vehicle_use_var="";
 
+        $value="";
+        $sticker_no="";
+        $cover_note="";
+
 
         if($request->get('vehicle_registration_no')==""){
             $vehicle_reg_var='N/A';
@@ -874,6 +910,52 @@ class ContractsController extends Controller
         DB::table('insurance_contracts')
             ->where('id', $contract_id)
             ->update(['vehicle_registration_no' => $vehicle_reg_var]);
+
+
+
+
+        if($request->get('cover_note')==""){
+            $cover_note='N/A';
+
+        }else{
+
+            $cover_note=$request->get('cover_note');
+
+        }
+
+
+        if($request->get('sticker_no')==""){
+            $sticker_no='N/A';
+
+        }else{
+
+            $sticker_no=$request->get('sticker_no');
+
+        }
+
+
+        if($request->get('value')==""){
+            $value='N/A';
+
+        }else{
+
+            $value=$request->get('value');
+
+        }
+
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['value' => $value]);
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['sticker_no' => $sticker_no]);
+
+
+        DB::table('insurance_contracts')
+            ->where('id', $contract_id)
+            ->update(['cover_note' => $cover_note]);
 
 
 

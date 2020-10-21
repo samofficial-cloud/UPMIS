@@ -259,7 +259,7 @@ $today=date('Y-m-d');
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -291,8 +291,8 @@ $today=date('Y-m-d');
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -357,8 +357,10 @@ $today=date('Y-m-d');
                                                     ?>
                                                     <option value=""></option>
                                                     @foreach($classes as $class)
-
+                                                        @if($class->classes!='')
                                                         <option value="{{$class->classes}}">{{$class->classes}}</option>
+                                                            @else
+                                                            @endif
 
                                                     @endforeach
                                                 </select>
@@ -519,15 +521,14 @@ $today=date('Y-m-d');
 
                                     <div class="form-group row">
 
-                                        <div class="form-wrapper col-6">
+                                        <div class="form-wrapper col-12">
                                             <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
                                             <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
                                         </div>
 
-                                        <div class="form-wrapper col-6">
-                                            <label for="currency">Currency <span style="color: red;"> *</span></label>
-
-                                            <input type="text" id="currency" class="form-control" readonly required name="currency">
+                                        <div id="valueDiv" style="display: none;" class="form-wrapper col-12">
+                                            <label for="amount">Value <span style="color: red;"> *</span></label>
+                                            <input type="number" min="20" id="value" name="value" class="form-control" >
                                         </div>
 
 
@@ -545,6 +546,23 @@ $today=date('Y-m-d');
                                             <input type="number" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value="" required autocomplete="off">
                                         </div>
 
+
+                                        <div class="form-wrapper col-12">
+                                            <label for="currency">Currency <span style="color: red;"> *</span></label>
+
+                                            <input type="text" id="currency" class="form-control" readonly required name="currency">
+                                        </div>
+
+
+                                        <div id="cover_noteDiv" style="display: none;" class="form-wrapper col-6">
+                                            <label for="amount">Cover note<span style="color: red;"> *</span></label>
+                                            <input type="text" id="cover_note" name="cover_note" class="form-control">
+                                        </div>
+
+                                        <div id="sticker_noDiv" style="display: none;" class="form-wrapper col-6">
+                                            <label for="amount">Sticker number <span style="color: red;"> *</span></label>
+                                            <input type="text" id="sticker_no" name="sticker_no" class="form-control">
+                                        </div>
 
 
                                         <div class="form-wrapper col-12">
@@ -605,6 +623,23 @@ $today=date('Y-m-d');
                         $('#TypeDiv').show();
                         $('#TypeDivNA').hide();
 
+                        $('#cover_noteDiv').show();
+                        document.getElementById("cover_note").disabled = false;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = true;
+
+
+                        $('#sticker_noDiv').show();
+                        document.getElementById("sticker_no").disabled = false;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = true;
+
+                        $('#valueDiv').hide();
+                        document.getElementById("value").disabled = true;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = false;
+
+
                         document.getElementById("insurance_type_na").disabled = true;
                     }else{
                         $('#TypeDiv').hide();
@@ -614,6 +649,25 @@ $today=date('Y-m-d');
                         document.getElementById("insurance_type_na").disabled = false;
 
 
+                        $('#cover_noteDiv').hide();
+                        document.getElementById("cover_note").disabled = true;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = false;
+
+
+                        $('#sticker_noDiv').hide();
+                        document.getElementById("sticker_no").disabled = true;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = false;
+
+                        $('#valueDiv').show();
+                        document.getElementById("value").disabled = false;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = true;
+
+
+
+
                     }
                 }else if($('#TypeDiv:visible').length!=0){
                     //starts
@@ -621,6 +675,25 @@ $today=date('Y-m-d');
                     if(query=='MOTOR'){
                         $('#TypeDiv').show();
                         $('#TypeDivNA').hide();
+
+
+                        $('#cover_noteDiv').show();
+                        document.getElementById("cover_note").disabled = false;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = true;
+
+
+                        $('#sticker_noDiv').show();
+                        document.getElementById("sticker_no").disabled = false;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = true;
+
+                        $('#valueDiv').hide();
+                        document.getElementById("value").disabled = true;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = false;
+
+
                         document.getElementById("insurance_type_na").disabled = true;
 
                     }else{
@@ -630,6 +703,21 @@ $today=date('Y-m-d');
                         $('#TypeDivNA').show();
                         document.getElementById("insurance_type_na").disabled = false;
 
+                        $('#cover_noteDiv').hide();
+                        document.getElementById("cover_note").disabled = true;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = false;
+
+
+                        $('#sticker_noDiv').hide();
+                        document.getElementById("sticker_no").disabled = true;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = false;
+
+                        $('#valueDiv').show();
+                        document.getElementById("value").disabled = false;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = true;
 
                     }
                     //ends
@@ -646,6 +734,21 @@ $today=date('Y-m-d');
                     var insurance_class=document.getElementById("insurance_class").value;
                     if(insurance_class=='MOTOR'){
 
+                        $('#cover_noteDiv').show();
+                        document.getElementById("cover_note").disabled = false;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = true;
+
+
+                        $('#sticker_noDiv').show();
+                        document.getElementById("sticker_no").disabled = false;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = true;
+
+                        $('#valueDiv').hide();
+                        document.getElementById("value").disabled = true;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = false;
 
                         $('#TypeDiv').show();
 
@@ -653,6 +756,24 @@ $today=date('Y-m-d');
 
                         $('#TypeDivNA').show();
                         document.getElementById("insurance_type_na").disabled = false;
+
+                        $('#cover_noteDiv').hide();
+                        document.getElementById("cover_note").disabled = true;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = false;
+
+
+                        $('#sticker_noDiv').hide();
+                        document.getElementById("sticker_no").disabled = true;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = false;
+
+                        $('#valueDiv').show();
+                        document.getElementById("value").disabled = false;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = true;
+
+
                     }
 
                     $('#priceDiv').show();
@@ -679,9 +800,44 @@ $today=date('Y-m-d');
                 if(query=='MOTOR'){
                     $('#vehicle').show();
                 properNextZero();
+
+                    $('#cover_noteDiv').show();
+                    document.getElementById("cover_note").disabled = false;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = true;
+
+
+                    $('#sticker_noDiv').show();
+                    document.getElementById("sticker_no").disabled = false;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = true;
+
+                    $('#valueDiv').hide();
+                    document.getElementById("value").disabled = true;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = false;
+
+
                 }else{
                     $('#vehicle').hide();
                     properNext();
+
+                    $('#cover_noteDiv').hide();
+                    document.getElementById("cover_note").disabled = true;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = false;
+
+
+                    $('#sticker_noDiv').hide();
+                    document.getElementById("sticker_no").disabled = true;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = false;
+
+                    $('#valueDiv').show();
+                    document.getElementById("value").disabled = false;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = true;
+
                 }
 
 

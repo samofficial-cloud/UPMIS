@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Riskihajar\Terbilang\Facades\Terbilang;
@@ -131,8 +132,29 @@ class SendInvoices extends Command
             if(count($invoice_to_be_created)==0){
 
                 DB::table('invoices')->insert(
-                    ['contract_id' => $var->contract_id, 'invoicing_period_start_date' => $var->programming_start_date,'invoicing_period_end_date' => $var->programming_end_date,'period' => $period,'project_id' => 'renting_space','debtor_account_code' => $var->client_id,'debtor_name' => $var->full_name,'debtor_address' => $var->address,'amount_to_be_paid' => ($var->amount+$amount_not_paid),'currency_invoice'=>$var->currency,'gepg_control_no'=>'','tin'=>$var->tin,'vrn'=>$var->vrn,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Space Rent','prepared_by'=>'Name','approved_by'=>'Name']
+                    ['contract_id' => $var->contract_id, 'invoicing_period_start_date' =>date("Y-m-d",strtotime($var->programming_start_date)),'invoicing_period_end_date' =>date("Y-m-d",strtotime($var->programming_end_date)),'period' => $period,'project_id' => 'renting_space','debtor_account_code' => $var->client_id,'debtor_name' => $var->full_name,'debtor_address' => $var->address,'amount_to_be_paid' => ($var->amount+$amount_not_paid),'currency_invoice'=>$var->currency,'gepg_control_no'=>'','tin'=>$var->tin,'vrn'=>$var->vrn,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Space Rent','prepared_by'=>'Name','approved_by'=>'Name']
                 );
+
+
+                $programming_end_date_old = Carbon::createFromFormat('Y-m-d', $var->programming_end_date);
+
+
+                $programming_start_date_new = $programming_end_date_old->addDays(1);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $var->contract_id)
+                    ->update(['programming_start_date' => $programming_start_date_new]);
+
+
+                $daysToAdd2 = DB::table('payment_cycle_settings')->where('cycle',$var->payment_cycle)->value('days');
+
+                $programming_end_date_new=$programming_start_date_new->addDays($daysToAdd2);
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $var->contract_id)
+                    ->update(['programming_end_date' => $programming_end_date_new]);
+
 
                 $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 

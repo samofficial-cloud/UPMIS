@@ -58,7 +58,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -90,8 +90,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -167,9 +167,10 @@
                     ?>
                       <option value=""></option>
                     @foreach($classes as $class)
-
+                            @if($class->classes!=null)
                       <option value="{{$class->classes}}">{{$class->classes}}</option>
-
+                            @else
+                            @endif
                     @endforeach
                   </select>
 
