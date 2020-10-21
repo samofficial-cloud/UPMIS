@@ -101,7 +101,8 @@
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -151,7 +152,7 @@
           </div>
 
           <div class="modal-body">
-            <form method="post" action="{{ route('add_insurance')}}"  id="form1" >
+            <form method="post" action="{{ route('add_insurance')}}"  id="form1">
               {{csrf_field()}}
 
 
@@ -333,9 +334,9 @@ $companies=DB::table('insurance_parameters')->get();
             <td><center>{{$var->class}}</center></td>
             <td><center>{{$var->insurance_company}}</center></td>
             <td><center>{{$var->insurance_type}}</center></td>
-            <td><center>{{$var->price}} {{$var->insurance_currency}}</center></td>
+            <td><center>{{number_format($var->price)}} {{$var->insurance_currency}}</center></td>
             <td><center>{{$var->commission_percentage}}%</center></td>
-            <td><center>{{$var->commission}} {{$var->insurance_currency}} </center></td>
+            <td><center>{{number_format($var->commission)}} {{$var->insurance_currency}} </center></td>
             <td><center> {{$var->billing}} </center></td>
               @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
               @else

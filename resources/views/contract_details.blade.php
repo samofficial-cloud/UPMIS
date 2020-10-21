@@ -101,7 +101,8 @@
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -150,7 +151,7 @@
 
                         <tr>
                             <td> Amount:</td>
-                            <td> {{$var->amount}} {{$var->currency}}</td>
+                            <td> {{number_format($var->amount)}} {{$var->currency}}</td>
                         </tr>
 
 
@@ -172,6 +173,8 @@
                         </tr>
 
 
+
+
                         <tr>
                             <td>Payment Cycle:</td>
                             <td>{{$var->payment_cycle}}</td>
@@ -185,7 +188,22 @@
                             <td>{{$var->escalation_rate}} </td>
                         </tr>
 
+                        <tr>
+                            <td>Contract Creation Date:</td>
+                            <td>{{date("d/m/Y",strtotime($var->creation_date))}}</td>
+                        </tr>
 
+
+                        <tr>
+                            <td>Contract Status:</td>
+                            <td>@if($var->contract_status==0)
+                                    TERMINATED
+                                @elseif($var->end_date<date('Y-m-d'))
+                                    EXPIRED
+                                @else
+                                    ACTIVE
+                                @endif</td>
+                        </tr>
 
 
 
@@ -416,7 +434,7 @@
                                     <td><center>{{$var->invoice_number}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                    <td><center>{{$var->amount_to_be_paid}} {{$var->currency_invoice}}</center></td>
+                                    <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
                                     <td><center>{{$var->payment_status}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
 
@@ -455,13 +473,13 @@
 
                                                                 <tr>
                                                                     <td> Start Date:</td>
-                                                                    <td> {{$var->invoicing_period_start_date}}</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
                                                                 </tr>
 
 
                                                                 <tr>
                                                                     <td> End Date:</td>
-                                                                    <td> {{$var->invoicing_period_end_date}}</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -477,7 +495,7 @@
 
                                                                 <tr>
                                                                     <td> Amount:</td>
-                                                                    <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                    <td> {{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
                                                                 </tr>
 
 
@@ -588,7 +606,7 @@
 
                                                 @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
                                                 @else
-                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class="btn btn-info"  name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
+                                            <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class=""  name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
 @endif
 
                                             <div class="modal fade" id="add_comment{{$var->invoice_number}}" role="dialog">

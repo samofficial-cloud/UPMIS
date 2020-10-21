@@ -112,7 +112,8 @@ hr {
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
 @admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
     </div>
@@ -625,8 +626,11 @@ hr {
              </div>
          </div>
      </div>
+
         <a title="Send Email to this Client" data-toggle="modal" data-target="#mail{{$client->client_id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
       <div class="modal fade" id="mail{{$client->client_id}}" role="dialog">
+
+
               <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
@@ -1789,16 +1793,16 @@ hr {
             if (category=='Real Estate only' || category=='All') {
             $(".insurance_clients").removeClass("defaultContract");
             $(".car_clients").removeClass("defaultContract");
-            $('.space_clients').addClass('defaultContract'); 
+            $('.space_clients').addClass('defaultContract');
             }
-            
+
 
             else if (category=='CPTU only' || category=='All') {
                $(".space_clients").removeClass("defaultContract");
               $(".insurance_clients").removeClass("defaultContract");
               $('.car_clients').addClass('defaultContract');
             }
-            
+
 
             else if (category=='Insurance only' || category=='All') {
                 $(".space_clients").removeClass("defaultContract");
