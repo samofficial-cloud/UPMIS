@@ -354,6 +354,42 @@ if($request->get('cost_centre')=='')
 
     public function EditSystemSettings(Request $request)
     {
+
+        if ($request->get('semester_one_start')>$request->get('semester_one_end')) {
+
+            return redirect()->back()->with("error","Semester one start date cannot be greater than semester one end date. Please try again");
+        }
+
+
+        if ($request->get('semester_two_start')>$request->get('semester_two_end')) {
+
+            return redirect()->back()->with("error","Semester two start date cannot be greater than semester two end date. Please try again");
+        }
+
+        if ($request->get('semester_one_start')>$request->get('semester_two_start')) {
+
+            return redirect()->back()->with("error","Semester one date(s) cannot be greater than semester two date(s). Please try again");
+        }
+
+        if ($request->get('semester_one_start')>$request->get('semester_two_end')) {
+
+            return redirect()->back()->with("error","Semester one date(s) cannot be greater than semester two date(s). Please try again");
+        }
+
+
+        if ($request->get('semester_one_end')>$request->get('semester_two_end')) {
+
+            return redirect()->back()->with("error","Semester one date(s) cannot be greater than semester two date(s). Please try again");
+        }
+
+
+        if ($request->get('semester_one_end')>$request->get('semester_two_start')) {
+
+            return redirect()->back()->with("error","Semester one date(s) cannot be greater than semester two date(s). Please try again");
+        }
+
+
+
         $insurance_percentage=$request->get('insurance_percentage')/100;
 
         DB::table('system_settings')
@@ -397,6 +433,27 @@ if($request->get('cost_centre')=='')
         DB::table('system_settings')
             ->where('id', 1)
             ->update(['days_in_advance_for_invoices' => $request->get('days_in_advance_for_invoices')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['semester_one_start' => $request->get('semester_one_start')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['semester_one_end' => $request->get('semester_one_end')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['semester_two_start' => $request->get('semester_two_start')]);
+
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['semester_two_end' => $request->get('semester_two_end')]);
 
 
 

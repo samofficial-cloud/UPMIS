@@ -477,16 +477,17 @@
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-6">
+                                                    <div class="form-wrapper col-12">
                                                         <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
                                                         <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
                                                     </div>
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="currency">Currency <span style="color: red;"> *</span></label>
-
-                                                        <input type="text" id="currency" class="form-control" readonly value="{{$var->insurance_currency}}" required name="currency">
+                                                    <div id="valueDiv" style="display: none;" class="form-wrapper col-12">
+                                                        <label for="amount">Value <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="20" id="value" name="value" class="form-control" >
                                                     </div>
+
+
 
 
                                                 </div>
@@ -501,6 +502,25 @@
                                                     <div class="form-wrapper col-6">
                                                         <label for="amount">Commission <span style="color: red;"> *</span></label>
                                                         <input type="number" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value="{{$var->commission}}" required autocomplete="off">
+                                                    </div>
+
+                                                    <div class="form-wrapper col-12">
+                                                        <label for="currency">Currency <span style="color: red;"> *</span></label>
+
+                                                        <input type="text" id="currency" class="form-control" readonly value="{{$var->insurance_currency}}" required name="currency">
+                                                    </div>
+
+
+                                                    <div id="cover_noteDiv" style="display: none;"  class="form-wrapper col-6">
+                                                        <label for="amount">Cover note<span style="color: red;"> *</span></label>
+                                                        <input type="text" id="cover_note" name="cover_note" class="form-control">
+                                                    </div>
+
+
+
+                                                    <div id="sticker_noDiv" style="display: none;" class="form-wrapper col-6">
+                                                        <label for="amount">Sticker number<span style="color: red;"> *</span></label>
+                                                        <input type="text" id="sticker_no" name="sticker_no" class="form-control">
                                                     </div>
 
 
@@ -541,11 +561,46 @@
             if(query=='MOTOR'){
                 $('#vehicle').show();
                 properNextZero();
+
+                $('#cover_noteDiv').show();
+                document.getElementById("cover_note").disabled = false;
+                var ele = document.getElementById("cover_note");
+                ele.required = true;
+
+
+                $('#sticker_noDiv').show();
+                document.getElementById("sticker_no").disabled = false;
+                var ele2 = document.getElementById("sticker_no");
+                ele2.required = true;
+
+                $('#valueDiv').hide();
+                document.getElementById("value").disabled = true;
+                var ele7 = document.getElementById("value");
+                ele7.required = false;
+
             }else{
                 $('#vehicle').hide();
                 properNext();
                 $('#vehicle_registration_no').val("");
                 $('#vehicle_use').val("");
+
+
+                $('#cover_noteDiv').hide();
+                document.getElementById("cover_note").disabled = true;
+                var ele = document.getElementById("cover_note");
+                ele.required = false;
+
+
+                $('#sticker_noDiv').hide();
+                document.getElementById("sticker_no").disabled = true;
+                var ele2 = document.getElementById("sticker_no");
+                ele2.required = false;
+
+                $('#valueDiv').show();
+                document.getElementById("value").disabled = false;
+                var ele7 = document.getElementById("value");
+                ele7.required = true;
+
             }
 
 
@@ -576,6 +631,21 @@
                     $('#TypeDiv').show();
                     $('#TypeDivNA').hide();
 
+                    $('#cover_noteDiv').show();
+                    document.getElementById("cover_note").disabled = false;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = true;
+
+
+                    $('#sticker_noDiv').show();
+                    document.getElementById("sticker_no").disabled = false;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = true;
+
+                    $('#valueDiv').hide();
+                    document.getElementById("value").disabled = true;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = false;
 
                 }else{
                     $('#TypeDiv').hide();
@@ -583,6 +653,21 @@
                     ele5.required = false;
                     $('#TypeDivNA').show();
 
+                    $('#cover_noteDiv').hide();
+                    document.getElementById("cover_note").disabled = true;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = false;
+
+
+                    $('#sticker_noDiv').hide();
+                    document.getElementById("sticker_no").disabled = true;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = false;
+
+                    $('#valueDiv').show();
+                    document.getElementById("value").disabled = false;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = true;
 
 
                 }
@@ -593,6 +678,22 @@
                     $('#TypeDiv').show();
                     $('#TypeDivNA').hide();
 
+                    $('#cover_noteDiv').show();
+                    document.getElementById("cover_note").disabled = false;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = true;
+
+
+                    $('#sticker_noDiv').show();
+                    document.getElementById("sticker_no").disabled = false;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = true;
+
+                    $('#valueDiv').hide();
+                    document.getElementById("value").disabled = true;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = false;
+
 
                 }else{
                     $('#TypeDiv').hide();
@@ -600,7 +701,21 @@
                     ele6.required = false;
                     $('#TypeDivNA').show();
 
+                    $('#cover_noteDiv').hide();
+                    document.getElementById("cover_note").disabled = true;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = false;
 
+
+                    $('#sticker_noDiv').hide();
+                    document.getElementById("sticker_no").disabled = true;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = false;
+
+                    $('#valueDiv').show();
+                    document.getElementById("value").disabled = false;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = true;
 
                 }
                 //ends
@@ -620,9 +735,42 @@
 
                     $('#TypeDiv').show();
 
+
+                    $('#cover_noteDiv').show();
+                    document.getElementById("cover_note").disabled = false;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = true;
+
+
+                    $('#sticker_noDiv').show();
+                    document.getElementById("sticker_no").disabled = false;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = true;
+
+                    $('#valueDiv').hide();
+                    document.getElementById("value").disabled = true;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = false;
+
                 }else{
 
                     $('#TypeDivNA').show();
+
+                    $('#cover_noteDiv').hide();
+                    document.getElementById("cover_note").disabled = true;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = false;
+
+
+                    $('#sticker_noDiv').hide();
+                    document.getElementById("sticker_no").disabled = true;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = false;
+
+                    $('#valueDiv').show();
+                    document.getElementById("value").disabled = false;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = true;
 
                 }
 
@@ -680,12 +828,43 @@
                         $('#TypeDiv').show();
                         $('#TypeDivNA').hide();
 
+                        $('#cover_noteDiv').show();
+                        document.getElementById("cover_note").disabled = false;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = true;
+
+
+                        $('#sticker_noDiv').show();
+                        document.getElementById("sticker_no").disabled = false;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = true;
+
+                        $('#valueDiv').hide();
+                        document.getElementById("value").disabled = true;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = false;
 
                     }else{
                         $('#TypeDiv').hide();
                         var ele5 = document.getElementById("insurance_type");
                         ele5.required = false;
                         $('#TypeDivNA').show();
+
+                        $('#cover_noteDiv').hide();
+                        document.getElementById("cover_note").disabled = true;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = false;
+
+
+                        $('#sticker_noDiv').hide();
+                        document.getElementById("sticker_no").disabled = true;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = false;
+
+                        $('#valueDiv').show();
+                        document.getElementById("value").disabled = false;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = true;
 
 
 
@@ -697,12 +876,44 @@
                         $('#TypeDiv').show();
                         $('#TypeDivNA').hide();
 
+                        $('#cover_noteDiv').show();
+                        document.getElementById("cover_note").disabled = false;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = true;
+
+
+                        $('#sticker_noDiv').show();
+                        document.getElementById("sticker_no").disabled = false;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = true;
+
+                        $('#valueDiv').hide();
+                        document.getElementById("value").disabled = true;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = false;
+
 
                     }else{
                         $('#TypeDiv').hide();
                         var ele6 = document.getElementById("insurance_type");
                         ele6.required = false;
                         $('#TypeDivNA').show();
+
+                        $('#cover_noteDiv').hide();
+                        document.getElementById("cover_note").disabled = true;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = false;
+
+
+                        $('#sticker_noDiv').hide();
+                        document.getElementById("sticker_no").disabled = true;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = false;
+
+                        $('#valueDiv').show();
+                        document.getElementById("value").disabled = false;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = true;
 
 
 
@@ -724,9 +935,41 @@
 
                         $('#TypeDiv').show();
 
+                        $('#cover_noteDiv').show();
+                        document.getElementById("cover_note").disabled = false;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = true;
+
+
+                        $('#sticker_noDiv').show();
+                        document.getElementById("sticker_no").disabled = false;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = true;
+
+                        $('#valueDiv').hide();
+                        document.getElementById("value").disabled = true;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = false;
+
                     }else{
 
                         $('#TypeDivNA').show();
+
+                        $('#cover_noteDiv').hide();
+                        document.getElementById("cover_note").disabled = true;
+                        var ele = document.getElementById("cover_note");
+                        ele.required = false;
+
+
+                        $('#sticker_noDiv').hide();
+                        document.getElementById("sticker_no").disabled = true;
+                        var ele2 = document.getElementById("sticker_no");
+                        ele2.required = false;
+
+                        $('#valueDiv').show();
+                        document.getElementById("value").disabled = false;
+                        var ele7 = document.getElementById("value");
+                        ele7.required = true;
 
                     }
 
@@ -754,9 +997,41 @@
                 if(query=='MOTOR'){
                     $('#vehicle').show();
                     properNextZero();
+
+                    $('#cover_noteDiv').show();
+                    document.getElementById("cover_note").disabled = false;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = true;
+
+
+                    $('#sticker_noDiv').show();
+                    document.getElementById("sticker_no").disabled = false;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = true;
+
+                    $('#valueDiv').hide();
+                    document.getElementById("value").disabled = true;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = false;
                 }else{
                     $('#vehicle').hide();
                     properNext();
+
+                    $('#cover_noteDiv').hide();
+                    document.getElementById("cover_note").disabled = true;
+                    var ele = document.getElementById("cover_note");
+                    ele.required = false;
+
+
+                    $('#sticker_noDiv').hide();
+                    document.getElementById("sticker_no").disabled = true;
+                    var ele2 = document.getElementById("sticker_no");
+                    ele2.required = false;
+
+                    $('#valueDiv').show();
+                    document.getElementById("value").disabled = false;
+                    var ele7 = document.getElementById("value");
+                    ele7.required = true;
                 }
 
 

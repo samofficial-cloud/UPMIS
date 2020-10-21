@@ -58,7 +58,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -90,8 +90,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -106,6 +106,22 @@
           @endadmin
         </ul>
     </div>
+
+
+    <?php
+
+
+
+    $today=date('Y-m-d');
+
+    $date=date_create($today);
+
+    date_sub($date,date_interval_create_from_date_string("366 days"));
+
+
+
+    ?>
+
 
     <div class="main_content">
       <div class="container " style="max-width: 1308px;">
@@ -138,31 +154,85 @@
 <h4 style="margin-top: 1.3%;">General</h4>
                   <div class="settings_group">
 
-
-                  <div class="group_children">
-                      <div class="form-wrapper">
-                          <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Financial year</strong></label>
-                          <input type="text"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->financial_year}}" id="input_financial_year" name="financial_year" autocomplete="off" required>
-                          <p style="display: none;" class="mt-2 p-1"  id="messageFinancialYear"></p>
-                      </div>
-                  </div>
-
-                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
-
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>System's default password</strong></label>
-                              <input type="text"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->default_password}}" id="rent_price_guide_checkbox" name="default_password" required autocomplete="off">
+                              <input type="text"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->default_password}}" id="rent_price_guide_checkbox" name="default_password" required autocomplete="off">
 
                           </div>
                       </div>
 
                       <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
 
+
+
+
+                      <div class="group_children">
+                      <div class="form-wrapper">
+                          <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Financial year</strong></label>
+                          <input type="text"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->financial_year}}" id="input_financial_year" name="financial_year" autocomplete="off" required>
+                          <p style="display: none;" class="mt-2 p-1"  id="messageFinancialYear"></p>
+                      </div>
+                  </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>First semester start date</strong></label>
+                              <input type="date" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->semester_one_start}}" id="rent_price_guide_checkbox" name="semester_one_start" min="{{date_format($date,"Y-m-d")}}" autocomplete="off">
+
+                          </div>
+                      </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>First semester end date</strong></label>
+                              <input type="date" min="{{date_format($date,"Y-m-d")}}" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->semester_one_end}}" id="rent_price_guide_checkbox" name="semester_one_end" autocomplete="off">
+
+                          </div>
+                      </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+
+
+
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Second semester start date</strong></label>
+                              <input type="date" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->semester_two_start}}" id="rent_price_guide_checkbox" name="semester_two_start" min="{{date_format($date,"Y-m-d")}}" autocomplete="off">
+
+                          </div>
+                      </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Second semester end date</strong></label>
+                              <input type="date" min="{{date_format($date,"Y-m-d")}}" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->semester_two_end}}" id="rent_price_guide_checkbox" name="semester_two_end" autocomplete="off">
+
+                          </div>
+                      </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+
+
+
+
+
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Maximum number of days to pay invoice</strong></label>
-                              <input type="number" min="1" max="90"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->max_no_of_days_to_pay_invoice}}" id="rent_price_guide_checkbox" name="max_no_of_days_to_pay_invoice" required autocomplete="off">
+                              <input type="number" min="1" max="90"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->max_no_of_days_to_pay_invoice}}" id="rent_price_guide_checkbox" name="max_no_of_days_to_pay_invoice" required autocomplete="off">
 
                           </div>
                       </div>
@@ -180,7 +250,7 @@
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Percentage used when generating invoice to principals</strong></label>
-                              <input type="number" min="1" max="100" style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" required value="{{($var->insurance_percentage)*100}}" id="rent_price_guide_checkbox" name="insurance_percentage" autocomplete="off">
+                              <input type="number" min="1" max="100" style="display: inline-block; float: right; clear: both;  text-align: center;" required value="{{($var->insurance_percentage)*100}}" id="rent_price_guide_checkbox" name="insurance_percentage" autocomplete="off">
 
                           </div>
                       </div>
@@ -190,7 +260,7 @@
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Day in a month for the system to generate insurance invoices automatically</strong></label>
-                              <input type="number" min="1"  max="31" style="display: inline-block; float: right; clear: both;  max-width: 110px; text-align: center;" required value="{{$var->day_for_insurance_invoice}}" id="rent_price_guide_checkbox" name="day_for_insurance_invoice" autocomplete="off">
+                              <input type="number" min="1"  max="31" style="display: inline-block; float: right; clear: both;   text-align: center;" required value="{{$var->day_for_insurance_invoice}}" id="rent_price_guide_checkbox" name="day_for_insurance_invoice" autocomplete="off">
 
                           </div>
                       </div>
@@ -200,7 +270,7 @@
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Invoice start day(Day in a month)</strong></label>
-                              <input type="number" min="1"  max="31" required style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->insurance_invoice_start_day}}" id="rent_price_guide_checkbox" name="insurance_invoice_start_day" autocomplete="off">
+                              <input type="number" min="1"  max="31" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->insurance_invoice_start_day}}" id="rent_price_guide_checkbox" name="insurance_invoice_start_day" autocomplete="off">
 
                           </div>
                       </div>
@@ -209,7 +279,7 @@
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Invoice end day(Day in a month)</strong></label>
-                              <input type="number" min="1"  max="31"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->insurance_invoice_end_day}}" id="rent_price_guide_checkbox" name="insurance_invoice_end_day" required autocomplete="off">
+                              <input type="number" min="1"  max="31"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->insurance_invoice_end_day}}" id="rent_price_guide_checkbox" name="insurance_invoice_end_day" required autocomplete="off">
                           </div>
                       </div>
 
@@ -248,7 +318,7 @@
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Days before the payment cycle ends for which the system will create space invoices automatically</strong></label>
-                              <input type="number" min="1"  max="27"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="{{$var->days_in_advance_for_invoices}}" id="rent_price_guide_checkbox" name="days_in_advance_for_invoices" required autocomplete="off">
+                              <input type="number" min="1"  max="27"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->days_in_advance_for_invoices}}" id="rent_price_guide_checkbox" name="days_in_advance_for_invoices" required autocomplete="off">
 
                           </div>
                       </div>
@@ -258,7 +328,7 @@
 {{--                      <div class="group_children">--}}
 {{--                          <div class="form-wrapper">--}}
 {{--                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Bills invoice start day</strong></label>--}}
-{{--                              <input type="text"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="1" id="rent_price_guide_checkbox" name="default_password" autocomplete="off">--}}
+{{--                              <input type="text"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="1" id="rent_price_guide_checkbox" name="default_password" autocomplete="off">--}}
 
 {{--                          </div>--}}
 {{--                      </div>--}}
@@ -268,7 +338,7 @@
 {{--                      <div class="group_children">--}}
 {{--                          <div class="form-wrapper">--}}
 {{--                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Bills invoice end day</strong></label>--}}
-{{--                              <input type="text"  style="display: inline-block; float: right; clear: both; max-width: 110px; text-align: center;" value="20" id="rent_price_guide_checkbox" name="default_password" autocomplete="off">--}}
+{{--                              <input type="text"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="20" id="rent_price_guide_checkbox" name="default_password" autocomplete="off">--}}
 
 {{--                          </div>--}}
 {{--                      </div>--}}

@@ -254,7 +254,7 @@ $today=date('Y-m-d');
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -286,8 +286,8 @@ $today=date('Y-m-d');
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -496,12 +496,46 @@ $today=date('Y-m-d');
 
 					<div class="form-group row">
 
-					<div class="form-wrapper col-6">
-						<label for="amount">Amount <span style="color: red;"> *</span></label>
-						<input type="number" min="0" id="amount" name="amount" value="{{$var->amount}}" class="form-control" required="">
-					</div>
+                        <div class="form-wrapper col-12">
+                            <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
+                            <select id="academic_dependance" class="form-control" name="academic_dependance" required>
+                                @if($var->academic_dependance=='Yes')
+                                <option value="No" >No</option>
+                                <option value="{{$var->academic_dependance}}" selected>{{$var->academic_dependance}}</option>
+                                @elseif($var->academic_dependance=='No')
+                                    <option value="{{$var->academic_dependance}}" selected>{{$var->academic_dependance}}</option>
+                                <option value="Yes" >Yes</option>
+                                    @else
+                                    <option value="" ></option>
+                                    <option value="No" >No</option>
+                                    <option value="Yes" >Yes</option>
 
-                        <div class="form-wrapper col-6">
+                                @endif
+                            </select>
+                        </div>
+
+
+                        <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                            <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
+                            <input type="number" min="0" id="academic_season" value="{{$var->academic_season}}" name="academic_season" class="form-control" >
+                        </div>
+
+
+                        <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                            <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
+                            <input type="number" min="0" id="vacation_season" value="{{$var->vacation_season}}" name="vacation_season" class="form-control" >
+                        </div>
+
+                        <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
+                            <label for="amount">Amount <span style="color: red;"> *</span></label>
+                            <input type="number" min="0" id="amount" name="amount" value="{{$var->amount}}" class="form-control" >
+                        </div>
+
+
+
+
+
+                        <div class="form-wrapper col-12">
                             <label for="currency">Currency <span style="color: red;"> *</span></label>
                             <select id="currency" class="form-control" name="currency" required>
 
@@ -571,15 +605,127 @@ $today=date('Y-m-d');
 @endsection
 
 @section('pagescript')
+    <?php
+    $academic_dependance='';
+    foreach($contract_data as $var)
+    {
 
+        $academic_dependance=$var->academic_dependance;
+
+    }
+
+    ?>
     <script type="text/javascript">
         window.onload=function(){
             document.getElementById("client_type").click();
+
+
+
+            var academic_dependance={!! json_encode($academic_dependance) !!};
+
+            if (academic_dependance=='Yes') {
+
+                $('#academicDiv').show();
+                document.getElementById("academic_season").disabled = false;
+                var ele = document.getElementById("academic_season");
+                ele.required = true;
+
+
+                $('#vacationDiv').show();
+                document.getElementById("vacation_season").disabled = false;
+                var ele = document.getElementById("vacation_season");
+                ele.required = true;
+
+
+                $('#amountDiv').hide();
+                document.getElementById("amount").disabled = true;
+                var ele = document.getElementById("amount");
+                ele.required = false;
+
+            }else if(academic_dependance=='No'){
+
+                $('#academicDiv').hide();
+                document.getElementById("academic_season").disabled = true;
+                var ele = document.getElementById("academic_season");
+                ele.required = false;
+
+                $('#vacationDiv').hide();
+                document.getElementById("vacation_season").disabled = true;
+                var ele = document.getElementById("vacation_season");
+                ele.required = false;
+
+                $('#amountDiv').show();
+                document.getElementById("amount").disabled = false;
+                var ele = document.getElementById("amount");
+                ele.required = true;
+
+
+            }else{
+
+
+            }
+
+
         };
     </script>
 
     <script type="text/javascript">
         $(document).ready(function(){
+
+            $('#academic_dependance').click(function() {
+                var query=$(this).val();
+                if(query=='Yes') {
+
+                    $('#academicDiv').show();
+                    document.getElementById("academic_season").disabled = false;
+                    var ele = document.getElementById("academic_season");
+                    ele.required = true;
+
+
+                    $('#vacationDiv').show();
+                    document.getElementById("vacation_season").disabled = false;
+                    var ele = document.getElementById("vacation_season");
+                    ele.required = true;
+
+
+                    $('#amountDiv').hide();
+                    document.getElementById("amount").disabled = true;
+                    var ele = document.getElementById("amount");
+                    ele.required = false;
+
+
+
+                }else if(query=='No'){
+
+                    $('#academicDiv').hide();
+                    document.getElementById("academic_season").disabled = true;
+                    var ele = document.getElementById("academic_season");
+                    ele.required = false;
+
+                    $('#vacationDiv').hide();
+                    document.getElementById("vacation_season").disabled = true;
+                    var ele = document.getElementById("vacation_season");
+                    ele.required = false;
+
+                    $('#amountDiv').show();
+                    document.getElementById("amount").disabled = false;
+                    var ele = document.getElementById("amount");
+                    ele.required = true;
+
+                }else{
+                    $('#vacationDiv').hide();
+                    $('#academicDiv').hide();
+                    $('#amountDiv').hide();
+
+                }
+
+
+
+            });
+
+
+
+
 
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
