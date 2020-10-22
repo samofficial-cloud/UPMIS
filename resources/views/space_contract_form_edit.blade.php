@@ -498,12 +498,12 @@ $today=date('Y-m-d');
 
                         <div class="form-wrapper col-12">
                             <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
-                            <select id="academic_dependance" class="form-control" name="academic_dependance" required>
-                                @if($var->academic_dependance=='Yes')
+                            <select id="academic_dependence" class="form-control" name="academic_dependence" required>
+                                @if($var->academic_dependence=='Yes')
                                 <option value="No" >No</option>
-                                <option value="{{$var->academic_dependance}}" selected>{{$var->academic_dependance}}</option>
-                                @elseif($var->academic_dependance=='No')
-                                    <option value="{{$var->academic_dependance}}" selected>{{$var->academic_dependance}}</option>
+                                <option value="{{$var->academic_dependence}}" selected>{{$var->academic_dependence}}</option>
+                                @elseif($var->academic_dependence=='No')
+                                    <option value="{{$var->academic_dependence}}" selected>{{$var->academic_dependence}}</option>
                                 <option value="Yes" >Yes</option>
                                     @else
                                     <option value="" ></option>
@@ -606,11 +606,11 @@ $today=date('Y-m-d');
 
 @section('pagescript')
     <?php
-    $academic_dependance='';
+    $academic_dependence='';
     foreach($contract_data as $var)
     {
 
-        $academic_dependance=$var->academic_dependance;
+        $academic_dependence=$var->academic_dependence;
 
     }
 
@@ -621,9 +621,9 @@ $today=date('Y-m-d');
 
 
 
-            var academic_dependance={!! json_encode($academic_dependance) !!};
+            var academic_dependence={!! json_encode($academic_dependence) !!};
 
-            if (academic_dependance=='Yes') {
+            if (academic_dependence=='Yes') {
 
                 $('#academicDiv').show();
                 document.getElementById("academic_season").disabled = false;
@@ -642,7 +642,7 @@ $today=date('Y-m-d');
                 var ele = document.getElementById("amount");
                 ele.required = false;
 
-            }else if(academic_dependance=='No'){
+            }else if(academic_dependence=='No'){
 
                 $('#academicDiv').hide();
                 document.getElementById("academic_season").disabled = true;
@@ -672,7 +672,7 @@ $today=date('Y-m-d');
     <script type="text/javascript">
         $(document).ready(function(){
 
-            $('#academic_dependance').click(function() {
+            $('#academic_dependence').click(function() {
                 var query=$(this).val();
                 if(query=='Yes') {
 

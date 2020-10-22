@@ -166,7 +166,8 @@ if($request->get('cost_centre')=='')
             'phone_number' => $request->get('phone_number'),
             'role' => $request->get('role'),
             'cost_centre' => $cost_centre,
-            'password' => Hash::make($default_password)
+            'password' => Hash::make($default_password),
+            'password_flag' => 0
 
         ]);
 

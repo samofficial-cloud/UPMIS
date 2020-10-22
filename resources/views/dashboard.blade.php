@@ -55,7 +55,7 @@
     animation-iteration-count: 10;
     animation-name: wiggle;
   }*/
-  
+
   @keyframes wiggle {
   0% { transform: translate(0px, 0); }
  /* 10% { transform: translate(-1px, 0); }
@@ -80,7 +80,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -112,8 +112,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -123,6 +123,7 @@
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
 @admin
+                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
             <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
@@ -162,10 +163,10 @@
         <p>{{$message}}</p>
       </div>
     @endif
-        
+
         <div class="card-deck" style="font-size: 15px; font-family: sans-serif;">
   <div class="card text-white bg-info">
-   
+
     <div class="card-body" >
       <h5 class="card-title">UDIA <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
       <p>Principals: {{count($total_insurance)}}
@@ -236,8 +237,8 @@
             <input type="text" id="inia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="inia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="inia_subject" class="col-sm-2">Subject</label>
             <div class="col-sm-9">
@@ -410,8 +411,8 @@
                                           @else
                                           <td>{{$space->currency}} {{number_format($space->academic_season)}}</td>
                                           @endif
-                                      
-                                          
+
+
                                            @if(empty($space->vacation_season))
                                            <td><center>-</center></td>
                                            @else
@@ -468,7 +469,7 @@
           </div>
         </div>
          <br>
-         
+
         <div class="form-group row">
             <label for="messages{{$space->contract_id}}" class="col-sm-2">Message</label>
             <div class="col-sm-9">
@@ -556,8 +557,8 @@
             <input type="text" id="debt_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="debt_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="debt_subject" class="col-sm-2">Subject</label>
             <div class="col-sm-9">
@@ -849,9 +850,9 @@
          </div>
      </div>
                                     </td>
-                                    @endif  
+                                    @endif
                                   </tr>
-                                  
+
                                   @endforeach
                                 </tbody>
 </table>
@@ -887,8 +888,8 @@
             <input type="text" id="aia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="aia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="aia_subject" class="col-sm-2">Subject</label>
             <div class="col-sm-9">
@@ -958,7 +959,7 @@
                                 <th scope="col" >Invoice Date</th>
                                 @if(Auth::user()->role=='System Administrator')
                                 <th scope="col" >Action</th>
-                                @endif 
+                                @endif
                             </tr>
                             </thead>
                             <tbody>
@@ -1147,9 +1148,9 @@
          </div>
      </div>
                                     </td>
-                                    @endif 
+                                    @endif
                                   </tr>
-                                  
+
                                   @endforeach
                                 </tbody>
 </table>
@@ -1176,7 +1177,7 @@
   } );
 
   var table2 = $('#myTable').DataTable();
- 
+
     $('#myTable tbody').on( 'click', 'tr', function () {
       document.getElementById("inia_par_names").innerHTML="";
         $(this).toggleClass('selected');
@@ -1189,7 +1190,7 @@
       }
       else{
         $('#notify_all').hide();
-      }   
+      }
     }
     else{
       $('#notify_all').hide();
@@ -1205,7 +1206,7 @@
         }
 
         $('#inia_client_names').val(result6).toString();
-        
+
         var content6 = document.getElementById("inia_par_names");
         for(var i=0; i< result6.length;i++){
           if(i==(result6.length-1)){
@@ -1214,13 +1215,13 @@
           else{
             content6.innerHTML += result6[i] + ', ';
           }
-          
+
         }
     });
 
 
     var table3 = $('#myTable1').DataTable();
- 
+
     $('#myTable1 tbody').on( 'click', 'tr', function () {
       document.getElementById("debt_par_names").innerHTML="";
         $(this).toggleClass('selected');
@@ -1233,7 +1234,7 @@
       }
       else{
         $('#debt_notify_all').hide();
-      }   
+      }
     }
     else{
       $('#debt_notify_all').hide();
@@ -1249,7 +1250,7 @@
         }
 
         $('#debt_client_names').val(result3).toString();
-        
+
         var content3 = document.getElementById("debt_par_names");
         for(var i=0; i< result3.length;i++){
           if(i==(result3.length-1)){
@@ -1258,13 +1259,13 @@
           else{
             content3.innerHTML += result3[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     });
 
     var table4 = $('#myTable2').DataTable();
- 
+
     $('#myTable2 tbody').on( 'click', 'tr', function () {
       document.getElementById("aia_par_names").innerHTML="";
         $(this).toggleClass('selected');
@@ -1277,15 +1278,15 @@
       }
       else{
         $('#notify_all_cptu').hide();
-      }   
+      }
     }
     else{
       $('#notify_all_cptu').hide();
     }
     });
 
-    
-  
+
+
      $('#notify_all_cptu').click( function () {
         var datas6 = table4.rows('.selected').data();
         var result6 = [];
@@ -1295,7 +1296,7 @@
         }
 
         $('#aia_client_names').val(result6).toString();
-        
+
         var content6 = document.getElementById("aia_par_names");
         for(var i=0; i< result6.length;i++){
           if(i==(result6.length-1)){
@@ -1304,7 +1305,7 @@
           else{
             content6.innerHTML += result6[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     } );

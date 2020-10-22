@@ -489,7 +489,7 @@ $today=date('Y-m-d');
 
                         <div class="form-wrapper col-12">
                             <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
-                            <select id="academic_dependance" class="form-control" name="academic_dependance" required>
+                            <select id="academic_dependence" class="form-control" name="academic_dependence" required>
                                 <option value="" ></option>
                                 <option value="No" >No</option>
                                 <option value="Yes" >Yes</option>
@@ -805,7 +805,7 @@ return true;
 <script type="text/javascript">
 	$(document).ready(function() {
 
-        $('#academic_dependance').click(function() {
+        $('#academic_dependence').click(function() {
             var query=$(this).val();
             if(query=='Yes') {
 

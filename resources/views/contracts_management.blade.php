@@ -58,7 +58,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -90,8 +90,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -170,7 +170,7 @@
                 <h4 style="text-align: center">Real Estate Contracts</h4>
 
 
-                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
                 @else
         <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
     padding: 10px;
@@ -358,7 +358,7 @@ $i=1;
 
 
                     @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
-                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
                         @else
                         <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
                         <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
@@ -397,7 +397,7 @@ $i=1;
 
                     @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
 {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
-                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI')
+                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant')
                         @else
                         <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
                         @endif
@@ -433,7 +433,7 @@ $i=1;
                 <h4 style="text-align: center">Insurance Contracts</h4>
 
 
-                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
                 @else
                 <a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
     padding: 10px;
@@ -501,7 +501,7 @@ $i=1;
                                         <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details_insurance',$var->id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
 
 
-                                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant')
                                         @else
 
 
@@ -565,7 +565,7 @@ $i=1;
  @if ($category=='CPTU only' OR $category=='All')
 
             <div id="car_contracts" class="tabcontentOuter">
-               
+
                 {{-- <h4 style="text-align: center">Car Rental Contracts</h4> --}}
                 <br>
                 @if(Auth::user()->role=='Transport Officer-CPTU')
