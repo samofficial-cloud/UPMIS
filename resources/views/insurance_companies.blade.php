@@ -116,7 +116,7 @@
 
 
 <br>
- <a style="cursor: pointer; color: black; font-weight: bold; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal"  data-target="#add_company"  role="button" aria-pressed="true" name="editC">New Insurance Company</a>
+ <a style="cursor: pointer; color:white; font-weight: bold; background-color: #38c172; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal"  data-target="#add_company"  role="button" aria-pressed="true" name="editC">Add New Insurance Company</a>
 
 
 
@@ -137,8 +137,35 @@
 
                       <div class="form-group">
                           <div class="form-wrapper">
-                              <label for=""  ><strong>Company Name<span style="color: red;"> *</span> </strong></label>
+                              <label for=""  ><strong>Name<span style="color: red;"> *</span> </strong></label>
                               <input type="text" class="form-control"   name="company" value="" required autocomplete="off">
+
+                          </div>
+                      </div>
+                      <br>
+
+                      <div class="form-group">
+                          <div class="form-wrapper">
+                              <label for=""  ><strong>Email<span style="color: red;"> *</span> </strong></label>
+                              <input type="email" class="form-control"   name="company_email" value="" required autocomplete="off">
+
+                          </div>
+                      </div>
+                      <br>
+
+                      <div class="form-group">
+                          <div class="form-wrapper">
+                              <label for=""  ><strong>Address<span style="color: red;"> *</span> </strong></label>
+                              <input type="text" class="form-control"   name="company_address" value="" required autocomplete="off">
+
+                          </div>
+                      </div>
+                      <br>
+
+                      <div class="form-group">
+                          <div class="form-wrapper">
+                              <label for=""  ><strong>TIN<span style="color: red;"> *</span> </strong></label>
+                              <input type="text" class="form-control" name="company_tin" value="" required autocomplete="off">
 
                           </div>
                       </div>
@@ -169,7 +196,10 @@
               <thead class="thead-dark">
               <tr>
                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                <th scope="col" style="color:#fff;">Insurance company</th>
+                <th scope="col" style="color:#fff;">Name</th>
+                <th scope="col" style="color:#fff;">Email</th>
+                <th scope="col" style="color:#fff;">Address</th>
+                <th scope="col" style="color:#fff;">TIN</th>
                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
               </tr>
@@ -182,6 +212,10 @@
 
                   <td class="text-center">{{$i}}</td>
                   <td>{{$var->company}}</td>
+                  <td>{{$var->company_email}}</td>
+                  <td>{{$var->company_address}}</td>
+                  <td>{{$var->company_tin}}</td>
+
                   <td><center>
 
 
@@ -209,13 +243,46 @@
 
                               <div class="form-group">
                                 <div class="form-wrapper">
-                                  <label for="first_name"  ><strong>Company name </strong></label>
+                                  <label for="first_name"  ><strong>Name </strong></label>
                                   <input type="text" class="form-control" required  name="company" value="{{$var->company}}"  autocomplete="off">
 
                                 </div>
                               </div>
 
                                 <br>
+
+                                <div class="form-group">
+                                    <div class="form-wrapper">
+                                        <label for="first_name"  ><strong>Email </strong></label>
+                                        <input type="email" class="form-control" required  name="company_email" value="{{$var->company_email}}"  autocomplete="off">
+
+                                    </div>
+                                </div>
+
+                                <br>
+
+
+                                <div class="form-group">
+                                    <div class="form-wrapper">
+                                        <label for="first_name"  ><strong>Address </strong></label>
+                                        <input type="text" class="form-control" required  name="company_address" value="{{$var->company_address}}"  autocomplete="off">
+
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <div class="form-group">
+                                    <div class="form-wrapper">
+                                        <label for="first_name"  ><strong>TIN</strong></label>
+                                        <input type="text" class="form-control" required  name="company_tin" value="{{$var->company_tin}}"  autocomplete="off">
+
+                                    </div>
+                                </div>
+
+                                <br>
+
+
                               <div align="right">
                                 <button class="btn btn-primary" type="submit" >Save</button>
                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>

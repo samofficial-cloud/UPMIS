@@ -131,13 +131,13 @@
 
         </div>
 
-            @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+            @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI'  OR Auth::user()->role=='Accountant')
             @else
         <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="  color: white;  background-color: #38c172;
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true">New insurance package</a>
+    margin-top: 4px;" role="button" aria-pressed="true">Add new Insurance Package</a>
             @endif
 
   <div class="">
@@ -292,7 +292,7 @@ $companies=DB::table('insurance_parameters')->get();
 
 
               <div align="right">
-                <button class="btn btn-primary" type="submit">Submit</button>
+                <button class="btn btn-primary" type="submit">Save</button>
                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
               </div>
             </form>
@@ -320,7 +320,7 @@ $companies=DB::table('insurance_parameters')->get();
           <th scope="col"  style="color:#fff;"><center>Commission(%)</center></th>
           <th scope="col"  style="color:#fff;"><center>Commission</center></th>
           <th scope="col"  style="color:#fff;"><center>Billing</center></th>
-            @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+            @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant')
             @else
           <th scope="col"  style="color:#fff;"><center>Action</center></th>
                 @endif
@@ -339,7 +339,7 @@ $companies=DB::table('insurance_parameters')->get();
             <td><center>{{$var->commission_percentage}}%</center></td>
             <td><center>{{number_format($var->commission)}} {{$var->insurance_currency}} </center></td>
             <td><center> {{$var->billing}} </center></td>
-              @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+              @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
               @else
             <td><center>
 

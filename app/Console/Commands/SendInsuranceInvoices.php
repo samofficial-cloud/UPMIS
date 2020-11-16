@@ -154,9 +154,9 @@ class SendInsuranceInvoices extends Command
 
 //        echo "Insurance invoice created successfully";
         //create insurance invoice automatically end
-        DB::table('testing_table')->insert(
-            ['data' => 'john@insurance']
-        );
+//        DB::table('testing_table')->insert(
+//            ['data' => 'john@insurance']
+//        );
 
     }
 }
