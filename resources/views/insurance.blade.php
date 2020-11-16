@@ -137,7 +137,7 @@
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true">New insurance package</a>
+    margin-top: 4px;" role="button" aria-pressed="true">Add new Insurance Package</a>
             @endif
 
   <div class="">
@@ -292,7 +292,7 @@ $companies=DB::table('insurance_parameters')->get();
 
 
               <div align="right">
-                <button class="btn btn-primary" type="submit">Submit</button>
+                <button class="btn btn-primary" type="submit">Save</button>
                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
               </div>
             </form>

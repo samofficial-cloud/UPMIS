@@ -55,6 +55,22 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+
+            <?php
+
+
+
+            $today=date('Y-m-d');
+
+            $date=date_create($today);
+
+            date_sub($date,date_interval_create_from_date_string("366 days"));
+
+
+
+            ?>
+
+
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
@@ -194,87 +210,11 @@
                                     <form method="post" action="{{ route('create_space_invoice_manually')}}"  id="form1" >
                                         {{csrf_field()}}
 
+
+
+
+
                                         <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <div class="form-wrapper">
-                                                <label for=""  >Client Full Name <span style="color: red;">*</span></label>
-                                                <input type="text" class="form-control" id="" name="debtor_name" value="" Required autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <br>
-
-
-
-
-                                        <div class="form-group col-md-6">
-                                            <div class="form-wrapper">
-                                                <label for=""  >Client Account Code</label>
-                                                <input type="text" class="form-control" id="" name="debtor_account_code" value=""  autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <br>
-
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client TIN</label>
-                                                    <input type="text" class="form-control" id="" name="tin" value=""  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client VRN</label>
-                                                    <input type="text" class="form-control" id="" name="vrn" value=""  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                        <div class="form-group col-md-12">
-                                            <div class="form-wrapper">
-                                                <label for=""  >Client Address <span style="color: red;">*</span></label>
-                                                <input type="text" class="form-control" id="" name="debtor_address" value="" Required autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                    <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                    <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for="">Period <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
 
 
                                             <div class="form-group col-md-12">
@@ -284,22 +224,102 @@
                                                     <p style="display: none;" class="mt-2 p-1" id="space_contract_availability"></p>
                                                 </div>
                                             </div>
-                                            <br>
+
+
+
+                                        <div style="display: none;" id="debtor_nameDiv" class="form-group col-md-6 mt-1">
+                                            <div class="form-wrapper">
+                                                <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                <input type="text" class="form-control" id="debtor_name_space" name="debtor_name" readonly value="" Required autocomplete="off">
+                                            </div>
+                                        </div>
 
 
 
 
 
-                                            <div id="amount_spaceDiv" style="display: none;" class="form-group col-md-6">
+                                        <div style="display: none;" id="debtor_account_codeDiv" class="form-group col-md-6 mt-1">
+                                            <div class="form-wrapper">
+                                                <label for=""  >Client Account Code</label>
+                                                <input type="text" class="form-control" id="debtor_account_code_space" readonly name="debtor_account_code" value=""  autocomplete="off">
+                                            </div>
+                                        </div>
+
+
+
+
+                                            <div style="display: none;" id="tinDiv" class="form-group col-md-12 mt-1">
                                                 <div class="form-wrapper">
-                                                    <label for="">Amount <span style="color: red;">*</span></label>
-                                                    <input type="number" min="0" class="form-control" id="" name="amount_to_be_paid" value="" Required  autocomplete="off">
+                                                    <label for=""  >Client TIN</label>
+                                                    <input type="text" class="form-control" id="tin_space" readonly name="tin" value=""  autocomplete="off">
                                                 </div>
                                             </div>
-                                            <br>
 
 
-                                            <div id="currency_spaceDiv" style="display: none;" class="form-group col-md-6">
+
+
+
+
+
+                                        <div style="display: none;" id="debtor_addressDiv" class="form-group col-md-12 mt-1">
+                                            <div class="form-wrapper">
+                                                <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                <input type="text" class="form-control" id="debtor_address_space" name="debtor_address" value="" readonly Required autocomplete="off">
+                                            </div>
+                                        </div>
+
+
+
+                                            <div style="display: none;" id="invoicing_period_start_dateDiv" class="form-group col-md-6 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                    <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+
+                                            <div style="display: none;" id="invoicing_period_end_dateDiv" class="form-group col-md-6 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                    <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+                                            <div style="display: none;" id="periodDiv" class="form-group col-md-12 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for="">Period <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+                                            <div style="display: none;" id="project_idDiv"  class="form-group col-md-12 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+
+
+                                            <div id="amount_spaceDiv" style="display: none;" class="form-group col-md-6 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for="">Amount <span style="color: red;">*</span></label>
+                                                    <input type="number" min="20" class="form-control" id="" name="amount_to_be_paid" value="" Required  autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+
+                                            <div id="currency_spaceDiv" style="display: none;" class="form-group col-md-6 mt-1">
                                                 <label>Currency <span style="color: red;">*</span></label>
                                                 <div  class="form-wrapper">
                                                     <select id="" class="form-control" required name="currency">
@@ -309,24 +329,24 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <br>
 
 
-                                            <div id="status_spaceDiv" style="display: none;" class="form-group col-md-12">
+
+                                            <div id="status_spaceDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Status <span style="color: red;">*</span></label>
                                                     <input type="text" class="form-control" id="" name="status" value="" required  autocomplete="off">
                                                 </div>
                                             </div>
-                                            <br>
 
-                                            <div id="description_spaceDiv" style="display: none;" class="form-group col-md-12">
+
+                                            <div id="description_spaceDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Description <span style="color: red;">*</span></label>
                                                     <input type="text" class="form-control" id="" name="description" value="" required  autocomplete="off">
                                                 </div>
                                             </div>
-                                            <br>
+
 
 
 
@@ -337,7 +357,7 @@
 
 
                                         <div align="right">
-                                            <button id="submit_space" class="btn btn-primary" type="submit">Submit</button>
+                                            <button id="submit_space" class="btn btn-primary" type="submit">Save</button>
                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </form>
@@ -385,7 +405,7 @@
                             @foreach($space_invoices as $var)
                                 <tr>
 
-                                    <td>   </td>
+                                    <td> <center>{{$i}}</center>  </td>
 
                                     <td>{{$var->debtor_name}}</td>
                                     <td><center>{{$var->invoice_number}}
@@ -702,11 +722,15 @@
                                                                     <div style="padding-top: 2%;" class="form-group col-md-12">
                                                                         <label>Currency <span style="color: red;">*</span></label>
                                                                         <div  class="form-wrapper">
-                                                                            <select id="currency_space" class="form-control" required name="currency_payments">
-                                                                                <option value="" ></option>
-                                                                                <option value="TZS" >TZS</option>
-                                                                                <option value="USD" >USD</option>
-                                                                            </select>
+                                                                            <input type="text"  class="form-control" id="currency_space" name="currency_payments" value="{{$var->currency_invoice}}"  readonly autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group col-md-12 pt-2">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                     <br>
@@ -740,9 +764,8 @@
 
 
 
-
                                                                 <div style="padding-top: 2%;" align="right">
-                                                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                                                    <button class="btn btn-primary" type="submit">Save</button>
                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                 </div>
                                                             </form>
@@ -817,7 +840,7 @@
                                             {{csrf_field()}}
 
                                             <div class="form-row">
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Principal <span style="color: red;">*</span></label>
                                                         <select class="form-control"  id="principal" required name="debtor_name">
@@ -846,113 +869,106 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <br>
 
 
 
 
-                                                <div class="form-group col-md-6">
+
+                                                <div class="form-group col-md-6 mt-1"  style="display: none;" id="debtor_account_code_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Principal Account Code</label>
-                                                        <input type="text" class="form-control" id="" name="debtor_account_code" value=""  autocomplete="off">
+                                                        <input type="text" class="form-control" id="debtor_account_code_insurance" readonly name="debtor_account_code" value=""  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
 
-                                                <div class="form-group col-md-6">
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="tin_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Principal TIN</label>
-                                                        <input type="text" class="form-control" id="" name="tin" value=""  autocomplete="off">
+                                                        <input type="text" class="form-control" id="tin_insurance" readonly name="tin" value=""  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Principal VRN</label>
-                                                        <input type="text" class="form-control" id="" name="vrn" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
 
-                                                <div class="form-group col-md-12">
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="debtor_address_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Principal Address <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="debtor_address" value="" Required autocomplete="off">
+                                                        <input type="text" class="form-control" id="debtor_address_insurance" name="debtor_address" value="" readonly Required autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div class="form-group col-md-6">
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                        <input type="date" class="form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div class="form-group col-md-6">
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                        <input type="date" class="form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
 
 
 
 
-                                                <div class="form-group col-md-12">
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="project_id_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Project ID <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
+                                                        <input type="text" class="form-control" id="project_id_insurance" name="project_id" value="" Required autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div class="form-group col-md-6">
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="amount_to_be_paid_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for="">Amount <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="" name="amount_to_be_paid" value="" Required  autocomplete="off">
+                                                        <input type="number" min="20" class="form-control" id="amount_to_be_paid_insurance" name="amount_to_be_paid" value="" Required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div class="form-group col-md-6">
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="currency_insuranceDiv">
                                                     <label>Currency <span style="color: red;">*</span></label>
                                                     <div  class="form-wrapper">
-                                                        <select id="" class="form-control" required name="currency">
+                                                        <select id="currency_insurance" class="form-control" required name="currency">
                                                             <option value="" ></option>
                                                             <option value="TZS" >TZS</option>
                                                             <option value="USD" >USD</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div class="form-group col-md-12">
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="status_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Status <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="status" value="" required  autocomplete="off">
+                                                        <input type="text" class="form-control" id="status_insurance" name="status" value="" required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
-                                                <div class="form-group col-md-12">
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="description_insuranceDiv">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Description <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="description" value="" required  autocomplete="off">
+                                                        <input type="text" class="form-control" id="description_insurance" name="description" value="" required  autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <br>
@@ -966,7 +982,7 @@
 
 
                                             <div align="right">
-                                                <button class="btn btn-primary" type="submit">Submit</button>
+                                                <button class="btn btn-primary" type="submit">Save</button>
                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </form>
@@ -1155,7 +1171,7 @@
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
                                                                             <input id="gepg{{$var->invoice_number}}"  type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlInsurance(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
-                                                                            <p id="error_gepg{{$var->invoice_number}}"></p>
+                                                                            <p id="error_gepg_insurance{{$var->invoice_number}}"></p>
                                                                         </div>
                                                                     </div>
 
@@ -1163,7 +1179,7 @@
 
                                                                     <br>
                                                                     <div align="right">
-                                                                        <button id="sendbtn{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
+                                                                        <button id="sendbtn_insurance{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                     </div>
                                                                 </form>
@@ -1246,11 +1262,16 @@
                                                                     <div style="padding-top: 2%;" class="form-group col-md-12">
                                                                         <label>Currency <span style="color: red;">*</span></label>
                                                                         <div  class="form-wrapper">
-                                                                            <select id="currency_space" class="form-control" required name="currency_payments">
-                                                                                <option value="" ></option>
-                                                                                <option value="TZS" >TZS</option>
-                                                                                <option value="USD" >USD</option>
-                                                                            </select>
+
+                                                                            <input type="text"  class="form-control" id="currency_space" name="currency_payments" value="{{$var->currency_invoice}}"  readonly autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group col-md-12 pt-2">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                     <br>
@@ -1286,7 +1307,7 @@
 
 
                                                                 <div style="padding-top: 2%;" align="right">
-                                                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                                                    <button class="btn btn-primary" type="submit">Save</button>
                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                 </div>
                                                             </form>
@@ -1357,79 +1378,7 @@
                                             {{csrf_field()}}
 
                                             <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Full Name <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="debtor_name" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
-
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Account Code</label>
-                                                        <input type="text" class="form-control" id="" name="debtor_account_code" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client TIN</label>
-                                                        <input type="text" class="form-control" id="" name="tin" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client VRN</label>
-                                                        <input type="text" class="form-control" id="" name="vrn" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-12">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Address <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="debtor_address" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-12">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Project ID <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
                                                 <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
@@ -1438,22 +1387,78 @@
                                                         <p style="display: none;" class="mt-2 p-1" id="car_contract_availability"></p>
                                                     </div>
                                                 </div>
-                                                <br>
 
 
 
-
-
-                                                <div id="amount_carDiv" style="display: none;" class="form-group col-md-6">
+                                                <div id="debtor_name_carDiv" style="display:none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
-                                                        <label for="">Amount <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="" name="amount_to_be_paid" value="" Required  autocomplete="off">
+                                                        <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="debtor_name_car" name="debtor_name" readonly value="" Required autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div id="currency_carDiv" style="display: none;" class="form-group col-md-6">
+
+                                                <div id="vrn_carDiv" style="display:none;" class="form-group col-md-12 mt-1">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Vehicle Registration Number (VRN)</label>
+                                                        <input type="text" class="form-control" id="vrn_car" name="vrn" value="" readonly  autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div id="debtor_address_carDiv" style="display:none;" class="form-group col-md-12 mt-1">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="debtor_address_car" name="debtor_address" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div style="display:none;" id="invoicing_period_start_date_carDiv" class="form-group col-md-6 mt-1">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                        <input type="date" class="form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div style="display:none;" id="invoicing_period_end_date_carDiv" class="form-group col-md-6 mt-1">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                        <input type="date" class="form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div style="display:none;" id="project_id_carDiv" class="form-group col-md-12 mt-1">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="project_id_car" name="project_id" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+
+                                                <div id="amount_carDiv" style="display: none;"  class="form-group col-md-6 mt-1">
+                                                    <div class="form-wrapper">
+                                                        <label for="">Amount <span style="color: red;">*</span></label>
+                                                        <input type="number" min="20" class="form-control" id="" name="amount_to_be_paid" value="" Required  autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div id="currency_carDiv" style="display: none;" class="form-group col-md-6 mt-1">
                                                     <label>Currency <span style="color: red;">*</span></label>
                                                     <div  class="form-wrapper">
                                                         <select id="" class="form-control" required name="currency">
@@ -1463,18 +1468,18 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div id="status_carDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="status_carDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Status <span style="color: red;">*</span></label>
                                                         <input type="text" class="form-control" id="" name="status" value="" required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
-                                                <div id="description_carDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="description_carDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Description <span style="color: red;">*</span></label>
                                                         <input type="text" class="form-control" id="" name="description" value="" required  autocomplete="off">
@@ -1491,7 +1496,7 @@
 
 
                                             <div align="right">
-                                                <button id="submit_car" class="btn btn-primary" type="submit">Submit</button>
+                                                <button id="submit_car" class="btn btn-primary" type="submit">Save</button>
                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </form>
@@ -1776,7 +1781,7 @@
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlCar(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
-                                                                            <p id="error_gepg{{$var->invoice_number}}"></p>
+                                                                            <p id="error_gepg_car{{$var->invoice_number}}"></p>
                                                                         </div>
                                                                     </div>
 
@@ -1784,7 +1789,7 @@
 
                                                                     <br>
                                                                     <div align="right">
-                                                                        <button id="sendbtn{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
+                                                                        <button id="sendbtn_car{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                     </div>
                                                                 </form>
@@ -1867,11 +1872,16 @@
                                                                     <div style="padding-top: 2%;" class="form-group col-md-12">
                                                                         <label>Currency <span style="color: red;">*</span></label>
                                                                         <div  class="form-wrapper">
-                                                                            <select id="currency_space" class="form-control" required name="currency_payments">
-                                                                                <option value="" ></option>
-                                                                                <option value="TZS" >TZS</option>
-                                                                                <option value="USD" >USD</option>
-                                                                            </select>
+
+                                                                            <input type="text"  class="form-control" id="currency_space" name="currency_payments" value="{{$var->currency_invoice}}"  readonly autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group col-md-12 pt-2">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                     <br>
@@ -1907,7 +1917,7 @@
 
 
                                                                 <div style="padding-top: 2%;" align="right">
-                                                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                                                    <button class="btn btn-primary" type="submit">Save</button>
                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                 </div>
                                                             </form>
@@ -1981,78 +1991,6 @@
                                             {{csrf_field()}}
 
                                             <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Full Name <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="debtor_name" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Account Code</label>
-                                                        <input type="text" class="form-control" id="" name="debtor_account_code" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client TIN</label>
-                                                        <input type="text" class="form-control" id="" name="tin" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client VRN</label>
-                                                        <input type="text" class="form-control" id="" name="vrn" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-12">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Address <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="debtor_address" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-                                                <div class="form-group col-md-12">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Project ID <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
                                                 <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
@@ -2061,55 +1999,125 @@
                                                         <p style="display: none;" class="mt-2 p-1" id="water_contract_availability"></p>
                                                     </div>
                                                 </div>
-                                                <br>
+
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="debtor_name_waterDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="debtor_name_water" name="debtor_name" readonly value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
 
 
 
 
 
-                                                <div id="debt_waterDiv" style="display: none;" class="form-group col-md-6">
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="debtor_account_code_waterDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client Account Code</label>
+                                                        <input type="text" class="form-control" id="debtor_account_code_water" readonly name="debtor_account_code" value=""  autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="tin_waterDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client TIN</label>
+                                                        <input type="text" class="form-control" id="tin_water" name="tin" readonly value=""  autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="debtor_address_waterDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="debtor_address_water" readonly name="debtor_address" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_waterDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_waterDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="project_id_waterDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+
+
+                                                <div id="debt_waterDiv" style="display: none;" class="form-group col-md-6 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for="">Debt <span style="color: red;">*</span></label>
-                                                        <input type="text"  class="form-control" readonly id="debt_water" name="debt" value="" Required  autocomplete="off">
+                                                        <input type="number" min="0" class="form-control" readonly id="debt_water" name="debt" value="" Required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
-                                                <div id="current_amount_waterDiv" style="display: none;" class="form-group col-md-6">
+
+                                                <div id="current_amount_waterDiv" style="display: none;" class="form-group col-md-6 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for="">Current Amount <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="current_amount_water" name="current_amount" value="" Required  autocomplete="off">
+                                                        <input type="number" min="20" class="form-control" id="current_amount_water" name="current_amount" value="" Required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
-                                                <div id="cumulative_amount_waterDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="cumulative_amount_waterDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for="">Cumulative Amount <span style="color: red;">*</span></label>
-                                                        <input type="text" readonly class="form-control" id="cumulative_amount_water" name="cumulative_amount" value="" Required  autocomplete="off">
+                                                        <input type="number" min="20" readonly class="form-control" id="cumulative_amount_water" name="cumulative_amount" value="" Required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div id="currency_waterDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="currency_waterDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <label>Currency <span style="color: red;">*</span></label>
                                                     <div id="changable_currency_water" class="form-wrapper">
                                                         <input type="text" class="form-control" readonly id="currency_water" required name="currency" autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div id="status_waterDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="status_waterDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Status <span style="color: red;">*</span></label>
                                                         <input type="text" class="form-control" id="" name="status" value="" required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
-                                                <div id="description_waterDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="description_waterDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for="">Description <span style="color: red;">*</span></label>
                                                         <input type="text" class="form-control" id="" name="description" value="" required  autocomplete="off">
@@ -2126,7 +2134,7 @@
 
 
                                             <div align="right">
-                                                <button id="submit_water" class="btn btn-primary" type="submit">Submit</button>
+                                                <button id="submit_water" class="btn btn-primary" type="submit">Save</button>
                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </form>
@@ -2456,8 +2464,8 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
-                                                                            <p id="error_gepg{{$var->invoice_number}}"></p>
+                                                                            <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <p id="error_gepg_water{{$var->invoice_number}}"></p>
                                                                         </div>
                                                                     </div>
 
@@ -2467,7 +2475,7 @@
 
                                                                     <br>
                                                                     <div align="right">
-                                                                        <button id="sendbtn{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
+                                                                        <button id="sendbtn_water{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                     </div>
                                                                 </form>
@@ -2551,11 +2559,16 @@
                                                                     <div style="padding-top: 2%;" class="form-group col-md-12">
                                                                         <label>Currency <span style="color: red;">*</span></label>
                                                                         <div  class="form-wrapper">
-                                                                            <select id="currency_space" class="form-control" required name="currency_payments">
-                                                                                <option value="" ></option>
-                                                                                <option value="TZS" >TZS</option>
-                                                                                <option value="USD" >USD</option>
-                                                                            </select>
+
+                                                                            <input type="text"  class="form-control" id="currency_space" name="currency_payments" value="{{$var->currency_invoice}}"  readonly autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group col-md-12 pt-2">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                     <br>
@@ -2591,7 +2604,7 @@
 
 
                                                                 <div style="padding-top: 2%;" align="right">
-                                                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                                                    <button class="btn btn-primary" type="submit">Save</button>
                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                 </div>
                                                             </form>
@@ -2660,78 +2673,7 @@
                                             {{csrf_field()}}
 
                                             <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Full Name <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="debtor_name" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
-
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Account Code</label>
-                                                        <input type="text" class="form-control" id="" name="debtor_account_code" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client TIN</label>
-                                                        <input type="text" class="form-control" id="" name="tin" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client VRN</label>
-                                                        <input type="text" class="form-control" id="" name="vrn" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-12">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client Address <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="debtor_address" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                                <div class="form-group col-md-6">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
-
-                                                <div class="form-group col-md-12">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Project ID <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
                                                 <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
@@ -2740,57 +2682,127 @@
                                                         <p style="display: none;" class="mt-2 p-1" id="electricity_contract_availability"></p>
                                                     </div>
                                                 </div>
-                                                <br>
+
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="debtor_name_electricityDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="debtor_name_electricity" name="debtor_name" value="" readonly Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="debtor_account_code_electricityDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client Account Code</label>
+                                                        <input type="text" class="form-control" id="debtor_account_code_electricity" name="debtor_account_code" value="" readonly  autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="tin_electricityDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client TIN</label>
+                                                        <input type="text" class="form-control" id="tin_electricity" name="tin" value=""  readonly autocomplete="off">
+                                                    </div>
+                                                </div>
 
 
 
 
 
-                                                <div id="debt_electricityDiv" style="display: none;" class="form-group col-md-6">
+
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="debtor_address_electricityDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="debtor_address_electricity" name="debtor_address" value="" readonly Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_electricityDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                        <input type="date" class="form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_electricityDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                        <input type="date" class="form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="project_id_electricityDiv">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="project_id_electricity" name="project_id" value="" Required autocomplete="off">
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+
+
+                                                <div id="debt_electricityDiv" style="display: none;" class="form-group col-md-6 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for="">Debt <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="debt_electricity" readonly name="debt" value="" Required  autocomplete="off">
+                                                        <input type="number" min="0" class="form-control" id="debt_electricity" readonly name="debt" value="" Required  autocomplete="off">
 
 
                                                     </div>
                                                 </div>
-                                                <br>
 
-                                                <div id="current_amount_electricityDiv" class="form-group col-md-6" style="display: none;">
+
+                                                <div id="current_amount_electricityDiv" class="form-group col-md-6 mt-1" style="display: none;">
                                                     <div class="form-wrapper">
                                                         <label for="">Current Amount <span style="color: red;">*</span></label>
-                                                        <input type="number" min="0" class="form-control" id="current_amount_electricity" name="current_amount" value="" Required  autocomplete="off">
+                                                        <input type="number" min="20" class="form-control" id="current_amount_electricity" name="current_amount" value="" Required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
-                                                <div id="cumulative_amount_electricityDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="cumulative_amount_electricityDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for="">Cumulative Amount <span style="color: red;">*</span></label>
-                                                        <input type="text"  class="form-control" id="cumulative_amount_electricity" readonly name="cumulative_amount" value="" Required  autocomplete="off">
+                                                        <input type="number" min="20" class="form-control" id="cumulative_amount_electricity" readonly name="cumulative_amount" value="" Required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div id="currency_electricityDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="currency_electricityDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <label>Currency <span style="color: red;">*</span></label>
                                                     <div id="changable_currency_electricity" class="form-wrapper">
                                                         <input type="text" class="form-control" id="currency_electricity" readonly required name="currency"  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
 
-                                                <div id="status_electricityDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="status_electricityDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Status <span style="color: red;">*</span></label>
                                                         <input type="text" class="form-control" id="" name="status" value="" required  autocomplete="off">
                                                     </div>
                                                 </div>
-                                                <br>
 
-                                                <div id="description_electricityDiv" style="display: none;" class="form-group col-md-12">
+
+                                                <div id="description_electricityDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                     <div class="form-wrapper">
                                                         <label for="" >Description <span style="color: red;">*</span></label>
                                                         <input type="text" class="form-control" id="" name="description" value="" required  autocomplete="off">
@@ -2804,7 +2816,7 @@
 
 
                                             <div align="right">
-                                                <button id="submit_electricity" class="btn btn-primary" type="submit">Submit</button>
+                                                <button id="submit_electricity" class="btn btn-primary" type="submit">Save</button>
                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </form>
@@ -3133,8 +3145,8 @@
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="course_name">GEPG Control Number</label>
-                                                                            <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
-                                                                            <p id="error_gepg{{$var->invoice_number}}"></p>
+                                                                            <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
+                                                                            <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                         </div>
                                                                     </div>
 
@@ -3142,7 +3154,7 @@
 
                                                                     <br>
                                                                     <div align="right">
-                                                                        <button id="sendbtn{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
+                                                                        <button id="sendbtn_electricity{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                     </div>
                                                                 </form>
@@ -3226,15 +3238,19 @@
                                                                     <div style="padding-top: 2%;" class="form-group col-md-12">
                                                                         <label>Currency <span style="color: red;">*</span></label>
                                                                         <div  class="form-wrapper">
-                                                                            <select id="currency_space" class="form-control" required name="currency_payments">
-                                                                                <option value="" ></option>
-                                                                                <option value="TZS" >TZS</option>
-                                                                                <option value="USD" >USD</option>
-                                                                            </select>
+
+                                                                            <input type="text"  class="form-control" id="currency_space" name="currency_payments" value="{{$var->currency_invoice}}"  readonly autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                     <br>
 
+                                                                    <div class="form-group col-md-12 pt-2">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
 
                                                                     <div style="padding-top: 2%;" class="form-group col-md-12">
                                                                         <div class="form-wrapper">
@@ -3266,7 +3282,7 @@
 
 
                                                                 <div style="padding-top: 2%;" align="right">
-                                                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                                                    <button class="btn btn-primary" type="submit">Save</button>
                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                 </div>
                                                             </form>
@@ -3355,15 +3371,15 @@ if(value.length<12){
 
         if(value.length<12){
 
-            document.getElementById("sendbtn"+id).disabled = true;
-            document.getElementById("error_gepg"+id).style.color = 'red';
-            document.getElementById("error_gepg"+id).style.float = 'left';
-            document.getElementById("error_gepg"+id).style.paddingTop = '1%';
-            document.getElementById("error_gepg"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+            document.getElementById("sendbtn_insurance"+id).disabled = true;
+            document.getElementById("error_gepg_insurance"+id).style.color = 'red';
+            document.getElementById("error_gepg_insurance"+id).style.float = 'left';
+            document.getElementById("error_gepg_insurance"+id).style.paddingTop = '1%';
+            document.getElementById("error_gepg_insurance"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
 
         }else{
-            document.getElementById("error_gepg"+id).innerHTML ='';
-            document.getElementById("sendbtn"+id).disabled = false;
+            document.getElementById("error_gepg_insurance"+id).innerHTML ='';
+            document.getElementById("sendbtn_insurance"+id).disabled = false;
         }
 
     }
@@ -3373,36 +3389,37 @@ if(value.length<12){
 
 
 
+
         if(value.length<12){
 
-            document.getElementById("sendbtn"+id).disabled = true;
-            document.getElementById("error_gepg"+id).style.color = 'red';
-            document.getElementById("error_gepg"+id).style.float = 'left';
-            document.getElementById("error_gepg"+id).style.paddingTop = '1%';
-            document.getElementById("error_gepg"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+            document.getElementById("sendbtn_water"+id).disabled = true;
+            document.getElementById("error_gepg_water"+id).style.color = 'red';
+            document.getElementById("error_gepg_water"+id).style.float = 'left';
+            document.getElementById("error_gepg_water"+id).style.paddingTop = '1%';
+            document.getElementById("error_gepg_water"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
 
         }else{
-            document.getElementById("error_gepg"+id).innerHTML ='';
-            document.getElementById("sendbtn"+id).disabled = false;
+            document.getElementById("error_gepg_water"+id).innerHTML ='';
+            document.getElementById("sendbtn_water"+id).disabled = false;
         }
 
     }
 
     function minControlElectricity(value,id){
-
+        console.log('executed');
 
 
         if(value.length<12){
 
-            document.getElementById("sendbtn"+id).disabled = true;
-            document.getElementById("error_gepg"+id).style.color = 'red';
-            document.getElementById("error_gepg"+id).style.float = 'left';
-            document.getElementById("error_gepg"+id).style.paddingTop = '1%';
-            document.getElementById("error_gepg"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+            document.getElementById("sendbtn_electricity"+id).disabled = true;
+            document.getElementById("error_gepg_electricity"+id).style.color = 'red';
+            document.getElementById("error_gepg_electricity"+id).style.float = 'left';
+            document.getElementById("error_gepg_electricity"+id).style.paddingTop = '1%';
+            document.getElementById("error_gepg_electricity"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
 
         }else{
-            document.getElementById("error_gepg"+id).innerHTML ='';
-            document.getElementById("sendbtn"+id).disabled = false;
+            document.getElementById("error_gepg_electricity"+id).innerHTML ='';
+            document.getElementById("sendbtn_electricity"+id).disabled = false;
         }
 
     }
@@ -3414,15 +3431,15 @@ if(value.length<12){
 
         if(value.length<12){
 
-            document.getElementById("sendbtn"+id).disabled = true;
-            document.getElementById("error_gepg"+id).style.color = 'red';
-            document.getElementById("error_gepg"+id).style.float = 'left';
-            document.getElementById("error_gepg"+id).style.paddingTop = '1%';
-            document.getElementById("error_gepg"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+            document.getElementById("sendbtn_car"+id).disabled = true;
+            document.getElementById("error_gepg_car"+id).style.color = 'red';
+            document.getElementById("error_gepg_car"+id).style.float = 'left';
+            document.getElementById("error_gepg_car"+id).style.paddingTop = '1%';
+            document.getElementById("error_gepg_car"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
 
         }else{
-            document.getElementById("error_gepg"+id).innerHTML ='';
-            document.getElementById("sendbtn"+id).disabled = false;
+            document.getElementById("error_gepg_car"+id).innerHTML ='';
+            document.getElementById("sendbtn_car"+id).disabled = false;
         }
 
     }
@@ -3677,6 +3694,92 @@ if(value.length<12){
     <script>
 
 
+        $('#principal').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('get_info_insurance') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+
+
+
+
+
+                        }
+                        else{
+
+
+                            $('#amount_to_be_paid_insuranceDiv').show();
+                            $('#currency_insuranceDiv').show();
+                            $('#description_insuranceDiv').show();
+                            $('#status_insuranceDiv').show();
+                            $('#debtor_name_insuranceDiv').show();
+                            $('#debtor_account_code_insuranceDiv').show();
+                            $('#tin_insuranceDiv').show();
+                            $('#vrn_insuranceDiv').show();
+                            $('#debtor_address_insuranceDiv').show();
+                            $('#invoicing_period_start_date_insuranceDiv').show();
+                            $('#invoicing_period_end_date_insuranceDiv').show();
+                            $('#project_id_insuranceDiv').show();
+
+                            //for data
+
+                            $('#debtor_account_code_insurance').val(data[0].id);
+                            $('#tin_insurance').val(data[0].company_tin);
+                            $('#vrn_insurance').val(data[0].company_vrn);
+                            $('#debtor_address_insurance').val(data[0].company_address);
+
+
+                            // if(final_data.currency_payments=='default'){
+                            //
+                            //     $('#changable_currency_insurance').html("<select id=\"\" class=\"form-control\" required name=\"currency\">\n" +
+                            //         "                                                        <option value=\"\" ></option>\n" +
+                            //         "                                                        <option value=\"TZS\" >TZS</option>\n" +
+                            //         "                                                        <option value=\"USD\" >USD</option>\n" +
+                            //         "                                                    </select>");
+                            //
+                            // }else{
+                            //     $('#changable_currency_insurance').html("<input type=\"text\" class=\"form-control\" id=\"currency_electricity\" readonly required name=\"currency\"  autocomplete=\"off\">");
+                            //
+                            //     $('#currency_insurance').val(final_data.currency_payments);
+                            // }
+
+                            $('#status_insuranceDiv').show();
+
+
+
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#amount_to_be_paid_insuranceDiv').hide();
+                $('#currency_insuranceDiv').hide();
+                $('#description_insuranceDiv').hide();
+                $('#status_insuranceDiv').hide();
+                $('#debtor_name_insuranceDiv').hide();
+                $('#debtor_account_code_insuranceDiv').hide();
+                $('#tin_insuranceDiv').hide();
+                $('#vrn_insuranceDiv').hide();
+                $('#debtor_address_insuranceDiv').hide();
+                $('#invoicing_period_start_date_insuranceDiv').hide();
+                $('#invoicing_period_end_date_insuranceDiv').hide();
+                $('#project_id_insuranceDiv').hide();
+
+            }
+        });
+
+
+
 
         $('#contract_id_electricity').on('input', function(e) {
 
@@ -3704,6 +3807,17 @@ if(value.length<12){
                             $('#status_electricityDiv').hide();
                             $('#submit_electricity').prop('disabled', true);
 
+                            $('#debtor_name_electricityDiv').hide();
+                            $('#debtor_account_code_electricityDiv').hide();
+                            $('#tin_electricityDiv').hide();
+                            $('#vrn_electricityDiv').hide();
+                            $('#debtor_address_electricityDiv').hide();
+                            $('#invoicing_period_start_date_electricityDiv').hide();
+                            $('#invoicing_period_end_date_electricityDiv').hide();
+                            $('#project_id_electricityDiv').hide();
+
+
+
                         }
                         else{
                             var final_data=JSON.parse(data);
@@ -3718,6 +3832,23 @@ if(value.length<12){
                             $('#cumulative_amount_electricityDiv').show();
                             $('#currency_electricityDiv').show();
                             $('#description_electricityDiv').show();
+
+                            $('#debtor_name_electricityDiv').show();
+                            $('#debtor_account_code_electricityDiv').show();
+                            $('#tin_electricityDiv').show();
+                            $('#vrn_electricityDiv').show();
+                            $('#debtor_address_electricityDiv').show();
+                            $('#invoicing_period_start_date_electricityDiv').show();
+                            $('#invoicing_period_end_date_electricityDiv').show();
+                            $('#project_id_electricityDiv').show();
+
+                            //for data
+                            $('#debtor_name_electricity').val(final_data.full_name);
+                            $('#debtor_account_code_electricity').val(final_data.client_id);
+                            $('#tin_electricity').val(final_data.tin);
+                            $('#vrn_electricity').val(final_data.vrn);
+                            $('#debtor_address_electricity').val(final_data.address);
+
 
                             if(final_data.currency_payments=='default'){
 
@@ -3819,6 +3950,17 @@ if(value.length<12){
                             $('#submit_water').prop('disabled', true);
 
 
+                            $('#debtor_name_waterDiv').hide();
+                            $('#debtor_account_code_waterDiv').hide();
+                            $('#tin_waterDiv').hide();
+                            $('#vrn_waterDiv').hide();
+                            $('#debtor_address_waterDiv').hide();
+                            $('#invoicing_period_start_date_waterDiv').hide();
+                            $('#invoicing_period_end_date_waterDiv').hide();
+                            $('#project_id_waterDiv').hide();
+
+
+
                         }
                         else{
                             $("#water_contract_availability").html("");
@@ -3827,8 +3969,7 @@ if(value.length<12){
                             $('#description_waterDiv').show();
 
                             var final_data=JSON.parse(data);
-                            console.log('here');
-                            console.log(final_data.currency_payments);
+
 
 
                             $('#debt_water').val(final_data.amount_not_paid);
@@ -3837,6 +3978,24 @@ if(value.length<12){
                             $('#cumulative_amount_waterDiv').show();
                             $('#currency_waterDiv').show();
                             $('#status_waterDiv').show();
+
+                            $('#debtor_name_waterDiv').show();
+                            $('#debtor_account_code_waterDiv').show();
+                            $('#tin_waterDiv').show();
+                            $('#vrn_waterDiv').show();
+                            $('#debtor_address_waterDiv').show();
+                            $('#invoicing_period_start_date_waterDiv').show();
+                            $('#invoicing_period_end_date_waterDiv').show();
+                            $('#project_id_waterDiv').show();
+
+
+                            //for data
+                            $('#debtor_name_water').val(final_data.full_name);
+                            $('#debtor_account_code_water').val(final_data.client_id);
+                            $('#tin_water').val(final_data.tin);
+                            $('#vrn_water').val(final_data.vrn);
+                            $('#debtor_address_water').val(final_data.address);
+
 
 
                             if(final_data.currency_payments=='default'){
@@ -3892,11 +4051,27 @@ if(value.length<12){
                             $('#currency_spaceDiv').hide();
                             $('#status_spaceDiv').hide();
                             $('#description_spaceDiv').hide();
+
+                            $('#debtor_nameDiv').hide();
+                            $('#debtor_account_codeDiv').hide();
+                            $('#tinDiv').hide();
+                            $('#vrnDiv').hide();
+                            $('#debtor_addressDiv').hide();
+                            $('#invoicing_period_start_dateDiv').hide();
+                            $('#invoicing_period_end_dateDiv').hide();
+                            $('#periodDiv').hide();
+                            $('#project_idDiv').hide();
+
+
+
+
                             $('#submit_space').prop('disabled', true);
 
                         }
 
                         else{
+
+
                             $("#space_contract_availability").html("");
                             $("#space_contract_availability").hide();
                             $('#contract_id_space').attr('style','border:1px solid #ced4da');
@@ -3905,6 +4080,27 @@ if(value.length<12){
                             $('#status_spaceDiv').show();
                             $('#description_spaceDiv').show();
                             $('#submit_space').prop('disabled', false);
+                            $('#debtor_nameDiv').show();
+                            $('#debtor_account_codeDiv').show();
+                            $('#tinDiv').show();
+                            $('#vrnDiv').show();
+                            $('#debtor_addressDiv').show();
+                            $('#invoicing_period_start_dateDiv').show();
+                            $('#invoicing_period_end_dateDiv').show();
+                            $('#periodDiv').show();
+                            $('#project_idDiv').show();
+
+                            //for data
+
+                            $('#debtor_name_space').val(data[0].full_name);
+                            $('#debtor_account_code_space').val(data[0].client_id);
+                            $('#tin_space').val(data[0].tin);
+                            $('#vrn_space').val(data[0].vrn);
+                            $('#debtor_address_space').val(data[0].address);
+
+
+
+
 
 
                         }
@@ -3944,6 +4140,16 @@ if(value.length<12){
                             $('#description_carDiv').hide();
                             $('#submit_car').prop('disabled', true);
 
+                            $('#debtor_name_carDiv').hide();
+                            $('#debtor_account_code_carDiv').hide();
+                            $('#tin_carDiv').hide();
+                            $('#vrn_carDiv').hide();
+                            $('#debtor_address_carDiv').hide();
+                            $('#invoicing_period_start_date_carDiv').hide();
+                            $('#invoicing_period_end_date_carDiv').hide();
+                            $('#project_id_carDiv').hide();
+
+
                         }
 
                         else{
@@ -3956,6 +4162,21 @@ if(value.length<12){
                             $('#description_carDiv').show();
                             $('#submit_car').prop('disabled', false);
 
+                            $('#debtor_name_carDiv').show();
+                            $('#debtor_account_code_carDiv').show();
+                            $('#tin_carDiv').show();
+                            $('#vrn_carDiv').show();
+                            $('#debtor_address_carDiv').show();
+                            $('#invoicing_period_start_date_carDiv').show();
+                            $('#invoicing_period_end_date_carDiv').show();
+                            $('#project_id_carDiv').show();
+
+                            //for data
+                            $('#debtor_name_car').val(data[0].fullName);
+                            // $('#debtor_account_code_car').val(data[0].client_id);
+                            // $('#tin_car').val(data[0].tin);
+                            $('#vrn_car').val(data[0].vehicle_reg_no);
+                            // $('#debtor_address_car').val(data[0].address);
 
                         }
                     }

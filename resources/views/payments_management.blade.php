@@ -55,7 +55,19 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+            <?php
 
+
+
+            $today=date('Y-m-d');
+
+            $date=date_create($today);
+
+            date_sub($date,date_interval_create_from_date_string("366 days"));
+
+
+
+            ?>
                 <?php
                 $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
                 ?>
@@ -212,6 +224,14 @@
                                             </div>
                                             <br>
 
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
 
                                             <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
@@ -232,7 +252,7 @@
 
 
                                         <div align="right">
-                                            <button id="submit_space" class="btn btn-primary" type="submit">Submit</button>
+                                            <button id="submit_space" class="btn btn-primary" type="submit">Save</button>
                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </form>
@@ -270,6 +290,7 @@
                                 <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
 
                                 <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
@@ -287,6 +308,7 @@
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
 
+                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                     <td><center>{{$var->receipt_number}}</center></td>
                                     <td><center>
 
@@ -483,6 +505,14 @@
 
                                             <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
+                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
                                                     <label for=""  >Receipt Number <span style="color: red;">*</span></label>
                                                     <input type="text" class="form-control" id="receipt_car" name="receipt_number" value="" required  autocomplete="off">
                                                 </div>
@@ -500,7 +530,7 @@
 
 
                                         <div align="right">
-                                            <button id="submit_car" class="btn btn-primary" type="submit">Submit</button>
+                                            <button id="submit_car" class="btn btn-primary" type="submit">Save</button>
                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </form>
@@ -537,7 +567,7 @@
                                 <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-
+                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
@@ -552,7 +582,7 @@
                                     <td><center>{{$var->invoice_number_votebook}}</center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-
+                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                     <td><center>{{$var->receipt_number}}</center></td>
                                     <td><center>
 
@@ -745,6 +775,13 @@
                                             </div>
                                             <br>
 
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
 
                                             <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
@@ -765,7 +802,7 @@
 
 
                                         <div align="right">
-                                            <button id="submit_insurance" class="btn btn-primary" type="submit">Submit</button>
+                                            <button id="submit_insurance" class="btn btn-primary" type="submit">Save</button>
                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </form>
@@ -801,7 +838,7 @@
                                 <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-
+                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
@@ -816,7 +853,7 @@
                                     <td><center>{{$var->invoice_number_votebook}}</center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-
+                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                     <td><center>{{$var->receipt_number}}</center></td>
                                     <td><center>
 
@@ -1010,6 +1047,13 @@
                                             </div>
                                             <br>
 
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
 
                                             <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
@@ -1030,7 +1074,7 @@
 
 
                                         <div align="right">
-                                            <button id="submit_water" class="btn btn-primary" type="submit">Submit</button>
+                                            <button id="submit_water" class="btn btn-primary" type="submit">Save</button>
                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </form>
@@ -1067,7 +1111,7 @@
                                 <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-
+                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
@@ -1082,7 +1126,7 @@
                                     <td><center>{{$var->invoice_number_votebook}}</center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-
+                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                     <td><center>{{$var->receipt_number}}</center></td>
                                     <td><center>
 
@@ -1295,6 +1339,14 @@
                                             </div>
                                             <br>
 
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
 
                                             <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
@@ -1315,7 +1367,7 @@
 
 
                                         <div align="right">
-                                            <button id="submit_electricity" class="btn btn-primary" type="submit">Submit</button>
+                                            <button id="submit_electricity" class="btn btn-primary" type="submit">Save</button>
                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </form>
@@ -1353,6 +1405,7 @@
                                 <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
 
                                 <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
@@ -1368,7 +1421,7 @@
                                     <td><center>{{$var->invoice_number_votebook}}</center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-
+                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                     <td><center>{{$var->receipt_number}}</center></td>
                                     <td><center>
 

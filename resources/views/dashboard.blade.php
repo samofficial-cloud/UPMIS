@@ -150,7 +150,7 @@
   ?>
     <br>
 
-    <div class="container">
+    <div class="container" style="max-width: 100%;">
       <br>
       @if ($message = Session::get('errors'))
           <div class="alert alert-danger">

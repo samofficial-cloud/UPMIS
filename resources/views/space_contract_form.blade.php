@@ -499,19 +499,25 @@ $today=date('Y-m-d');
 
                         <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
                             <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
-                            <input type="number" min="0" id="academic_season" name="academic_season" class="form-control" >
+                            <input type="number" min="20" id="academic_season" name="academic_season" class="form-control" >
                         </div>
 
 
                         <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
                             <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
-                            <input type="number" min="0" id="vacation_season" name="vacation_season" class="form-control" >
+                            <input type="number" min="20" id="vacation_season" name="vacation_season" class="form-control" >
                         </div>
 
                         <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
                             <label for="amount">Amount <span style="color: red;"> *</span></label>
-                            <input type="number" min="0" id="amount" name="amount" class="form-control" >
+                            <input type="number" min="20" id="amount" name="amount" class="form-control" >
                         </div>
+
+                        <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
+                            <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
+                            <input type="number" min="1" id="rent_sqm" name="rent_sqm"  class="form-control">
+                        </div>
+
 
                         <div class="form-wrapper col-12">
                             <label for="currency">Currency <span style="color: red;"> *</span></label>
@@ -546,7 +552,7 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-6">
                                             <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
-                                            <input type="text" id="escalation_rate" name="escalation_rate" class="form-control" required>
+                                            <input type="number" min="0" id="escalation_rate" name="escalation_rate" class="form-control" required>
                                         </div>
 
 

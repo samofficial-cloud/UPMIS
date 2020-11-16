@@ -64,7 +64,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -96,8 +96,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -138,7 +138,7 @@
 
 
 <br>
- <a style="cursor: pointer; color: black; font-weight: bold; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal" title="Add new role" data-target="#add_role"  role="button" aria-pressed="true" name="editC">Add New Role </a>
+ <a style="cursor: pointer; color: black; font-weight: bold; background-color: #38c172; color:white; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal" title="Add new role" data-target="#add_role"  role="button" aria-pressed="true" name="editC">Add New Role </a>
 
 
 
@@ -147,7 +147,7 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <b><h5 class="modal-title">Adding new role</h5></b>
+                  <b><h5 class="modal-title">Adding New Role</h5></b>
 
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
@@ -184,7 +184,7 @@
 
 
                     <div align="right">
-                      <button class="btn btn-primary" type="submit" >Submit</button>
+                      <button class="btn btn-primary" type="submit" >Save</button>
                       <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                     </div>
                   </form>

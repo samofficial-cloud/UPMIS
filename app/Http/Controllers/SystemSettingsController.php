@@ -224,6 +224,9 @@ if($request->get('cost_centre')=='')
         DB::table('insurance_parameters')->insert([
 
             'company' => $request->get('company'),
+            'company_email' => $request->get('company_email'),
+            'company_address' => $request->get('company_address'),
+            'company_tin' => $request->get('company_tin'),
             'classes' => '',
 
         ]);
@@ -296,6 +299,23 @@ if($request->get('cost_centre')=='')
         DB::table('insurance_parameters')
             ->where('id', $id)
             ->update(['company' => $request->get('company')]);
+
+
+        DB::table('insurance_parameters')
+            ->where('id', $id)
+            ->update(['company_email' => $request->get('company_email')]);
+
+
+
+        DB::table('insurance_parameters')
+            ->where('id', $id)
+            ->update(['company_address' => $request->get('company_address')]);
+
+
+        DB::table('insurance_parameters')
+            ->where('id', $id)
+            ->update(['company_tin' => $request->get('company_tin')]);
+
 
 
         return redirect('/insurance_companies')

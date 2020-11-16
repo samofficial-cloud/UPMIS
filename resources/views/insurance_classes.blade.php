@@ -116,7 +116,7 @@
 
 
                 <br>
-                <a style="cursor: pointer; color: black; font-weight: bold; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal"  data-target="#add_class"  role="button" aria-pressed="true" name="editC">New Insurance Class</a>
+                <a style="cursor: pointer; color: white; font-weight: bold; background-color: #38c172; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal"  data-target="#add_class"  role="button" aria-pressed="true" name="editC">Add New Insurance Class</a>
 
 
 

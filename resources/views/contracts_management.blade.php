@@ -176,7 +176,7 @@
     padding: 10px;
     margin-left: 2px;
     margin-bottom: 15px;
-    margin-top: 4px;" role="button" aria-pressed="true" title="Add new Space Contract">New Contract</a>
+    margin-top: 4px;" role="button" aria-pressed="true" title="Add new Space Contract">Add New Contract</a>
                 @endif
 <?php
 $i=1;
@@ -439,7 +439,7 @@ $i=1;
     padding: 10px;
     margin-left: 2px;
     margin-bottom: 15px;
-    margin-top: 4px;" role="button" aria-pressed="true">New Contract</a>
+    margin-top: 4px;" role="button" aria-pressed="true">Add New Contract</a>
                 @endif
 
                 <div class="">
