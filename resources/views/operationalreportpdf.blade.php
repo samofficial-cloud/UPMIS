@@ -53,17 +53,31 @@ table {
   <div id="footer">
   <div class="page-number"></div>
 </div>
-	<?php
-	Use App\operational_expenditure;
-    $operational=operational_expenditure::where('flag',1)->get();
-	?>
+	
 	<br>
 	<center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
      <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
     </b>
-    <br><br><strong>Revenue Report For Service, Repairs and Fuel For Motor Vehicles</strong>
+    @if($_GET['date_fil']=='true' && $_GET['model_fil']=='true' && $_GET['reg_fil']=='true')
+      <br><br>Revenue Report For Service, Repairs and Fuel For Motor Vehicles whose Model is <strong>{{$_GET['model']}}</strong>, Vehicle Registration No is <strong>{{$_GET['reg']}}</strong> and Date Received is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+    @elseif($_GET['date_fil']=='true' && $_GET['model_fil']=='true' && $_GET['reg_fil']!='true')
+      <br><br>Revenue Report For Service, Repairs and Fuel For Motor Vehicles whose Model is <strong>{{$_GET['model']}}</strong>and Date Received is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+    @elseif($_GET['date_fil']=='true' && $_GET['model_fil']!='true' && $_GET['reg_fil']=='true')
+      <br><br>Revenue Report For Service, Repairs and Fuel For Motor Vehicles whose Vehicle Registration No is <strong>{{$_GET['reg']}}</strong> and Date Received is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong> 
+    @elseif($_GET['date_fil']=='true' && $_GET['model_fil']!='true' && $_GET['reg_fil']!='true')
+      <br><br>Revenue Report For Service, Repairs and Fuel For Motor Vehicles whose Date Received is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+    @elseif($_GET['date_fil']!='true' && $_GET['model_fil']=='true' && $_GET['reg_fil']=='true')
+      <br><br>Revenue Report For Service, Repairs and Fuel For Motor Vehicles whose Model is <strong>{{$_GET['model']}}</strong> and Vehicle Registration No is <strong>{{$_GET['reg']}}</strong>
+    @elseif($_GET['date_fil']!='true' && $_GET['model_fil']=='true' && $_GET['reg_fil']!='true')
+      <br><br>Revenue Report For Service, Repairs and Fuel For Motor Vehicles whose Model is <strong>{{$_GET['model']}}</strong>
+    @elseif($_GET['date_fil']!='true' && $_GET['model_fil']!='true' && $_GET['reg_fil']=='true')
+      <br><br>Revenue Report For Service, Repairs and Fuel For Motor Vehicles whose Vehicle Registration No is <strong>{{$_GET['reg']}}</strong>
+    @elseif($_GET['date_fil']!='true' && $_GET['model_fil']!='true' && $_GET['reg_fil']!='true')
+      <br><br>Revenue Report For Service, Repairs and Fuel For Motor Vehicles
+    @endif
+   
 </center>
 <br>
 <table class="hover table table-striped table-bordered">

@@ -127,7 +127,7 @@ class ChartController extends Controller
 
         $chart2 = new SampleChart;
         $chart2->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart2->title("Income Collected from Cover Note Sales per each Class $year");
+        //$chart2->title("Income Collected from Cover Note Sales per each Class $year");
         $chart2->dataset('Motor Income', 'bar', $UDIA_income_motor)->options([
             'fill' => 'true',
             'borderColor' => '#51C1C0',

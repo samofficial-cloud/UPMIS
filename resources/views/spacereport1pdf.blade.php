@@ -64,52 +64,90 @@ table, td, th {
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
      <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT  
     </b>
-    @if($_GET['module']=='space')
+  @if($_GET['module']=='space')
     @if($_GET['major_industry']=='list')
-    @if(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true'))
-    @if($_GET['space_status']=='1')
-    <br><br><strong>List of Occupied Spaces at {{$_GET['location']}}Whose Price Range is Between {{number_format($_GET['min_price'])}} and {{number_format($_GET['max_price'])}}</strong>
-    @elseif($_GET['space_status']=='0')
-    <br><br><strong>List of Vacant Spaces at {{$_GET['location']}} Whose Price Range is Between {{number_format($_GET['min_price'])}} and {{number_format($_GET['max_price'])}}</strong>
+        @if(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']=='true'))
+            @if($_GET['space_status']=='1')
+              <br><br>List of Occupied Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+            @elseif($_GET['space_status']=='0')
+              <br><br>List of Vacant Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+            @endif
+
+        @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']!='true'))
+            @if($_GET['space_status']=='1')
+              <br><br>List of Occupied Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+            @elseif($_GET['space_status']=='0')
+              <br><br>List of Vacant Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+            @endif
+
+        @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']=='true'))
+            <br><br>List of Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+
+        @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']!='true'))
+            <br><br>List of Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+
+        @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']=='true'))
+            @if($_GET['space_status']=='1')
+              <br><br>List of Occupied Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+            @elseif($_GET['space_status']=='0')
+              <br><br>List of Vacant Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+            @endif
+
+        @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']!='true'))
+            @if($_GET['space_status']=='1')
+              <br><br>List of Occupied Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+            @elseif($_GET['space_status']=='0')
+              <br><br>List of Vacant Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+            @endif
+
+        @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']=='true'))
+            <br><br>List of Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+
+        @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']!='true'))
+            <br><br>List of Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+
+        @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']=='true'))
+            @if($_GET['space_status']=='1')
+              <br><br>List of Occupied Spaces at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+            @elseif($_GET['space_status']=='0')
+              <br><br>List of Vacant Spaces at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+            @endif
+
+        @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']!='true'))
+            @if($_GET['space_status']=='1')
+              <br><br>List of Occupied Spaces at <strong>{{$_GET['location']}}</strong>
+            @elseif($_GET['space_status']=='0')
+              <br><br>List of Vacant Spaces at <strong>{{$_GET['location']}}</strong>
+            @endif
+
+        @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']=='true'))
+          <br><br>List of Registered Spaces at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+
+        @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']!='true'))
+          <br><br>List of All Registered Spaces at <strong>{{$_GET['location']}}</strong>
+
+        @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']=='true'))
+            @if($_GET['space_status']=='1')
+              <br><br>List of Occupied Spaces Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+            @elseif($_GET['space_status']=='0')
+              <br><br>List of Vacant Spaces Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+            @endif
+
+        @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']!='true'))
+            @if($_GET['space_status']=='1')
+              <br><br>List of Occupied Spaces
+            @elseif($_GET['space_status']=='0')
+              <br><br>List of Vacant Spaces
+            @endif
+
+        @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']=='true'))
+            <br><br>List of Registered Spaces Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+
+        @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']!='true'))
+            <br><br>List of All Registered Spaces
+        @endif
     @endif
-    @endif
-    @if(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true'))
-    <br><br><strong>List of Spaces at {{$_GET['location']}} Whose Price Range is Between {{number_format($_GET['min_price'])}} and {{number_format($_GET['max_price'])}}</strong>
-    @endif
-    @if(($_GET['space_prize']=='true')&&($_GET['location_status']!='true')&&($_GET['status']=='true'))
-    @if($_GET['space_status']=='1')
-    <br><br><strong>List of Occupied Spaces Whose Price Range is Between {{number_format($_GET['min_price'])}} and {{number_format($_GET['max_price'])}}</strong>
-    @elseif($_GET['space_status']=='0')
-     <br><br><strong>List of Vacant Spaces Whose Price Range is Between {{number_format($_GET['min_price'])}} and {{number_format($_GET['max_price'])}}</strong>
-    @endif
-    @endif
-    @if(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true'))
-     <br><br><strong>List of Spaces Whose Price Range is Between {{number_format($_GET['min_price'])}} and {{number_format($_GET['max_price'])}}</strong>
-    @endif
-     @if(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true'))
-      @if($_GET['space_status']=='1')
-    <br><br><strong>List of Occupied Spaces at {{$_GET['location']}}</strong>
-    @elseif($_GET['space_status']=='0')
-    <br><br><strong>List of Vacant Spaces at {{$_GET['location']}}</strong>
-    @endif
-     @endif
-      @if(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true'))
-      <br><br><strong>List of All Registered Spaces at {{$_GET['location']}}</strong>
-      @endif
-       @if(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true'))
-      @if($_GET['space_status']=='1')
-    <br><br><strong>List of Occupied Spaces</strong>
-    @elseif($_GET['space_status']=='0')
-    <br><br><strong>List of Vacant Spaces</strong>
-    @endif
-    @endif
-    @if(($_GET['status']!='true')&&($_GET['location_status']!='true')&&($_GET['space_prize']!='true'))
-    <br><br><strong>List of All Registered Spaces</strong>
-    @endif
-    @else
-    <br><br><strong>List of All Registered Spaces</strong>
-    @endif
-    @endif
+  @endif
     
     </center>
 <br>

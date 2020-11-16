@@ -328,10 +328,11 @@ $today=date('Y-m-d');
     </div>
 
     <div class="form-group row" id="namediv">
-                        <div class="form-wrapper col-2">
+                        <div class="form-wrapper col-4">
                             <label for="designation">Designation<span style="color: red;">*</span></label>
                             <span id="designationmsg"></span>
-                            <select class="form-control" required="" id="designation" name="designation">
+                            <input type="text" id="designation" name="designation" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
+                            {{-- <select class="form-control" required="" id="designation" name="designation">
               <option value="" disabled selected hidden> </option>
               <option value="Prof.">Prof.</option>
               <option value="Dr.">Dr.</option>
@@ -339,15 +340,15 @@ $today=date('Y-m-d');
               <option value="Mr.">Mr.</option>
               <option value="Mrs.">Mrs.</option>
               <option value="Miss">Miss</option>
-            </select>
+            </select> --}}
                         </div>
 
-						<div class="form-wrapper col-5">
+						<div class="form-wrapper col-4">
 							<label for="first_name">First Name<span style="color: red;">*</span></label>
                             <span id="name1msg"></span>
 							<input type="text" id="first_name" name="first_name" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
 						</div>
-						<div class="form-wrapper col-5">
+						<div class="form-wrapper col-4">
 							<label for="last_name">Last Name<span style="color: red;">*</span></label>
                             <span id="name2msg"></span>
 							<input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
@@ -378,7 +379,7 @@ $today=date('Y-m-d');
                         <div class="form-wrapper col-6">
                             <label for="faculty_name">Faculty/Department/Unit<span style="color: red;">*</span></label>
                             <span id="name1msg"></span>
-                            <input type="text" id="faculty_name" name="faculty_name" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                            <input type="text" id="faculty_name" name="faculty_name" class="form-control"  required="" readonly="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                         </div>
 					</div>
 
@@ -486,10 +487,11 @@ $today=date('Y-m-d');
 }
 </script>
 <script type="text/javascript">
+     $(document).ready(function(){
     $('#centre_name').click(function(e){
         $('#faculty_name').val("");
     var query = $('#centre_name').val();
-        console.log(query);
+        //console.log(query);
         if(query!=''){
        var _token = $('input[name="_token"]').val();
          $.ajax({
@@ -503,5 +505,11 @@ $today=date('Y-m-d');
 
      }
          });
+
+    $("#centre_name").change(function(){
+         var query = $(this).val();  
+        $("#centre_name option:selected").text(query);
+    });
+});
 </script>
 @endsection

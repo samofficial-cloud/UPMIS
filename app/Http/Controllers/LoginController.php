@@ -17,6 +17,11 @@ class LoginController extends Controller
       
 
       $errors = new MessageBag; // initiate MessageBag
+
+      $request->validate([
+      'user_name' => 'bail|required|max:50',
+      'password' => 'required|min:8',
+      ]);
       /*
       Check if credentials match with the records in the database
       */
@@ -24,7 +29,7 @@ class LoginController extends Controller
         'user_name' => $request->user_name,
         'password' => $request->password,
         'status' => 1
-      ]))
+      ],$request->remember))
 
       /*
       (Entered credentials are correct)

@@ -29,7 +29,7 @@
       <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-      <th scope="col" style="color:#fff;"><center>Hire Rate (TZS)</center></th>
+      <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
     </tr>
   </thead>
   <tbody>
@@ -39,7 +39,7 @@
       <td><center>{{ $cars->vehicle_reg_no}}</center></td>
       <td>{{$cars->vehicle_model}}</td>
       <td><center>{{ $cars->vehicle_status}}</center></td>
-      <td><center>{{ number_format($cars->hire_rate)}}</center></td>
+      <td style="text-align: right;">{{ number_format($cars->hire_rate)}}</td>
       </tr>
       @endforeach
   </tbody>

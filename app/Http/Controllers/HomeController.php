@@ -41,7 +41,104 @@ class HomeController extends Controller
 
     public function report()
     {
+     
         return view('reports');
+    }
+
+    public function tenancyreport(){
+       
+
+    $invoice=[];
+    $contract_id=[];
+
+  if(($_GET['b_fil']=='true') && ($_GET['l_fil']=='true')){
+     $details=DB::table('invoices')
+        ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+        ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+        ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+        ->where('spaces.major_industry',$_GET['b_type'])
+        ->where('spaces.location',$_GET['loc'])
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->distinct()->orderBy('invoices.contract_id')
+        ->get();
+  }
+
+  elseif(($_GET['b_fil']=='true') && ($_GET['l_fil']!='true')){
+     $details=DB::table('invoices')
+        ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+        ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+        ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+        ->where('spaces.major_industry',$_GET['b_type'])
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->distinct()->orderBy('invoices.contract_id')
+        ->get();
+  }
+
+  elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']=='true')){
+     $details=DB::table('invoices')
+        ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+        ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+        ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+        ->where('spaces.location',$_GET['loc'])
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->distinct()->orderBy('invoices.contract_id')
+        ->get();
+  }
+
+  elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']!='true')){
+     $details=DB::table('invoices')
+        ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+        ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+        ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->distinct()->orderBy('invoices.contract_id')
+        ->get();
+  }
+
+    $x1= $_GET['start'];
+    $x2= $_GET['duration'];
+    if($x2>5){
+     $x2=5;
+    }
+    $x3=$x1+$x2-1;
+    $k=0;
+
+    foreach($details as $detail){
+      $k =$k+1;
+        $contract_id= array();
+        $invoice= array();
+        $contract_id[] = DB::table('invoices')
+                ->select('contract_id')
+                ->where('contract_id',$detail->contract_id)
+                ->distinct()->pluck('contract_id')
+                ->toArray();
+
+        foreach($contract_id[0] as $id){
+
+              for ($days_backwards = $x1; $days_backwards <= $x3; $days_backwards++) {
+
+              $invoice[] = DB::table('space_payments')
+                    ->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
+                    ->select('amount_paid')
+                    ->where('contract_id',$id)
+                    ->whereMonth('invoicing_period_start_date',$days_backwards)
+                    ->whereYear('invoicing_period_start_date',$_GET['year'])
+                    ->where('payment_status','!=','Not Paid')
+                    ->pluck('amount_paid')
+                    ->toArray();
+              }
+    
+          }
+    }
+      if(count($invoice)==0){
+         return redirect()->back()->with('errors', "No data found to generate the requested report");
+      }
+      else{
+        $pdf = PDF::loadView('tenancyschedule',['details'=>$details])->setPaper('a4', 'landscape');
+  
+        return $pdf->stream('Tenancy Schedule.pdf');
+      }
+       
     }
 
     public function spacereport1(){
@@ -95,7 +192,7 @@ class HomeController extends Controller
         else{
            $validatedData = $request->validate([
             'current-password' => 'required',
-            'new-password' => 'required|string|min:6|confirmed',
+            'new-password' => 'required|string|min:8|confirmed',
         ]);
 
         //Change Password
@@ -113,18 +210,18 @@ class HomeController extends Controller
 
         if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
             // The passwords matches
-            return redirect()->back()->with("error","Your current password does not matches with the password you provided. Please try again.");
+            return redirect()->back()->with("errorz","Your current password does not matches with the password you provided. Please try again.");
         }
 
         if(strcmp($request->get('current-password'), $request->get('new-password')) == 0){
             //Current password and new password are same
-            return redirect()->back()->with("error","New Password cannot be same as your current password. Please choose a different password.");
+            return redirect()->back()->with("errorz","New Password cannot be same as your current password. Please choose a different password.");
         }
 
         else{
            $validatedData = $request->validate([
             'current-password' => 'required',
-            'new-password' => 'required|string|min:6|confirmed',
+            'new-password' => 'required|string|min:8|confirmed',
         ]);
 
         //Change Password
@@ -161,87 +258,549 @@ class HomeController extends Controller
 
     }
 
+    public function debtsummaryPDF(){
+      $contract_id = [];
+      if($_GET['b_type']=='Space'){
+        if($_GET['criteria']=='space'){
+          if($_GET['show']=='clients'){
+            if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->where('location',$_GET['loc'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->where('location',$_GET['loc'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true')){
+               $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('location',$_GET['loc'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+             elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('location',$_GET['loc'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+
+             elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+
+             elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
+                $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+          }
+          elseif($_GET['show']=='industry'){
+             $pdf = PDF::loadView('debtsummaryreport2pdf');
+            return $pdf->stream('Debt Summary.pdf');
+          }
+        }
+        elseif($_GET['criteria']=='electricity'){
+          if($_GET['show']=='clients'){
+
+            if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->where('location',$_GET['loc'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->where('location',$_GET['loc'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true')){
+               $contract_id[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('location',$_GET['loc'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('location',$_GET['loc'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+
+             elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+
+             elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
+                $contract_id[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+
+          }
+          elseif($_GET['show']=='industry'){
+            $pdf = PDF::loadView('debtsummaryreport2pdf');
+            return $pdf->stream('Debt Summary.pdf');
+          }
+        }
+        elseif($_GET['criteria']=='water'){
+          if($_GET['show']=='clients'){
+            if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->where('location',$_GET['loc'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->where('location',$_GET['loc'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('major_industry',$_GET['biz'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true')){
+               $contract_id[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('location',$_GET['loc'])
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+            }
+
+            elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true')){
+              $contract_id[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('location',$_GET['loc'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+
+             elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
+              $contract_id[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+
+             elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
+                $contract_id[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+             }
+
+          }
+          elseif($_GET['show']=='industry'){
+            $pdf = PDF::loadView('debtsummaryreport2pdf');
+            return $pdf->stream('Debt Summary.pdf');
+          }
+        }
+      }
+      elseif($_GET['b_type']=='Insurance'){
+        if($_GET['yr2_fil']=='true'){
+           $contract_id[]= DB::table('insurance_invoices')
+                            ->select('debtor_name','currency_invoice')
+                            ->whereYear('invoicing_period_start_date',$_GET['yr2'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+        }
+        else{
+          $contract_id[]= DB::table('insurance_invoices')
+                            ->select('debtor_name','currency_invoice')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+        }
+       
+      }
+      elseif($_GET['b_type']=='Car Rental'){
+        if($_GET['yr2_fil']=='true'){
+           $contract_id[]= DB::table('car_rental_invoices')
+                            ->select('car_rental_invoices.contract_id','debtor_name','cost_centre','destination')
+                            ->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')
+                            ->whereYear('invoicing_period_start_date',$_GET['yr2'])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+        }
+        else{
+           $contract_id[]= DB::table('car_rental_invoices')
+                            ->select('car_rental_invoices.contract_id','debtor_name','cost_centre','destination')
+                            ->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+        }
+
+      }
+
+      if($_GET['b_type']=='Insurance'){
+         $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id]);
+      }
+      else{
+       $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id])->setPaper('a4', 'landscape'); 
+      }
+      
+  
+      return $pdf->stream('Debt Summary.pdf');
+    }
+
     public function spacereport1PDF(){
       $today= date('Y-m-d');
       if($_GET['module']=='space'){
         if($_GET['major_industry']=='list'){
-          if(($_GET['space_prize']=='true') && ($_GET['status']=='true') &&($_GET['location_status']=='true')){
-            if($_GET['space_status']=='1'){
-            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
-            }
-            elseif($_GET['space_status']=='0'){
-          $spaces= DB::table('spaces')
-        ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
-        ->where('status','1')
-        ->where('location',$_GET['location'])->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
-        ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
-        ->orderBy('space_id','asc')
-        ->get();
-            }
-            
+            if(($_GET['space_prize']=='true') && ($_GET['status']=='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']=='true')){
+                if($_GET['space_status']=='1'){
+                $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->where('major_industry',$_GET['ind'])->orderby('space_id','asc')->distinct()->get();
+                }
+
+                elseif($_GET['space_status']=='0'){
+                  $spaces= DB::table('spaces')
+                  ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+                  ->where('status','1')
+                  ->where('location',$_GET['location'])
+                  ->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
+                  ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
+                  ->where('major_industry',$_GET['ind'])
+                  ->orderBy('space_id','asc')
+                  ->get();
+                }
             }
 
-            if(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true')){
-              $spaces=space::where('rent_price_guide_from','>=',$_GET['min_price'])->where('rent_price_guide_to','<=',$_GET['max_price'])->where('status','1')->where('location',$_GET['location'])->orderby('space_id','asc')->get();
+            elseif(($_GET['space_prize']=='true') && ($_GET['status']=='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']!='true')){
+              if($_GET['space_status']=='1'){
+                $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
+                }
+
+                elseif($_GET['space_status']=='0'){
+                  $spaces= DB::table('spaces')
+                  ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+                  ->where('status','1')
+                  ->where('location',$_GET['location'])
+                  ->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
+                  ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
+                  ->orderBy('space_id','asc')
+                  ->get();
+                }
             }
 
-            if(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true')){
-               if($_GET['space_status']=='1'){
-            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->orderby('space_id','asc')->distinct()->get();
+            elseif(($_GET['space_prize']=='true') && ($_GET['status']=='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']=='true')){
+              if($_GET['space_status']=='1'){
+                $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('major_industry',$_GET['ind'])->orderby('space_id','asc')->distinct()->get();
         
+                }
+
+                elseif($_GET['space_status']=='0'){
+                $spaces= DB::table('spaces')
+                ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+                ->where('status','1')
+                ->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
+                ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
+                ->where('major_industry',$_GET['ind'])
+                ->orderBy('space_id','asc')
+                ->get();
+                }
             }
-            elseif($_GET['space_status']=='0'){
+
+            elseif(($_GET['space_prize']=='true') && ($_GET['status']=='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']!='true')){
+                $spaces=space::where('rent_price_guide_from','>=',$_GET['min_price'])->where('rent_price_guide_to','<=',$_GET['max_price'])->where('status','1')->where('location',$_GET['location'])->orderby('space_id','asc')->get();
+            }
+
+
+            elseif(($_GET['space_prize']=='true') && ($_GET['status']!='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']=='true')){
+                if($_GET['space_status']=='1'){
+                $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('major_industry',$_GET['ind'])->orderby('space_id','asc')->distinct()->get();
+        
+                }
+                elseif($_GET['space_status']=='0'){
+                  $spaces= DB::table('spaces')
+                  ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+                  ->where('status','1')
+                  ->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
+                  ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
+                  ->where('major_industry',$_GET['ind'])
+                  ->orderBy('space_id','asc')
+                  ->get();
+                }
+            }
+
+
+            elseif(($_GET['space_prize']=='true') && ($_GET['status']!='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']!='true')){
+              if($_GET['space_status']=='1'){
+              $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->orderby('space_id','asc')->distinct()->get();
+        
+              }
+              elseif($_GET['space_status']=='0'){
                $spaces= DB::table('spaces')
-        ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
-        ->where('status','1')
-        ->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
-        ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
-        ->orderBy('space_id','asc')
-        ->get();
+                ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+                ->where('status','1')
+                ->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])
+                ->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])
+                ->orderBy('space_id','asc')
+                 ->get();
             }
-            }
+          }
 
 
-            if(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true')){
-              $spaces=space::where('rent_price_guide_from','>=',$_GET['min_price'])->where('rent_price_guide_to','<=',$_GET['max_price'])->where('status','1')->orderBy('space_id','asc')->get();
-            }
-            
-          
-          if(($_GET['space_prize']!='true') && ($_GET['location_status']=='true') && ($_GET['status']=='true')){
+          elseif(($_GET['space_prize']=='true') && ($_GET['status']!='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']=='true')){
+             $spaces=space::where('status','1')
+             ->where('rent_price_guide_from','>=',$_GET['min_price'])
+             ->where('rent_price_guide_to','<=',$_GET['max_price'])
+             ->where('major_industry',$_GET['ind'])
+             ->orderBy('space_id','asc')->get();
+          }
+
+
+          elseif(($_GET['space_prize']=='true') && ($_GET['status']!='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']!='true')){
+            $spaces=space::where('status','1')
+            ->where('rent_price_guide_from','>=',$_GET['min_price'])
+            ->where('rent_price_guide_to','<=',$_GET['max_price'])
+            ->orderBy('space_id','asc')
+            ->get();
+          }
+
+
+          elseif(($_GET['space_prize']!='true') && ($_GET['status']=='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']=='true')){
             if($_GET['space_status']=='1'){
-            $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
+              $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->where('major_industry',$_GET['ind'])->orderby('space_id','asc')->distinct()->get();
             }
 
             elseif($_GET['space_status']=='0'){
-               $spaces= DB::table('spaces')
-        ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
-        ->where('status','1')
-        ->where('location',$_GET['location'])
-        ->orderBy('space_id','asc')
-        ->get();
+             $spaces= DB::table('spaces')
+              ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+              ->where('status','1')
+              ->where('location',$_GET['location'])
+              ->where('major_industry',$_GET['ind'])
+              ->orderBy('space_id','asc')
+              ->get();
             }  
           }
 
-          if(($_GET['space_prize']!='true')&&($_GET['location_status']=='true') && ($_GET['status']!='true')){
-            $spaces=space::where('status','1')->where('location',$_GET['location'])->orderBy('space_id','asc')->get();
-          }
-
-          if(($_GET['space_prize']!='true')&&($_GET['location_status']!='true') && ($_GET['status']=='true')){
-            if($_GET['space_status']=='1'){    
-           $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->orderBy('space_id','asc')->distinct()->get();
+          elseif(($_GET['space_prize']!='true') && ($_GET['status']=='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']!='true')){
+            if($_GET['space_status']=='1'){
+              $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->where('location',$_GET['location'])->orderby('space_id','asc')->distinct()->get();
             }
 
             elseif($_GET['space_status']=='0'){
-        $spaces= DB::table('spaces')
-        ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
-        ->where('status','1')
-        ->orderBy('space_id','asc')
-        ->get();
-            }    
+              $spaces= DB::table('spaces')
+              ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+              ->where('status','1')
+              ->where('location',$_GET['location'])
+              ->orderBy('space_id','asc')
+              ->get();
+            }
+           }
+
+
+          elseif(($_GET['space_prize']!='true') && ($_GET['status']=='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']=='true')){
+            if($_GET['space_status']=='1'){
+              $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->where('major_industry',$_GET['ind'])->orderby('space_id','asc')->distinct()->get();
+            }
+
+            elseif($_GET['space_status']=='0'){
+              $spaces= DB::table('spaces')
+              ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+              ->where('status','1')
+              ->where('major_industry',$_GET['ind'])
+              ->orderBy('space_id','asc')
+              ->get();
+            }
           }
 
-          if(($_GET['status']!='true') &&($_GET['location_status']!='true')&& ($_GET['space_prize']!='true')){
-            $spaces=space::where('status','1')->orderBy('space_id','asc')->get();
+          elseif(($_GET['space_prize']!='true') && ($_GET['status']=='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']!='true')){
+            if($_GET['space_status']=='1'){
+              $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->whereDate('end_date', '>=', $today)->orderby('space_id','asc')->distinct()->get();
+            }
+
+            elseif($_GET['space_status']=='0'){
+              $spaces= DB::table('spaces')
+              ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>=',$today)->distinct()->pluck('space_id_contract')->toArray())
+              ->where('status','1')
+              ->orderBy('space_id','asc')
+              ->get();
+            }
+          }
+
+          elseif(($_GET['space_prize']!='true') && ($_GET['status']!='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']=='true')){
+            $spaces=space::where('status','1')->where('location',$_GET['location'])->where('major_industry',$_GET['ind'])->orderBy('space_id','asc')->get();
+          }
+
+          elseif(($_GET['space_prize']!='true') && ($_GET['status']!='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']!='true')){
+           $spaces=space::where('status','1')->where('location',$_GET['location'])->orderBy('space_id','asc')->get();
+          }
+
+
+
+          elseif(($_GET['space_prize']!='true') && ($_GET['status']!='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']=='true')){
+            $spaces=space::where('status','1')->where('major_industry',$_GET['ind'])->orderBy('space_id','asc')->get();
+          }
+
+
+          elseif(($_GET['space_prize']!='true') && ($_GET['status']!='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']!='true')){
+             $spaces=space::where('status','1')->orderBy('space_id','asc')->get();
           }
           
         }
@@ -289,19 +848,117 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
        
       }
 
-      public function insurancereportPDF(){
-       if($_GET['report_type']=='sales'){
-        if(($_GET['principal_filter']=='true') && ($_GET['insurance_typefilter']=='true')){
-        $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_type',$_GET['insurance_type'])->get();
-      }
-      if(($_GET['principal_filter']=='true') && ($_GET['insurance_typefilter']!='true')){
-        $insurance=insurance_contract::where('principal',$_GET['principaltype'])->get();
-      }
-      if(($_GET['insurance_typefilter']=='true') && ($_GET['principal_filter']!='true')){
-        $insurance=insurance_contract::where('insurance_type',$_GET['insurance_type'])->get();
+      public function systemreportPDF(){
+        if($_GET['report_type']=='user'){
+          if($_GET['st_fil']=='true'){
+            if($_GET['user']=='active'){
+              $users=DB::table('users')->where('status',1)->orderBy('first_name','asc')->get();
+            }
+            elseif($_GET['user']=='inactive'){
+              $users=DB::table('users')->where('status',0)->orderBy('first_name','asc')->get();
+            }
+            
+          }
+          else{
+            $users=DB::table('users')->orderBy('first_name','asc')->get();
+          }
+        }
+        if(count($users)==0){
+           return redirect()->back()->with('errors', "No data found to generate the requested report");
+        }
+        else{
+           $pdf = PDF::loadView('userreportpdf',['users'=>$users])->setPaper('a4', 'landscape');
+  
+            return $pdf->stream('System User Report.pdf');
+        }
       }
 
-      if(($_GET['insurance_typefilter']!='true') && ($_GET['principal_filter']!='true')){
+      public function insurancereportPDF(){
+       if($_GET['report_type']=='sales'){
+        if(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true')&&($_GET['yr_fil']=='true')){
+          if($_GET['insurance_typefilter']=='true'){
+            if($_GET['yr_cat']=='start'){
+               $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('commission_date',$_GET['yr'])->get();
+            }
+            elseif($_GET['yr_cat']=='end'){
+              $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('end_date',$_GET['yr'])->get();
+            }
+          }
+          else{
+            if($_GET['yr_cat']=='start'){
+            $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereYear('commission_date',$_GET['yr'])->get();
+          }
+          elseif($_GET['yr_cat']=='end'){
+            $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereYear('end_date',$_GET['yr'])->get();
+          }
+          }
+        }
+
+        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']!='true')){
+          if($_GET['insurance_typefilter']=='true'){
+             $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get(); 
+          }
+          else{
+            $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->get();
+          }
+
+        }
+
+        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
+            if($_GET['yr_cat']=='start'){
+               $insurance=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('commission_date',$_GET['yr'])->get();
+            }
+            elseif($_GET['yr_cat']=='end'){
+              $insurance=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('end_date',$_GET['yr'])->get();
+            }
+          
+        }
+
+        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']!='true')){
+           $insurance=insurance_contract::where('principal',$_GET['principaltype'])->get();
+        }
+
+        elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']=='true')){
+          if($_GET['insurance_typefilter']=='true'){
+            if($_GET['yr_cat']=='start'){
+               $insurance=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('commission_date',$_GET['yr'])->get();
+            }
+            elseif($_GET['yr_cat']=='end'){
+              $insurance=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('end_date',$_GET['yr'])->get();
+            }
+          }
+          else{
+            if($_GET['yr_cat']=='start'){
+            $insurance=insurance_contract::where('insurance_class',$_GET['package'])->whereYear('commission_date',$_GET['yr'])->get();
+          }
+          elseif($_GET['yr_cat']=='end'){
+            $insurance=insurance_contract::where('insurance_class',$_GET['package'])->whereYear('end_date',$_GET['yr'])->get();
+          }
+          }
+        }
+
+
+        elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']!='true')){
+          if($_GET['insurance_typefilter']=='true'){
+               $insurance=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get();
+            }
+           
+          else{ 
+            $insurance=insurance_contract::where('insurance_class',$_GET['package'])->get();
+          }
+        }
+
+         elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
+          if($_GET['yr_cat']=='start'){
+               $insurance=insurance_contract::whereYear('commission_date',$_GET['yr'])->get();
+            }
+            elseif($_GET['yr_cat']=='end'){
+              $insurance=insurance_contract::whereYear('end_date',$_GET['yr'])->get();
+            }
+
+         }
+
+      elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']!='true') &&($_GET['yr_fil']!='true')){
         $insurance=insurance_contract::get();
       }
 
@@ -325,7 +982,94 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
     }
 
      else if($_GET['report_type']=='clients'){
-      $clients=insurance_contract::orderBy('commission_date','dsc')->get();
+        if(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true')&&($_GET['yr_fil']=='true')){
+          if($_GET['insurance_typefilter']=='true'){
+            if($_GET['yr_cat']=='start'){
+               $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('commission_date',$_GET['yr'])->get();
+            }
+            elseif($_GET['yr_cat']=='end'){
+              $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('end_date',$_GET['yr'])->get();
+            }
+          }
+          else{
+            if($_GET['yr_cat']=='start'){
+            $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereYear('commission_date',$_GET['yr'])->get();
+          }
+          elseif($_GET['yr_cat']=='end'){
+            $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereYear('end_date',$_GET['yr'])->get();
+          }
+          }
+        }
+
+        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']!='true')){
+          if($_GET['insurance_typefilter']=='true'){
+             $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get(); 
+          }
+          else{
+            $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->get();
+          }
+
+        }
+
+        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
+            if($_GET['yr_cat']=='start'){
+               $clients=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('commission_date',$_GET['yr'])->get();
+            }
+            elseif($_GET['yr_cat']=='end'){
+              $clients=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('end_date',$_GET['yr'])->get();
+            }
+          
+        }
+
+        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']!='true')){
+           $clients=insurance_contract::where('principal',$_GET['principaltype'])->get();
+        }
+
+        elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']=='true')){
+          if($_GET['insurance_typefilter']=='true'){
+            if($_GET['yr_cat']=='start'){
+               $clients=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('commission_date',$_GET['yr'])->get();
+            }
+            elseif($_GET['yr_cat']=='end'){
+              $clients=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('end_date',$_GET['yr'])->get();
+            }
+          }
+          else{
+            if($_GET['yr_cat']=='start'){
+            $clients=insurance_contract::where('insurance_class',$_GET['package'])->whereYear('commission_date',$_GET['yr'])->get();
+          }
+          elseif($_GET['yr_cat']=='end'){
+            $clients=insurance_contract::where('insurance_class',$_GET['package'])->whereYear('end_date',$_GET['yr'])->get();
+          }
+          }
+        }
+
+
+        elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']!='true')){
+          if($_GET['insurance_typefilter']=='true'){
+               $clients=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get();
+            }
+           
+          else{ 
+            $clients=insurance_contract::where('insurance_class',$_GET['package'])->get();
+          }
+        }
+
+         elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
+          if($_GET['yr_cat']=='start'){
+               $clients=insurance_contract::whereYear('commission_date',$_GET['yr'])->get();
+            }
+            elseif($_GET['yr_cat']=='end'){
+              $clients=insurance_contract::whereYear('end_date',$_GET['yr'])->get();
+            }
+
+         }
+
+      elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']!='true') &&($_GET['yr_fil']!='true')){
+        $clients=insurance_contract::get();
+      }
+      //******************
+      // $clients=insurance_contract::orderBy('commission_date','dsc')->get();
       if(count($clients)==0){
         return redirect()->back()->with('errors', "No data found to generate the requested report");
       }
@@ -444,16 +1188,288 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
       public function carreportPDF(){
         if($_GET['report_type']=='clients'){
 
-        $clients=DB::table('car_contracts')
-        ->where('form_completion','1')
-      ->orderBy('car_contracts.fullName','asc')
-      ->get();
+          if($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
+            if($_GET['cont']=='Active'){
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->where('payment_status',$_GET['pay'])
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+            elseif($_GET['cont']=='Inactive'){
+              $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('end_date','<',date('Y-m-d'))
+                    ->where('payment_status',$_GET['pay'])
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+          }
+
+
+          elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true'){
+            if($_GET['cont']=='Active'){
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+            elseif($_GET['cont']=='Inactive'){
+              $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('end_date','<',date('Y-m-d'))
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+          }
+
+          elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true'){
+            if($_GET['cont']=='Active'){
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->where('payment_status',$_GET['pay'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+            elseif($_GET['cont']=='Inactive'){
+              $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('end_date','<',date('Y-m-d'))
+                    ->where('payment_status',$_GET['pay'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+          }
+
+
+          elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true'){
+            if($_GET['cont']=='Active'){
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+            elseif($_GET['cont']=='Inactive'){
+              $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('end_date','<',date('Y-m-d'))
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+          }
+
+          elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
+           
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->where('payment_status',$_GET['pay'])
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+          }
+
+
+          elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true'){
+            
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+          }
+
+          elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true'){
+            
+            $clients = DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->where('payment_status',$_GET['pay'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            
+            
+          }
+
+          elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true'){
+
+                   $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('cost_centre',$_GET['centre'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+          }
+
+          elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
+            if($_GET['cont']=='Active'){
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->where('payment_status',$_GET['pay'])
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+            elseif($_GET['cont']=='Inactive'){
+              $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->whereDate('end_date','<',date('Y-m-d'))
+                    ->where('payment_status',$_GET['pay'])
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+          }
+
+          elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true'){
+            if($_GET['cont']=='Active'){
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+            else if($_GET['cont']=='Inactive'){
+              $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->whereDate('end_date','<',date('Y-m-d'))
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+          }
+
+          elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true'){
+            if($_GET['cont']=='Active'){
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->where('payment_status',$_GET['pay'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+            else if($_GET['cont']=='Inactive'){
+              $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->whereDate('end_date','<',date('Y-m-d'))
+                    ->where('payment_status',$_GET['pay'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+          }
+
+          elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true'){
+            if($_GET['cont']=='Active'){
+            $clients=DB::table('car_contracts')
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+            else if($_GET['cont']=='Inactive'){
+              $clients=DB::table('car_contracts')
+                    ->whereDate('end_date','<',date('Y-m-d'))
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+            }
+          }
+
+           elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
+               $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+
+           }
+
+          elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true'){
+            
+            $clients=DB::table('car_contracts')
+                    ->whereDate('start_date','>=',$_GET['start'])
+                    ->whereDate('end_date','<=',$_GET['end'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+          }
+
+          elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true'){
+            
+            $clients=DB::table('car_contracts')
+                    ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->where('payment_status',$_GET['pay'])
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+          }
+
+          elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true'){
+              $clients=DB::table('car_contracts')
+                    ->where('form_completion','1')
+                    ->orderBy('car_contracts.fullName','asc')
+                    ->get();
+          }
+
+
+
+
+
+        
 
          if(count($clients)==0){
            return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
         else{
-          $pdf=PDF::loadView('carreportpdf',['clients'=>$clients]);
+          $pdf=PDF::loadView('carreportpdf',['clients'=>$clients])->setPaper('a4', 'landscape');
         return $pdf->stream('Car Rental Report.pdf');
         }
         }
@@ -723,8 +1739,77 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
       }
 
       public function carreportPDF2(){
-         $pdf=PDF::loadView('operationalreportpdf')->setPaper('a4', 'landscape');    
+         if($_GET['date_fil']=='true' && $_GET['model_fil']=='true' && $_GET['reg_fil']=='true'){
+           $operational=operational_expenditure::
+           join('car_rentals','car_rentals.vehicle_reg_no','=','operational_expenditures.vehicle_reg_no')
+           ->whereBetween(DB::raw('DATE(date_received)'), array($_GET['start'], $_GET['end']))
+           ->where('vehicle_model',$_GET['model'])
+           ->where('operational_expenditures.vehicle_reg_no',$_GET['reg'])
+           ->where('operational_expenditures.flag',1)
+           ->get();
+         }
+
+         elseif($_GET['date_fil']=='true' && $_GET['model_fil']=='true' && $_GET['reg_fil']!='true'){
+           $operational=operational_expenditure::
+           join('car_rentals','car_rentals.vehicle_reg_no','=','operational_expenditures.vehicle_reg_no')
+           ->whereBetween(DB::raw('DATE(date_received)'), array($_GET['start'], $_GET['end']))
+           ->where('vehicle_model',$_GET['model'])
+           ->where('operational_expenditures.flag',1)
+           ->get();
+         }
+
+         elseif($_GET['date_fil']=='true' && $_GET['model_fil']!='true' && $_GET['reg_fil']=='true'){
+           $operational=operational_expenditure::
+            whereBetween(DB::raw('DATE(date_received)'), array($_GET['start'], $_GET['end']))
+           ->where('operational_expenditures.vehicle_reg_no',$_GET['reg'])
+           ->where('operational_expenditures.flag',1)
+           ->get();
+         }
+
+         elseif($_GET['date_fil']=='true' && $_GET['model_fil']!='true' && $_GET['reg_fil']!='true'){
+           $operational=operational_expenditure::
+           whereBetween(DB::raw('DATE(date_received)'), array($_GET['start'], $_GET['end']))
+          ->where('operational_expenditures.flag',1)
+          ->get();
+         }
+
+         elseif($_GET['date_fil']!='true' && $_GET['model_fil']=='true' && $_GET['reg_fil']=='true'){
+           $operational=operational_expenditure::
+           join('car_rentals','car_rentals.vehicle_reg_no','=','operational_expenditures.vehicle_reg_no')
+           ->where('vehicle_model',$_GET['model'])
+           ->where('operational_expenditures.vehicle_reg_no',$_GET['reg'])
+           ->where('operational_expenditures.flag',1)->get();
+         }
+
+         elseif($_GET['date_fil']!='true' && $_GET['model_fil']=='true' && $_GET['reg_fil']!='true'){
+           $operational=operational_expenditure::
+           join('car_rentals','car_rentals.vehicle_reg_no','=','operational_expenditures.vehicle_reg_no')
+           ->where('vehicle_model',$_GET['model'])
+           ->where('operational_expenditures.flag',1)->get();
+         }
+
+         elseif($_GET['date_fil']!='true' && $_GET['model_fil']!='true' && $_GET['reg_fil']=='true'){
+           $operational=operational_expenditure::
+           where('operational_expenditures.vehicle_reg_no',$_GET['reg'])
+           ->where('operational_expenditures.flag',1)
+           ->get();
+         }
+
+         elseif($_GET['date_fil']!='true' && $_GET['model_fil']!='true' && $_GET['reg_fil']!='true'){
+           $operational=operational_expenditure::
+           where('operational_expenditures.flag',1)
+           ->get();
+         }
+
+         if(count($operational)==0){
+           return redirect()->back()->with('errors', "No data found to generate the requested report");
+        }
+        else{
+          $pdf=PDF::loadView('operationalreportpdf',['operational'=>$operational])->setPaper('a4', 'landscape');    
          return $pdf->stream('Car Rental Operational Report.pdf');
+        }
+
+         
       }
 
       public function carreportPDF3(){
@@ -764,7 +1849,7 @@ elseif(($_GET['c_filter']!='true') && ($_GET['con_filter']!='true') && ($_GET['y
 }
 elseif($_GET['business_type']=='Insurance'){
    if($_GET['lease']=='start'){
-  $contracts=insurance_contract::whereYear('start_date',$_GET['year'])->orderBy('full_name','asc')->get();
+  $contracts=insurance_contract::whereYear('commission_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif($_GET['lease']=='end'){
    $contracts=insurance_contract::whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
@@ -814,7 +1899,7 @@ elseif(($_GET['business_type']=='Space')&&($_GET['lease']=='end')){
         $contracts=space_contract::where('contract_status',1)->whereDate('end_date','>=',date('Y-m-d'))->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif(($_GET['business_type']=='Insurance')&&($_GET['lease']=='start')){
-  $contracts=insurance_contract::whereDate('end_date','>=',date('Y-m-d'))->whereYear('start_date',$_GET['year'])->orderBy('full_name','asc')->get();
+  $contracts=insurance_contract::whereDate('end_date','>=',date('Y-m-d'))->whereYear('commission_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif(($_GET['business_type']=='Insurance')&&($_GET['lease']=='end')){
   $contracts=insurance_contract::whereDate('end_date','>=',date('Y-m-d'))->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
@@ -834,7 +1919,7 @@ elseif(($_GET['business_type']=='Space')&&($_GET['lease']=='end')){
         $contracts=space_contract::where('contract_status',1)->whereDate('end_date','<',date('Y-m-d'))->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif(($_GET['business_type']=='Insurance')&&($_GET['lease']=='start')){
-  $contracts=insurance_contract::whereDate('end_date','<',date('Y-m-d'))->whereYear('start_date',$_GET['year'])->orderBy('full_name','asc')->get();
+  $contracts=insurance_contract::whereDate('end_date','<',date('Y-m-d'))->whereYear('commission_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif(($_GET['business_type']=='Insurance')&&($_GET['lease']=='end')){
   $contracts=insurance_contract::whereDate('end_date','<',date('Y-m-d'))->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
@@ -871,7 +1956,7 @@ elseif($_GET['business_type']=='Car Rental'){
 }
 elseif($_GET['business_type']=='Insurance'){
    if($_GET['lease']=='start'){
-  $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereYear('start_date',$_GET['year'])->orderBy('full_name','asc')->get();
+  $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereYear('commission_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif($_GET['lease']=='end'){
    $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
@@ -919,7 +2004,7 @@ elseif(($_GET['business_type']=='Space')&&($_GET['lease']=='end')){
         $contracts=space_contract::where('full_name',$_GET['c_name'])->where('contract_status',1)->whereDate('end_date','>=',date('Y-m-d'))->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif(($_GET['business_type']=='Insurance')&&($_GET['lease']=='start')){
-  $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereDate('end_date','>=',date('Y-m-d'))->whereYear('start_date',$_GET['year'])->orderBy('full_name','asc')->get();
+  $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereDate('end_date','>=',date('Y-m-d'))->whereYear('commission_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif(($_GET['business_type']=='Insurance')&&($_GET['lease']=='end')){
   $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereDate('end_date','>=',date('Y-m-d'))->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
@@ -939,7 +2024,7 @@ elseif(($_GET['business_type']=='Space')&&($_GET['lease']=='end')){
         $contracts=space_contract::where('full_name',$_GET['c_name'])->where('contract_status',1)->whereDate('end_date','<',date('Y-m-d'))->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif(($_GET['business_type']=='Insurance')&&($_GET['lease']=='start')){
-  $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereDate('end_date','<',date('Y-m-d'))->whereYear('start_date',$_GET['year'])->orderBy('full_name','asc')->get();
+  $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereDate('end_date','<',date('Y-m-d'))->whereYear('commission_date',$_GET['year'])->orderBy('full_name','asc')->get();
 }
 elseif(($_GET['business_type']=='Insurance')&&($_GET['lease']=='end')){
   $contracts=insurance_contract::where('full_name',$_GET['c_name'])->whereDate('end_date','<',date('Y-m-d'))->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();

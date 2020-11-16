@@ -1,7 +1,8 @@
 /* Base */
 
 body, body *:not(html):not(style):not(br):not(tr):not(code) {
-    font-family: Avenir, Helvetica, sans-serif;
+    /*font-family: Avenir, Helvetica, sans-serif;*/
+    font: small/ 1.5 Arial,Helvetica,sans-serif;
     box-sizing: border-box;
 }
 
@@ -41,10 +42,11 @@ a img {
 
 h1 {
     color: #2F3133;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: normal;
     margin-top: 0;
     text-align: left;
+    padding-bottom: 10px;
 }
 
 h2 {

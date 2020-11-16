@@ -71,11 +71,7 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-
+                    
                         <?php
 
                         $chats=DB::table('system_chats')->where('receiver',Auth::user()->name)->where('flag','1')->count('id');
@@ -121,9 +117,15 @@
                         $all_notifications_count=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
 
                         ?>
+                    {{-- heree --}}
+                    @if(Auth::user()->password_flag=='1')
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
 
 
-                         <a class="nav-link " href="/system_chats?id=" role="button"><i class='fas fa-comment-dots' style='font-size:26px;color:#282727'></i> <span class="badge badge-danger">{{$chats}}</span>
+
+                         <a title="View Chats" class="nav-link " href="/system_chats?id=" role="button"><i class='fas fa-comment-dots' style='font-size:26px;color:#282727'></i> <span class="badge badge-danger">{{$chats}}</span>
                         </a>
 
 
@@ -131,12 +133,12 @@
 
 
                                 @if($all_notifications_count==0)
-                            <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a title="View Notifications" id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
                             </a>
 
                             @else
-                                  <a id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <a title="View Notifications" id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger">{{$all_notifications_count}}</span>
                                 </a>
                                 @endif
@@ -265,6 +267,9 @@
                             </li>
                        {{--  @endguest --}}
                     </ul>
+                    @else
+                    @endif
+                    {{-- hereee --}}
                 </div>
             </div>
         </nav>
