@@ -4,17 +4,17 @@
 <div class="wrapper">
 <div class="main_content">
     <div class="container">
-    <br>
-    <p class="alert alert-danger">You Must Change Password on First Log in to the System.</p>   
+    <br><br>
+    <h4 style="color: tomato;"><center>You Must Change Password on First Log in to the System.</center></h4>
+    <hr style="margin-top: 0rem;
+    border-bottom: 2px solid #505559; width: 60%;">   
         @if (session('errorz'))
-        <br>
         <div class="alert alert-danger" >
           {{ session('errorz') }}
         </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <br>
       <div class="alert alert-success">
         <p>{{$message}}</p>
       </div>
@@ -32,7 +32,7 @@
           {{ csrf_field() }}
 
                   <div class="form-group{{ $errors->has('current-password') ? ' has-error' : '' }} row">
-            <label for="new-password" class="col-sm-3 control-label"><strong>Current Password :</strong></label>
+            <label for="new-password" class="col-sm-4 control-label"><strong>Current Password: <span style="color: red;">*</span></strong></label>
 
             <div class="col-sm-7">
               <input id="current-password" type="password" class="form-control" name="current-password" required>
@@ -46,7 +46,7 @@
           </div>
 
           <div class="form-group{{ $errors->has('new-password') ? ' has-error' : '' }} row">
-            <label for="new-password" class="col-sm-3 control-label"><strong>New Password :</strong></label>
+            <label for="new-password" class="col-sm-4 control-label"><strong>New Password: <span style="color: red;">*</span></strong><br><p style="font-size: 11px; color: #69b88c;margin-bottom: 0rem;">(Password must be atleast 8 characters)</p></label>
 
             <div class="col-sm-7">
               <input id="new-password" type="password" class="form-control" name="new-password" required>
@@ -60,7 +60,7 @@
           </div>
 
           <div class="form-group row">
-            <label for="new-password-confirm" class="col-sm-3 control-label"><strong>Confirm Password :</strong></label>
+            <label for="new-password-confirm" class="col-sm-4 control-label"><strong>Confirm New Password: <span style="color: red;">*</span></strong></label>
 
             <div class="col-sm-7">
               <input id="new-password-confirm" type="password" class="form-control" name="new-password_confirmation" required>
@@ -68,7 +68,7 @@
           </div>
 
            <div class="form-group">
-              <center><button type="submit" class="btn btn-primary">Submit</button>
+              <center><button type="submit" class="btn btn-primary">Change</button>
               </center>
           </div>
         </form>

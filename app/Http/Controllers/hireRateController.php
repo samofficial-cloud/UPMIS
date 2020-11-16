@@ -4,15 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\hire_rate;
 
 class hireRateController extends Controller
 {
     //
     public function addhirerate( Request $request){
+      $model=$request->get('vehicle_model');
+      $check=hire_rate::where('vehicle_model',$model)->get();
+      if(count($check)>0){
+        return redirect()->back()->with('errors', "'$model' Model Already Exists.");
+      }
+      else{
         DB::table('hire_rates')
              ->insert(['vehicle_model' => $request->get('vehicle_model'), 'hire_rate' => $request->get('hire_rate')]);
 
               return redirect()->back()->with('success', 'Hire Rate Details Added Successfully');
+      }
+      
 
     }
 
@@ -31,9 +40,11 @@ class hireRateController extends Controller
     }
 
     public function deletehirerate($id){
-    DB::table('hire_rates')
-       ->where('id', $id)
-       ->update(['flag' => '0']);
+    // DB::table('hire_rates')
+    //    ->where('id', $id)
+    //    ->update(['flag' => '0']);
+      $hire=hire_rate::find($id);
+      $hire->delete();
    return redirect()->back()->with('success', 'Hire Rate Deleted Successfully');
     }
 }

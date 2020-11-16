@@ -140,15 +140,15 @@ hr {
     <br>
     <div class="tab">
       @if ($category=='Real Estate only' OR $category=='All')
-            <button class="tablinks space_clients" onclick="openClients(event, 'space')" id="defaultOpen"><strong>Space</strong></button>
+            <button class="tablinks space_clients" onclick="openClients(event, 'space')" id="defaultOpen"><strong>Space Clients</strong></button>
             @else
             @endif
             @if ($category=='CPTU only' OR $category=='All')
-            <button class="tablinks car_clients" onclick="openClients(event, 'car')"><strong>Car Rental</strong></button>
+            <button class="tablinks car_clients" onclick="openClients(event, 'car')"><strong>Car Rental Clients</strong></button>
             @else
             @endif
              @if($category=='Insurance only' OR $category=='All')
-             <button class="tablinks insurance_clients" onclick="openClients(event, 'insurance')"><strong>Insurance</strong></button>
+             <button class="tablinks insurance_clients" onclick="openClients(event, 'insurance')"><strong>Insurance Clients</strong></button>
              @else
              @endif
         </div>
@@ -179,7 +179,7 @@ hr {
     display: none;
     float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
     <div class="modal fade" id="asp_mail" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -199,7 +199,7 @@ hr {
         </div>    
         
         <div class="form-group row">
-            <label for="asp_subject" class="col-sm-2">Subject</label>
+            <label for="asp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label></label>
             <div class="col-sm-9">
             <input type="text" id="asp_subject" name="subject" class="form-control" value="" required="">
           </div>
@@ -209,13 +209,13 @@ hr {
          <div class="form-group row">
             <label for="asp_greetings" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="asp_greetings" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="asp_greetings" name="greetings" class="form-control" value="Dear " readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="asp_message" class="col-sm-2">Body</label>
+            <label for="asp_message" class="col-sm-2">Body<span style="color: red;">*</span></label></label>
             <div class="col-sm-9">
               <textarea type="text" id="asp_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
@@ -223,22 +223,17 @@ hr {
         <br>
 
         <div class="form-group row">
-            <label for="attachment" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
         <div class="form-group row">
             <label for="asp_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="asp_closing" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="asp_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM" readonly="">
           </div>
         </div>
         <br>
@@ -313,7 +308,7 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="phone_number{{$client->client_id}}">Phone Number</label>
+            <label for="phone_number{{$client->client_id}}">Phone Number<span style="color: red;">*</span></label>
 
             <input type="text" id="phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
            maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
@@ -324,7 +319,7 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="email{{$client->client_id}}">Email</label>
+            <label for="email{{$client->client_id}}">Email<span style="color: red;">*</span></label>
             <input type="text" id="email{{$client->client_id}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
           </div>
         </div>
@@ -332,7 +327,7 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="address{{$client->client_id}}">Address</label>
+            <label for="address{{$client->client_id}}">Address<span style="color: red;">*</span></label>
             <input type="text" id="address{{$client->client_id}}" name="address" class="form-control" value="{{$client->address}}" required="">
           </div>
         </div>
@@ -348,9 +343,10 @@ hr {
              </div>
          </div>
      </div>
+     @if($client->email!='')
       <a title="Send Email to this Client" data-toggle="modal" data-target="#mail{{$client->client_id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
       <div class="modal fade" id="mail{{$client->client_id}}" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog  modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -369,38 +365,33 @@ hr {
         </div>
         <br>
         <div class="form-group row">
-            <label for="subject{{$client->client_id}}" class="col-sm-2">Subject</label>
+            <label for="subject{{$client->client_id}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
-            <input type="text" id="subject{{$client->client_id}}" name="subject" class="form-control" value="" >
+            <input type="text" id="subject{{$client->client_id}}" name="subject" class="form-control" value="" required="" >
           </div>
         </div>
          <br>
          <div class="form-group row">
             <label for="greetings{{$client->client_id}}" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="greetings{{$client->client_id}}" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="greetings{{$client->client_id}}" name="greetings" class="form-control" value="Dear {{$client->full_name}}," readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="message{{$client->client_id}}" class="col-sm-2">Body</label>
+            <label for="message{{$client->client_id}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
             <div class="col-sm-9">
-              <textarea type="text" id="message{{$client->client_id}}" name="message" class="form-control" value="" rows="7"></textarea>
+              <textarea type="text" id="message{{$client->client_id}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
         </div>
         <br>
 
         <div class="form-group row">
-            <label for="attachment{{$client->client_id}}" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="attachment{{$client->client_id}}" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
+              <span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
           </div>
         </div>
         <br>
@@ -410,7 +401,7 @@ hr {
          <div class="form-group row">
             <label for="closing{{$client->client_id}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM" readonly="">
           </div>
         </div>
         <br>
@@ -424,6 +415,9 @@ hr {
              </div>
          </div>
      </div>
+     @else
+     <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+     @endif
      @endif
    </center>
       </td>
@@ -451,7 +445,7 @@ hr {
     display: none;
     float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
     <div class="modal fade" id="mail" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -463,54 +457,51 @@ hr {
                   <form method="post" action="{{ route('SendMessage2') }}" enctype="multipart/form-data">
         {{csrf_field()}}
           <div class="form-group row">
-            <label for="client_names" class="col-sm-2">To</label>
+            <label for="ina_client_names" class="col-sm-2">To</label>
             <div class="col-sm-9">
-            <input type="text" id="client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
+            <input type="text" id="ina_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
         </div>
 
-            <div class="form-group row">
-            <label for="subject" class="col-sm-2">Salutation</label>
+        <div class="form-group row">
+            <label for="inasp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
-            <input type="text" id="greetings" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="inasp_subject" name="subject" class="form-control" value="" required="">
+          </div>
+        </div>
+         <br>
+
+            <div class="form-group row">
+            <label for="inasp_greetings" class="col-sm-2">Salutation</label>
+            <div class="col-sm-9">
+            <input type="text" id="inasp_greetings" name="greetings" class="form-control" value="Dear " readonly="">
           </div>
         </div>
          <br>
         
-        <div class="form-group row">
-            <label for="subject" class="col-sm-2">Subject</label>
-            <div class="col-sm-9">
-            <input type="text" id="subject" name="subject" class="form-control" value="" required="">
-          </div>
-        </div>
-         <br>
+        
 
         <div class="form-group row">
-            <label for="message" class="col-sm-2">Body</label>
+            <label for="inasp_message" class="col-sm-2">Body<span style="color: red;">*</span></label>
             <div class="col-sm-9">
-              <textarea type="text" id="message" name="message" class="form-control" value="" rows="7" required=""></textarea>
+              <textarea type="text" id="inasp_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
         </div>
         <br>
 
         <div class="form-group row">
-            <label for="attachment" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="inasp_attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="inasp_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center> 
           </div>
         </div>
         <br>
         <div class="form-group row">
-            <label for="closing" class="col-sm-2">Closing</label>
+            <label for="inasp_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="closing" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="inasp_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -575,25 +566,25 @@ hr {
         {{csrf_field()}}
           <div class="form-group">
           <div class="form-wrapper">
-            <label for="client_name{{$client->client_id}}">Client Name</label>
-            <input type="text" id="client_name{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
+            <label for="inasp_client_name{{$client->client_id}}">Client Name</label>
+            <input type="text" id="inasp_client_name{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
           </div>
         </div>
         <br>
 
         <div class="form-group">
           <div class="form-wrapper">
-            <label for="client_type{{$client->client_id}}">Client Type</label>
-            <input type="text" id="client_type{{$client->client_id}}" name="client_type" class="form-control" value="{{$client->type}}" readonly="">
+            <label for="inasp_client_type{{$client->client_id}}">Client Type</label>
+            <input type="text" id="inasp_client_type{{$client->client_id}}" name="client_type" class="form-control" value="{{$client->type}}" readonly="">
           </div>
         </div>
 <br>
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="phone_number{{$client->client_id}}">Phone Number</label>
+            <label for="inasp_phone_number{{$client->client_id}}">Phone Number<span style="color: red;">*</span></label>
 
-            <input type="text" id="phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            <input type="text" id="inasp_phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
            maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
 
           </div>
@@ -602,16 +593,16 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="email{{$client->client_id}}">Email</label>
-            <input type="text" id="email{{$client->client_id}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+            <label for="inasp_email{{$client->client_id}}">Email<span style="color: red;">*</span></label>
+            <input type="text" id="inasp_email{{$client->client_id}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
           </div>
         </div>
 <br>
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="address{{$client->client_id}}">Address</label>
-            <input type="text" id="address{{$client->client_id}}" name="address" class="form-control" value="{{$client->address}}" required="">
+            <label for="inasp_address{{$client->client_id}}">Address<span style="color: red;">*</span></label>
+            <input type="text" id="inasp_address{{$client->client_id}}" name="address" class="form-control" value="{{$client->address}}" required="">
           </div>
         </div>
 <br>
@@ -626,12 +617,13 @@ hr {
              </div>
          </div>
      </div>
+     @if($client->email!='')
 
         <a title="Send Email to this Client" data-toggle="modal" data-target="#mail{{$client->client_id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
       <div class="modal fade" id="mail{{$client->client_id}}" role="dialog">
 
 
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -643,71 +635,49 @@ hr {
                   <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
         {{csrf_field()}}
           <div class="form-group row">
-            <label for="client_names{{$client->client_id}}" class="col-sm-2">To</label>
+            <label for="inasp_client_names{{$client->client_id}}" class="col-sm-2">To</label>
             <div class="col-sm-9">
-            <input type="text" id="client_names{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
+            <input type="text" id="inasp_client_names{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
           </div>
         </div>
         <br>
-        {{-- <div class="dropdown" style="text-align: start;">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Add Recipient
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdowncon">
-    @foreach($Spemails as $semails)
-    <div class="form-check form-check-inline">
-       <input  type="checkbox" name="otherrecipient" value="" class="form-check-input">
-      <label  class="form-check-label">{{$semails->full_name}}</label>
-      </div>
-    @endforeach
-    
-     <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-  <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-  <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-    </div>
-  </div>
-        <br> --}}
+      
         <div class="form-group row">
-            <label for="subject{{$client->client_id}}" class="col-sm-2">Subject</label>
+            <label for="inasp_subject{{$client->client_id}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
-            <input type="text" id="subject{{$client->client_id}}" name="subject" class="form-control" value="" >
+            <input type="text" id="inasp_subject{{$client->client_id}}" name="subject" class="form-control" value="" required="" >
           </div>
         </div>
          <br>
 
          <div class="form-group row">
-            <label for="greetings{{$client->client_id}}" class="col-sm-2">Salutation</label>
+            <label for="inasp_greetings{{$client->client_id}}" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="greetings{{$client->client_id}}" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="inasp_greetings{{$client->client_id}}" name="greetings" class="form-control" value="Dear {{$client->full_name}}," readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="message{{$client->client_id}}" class="col-sm-2">Body</label>
+            <label for="inasp_message{{$client->client_id}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
             <div class="col-sm-9">
-              <textarea type="text" id="message{{$client->client_id}}" name="message" class="form-control" value="" rows="7"></textarea>
+              <textarea type="text" id="inasp_message{{$client->client_id}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
         </div>
         <br>
 
         <div class="form-group row">
-            <label for="attachment{{$client->client_id}}" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="inasp_attachment{{$client->client_id}}" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="inasp_attachment{{$client->client_id}}" name="filenames[]" class="myfrm form-control" multiple="">
+              <span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span> 
           </div>
         </div>
         <br>
         <div class="form-group row">
-            <label for="closing{{$client->client_id}}" class="col-sm-2">Closing</label>
+            <label for="inasp_closing{{$client->client_id}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="inasp_closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -722,6 +692,9 @@ hr {
              </div>
          </div>
      </div>
+     @else
+     <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+     @endif
      @endif
    </center>
       </td>
@@ -755,7 +728,7 @@ hr {
     display: none;
     float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
     <div class="modal fade" id="acp_mail" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -775,7 +748,7 @@ hr {
         </div>    
         
         <div class="form-group row">
-            <label for="acp_subject" class="col-sm-2">Subject</label>
+            <label for="acp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
             <input type="text" id="acp_subject" name="subject" class="form-control" value="" required="">
           </div>
@@ -785,13 +758,13 @@ hr {
          <div class="form-group row">
             <label for="acp_greetings" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="acp_greetings" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="acp_greetings" name="greetings" class="form-control" value="Dear " readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="acp_message" class="col-sm-2">Body</label>
+            <label for="acp_message" class="col-sm-2">Body<span style="color: red;">*</span></label>
             <div class="col-sm-9">
               <textarea type="text" id="acp_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
@@ -799,22 +772,17 @@ hr {
         <br>
 
         <div class="form-group row">
-            <label for="attachment" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="acp_attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="acp_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
         <div class="form-group row">
             <label for="acp_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="acp_closing" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="acp_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -881,7 +849,7 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="Caremail{{$i}}">Email</label>
+            <label for="Caremail{{$i}}">Email<span style="color: red;">*</span></label>
             <input type="text" id="Caremail{{$i}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
           </div>
         </div>
@@ -889,8 +857,8 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="Carcentre{{$i}}">Cost Centre</label>
-            <input type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" value="{{$client->cost_centre}}" required="">
+            <label for="Carcentre{{$i}}">Cost Centre<span style="color: red;">*</span></label>
+            <input type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" value="{{$client->cost_centre}}" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 <br>
@@ -907,10 +875,10 @@ hr {
              </div>
          </div>
      </div>
-        
+        @if($client->email!='')
         <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$i}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
       <div class="modal fade" id="carmail{{$i}}" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog  modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -929,7 +897,7 @@ hr {
         </div>
         <br>
         <div class="form-group row">
-            <label for="carsubject{{$i}}" class="col-sm-2">Subject</label>
+            <label for="carsubject{{$i}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
             <input type="text" id="carsubject{{$i}}" name="subject" class="form-control" value="" >
           </div>
@@ -939,13 +907,13 @@ hr {
          <div class="form-group row">
             <label for="cargreetings{{$i}}" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="cargreetings{{$i}}" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="cargreetings{{$i}}" name="greetings" class="form-control" value="Dear {{$client->fullName}}," readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="carmessage{{$i}}" class="col-sm-2">Body</label>
+            <label for="carmessage{{$i}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
             <div class="col-sm-9">
               <textarea type="text" id="carmessage{{$i}}" name="message" class="form-control" value="" rows="7"></textarea>
           </div>
@@ -953,19 +921,17 @@ hr {
         <br>
 
         <div class="form-group row">
-            <label for="carattachment{{$i}}" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         echo Form::file('image');
-      ?>
+            <label for="carattachment{{$i}}" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="carattachment{{$i}}" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
         <div class="form-group row">
             <label for="carclosing{{$i}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -979,6 +945,9 @@ hr {
              </div>
          </div>
      </div>
+     @else
+     <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+     @endif
      @endif
    </center>
       </td>
@@ -1005,7 +974,7 @@ hr {
     display: none;
     float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
     <div class="modal fade" id="incp_mail" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -1025,7 +994,7 @@ hr {
         </div>    
         
         <div class="form-group row">
-            <label for="incp_subject" class="col-sm-2">Subject</label>
+            <label for="incp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
             <input type="text" id="incp_subject" name="subject" class="form-control" value="" required="">
           </div>
@@ -1035,13 +1004,13 @@ hr {
          <div class="form-group row">
             <label for="incp_greetings" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="incp_greetings" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="incp_greetings" name="greetings" class="form-control" value="Dear " readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="incp_message" class="col-sm-2">Body</label>
+            <label for="incp_message" class="col-sm-2">Body<span style="color: red;">*</span></label>
             <div class="col-sm-9">
               <textarea type="text" id="incp_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
@@ -1049,15 +1018,10 @@ hr {
         <br>
 
         <div class="form-group row">
-            <label for="attachment" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="incp_attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="incp_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1065,7 +1029,7 @@ hr {
         <div class="form-group row">
             <label for="incp_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="incp_closing" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="incp_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1130,7 +1094,7 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="Caremail{{$i}}">Email</label>
+            <label for="Caremail{{$i}}">Email<span style="color: red;">*</span></label>
             <input type="text" id="Caremail{{$i}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
           </div>
         </div>
@@ -1138,8 +1102,8 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="Carcentre{{$i}}">Cost Centre</label>
-            <input type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" value="{{$client->cost_centre}}" required="">
+            <label for="Carcentre{{$i}}">Cost Centre<span style="color: red;">*</span></label>
+            <input type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" value="{{$client->cost_centre}}" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 <br>
@@ -1156,10 +1120,10 @@ hr {
              </div>
          </div>
      </div>
-        
+        @if($client->email!='')
         <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$i}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
       <div class="modal fade" id="carmail{{$i}}" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -1178,35 +1142,33 @@ hr {
         </div>
         <br>
         <div class="form-group row">
-            <label for="carsubject{{$i}}" class="col-sm-2">Subject</label>
+            <label for="carsubject{{$i}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
-            <input type="text" id="carsubject{{$i}}" name="subject" class="form-control" value="" >
+            <input type="text" id="carsubject{{$i}}" name="subject" class="form-control" value="" required="" >
           </div>
         </div>
          <br>
          <div class="form-group row">
             <label for="cargreetings{{$i}}" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="cargreetings{{$i}}" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="cargreetings{{$i}}" name="greetings" class="form-control" value="Dear {{$client->fullName}}," readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="carmessage{{$i}}" class="col-sm-2">Body</label>
+            <label for="carmessage{{$i}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
             <div class="col-sm-9">
-              <textarea type="text" id="carmessage{{$i}}" name="message" class="form-control" value="" rows="7"></textarea>
+              <textarea type="text" id="carmessage{{$i}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
         </div>
         <br>
 
         <div class="form-group row">
             <label for="carattachment{{$i}}" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         echo Form::file('image');
-      ?>
+            <div class="col-sm-9">
+              <input type="file" id="carattachment{{$i}}" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1214,7 +1176,7 @@ hr {
         <div class="form-group row">
             <label for="carclosing{{$i}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1228,6 +1190,9 @@ hr {
              </div>
          </div>
      </div>
+     @else
+     <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+     @endif
      @endif
    </center>
       </td>
@@ -1263,7 +1228,7 @@ hr {
     display: none;
     float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
     <div class="modal fade" id="aia_mail" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -1283,7 +1248,7 @@ hr {
         </div>    
         
         <div class="form-group row">
-            <label for="aia_subject" class="col-sm-2">Subject</label>
+            <label for="aia_subject" class="col-sm-2">Subject<span style="color:red;">*</span></label>
             <div class="col-sm-9">
             <input type="text" id="aia_subject" name="subject" class="form-control" value="" required="">
           </div>
@@ -1293,13 +1258,13 @@ hr {
          <div class="form-group row">
             <label for="aia_greetings" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="aia_greetings" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="aia_greetings" name="greetings" class="form-control" value="Dear " readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="aia_message" class="col-sm-2">Body</label>
+            <label for="aia_message" class="col-sm-2">Body<span style="color:red;">*</span></label>
             <div class="col-sm-9">
               <textarea type="text" id="aia_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
@@ -1307,22 +1272,17 @@ hr {
         <br>
 
         <div class="form-group row">
-            <label for="attachment" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="aia_attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="aia_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
         <div class="form-group row">
             <label for="aia_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="aia_closing" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="aia_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1385,17 +1345,12 @@ hr {
           </div>
         </div>
 
-        {{-- <div class="form-group">
-          <div class="form-wrapper">
-            <label for="client_type{{$j}}">Client Type</label>
-            <input type="text" id="client_type{{$j}}" name="client_type" class="form-control" value="{{$client->type}}" readonly="">
-          </div>
-        </div> --}}
+        
 <br>
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="phone_number{{$j}}">Phone Number</label>
+            <label for="phone_number{{$j}}">Phone Number<span style="color:red;">*</span></label>
 
             <input type="text" id="udia_act_number{{$j}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
            maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
@@ -1406,18 +1361,13 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="email{{$j}}">Email</label>
+            <label for="email{{$j}}">Email<span style="color:red;">*</span></label>
             <input type="text" id="udia_act_email{{$j}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
           </div>
         </div>
 <br>
 
-{{-- <div class="form-group">
-          <div class="form-wrapper">
-            <label for="address{{$j}}">Address</label>
-            <input type="text" id="address{{$j}}" name="address" class="form-control" value="{{$client->address}}" required="">
-          </div>
-        </div> --}}
+
 <br>
         <input type="text" name="id" value="{{$j}}" hidden="">
 
@@ -1430,9 +1380,10 @@ hr {
              </div>
          </div>
      </div>
+     @if($client->email!='')
       <a title="Send Email to this Client" data-toggle="modal" data-target="#mailIns{{$j}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
       <div class="modal fade" id="mailIns{{$j}}" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -1451,38 +1402,33 @@ hr {
         </div>
         <br>
         <div class="form-group row">
-            <label for="udia_subject{{$j}}" class="col-sm-2">Subject</label>
+            <label for="udia_subject{{$j}}" class="col-sm-2">Subject<span style="color:red;">*</span></label>
             <div class="col-sm-9">
-            <input type="text" id="udia_subject{{$j}}" name="subject" class="form-control" value="" >
+            <input type="text" id="udia_subject{{$j}}" name="subject" class="form-control" value="" required="">
           </div>
         </div>
          <br>
          <div class="form-group row">
             <label for="udia_greetings{{$j}}" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="udia_greetings{{$j}}" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="udia_greetings{{$j}}" name="greetings" class="form-control" value="Dear {{$client->full_name}}," readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="udia_message{{$j}}" class="col-sm-2">Message</label>
+            <label for="udia_message{{$j}}" class="col-sm-2">Message<span style="color:red;">*</span></label>
             <div class="col-sm-9">
-              <textarea type="text" id="udia_message{{$j}}" name="message" class="form-control" value="" rows="7"></textarea>
+              <textarea type="text" id="udia_message{{$j}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
         </div>
         <br>
 
         <div class="form-group row">
-            <label for="udia_attachment{{$j}}" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="udia_attachment{{$j}}" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="udia_attachment{{$j}}" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1490,7 +1436,7 @@ hr {
         <div class="form-group row">
             <label for="udia_closing{{$j}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="udia_closing{{$j}}" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="udia_closing{{$j}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1504,6 +1450,9 @@ hr {
              </div>
          </div>
      </div>
+     @else
+     <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+     @endif
      @endif
    </center>
       </td>
@@ -1530,7 +1479,7 @@ hr {
     display: none;
     float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
     <div class="modal fade" id="inia_mail" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -1550,7 +1499,7 @@ hr {
         </div>    
         
         <div class="form-group row">
-            <label for="inia_subject" class="col-sm-2">Subject</label>
+            <label for="inia_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
             <input type="text" id="inia_subject" name="subject" class="form-control" value="" required="">
           </div>
@@ -1560,13 +1509,13 @@ hr {
          <div class="form-group row">
             <label for="inia_greetings" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="inia_greetings" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="inia_greetings" name="greetings" class="form-control" value="Dear " readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="inia_message" class="col-sm-2">Body</label>
+            <label for="inia_message" class="col-sm-2">Message<span style="color: red;">*</span></label>
             <div class="col-sm-9">
               <textarea type="text" id="inia_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
           </div>
@@ -1574,22 +1523,17 @@ hr {
         <br>
 
         <div class="form-group row">
-            <label for="attachment" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="inia_attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="inia_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
         <div class="form-group row">
             <label for="inia_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="inia_closing" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="inia_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1660,7 +1604,7 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="udia_inact_number{{$k}}">Phone Number</label>
+            <label for="udia_inact_number{{$k}}">Phone Number<span style="color: red;">*</span></label>
 
             <input type="text" id="udia_inact_number{{$k}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
            maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
@@ -1671,7 +1615,7 @@ hr {
 
 <div class="form-group">
           <div class="form-wrapper">
-            <label for="udia_inact_email{{$k}}">Email</label>
+            <label for="udia_inact_email{{$k}}">Email<span style="color: red;">*</span></label>
             <input type="text" id="udia_inact_email{{$k}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
           </div>
         </div>
@@ -1695,9 +1639,10 @@ hr {
              </div>
          </div>
      </div>
+     @if($client->email!='')
       <a title="Send Email to this Client" data-toggle="modal" data-target="#in_mailIns{{$k}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
       <div class="modal fade" id="in_mailIns{{$k}}" role="dialog">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">New Message</h5></b>
@@ -1716,7 +1661,7 @@ hr {
         </div>
         <br>
         <div class="form-group row">
-            <label for="udia_inact_subject{{$k}}" class="col-sm-2">Subject</label>
+            <label for="udia_inact_subject{{$k}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
             <input type="text" id="udia_inact_subject{{$k}}" name="subject" class="form-control" value="" >
           </div>
@@ -1725,13 +1670,13 @@ hr {
          <div class="form-group row">
             <label for="udia_inact_greetings{{$k}}" class="col-sm-2">Salutation</label>
             <div class="col-sm-9">
-            <input type="text" id="udia_inact_greetings{{$k}}" name="greetings" class="form-control" value="Dear," readonly="">
+            <input type="text" id="udia_inact_greetings{{$k}}" name="greetings" class="form-control" value="Dear {{$client->full_name}}," readonly="">
           </div>
         </div>
          <br>
 
         <div class="form-group row">
-            <label for="udia_inact_message{{$k}}" class="col-sm-2">Message</label>
+            <label for="udia_inact_message{{$k}}" class="col-sm-2">Message<span style="color: red;">*</span></label>
             <div class="col-sm-9">
               <textarea type="text" id="udia_inact_message{{$k}}" name="message" class="form-control" value="" rows="7"></textarea>
           </div>
@@ -1739,15 +1684,10 @@ hr {
         <br>
 
         <div class="form-group row">
-            <label for="udia_inact_attachment{{$k}}" class="col-sm-3">Attachments</label>
-            <div class="col-sm-8">
-              <?php
-         echo Form::open(array('url' => '/uploadfile','files'=>'true'));
-         //echo 'Select the file to upload.';
-         echo Form::file('image');
-         //echo Form::submit('Upload File');
-         //echo Form::close();
-      ?>
+            <label for="udia_inact_attachment{{$k}}" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="inia_attachment{{$k}}" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1755,7 +1695,7 @@ hr {
         <div class="form-group row">
             <label for="udia_inact_closing{{$k}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="udia_inact_closing{{$k}}" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="udia_inact_closing{{$k}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1769,6 +1709,9 @@ hr {
              </div>
          </div>
      </div>
+     @else
+     <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+     @endif
      @endif
    </center>
       </td>
@@ -1916,7 +1859,11 @@ document.getElementById("defaultOpencptu").click();
 }
 document.getElementById("defaultOpenIns").click();
 </script>
-
+<script>
+function myFunction() {
+  alert("This client has no email.");
+}
+</script>
 <script type="text/javascript">
   $(document).ready(function(){
      // document.getElementById("dropdowncon").addEventListener('click', function (event) { 
@@ -1952,19 +1899,29 @@ var table5 = $('#myTable5').DataTable( {
  
     $('#myTable tbody').on( 'click', 'tr', function () {
       document.getElementById("asp_par_names").innerHTML="";
+      document.getElementById("asp_greetings").value="Dear ";
+      var emailz = $(this).find('td:eq(2)').text();
+      if(emailz==""){
+
+      }
+      else{
+
         $(this).toggleClass('selected');
          var count6=table6.rows('.selected').data().length +' row(s) selected';
-    if(count6>'2'){
-      $('#asp_btn_mail').show();
-    }
-    else{
-      $('#asp_btn_mail').hide();
+      if(count6>'2'){
+       $('#asp_btn_mail').show();
+      }
+      else{
+        $('#asp_btn_mail').hide();
+      }
     }
     });
 
     
   
      $('#asp_btn_mail').click( function () {
+      document.getElementById("asp_par_names").innerHTML="";
+      document.getElementById("asp_greetings").value="Dear ";
         var datas6 = table6.rows('.selected').data();
         var result6 = [];
         for (var i = 0; i < datas6.length; i++)
@@ -1984,6 +1941,17 @@ var table5 = $('#myTable5').DataTable( {
           }
           
         }
+
+        var salutation6 = document.getElementById("asp_greetings");
+        for(var i=0; i< result6.length;i++){
+          if(i==(result6.length-1)){
+            salutation6.value += result6[i]+ '.';
+          }
+          else{
+            salutation6.value += result6[i] + ', ';
+          }
+          
+        }
          //console.log(result);
     } );
 
@@ -1992,6 +1960,13 @@ var table5 = $('#myTable5').DataTable( {
  
     $('#myTable1 tbody').on( 'click', 'tr', function () {
       document.getElementById("par_names").innerHTML="";
+      document.getElementById("inasp_greetings").value="Dear ";
+      var emailz1 = $(this).find('td:eq(2)').text();
+      if(emailz1==''){
+
+      }
+      else{
+
         $(this).toggleClass('selected');
          var count=table1.rows('.selected').data().length +' row(s) selected';
          console.log(count);
@@ -2003,11 +1978,14 @@ var table5 = $('#myTable5').DataTable( {
       $('#btn_mail').hide();
       console.log("hide");
     }
+  }
     } );
 
     
   
      $('#btn_mail').click( function () {
+      document.getElementById("par_names").innerHTML="";
+      document.getElementById("inasp_greetings").value="Dear ";
         var datas = table1.rows('.selected').data();
         var result = [];
         for (var i = 0; i < datas.length; i++)
@@ -2027,6 +2005,17 @@ var table5 = $('#myTable5').DataTable( {
           }
           
         }
+
+        var salutation7 = document.getElementById("inasp_greetings");
+        for(var i=0; i< result.length;i++){
+          if(i==(result.length-1)){
+            salutation7.value += result[i]+ '.';
+          }
+          else{
+            salutation7.value += result[i] + ', ';
+          }
+          
+        }
          //console.log(result);
     } );
 
@@ -2035,19 +2024,28 @@ var table5 = $('#myTable5').DataTable( {
  
     $('#myTable2 tbody').on( 'click', 'tr', function () {
       document.getElementById("acp_par_names").innerHTML="";
+      document.getElementById("acp_greetings").value="Dear ";
+      var emailz2 = $(this).find('td:eq(3)').text();
+      if(emailz2==''){
+
+      }
+      else{
         $(this).toggleClass('selected');
-         var count7=table7.rows('.selected').data().length +' row(s) selected';
-    if(count7>'2'){
-      $('#acp_btn_mail').show();
-    }
-    else{
-      $('#acp_btn_mail').hide();
-    }
+        var count7=table7.rows('.selected').data().length +' row(s) selected';
+          if(count7>'2'){
+            $('#acp_btn_mail').show();
+          }
+          else{
+            $('#acp_btn_mail').hide();
+          }
+  }
     });
 
     
   
      $('#acp_btn_mail').click( function () {
+      document.getElementById("acp_par_names").innerHTML="";
+      document.getElementById("acp_greetings").value="Dear ";
         var datas7 = table7.rows('.selected').data();
         var result7 = [];
         for (var i = 0; i < datas7.length; i++)
@@ -2067,6 +2065,17 @@ var table5 = $('#myTable5').DataTable( {
           }
           
         }
+
+        var salutation8 = document.getElementById("acp_greetings");
+        for(var i=0; i< result7.length;i++){
+          if(i==(result7.length-1)){
+            salutation8.value += result7[i]+ '.';
+          }
+          else{
+            salutation8.value += result7[i] + ', ';
+          }
+          
+        }
          //console.log(result);
     } );
 
@@ -2075,19 +2084,30 @@ var table5 = $('#myTable5').DataTable( {
  
     $('#myTable5 tbody').on( 'click', 'tr', function () {
       document.getElementById("incp_par_names").innerHTML="";
+      document.getElementById("incp_greetings").value="Dear ";
+      var emailz3 = $(this).find('td:eq(3)').text();
+      if(emailz3==''){
+
+      }
+      else{
         $(this).toggleClass('selected');
          var count8=table8.rows('.selected').data().length +' row(s) selected';
-    if(count8>'2'){
-      $('#incp_btn_mail').show();
-    }
-    else{
-      $('#incp_btn_mail').hide();
-    }
+          if(count8>'2'){
+            $('#incp_btn_mail').show();
+          }
+          else{
+            $('#incp_btn_mail').hide();
+          }
+      }
+
+        
     });
 
     
   
      $('#incp_btn_mail').click( function () {
+      document.getElementById("incp_par_names").innerHTML="";
+      document.getElementById("incp_greetings").value="Dear ";
         var datas8 = table8.rows('.selected').data();
         var result8 = [];
         for (var i = 0; i < datas8.length; i++)
@@ -2107,7 +2127,18 @@ var table5 = $('#myTable5').DataTable( {
           }
           
         }
-         //console.log(result);
+
+        var salutation9 = document.getElementById("incp_greetings");
+        for(var i=0; i< result8.length;i++){
+          if(i==(result8.length-1)){
+            salutation9.value += result8[i]+ '.';
+          }
+          else{
+            salutation9.value += result8[i] + ', ';
+          }
+          
+        }
+         
     } );
 
 
@@ -2115,19 +2146,28 @@ var table5 = $('#myTable5').DataTable( {
  
     $('#myTable3 tbody').on( 'click', 'tr', function () {
       document.getElementById("aia_par_names").innerHTML="";
-        $(this).toggleClass('selected');
+      document.getElementById("aia_greetings").value="Dear ";
+       var emailz4 = $(this).find('td:eq(2)').text();
+       if(emailz4==""){}
+        else{
+          $(this).toggleClass('selected');
          var count9=table9.rows('.selected').data().length +' row(s) selected';
-    if(count9>'2'){
-      $('#aia_btn_mail').show();
-    }
-    else{
-      $('#aia_btn_mail').hide();
-    }
+            if(count9>'2'){
+              $('#aia_btn_mail').show();
+            }
+            else{
+              $('#aia_btn_mail').hide();
+            }
+        }
+
+        
     });
 
     
   
      $('#aia_btn_mail').click( function () {
+       document.getElementById("aia_par_names").innerHTML="";
+      document.getElementById("aia_greetings").value="Dear ";
         var datas9 = table9.rows('.selected').data();
         var result9 = [];
         for (var i = 0; i < datas9.length; i++)
@@ -2147,6 +2187,17 @@ var table5 = $('#myTable5').DataTable( {
           }
           
         }
+
+        var salutation10 = document.getElementById("aia_greetings");
+        for(var i=0; i< result9.length;i++){
+          if(i==(result9.length-1)){
+            salutation10.value += result9[i]+ '.';
+          }
+          else{
+            salutation10.value += result9[i] + ', ';
+          }
+          
+        }
          //console.log(result);
     } );
 
@@ -2155,19 +2206,27 @@ var table5 = $('#myTable5').DataTable( {
  
     $('#myTable4 tbody').on( 'click', 'tr', function () {
       document.getElementById("inia_par_names").innerHTML="";
-        $(this).toggleClass('selected');
+      document.getElementById("inia_greetings").value="Dear ";
+       var emailz5 = $(this).find('td:eq(2)').text();
+       if(emailz5==''){}
+        else{
+          $(this).toggleClass('selected');
          var count10=table10.rows('.selected').data().length +' row(s) selected';
-    if(count10>'2'){
-      $('#inia_btn_mail').show();
-    }
-    else{
-      $('#inia_btn_mail').hide();
-    }
+          if(count10>'2'){
+            $('#inia_btn_mail').show();
+          }
+          else{
+            $('#inia_btn_mail').hide();
+          }
+        }
+        
     });
 
     
   
      $('#inia_btn_mail').click( function () {
+      document.getElementById("inia_par_names").innerHTML="";
+      document.getElementById("inia_greetings").value="Dear ";
         var datas10 = table10.rows('.selected').data();
         var result10 = [];
         for (var i = 0; i < datas10.length; i++)
@@ -2187,8 +2246,19 @@ var table5 = $('#myTable5').DataTable( {
           }
           
         }
+
+        var salutation11 = document.getElementById("inia_greetings");
+        for(var i=0; i< result10.length;i++){
+          if(i==(result10.length-1)){
+            salutation11.value += result10[i]+ '.';
+          }
+          else{
+            salutation11.value += result10[i] + ', ';
+          }
+          
+        }
          //console.log(result);
-    } );
+    });
 
    
 

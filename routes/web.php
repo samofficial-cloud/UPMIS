@@ -22,6 +22,8 @@ Route::post('/login/custom', [
 
     Route::group(['middleware' => 'auth'], function(){
 
+    Route::get('file','UploadFileController@create');
+    Route::post('file','UploadFileController@store');
 
     Route::get('/', 'ChartController@index')->name('home');
     Route::get('/home2', 'ChartController@udiaindex')->name('home2');
@@ -106,6 +108,12 @@ Route::post('/car/hire_rate/edit','hireRateController@edithirerate')->name('edit
 
 Route::get('/car/hire_rate/delete/{id}','hireRateController@deletehirerate')->name('deletehirerate');
 
+Route::post('/car/cost_centres/add','carRentalController@addcentre')->name('addcentre');
+
+Route::post('/car/cost_centres/edit','carRentalController@editcentre')->name('editcentre');
+
+Route::get('/car/cost_centres/delete/{id}','carRentalController@deletecentre')->name('deletecentre');
+
 Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('deletecar');
 
 Route::get('/contracts/car_rental','carContractsController@index')->name('carContracts');
@@ -161,11 +169,15 @@ Route::post('/autocomplete/faculty', 'carRentalController@faculty')->name('autoc
 
 Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('autocomplete.spaces');
 
+Route::post('/autocomplete/cost_centres', 'carRentalController@fetchcostcentres')->name('autocomplete.costcentres');
+
 Route::post('/autocomplete/client_name', 'clientsController@fetchclient_name')->name('autocomplete.client_name');
 
 Route::get('/reports', 'HomeController@report')->name('reports');
 
 Route::get('/reports/space1', 'HomeController@spacereport1')->name('spacereport1');
+
+Route::get('/reports/invoice/debt_summary', 'HomeController@debtsummaryPDF')->name('debtsummarypdf');
 
 Route::get('/reports/space1/pdf','HomeController@spacereport1PDF')->name('spacereport1pdf');
 
@@ -184,6 +196,11 @@ Route::get('/reports/car_rental3/pdf','HomeController@carreportPDF3')->name('car
 Route::get('/reports/contracts/pdf','HomeController@contractreportPDF')->name('contractreportpdf');
 
 Route::get('/reports/invoice/pdf','HomeController@invoicereportPDF')->name('invoicereportpdf');
+
+Route::get('/reports/system/user/pdf','HomeController@systemreportPDF')->name('systemreportpdf');
+
+Route::get('/reports/tenancy/pdf','HomeController@tenancyreport')->name('tenancyreportpdf');
+
 
 Route::get('/notification/{id}', 'notificationsController@ShowNotifications')->name('ShowNotifications');
 

@@ -34,7 +34,7 @@
     margin-top: 0rem;
     margin-bottom: 2rem;
     border: 0;
-    border: 1px solid #505559;
+    border-bottom: 2px solid #505559;
   }
   .form-inline .form-control {
     width: 100%;
@@ -284,11 +284,11 @@
 <script type="text/javascript">
    $(document).ready(function(){
   var table = $('#myTable').DataTable( {
-    dom: '<"top"l>rt<"bottom">'
+    dom: '<"top"l>rt<"bottom"pi>'
   } );
 
   var table1 = $('#myTable1').DataTable( {
-    dom: '<"top"l>rt<"bottom">'
+    dom: '<"top"l>rt<"bottom"pi>'
   } );
   } );
 </script>

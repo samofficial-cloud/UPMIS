@@ -43,7 +43,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards'),<br>DPDI.
+@lang('Regards'),<br><span style="font-style: oblique; font-size: 15px;">Directorate of Planning, Development and Investment, UDSM.</span>
 @endif
 
 {{-- Subcopy --}}

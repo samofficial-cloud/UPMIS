@@ -104,14 +104,25 @@ class clientsController extends Controller
         $subject=$request->get('subject');
         $message=$request->get('message');
         $type=$request->get('type');
-        if ($request->hasFile('image')) {
-        $file = $request->file('image');
-        $destinationPath = 'uploads';
-        $filename=$file->getClientOriginalName();
-        $extension=$file->getClientOriginalExtension();
-        $mime=$file->getMimeType();
-        $path=$file->getRealPath();
-        $file->move($destinationPath,$filename);
+
+        if($request->hasfile('filenames')){
+
+          foreach($request->file('filenames') as $file) {
+              $filename = $file->getClientOriginalName().'.'.$file->extension();
+                
+              $filepaths[]=public_path().'/'.'uploads'.'/'.$filename;
+              // $filename[]=$file->getClientOriginalName();
+              // $mime[]=$file->getMimeType();
+              $file->move(public_path().'/uploads/', $filename);
+            }
+
+        // $file = $request->file('image');
+        // $destinationPath = 'uploads';
+        // $filename=$file->getClientOriginalName();
+        // $extension=$file->getClientOriginalExtension();
+        // $mime=$file->getMimeType();
+        // $path=$file->getRealPath();
+        // $file->move($destinationPath,$filename);
         if($type=='space'){
            $client=client::where('full_name',$name)->first();
         }
@@ -123,7 +134,8 @@ class clientsController extends Controller
            $client=insurance_contract::where('full_name',$name)->first();
         }
     // \Notification::send($recipients, new Announcement($centre));
-      $client->notify(new SendMessage($name, $subject, $message, $file,$extension,$filename,$mime,$path));
+
+      $client->notify(new SendMessage($name, $subject, $message, $filepaths));
       return redirect()->back()->with('success', 'Message Sent Successfully');
       }
       else{
@@ -147,14 +159,17 @@ class clientsController extends Controller
         $subject=$request->get('subject');
         $message=$request->get('message');
         $type=$request->get('type');
-        if ($request->hasFile('image')) {
-        $file = $request->file('image');
-        $destinationPath = 'uploads';
-        $filename=$file->getClientOriginalName();
-        $extension=$file->getClientOriginalExtension();
-        $mime=$file->getMimeType();
-        $path=$file->getRealPath();
-        $file->move($destinationPath,$filename);
+
+        if($request->hasfile('filenames')) {
+          foreach($request->file('filenames') as $file) {
+              $filename = $file->getClientOriginalName().'.'.$file->extension();
+                
+              $filepaths[]=public_path().'/'.'uploads'.'/'.$filename;
+              // $filename[]=$file->getClientOriginalName();
+              // $mime[]=$file->getMimeType();
+              $file->move(public_path().'/uploads/', $filename);
+            }
+        
         foreach($names as $name){
           if($type=='space'){
            $client=client::where('full_name',$name)->first();
@@ -167,7 +182,8 @@ class clientsController extends Controller
            $client=insurance_contract::where('full_name',$name)->first();
         }
     // \Notification::send($recipients, new Announcement($centre));
-      $client->notify(new SendMessage($name, $subject, $message, $file,$extension,$filename,$mime,$path));
+        $client->notify(new SendMessage($name, $subject, $message, $filepaths));
+     
         }
     
       return redirect()->back()->with('success', 'Message Sent Successfully');
@@ -185,7 +201,7 @@ class clientsController extends Controller
            $client=insurance_contract::where('full_name',$name)->first();
         }
     // \Notification::send($recipients, new Announcement($centre));
-       $client->notify(new SendMessage2($name, $subject, $message));
+        $client->notify(new SendMessage2($name, $subject, $message));
         }
          return redirect()->back()->with('success', 'Message Sent Successfully');
       } 

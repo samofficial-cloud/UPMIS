@@ -412,12 +412,12 @@ $today=date('Y-m-d');
     <div class="form-group row" id="estimationdiv">
 						<div class="form-wrapper col-6">
 							<label for="estimated_distance">Estimated Distance in Kms</label>
-							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{number_format($contract->estimated_distance)}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{number_format($contract->estimated_distance)}}" readonly onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="estimated_cost">Estimated Cost in Tshs.</label>
                             <span id="estimated_costmsg"></span>
-							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{number_format($contract->estimated_cost)}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{number_format($contract->estimated_cost)}}"  readonly onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 						</div>
 					</div>
 

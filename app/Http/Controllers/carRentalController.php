@@ -16,8 +16,9 @@ class carRentalController extends Controller
     public function index(){
     	$cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
       $operational=operational_expenditure::where('flag','1')->get();
-      $rate=hire_rate::get();
-    	return view('car')->with('cars',$cars)->with('operational',$operational)->with('rate',$rate);
+      $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
+      $costcentres=cost_centre::orderBy('costcentre_id','asc')->get();
+    	return view('car')->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres);
     }
 
     public function newcar(Request $request){
@@ -60,6 +61,40 @@ public function deletecar($id){
     $car->save();
     return redirect()->back()->with('success', 'Car Deleted Successfully');
 
+}
+
+public function addcentre(Request $request){
+ $centre_id=$request->get('costcentreid');
+ $check=cost_centre::where('costcentre_id',$centre_id)->get();
+ if(count($check)>0){
+  return redirect()->back()->with('errors', "This cost centre '$centre_id' already exists");
+ }
+ else{
+  $centre_name=$request->get('centrename');
+  $data=array('costcentre_id'=>$centre_id,"costcentre"=>$centre_name);
+  DB::table('cost_centres')->insert($data);
+  return redirect()->back()->with('success', 'Cost Centre Added Successfully');
+ }
+}
+
+public function editcentre(Request $request){
+  $id=$request->get('centreid');
+
+      DB::table('cost_centres')
+      ->where('id', $id)
+      ->update(['costcentre_id' => $request->get('costcentre_id')]);
+
+       DB::table('cost_centres')
+      ->where('id', $id)
+      ->update(['costcentre' => $request->get('centrename')]);
+
+      return redirect()->back()->with('success', 'Cost Centre Details Edited Successfully');
+}
+
+public function deletecentre($id){
+  $centre=cost_centre::find($id);
+  $centre->delete();
+  return redirect()->back()->with('success', 'Cost Centre Deleted Successfully');
 }
 
    public function fetch(Request $request)
@@ -182,6 +217,30 @@ public function deletecar($id){
      
       echo $output;
      
+   }
+ }
+
+ public function fetchcostcentres(Request $request){
+  if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = cost_centre::where('costcentre_id', 'LIKE', "%{$query}%")->get();
+      if(count($data)!=0){
+      $output = '<ul class="dropdown-menu_custom" style="display: block;
+    width: 100%; margin-left: 0%; margin-top: 0%; margin-bottom: 1%;">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li id="list" style="margin-left: 1%; margin-right: 1%;">'.$row->costcentre_id.' - '.$row->costcentre.'</li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
+     else{
+      echo "0";
+     }
+
    }
  }
 

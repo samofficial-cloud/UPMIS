@@ -226,7 +226,39 @@ Detailed Information:
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
      <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
     </b>
-    <br><br><strong>List of Car Rental Clients</strong>
+      @if($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true')
+        <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>, Contract Status is <strong>{{$_GET['cont']}}</strong>, Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+      @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true')
+         <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>, Contract Status is <strong>{{$_GET['cont']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+      @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true')
+        <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>, Contract Status is <strong>{{$_GET['cont']}}</strong> and Payment Status is <strong>{{$_GET['pay']}}</strong>
+      @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true')
+        <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong> and Contract Status is <strong>{{$_GET['cont']}}</strong>
+      @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true')
+        <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>, Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+      @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true') 
+        <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+      @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true')
+        <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong> and Payment Status is <strong>{{$_GET['pay']}}</strong>
+      @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true')
+        <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>
+      @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true')
+        <br><br>List of Car Rental Clients whose Contract Status is <strong>{{$_GET['cont']}}</strong>, Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+      @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true')
+        <br><br>List of Car Rental Clients whose Contract Status is <strong>{{$_GET['cont']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+      @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true')
+        <br><br>List of Car Rental Clients whose Contract Status is <strong>{{$_GET['cont']}}</strong> and Payment Status is <strong>{{$_GET['pay']}}</strong>
+      @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true')
+        <br><br>List of Car Rental Clients whose Contract Status is <strong>{{$_GET['cont']}}</strong>
+      @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true')
+        <br><br>List of Car Rental Clients whose Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+      @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true')
+        <br><br>List of Car Rental Clients whose Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+      @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true')
+        <br><br>List of Car Rental Clients whose Payment Status is <strong>{{$_GET['pay']}}</strong>
+      @else
+        <br><br>List of Car Rental Clients
+      @endif
 </center>
 <br>
 @if(count($clients)>0)
@@ -234,6 +266,7 @@ Detailed Information:
   <thead class="thead-dark">
     <tr>
       <th scope="col"style="width: 5%;"><center>S/N</center></th>
+      <th scope="col">Designation</th>
       <th scope="col"><center>Client Name</center></th>
       <th scope="col" style="width: 16%;"><center>Vehicle Reg No.</center></th>
       <th scope="col" style="width: 14%;"><center>Start Date</center></th>
@@ -245,7 +278,8 @@ Detailed Information:
     @foreach($clients as $client)
     <tr>
     <td scope="row" class="counterCell" style="text-align: center;">.</td>
-    <td>{{$client->designation}} {{$client->fullName}}</td>
+    <td>{{$client->designation}}</td>
+    <td>{{$client->fullName}}</td>
     <td><center>{{$client->vehicle_reg_no}}</center></td>
     <td><center>{{date("d/m/Y",strtotime($client->start_date))}}</center></td>
     <td><center>{{date("d/m/Y",strtotime($client->end_date))}}</center></td>
@@ -264,7 +298,7 @@ Detailed Information:
   <img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
      <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
     </b>
-    <br><br>CPTU Revenue Report For the Duration of <strong>{{date("d/m/Y",strtotime($_GET['start_date']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end_date']))}}</strong>
+    <br><br>CPTU Revenue Report For the Duration <strong>{{date("d/m/Y",strtotime($_GET['start_date']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end_date']))}}</strong>
 </center>
 <br>
 @if(count($revenues)>0)
@@ -276,7 +310,7 @@ Detailed Information:
       <th scope="col" style="width: 18%"><center>Vehicle Reg No.</center></th>
       <th scope="col" style="width: 16%"><center>Invoicing Start Date</center></th>
       <th scope="col" style="width: 16%"><center>Invoicing End Date</center></th>
-      <th scope="col" style="width: 16%"><center>Amount Paid</center></th>
+      <th scope="col" style="width: 16%"><center>Amount Paid(TZS)</center></th>
     </tr>
   </thead>
   <tbody>
@@ -287,7 +321,7 @@ Detailed Information:
     <td><center>{{$client->vehicle_reg_no}}</center></td>
     <td><center>{{date("d/m/Y",strtotime($client->invoicing_period_start_date))}}</center></td>
     <td><center>{{date("d/m/Y",strtotime($client->invoicing_period_end_date))}}</center></td>
-    <td><center>{{$client->currency_invoice}} {{number_format($client->amount_to_be_paid)}}</center></td>
+    <td style="text-align: right;">{{number_format($client->amount_to_be_paid)}}</td>
 </tr>
 <?php
 $total=$total + $client->amount_to_be_paid;
@@ -298,7 +332,7 @@ $total=$total + $client->amount_to_be_paid;
 <table>
   <tr style="width: 100%">
   <td><b>TOTAL</b></td>
-  <td style="width: 16%"><center>{{$client->currency_invoice}} {{number_format($total)}}</center></td>
+  <td style="width: 16%; text-align: right;">{{$client->currency_invoice}} {{number_format($total)}}</td>
 </tr>
 </table>
 @else

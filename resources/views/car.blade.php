@@ -178,6 +178,23 @@ div.dataTables_filter{
   padding-left:852px;
   padding-bottom:20px;
 }
+#myTable3_filter {
+   padding-left:590px;
+  padding-bottom:10px;
+  }
+
+  #myTable3_length{
+    padding-left: 50px;
+  }
+
+   #myTable2_length{
+    padding-left: 48px;
+  }
+
+  #myTable2_filter {
+   padding-left:595px;
+  padding-bottom:10px;
+  }
 
 div.dataTables_length label {
     font-weight: normal;
@@ -206,7 +223,7 @@ hr {
     margin-top: 0rem;
     margin-bottom: 2rem;
     border: 0;
-    border: 1px solid #505559;
+    border-bottom: 2px solid #505559;
 }
 
 .form-inline .form-control {
@@ -308,7 +325,9 @@ $i='1';
             <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>VEHICLE FLEET</strong></button>
             {{-- <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button> --}}
             <button class="tablinks" onclick="openContracts(event, 'hire')"><strong>HIRE RATE</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'cost_centres')"><strong>COST CENTRES</strong></button>
              <button class="tablinks" onclick="openContracts(event, 'availability')"><strong>VEHICLE AVAILABILITY</strong></button>
+             
         </div>
         <div id="car_list" class="tabcontent">
   <br>
@@ -337,14 +356,14 @@ $i='1';
         {{csrf_field()}}
 					<div class="form-group" id="regNodiv">
 					<div class="form-wrapper">
-						<label for="reg_no">Vehicle Registration No</label>
+						<label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
 						<input type="text" id="reg_no" name="vehicle_reg_no" class="form-control" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
 					</div>
 				</div>
 
 				<div class="form-group" id="modeldiv">
 					<div class="form-wrapper">
-						<label for="model">Vehicle Model</label>
+						<label for="model">Vehicle Model<span style="color: red;">*</span></label>
             <select class="form-control" required="" id="model" name="model" required="">
               <option value=""disabled selected hidden>select Vehicle Model</option>
               @foreach($model as $model)
@@ -356,7 +375,7 @@ $i='1';
 
 				<div class="form-group">
 					<div class="form-wrapper" id="clientdiv">
-          <label for="vehicle_status">Vehicle Status</label>
+          <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
             <select class="form-control" required="" id="vehicle_status" name="vehicle_status" required="">
               <option value=""disabled selected hidden>select Vehicle status</option>
               <option value="Running">Running</option>
@@ -369,7 +388,7 @@ $i='1';
 
 				<div class="form-group" id="hirediv">
 					<div class="form-wrapper">
-						<label for="hire_rate">Hire Rate/KM</label>
+						<label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
 						<input type="text" id="hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 					</div>
 				</div>
@@ -426,7 +445,7 @@ $i='1';
         {{csrf_field()}}
 					<div class="form-group">
 					<div class="form-wrapper">
-						<label for="reg_no">Vehicle Registration No</label>
+						<label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
 						<input type="text" id="reg_no{{$cars->id}}" name="vehicle_reg_no" class="form-control" value="{{$cars->vehicle_reg_no}}" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
 					</div>
 				</div>
@@ -434,7 +453,7 @@ $i='1';
 
 				<div class="form-group">
 					<div class="form-wrapper">
-						<label for="model">Vehicle Model</label>
+						<label for="model">Vehicle Model<span style="color: red;">*</span></label>
             <select class="form-control" required="" id="model{{$cars->id}}" name="model" required="">
               <option value="{{$cars->vehicle_model}}">{{$cars->vehicle_model}}</option>
               @foreach($model1 as $model)
@@ -448,7 +467,7 @@ $i='1';
                 <br>
 				<div class="form-group">
 					<div class="form-wrapper">
-          <label for="vehicle_status">Vehicle Status</label>
+          <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
             <select class="form-control" required="" id="vehicle_status{{$cars->id}}" name="vehicle_status" required="">
               <option value="{{$cars->vehicle_status}}">{{$cars->vehicle_status}}</option>
               @if($cars->vehicle_status != 'Running')
@@ -467,7 +486,7 @@ $i='1';
 <br>
 				<div class="form-group">
 					<div class="form-wrapper">
-						<label for="hire_rate">Hire Rate/KM</label>
+						<label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
 						<input type="text" id="hire_rate{{$cars->id}}" name="hire_rate" class="form-control" value="{{$cars->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 					</div>
 				</div>
@@ -544,24 +563,25 @@ $i='1';
                 </div>
 
                  <div class="modal-body">
-                  <form method="post" action="{{ route('addhirerate') }}">
+                  <form method="post" action="{{ route('addhirerate') }}" onsubmit="return gethire()">
         {{csrf_field()}}
         <div class="form-group" id="modeldiv">
           <div class="form-wrapper">
-            <label for="model">Vehicle Model</label>
+            <label for="model">Vehicle Model<span style="color: red;">*</span></label>
             <input type="text" id="hire_model" name="vehicle_model" class="form-control" required="">
           </div>
         </div>
 
         <div class="form-group" id="hirediv">
           <div class="form-wrapper">
-            <label for="hire_hire_rate">Hire Rate/Km</label>
+            <label for="hire_hire_rate">Hire Rate/Km<span style="color: red;">*</span></label>
+            <span id="ratemessage"></span>
             <input type="text" id="hire_hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -571,13 +591,13 @@ $i='1';
      </div>
      <br><br>
      @endif
-     <div class="container" style="width: 80%">
+     <div class="container" style="width: 100%;">
      <table class="hover table table-striped table-bordered" id="myTable2" style="width: 90%">
   <thead class="thead-dark">
     <tr>
       <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-      <th scope="col" style="color:#fff;"><center>Hire Rate (TZS)</center></th>
+      <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
       @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
       <th scope="col" style="color:#fff;"><center>Action</center></th>
       @endif
@@ -591,7 +611,7 @@ $i='1';
     <td><center>{{number_format($rate->hire_rate)}}</center></td>
     @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
     <td><center>
-      <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+      <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;cursor: pointer;"></i></a>
          <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
 
               <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -607,7 +627,7 @@ $i='1';
         {{csrf_field()}}
         <div class="form-group">
           <div class="form-wrapper">
-            <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model</label>
+            <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model<span style="color: red;">*</span></label>
             <input type="text" id="hire_vehicle_model{{$rate->id}}" name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
           </div>
         </div>
@@ -615,7 +635,8 @@ $i='1';
 
         <div class="form-group">
           <div class="form-wrapper">
-            <label for="hire_hire_rate{{$rate->id}}">Hire Rate</label>
+            <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span style="color: red;">*</span><span id="ratemessage{{$rate->id}}"></span></label>
+            
             <input type="text" id="hire_hire_rate{{$rate->id}}" name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
@@ -623,7 +644,7 @@ $i='1';
         <input type="text" name="id" value="{{$rate->id}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
 
@@ -696,6 +717,149 @@ $i='1';
   </div>
 
 </div>
+<?php $k=1;?>
+<div id="cost_centres" class="tabcontent">
+  <br>
+  <center><h3><strong>Cost Centres</strong></h3></center>
+  <hr>
+  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+          <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success button_color active" style="
+    padding: 10px;
+
+    margin-bottom: 5px;
+    margin-top: 4px;" role="button" aria-pressed="true">Add Cost Centre</a>
+    <div class="modal fade" id="cost_centree" role="dialog">
+
+              <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Fill the form below to add new cost centre</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('addcentre') }}">
+        {{csrf_field()}}
+        <div class="form-group" id="costcentreiddiv">
+          <div class="form-wrapper">
+            <label for="costcentreid">Cost Centre id<span style="color: red;">*</span></label>
+            <input type="text" id="costcentreid" name="costcentreid" class="form-control" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+          </div>
+        </div>
+
+        <div class="form-group" id="centrenamediv">
+          <div class="form-wrapper">
+            <label for="centrename">Cost Centre Name<span style="color: red;">*</span></label>
+            <input type="text" id="centrename" name="centrename" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+          </div>
+        </div>
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Save</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+     @endif
+     <br><br>
+     <div class="container" style="width: 100%;">
+     <table class="hover table table-striped table-bordered" id="myTable3" style="width: 90%">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
+      <th scope="col" style="color:#fff;"><center>Cost Centre Id</center></th>
+      <th scope="col" style="color:#fff;"><center>Cost Centre Name</center></th>
+      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+      <th scope="col" style="color:#fff;"><center>Action</center></th>
+      @endif
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($costcentres as $var)
+    <tr>
+      <td><center>{{$k}}.</center></td>
+      <td><center>{{$var->costcentre_id}}</center></td>
+      <td>{{$var->costcentre}}</td>
+      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+    <td><center>
+      <a title="Edit this Cost Centre Details" data-toggle="modal" data-target="#centre{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+         <div class="modal fade" id="centre{{$var->id}}" role="dialog">
+
+              <div class="modal-dialog modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">Fill the form below to edit cost centre details</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('editcentre') }}">
+        {{csrf_field()}}
+        <div class="form-group">
+          <div class="form-wrapper">
+            <label for="costcentre_id{{$var->id}}">Cost Centre Id<span style="color: red;">*</span></label>
+            <input type="text" id="costcentre_id{{$var->id}}" name="costcentre_id" class="form-control" required="" autocomplete="off" value="{{$var->costcentre_id}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+          <div class="form-wrapper">
+            <label for="centrename{{$var->id}}">Cost Centre Name<span style="color: red;">*</span></label>
+            <input type="text" id="centrename{{$var->id}}" name="centrename" class="form-control" required="" value="{{$var->costcentre}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+          </div>
+        </div>
+        <br>
+        <input type="text" name="centreid" value="{{$var->id}}" hidden="">
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+
+      </form>
+
+                 </div>
+               </div>
+             </div>
+           </div>
+
+           <a title="Delete this cost centre" data-toggle="modal" data-target="#Deletecentre{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+<div class="modal fade" id="Deletecentre{{$var->id}}" role="dialog">
+        <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+           <div class="modal-body">
+            <p style="font-size: 20px;">Are you sure you want to delete this cost centre?</p>
+            <br>
+            <div align="right">
+      <a class="btn btn-info" href="{{route('deletecentre',$var->id)}}">Proceed</a>
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+</div>
+
+</div>
+</div>
+</div>
+</div></center>
+    </td>
+    @endif
+
+    </tr>
+    <?php $k=$k+1;?>
+    @endforeach
+  </tbody>
+</table>
+</div>
+</div>
 
 </div>
 </div>
@@ -714,7 +878,10 @@ $i='1';
     } );
 
   var table = $('#myTable2').DataTable( {
-        dom: '<"top"l>rt<"bottom"pi>'
+        dom: '<"top"fl>rt<"bottom"pi>'
+    } );
+  var table = $('#myTable3').DataTable( {
+        dom: '<"top"fl>rt<"bottom"pi>'
     } );
 
 
@@ -726,6 +893,41 @@ $i='1';
   function removeSpaces(string) {
  return string.split(' ').join('');
 }
+
+    function gethire(){
+      var rate=document.getElementById("hire_hire_rate").value;
+      if(rate<500){
+        var message=document.getElementById('ratemessage');
+        message.style.color='red';
+        message.innerHTML="Hire Rate/KM should be greater than TZS 500";
+        return false;
+      }
+      else{
+        var message=document.getElementById('ratemessage');
+        message.innerHTML="";
+        return true;
+      }
+    }
+
+    $('#myTable2').on('click', '[name="rate_editSubmit"]', function(e){
+          //e.preventDefault();
+         var id = $(this).attr("id");
+         var rate = $('#hire_hire_rate'+id).val();
+         console.log(id);
+
+         if(rate<500){
+          var message=document.getElementById('ratemessage'+id);
+          message.style.color='red';
+          message.innerHTML="Hire Rate/KM should be greater than TZS 500";
+          return false;
+          }
+          else{
+          var message=document.getElementById('ratemessage'+id);
+          message.innerHTML="";
+          return true;
+        }
+      });
+
 
   function openContracts(evt, evtName) {
   // Declare all variables

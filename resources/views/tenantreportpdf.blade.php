@@ -134,7 +134,7 @@ $j=1;
   <thead class="thead-dark">
     <tr>
       <th scope="col"><center>S/N</center></th>
-      <th scope="col"><center>Client Name</center></th>
+      <th scope="col" style="width: 18%;"><center>Client Name</center></th>
       <th scope="col"><center>Client Type</center></th>
       <th scope="col"><center>Space ID</center></th>
       <th scope="col"><center>Phone Number</center></th>
@@ -149,12 +149,12 @@ $j=1;
     @foreach($tenants as $client)
     <tr>
       <td scope="row"><center>{{$j}}.</center></td>
-      <td>{{$client->full_name}}</td>
-      <td>{{$client->type}}</td>
-      <td>{{$client->space_id_contract}}</td>
+      <td style="padding-left: 5px;">{{$client->full_name}}</td>
+      <td style="padding-left: 5px;">{{$client->type}}</td>
+      <td><center>{{$client->space_id_contract}}</center></td>
       <td><center>{{$client->phone_number}}</center></td>
-      <td>{{$client->email}}</td>
-      <td>{{$client->address}}</td>
+      <td style="padding-left: 5px;">{{$client->email}}</td>
+      <td style="padding-left: 5px;">{{$client->address}}</td>
       @if($_GET['contract_filter']!='true')
       @if($client->contract_status=='1' && $client->end_date<$today)
       <td><center>Expired</center></td>

@@ -82,7 +82,7 @@
           {{ csrf_field() }}
 
                   <div class="form-group{{ $errors->has('current-password') ? ' has-error' : '' }} row">
-            <label for="new-password" class="col-sm-3 control-label"><strong>Current Password: <span style="color: red;">*</span></strong></label>
+            <label for="new-password" class="col-sm-4 control-label"><strong>Current Password: <span style="color: red;">*</span></strong></label>
 
             <div class="col-sm-7">
               <input id="current-password" type="password" class="form-control" name="current-password" required>
@@ -96,7 +96,7 @@
           </div>
 
           <div class="form-group{{ $errors->has('new-password') ? ' has-error' : '' }} row">
-            <label for="new-password" class="col-sm-3 control-label"><strong>New Password: <span style="color: red;">*</span></strong></label>
+            <label for="new-password" class="col-sm-4 control-label"><strong>New Password: <span style="color: red;">*</span></strong><br><p style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Password must be atleast 8 characters)</p></label>
 
             <div class="col-sm-7">
               <input id="new-password" type="password" class="form-control" name="new-password" required>
@@ -110,7 +110,7 @@
           </div>
 
           <div class="form-group row">
-            <label for="new-password-confirm" class="col-sm-3 control-label"><strong>Confirm Password: <span style="color: red;">*</span></strong></label>
+            <label for="new-password-confirm" class="col-sm-4 control-label"><strong>Confirm New Password: <span style="color: red;">*</span></strong></label>
 
             <div class="col-sm-7">
               <input id="new-password-confirm" type="password" class="form-control" name="new-password_confirmation" required>
@@ -118,8 +118,9 @@
           </div>
 
           <center><div class="form-group">
-            <input type="button" class="btn btn-primary" value="Back" onclick="history.back()">
-              <button type="submit" class="btn btn-danger">Change</button>
+            <button type="submit" class="btn btn-primary">Change</button>
+            <input type="button" class="btn btn-danger" value="Cancel" onclick="history.back()">
+              
           </div></center>
         </form>
   </div>

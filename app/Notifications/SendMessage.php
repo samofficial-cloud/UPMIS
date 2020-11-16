@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\Mail\SendMessage as Mailable;
+
 
 class SendMessage extends Notification
 {
@@ -24,18 +26,16 @@ class SendMessage extends Notification
     protected $filename;
     protected $extension;
     protected $mime;
+    protected $filepaths;
 
-    public function __construct($name, $subject, $message, $file,$extension,$filename,$mime,$path)
+    public function __construct($name, $subject, $message,$filepaths)
     {
         //
         $this->name = $name;
         $this->subject = $subject;
         $this->message = $message;
-        $this->file = $file;
-        $this->filename = $filename;
-        $this->extension=$extension;
-        $this->mime=$mime;
-        $this->path=$path;
+        $this->filepaths = $filepaths;
+        
     }
 
     /**
@@ -55,20 +55,9 @@ class SendMessage extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
-    {
-$path=public_path().'/'.'uploads'.'/'.($this->filename);
-        return (new MailMessage)
-                    ->greeting('Dear '.($this->name).',')
-                    ->subject(($this->subject))
-                    ->line(($this->message))
-                    // ->attachData(($this->path), ($this->filename));
-                    ->attach($path , [
-                        'as' =>($this->filename),
-                        'mime' =>($this->mime),
-                    ]);
-                    
-                    
+    public function toMail($notifiable){
+        return (new Mailable($notifiable, $this->name, $this->subject, $this->message, $this->filepaths));
+                                  
     }
 
     /**

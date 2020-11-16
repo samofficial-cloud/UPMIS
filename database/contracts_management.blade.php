@@ -33,7 +33,7 @@
     margin-top: 0rem;
     margin-bottom: 2rem;
     border: 0;
-    border-bottom: 2px solid #505559;
+    border: 2px solid #505559;
   }
   .form-inline .form-control {
     width: 100%;
@@ -46,16 +46,6 @@
   .form-inline label {
     justify-content: left;
   }
-
-   sub {
-   font-size: .50em;
-    line-height: 0.5em;
-    vertical-align: baseline;
-    position: relative;
-    bottom: 0px;
-    float: right;
-    color: blue;
-}
 </style>
 
 @endsection
@@ -191,16 +181,14 @@
 <?php
 $i=1;
 ?>
-<p style="font-size: 13px;">Note: <span style="color: blue">(A.S)</span> - Academic Season <span style="color: blue">(V.S)</span> - Vacation Season</p>
 
-
-      <table class="hover table table-striped table-bordered" id="myTablea">
+      <table class="hover table table-striped table-bordered" id="myTable">
         <thead class="thead-dark">
         <tr>
           <th scope="col" style="color:#fff;"><center>S/N</center></th>
           <th scope="col" style="color:#fff;">Client Name</th>
           <th scope="col" style="color:#fff;"><center>Space Number</center></th>
-          <th scope="col" style="color:#fff;" colspan="2"><center>Amount</center></th>
+          <th scope="col" style="color:#fff;"><center>Amount</center></th>
 
 
           <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
@@ -349,22 +337,7 @@ $i=1;
                       </div>
                   </div>
               </td>
-              @if($var->academic_dependence=="Yes")
-              @if(empty($var->academic_season)&&empty($var->vacation_season))
-              <td>{{$var->currency}} {{$var->academic_season}}<sub>(A.S)</sub></td>
-              <td>{{$var->currency}} {{$var->vacation_season}}<sub>(V.S)</sub> </td>
-              @else
-              <td>{{$var->currency}} {{number_format($var->academic_season)}}<sub>(A.S)</sub></td>
-              <td>{{$var->currency}} {{number_format($var->vacation_season)}}<sub>(V.S)</sub> </td>
-              @endif
-              @else
-              @if(empty($var->amount))
-              <td colspan="2" style="text-align: right;">{{$var->amount}}</td>
-              @else
-               <td colspan="2" style="text-align: right;">{{number_format($var->amount)}}</td>
-              @endif
-              @endif
-            
+            <td><center>{{number_format($var->amount)}} {{$var->currency}}</center></td>
 
 
             <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
@@ -597,7 +570,7 @@ $i=1;
                 <br>
                 @if(Auth::user()->role=='Transport Officer-CPTU')
   <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+    padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
   </a>
 <br>
 <br>
@@ -605,8 +578,8 @@ $i=1;
   <div class="tab2">
             <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contracts</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Inactive Contracts</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button>
+            <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Inactive Contract</strong></button>
         </div>
 <div id="inbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
   <br>
@@ -627,7 +600,7 @@ $i=1;
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
         <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -658,7 +631,7 @@ $i=1;
         <td><center>{{$outbox->form_initiator}}</center></td>
         <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
@@ -738,7 +711,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -812,7 +785,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -844,7 +817,7 @@ $i=1;
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
          <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -875,7 +848,7 @@ $i=1;
         <td><center>{{$outbox->form_initiator}}</center></td>
         <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
@@ -954,7 +927,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1029,7 +1002,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1061,7 +1034,7 @@ $i=1;
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
          <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -1092,7 +1065,7 @@ $i=1;
         <td><center>{{$outbox->form_initiator}}</center></td>
         <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
@@ -1171,7 +1144,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1245,7 +1218,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1253,7 +1226,7 @@ $i=1;
 </div>
 @elseif(Auth::user()->role=='Head of CPTU')
 <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+    padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
   </a>
   <br><br>
   <div class="tab2">
@@ -1281,7 +1254,7 @@ $i=1;
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
         <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -1312,7 +1285,7 @@ $i=1;
         <td><center>{{$outbox->form_initiator}}</center></td>
         <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
@@ -1391,7 +1364,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1465,7 +1438,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1497,7 +1470,7 @@ $i=1;
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($inbox->start_date))}} to {{date("d/m/Y",strtotime($inbox->end_date))}}</td>
          <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -1528,7 +1501,7 @@ $i=1;
         <td><center>{{$outbox->form_initiator}}</center></td>
         <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+        <td>{{date("d/m/Y",strtotime($outbox->start_date))}} to {{date("d/m/Y",strtotime($outbox->end_date))}}</td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
@@ -1607,7 +1580,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1681,7 +1654,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Print this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1697,7 +1670,7 @@ $i=1;
     <br>
     @if(Auth::user()->role=='System Administrator')
  <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+    padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
   </a>
   @endif
    <h4 style="text-align: center"><strong>Active Car Rental Contracts</strong></h4>
@@ -1769,7 +1742,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1779,7 +1752,7 @@ $i=1;
     <br>
     @if(Auth::user()->role=='System Administrator')
  <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+    padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
   </a>
   @endif
    <h4 style="text-align: center"><strong>Inactive Car Rental Contracts</strong></h4>
@@ -1850,7 +1823,7 @@ $i=1;
                </div>
              </div>
            </div>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
     </tbody>
@@ -2012,47 +1985,44 @@ $i=1;
 
 
     <script type="text/javascript">
-       $(document).ready(function(){
         var table = $('#myTable').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
-
+        } );
         var table2 = $('#myTable2').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
+        } );
 
 
         var table2 = $('#myTableInsurance').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
+        } );
 
         var table3 = $('#myTablecar').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
+        } );
 
          var table4 = $('#myTablecar2').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
+        } );
 
-        var table5 = $('#myTablecar3').DataTable( {
+          var table5 = $('#myTablecar3').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-          });
+        } );
 
-        var table6 = $('#myTablecar4').DataTable( {
+          var table6 = $('#myTablecar4').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
+        } );
 
-        var table7 = $('#myTablecar5').DataTable( {
+          var table7 = $('#myTablecar5').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
+        } );
 
            var table8 = $('#myTablecar6').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
+        } );
 
             var table9 = $('#myTablecar7').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
-        });
-      });
+        } );
     </script>
 @endsection

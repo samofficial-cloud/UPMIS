@@ -267,8 +267,8 @@ hr {
         <td>{{$operational->description}}</td>
         <td>{{$operational->service_provider}}</td>
         <td>{{$operational->fuel_consumed}}</td>
-        <td>{{number_format($operational->amount)}}</td>
-        <td>{{number_format($operational->total)}}</td>
+        <td style="text-align: right;">{{number_format($operational->amount)}}</td>
+        <td style="text-align: right;">{{number_format($operational->total)}}</td>
         @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
         <td>
           <a title="Edit Operational Expenditure" data-toggle="modal" data-target="#editops{{$operational->id}}" role="button" aria-pressed="true" id="{{$operational->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
@@ -411,6 +411,7 @@ hr {
       <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
      {{--  <th scope="col" style="color:#fff;"><center>Vehicle No.</center></th> --}}
       <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff;"><center>Department/Faculty</center></th>
        <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
       <th scope="col" style="color:#fff;"><center>Trip Start Date</center></th>
        <th scope="col" style="color:#fff;"><center>Trip End Date</center></th>
@@ -422,11 +423,12 @@ hr {
       <tr>
       	<td class="counterCell text-center">.</td>
       	{{-- <td><center>{{$bookings->vehicle_reg_no}}</center></td> --}}
-      	<td><center>{{$bookings->fullName}}</center></td>
+      	<td>{{$bookings->fullName}}</td>
+        <td>{{$bookings->faculty}}</td>
       	<td><center>{{$bookings->cost_centre}}</center></td>
       	<td><center>{{date("d/m/Y",strtotime($bookings->start_date))}}</center></td>
       	<td><center>{{date("d/m/Y",strtotime($bookings->end_date))}}</center></td>
-      	<td><center>{{$bookings->destination}}</center></td>
+      	<td>{{$bookings->destination}}</td>
       </tr>
       @endforeach
   </tbody>
@@ -440,6 +442,7 @@ hr {
       <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
       {{-- <th scope="col" style="color:#fff;"><center>Vehicle No.</center></th> --}}
       <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff;"><center>Department/Faculty</center></th>
        <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
       <th scope="col" style="color:#fff;"><center>Trip Start Date</center></th>
        <th scope="col" style="color:#fff;"><center>Trip End Date</center></th>
@@ -451,11 +454,12 @@ hr {
       <tr>
       	<td class="counterCell text-center">.</td>
       	{{-- <td><center>{{$bookings->vehicle_reg_no}}</center></td> --}}
-      	<td><center>{{$bookings->fullName}}</center></td>
+      	<td>{{$bookings->fullName}}</td>
+        <td>{{$bookings->faculty}}</td>
       	<td><center>{{$bookings->cost_centre}}</center></td>
       	<td><center>{{date("d/m/Y",strtotime($bookings->start_date))}}</center></td>
       	<td><center>{{date("d/m/Y",strtotime($bookings->end_date))}}</center></td>
-      	<td><center>{{$bookings->destination}}</center></td>
+      	<td>{{$bookings->destination}}</td>
       </tr>
       @endforeach
   </tbody>

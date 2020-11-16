@@ -32,18 +32,24 @@
                     <!-- Email Body -->
                     <tr>
                         <td class="body" width="100%" cellpadding="0" cellspacing="0">
-                            <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0">
+                            <table class="inner-body"  width="570" cellpadding="0" cellspacing="0" style="min-height: 500px;">
                                 <!-- Body content -->
                                 <tr>
-                                    <td class="content-cell">
+                                    <td class="content-cell" style="padding-top: 20px !important; vertical-align: top !important;">
                                         {{ Illuminate\Mail\Markdown::parse($slot) }}
 
                                         {{ $subcopy ?? '' }}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td class="content-cell" style="padding-top: 20px !important; vertical-align: bottom !important;">
+                                    <p style="font-style: italic;color: darkcyan; font-size: 12px;">Directorate Of Planning, Development & Investment<br>Postal Address 35091, Dar es Salaam<br>Telephone: + 255 22 2410514/5<br>Office Number: <br>Mlimani Campus, Utawala Building</p> 
+                                    </td>
+                                </tr>
                             </table>
                         </td>
                     </tr>
+                    
 
                     {{ $footer ?? '' }}
                 </table>
