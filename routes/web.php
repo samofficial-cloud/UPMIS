@@ -368,6 +368,7 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::post('/change_payment_status_insurance/{id}', 'InvoicesController@changePayementStatusInsurance')->name('change_payment_status_insurance');
     Route::get('/create_insurance_invoice', 'InvoicesController@CreateInsuranceInvoice');
     Route::post('/create_insurance_invoice_manually', 'InvoicesController@CreateInsuranceInvoiceManually')->name('create_insurance_invoice_manually');
+    Route::get('/get_info_insurance', 'InvoicesController@getInfoInsurance')->name('get_info_insurance');
 
 
 

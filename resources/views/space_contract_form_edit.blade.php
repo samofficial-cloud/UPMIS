@@ -498,12 +498,12 @@ $today=date('Y-m-d');
 
                         <div class="form-wrapper col-12">
                             <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
-                            <select id="academic_dependance" class="form-control" name="academic_dependance" required>
-                                @if($var->academic_dependance=='Yes')
+                            <select id="academic_dependence" class="form-control" name="academic_dependence" required>
+                                @if($var->academic_dependence=='Yes')
                                 <option value="No" >No</option>
-                                <option value="{{$var->academic_dependance}}" selected>{{$var->academic_dependance}}</option>
-                                @elseif($var->academic_dependance=='No')
-                                    <option value="{{$var->academic_dependance}}" selected>{{$var->academic_dependance}}</option>
+                                <option value="{{$var->academic_dependence}}" selected>{{$var->academic_dependence}}</option>
+                                @elseif($var->academic_dependence=='No')
+                                    <option value="{{$var->academic_dependence}}" selected>{{$var->academic_dependence}}</option>
                                 <option value="Yes" >Yes</option>
                                     @else
                                     <option value="" ></option>
@@ -517,22 +517,25 @@ $today=date('Y-m-d');
 
                         <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
                             <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
-                            <input type="number" min="0" id="academic_season" value="{{$var->academic_season}}" name="academic_season" class="form-control" >
+                            <input type="number" min="20" id="academic_season" value="{{$var->academic_season}}" name="academic_season" class="form-control" >
                         </div>
 
 
                         <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
                             <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
-                            <input type="number" min="0" id="vacation_season" value="{{$var->vacation_season}}" name="vacation_season" class="form-control" >
+                            <input type="number" min="20" id="vacation_season" value="{{$var->vacation_season}}" name="vacation_season" class="form-control" >
                         </div>
 
                         <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
                             <label for="amount">Amount <span style="color: red;"> *</span></label>
-                            <input type="number" min="0" id="amount" name="amount" value="{{$var->amount}}" class="form-control" >
+                            <input type="number" min="20" id="amount" name="amount" value="{{$var->amount}}" class="form-control" >
                         </div>
 
 
-
+                        <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
+                            <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
+                            <input type="number" min="1" id="rent_sqm" name="rent_sqm" value="{{$var->rent_sqm}}"  class="form-control">
+                        </div>
 
 
                         <div class="form-wrapper col-12">
@@ -580,7 +583,7 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-6">
                                             <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
-                                            <input type="text" id="escalation_rate" name="escalation_rate" value="{{$var->escalation_rate}}" class="form-control" required>
+                                            <input type="number" min="0" id="escalation_rate" name="escalation_rate" value="{{$var->escalation_rate}}" class="form-control" required>
                                         </div>
 
 
@@ -606,11 +609,11 @@ $today=date('Y-m-d');
 
 @section('pagescript')
     <?php
-    $academic_dependance='';
+    $academic_dependence='';
     foreach($contract_data as $var)
     {
 
-        $academic_dependance=$var->academic_dependance;
+        $academic_dependence=$var->academic_dependence;
 
     }
 
@@ -621,9 +624,9 @@ $today=date('Y-m-d');
 
 
 
-            var academic_dependance={!! json_encode($academic_dependance) !!};
+            var academic_dependence={!! json_encode($academic_dependence) !!};
 
-            if (academic_dependance=='Yes') {
+            if (academic_dependence=='Yes') {
 
                 $('#academicDiv').show();
                 document.getElementById("academic_season").disabled = false;
@@ -638,21 +641,28 @@ $today=date('Y-m-d');
 
 
                 $('#amountDiv').hide();
+                // $('#amount').val("");
+                document.getElementById("amount").innerHTML = '';
                 document.getElementById("amount").disabled = true;
                 var ele = document.getElementById("amount");
                 ele.required = false;
 
-            }else if(academic_dependance=='No'){
+            }else if(academic_dependence=='No'){
 
                 $('#academicDiv').hide();
+                // $('#academic_season').val("");
+                document.getElementById("academic_season").innerHTML = '';
                 document.getElementById("academic_season").disabled = true;
                 var ele = document.getElementById("academic_season");
                 ele.required = false;
 
                 $('#vacationDiv').hide();
+                // $('#vacation_season').val("");
+                document.getElementById("vacation_season").innerHTML = '';
                 document.getElementById("vacation_season").disabled = true;
                 var ele = document.getElementById("vacation_season");
                 ele.required = false;
+
 
                 $('#amountDiv').show();
                 document.getElementById("amount").disabled = false;
@@ -672,7 +682,7 @@ $today=date('Y-m-d');
     <script type="text/javascript">
         $(document).ready(function(){
 
-            $('#academic_dependance').click(function() {
+            $('#academic_dependence').click(function() {
                 var query=$(this).val();
                 if(query=='Yes') {
 

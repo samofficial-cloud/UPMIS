@@ -254,7 +254,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -286,8 +286,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -466,7 +466,7 @@
                                                 <h2 class="fs-title">Payment Information</h2>
                                                 <div class="form-group row">
                                                     <div class="form-wrapper col-12">
-                                                        <label for="start_date">Start Date  <span style="color: red;"> *</span></label>
+                                                        <label for="start_date">Start Date <span style="color: red;"> *</span></label>
                                                         <input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
                                                     </div>
 
@@ -487,12 +487,39 @@
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Amount <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="0" id="amount" name="amount" class="form-control" required="">
+                                                    <div class="form-wrapper col-12">
+                                                        <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
+                                                        <select id="academic_dependence" class="form-control" name="academic_dependence" required>
+                                                            <option value="" ></option>
+                                                            <option value="No" >No</option>
+                                                            <option value="Yes" >Yes</option>
+                                                        </select>
                                                     </div>
 
-                                                    <div class="form-wrapper col-6">
+
+                                                    <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                                        <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="20" id="academic_season" name="academic_season" class="form-control" >
+                                                    </div>
+
+
+                                                    <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                                        <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="20" id="vacation_season" name="vacation_season" class="form-control" >
+                                                    </div>
+
+                                                    <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
+                                                        <label for="amount">Amount <span style="color: red;"> *</span></label>
+                                                        <input type="number" min="20" id="amount" name="amount" class="form-control" >
+                                                    </div>
+
+                                                    <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
+                                                        <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
+                                                        <input type="number" min="1" id="rent_sqm" name="rent_sqm"  class="form-control">
+                                                    </div>
+
+
+                                                    <div class="form-wrapper col-12">
                                                         <label for="currency">Currency <span style="color: red;"> *</span></label>
                                                         <select id="currency" class="form-control" required name="currency" >
                                                             <option value="" ></option>
@@ -509,17 +536,15 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
-                                                        <select id="payment_cycle" class="form-control" required name="payment_cycle" >
-
-
-
+                                                        <select id="payment_cycle" required class="form-control" name="payment_cycle" >
                                                             <?php
                                                             $payment_cycles=DB::table('payment_cycle_settings')->get();
                                                             ?>
                                                             <option value=""></option>
+
                                                             @foreach($payment_cycles as $payment_cycle)
 
-                                                                    <option value="{{$payment_cycle->cycle}}" >{{$payment_cycle->cycle}}</option>
+                                                                <option value="{{$payment_cycle->cycle}}">{{$payment_cycle->cycle}}</option>
 
                                                             @endforeach
                                                         </select>
@@ -527,7 +552,7 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
-                                                        <input type="text" id="escalation_rate" name="escalation_rate" class="form-control" required>
+                                                        <input type="number" min="0" id="escalation_rate" name="escalation_rate" class="form-control" required>
                                                     </div>
 
 
@@ -539,7 +564,7 @@
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                             <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
-                                            <a href="/Space" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
                                     </form>
                                 </div>
@@ -796,6 +821,60 @@
 
     <script>
         $( document ).ready(function() {
+
+            $('#academic_dependence').click(function() {
+                var query=$(this).val();
+                if(query=='Yes') {
+
+                    $('#academicDiv').show();
+                    document.getElementById("academic_season").disabled = false;
+                    var ele = document.getElementById("academic_season");
+                    ele.required = true;
+
+
+                    $('#vacationDiv').show();
+                    document.getElementById("vacation_season").disabled = false;
+                    var ele = document.getElementById("vacation_season");
+                    ele.required = true;
+
+
+                    $('#amountDiv').hide();
+                    document.getElementById("amount").disabled = true;
+                    var ele = document.getElementById("amount");
+                    ele.required = false;
+
+
+
+                }else if(query=='No'){
+
+                    $('#academicDiv').hide();
+                    document.getElementById("academic_season").disabled = true;
+                    var ele = document.getElementById("academic_season");
+                    ele.required = false;
+
+                    $('#vacationDiv').hide();
+                    document.getElementById("vacation_season").disabled = true;
+                    var ele = document.getElementById("vacation_season");
+                    ele.required = false;
+
+                    $('#amountDiv').show();
+                    document.getElementById("amount").disabled = false;
+                    var ele = document.getElementById("amount");
+                    ele.required = true;
+
+                }else{
+                    $('#vacationDiv').hide();
+                    $('#academicDiv').hide();
+                    $('#amountDiv').hide();
+
+                }
+
+
+
+            });
+
+
+
 
 
             $('#space_id_contract').keyup(function(e){

@@ -245,11 +245,19 @@ class ContractsController extends Controller
                 ->update(['phone_number' => $request->get('phone_number')]);
 
 
+$rent_sqm="";
 
+if($request->get('rent_sqm')==''){
+    $rent_sqm='N/A';
+
+}else{
+
+    $rent_sqm=$request->get('rent_sqm');
+}
 
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
+                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
             );
 
         }else {
@@ -262,11 +270,19 @@ class ContractsController extends Controller
                     ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
                 );
 
+                $rent_sqm="";
 
+                if($request->get('rent_sqm')==''){
+                    $rent_sqm='N/A';
+
+                }else{
+
+                    $rent_sqm=$request->get('rent_sqm');
+                }
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
                 );
 
             } else {
@@ -276,11 +292,19 @@ class ContractsController extends Controller
                 );
 
 
+                $rent_sqm="";
 
+                if($request->get('rent_sqm')==''){
+                    $rent_sqm='N/A';
+
+                }else{
+
+                    $rent_sqm=$request->get('rent_sqm');
+                }
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
                 );
 
 
@@ -361,11 +385,19 @@ class ContractsController extends Controller
                 ->update(['phone_number' => $request->get('phone_number')]);
 
 
+            $rent_sqm="";
 
+            if($request->get('rent_sqm')==''){
+                $rent_sqm='N/A';
+
+            }else{
+
+                $rent_sqm=$request->get('rent_sqm');
+            }
 
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
+                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
             );
 
         }else {
@@ -378,11 +410,19 @@ class ContractsController extends Controller
                     ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
                 );
 
+                $rent_sqm="";
 
+                if($request->get('rent_sqm')==''){
+                    $rent_sqm='N/A';
+
+                }else{
+
+                    $rent_sqm=$request->get('rent_sqm');
+                }
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
                 );
 
             } else {
@@ -392,11 +432,19 @@ class ContractsController extends Controller
                 );
 
 
+                $rent_sqm="";
 
+                if($request->get('rent_sqm')==''){
+                    $rent_sqm='N/A';
+
+                }else{
+
+                    $rent_sqm=$request->get('rent_sqm');
+                }
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
                 );
 
 
@@ -551,7 +599,50 @@ class ContractsController extends Controller
 
         DB::table('space_contracts')
             ->where('contract_id', $contract_id)
-            ->update(['amount' => $request->get('amount')]);
+            ->update(['academic_dependence' => $request->get('academic_dependence')]);
+
+
+        if($request->get('academic_dependence')=='Yes'){
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['academic_season' => $request->get('academic_season')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['vacation_season' => $request->get('vacation_season')]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['amount' => 0]);
+
+
+
+        }elseif($request->get('academic_dependence')=='No') {
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['amount' => $request->get('amount')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['academic_season' => 0]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['vacation_season' => 0]);
+
+
+        }else{
+
+
+
+        }
+
+
+
 
 
         DB::table('space_contracts')
@@ -614,6 +705,21 @@ class ContractsController extends Controller
             ->where('contract_id', $contract_id)
             ->update(['escalation_rate' => $request->get('escalation_rate')]);
 
+
+        $rent_sqm="";
+
+        if($request->get('rent_sqm')==''){
+            $rent_sqm='N/A';
+
+        }else{
+
+            $rent_sqm=$request->get('rent_sqm');
+        }
+
+
+        DB::table('space_contracts')
+            ->where('contract_id', $contract_id)
+            ->update(['rent_sqm' => $rent_sqm]);
 
 
 

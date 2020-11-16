@@ -64,7 +64,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -96,8 +96,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -129,7 +129,7 @@
           @endif
 
 
-        <p class="mt-1" style="  font-size:30px !important; "> Users and Role Management</p>
+        <p class="mt-1" style="  font-size:30px !important; "> Users and Roles Management</p>
         <hr style="    border-bottom: 1px solid #e5e5e5 !important;">
 
 
@@ -138,15 +138,15 @@
 
 
 
-<br>
-            <a style="cursor: pointer;" data-toggle="modal" title="Add new user" data-target="#add_user"  role="button" aria-pressed="true" name="editC"><div style="float:left; font-weight: bold; background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Add New User
+
+            <a style="cursor: pointer;" data-toggle="modal" title="Add new user" data-target="#add_user"  role="button" aria-pressed="true" name="editC"><div style="float:left; font-weight: bold; background-color: #38c172; color:white; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Add New User
 </div></a>
 
 {{--            <a title="Other settings" style="cursor: pointer;  color: black !important; font-weight: bold; text-decoration: none;" href="/role_management"> <div style="float:right;      background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;"><i class="fas fa-cog"></i>--}}
 {{--                </div>--}}
 {{--            </a>--}}
 
-            <a style="cursor: pointer; color: black !important; font-weight: bold; text-decoration: none;" href="/role_management"> <div style="float:right;      background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Role management
+            <a style="cursor: pointer; color: black !important; font-weight: bold; text-decoration: none;" href="/role_management"> <div style="float:left; margin-left: 0.5%; color:white;    background-color: #38c172; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Roles management
             </div>
             </a>
 
@@ -159,7 +159,7 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <b><h5 class="modal-title">Adding new user</h5></b>
+                  <b><h5 class="modal-title">Adding New User</h5></b>
 
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
@@ -218,11 +218,11 @@
                           <?php
                           $roles=DB::table('general_settings')->get();
                           ?>
-                          <option value="" selected ></option>
+                          <option value="" selected></option>
                           @foreach($roles as $role )
 
 
-                              <option value="{{$role->user_roles}}" >{{$role->user_roles}}</option>
+                              <option value="{{$role->user_roles}}">{{$role->user_roles}}</option>
 
 
                           @endforeach
@@ -254,7 +254,7 @@
 
 
                     <div align="right">
-                      <button class="btn btn-primary" type="submit" onsubmit="check_phone();">Submit</button>
+                      <button class="btn btn-primary" type="submit" onsubmit="check_phone();">Save</button>
                       <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                     </div>
                   </form>

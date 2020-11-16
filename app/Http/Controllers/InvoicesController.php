@@ -395,10 +395,34 @@ class InvoicesController extends Controller
             ->update(['user_comments' => $request->get('user_comments')]);
 
 
-        DB::table('space_payments')->insert(
-            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
-        );
+//        DB::table('space_payments')->insert(
+//            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
+//        );
 
+
+        DB::table('space_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+        DB::table('space_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_paid' => $request->get('amount_paid')]);
+
+        DB::table('space_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_not_paid' => $amount_not_paid]);
+
+        DB::table('space_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['currency_payments' => $request->get('currency_payments')]);
+
+        DB::table('space_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['receipt_number' => $request->get('receipt_number')]);
+
+        DB::table('space_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
         return redirect('/invoice_management')
@@ -456,12 +480,22 @@ class InvoicesController extends Controller
 
 
 
-
+            DB::table('space_payments')->insert(
+                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+            );
 
         }
 
 
+
+
+
         DB::table('invoice_notifications')->where('invoice_category',  'space')->where('invoice_id',$id)->delete();
+
+
+
+
+
 
         return redirect('/invoice_management')
             ->with('success', 'Invoice Sent Successfully');
@@ -518,7 +552,9 @@ class InvoicesController extends Controller
         ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
 
-
+        DB::table('car_rental_payments')->insert(
+            ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+        );
 
 
 
@@ -655,9 +691,35 @@ class InvoicesController extends Controller
             ->update(['user_comments' => $request->get('user_comments')]);
 
 
-        DB::table('car_rental_payments')->insert(
-            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
-        );
+//        DB::table('car_rental_payments')->insert(
+//            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
+//        );
+
+
+        DB::table('car_rental_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+        DB::table('car_rental_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_paid' => $request->get('amount_paid')]);
+
+        DB::table('car_rental_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_not_paid' => $amount_not_paid]);
+
+        DB::table('car_rental_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['currency_payments' => $request->get('currency_payments')]);
+
+        DB::table('car_rental_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['receipt_number' => $request->get('receipt_number')]);
+
+        DB::table('car_rental_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['date_of_payment' => $request->get('date_of_payment')]);
+
 
         return redirect('/invoice_management')
             ->with('success', 'Payment received successfully');
@@ -806,6 +868,10 @@ class InvoicesController extends Controller
                 ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
 
+            DB::table('insurance_payments')->insert(
+                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+            );
+
 
         }
 
@@ -848,10 +914,36 @@ class InvoicesController extends Controller
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
-        DB::table('insurance_payments')->insert(
-            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
-        );
 
+//        DB::table('insurance_payments')->insert(
+//            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
+//        );
+
+
+
+        DB::table('insurance_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+        DB::table('insurance_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_paid' => $request->get('amount_paid')]);
+
+        DB::table('insurance_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_not_paid' => $amount_not_paid]);
+
+        DB::table('insurance_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['currency_payments' => $request->get('currency_payments')]);
+
+        DB::table('insurance_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['receipt_number' => $request->get('receipt_number')]);
+
+        DB::table('insurance_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
         return redirect('/invoice_management')
@@ -1003,12 +1095,14 @@ class InvoicesController extends Controller
 
 
 
-
-
-
             DB::table('electricity_bill_invoices')
                 ->where('invoice_number', $id)
                 ->update(['currency_invoice' => $request->get('currency')]);
+
+
+            DB::table('electricity_bill_payments')->insert(
+                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->cumulative_amount,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+            );
 
 
 
@@ -1054,9 +1148,35 @@ class InvoicesController extends Controller
             ->update(['user_comments' => $request->get('user_comments')]);
 
 
-        DB::table('electricity_bill_payments')->insert(
-            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
-        );
+//        DB::table('electricity_bill_payments')->insert(
+//            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
+//        );
+
+        DB::table('electricity_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+        DB::table('electricity_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_paid' => $request->get('amount_paid')]);
+
+        DB::table('electricity_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_not_paid' => $amount_not_paid]);
+
+        DB::table('electricity_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['currency_payments' => $request->get('currency_payments')]);
+
+        DB::table('electricity_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['receipt_number' => $request->get('receipt_number')]);
+
+        DB::table('electricity_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['date_of_payment' => $request->get('date_of_payment')]);
+
+
 
 
         return redirect('/invoice_management')
@@ -1091,9 +1211,10 @@ class InvoicesController extends Controller
         {
             $query = $request->get('query');
 
-            $data=DB::table('space_contracts')->where('contract_id',$query)->where('has_electricity_bill','Yes')->get();
 
-            if(count($data)!=0){
+            $contract_data=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $query)->where('space_contracts.has_electricity_bill','Yes')->get();
+
+            if(count($contract_data)!=0){
 
                 $contract_invoice_no=DB::table('electricity_bill_invoices')->where('contract_id',$query)->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
                 $amount_not_paid=DB::table('electricity_bill_payments')->where('invoice_number',$contract_invoice_no)->value('amount_not_paid');
@@ -1102,21 +1223,33 @@ class InvoicesController extends Controller
                 $data="";
                 if($amount_not_paid==null){
 
-
-                    $data = [
-                        'amount_not_paid'   => 0,
-                        'currency_payments' => 'default'
+                    foreach($contract_data as $var) {
+                        $data = [
+                            'amount_not_paid' => 0,
+                            'currency_payments' => 'default',
+                            'full_name'=> $var->full_name,
+                            'client_id'=>$var->client_id,
+                            'tin'=>$var->tin,
+                            'vrn'=>$var->vrn,
+                            'address'=>$var->address,
 
                     ];
-
+}
 
                 }else{
+                    foreach($contract_data as $var) {
+                        $data = [
+                            'amount_not_paid' => $amount_not_paid,
+                            'currency_payments' => $currency,
 
-                    $data = [
-                        'amount_not_paid'   => $amount_not_paid,
-                        'currency_payments' => $currency
+                            'full_name' => $var->full_name,
+                            'client_id' => $var->client_id,
+                            'tin' => $var->tin,
+                            'vrn' => $var->vrn,
+                            'address' => $var->address,
 
-                    ];
+                        ];
+                    }
                 }
 
                 $final_value=json_encode($data);
@@ -1146,34 +1279,47 @@ class InvoicesController extends Controller
             $query = $request->get('query');
 
 
-            $data=DB::table('space_contracts')->where('contract_id', $query)->where('has_water_bill','Yes')->get();
 
+            $contract_data=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $query)->where('space_contracts.has_water_bill','Yes')->get();
 
-            if(count($data)!=0){
+            if(count($contract_data)!=0){
 
 
                 $contract_invoice_no=DB::table('water_bill_invoices')->where('contract_id',$query)->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
                 $amount_not_paid=DB::table('water_bill_payments')->where('invoice_number',$contract_invoice_no)->value('amount_not_paid');
                 $currency=DB::table('water_bill_payments')->where('invoice_number',$contract_invoice_no)->value('currency_payments');
-            $data="";
+                $data="";
                 if($amount_not_paid==null){
 
+                    foreach($contract_data as $var ){
 
                     $data = [
-                        'amount_not_paid'   => 0,
+                        'full_name'=> $var->full_name,
+                        'client_id'=>$var->client_id,
+                        'tin'=>$var->tin,
+                        'vrn'=>$var->vrn,
+                        'address'=>$var->address,
+
+                        'amount_not_paid' => 0,
                         'currency_payments' => 'default'
 
                     ];
-
+}
 
                 }else{
+                    foreach($contract_data as $var ) {
+                        $data = [
+                            'full_name' => $var->full_name,
+                            'client_id' => $var->client_id,
+                            'tin' => $var->tin,
+                            'vrn' => $var->vrn,
+                            'address' => $var->address,
+                            'amount_not_paid' => $amount_not_paid,
+                            'currency_payments' => $currency
 
-                    $data = [
-                        'amount_not_paid'   => $amount_not_paid,
-                        'currency_payments' => $currency
-
-                    ];
+                        ];
+                    }
                 }
 
                 $final_value=json_encode($data);
@@ -1212,13 +1358,13 @@ class InvoicesController extends Controller
             $query = $request->get('query');
 
 
-            $data=DB::table('space_contracts')->where('contract_id', $query)->get();
 
+            $data=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $query)->get();
 
             if(count($data)!=0){
 
 
-                echo "1";
+                return $data;
             }
             else{
                 echo "0";
@@ -1259,7 +1405,48 @@ class InvoicesController extends Controller
             if(count($data)!=0){
 
 
-                echo "1";
+                return $data;
+            }
+            else{
+                echo "0";
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+    }
+
+
+
+    public function getInfoInsurance(Request $request)
+    {
+
+
+
+        if($request->get('query'))
+        {
+            $query = $request->get('query');
+
+
+            $data=DB::table('insurance_parameters')->where('company',$query)->get();
+
+
+            if(count($data)!=0){
+
+
+                return $data;
             }
             else{
                 echo "0";
@@ -1412,15 +1599,14 @@ class InvoicesController extends Controller
 
 
 
-
-
-
-
-
-
             DB::table('water_bill_invoices')
                 ->where('invoice_number', $id)
                 ->update(['currency_invoice' => $request->get('currency')]);
+
+
+            DB::table('water_bill_payments')->insert(
+                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->cumulative_amount,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+            );
 
 
 
@@ -1465,9 +1651,34 @@ class InvoicesController extends Controller
             ->where('invoice_number', $id)
             ->update(['user_comments' => $request->get('user_comments')]);
 
-        DB::table('water_bill_payments')->insert(
-            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number')]
-        );
+//        DB::table('water_bill_payments')->insert(
+//            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
+//        );
+
+
+        DB::table('water_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+        DB::table('water_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_paid' => $request->get('amount_paid')]);
+
+        DB::table('water_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['amount_not_paid' => $amount_not_paid]);
+
+        DB::table('water_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['currency_payments' => $request->get('currency_payments')]);
+
+        DB::table('water_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['receipt_number' => $request->get('receipt_number')]);
+
+        DB::table('water_bill_payments')
+            ->where('invoice_number', $request->get('invoice_number'))
+            ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
         return redirect('/invoice_management')

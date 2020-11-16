@@ -58,7 +58,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -90,8 +90,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -152,6 +152,16 @@
                         <tr>
                             <td> Amount:</td>
                             <td> {{number_format($var->amount)}} {{$var->currency}}</td>
+                        </tr>
+
+                        <tr>
+                            <td> Rent/SQM:</td>
+                            <td>@if($var->rent_sqm=='')
+                                    N/A
+                                @else
+                                    {{$var->rent_sqm}}
+                                @endif
+                            </td>
                         </tr>
 
 
@@ -224,7 +234,8 @@
 
                             @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
                             @else
-                    <a data-toggle="modal"  style="background-color: lightgrey; padding: 10px; color:blue; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice" title="Add new space invoice" role="button" aria-pressed="true"><i  class="fa fa-plus" aria-hidden="true"></i></a>
+
+                                <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice" title="Add new Space Invoice" role="button" aria-pressed="true">Add New Invoice</a>
 @endif
                     <div class="modal fade" id="new_invoice" role="dialog">
 

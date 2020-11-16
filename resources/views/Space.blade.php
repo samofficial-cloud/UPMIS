@@ -87,7 +87,7 @@
         </div>
 
         <div class="main_content">
-            <div class="container " style="max-width: 1308px;">
+            <div class="container " style="max-width: 100%;">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success row col-xs-12" style="margin-left: -13px; margin-bottom: -1px; margin-top: 4px;">
                         <p>{{$message}}</p>
@@ -111,7 +111,7 @@
                 </div>
                 <br>
 
-                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
                 @else
                     <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
     margin-left: -2px;
@@ -297,7 +297,7 @@
 
 
                                         <div align="right">
-                                            <button class="btn btn-primary" type="submit">Submit</button>
+                                            <button class="btn btn-primary" type="submit">Save</button>
                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </form>
@@ -327,11 +327,11 @@
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                            <th scope="col" style="color:#fff;"><center>Major Industry</center></th>
-                            <th scope="col" style="color:#fff;"><center>Minor Industry</center></th>
-                            <th scope="col" style="color:#fff;"><center>Space Number</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Location</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Sub Location</center></th>
+                            <th scope="col" style="color:#fff;">Major Industry</th>
+                            <th scope="col" style="color:#fff;">Minor Industry</th>
+                            <th scope="col" style="color:#fff;">Space Number</th>
+                            <th scope="col"  style="color:#fff;">Location</th>
+                            <th scope="col"  style="color:#fff;">Sub Location</th>
                             <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
 
                             {{--          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>--}}
@@ -345,12 +345,12 @@
                         @foreach($spaces as $var)
                             <tr>
 
-                                <td class=""><center>{{$i}}co</center></td>
-                                <td><center>{{$var->major_industry}}</center></td>
-                                <td><center>{{$var->minor_industry}}</center></td>
-                                <td><center>{{$var->space_id}}</center></td>
-                                <td><center>{{$var->location}}</center></td>
-                                <td><center>{{$var->sub_location}}</center></td>
+                                <td class=""><center>{{$i}}</center></td>
+                                <td>{{$var->major_industry}}</td>
+                                <td>{{$var->minor_industry}}</td>
+                                <td>{{$var->space_id}}</td>
+                                <td>{{$var->location}}</td>
+                                <td>{{$var->sub_location}}</td>
 
                                 <td><center>  @if($var->size==null)
                                             N/A
@@ -479,7 +479,7 @@
                                             </div>
                                         </div>
 
-                                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
                                         @else
                                             <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 

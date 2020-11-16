@@ -123,9 +123,7 @@ class SpaceController extends Controller
 
         }
 
-        DB::table('spaces')
-            ->where('id', $id)
-            ->update(['space_id' => $request->get('space_id')]);
+
 
         DB::table('spaces')
             ->where('id', $id)
