@@ -108,7 +108,7 @@
     </div>
 
     <div class="main_content">
-      <div class="container " style="max-width: 1308px;">
+      <div class="container " style="max-width: 100%;">
         @if ($message = Session::get('success'))
           <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
     margin-bottom: -1px;
@@ -136,7 +136,7 @@
         <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="  color: white;  background-color: #38c172;
     padding: 10px;
     margin-left: -2px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true">Add new Insurance Package</a>
             @endif
 
@@ -509,7 +509,7 @@ $companies=DB::table('insurance_parameters')->get();
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <b><h5 class="modal-title">Are you sure you want to deactivate {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
+                        <b><h5 class="modal-title">Are you sure you want to delete {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
 
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                       </div>

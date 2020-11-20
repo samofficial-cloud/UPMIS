@@ -215,11 +215,12 @@
                                             <div class="form-group col-md-12">
                                                 <label>Currency <span style="color: red;">*</span></label>
                                                 <div  class="form-wrapper">
-                                                    <select id="currency_space" class="form-control" required name="currency_payments">
-                                                        <option value="" ></option>
-                                                        <option value="TZS" >TZS</option>
-                                                        <option value="USD" >USD</option>
-                                                    </select>
+{{--                                                    <select id="currency_space" class="form-control" required name="currency_payments">--}}
+{{--                                                        <option value="" ></option>--}}
+{{--                                                        <option value="TZS" >TZS</option>--}}
+{{--                                                        <option value="USD" >USD</option>--}}
+{{--                                                    </select>--}}
+                                                    <input type="text"  class="form-control" id="currency_space" name="currency_payments" readonly value="" Required  autocomplete="off">
                                                 </div>
                                             </div>
                                             <br>
@@ -493,11 +494,13 @@
                                             <div class="form-group col-md-12">
                                                 <label>Currency <span style="color: red;">*</span></label>
                                                 <div  class="form-wrapper">
-                                                    <select id="currency_car" class="form-control" required name="currency_payments">
-                                                        <option value="" ></option>
-                                                        <option value="TZS" >TZS</option>
-                                                        <option value="USD" >USD</option>
-                                                    </select>
+{{--                                                    <select id="currency_car" class="form-control" required name="currency_payments">--}}
+{{--                                                        <option value="" ></option>--}}
+{{--                                                        <option value="TZS" >TZS</option>--}}
+{{--                                                        <option value="USD" >USD</option>--}}
+{{--                                                    </select>--}}
+
+                                                    <input type="text"  class="form-control" id="currency_car" name="currency_payments" readonly value="" Required  autocomplete="off">
                                                 </div>
                                             </div>
                                             <br>
@@ -766,11 +769,12 @@
                                             <div class="form-group col-md-12">
                                                 <label>Currency <span style="color: red;">*</span></label>
                                                 <div  class="form-wrapper">
-                                                    <select id="currency_insurance" class="form-control" required name="currency_payments">
-                                                        <option value="" ></option>
-                                                        <option value="TZS" >TZS</option>
-                                                        <option value="USD" >USD</option>
-                                                    </select>
+{{--                                                    <select id="currency_insurance" class="form-control" required name="currency_payments">--}}
+{{--                                                        <option value="" ></option>--}}
+{{--                                                        <option value="TZS" >TZS</option>--}}
+{{--                                                        <option value="USD" >USD</option>--}}
+{{--                                                    </select>--}}
+                                                    <input type="text"  class="form-control" id="currency_insurance" name="currency_payments" readonly value="" Required  autocomplete="off">
                                                 </div>
                                             </div>
                                             <br>
@@ -1038,11 +1042,12 @@
                                             <div class="form-group col-md-12">
                                                 <label>Currency <span style="color: red;">*</span></label>
                                                 <div  class="form-wrapper">
-                                                    <select id="currency_water" class="form-control" required name="currency_payments">
-                                                        <option value="" ></option>
-                                                        <option value="TZS" >TZS</option>
-                                                        <option value="USD" >USD</option>
-                                                    </select>
+{{--                                                    <select id="currency_water" class="form-control" required name="currency_payments">--}}
+{{--                                                        <option value="" ></option>--}}
+{{--                                                        <option value="TZS" >TZS</option>--}}
+{{--                                                        <option value="USD" >USD</option>--}}
+{{--                                                    </select>--}}
+                                                    <input type="text"  class="form-control" id="currency_water" name="currency_payments" readonly value="" Required  autocomplete="off">
                                                 </div>
                                             </div>
                                             <br>
@@ -1330,11 +1335,12 @@
                                             <div class="form-group col-md-12">
                                                 <label>Currency <span style="color: red;">*</span></label>
                                                 <div  class="form-wrapper">
-                                                    <select id="currency_electricity" class="form-control" required name="currency_payments">
-                                                        <option value="" ></option>
-                                                        <option value="TZS" >TZS</option>
-                                                        <option value="USD" >USD</option>
-                                                    </select>
+{{--                                                    <select id="currency_electricity" class="form-control" required name="currency_payments">--}}
+{{--                                                        <option value="" ></option>--}}
+{{--                                                        <option value="TZS" >TZS</option>--}}
+{{--                                                        <option value="USD" >USD</option>--}}
+{{--                                                    </select>--}}
+                                                    <input type="text"  class="form-control" id="currency_electricity" name="currency_payments" readonly value="" Required  autocomplete="off">
                                                 </div>
                                             </div>
                                             <br>
@@ -1810,6 +1816,7 @@
                             $("#not_paid_space").prop('disabled', true);
                             $("#currency_space").prop('disabled', true);
                             $("#receipt_space").prop('disabled', true);
+                            $("#currency_space").val("");
                             $("#submit_space").prop('disabled', true);
 
 
@@ -1823,6 +1830,8 @@
                             $("#amount_paid_space").prop('disabled', false);
                             $("#not_paid_space").prop('disabled', false);
                             $("#currency_space").prop('disabled', false);
+                            $("#currency_space").val(data);
+
                             $("#receipt_space").prop('disabled', false);
                             $("#submit_space").prop('disabled', false);
 
@@ -1861,7 +1870,7 @@
                             $("#currency_insurance").prop('disabled', true);
                             $("#receipt_insurance").prop('disabled', true);
                             $("#submit_insurance").prop('disabled', true);
-
+                            $("#currency_insurance").val("");
 
                         }
                         else{
@@ -1873,6 +1882,7 @@
                             $("#amount_paid_insurance").prop('disabled', false);
                             $("#not_paid_insurance").prop('disabled', false);
                             $("#currency_insurance").prop('disabled', false);
+                            $("#currency_insurance").val(data);
                             $("#receipt_insurance").prop('disabled', false);
                             $("#submit_insurance").prop('disabled', false);
 
@@ -1911,7 +1921,7 @@
                             $("#currency_car").prop('disabled', true);
                             $("#receipt_car").prop('disabled', true);
                             $("#submit_car").prop('disabled', true);
-
+                            $("#currency_car").val("");
 
                         }
                         else{
@@ -1923,6 +1933,7 @@
                             $("#amount_paid_car").prop('disabled', false);
                             $("#not_paid_car").prop('disabled', false);
                             $("#currency_car").prop('disabled', false);
+                            $("#currency_car").val(data);
                             $("#receipt_car").prop('disabled', false);
                             $("#submit_car").prop('disabled', false);
 
@@ -1961,7 +1972,7 @@
                             $("#currency_water").prop('disabled', true);
                             $("#receipt_water").prop('disabled', true);
                             $("#submit_water").prop('disabled', true);
-
+                            $("#currency_water").val("");
 
                         }
                         else{
@@ -1972,6 +1983,7 @@
                             $("#amount_paid_water").prop('disabled', false);
                             $("#not_paid_water").prop('disabled', false);
                             $("#currency_water").prop('disabled', false);
+                            $("#currency_water").val(data);
                             $("#receipt_water").prop('disabled', false);
                             $("#submit_water").prop('disabled', false);
 
@@ -2010,7 +2022,7 @@
                             $("#currency_electricity").prop('disabled', true);
                             $("#receipt_electricity").prop('disabled', true);
                             $("#submit_electricity").prop('disabled', true);
-
+                            $("#currency_electricity").val("");
 
                         }
                         else{
@@ -2022,6 +2034,7 @@
                             $("#amount_paid_electricity").prop('disabled', false);
                             $("#not_paid_electricity").prop('disabled', false);
                             $("#currency_electricity").prop('disabled', false);
+                            $("#currency_electricity").val(data);
                             $("#receipt_electricity").prop('disabled', false);
                             $("#submit_electricity").prop('disabled', false);
 

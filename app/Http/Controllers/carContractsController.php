@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+
 use App\carContract;
 use App\client;
 use PDF;
@@ -137,7 +138,7 @@ class carContractsController extends Controller
     }
     else{
       $start_date=$request->input('start_date');
-      $end_date=$request->input('end_date');  
+      $end_date=$request->input('end_date');
     }
         DB::table('car_contracts')->insert(
                     ['fullName' => $full_name, 'area_of_travel' => $request->get('area'), 'faculty' => $request->get('faculty_name'), 'cost_centre' => $request->get('centre_name'),'designation' => $request->get('designation'), 'start_date' => $start_date, 'end_date' => $end_date, 'start_time' => $request->get('start_time'), 'end_time' => $request->get('end_time'),'overtime'=>$request->get('overtime'), 'destination'=>$request->get('destination'), 'purpose'=>$request->get('purpose'), 'trip_nature'=>$request->get('trip_nature'), 'estimated_distance'=>$request->get('estimated_distance'), 'estimated_cost'=>$request->get('estimated_cost'), 'form_initiator' => Auth::user()->name, 'cptu_msg_status'=>'outbox', 'form_status'=>'Vote Holder', 'head_msg_status'=> 'inbox', 'form_completion'=>'0', 'email'=> $request->get('email'), 'first_name'=> $request->input('first_name'), 'last_name'=> $request->input('last_name')]
@@ -213,7 +214,7 @@ class carContractsController extends Controller
                 DB::table('car_contracts')
                 ->where('id', $id)
                 ->update(['balance_status' => $request->get('balance_status')]);
-                
+
                 DB::table('car_contracts')
                 ->where('id', $id)
                 ->update(['head_name' => $request->get('head_name')]);
@@ -233,7 +234,7 @@ class carContractsController extends Controller
                 if($request->get('head_approval_status')=='Rejected'){
                 DB::table('car_contracts')
                 ->where('id', $id)
-                ->update(['form_status' => 'Vote Holder']); 
+                ->update(['form_status' => 'Vote Holder']);
 
                  DB::table('car_contracts')
                 ->where('id', $id)
@@ -270,9 +271,9 @@ class carContractsController extends Controller
                 ->update(['dvc_msg_status' => 'inbox']);
 
                  DB::table('notifications')->insert(['role'=>'DVC Administrator', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
-                } 
                 }
-                
+                }
+
 
                return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
 
@@ -387,7 +388,7 @@ class carContractsController extends Controller
             DB::table('car_contracts')
            ->where('id', $id)
            ->update(['overtime_hrs' => $request->get('end_overtime')]);
-            
+
             DB::table('car_contracts')
            ->where('id', $id)
            ->update(['driver_name' => $request->get('driver_name')]);
@@ -445,17 +446,20 @@ class carContractsController extends Controller
 
                 $amount_in_words='';
 
-                    $amount_in_words=Terbilang::make($var->amount,' TZS',' ');
-               
+                    $amount_in_words=Terbilang::make($var->grand_total,' TZS',' ');
+
 
                 $today=date('Y-m-d');
 
                 $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
 
 
-            DB::table('car_rental_invoices')->insert(
-                ['contract_id' => $var->id, 'invoicing_period_start_date' => $var->start_date,'invoicing_period_end_date' => $var->end_date,'period' => $period,'project_id' => 'Car rental','debtor_account_code' => '','debtor_name' => $var->fullName,'debtor_address' => '','amount_to_be_paid' => $var->grand_total,'currency_invoice'=>'TZS','gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Car Rental','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Car Rental','prepared_by'=>'Name','approved_by'=>'Name']
-            );
+
+
+                DB::table('car_rental_invoices')->insert(
+                    ['contract_id' => $var->id, 'invoicing_period_start_date' => $var->start_date,'invoicing_period_end_date' => $var->end_date,'period' => $period,'project_id' => 'Car rental','debtor_account_code' => '','debtor_name' => $var->fullName,'debtor_address' => '','amount_to_be_paid' => $var->grand_total,'currency_invoice'=>'TZS','gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'1234','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Car Rental','prepared_by'=>Auth::user()->name,'approved_by'=>'N/A']
+                );
+
 
             }
 
@@ -464,6 +468,10 @@ class carContractsController extends Controller
             DB::table('invoice_notifications')->insert(
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'car_rental']
             );
+
+               DB::table('car_rental_payments')->insert(
+                   ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->grand_total,'currency_payments' => 'TZS','receipt_number' => '']
+               );
 
              return redirect()->route('contracts_management')->with('success', 'Details Saved and Closed Successfully');
        }
@@ -498,7 +506,7 @@ class carContractsController extends Controller
     $contract_type="Car Rental";
     $currency=$request->input('currency');
     $full_name=$first_name. ' '.$last_name;
-    
+
    if($client_type=='Individual'){
     $contract_data=array('fullName'=>$first_name. ' '.$last_name,"vehicle_reg_no"=>$vehicle_reg_no,'start_date'=>$start_date, 'end_date'=>$end_date, 'special_condition'=>$condition, 'rate'=>$rate, 'amount'=>$amount, 'currency'=>$currency);
 
@@ -552,7 +560,7 @@ $validate2=client::where('full_name',$company_name)->where('contract',$contract_
 
 }
 
-    
+
 
     DB::table('car_contracts')->insert($contract_data);
 
@@ -596,11 +604,11 @@ public function editcontract(Request $request){
      $client->last_name=NULL;
      $newfullName=$request->input('company_name');
     }
-    
+
     $client->address=$request->input('address');
     $client->phone_number=$request->input('phone_number');
     $client->email=$request->input('email');
-   
+
     $client->save();
     $contract=carContract::find($contract_id);
     $fullNames=$contract->fullName;
@@ -635,7 +643,7 @@ public function renewContractForm($id){
         return view('renewCarrentalform')->with('contract',$contract);
 }
 public function printContractForm(){
-    $pdf=PDF::loadView('carcontractspdf');    
+    $pdf=PDF::loadView('carcontractspdf');
     return $pdf->stream('Vehicle Requistion Form.pdf');
 }
 }

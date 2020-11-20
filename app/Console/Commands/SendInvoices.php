@@ -218,6 +218,10 @@ class SendInvoices extends Command
                     ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
                 );
 
+                DB::table('space_payments')->insert(
+                    ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>($amount+$amount_not_paid),'currency_payments' => $var->currency,'receipt_number' => '']
+                );
+
 
             }else{
                 echo "invoice already exists";

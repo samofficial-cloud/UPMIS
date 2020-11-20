@@ -118,7 +118,7 @@
     </div>
 
     <div class="main_content">
-      <div class="container " style="max-width: 1308px;">
+      <div class="container " style="max-width: 100%;">
         @if ($message = Session::get('success'))
           <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
     margin-bottom: -1px;
@@ -127,7 +127,7 @@
           </div>
         @endif
 
-            <div style="width:100%; text-align: center ">
+            <div style="width:100%; text-align: center" >
                 <br>
                 <h2>CONTRACTS MANAGEMENT</h2>
 
@@ -191,7 +191,6 @@
 <?php
 $i=1;
 ?>
-<p style="font-size: 13px;">Note: <span style="color: blue">(A.S)</span> - Academic Season <span style="color: blue">(V.S)</span> - Vacation Season</p>
 
 
       <table class="hover table table-striped table-bordered" id="myTablea">
@@ -200,7 +199,8 @@ $i=1;
           <th scope="col" style="color:#fff;"><center>S/N</center></th>
           <th scope="col" style="color:#fff;">Client Name</th>
           <th scope="col" style="color:#fff;"><center>Space Number</center></th>
-          <th scope="col" style="color:#fff;" colspan="2"><center>Amount</center></th>
+          <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
+          <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
 
           <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
@@ -349,22 +349,16 @@ $i=1;
                       </div>
                   </div>
               </td>
-              @if($var->academic_dependence=="Yes")
-              @if(empty($var->academic_season)&&empty($var->vacation_season))
-              <td>{{$var->currency}} {{$var->academic_season}}<sub>(A.S)</sub></td>
-              <td>{{$var->currency}} {{$var->vacation_season}}<sub>(V.S)</sub> </td>
-              @else
-              <td>{{$var->currency}} {{number_format($var->academic_season)}}<sub>(A.S)</sub></td>
-              <td>{{$var->currency}} {{number_format($var->vacation_season)}}<sub>(V.S)</sub> </td>
+
+              <td> {{number_format($var->academic_season)}} {{$var->currency}}</td>
+              <td>@if($var->vacation_season=="0")
+                      {{number_format($var->academic_season)}} {{$var->currency}}
+                      @else
+                  {{number_format($var->vacation_season)}} {{$var->currency}}
               @endif
-              @else
-              @if(empty($var->amount))
-              <td colspan="2" style="text-align: right;">{{$var->amount}}</td>
-              @else
-               <td colspan="2" style="text-align: right;">{{number_format($var->amount)}}</td>
-              @endif
-              @endif
-            
+              </td>
+
+
 
 
             <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
@@ -2013,7 +2007,7 @@ $i=1;
 
     <script type="text/javascript">
        $(document).ready(function(){
-        var table = $('#myTable').DataTable( {
+        var table = $('#myTablea').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
         });
 

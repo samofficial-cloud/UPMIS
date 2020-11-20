@@ -104,7 +104,7 @@ class SendInvoice extends Notification
             'gepg_control_no' => $this->gepg_control_no,
             'tin'  => $this->tin,
             'vrn'   => $this->vrn,
-            'invoice_date' => $this->invoice_date,
+            'invoice_date' =>date("d/m/Y",strtotime($this->invoice_date)) ,
             'period'  => $this->period,
             'financial_year'   => $this->financial_year,
             'max_no_of_days_to_pay' => $this->max_no_of_days_to_pay,

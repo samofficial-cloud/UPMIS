@@ -116,7 +116,7 @@
 
     $date=date_create($today);
 
-    date_sub($date,date_interval_create_from_date_string("366 days"));
+    date_sub($date,date_interval_create_from_date_string("732 days"));
 
 
 

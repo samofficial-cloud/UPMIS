@@ -24,11 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-//         $schedule->command('command:sendInvoices')
-//                  ->everyMinute();
-//
-//        $schedule->command('command:sendInsuranceInvoices')
-//            ->everyMinute();
+         $schedule->command('command:sendInvoices')
+                  ->everyMinute();
+
+        $schedule->command('command:sendInsuranceInvoices')
+            ->everyMinute();
 
     }
 

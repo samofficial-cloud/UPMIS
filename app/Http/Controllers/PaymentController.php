@@ -58,8 +58,14 @@ class PaymentController extends Controller
 
             $data=DB::table('invoices')->where('invoice_number', 'LIKE', "%{$query}%")->get();
             if(count($data)!=0){
+                $data2="";
+                foreach($data as $var){
+                    $data2=$var->currency_invoice;
 
-                echo "1";
+                }
+                echo $data2;
+
+
             }
             else{
                 echo "0";
@@ -115,7 +121,12 @@ class PaymentController extends Controller
             $data=DB::table('insurance_invoices')->where('invoice_number', 'LIKE', "%{$query}%")->get();
             if(count($data)!=0){
 
-                echo "1";
+                $data2="";
+                foreach($data as $var){
+                    $data2=$var->currency_invoice;
+
+                }
+                echo $data2;
             }
             else{
                 echo "0";
@@ -172,7 +183,12 @@ class PaymentController extends Controller
             $data=DB::table('car_rental_invoices')->where('invoice_number', 'LIKE', "%{$query}%")->get();
             if(count($data)!=0){
 
-                echo "1";
+                $data2="";
+                foreach($data as $var){
+                    $data2=$var->currency_invoice;
+
+                }
+                echo $data2;
             }
             else{
                 echo "0";
@@ -229,7 +245,12 @@ class PaymentController extends Controller
             $data=DB::table('water_bill_invoices')->where('invoice_number', 'LIKE', "%{$query}%")->get();
             if(count($data)!=0){
 
-                echo "1";
+                $data2="";
+                foreach($data as $var){
+                    $data2=$var->currency_invoice;
+
+                }
+                echo $data2;
             }
             else{
                 echo "0";
@@ -285,7 +306,12 @@ class PaymentController extends Controller
             $data=DB::table('electricity_bill_invoices')->where('invoice_number', 'LIKE', "%{$query}%")->get();
             if(count($data)!=0){
 
-                echo "1";
+                $data2="";
+                foreach($data as $var){
+                    $data2=$var->currency_invoice;
+
+                }
+                echo $data2;
             }
             else{
                 echo "0";

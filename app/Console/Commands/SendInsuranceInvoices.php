@@ -119,6 +119,11 @@ class SendInsuranceInvoices extends Command
                             );
 
 
+                            DB::table('insurance_payments')->insert(
+                                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$amount_ten_percent,'currency_payments' => 'TZS','receipt_number' => '']
+                            );
+
+
 
 
 
