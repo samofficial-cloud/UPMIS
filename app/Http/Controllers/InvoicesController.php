@@ -321,6 +321,10 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
             );
 
+            DB::table('space_payments')->insert(
+                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
+            );
+
 
         }else{
             return redirect()->back()->with("error","Invoice already exists. Please try again");
@@ -463,7 +467,7 @@ class InvoicesController extends Controller
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),'5647768',$max_no_of_days_to_pay,'OK','7868',$amount_in_words,'4353',$today,$financial_year,'4th Quarter','Renting Space Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'4353',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('invoices')
                 ->where('invoice_number', $id)
@@ -480,9 +484,9 @@ class InvoicesController extends Controller
 
 
 
-            DB::table('space_payments')->insert(
-                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
-            );
+//            DB::table('space_payments')->insert(
+//                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+//            );
 
         }
 
@@ -536,7 +540,7 @@ class InvoicesController extends Controller
 
 
     Notification::route('mail','upmistesting@gmail.com')
-        ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Car Rental','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),'78775',$max_no_of_days_to_pay,'OK','5654',$amount_in_words,'1234',$today,$financial_year,'3rd Quarter','Car Rental Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+        ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'1234',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
     DB::table('car_rental_invoices')
         ->where('invoice_number', $id)
@@ -552,9 +556,9 @@ class InvoicesController extends Controller
         ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
 
-        DB::table('car_rental_payments')->insert(
-            ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
-        );
+//        DB::table('car_rental_payments')->insert(
+//            ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+//        );
 
 
 
@@ -625,6 +629,10 @@ class InvoicesController extends Controller
 
             DB::table('invoice_notifications')->insert(
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'car_rental']
+            );
+
+            DB::table('car_rental_payments')->insert(
+                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
             );
 
 
@@ -797,9 +805,13 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance']
             );
 
+            DB::table('insurance_payments')->insert(
+                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
+            );
+
 
         }else{
-
+            return redirect()->back()->with("error","Invoice already exists. Please try again");
 
         }
 
@@ -852,7 +864,7 @@ class InvoicesController extends Controller
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'UDIA','',$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Insurance Monthly Fees',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'inc_code',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('insurance_invoices')
                 ->where('invoice_number', $id)
@@ -868,9 +880,9 @@ class InvoicesController extends Controller
                 ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
 
-            DB::table('insurance_payments')->insert(
-                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
-            );
+//            DB::table('insurance_payments')->insert(
+//                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+//            );
 
 
         }
@@ -1020,6 +1032,11 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'electricity bill']
             );
 
+            DB::table('electricity_bill_payments')->insert(
+                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('cumulative_amount'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
+            );
+
+
 
         }else{
 
@@ -1069,7 +1086,7 @@ class InvoicesController extends Controller
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency_invoice,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Electricity bill',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'inc_code',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('electricity_bill_invoices')
                 ->where('invoice_number', $id)
@@ -1100,9 +1117,9 @@ class InvoicesController extends Controller
                 ->update(['currency_invoice' => $request->get('currency')]);
 
 
-            DB::table('electricity_bill_payments')->insert(
-                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->cumulative_amount,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
-            );
+//            DB::table('electricity_bill_payments')->insert(
+//                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->cumulative_amount,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+//            );
 
 
 
@@ -1521,6 +1538,11 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'water bill']
             );
 
+            DB::table('water_bill_payments')->insert(
+                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('cumulative_amount'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
+            );
+
+
 
         }else{
 
@@ -1573,7 +1595,7 @@ class InvoicesController extends Controller
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,'Renting Space','',$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency_invoice,$request->get('gepg_control_no'),'',$max_no_of_days_to_pay,'OK','',$amount_in_words,'inc_code',date("d/m/Y",strtotime($today)),$financial_year,$var->period,'Water bill',Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'1234',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('water_bill_invoices')
                 ->where('invoice_number', $id)
@@ -1604,9 +1626,9 @@ class InvoicesController extends Controller
                 ->update(['currency_invoice' => $request->get('currency')]);
 
 
-            DB::table('water_bill_payments')->insert(
-                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->cumulative_amount,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
-            );
+//            DB::table('water_bill_payments')->insert(
+//                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->cumulative_amount,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+//            );
 
 
 

@@ -606,6 +606,19 @@
             ele7.required = true;
 
         }
+        else if(nameSelect.value =='Accountant-Cost Centre'){
+
+            document.getElementById("cost_centreDiv").style.display = "block";
+            document.getElementById("cost_centre_id").disabled=false;
+            var ele7 = document.getElementById("cost_centre_id");
+
+
+            ele7.required = true;
+
+        }
+
+
+
         else{
             var ele7 = document.getElementById("cost_centre_id");
             ele7.required = false;
@@ -649,6 +662,25 @@ console.log('edit function called');
 
 
         }
+
+        else if(nameSelect.value =='Accountant-Cost Centre'){
+
+            document.getElementById("cost_centreDivEdit"+id).style.display = "block";
+
+            document.getElementById("cost_centre_idEdit"+id).disabled=false;
+            var ele7 = document.getElementById("cost_centre_idEdit"+id);
+            ele7.required = true;
+
+            var ele8 = document.getElementById("cost_centre_idEditHidden"+id);
+            ele8.required = true;
+            document.getElementById("cost_centreDivEditHidden"+id).style.display = "block";
+            document.getElementById("cost_centre_idEditHidden"+id).disabled=false;
+
+
+        }
+
+
+
         else{
             var ele7 = document.getElementById("cost_centre_idEdit"+id);
             ele7.required = false;
@@ -688,6 +720,18 @@ console.log('edit function called');
 
 
         }
+
+
+        else if(nameSelect.value =='Accountant-Cost Centre'){
+
+            var ele8 = document.getElementById("cost_centre_idEditHidden"+id);
+            ele8.required = true;
+            document.getElementById("cost_centreDivEditHidden"+id).style.display = "block";
+            document.getElementById("cost_centre_idEditHidden"+id).disabled=false;
+
+
+        }
+
         else{
 
             var ele9 = document.getElementById("cost_centre_idEditHidden"+id);
