@@ -228,7 +228,7 @@ hr {
         </div>
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
 
@@ -346,7 +346,7 @@ hr {
         <input type="text" name="id" value="{{$operational->id}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
 

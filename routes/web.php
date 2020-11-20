@@ -171,6 +171,7 @@ Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('aut
 
 Route::post('/autocomplete/cost_centres', 'carRentalController@fetchcostcentres')->name('autocomplete.costcentres');
 
+
 Route::post('/autocomplete/client_name', 'clientsController@fetchclient_name')->name('autocomplete.client_name');
 
 Route::get('/reports', 'HomeController@report')->name('reports');

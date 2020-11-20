@@ -382,7 +382,8 @@ $today=date('Y-m-d');
 				</div>
                                 </div>
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
-                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+ <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                                {{-- <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
                             </fieldset>
                             {{-- Second Form --}}
                             <fieldset>
@@ -458,7 +459,8 @@ $today=date('Y-m-d');
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
-                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;" />
+                               {{--  <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
                             </fieldset>
                             {{-- Third Form --}}
                             <fieldset>
@@ -564,7 +566,8 @@ $today=date('Y-m-d');
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
-                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                                {{-- <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
                             </fieldset>
                         </form>
                     </div>

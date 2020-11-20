@@ -244,6 +244,7 @@ public function deletecentre($id){
    }
  }
 
+
  public function viewMore(){
   $ops=operational_expenditure::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->get();
   $bookings=carContract::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->whereDate('end_date','>=',date('Y-m-d'))->get();

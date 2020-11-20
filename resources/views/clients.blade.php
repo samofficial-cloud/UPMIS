@@ -62,6 +62,9 @@ hr {
 
 @endsection
 @section('content')
+<?php
+  use App\cost_centre;
+ ?>
 <div class="wrapper">
 <div class="sidebar">
         <ul style="list-style-type:none;">
@@ -126,14 +129,16 @@ hr {
 <div class="container" style="max-width: 1308px;">
   <br>
   <br>
-  @if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+   @if ($message = Session::get('errors'))
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
@@ -335,7 +340,7 @@ hr {
         <input type="text" name="id" value="{{$client->client_id}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -609,7 +614,7 @@ hr {
         <input type="text" name="id" value="{{$client->client_id}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -855,19 +860,41 @@ hr {
         </div>
 <br>
 
-<div class="form-group">
+        <div class="form-group">
           <div class="form-wrapper">
             <label for="Carcentre{{$i}}">Cost Centre<span style="color: red;">*</span></label>
-            <input type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" value="{{$client->cost_centre}}" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+            <select type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" required="" onkeyup="filterFunction()">
+                <option value="{{$client->cost_centre}}">{{$client->cost_centre}}-{{$client->faculty}}</option>
+                <?php 
+                   $cost_centres=cost_centre::orderBy('costcentre_id','asc')->get();
+                ?>
+                    @foreach($cost_centres as $cost_centre)
+                      @if($cost_centre->costcentre_id !=$client->cost_centre )
+                        <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}-{{$cost_centre->costcentre}}</option>
+                      @endif
+                    @endforeach
+              </select>
+
+            
           </div>
         </div>
 <br>
+
+      
+            <div class="form-group">
+          <div class="form-wrapper">
+            <label for="carclient_department{{$i}}">Department/Faculty</label>
+           <input type="text" id="carclient_department{{$i}}" name="department" class="form-control"  readonly="" value="{{$client->faculty}}">
+          </div>
+        </div>
+        <br>
+          
 <input type="text" name="Caremail" value="{{$client->email}}" hidden="">
 <input type="text" name="Carcostcentre" value="{{$client->cost_centre}}" hidden="">
 <input type="text" name="Carfullname" value="{{$client->fullName}}" hidden="">
 
      <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -1103,16 +1130,37 @@ hr {
 <div class="form-group">
           <div class="form-wrapper">
             <label for="Carcentre{{$i}}">Cost Centre<span style="color: red;">*</span></label>
-            <input type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" value="{{$client->cost_centre}}" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+            <select type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" required="" onkeyup="filterFunction()">
+                <option value="{{$client->cost_centre}}">{{$client->cost_centre}}-{{$client->faculty}}</option>
+                <?php 
+                   $cost_centres=cost_centre::orderBy('costcentre_id','asc')->get();
+                ?>
+                    @foreach($cost_centres as $cost_centre)
+                      @if($cost_centre->costcentre_id !=$client->cost_centre )
+                        <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}-{{$cost_centre->costcentre}}</option>
+                      @endif
+                    @endforeach
+              </select>
+            
           </div>
         </div>
 <br>
+
+        <div class="form-group">
+          <div class="form-wrapper">
+            <label for="carclient_department{{$i}}">Department/Faculty</label>
+           <input type="text" id="carclient_department{{$i}}" name="department" class="form-control"  readonly="" value="{{$client->faculty}}">
+          </div>
+        </div>
+        <br>
+
+  
 <input type="text" name="Caremail" value="{{$client->email}}" hidden="">
 <input type="text" name="Carcostcentre" value="{{$client->cost_centre}}" hidden="">
 <input type="text" name="Carfullname" value="{{$client->fullName}}" hidden="">
 
      <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -1372,7 +1420,7 @@ hr {
         <input type="text" name="id" value="{{$j}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -1631,7 +1679,7 @@ hr {
         <input type="text" name="id" value="{{$k}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -1760,6 +1808,25 @@ hr {
 
     };
 </script>
+
+<script type="text/javascript">
+    function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("centre_name");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("option");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
+
 <script type="text/javascript">
 
   function openClients(evt, evtName) {
@@ -1893,6 +1960,50 @@ var table4 = $('#myTable4').DataTable( {
 var table5 = $('#myTable5').DataTable( {
         dom: '<"top"fl>rt<"bottom"pi>'
     } );
+
+var globalreg;
+
+$('#myTable2').on('click', '[name="cost_centre"]', function(e){
+      e.preventDefault();
+      var query = $(this).val();
+      var id = $("#"+e.target.id).val();
+      let reg = e.target.id.replace(/\D/g,'');
+      console.log(query);
+      if(query!=''){
+          var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.faculty')}}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            //console.log(data);
+            $('#carclient_department'+reg).val(data);
+          }
+          });
+
+     }
+});
+
+$('#myTable5').on('click', '[name="cost_centre"]', function(e){
+      e.preventDefault();
+      var query = $(this).val();
+      var id = $("#"+e.target.id).val();
+      let reg = e.target.id.replace(/\D/g,'');
+      console.log(query);
+      if(query!=''){
+          var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.faculty')}}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            //console.log(data);
+            $('#carclient_department'+reg).val(data);
+          }
+          });
+
+     }
+});
 
 
     var table6 = $('#myTable').DataTable();
