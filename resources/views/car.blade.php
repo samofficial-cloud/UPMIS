@@ -309,14 +309,16 @@ $i='1';
 <div class="main_content">
 	<div class="container" style="max-width: 1308px;">
     <br>
-		@if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+		 @if ($message = Session::get('errors'))
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
@@ -394,7 +396,7 @@ $i='1';
 				</div>
 
 				<div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -494,7 +496,7 @@ $i='1';
 				<input type="text" name="id" value="{{$cars->id}}" hidden="">
 
 				<div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -644,7 +646,7 @@ $i='1';
         <input type="text" name="id" value="{{$rate->id}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
+  <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
 
@@ -818,7 +820,7 @@ $i='1';
         <input type="text" name="centreid" value="{{$var->id}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
 

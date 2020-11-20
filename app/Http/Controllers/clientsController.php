@@ -207,6 +207,14 @@ class clientsController extends Controller
       } 
     }
     public function editCarclients(Request $request){
+      
+
+       DB::table('car_contracts')
+            ->where('email',$request->get('Caremail'))
+            ->where('fullName',$request->get('Carfullname'))
+            ->where('cost_centre',$request->get('Carcostcentre'))
+            ->update(['faculty' =>$request->get('department')]);
+
         DB::table('car_contracts')
             ->where('email',$request->get('Caremail'))
             ->where('fullName',$request->get('Carfullname'))
@@ -218,6 +226,9 @@ class clientsController extends Controller
             ->where('fullName',$request->get('Carfullname'))
             ->where('cost_centre',$request->get('Carcostcentre'))
             ->update(['cost_centre' => $request->get('cost_centre')]);
+
+
+           
 
              return redirect()->back()->with('success', 'Details Edited Successfully');
     }

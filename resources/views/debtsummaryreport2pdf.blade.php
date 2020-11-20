@@ -87,7 +87,7 @@ tbody{
 					@endif
  				@endif
  	</center>
-<h4>1. Payment Paid in TZS</h4>
+<h4>1. Payments Made in TZS</h4>
 	<table class="hover table table-striped table-bordered">
 			<thead class="thead-dark">
 				<tr>
@@ -309,7 +309,7 @@ tbody{
 			</tbody>
 	</table>
 <br>
-<h4>2. Payment Paid in USD</h4>
+<h4>2. Payments Made in USD</h4>
 	<table class="hover table table-striped table-bordered">
 			<thead class="thead-dark">
 				<tr>
