@@ -1,11 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.app_2')
 
 @section('content')
+<br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+            <div class="card" style="text-align: center;">
+                <div class="card-header"><h4>{{ __('Reset Password') }}</h4></div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -18,7 +19,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right"><strong>{{ __('E-Mail Address') }}<span style="color: red;"> *</span></strong></label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>

@@ -268,9 +268,11 @@ class HomeController extends Controller
                             ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->join('space_payments','invoices.invoice_number','=','space_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
                             ->where('major_industry',$_GET['biz'])
                             ->where('location',$_GET['loc'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -293,8 +295,10 @@ class HomeController extends Controller
                             ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->join('space_payments','invoices.invoice_number','=','space_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
                             ->where('major_industry',$_GET['biz'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -316,8 +320,10 @@ class HomeController extends Controller
                             ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->join('space_payments','invoices.invoice_number','=','space_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
                             ->where('location',$_GET['loc'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -339,7 +345,9 @@ class HomeController extends Controller
                             ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                             ->join('space_payments','invoices.invoice_number','=','space_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -368,9 +376,11 @@ class HomeController extends Controller
                             ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                             ->join('electricity_bill_payments','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
                             ->where('major_industry',$_GET['biz'])
                             ->where('location',$_GET['loc'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -391,8 +401,10 @@ class HomeController extends Controller
                             ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                             ->join('electricity_bill_payments','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
                             ->where('major_industry',$_GET['biz'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -414,8 +426,10 @@ class HomeController extends Controller
                             ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                             ->join('electricity_bill_payments','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
                             ->where('location',$_GET['loc'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -437,7 +451,9 @@ class HomeController extends Controller
                             ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->join('electricity_bill_payments','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -466,9 +482,11 @@ class HomeController extends Controller
                             ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->join('water_bill_payments','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
                             ->where('major_industry',$_GET['biz'])
                             ->where('location',$_GET['loc'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -489,8 +507,10 @@ class HomeController extends Controller
                             ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->join('water_bill_payments','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
                             ->where('major_industry',$_GET['biz'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -513,7 +533,9 @@ class HomeController extends Controller
                             ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
                             ->where('location',$_GET['loc'])
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->join('water_bill_payments','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -535,7 +557,9 @@ class HomeController extends Controller
                             ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
                             ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
                             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
-                            ->whereYear('invoicing_period_start_date',$_GET['yr'])
+                            ->join('water_bill_payments','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -561,8 +585,10 @@ class HomeController extends Controller
       elseif($_GET['b_type']=='Insurance'){
         if($_GET['yr2_fil']=='true'){
            $contract_id[]= DB::table('insurance_invoices')
-                            ->select('debtor_name','currency_invoice')
-                            ->whereYear('invoicing_period_start_date',$_GET['yr2'])
+                              ->join('insurance_payments','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
+                              ->select('debtor_name','currency_invoice')
+                              ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr2'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -581,7 +607,9 @@ class HomeController extends Controller
            $contract_id[]= DB::table('car_rental_invoices')
                             ->select('car_rental_invoices.contract_id','debtor_name','cost_centre','destination')
                             ->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')
-                            ->whereYear('invoicing_period_start_date',$_GET['yr2'])
+                             ->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            // ->whereYear('invoicing_period_start_date',$_GET['yr2'])
                             ->orderBy('debtor_name','asc')
                             ->distinct()
                             ->get();
@@ -596,9 +624,108 @@ class HomeController extends Controller
         }
 
       }
+      elseif($_GET['b_type']=='All'){
+        if($_GET['yr2_fil']=='true'){
+        $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->join('space_payments','invoices.invoice_number','=','space_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+        $contract_id2[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->join('water_bill_payments','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            ->where('has_water_bill','Yes')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+        $contract_id3[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->join('electricity_bill_payments','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            ->where('has_electricity_bill','Yes')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+        $contract_id4[]= DB::table('car_rental_invoices')
+                            ->select('car_rental_invoices.contract_id','debtor_name','cost_centre','destination')
+                            ->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')
+                            ->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+
+        $contract_id5[]= DB::table('insurance_invoices')
+                            ->join('insurance_payments','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
+                            ->select('debtor_name','currency_invoice')
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+          }
+          else{
+            $contract_id[]= DB::table('invoices')
+                            ->select('invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+        $contract_id2[]= DB::table('water_bill_invoices')
+                            ->select('water_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('has_water_bill','Yes')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+        $contract_id3[]= DB::table('electricity_bill_invoices')
+                            ->select('electricity_bill_invoices.contract_id','debtor_name','major_industry','sub_location','currency')
+                            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+                            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                            ->where('has_electricity_bill','Yes')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+        $contract_id4[]= DB::table('car_rental_invoices')
+                            ->select('car_rental_invoices.contract_id','debtor_name','cost_centre','destination')
+                            ->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+
+        $contract_id5[]= DB::table('insurance_invoices')
+                            ->select('debtor_name','currency_invoice')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
+          }
+      }
 
       if($_GET['b_type']=='Insurance'){
          $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id]);
+      }
+      elseif($_GET['b_type']=='All'){
+        $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id, 'contract_id2'=>$contract_id2, 'contract_id3'=>$contract_id3, 'contract_id4'=>$contract_id4, 'contract_id5'=>$contract_id5])->setPaper('a4', 'landscape');
       }
       else{
        $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id])->setPaper('a4', 'landscape'); 
@@ -1192,9 +1319,10 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             if($_GET['cont']=='Active'){
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->where('cost_centre',$_GET['centre'])
                     ->whereDate('end_date','>=',date('Y-m-d'))
-                    ->where('payment_status',$_GET['pay'])
                     ->whereDate('start_date','>=',$_GET['start'])
                     ->whereDate('end_date','<=',$_GET['end'])
                     ->where('form_completion','1')
@@ -1204,9 +1332,10 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             elseif($_GET['cont']=='Inactive'){
               $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->where('cost_centre',$_GET['centre'])
                     ->whereDate('end_date','<',date('Y-m-d'))
-                    ->where('payment_status',$_GET['pay'])
                     ->whereDate('start_date','>=',$_GET['start'])
                     ->whereDate('end_date','<=',$_GET['end'])
                     ->where('form_completion','1')
@@ -1245,9 +1374,10 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             if($_GET['cont']=='Active'){
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->where('cost_centre',$_GET['centre'])
                     ->whereDate('end_date','>=',date('Y-m-d'))
-                    ->where('payment_status',$_GET['pay'])
                     ->where('form_completion','1')
                     ->orderBy('car_contracts.fullName','asc')
                     ->get();
@@ -1255,9 +1385,10 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             elseif($_GET['cont']=='Inactive'){
               $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->where('cost_centre',$_GET['centre'])
                     ->whereDate('end_date','<',date('Y-m-d'))
-                    ->where('payment_status',$_GET['pay'])
                     ->where('form_completion','1')
                     ->orderBy('car_contracts.fullName','asc')
                     ->get();
@@ -1290,8 +1421,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
            
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->where('cost_centre',$_GET['centre'])
-                    ->where('payment_status',$_GET['pay'])
                     ->whereDate('start_date','>=',$_GET['start'])
                     ->whereDate('end_date','<=',$_GET['end'])
                     ->where('form_completion','1')
@@ -1316,8 +1448,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             
             $clients = DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->where('cost_centre',$_GET['centre'])
-                    ->where('payment_status',$_GET['pay'])
                     ->where('form_completion','1')
                     ->orderBy('car_contracts.fullName','asc')
                     ->get();
@@ -1339,8 +1472,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             if($_GET['cont']=='Active'){
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
                     ->whereDate('end_date','>=',date('Y-m-d'))
-                    ->where('payment_status',$_GET['pay'])
+                     ->where('payment_status',$_GET['pay'])
                     ->whereDate('start_date','>=',$_GET['start'])
                     ->whereDate('end_date','<=',$_GET['end'])
                     ->where('form_completion','1')
@@ -1350,8 +1484,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             elseif($_GET['cont']=='Inactive'){
               $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->whereDate('end_date','<',date('Y-m-d'))
-                    ->where('payment_status',$_GET['pay'])
                     ->whereDate('start_date','>=',$_GET['start'])
                     ->whereDate('end_date','<=',$_GET['end'])
                     ->where('form_completion','1')
@@ -1387,8 +1522,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             if($_GET['cont']=='Active'){
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->whereDate('end_date','>=',date('Y-m-d'))
-                    ->where('payment_status',$_GET['pay'])
                     ->where('form_completion','1')
                     ->orderBy('car_contracts.fullName','asc')
                     ->get();
@@ -1396,8 +1532,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             else if($_GET['cont']=='Inactive'){
               $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
+                     ->where('payment_status',$_GET['pay'])
                     ->whereDate('end_date','<',date('Y-m-d'))
-                    ->where('payment_status',$_GET['pay'])
                     ->where('form_completion','1')
                     ->orderBy('car_contracts.fullName','asc')
                     ->get();
@@ -1424,7 +1561,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
            elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
                $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
                     ->whereDate('start_date','>=',$_GET['start'])
+                     ->where('payment_status',$_GET['pay'])
                     ->whereDate('end_date','<=',$_GET['end'])
                     ->where('form_completion','1')
                     ->orderBy('car_contracts.fullName','asc')
@@ -1446,6 +1585,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
+                    ->join('car_rental_payments','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')
                     ->where('payment_status',$_GET['pay'])
                     ->where('form_completion','1')
                     ->orderBy('car_contracts.fullName','asc')
@@ -1814,14 +1954,22 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
 
       public function carreportPDF3(){
          $details=carRental::where('vehicle_reg_no',$_GET['reg'])->get();
-         $bookings=carContract::where('vehicle_reg_no',$_GET['reg'])->orderby('start_date','asc')->get();
-        $operations=operational_expenditure::where('vehicle_reg_no',$_GET['reg'])->orderby('date_received','asc')->get();
+         if($_GET['date_fil']=='true'){
+           $bookings=carContract::where('vehicle_reg_no',$_GET['reg'])->whereBetween(DB::raw('DATE(start_date)'), array($_GET['start'], $_GET['end']))->orderby('start_date','asc')->get();
+           $operations=operational_expenditure::where('vehicle_reg_no',$_GET['reg'])->whereBetween(DB::raw('DATE(date_received)'), array($_GET['start'], $_GET['end']))->orderby('date_received','asc')->get();
+         }
+         else{
+          $bookings=carContract::where('vehicle_reg_no',$_GET['reg'])->orderby('start_date','asc')->get();
+          $operations=operational_expenditure::where('vehicle_reg_no',$_GET['reg'])->orderby('date_received','asc')->get();
+         }
+         
         if((count($bookings)==0) &&(count($operations)==0)){
             return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
        else{
         $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations])->setPaper('a4', 'landscape');    
          return $pdf->stream('Car History Report.pdf');
+         //return view('carhistoryreport',compact('details','bookings','operations'));
        }
       }    
 

@@ -518,7 +518,7 @@ $i='1';
           </div>
 
            <div class="modal-body">
-            <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
+            <p style="font-size: 20px;">Are you sure you want to delete {{$cars->vehicle_reg_no}} - {{$cars->vehicle_model}}?</p>
             <br>
             <div align="right">
       <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
@@ -667,7 +667,7 @@ $i='1';
           </div>
 
            <div class="modal-body">
-            <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
+            <p style="font-size: 20px;">Are you sure you want to delete the hire rate for {{$rate->vehicle_model}} model?</p>
             <br>
             <div align="right">
       <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>
@@ -841,7 +841,7 @@ $i='1';
           </div>
 
            <div class="modal-body">
-            <p style="font-size: 20px;">Are you sure you want to delete this cost centre?</p>
+            <p style="font-size: 20px;">Are you sure you want to delete the cost centre {{$var->costcentre_id}} - {{$var->costcentre}}?</p>
             <br>
             <div align="right">
       <a class="btn btn-info" href="{{route('deletecentre',$var->id)}}">Proceed</a>

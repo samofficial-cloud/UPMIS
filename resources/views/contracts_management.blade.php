@@ -141,7 +141,7 @@
 
 
                     @if ($category=='Real Estate only' OR $category=='All')
-                        <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate Contracts</strong></button>
+                        <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate</strong></button>
 
 
 
@@ -154,7 +154,7 @@
 
 
                         @if($category=='Insurance only' OR $category=='All')
-                            <button class="tablinksOuter insurance_identity" onclick="openContractType(event, 'insurance_contracts')"><strong>Insurance Contracts</strong></button>
+                            <button class="tablinksOuter insurance_identity" onclick="openContractType(event, 'insurance_contracts')"><strong>Insurance</strong></button>
 
                         @else
                         @endif
@@ -162,7 +162,7 @@
 
 
                         @if ($category=='CPTU only' OR $category=='All')
-                            <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental Contracts</strong></button>
+                            <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental</strong></button>
                         @else
                         @endif
 

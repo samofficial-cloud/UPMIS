@@ -257,8 +257,9 @@ hr {
 
     @endif
 
-    <center><h3><strong>Active Space Clients</strong></h3></center>
+    <center><h3><strong>Active Clients</strong></h3></center>
   <hr>
+  <?php $a1=1;?>
  <table class="hover table table-striped table-bordered" id="myTable">
   <thead class="thead-dark">
     <tr>
@@ -273,7 +274,7 @@ hr {
   <tbody>
     @foreach($SCclients as $client)
     <tr>
-      <th scope="row" class="counterCell text-center">.</th>
+      <th scope="row" style="text-align: center;">{{$a1}}.</th>
       <td>{{$client->full_name}}</td>
       <td>{{$client->phone_number}}</td>
       <td>{{$client->email}}</td>
@@ -427,7 +428,9 @@ hr {
    </center>
       </td>
     </tr>
-    <?php $i=$i+1;?>
+    <?php $i=$i+1;
+          $a1 = $a1+1;
+    ?>
     @endforeach
   </tbody>
 </table>
@@ -522,11 +525,12 @@ hr {
          </div>
      </div>
     @endif
-  <center><h3><strong>Inactive Space Clients</strong></h3></center>
+  <center><h3><strong>Inactive Clients</strong></h3></center>
   <hr style="margin-top: 0rem;
     margin-bottom: 2rem;
     border: 0;
     border: 1px solid #505559">
+    <?php $a2=1;?>
    <table class="hover table table-striped table-bordered" id="myTable1">
   <thead class="thead-dark">
     <tr>
@@ -542,7 +546,7 @@ hr {
   <tbody>
     @foreach($SPclients as $client)
     <tr>
-     <th scope="row" class="counterCell text-center">.</th>
+     <th scope="row" style="text-align: center;">{{$a2}}.</th>
       <td>{{$client->full_name}}</td>
       <td>{{$client->phone_number}}</td>
       <td>{{$client->email}}</td>
@@ -704,6 +708,7 @@ hr {
    </center>
       </td>
     </tr>
+    <?php $a2=$a2 + 1;?>
     @endforeach
   </tbody>
 </table>
@@ -804,8 +809,9 @@ hr {
      </div>
 
     @endif
-    <center><h3><strong>Active CPTU Clients</strong></h3></center>
+    <center><h3><strong>Active Clients</strong></h3></center>
 <hr>
+<?php $a3=1;?>
     <table class="hover table table-striped table-bordered" id="myTable2">
   <thead class="thead-dark">
     <tr>
@@ -821,7 +827,7 @@ hr {
   <tbody>
     @foreach($active_carclients as $client)
     <tr>
-      <th scope="row" class="counterCell text-center">.</th>
+      <th scope="row" style="text-align: center;">{{$a3}}.</th>
       <td>{{$client->fullName}}</td>
       <td><center>{{$client->cost_centre}}</center></td>
       <td><center>{{$client->faculty}}</center></td>
@@ -979,7 +985,9 @@ hr {
    </center>
       </td>
     </tr>
-    <?php $i=$i+1;?>
+    <?php $i=$i+1;
+          $a3= $a3+1;
+    ?>
     @endforeach
   </tbody>
 </table>
@@ -1071,8 +1079,9 @@ hr {
          </div>
      </div>
     @endif
-    <center><h3><strong>Inactive CPTU Clients</strong></h3></center>
+    <center><h3><strong>Inactive Clients</strong></h3></center>
 <hr>
+<?php $a4=1;?>
     <table class="hover table table-striped table-bordered" id="myTable5">
   <thead class="thead-dark">
     <tr>
@@ -1088,7 +1097,7 @@ hr {
   <tbody>
     @foreach($inactive_carclients as $client)
     <tr>
-      <th scope="row" class="counterCell text-center">.</th>
+      <th scope="row" style="text-align: center;">{{$a4}}.</th>
       <td>{{$client->fullName}}</td>
       <td><center>{{$client->cost_centre}}</center></td>
       <td>{{$client->faculty}}</td>
@@ -1245,7 +1254,9 @@ hr {
    </center>
       </td>
     </tr>
-    <?php $i=$i+1;?>
+    <?php $i=$i+1;
+        $a4= $a4+1;
+    ?>
     @endforeach
   </tbody>
 </table>
@@ -1345,8 +1356,9 @@ hr {
          </div>
      </div>
     @endif
- <center><h3><strong>Active Insurance Clients</strong></h3></center>
+ <center><h3><strong>Active Clients</strong></h3></center>
  <hr>
+ <?php $a5=1;?>
 <table class="hover table table-striped table-bordered" id="myTable3">
   <thead class="thead-dark">
     <tr>
@@ -1354,13 +1366,14 @@ hr {
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
    <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
   <th scope="col" style="color:#fff;"><center>Email</center></th>
+  <th scope="col" style="color:#fff;"><center>Class</center></th>
   <th scope="col"  style="color:#fff;"><center>Action</center></th>
     </tr>
   </thead>
   <tbody>
     @foreach($active_insuranceclients as $client)
     <tr>
-      <th scope="row" class="counterCell text-center">.</th>
+      <th scope="row" style="text-align: center;">{{$a5}}.</th>
       <td>{{$client->full_name}}</td>
       <td>{{$client->phone_number}}</td>
       {{-- <td>{{ucfirst(strtolower($client->principal))}}</td>
@@ -1368,6 +1381,7 @@ hr {
       <td>{{number_format($client->sum_insured)}}</td>
       <td><center>{{date("d/m/Y",strtotime($client->commission_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td> --}}
       <td>{{$client->email}}</td>
+      <td>{{$client->insurance_class}}</td>
       <td>
         <center>
          <a title="View More Details" role="button" href="{{ route('InsuranceClientsViewMore',[$client->full_name,$client->email,$client->phone_number])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
@@ -1394,6 +1408,14 @@ hr {
         </div>
 
         
+<br>
+
+    <div class="form-group">
+          <div class="form-wrapper">
+            <label for="client_name{{$j}}">Insurance Class</label>
+            <input type="text" id="udia_act_class{{$j}}" name="client_class" class="form-control" value="{{$client->insurance_class}}" readonly="">
+          </div>
+        </div>     
 <br>
 
 <div class="form-group">
@@ -1505,7 +1527,7 @@ hr {
    </center>
       </td>
     </tr>
-    <?php $j=$j+1; ?>
+    <?php $j=$j+1; $a5 = $a5 +1;?>
     @endforeach
   </tbody>
 </table>
@@ -1597,8 +1619,9 @@ hr {
          </div>
      </div>
     @endif
- <center><h3><strong>Inactive Insurance Clients</strong></h3></center>
+ <center><h3><strong>Inactive Clients</strong></h3></center>
  <hr>
+ <?php $a6=1;?>
 <table class="hover table table-striped table-bordered" id="myTable4">
   <thead class="thead-dark">
     <tr>
@@ -1606,17 +1629,19 @@ hr {
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
    <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
   <th scope="col" style="color:#fff;"><center>Email</center></th>
+  <th scope="col" style="color:#fff;"><center>Class</center></th>
   <th scope="col"  style="color:#fff;"><center>Action</center></th>
     </tr>
   </thead>
   <tbody>
     @foreach($inactive_insuranceclients as $client)
     <tr>
-      <th scope="row" class="counterCell text-center">.</th>
+      <th scope="row" style="text-align: center;">{{$a6}}.</th>
       <td>{{$client->full_name}}</td>
       <td>{{$client->phone_number}}</td>
       {{-- <td>{{ucfirst(strtolower($client->principal))}}</td> --}}
       <td>{{$client->email}}</td>
+      <td>{{$client->insurance_class}}</td>
       <td>
         <center>
          <a title="View More Details" role="button" href="#"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
@@ -1641,13 +1666,14 @@ hr {
             <input type="text" id="udia_inact_name{{$k}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
           </div>
         </div>
+<br>
 
-        {{-- <div class="form-group">
+<div class="form-group">
           <div class="form-wrapper">
-            <label for="client_type{{$k}}">Client Type</label>
-            <input type="text" id="client_type{{$k}}" name="client_type" class="form-control" value="{{$client->type}}" readonly="">
+            <label for="udia_inact_class{{$k}}">Insurance Class</label>
+            <input type="text" id="udia_inact_class{{$k}}" name="client_class" class="form-control" value="{{$client->insurance_class}}" readonly="">
           </div>
-        </div> --}}
+        </div>     
 <br>
 
 <div class="form-group">
@@ -1764,7 +1790,7 @@ hr {
    </center>
       </td>
     </tr>
-    <?php $k=$k+1;?>
+    <?php $k=$k+1; $a6=$a6+1;?>
     @endforeach
   </tbody>
 </table>

@@ -215,8 +215,8 @@ table {
            <th scope="col" style="width: 8%;"><center>Receipt No </center></th>
             {{-- <th scope="col" style="width: 9%;"><center>Currency </center></th> --}}
          {{--  <th scope="col" style="width: 12%;"><center>Sum Insured</center></th> --}}
-          <th scope="col" style="width: 8%;"><center>Premium</center></th>
-            <th scope="col" style="width: 14%;"><center>Actual(Excluding VAT) </center></th>
+          <th scope="col" style="width: 8%;"><center>Premium (TZS)</center></th>
+            <th scope="col" style="width: 14%;"><center>Actual(Excluding VAT- TZS) </center></th>
            
            
         </tr>
@@ -234,8 +234,8 @@ table {
             <td><center>{{$var->receipt_no}}</center></td>
              {{-- <td><center>{{$var->currency}}</center></td> --}}
              {{--  <td style="text-align: right;">{{number_format($var->sum_insured)}}</td> --}}
-              <td style="text-align: right;">{{$var->currency}} {{number_format($var->premium)}}</td>
-            <td style="text-align: right;">{{$var->currency}} {{number_format($var->actual_ex_vat)}}</td>   
+              <td style="text-align: right;">{{number_format($var->premium)}}</td>
+            <td style="text-align: right;">{{number_format($var->actual_ex_vat)}}</td>   
           </tr>
           @endforeach
       </tbody>
@@ -276,7 +276,7 @@ table {
           <th scope="col" style="width: 9%;"><center>Insurance Package</center></th>
           <th scope="col" style="width: 9%;" ><center>Commission Date</center></th>
           <th scope="col" style="width: 9%;" ><center>End Date</center></th>
-          <th scope="col" style="width: 10%;"><center>Premium</center></th>
+          <th scope="col" style="width: 10%;"><center>Premium (TZS)</center></th>
          {{--  <th scope="col" style="width: 10%;"><center>Receipt No</center></th> --}}      
         </tr>
     </thead>
@@ -292,7 +292,7 @@ table {
             <td><center>{{$var->insurance_class}}</center></td>
             <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
             <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
-            <td style="text-align: right;">{{$var->currency}} {{number_format($var->premium)}}</td>
+            <td style="text-align: right;">{{number_format($var->premium)}}</td>
             {{-- <td><center>{{$var->receipt_no}}</center></td> --}}        
           </tr>
           @endforeach

@@ -148,6 +148,7 @@
   $grounded_cars=carRental::where('flag','1')->where('vehicle_status','Grounded')->count();
   $total_insurance=insurance::select('insurance_company')->groupby('insurance_company')->distinct()->get();
   $classes=insurance::select('class')->where('status',1)->distinct()->get();
+  $year = date('Y');
   ?>
     <br>
 
@@ -196,8 +197,32 @@
 </div>
         <br>
         <div class="card">
+          <br>
+          <div class="col-sm-12">
+    <div>
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group" style="margin-right: 5px;">
+           
+          <select name="activity_year" id="activity_year" class="form-control" required="">
+              <option value=" " disabled selected hidden>Select Year</option>
+                @for($x=-5;$x<=0; $x++)
+                  <option value="{{$year + $x}}">{{$year + $x}}</option>
+                @endfor
+          </select>
+          <span id="activity_msg"></span>
+        </div>
+      
+      <div class="form-group"  style="margin-right: 5px;">
+          <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
+      </div>
+
+     
+    </form>   
+  </div>
+</div>
           <div class="card-body">
-            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Space Activities {{date('Y')}}</h4>
+            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Space Activities</h4>
             <hr>
         <div class="card-deck">
   <div class="card border-info">
@@ -526,9 +551,37 @@
   </div>
 <br>
 <div class="card">
-          <div class="card-body">
-            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Space Income Generation {{date('Y')}}</h4>
+  <br>
+  <div class="col-sm-12">
+    <div>
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group" style="margin-right: 5px;">
+           
+          <select name="income_year" id="income_year" class="form-control" required="">
+              <option value=" " disabled selected hidden>Select Year</option>
+                @for($x=-5;$x<=0; $x++)
+                  <option value="{{$year + $x}}">{{$year + $x}}</option>
+                @endfor
+          </select>
+          <span id="error_msg"></span>
+        </div>
+      
+      <div class="form-group"  style="margin-right: 5px;">
+          <input type="submit" name="filter" value="Filter" id="income_filter" class="btn btn-primary">
+      </div>
+
+     
+    </form>   
+  </div>
+</div>
+          <div class="card-body" >
+            <div id="content">
+            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Space Income Generation</h4>
             <hr>
+            <div >
+    <center><div id="loading"></div></center>
+  </div>
 <div class="card-deck">
   <div class="card border-info">
      {!! $chart4->container() !!}
@@ -539,6 +592,7 @@
   <div class="card border-info">
      {!! $chart6->container() !!}
   </div>
+</div>
 </div>
 </div>
 </div>
@@ -1427,6 +1481,99 @@ function myFunction() {
         }
          
     });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(document).ajaxSend(function(){
+    $("#loading").fadeIn(250);
+    });
+$(document).ajaxComplete(function(){
+    $("#loading").fadeOut(250);
+    });
+
+$("#income_filter").click(function(e){
+  e.preventDefault();
+
+    var query = $('#income_year').val();
+
+    if(query==null){
+      $('#error_msg').show();
+      var message=document.getElementById('error_msg');
+      message.style.color='red';
+      message.innerHTML="Required";
+      $('#income_year').attr('style','border:1px solid #f00');
+    }
+    else{
+      $('#error_msg').hide();
+      $('#income_year').attr('style','border:1px solid #ccc');
+      $.ajax({
+      url: "/dashboard/income_filter?",
+      context: document.body,
+      async : false,
+      data:{year:query}
+      })
+    .done(function(data) {
+      {{$chart4->id}}.options.title.text = 'UDIA Income Generation '+query;
+      {{ $chart4->id }}.data.datasets[0].data =data.udia;
+      {{ $chart4->id }}.update(); 
+
+      {{$chart5->id}}.options.title.text = 'CPTU Income Generation '+query;
+      {{ $chart5->id }}.data.datasets[0].data =data.cptu;
+      // $chart5->id.data.datasets.label = 'CPTU Income';
+      {{ $chart5->id }}.update();
+
+      {{$chart6->id}}.options.title.text = 'Space Income Generation '+query;
+      {{ $chart6->id }}.data.datasets[0].data =data.space;
+      {{ $chart6->id }}.update(); 
+    });
+    }  
+    return false;
+
+  
+
+});
+
+$("#activity_filter").click(function(e){
+  e.preventDefault();
+
+    var query = $('#activity_year').val();
+
+    if(query==null){
+      $('#activity_msg').show();
+      var message=document.getElementById('activity_msg');
+      message.style.color='red';
+      message.innerHTML="Required";
+      $('#activity_year').attr('style','border:1px solid #f00');
+    }
+    else{
+      $('#activity_msg').hide();
+      $('#activity_year').attr('style','border:1px solid #ccc');
+      $.ajax({
+      url: "/dashboard/activity_filter?",
+      context: document.body,
+      async : false,
+      data:{year:query}
+      })
+    .done(function(data) {
+      {{$chart->id}}.options.title.text = 'UDIA Activities '+query;
+      {{ $chart->id }}.data.datasets[0].data =data.udia;
+      {{ $chart->id }}.update(); 
+
+      {{$chart2->id}}.options.title.text = 'CPTU Activities '+query;
+      {{ $chart2->id }}.data.datasets[0].data =data.cptu;
+      {{ $chart2->id }}.update();
+
+      {{$chart3->id}}.options.title.text = 'Space Activities '+query;
+      {{ $chart3->id }}.data.datasets[0].data =data.space;
+      {{ $chart3->id }}.update(); 
+    });
+    }  
+    return false;
+
+});
+
 });
 </script>
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script> --}}

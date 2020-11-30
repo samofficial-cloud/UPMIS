@@ -56,7 +56,11 @@ use App\carRental;
 use App\carContract;     
 
         
-        $total=0;
+$total=0;
+$total_paid =0;
+$total_paid2 = 0;
+$total_not = 0;
+$total_not2 = 0;
 ?>
 <div id="footer">
   <div class="page-number"></div>
@@ -268,10 +272,18 @@ Detailed Information:
       <th scope="col"style="width: 5%;"><center>S/N</center></th>
       <th scope="col">Designation</th>
       <th scope="col"><center>Client Name</center></th>
-      <th scope="col" style="width: 16%;"><center>Vehicle Reg No.</center></th>
-      <th scope="col" style="width: 14%;"><center>Start Date</center></th>
-      <th scope="col" style="width: 14%;"><center>End Date</center></th>
-      <th scope="col" style="width: 18%;"><center>Destination</center></th>
+      <th scope="col" style="width: 12%;"><center>Vehicle Reg No.</center></th>
+      <th scope="col" style="width: 10%;"><center>Start Date</center></th>
+      <th scope="col" style="width: 10%;"><center>End Date</center></th>
+      <th scope="col" style="width: 15%;"><center>Destination</center></th>
+      @if($_GET['pay_fil']=='true')
+         @if($_GET['pay']=='Partially Paid')
+          <th scope="col" style="width: 12%;"><center>Paid (TZS)</center></th>
+          <th scope="col" style="width: 12%;"><center>Debt (TZS)</center></th>
+        @else
+          <th scope="col" style="width: 12%;"><center>Amount (TZS)</center></th>
+        @endif
+      @endif
     </tr>
   </thead>
   <tbody>
@@ -284,11 +296,41 @@ Detailed Information:
     <td><center>{{date("d/m/Y",strtotime($client->start_date))}}</center></td>
     <td><center>{{date("d/m/Y",strtotime($client->end_date))}}</center></td>
     <td>{{$client->destination}}</td>
-    {{-- <td><center>{{$client->rate}}</center></td> --}}
+    @if($_GET['pay_fil']=='true')
+      @if($_GET['pay']=='Paid')
+        <td style="text-align: right;">{{number_format($client->amount_paid)}}</td>
+        <?php $total_paid = $total_paid + $client->amount_paid;?>
+      @elseif($_GET['pay']=='Not paid')
+        <td style="text-align: right;">{{number_format($client->amount_not_paid)}}</td>
+        <?php $total_not = $total_not + $client->amount_not_paid;?>
+      @elseif($_GET['pay']=='Partially Paid')
+        <td style="text-align: right;">{{number_format($client->amount_paid)}}</td>
+        <?php $total_paid2 = $total_paid2 + $client->amount_paid;?>
+        <?php $total_not2 = $total_not2 + $client->amount_not_paid;?>
+        <td style="text-align: right;">{{number_format($client->amount_not_paid)}}</td>
+      @endif
+    @endif
+    
 </tr>
 @endforeach
 </tbody>
 </table>
+@if($_GET['pay_fil']=='true')
+<table>
+  <tr style="width: 100%">
+  <td><b>TOTAL</b></td>
+   
+      @if($_GET['pay']=='Paid')
+        <td style="width: 12%; text-align: right;">{{number_format($total_paid)}}</td>
+      @elseif($_GET['pay']=='Not paid')
+        <td style="width: 12%; text-align: right;">{{number_format($total_not)}}</td>
+      @elseif($_GET['pay']=='Partially Paid')
+        <td style="width: 12%; text-align: right;">{{number_format($total_paid2)}}</td>
+        <td style="width: 12%; text-align: right;">{{number_format($total_not2)}}</td>
+      @endif 
+</tr>
+</table>
+ @endif
 @else
 <h3>Sorry No clients found for the specified parameters</h3>
 @endif

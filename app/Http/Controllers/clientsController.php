@@ -24,8 +24,8 @@ class clientsController extends Controller
   $active_carclients=carContract::select('fullName','email','cost_centre','faculty')->whereDate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
   $inactive_carclients=carContract::select('fullName','email','cost_centre','faculty')->whereDate('end_date','<',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
    $insuranceclients=insurance_contract::orderBy('full_name','asc')->get();
-   $active_insuranceclients=insurance_contract::select('full_name','email','phone_number')->whereDate('end_date','>=',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
-   $inactive_insuranceclients=insurance_contract::select('full_name','email','phone_number')->whereDate('end_date','<',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
+   $active_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class')->whereDate('end_date','>=',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
+   $inactive_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class')->whereDate('end_date','<',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
 
    $Spemails=client::whereIn('full_name',space_contract::select('full_name')->where('contract_status','1')->distinct()->pluck('full_name')->toArray())
       ->where('contract','Space')
