@@ -588,7 +588,7 @@ $year=$current-3;
             <select class="form-control" id="payment_status" name="payment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
               <option value="Paid">Paid</option>
-              <option value="Not Paid">Not Paid</option>
+              <option value="Not paid">Not Paid</option>
             </select>
         </div>
     </div>
@@ -651,7 +651,7 @@ $year=$current-3;
             <select class="form-control" id="t_invoicepayment_status" name="t_invoicepayment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
               <option value="Paid">Paid</option>
-              <option value="Not Paid">Not Paid</option>
+              <option value="Not paid">Not Paid</option>
             </select>
         </div>
     </div>
@@ -975,8 +975,8 @@ $year=$current-3;
                 </div>
 
                  <div class="col-3 form-check-inline">
-                  <input class="form-check-input" type="radio" name="clientpayment" id="clientpayment_unpaid" value="Not Paid" >
-                  <label for="clientpayment_unpaid" class="form-check-label">Not paid</label>
+                  <input class="form-check-input" type="radio" name="clientpayment" id="clientpayment_unpaid" value="Not paid" >
+                  <label for="clientpayment_unpaid" class="form-check-label">Not Paid</label>
                 </div>
               </div>
             </div>
@@ -1177,7 +1177,7 @@ $year=$current-3;
 
                  <div class="col-3 form-check-inline">
                   <input class="form-check-input" type="radio" name="Conyearcategory" id="Con_end_year" value="end" >
-                  <label for="electricity_bill" class="form-check-label">Lease End</label>
+                  <label for="Con_end_year" class="form-check-label">Lease End</label>
                 </div>
               </div>
             </div>
@@ -1409,26 +1409,21 @@ $year=$current-3;
                   <span id="InspaceCriteriamsg"></span>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
-                  <label for="In_space_rent" style=" display: block;
-    white-space: nowrap;">Space Rent
-                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="space_rent" value="rent" checked="">
-                </label>
-                 </div>
-
-                 <div class="form-wrapper col-3">
-                  <label for="electricity_bill" style=" display: block;
-    white-space: nowrap;">Electricity Bill
-                   <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="electricity_bill" value="electricity" >
-                   </label>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="space_rent2" value="rent" checked="">
+                  <label for="space_rent2" class="form-check-label">Space Rent</label>
                 </div>
 
-                <div class="form-wrapper col-3">
-                  <label for="water_bill" style=" display: block;
-    white-space: nowrap;">Water Bill
-                   <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="water_bill" value="water">
-                   </label>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="electricity_bill2" value="electricity" >
+                  <label for="electricity_bill2" class="form-check-label">Electricity Bill</label>
                 </div>
+
+                <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="water_bill2" value="water" >
+                  <label for="water_bill2" class="form-check-label">Water Bill</label>
+                </div>
+
                </div>
              </div>
            </div>
@@ -1475,7 +1470,8 @@ $year=$current-3;
             <select class="form-control" id="In_payment_status" name="In_payment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
               <option value="Paid">Paid</option>
-              <option value="Not Paid">Not Paid</option>
+              <option value="Partially Paid">Partially Paid</option>
+              <option value="Not paid">Not Paid</option>
             </select>
         </div>
     </div>
@@ -2726,15 +2722,16 @@ function myFunction() {
       bz=1;
       if(query!=null){
        $('#InvoicefilterBydiv').show();
-      }
-      else{
-        $('#InvoicefilterBydiv').hide();
-        if(query=='Space'){
+       if(query=='Space'){
         $('#InSpaceCriteriadiv').show();
       }
       else{
          $('#InSpaceCriteriadiv').hide();
       }
+      }
+      else{
+        $('#InvoicefilterBydiv').hide();
+        $('#InSpaceCriteriadiv').hide();
       }
 
        });

@@ -12,6 +12,9 @@ use Auth;
 use App\cost_centre;
 use Riskihajar\Terbilang\Facades\Terbilang;
 use App\carRental;
+use App\Notifications\RequestAccepted;
+use Response;
+
 
 class carContractsController extends Controller
 {
@@ -317,6 +320,16 @@ class carContractsController extends Controller
                 ->where('id', $id)
                 ->update(['charge_km' => $hire_rate]);
 
+                $client = carContract::where('id', $id)->first();
+                $start = carContract::select('start_date')->where('id', $id)->value('start_date');
+                $end = carContract::select('end_date')->where('id', $id)->value('end_date');
+                $dest = carContract::select('destination')->where('id', $id)->value('destination');
+                $vehicle = $request->get('vehicle_reg');
+                $name = carContract::select('fullName')->where('id', $id)->value('fullName');
+
+                $client->notify(new RequestAccepted($start, $end, $dest, $vehicle, $name));
+
+
                  DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
                 return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
@@ -360,6 +373,15 @@ class carContractsController extends Controller
                  DB::table('car_contracts')
                 ->where('id', $id)
                 ->update(['charge_km' => $hire_rate]);
+
+                $client = carContract::where('id', $id)->first();
+                $start = carContract::select('start_date')->where('id', $id)->value('start_date');
+                $end = carContract::select('end_date')->where('id', $id)->value('end_date');
+                $dest = carContract::select('destination')->where('id', $id)->value('destination');
+                $vehicle = $request->get('vehicle_reg');
+                $name = carContract::select('fullName')->where('id', $id)->value('fullName');
+
+                $client->notify(new RequestAccepted($start, $end, $dest, $vehicle, $name));
 
                  DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
@@ -631,6 +653,42 @@ public function deletecontract($id){
     $contract->save();
     return redirect()->back()->with('success', 'Contract Deleted Successfully');
 
+}
+
+public function fetchclient_details(Request $request){
+  if($request->get('query')){
+      $query = $request->get('query');
+      $data = carContract::select('first_name', 'last_name')->where('first_name', 'LIKE', "%{$query}%")->distinct()->get();
+      if(count($data)!=0){
+      $output = '<ul class="dropdown-menu form-card" style="display: block;
+    width: 100%; margin-left: 0%; position:absolute;margin-top: -8%;">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li id="list" style="margin-left: -3%;">'.$row->first_name. " ".$row->last_name.'</li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
+     else{
+      echo "0";
+     }
+
+   }
+}
+
+public function fetchallclient_details(Request $request){
+  //if($request->get('name')){
+    $names = $request->get('name');
+    $details= carContract::where('first_name', $request->get('first'))->where('last_name', $request->get('last'))->distinct()->first();
+    //dd($names);
+    //dd($details);
+    return response()->json(['first'=>$details->first_name, 'last'=>$details->last_name, 'email'=>$details->email, 'centre'=>$details->cost_centre, 'dep'=>$details->faculty, 'designation'=>$details->designation]);
+  
+  
+//return $names;
+  
 }
 
 public function renewContractForm($id){

@@ -864,7 +864,7 @@ class ChartController extends Controller
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $data->push(carContract::select('id')
-                    ->whereYear('start_date', '2019')
+                    ->whereYear('start_date', date('Y'))
                     ->whereMonth('start_date',$days_backwards)
                     ->distinct('vehicle_reg_no')
                     ->count());

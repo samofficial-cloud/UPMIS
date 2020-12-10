@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use View;
 
 class PaymentController extends Controller
 {
@@ -330,6 +331,11 @@ class PaymentController extends Controller
 
 
 
+    }
+
+
+    public function payment_filtered(){
+        return View::make('payments_filtered');
     }
 
 

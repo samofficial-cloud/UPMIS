@@ -52,6 +52,7 @@ class HomeController extends Controller
     $contract_id=[];
 
   if(($_GET['b_fil']=='true') && ($_GET['l_fil']=='true')){
+    
      $details=DB::table('invoices')
         ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
         ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
@@ -364,8 +365,9 @@ class HomeController extends Controller
              }
           }
           elseif($_GET['show']=='industry'){
-             $pdf = PDF::loadView('debtsummaryreport2pdf');
-            return $pdf->stream('Debt Summary.pdf');
+            return View('debtsummaryreport2_new');
+            //  $pdf = PDF::loadView('debtsummaryreport2pdf');
+            // return $pdf->stream('Debt Summary.pdf');
           }
         }
         elseif($_GET['criteria']=='electricity'){
@@ -722,17 +724,21 @@ class HomeController extends Controller
       }
 
       if($_GET['b_type']=='Insurance'){
-         $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id]);
+         //$pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id]);
+        return View('debtsummaryreport_new',compact('contract_id'));
       }
       elseif($_GET['b_type']=='All'){
         $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id, 'contract_id2'=>$contract_id2, 'contract_id3'=>$contract_id3, 'contract_id4'=>$contract_id4, 'contract_id5'=>$contract_id5])->setPaper('a4', 'landscape');
+        return $pdf->stream('Debt Summary.pdf');
+         // return View('debtsummaryreport_new',compact('contract_id','contract_id2', 'contract_id3','contract_id4','contract_id5'));
       }
       else{
-       $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id])->setPaper('a4', 'landscape'); 
+         return View('debtsummaryreport_new',compact('contract_id'));
+       // $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id])->setPaper('a4', 'landscape'); 
       }
       
   
-      return $pdf->stream('Debt Summary.pdf');
+      //return $pdf->stream('Debt Summary.pdf');
     }
 
     public function spacereport1PDF(){
@@ -2422,8 +2428,9 @@ if(count($invoices)==0){
  return redirect()->back()->with('errors', "No data found to generate the requested report");
 }
 else{
-   $pdf=PDF::loadView('invoicereportpdf',['invoices'=>$invoices])->setPaper('a4', 'landscape');
-        return $pdf->stream('Invoice Report.pdf');
+  return View('invoicereportpdf_new',compact('invoices'));
+   // $pdf=PDF::loadView('invoicereportpdf',['invoices'=>$invoices])->setPaper('a4', 'landscape');
+   //      return $pdf->stream('Invoice Report.pdf');
 }
        
       }

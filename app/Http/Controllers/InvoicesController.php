@@ -13,6 +13,7 @@ use PDF;
 use Riskihajar\Terbilang\Facades\Terbilang;
 use Notification;
 use Auth;
+use View;
 
 class InvoicesController extends Controller
 {
@@ -372,6 +373,10 @@ class InvoicesController extends Controller
 
         return view('invoices_management')->with('space_invoices',$space_invoices)->with('insurance_invoices',$insurance_invoices)->with('car_rental_invoices',$car_rental_invoices)->with('water_bill_invoices',$water_bill_invoices)->with('electricity_bill_invoices',$electricity_bill_invoices);
 
+    }
+
+    public function space_filter(){
+       return View::make('invoice_filtered');
     }
 
 
