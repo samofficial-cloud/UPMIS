@@ -86,24 +86,16 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
-            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li class="active_nav_item"><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
@@ -127,13 +119,7 @@
           </div>
         @endif
 
-            <div style="width:100%; text-align: center" >
-                <br>
-                <h2>CONTRACTS MANAGEMENT</h2>
-
-                <br>
-
-            </div>
+           <br>
 
             <div class="tab">
 
@@ -141,7 +127,7 @@
 
 
                     @if ($category=='Real Estate only' OR $category=='All')
-                        <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate Contracts</strong></button>
+                        <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate </strong></button>
 
 
 
@@ -154,7 +140,7 @@
 
 
                         @if($category=='Insurance only' OR $category=='All')
-                            <button class="tablinksOuter insurance_identity" onclick="openContractType(event, 'insurance_contracts')"><strong>Insurance Contracts</strong></button>
+                            <button class="tablinksOuter insurance_identity" onclick="openContractType(event, 'insurance_contracts')"><strong>Insurance </strong></button>
 
                         @else
                         @endif
@@ -162,7 +148,7 @@
 
 
                         @if ($category=='CPTU only' OR $category=='All')
-                            <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental Contracts</strong></button>
+                            <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental </strong></button>
                         @else
                         @endif
 
@@ -350,12 +336,23 @@ $i=1;
                   </div>
               </td>
 
-              <td> {{number_format($var->academic_season)}} {{$var->currency}}</td>
-              <td>@if($var->vacation_season=="0")
+              <td>
+                  @if($var->academic_dependence=='Yes')
+                  {{number_format($var->academic_season)}} {{$var->currency}}
+                  @else
+                      {{number_format($var->amount)}} {{$var->currency}}
+                  @endif
+
+              </td>
+              <td>@if($var->academic_dependence=='Yes')
+                  @if($var->vacation_season=="0")
                       {{number_format($var->academic_season)}} {{$var->currency}}
                       @else
                   {{number_format($var->vacation_season)}} {{$var->currency}}
               @endif
+                    @else
+                      {{number_format($var->amount)}} {{$var->currency}}
+                    @endif
               </td>
 
 
@@ -395,7 +392,7 @@ $i=1;
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                        <b><h5 class="modal-title">Are you sure you want to terminate {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}?</h5></b>
+                                        <b><h5 class="modal-title">Terminating {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}</h5></b>
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
 
@@ -403,9 +400,18 @@ $i=1;
                                     <form method="get" action="{{ route('terminate_space_contract',$var->contract_id)}}" >
                                         {{csrf_field()}}
 
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for=""><strong>Reason:</strong></label>
+                                                <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                            </div>
+                                        </div>
+                                        <br>
+
                                         <div align="right">
-                                            <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
-                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                            <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
 
                                     </form>
@@ -542,7 +548,7 @@ $i=1;
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <b><h5 class="modal-title">Are you sure you want to terminate insurance contract for vehicle with registration number {{$var->vehicle_registration_no}}?</h5></b>
+                                                        <b><h5 class="modal-title">Terminating {{$var->full_name}}'s insurance contract</h5></b>
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                     </div>
 
@@ -550,9 +556,19 @@ $i=1;
                                                         <form method="get" action="{{ route('terminate_insurance_contract',$var->id)}}" >
                                                             {{csrf_field()}}
 
+                                                            <div class="form-group">
+                                                                <div class="form-wrapper">
+                                                                    <label for=""><strong>Reason:</strong></label>
+                                                                    <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
                                                             <div align="right">
-                                                                <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
-                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                             </div>
 
                                                         </form>

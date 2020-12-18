@@ -71,7 +71,7 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
-                    
+
                         <?php
 
                         $chats=DB::table('system_chats')->where('receiver',Auth::user()->name)->where('flag','1')->count('id');
@@ -273,6 +273,8 @@
                 </div>
             </div>
         </nav>
+
+
 
         <main>
             @yield('content')

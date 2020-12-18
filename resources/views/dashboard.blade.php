@@ -55,7 +55,7 @@
     animation-iteration-count: 10;
     animation-name: wiggle;
   }*/
-  
+
   @keyframes wiggle {
   0% { transform: translate(0px, 0); }
  /* 10% { transform: translate(-1px, 0); }
@@ -80,9 +80,9 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
-           <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+           <li class="active_nav_item"><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
           <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Real Estate only')
@@ -98,22 +98,18 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+
+                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
+
+
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -162,10 +158,10 @@
         <p>{{$message}}</p>
       </div>
     @endif
-        
+
         <div class="card-deck" style="font-size: 15px; font-family: sans-serif;">
   <div class="card text-white bg-info">
-   
+
     <div class="card-body" >
       <h5 class="card-title">UDIA <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
       <p>Principals: {{count($total_insurance)}}
@@ -238,8 +234,8 @@
             <input type="text" id="inia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="inia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="inia_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -407,8 +403,8 @@
                                           @else
                                           <td>{{$space->currency}} {{number_format($space->academic_season)}}</td>
                                           @endif
-                                      
-                                          
+
+
                                            @if(empty($space->vacation_season))
                                            <td><center>-</center></td>
                                            @else
@@ -473,7 +469,7 @@
           </div>
         </div>
          <br>
-         
+
         <div class="form-group row">
             <label for="messages{{$space->contract_id}}" class="col-sm-2">Message<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -568,8 +564,8 @@
             <input type="text" id="debt_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="debt_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="debt_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -744,8 +740,8 @@
                                           @else
                                           <td>{{$var->currency}} {{number_format($var->academic_season)}}</td>
                                           @endif
-                                      
-                                          
+
+
                                            @if(empty($var->vacation_season))
                                            <td><center>-</center></td>
                                            @else
@@ -886,9 +882,9 @@
      <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
      @endif
                                     </td>
-                                    @endif  
+                                    @endif
                                   </tr>
-                                  
+
                                   @endforeach
                                 </tbody>
 </table>
@@ -924,8 +920,8 @@
             <input type="text" id="aia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="aia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="aia_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -990,7 +986,7 @@
                                 <th scope="col" >Invoice Date</th>
                                 @if(Auth::user()->role=='System Administrator')
                                 <th scope="col" >Action</th>
-                                @endif 
+                                @endif
                             </tr>
                             </thead>
                             <tbody>
@@ -1181,9 +1177,9 @@
     <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
      @endif
                                     </td>
-                                    @endif 
+                                    @endif
                                   </tr>
-                                  
+
                                   @endforeach
                                 </tbody>
 </table>
@@ -1215,7 +1211,7 @@ function myFunction() {
   } );
 
   var table2 = $('#myTable').DataTable();
- 
+
     $('#myTable tbody').on( 'click', 'tr', function () {
       document.getElementById("inia_par_names").innerHTML="";
       document.getElementById("inia_greetings").value="Dear ";
@@ -1232,7 +1228,7 @@ function myFunction() {
       else{
         $(this).toggleClass('selected');
          var count2=table2.rows('.selected').data().length +' row(s) selected';
-      
+
       if(count2>'2'){
         <?php $role=Auth::user()->role;?>
         var role={!! json_encode($role) !!};
@@ -1241,7 +1237,7 @@ function myFunction() {
         }
         else{
           $('#notify_all').hide();
-        }   
+        }
       }
       else{
         $('#notify_all').hide();
@@ -1260,7 +1256,7 @@ function myFunction() {
         }
 
         $('#inia_client_names').val(result0).toString();
-        
+
         var content0 = document.getElementById("inia_par_names");
         for(var i=0; i< result0.length;i++){
           if(i==(result0.length-1)){
@@ -1269,7 +1265,7 @@ function myFunction() {
           else{
             content0.innerHTML += result0[i] + ', ';
           }
-          
+
         }
 
         var salutation0 = document.getElementById("inia_greetings");
@@ -1280,13 +1276,13 @@ function myFunction() {
           else{
             salutation0.value += result0[i] + ', ';
           }
-          
+
         }
     });
 
 
     var table3 = $('#myTable1').DataTable();
- 
+
     $('#myTable1 tbody').on( 'click', 'tr', function () {
       document.getElementById("debt_par_names").innerHTML="";
       document.getElementById("debt_greetings").value="Dear ";
@@ -1297,14 +1293,14 @@ function myFunction() {
       else{
          var email1 = $(this).find('td:eq(8)').text();
       }
-       
+
       if(email1==""){
         //alert("This client has no email");
       }
       else{
         $(this).toggleClass('selected');
          var count3=table3.rows('.selected').data().length +' row(s) selected';
-      
+
       if(count3>'2'){
         <?php $role=Auth::user()->role;?>
         var role={!! json_encode($role) !!};
@@ -1313,7 +1309,7 @@ function myFunction() {
       }
       else{
         $('#debt_notify_all').hide();
-      }   
+      }
       }
       else{
       $('#debt_notify_all').hide();
@@ -1332,7 +1328,7 @@ function myFunction() {
         }
 
         $('#debt_client_names').val(result3).toString();
-        
+
         var content3 = document.getElementById("debt_par_names");
         for(var i=0; i< result3.length;i++){
           if(i==(result3.length-1)){
@@ -1341,7 +1337,7 @@ function myFunction() {
           else{
             content3.innerHTML += result3[i] + ', ';
           }
-          
+
         }
 
          var salutation3 = document.getElementById("debt_greetings");
@@ -1352,13 +1348,13 @@ function myFunction() {
           else{
             salutation3.value += result3[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     });
 
     var table4 = $('#myTable2').DataTable();
- 
+
     $('#myTable2 tbody').on( 'click', 'tr', function () {
       document.getElementById("aia_par_names").innerHTML="";
       document.getElementById("aia_greetings").value="Dear ";
@@ -1377,17 +1373,17 @@ function myFunction() {
         }
       else{
         $('#notify_all_cptu').hide();
-        }   
+        }
       }
       else{
       $('#notify_all_cptu').hide();
       }
     }
-    
+
     });
 
-    
-  
+
+
      $('#notify_all_cptu').click( function () {
       document.getElementById("aia_par_names").innerHTML="";
       document.getElementById("aia_greetings").value="Dear ";
@@ -1399,7 +1395,7 @@ function myFunction() {
         }
 
         $('#aia_client_names').val(result6).toString();
-        
+
         var content6 = document.getElementById("aia_par_names");
         for(var i=0; i< result6.length;i++){
           if(i==(result6.length-1)){
@@ -1408,7 +1404,7 @@ function myFunction() {
           else{
             content6.innerHTML += result6[i] + ', ';
           }
-          
+
         }
 
         var salutation6 = document.getElementById("aia_greetings");
@@ -1419,9 +1415,9 @@ function myFunction() {
           else{
             salutation6.value += result6[i] + ', ';
           }
-          
+
         }
-         
+
     });
 });
 </script>

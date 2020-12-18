@@ -82,19 +82,11 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
@@ -107,7 +99,7 @@
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
 @admin
-            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+            <li class="active_nav_item"><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
 <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
           @endadmin
         </ul>
@@ -129,7 +121,7 @@
           @endif
 
 
-        <p class="mt-1" style="font-size:30px !important; ">Role Management</p>
+        <p class="mt-1" style="font-size:30px !important; ">Roles Management</p>
         <hr style="    border-bottom: 1px solid #e5e5e5 !important;">
 
 
@@ -169,7 +161,7 @@
 
                       <div  class="form-group">
                           <div class="form-wrapper">
-                              <label for=""><strong>Privilege<span style="color: red;"> *</span></strong></label>
+                              <label for=""><strong>Businesses<span style="color: red;"> *</span></strong></label>
 
                               <select id="" class="form-control" name="category" required>
                                   <option value="" ></option>
@@ -181,6 +173,21 @@
                           </div>
                       </div>
                       <br>
+
+
+                      <div  class="form-group">
+                          <div class="form-wrapper">
+                              <label for=""><strong>Privileges<span style="color: red;"> *</span></strong></label>
+
+                              <select id="" class="form-control" name="privileges" required>
+                                  <option value="" ></option>
+                                  <option value="Read only" >Read only</option>
+                                  <option value="Read, add, edit and delete">Read, add, edit and delete</option>
+                              </select>
+                          </div>
+                      </div>
+                      <br>
+
 
 
                     <div align="right">
@@ -209,7 +216,8 @@
               <tr>
                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
                 <th scope="col" style="color:#fff;">Role</th>
-                <th scope="col" style="color:#fff;">Privilege</th>
+                <th scope="col" style="color:#fff;">Businesses</th>
+                <th scope="col" style="color:#fff;">Privileges</th>
                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
               </tr>
@@ -223,6 +231,7 @@
                   <td class="text-center">{{$i}}</td>
                   <td>{{$var->user_roles}}</td>
                   <td>{{$var->category}}</td>
+                  <td>{{$var->privileges}}</td>
                   <td><center>
 
 
@@ -260,7 +269,7 @@
 
                               <div  class="form-group">
                                 <div class="form-wrapper">
-                                  <label for=""  ><strong>Privilege<span style="color: red;"> *</span></strong></label>
+                                  <label for=""  ><strong>Businesses<span style="color: red;"> *</span></strong></label>
 
                                     <select id="" class="form-control" name="category" required>
                                         <option value="{{$var->category}}" selected>{{$var->category}}</option>
@@ -287,6 +296,32 @@
                                 </div>
                               </div>
                               <br>
+
+                                <div  class="form-group">
+                                    <div class="form-wrapper">
+                                        <label for=""  ><strong>Privileges<span style="color: red;"> *</span></strong></label>
+
+                                        <select id="" class="form-control" name="privileges" required>
+
+                                            @if($var->privileges=='Read only')
+                                                <option value="{{$var->privileges}}" selected>{{$var->privileges}}</option>
+                                                <option value="Read, add, edit and delete">Read, add, edit and delete</option>
+                                            @elseif($var->privileges=='Read, add, edit and delete')
+                                                <option value="{{$var->privileges}}" selected>{{$var->privileges}}</option>
+                                                <option value="Read only" >Read only</option>
+                                            @else
+                                            @endif
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+
+
+
+
+
+
 
 
                               <div align="right">

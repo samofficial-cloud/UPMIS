@@ -30,6 +30,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:sendInsuranceInvoices')
             ->everyMinute();
 
+
+//        $schedule->command('command:sendEmailsSpace')
+//            ->everyMinute();
+
     }
 
     /**

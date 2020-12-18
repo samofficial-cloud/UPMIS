@@ -424,6 +424,14 @@ margin-left: 43.5%;
     border-top-right-radius: 50px 20px;
     /*border-bottom: none;*/
 }
+
+.tab_inner_style {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background: #dbe7ef;
+
+}
+
 /* Style the buttons that are used to open the tab content */
 .tab button {
   background-color: #d1d8da;
@@ -843,3 +851,10 @@ margin-left: 43.5%;
 }
 
 
+.active_nav_item{
+    background: #ebedef;
+    /*background: #f6f6f6;*/
+    /*background: #f3f3f3;*/
+
+
+}

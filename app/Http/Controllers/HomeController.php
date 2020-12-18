@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\cost_centre;
+use App\hire_rate;
 use Illuminate\Http\Request;
 use PDF;
 use App\carRental;
@@ -39,14 +41,28 @@ class HomeController extends Controller
         return view('index');
     }
 
+
+    public function businesses()
+    {
+        $spaces=DB::table('spaces')->where('status',1)->get();
+        $insurance=DB::table('insurance')->where('status',1)->get();
+        $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
+        $operational=operational_expenditure::where('flag','1')->get();
+        $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
+        $costcentres=cost_centre::orderBy('costcentre_id','asc')->get();
+
+        return view('businesses')->with('spaces',$spaces)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres);
+    }
+
+
     public function report()
     {
-     
+
         return view('reports');
     }
 
     public function tenancyreport(){
-       
+
 
     $invoice=[];
     $contract_id=[];
@@ -127,7 +143,7 @@ class HomeController extends Controller
                     ->pluck('amount_paid')
                     ->toArray();
               }
-    
+
           }
     }
       if(count($invoice)==0){
@@ -135,29 +151,29 @@ class HomeController extends Controller
       }
       else{
         $pdf = PDF::loadView('tenancyschedule',['details'=>$details])->setPaper('a4', 'landscape');
-  
+
         return $pdf->stream('Tenancy Schedule.pdf');
       }
-       
+
     }
 
     public function spacereport1(){
-         
+
          return view('reports');
     }
 
     public function editprofile(){
-         
+
          return view('edit_profile');
     }
 
     public function viewprofile(){
-         
+
          return view('view_profile');
     }
 
     public function changepassword(){
-         
+
          return view('change_password');
     }
 
@@ -165,7 +181,7 @@ class HomeController extends Controller
        return view('change_password_first_login');
     }
 
-    
+
 
      public function editprofiledetails(Request $request){
 
@@ -231,13 +247,13 @@ class HomeController extends Controller
         $user->save();
         $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
         if($category=='All'){
-           return redirect()->route('home')->with("success","Password changed successfully !"); 
+           return redirect()->route('home')->with("success","Password changed successfully !");
           }
-          
+
           elseif($category=='Insurance only'){
              return redirect()->route('home2')->with("success","Password changed successfully !");
           }
-         
+
           elseif($category=='Real Estate only'){
             return redirect()->route('home4')->with("success","Password changed successfully !");
           }
@@ -245,7 +261,7 @@ class HomeController extends Controller
           if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre')){
             return redirect()->route('home3')->with("success","Password changed successfully !");
           }
-          
+
           if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre')){
             return redirect()->route('home5')->with("success","Password changed successfully !");
           }
@@ -253,7 +269,7 @@ class HomeController extends Controller
           if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre')){
             return redirect()->route('home5')->with("success","Password changed successfully !");
           }
-        
+
         }
 
     }
@@ -574,7 +590,7 @@ class HomeController extends Controller
                             ->distinct()
                             ->get();
         }
-       
+
       }
       elseif($_GET['b_type']=='Car Rental'){
         if($_GET['yr2_fil']=='true'){
@@ -601,10 +617,10 @@ class HomeController extends Controller
          $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id]);
       }
       else{
-       $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id])->setPaper('a4', 'landscape'); 
+       $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id])->setPaper('a4', 'landscape');
       }
-      
-  
+
+
       return $pdf->stream('Debt Summary.pdf');
     }
 
@@ -650,7 +666,7 @@ class HomeController extends Controller
             elseif(($_GET['space_prize']=='true') && ($_GET['status']=='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']=='true')){
               if($_GET['space_status']=='1'){
                 $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('major_industry',$_GET['ind'])->orderby('space_id','asc')->distinct()->get();
-        
+
                 }
 
                 elseif($_GET['space_status']=='0'){
@@ -673,7 +689,7 @@ class HomeController extends Controller
             elseif(($_GET['space_prize']=='true') && ($_GET['status']!='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']=='true')){
                 if($_GET['space_status']=='1'){
                 $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->where('major_industry',$_GET['ind'])->orderby('space_id','asc')->distinct()->get();
-        
+
                 }
                 elseif($_GET['space_status']=='0'){
                   $spaces= DB::table('spaces')
@@ -691,7 +707,7 @@ class HomeController extends Controller
             elseif(($_GET['space_prize']=='true') && ($_GET['status']!='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']!='true')){
               if($_GET['space_status']=='1'){
               $spaces= space_contract::select('location','size','rent_price_guide_from', 'rent_price_guide_to','space_id','major_industry','minor_industry','rent_price_guide_currency')->join('spaces','spaces.space_id', '=', 'space_contracts.space_id_contract')->where('spaces.rent_price_guide_to','<=',$_GET['max_price'])->where('spaces.rent_price_guide_from','>=',$_GET['min_price'])->whereDate('end_date', '>=', $today)->orderby('space_id','asc')->distinct()->get();
-        
+
               }
               elseif($_GET['space_status']=='0'){
                $spaces= DB::table('spaces')
@@ -736,7 +752,7 @@ class HomeController extends Controller
               ->where('major_industry',$_GET['ind'])
               ->orderBy('space_id','asc')
               ->get();
-            }  
+            }
           }
 
           elseif(($_GET['space_prize']!='true') && ($_GET['status']=='true') && ($_GET['location_status']=='true') && ($_GET['ind_fil']!='true')){
@@ -802,7 +818,7 @@ class HomeController extends Controller
           elseif(($_GET['space_prize']!='true') && ($_GET['status']!='true') && ($_GET['location_status']!='true') && ($_GET['ind_fil']!='true')){
              $spaces=space::where('status','1')->orderBy('space_id','asc')->get();
           }
-          
+
         }
       }
       if(count($spaces)==0){
@@ -810,11 +826,11 @@ class HomeController extends Controller
       }
       else{
         $pdf = PDF::loadView('spacereport1pdf',['spaces'=>$spaces])->setPaper('a4', 'landscape');
-  
+
         return $pdf->stream('List of Spaces.pdf');
       }
-       
-        
+
+
       }
 
       public function spacereport2PDF(){
@@ -842,10 +858,10 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
   }
   else{
      $pdf = PDF::loadView('spacereport2pdf',['details'=>$details, 'space'=>$space,'invoices'=>$invoices])->setPaper('a4', 'landscape');
-  
+
         return $pdf->stream('Spaces History.pdf');
   }
-       
+
       }
 
       public function systemreportPDF(){
@@ -857,7 +873,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
             elseif($_GET['user']=='inactive'){
               $users=DB::table('users')->where('status',0)->orderBy('first_name','asc')->get();
             }
-            
+
           }
           else{
             $users=DB::table('users')->orderBy('first_name','asc')->get();
@@ -868,7 +884,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         }
         else{
            $pdf = PDF::loadView('userreportpdf',['users'=>$users])->setPaper('a4', 'landscape');
-  
+
             return $pdf->stream('System User Report.pdf');
         }
       }
@@ -896,7 +912,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
         elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']!='true')){
           if($_GET['insurance_typefilter']=='true'){
-             $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get(); 
+             $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get();
           }
           else{
             $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->get();
@@ -911,7 +927,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
             elseif($_GET['yr_cat']=='end'){
               $insurance=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('end_date',$_GET['yr'])->get();
             }
-          
+
         }
 
         elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']!='true')){
@@ -942,8 +958,8 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
           if($_GET['insurance_typefilter']=='true'){
                $insurance=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get();
             }
-           
-          else{ 
+
+          else{
             $insurance=insurance_contract::where('insurance_class',$_GET['package'])->get();
           }
         }
@@ -968,7 +984,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
       else{
         $pdf = PDF::loadView('insurancereportpdf',['insurance'=>$insurance])->setPaper('a4', 'landscape');
       }
-        
+
       }
 
       else if($_GET['report_type']=='principals'){
@@ -1003,7 +1019,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
         elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']!='true')){
           if($_GET['insurance_typefilter']=='true'){
-             $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get(); 
+             $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get();
           }
           else{
             $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->get();
@@ -1018,7 +1034,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
             elseif($_GET['yr_cat']=='end'){
               $clients=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('end_date',$_GET['yr'])->get();
             }
-          
+
         }
 
         elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']!='true')){
@@ -1049,8 +1065,8 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
           if($_GET['insurance_typefilter']=='true'){
                $clients=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->get();
             }
-           
-          else{ 
+
+          else{
             $clients=insurance_contract::where('insurance_class',$_GET['package'])->get();
           }
         }
@@ -1077,7 +1093,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         $pdf = PDF::loadView('insurancereportpdf',['clients'=>$clients])->setPaper('a4', 'landscape');
       }
     }
-  
+
         return $pdf->stream('Insurance Report.pdf');
       }
 
@@ -1094,7 +1110,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
   else if($_GET['contract_status']==-1){
     $tenants=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->where('space_contracts.contract_status',0)->where('spaces.major_industry',$_GET['business_type'])->where('payment_status',$_GET['payment_status'])->whereDate('invoicing_period_start_date','>=',$_GET['start_date'])->whereDate('invoicing_period_end_date','<=',$_GET['end_date'])->orderBy('space_contracts.full_name','asc')->distinct()->get();
   }
-  
+
 }
 if(($_GET['business_filter']=='true') && ($_GET['contract_filter']=='true') && ($_GET['payment_filter']!='true')){
     if($_GET['contract_status']==1){
@@ -1148,7 +1164,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
              $pdf=PDF::loadView('tenantreportpdf',['tenants'=>$tenants])->setPaper('a4', 'landscape');
            return $pdf->stream('Tenant Report.pdf');
           }
-          
+
         }
         elseif($_GET['report_type']=='invoice'){
           if($_GET['payment_filter']=='true'){
@@ -1180,9 +1196,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
      $pdf=PDF::loadView('tenantreportpdf',['invoices'=>$invoices])->setPaper('a4', 'landscape');;
            return $pdf->stream('Tenant Invoice Report.pdf');
   }
-         
+
         }
-       
+
       }
 
       public function carreportPDF(){
@@ -1287,7 +1303,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           }
 
           elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
-           
+
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
                     ->where('cost_centre',$_GET['centre'])
@@ -1301,7 +1317,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
 
 
           elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true'){
-            
+
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
                     ->where('cost_centre',$_GET['centre'])
@@ -1313,7 +1329,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           }
 
           elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true'){
-            
+
             $clients = DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
                     ->where('cost_centre',$_GET['centre'])
@@ -1321,8 +1337,8 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
                     ->where('form_completion','1')
                     ->orderBy('car_contracts.fullName','asc')
                     ->get();
-            
-            
+
+
           }
 
           elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true'){
@@ -1433,7 +1449,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
            }
 
           elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true'){
-            
+
             $clients=DB::table('car_contracts')
                     ->whereDate('start_date','>=',$_GET['start'])
                     ->whereDate('end_date','<=',$_GET['end'])
@@ -1443,7 +1459,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           }
 
           elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true'){
-            
+
             $clients=DB::table('car_contracts')
                     ->join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')
                     ->where('payment_status',$_GET['pay'])
@@ -1463,7 +1479,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
 
 
 
-        
+
 
          if(count($clients)==0){
            return redirect()->back()->with('errors', "No data found to generate the requested report");
@@ -1718,7 +1734,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           $pdf=PDF::loadView('carreportpdf',['cars'=>$cars]);
         return $pdf->stream('Car Rental Report.pdf');
         }
-        
+
         }
         elseif ($_GET['report_type']=='revenue'){
           $revenues=DB::table('car_contracts')
@@ -1805,11 +1821,11 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
            return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
         else{
-          $pdf=PDF::loadView('operationalreportpdf',['operational'=>$operational])->setPaper('a4', 'landscape');    
+          $pdf=PDF::loadView('operationalreportpdf',['operational'=>$operational])->setPaper('a4', 'landscape');
          return $pdf->stream('Car Rental Operational Report.pdf');
         }
 
-         
+
       }
 
       public function carreportPDF3(){
@@ -1820,10 +1836,10 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
        else{
-        $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations])->setPaper('a4', 'landscape');    
+        $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations])->setPaper('a4', 'landscape');
          return $pdf->stream('Car History Report.pdf');
        }
-      }    
+      }
 
       public function contractreportPDF(){
         if(($_GET['c_filter']!='true') && ($_GET['con_filter']!='true') && ($_GET['y_filter']!='true')){
@@ -1845,7 +1861,7 @@ elseif(($_GET['c_filter']!='true') && ($_GET['con_filter']!='true') && ($_GET['y
     elseif($_GET['lease']=='end'){
        $contracts=space_contract::where('contract_status',1)->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
     }
-   
+
 }
 elseif($_GET['business_type']=='Insurance'){
    if($_GET['lease']=='start'){
@@ -1952,7 +1968,7 @@ elseif($_GET['business_type']=='Car Rental'){
     elseif($_GET['lease']=='end'){
        $contracts=space_contract::where('full_name',$_GET['c_name'])->where('contract_status',1)->whereYear('end_date',$_GET['year'])->orderBy('full_name','asc')->get();
     }
-   
+
 }
 elseif($_GET['business_type']=='Insurance'){
    if($_GET['lease']=='start'){
@@ -2045,9 +2061,9 @@ elseif(($_GET['business_type']=='Car Rental')&&($_GET['lease']=='end')){
         return $pdf->stream('Contract Report.pdf');
        }
 
-        
+
       }
-      
+
       public function invoicereportPDF(){
         if($_GET['report_type']=='list'){
     if(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']!='true')){
@@ -2277,7 +2293,7 @@ else{
    $pdf=PDF::loadView('invoicereportpdf',['invoices'=>$invoices])->setPaper('a4', 'landscape');
         return $pdf->stream('Invoice Report.pdf');
 }
-       
+
       }
-    
+
 }

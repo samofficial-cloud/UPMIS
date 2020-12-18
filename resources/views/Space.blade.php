@@ -699,7 +699,7 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <b><h5 class="modal-title">Are you sure you want to delete the space with space number {{$var->space_id}}?</h5></b>
+                                                        <b><h5 class="modal-title">Are you sure you want to deactivate the space with space number {{$var->space_id}}?</h5></b>
 
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                     </div>

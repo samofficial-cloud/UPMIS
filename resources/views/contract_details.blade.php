@@ -76,19 +76,11 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
@@ -150,8 +142,30 @@
                         </tr>
 
                         <tr>
-                            <td> Amount:</td>
-                            <td> {{number_format($var->amount)}} {{$var->currency}}</td>
+                            <td> Amount(Academic season):</td>
+                            <td>
+
+                                @if($var->academic_dependence=='Yes')
+                                    {{number_format($var->academic_season)}} {{$var->currency}}
+                                @else
+                                    {{number_format($var->amount)}} {{$var->currency}}
+                                @endif</td>
+                        </tr>
+
+
+                        <tr>
+                            <td> Amount(Vacation season):</td>
+                            <td> @if($var->academic_dependence=='Yes')
+                                    @if($var->vacation_season=="0")
+                                        {{number_format($var->academic_season)}} {{$var->currency}}
+                                    @else
+                                        {{number_format($var->vacation_season)}} {{$var->currency}}
+                                    @endif
+                                @else
+                                    {{number_format($var->amount)}} {{$var->currency}}
+                                @endif
+
+                            </td>
                         </tr>
 
                         <tr>
@@ -215,6 +229,17 @@
                                 @endif</td>
                         </tr>
 
+
+                        @if($var->contract_status==0)
+                        <tr>
+                            <td>Reason for termination:</td>
+                            <td>
+                                {{$var->reason_for_termination}}
+                            </td>
+                        </tr>
+
+                        @else
+                        @endif
 
 
 

@@ -257,29 +257,14 @@
             ?>
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if($category=='CPTU only' OR $category=='All')
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+
+                    <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
+
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-            <div class="dropdown">
-  <li class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <i class="fas fa-file-contract"></i> Contracts
-  </li>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="/contracts/car_rental">Car Rental</a>
-    <a class="dropdown-item" href="/insurance_contracts_management">Insurance</a>
-    <a class="dropdown-item" href="/space_contracts_management">Space</a>
-  </div>
-</div>
+                <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="#"><i class="fas fa-file-invoice"></i>Invoice</a></li>
             <li><a href="#"><i class="fas fa-money-bill"></i>Payment</a></li>
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
@@ -302,7 +287,6 @@
                                         <!-- progressbar -->
                                         <ul id="progressbar">
                                             <li class="active" id="personal"><strong>Insurance</strong></li>
-                                            <li  id="vehicle"><strong>Vehicle</strong></li>
                                             <li id="payment"><strong>Payment</strong></li>
                                         </ul>
                                         <!-- fieldsets -->
@@ -318,14 +302,6 @@
 
                                                         <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="space_location"  ><strong>Client Name</strong> <span style="color: red;"> *</span></label>
-                                                            <span id="client_msg"></span>
-                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" readonly class="form-control" required>
-                                                        </div>
-
-
-                                                        <div class="form-wrapper col-12">
-                                                            <br>
                                                             <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
                                                             <span id="class_msg"></span>
                                                             <select id="insurance_class" class="form-control" readonly Required name="insurance_class">
@@ -336,23 +312,6 @@
 
 
                                                         </div>
-
-
-
-                                                        <div class="form-wrapper col-6 pt-4">
-                                                            <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
-                                                            <span id="phone_msg"></span>
-                                                            <input type="text" id="phone_number" readonly value="{{$var->phone_number}}" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-                                                        </div>
-
-                                                        <div class="form-wrapper col-6 pt-4">
-                                                            <label for="email">Email <span style="color: red;"> *</span></label>
-                                                            <span id="email_msg"></span>
-                                                            <input type="text" name="email" value="{{$var->email}}" id="email" readonly class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
-                                                        </div>
-
-
-
 
 
 
@@ -398,6 +357,60 @@
 
 
 
+
+
+                                                        <div class="form-wrapper col-12">
+                                                            <br>
+                                                            <label for="space_location"  ><strong>Client Name</strong> <span style="color: red;"> *</span></label>
+                                                            <span id="client_msg"></span>
+                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" readonly class="form-control" required>
+                                                        </div>
+
+
+
+
+
+
+                                                        <div class="form-wrapper col-6 pt-4">
+                                                            <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
+                                                            <span id="phone_msg"></span>
+                                                            <input type="text" id="phone_number" readonly value="{{$var->phone_number}}" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                        </div>
+
+                                                        <div class="form-wrapper col-6 pt-4">
+                                                            <label for="email">Email <span style="color: red;"> *</span></label>
+                                                            <span id="email_msg"></span>
+                                                            <input type="text" name="email" value="{{$var->email}}" id="email" readonly class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
+                                                        </div>
+
+
+                                                        @if($var->vehicle_registration_no=='')
+                                                            @else
+                                                        <div class="form-wrapper col-12">
+                                                            <br>
+                                                            <label for="client_type"><strong>Vehicle Registration Number</strong></label>
+                                                            <span id="v_regno_msg"></span>
+
+                                                            <input type="text" id="vehicle_registration_no" value="{{$var->vehicle_registration_no}}" name="vehicle_registration_no" readonly class="form-control" >
+                                                        </div>
+
+                                                        <br>
+                                                        <div class="form-wrapper col-12">
+                                                            <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
+                                                            <span id="v_use_msg"></span>
+                                                            <select class="form-control" id="vehicle_use" readonly name="vehicle_use">
+                                                                <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
+
+                                                            </select>
+                                                        </div>
+
+                                                        @endif
+
+
+
+
+
+
                                                     </div>
 
 
@@ -417,158 +430,113 @@
 
 
 
-                                        {{-- Second Form --}}
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 style="text-align: center" class="fs-title">Vehicle Information</h2>
+
+                                            {{-- Third Form --}}
+                                            <fieldset>
+                                                <div class="form-card">
+                                                    <h2 class="fs-title">Payment Information</h2>
+                                                    <div class="form-group row">
+                                                        <div class="form-wrapper col-12">
+                                                            <label for="start_date">Commission Date <span style="color: red;"> *</span></label>
+                                                            <input type="date" id="commission_date" name="commission_date" class="form-control" required="" min="{{$today}}">
+                                                        </div>
+                                                        {{--                    <div class="form-wrapper col-6">--}}
+                                                        {{--                        <label for="duration">Duration <span style="color: red;"> *</span></label>--}}
+                                                        {{--                    </div>--}}
+                                                        <input type="hidden"  min="1" max="50" id="duration" name="duration" class="form-control" value="1" >
 
 
 
+                                                        <input type="hidden"  id="duration_period" name="duration_period" class="form-control" value="Years" >
 
-                                                <div class="form-group row">
-                                                    <div class="form-wrapper col-12">
-                                                        <br>
-                                                        <label for="client_type"><strong>Vehicle Registration Number</strong></label>
-                                                        <span id="v_regno_msg"></span>
 
-                                                        <input type="text" id="vehicle_registration_no" value="{{$var->vehicle_registration_no}}" name="vehicle_registration_no" readonly class="form-control" >
                                                     </div>
 
-                                                    <br>
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
-                                                        <span id="v_use_msg"></span>
-                                                        <select class="form-control" id="vehicle_use" readonly name="vehicle_use">
-                                                            <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
+                                                    <div class="form-group row">
 
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                        <div class="form-wrapper col-12">
+                                                            <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
+                                                            <input type="number" min="20" id="sum_insured" name="sum_insured" class="form-control" required="">
+                                                        </div>
+
+                                                        {{--                        <div class="form-wrapper col-6">--}}
+                                                        {{--                            <label for="amount">Premium <span style="color: red;"> *</span></label>--}}
+                                                        {{--                        </div>--}}
+                                                        <input type="hidden" min="0"  id="premium" readonly name="premium" class="form-control" >
 
 
 
-                                                <br>
-                                                <br>
-                                            </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
-                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
-                                        </fieldset>
-                                        {{-- Third Form --}}
 
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Payment Information</h2>
-                                                <div class="form-group row">
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="start_date">Commission Date <span style="color: red;"> *</span></label>
-                                                        <input type="date" id="commission_date" value="" name="commission_date" class="form-control" required="" min="{{$today}}">
-                                                    </div>
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="duration">Duration <span style="color: red;"> *</span></label>
-                                                        <input type="number"  min="1" max="50" id="duration" value="" name="duration" class="form-control" required="" >
+
                                                     </div>
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="cur">Period <span style="color: red;"> *</span></label>
-                                                        <select id="cur" class="form-control" name="duration_period"  required>
+                                                    <div class="form-group row">
 
-                                                            <option value=""></option>
-                                                            <option value="Months" >Months</option>
-                                                            <option value="Years" >Years</option>
+                                                        <div class="form-wrapper col-12">
+                                                            <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
+                                                            <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
+                                                        </div>
 
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                        @if($var->vehicle_registration_no=='')
+                                                            <div id="valueDiv"  class="form-wrapper col-12">
+                                                                <label for="amount">Value <span style="color: red;"> *</span></label>
+                                                                <input type="number" min="20" id="value" name="value" class="form-control" >
+                                                            </div>
+                                                        @else
+                                                        @endif
 
-                                                <div class="form-group row">
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="20" id="sum_insured" name="sum_insured"  value="" class="form-control" required="">
-                                                    </div>
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Premium <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="0"  id="premium" readonly name="premium" value="{{$var->premium}}" class="form-control" required="">
+
                                                     </div>
 
+                                                    <div class="form-group row">
+
+                                                        {{--                                        <div class="form-wrapper col-6">--}}
+                                                        {{--                                            <label for="amount">Commission(%) <span style="color: red;"> *</span></label>--}}
+                                                        {{--                                        </div>--}}
+                                                        <input type="hidden" min="1"  step="0.01" class="form-control"  readonly name="commission_percentage"  value=""  id="commission_percentage" autocomplete="off">
+
+                                                        {{--                                        <div class="form-wrapper col-6">--}}
+                                                        {{--                                            <label for="amount">Commission <span style="color: red;"> *</span></label>--}}
+                                                        {{--                                        </div>--}}
+                                                        <input type="hidden" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value=""  autocomplete="off">
 
 
+                                                        <div class="form-wrapper col-12">
+                                                            <label for="currency">Currency <span style="color: red;"> *</span></label>
+
+                                                            <input type="text" id="currency" class="form-control" readonly required name="currency">
+                                                        </div>
+
+                                                        @if($var->vehicle_registration_no=='')
+                                                        @else
+                                                        <div id="cover_noteDiv"  class="form-wrapper col-6">
+                                                            <label for="amount">Cover note<span style="color: red;"> *</span></label>
+                                                            <input type="text" id="cover_note" name="cover_note" class="form-control">
+                                                        </div>
+
+                                                        <div id="sticker_noDiv"  class="form-wrapper col-6">
+                                                            <label for="amount">Sticker number <span style="color: red;"> *</span></label>
+                                                            <input type="text" id="sticker_no" name="sticker_no" class="form-control">
+                                                        </div>
+                                                        @endif
 
 
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" value="" class="form-control" required="">
-                                                    </div>
-
-                                                    @if($var->value!='N/A')
-
-                                                    <div id="valueDiv" class="form-wrapper col-12">
-                                                        <label for="amount">Value <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="20" id="value" name="value" class="form-control"  required>
-                                                    </div>
-                                                    @else
-                                                    @endif
+                                                        <div class="form-wrapper col-12">
+                                                            <label for="amount">Receipt Number <span style="color: red;"> *</span></label>
+                                                            <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="">
+                                                        </div>
 
 
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Commission(%) <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="1"  step="0.01" class="form-control"  readonly name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage" autocomplete="off">
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Commission <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value="{{$var->commission}}" required autocomplete="off">
-                                                    </div>
-
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="currency">Currency <span style="color: red;"> *</span></label>
-
-                                                        <input type="text" id="currency" class="form-control" value="{{$var->currency}}" readonly required name="currency">
-                                                    </div>
-
-
-                                                    @if($var->cover_note!='N/A')
-                                                    <div id="cover_noteDiv" class="form-wrapper col-6">
-                                                        <label for="amount">Cover note<span style="color: red;"> *</span></label>
-                                                        <input type="text" id="cover_note" name="cover_note" class="form-control">
-                                                    </div>
-                                                    @else
-                                                    @endif
-
-
-                                                        @if($var->sticker_no!='N/A')
-                                                    <div id="sticker_noDiv"  class="form-wrapper col-6">
-                                                        <label for="amount">Sticker number <span style="color: red;"> *</span></label>
-                                                        <input type="text" id="sticker_no" name="sticker_no" class="form-control">
-                                                    </div>
-                                                    @else
-                                                    @endif
-
-
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="amount">Receipt Number <span style="color: red;"> *</span></label>
-                                                        <input type="text" id="receipt_no" name="receipt_no" class="form-control" value="" required="">
                                                     </div>
 
 
                                                 </div>
-
-
-                                            </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="submit" name="make_payment" class="submit action-button" value="Confirm"/>
-                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
-                                        </fieldset>
+                                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                                <input type="submit" name="make_payment" class="submit action-button" value="Confirm"/>
+                                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                            </fieldset>
                                         @endforeach
 
                                     </form>
@@ -584,121 +552,121 @@
 
 @section('pagescript')
 
-    <script type="text/javascript">
-        window.onload=function(){
+{{--    <script type="text/javascript">--}}
+{{--        window.onload=function(){--}}
 
 
-            var query=$('#insurance_class').val();
-            if(query=='MOTOR'){
-                $('#vehicle').show();
-                properNextZero();
-            }else{
-                $('#vehicle').hide();
-                properNext();
-                $('#vehicle_registration_no').val("");
-                $('#vehicle_use').val("");
-            }
-
-
-
-                var query3=$('#insurance_class').val();
-                if(query3!=''){
-
-                    $('#insurance_companyDiv').show();
-
-                }
-                else{
-                    $('#insurance_companyDiv').hide();
-                    $('#TypeDiv').hide();
-
-                    var ele4 = document.getElementById("insurance_type");
-                    ele4.required = false;
-                    $('#TypeDivNA').hide();
-                    document.getElementById("insurance_type_na").disabled = true;
-                    $('#priceDiv').hide();
-                    $('#commissionDiv').hide();
-                    $('#insurance_currencyDiv').hide();
-
-                }
-
-                if($('#TypeDivNA:visible').length!=0) {
-                    var query=$('#insurance_class').val();
-                    if(query=='MOTOR'){
-                        $('#TypeDiv').show();
-                        $('#TypeDivNA').hide();
-
-                        document.getElementById("insurance_type_na").disabled = true;
-                    }else{
-                        $('#TypeDiv').hide();
-                        var ele5 = document.getElementById("insurance_type");
-                        ele5.required = false;
-                        $('#TypeDivNA').show();
-                        document.getElementById("insurance_type_na").disabled = false;
-
-
-                    }
-                }else if($('#TypeDiv:visible').length!=0){
-                    //starts
-                    var query=$('#insurance_class').val();
-                    if(query=='MOTOR'){
-                        $('#TypeDiv').show();
-                        $('#TypeDivNA').hide();
-                        document.getElementById("insurance_type_na").disabled = true;
-
-                    }else{
-                        $('#TypeDiv').hide();
-                        var ele6 = document.getElementById("insurance_type");
-                        ele6.required = false;
-                        $('#TypeDivNA').show();
-                        document.getElementById("insurance_type_na").disabled = false;
-
-
-                    }
-                    //ends
-                }else{
-
-
-                }
+{{--            var query=$('#insurance_class').val();--}}
+{{--            if(query=='MOTOR'){--}}
+{{--                $('#vehicle').show();--}}
+{{--                properNextZero();--}}
+{{--            }else{--}}
+{{--                $('#vehicle').hide();--}}
+{{--                properNext();--}}
+{{--                $('#vehicle_registration_no').val("");--}}
+{{--                $('#vehicle_use').val("");--}}
+{{--            }--}}
 
 
 
+{{--                var query3=$('#insurance_class').val();--}}
+{{--                if(query3!=''){--}}
 
-                var query5=$('#insurance_company').val();
-                if(query5!=''){
-                    var insurance_class=document.getElementById("insurance_class").value;
-                    if(insurance_class=='MOTOR'){
+{{--                    $('#insurance_companyDiv').show();--}}
+
+{{--                }--}}
+{{--                else{--}}
+{{--                    $('#insurance_companyDiv').hide();--}}
+{{--                    $('#TypeDiv').hide();--}}
+
+{{--                    var ele4 = document.getElementById("insurance_type");--}}
+{{--                    ele4.required = false;--}}
+{{--                    $('#TypeDivNA').hide();--}}
+{{--                    document.getElementById("insurance_type_na").disabled = true;--}}
+{{--                    $('#priceDiv').hide();--}}
+{{--                    $('#commissionDiv').hide();--}}
+{{--                    $('#insurance_currencyDiv').hide();--}}
+
+{{--                }--}}
+
+{{--                if($('#TypeDivNA:visible').length!=0) {--}}
+{{--                    var query=$('#insurance_class').val();--}}
+{{--                    if(query=='MOTOR'){--}}
+{{--                        $('#TypeDiv').show();--}}
+{{--                        $('#TypeDivNA').hide();--}}
+
+{{--                        document.getElementById("insurance_type_na").disabled = true;--}}
+{{--                    }else{--}}
+{{--                        $('#TypeDiv').hide();--}}
+{{--                        var ele5 = document.getElementById("insurance_type");--}}
+{{--                        ele5.required = false;--}}
+{{--                        $('#TypeDivNA').show();--}}
+{{--                        document.getElementById("insurance_type_na").disabled = false;--}}
 
 
-                        $('#TypeDiv').show();
+{{--                    }--}}
+{{--                }else if($('#TypeDiv:visible').length!=0){--}}
+{{--                    //starts--}}
+{{--                    var query=$('#insurance_class').val();--}}
+{{--                    if(query=='MOTOR'){--}}
+{{--                        $('#TypeDiv').show();--}}
+{{--                        $('#TypeDivNA').hide();--}}
+{{--                        document.getElementById("insurance_type_na").disabled = true;--}}
 
-                    }else{
+{{--                    }else{--}}
+{{--                        $('#TypeDiv').hide();--}}
+{{--                        var ele6 = document.getElementById("insurance_type");--}}
+{{--                        ele6.required = false;--}}
+{{--                        $('#TypeDivNA').show();--}}
+{{--                        document.getElementById("insurance_type_na").disabled = false;--}}
 
-                        $('#TypeDivNA').show();
-                        document.getElementById("insurance_type_na").disabled = false;
-                    }
 
-                    $('#priceDiv').show();
-                    $('#commissionDiv').show();
-                    $('#insurance_currencyDiv').show();
-                    $('#billing').show();
-                }
-                else{
-                    $('#TypeDiv').hide();
-                    var ele7 = document.getElementById("insurance_type");
-                    ele7.required = false;
-                    $('#priceDiv').hide();
-                    $('#commissionDiv').hide();
-                    $('#insurance_currencyDiv').hide();
-                    $('#TypeDivNA').hide();
-                    $('#billing').hide();
-                    document.getElementById("insurance_type_na").disabled = true;
-                }
+{{--                    }--}}
+{{--                    //ends--}}
+{{--                }else{--}}
+
+
+{{--                }--}}
 
 
 
 
-        };
-    </script>
+{{--                var query5=$('#insurance_company').val();--}}
+{{--                if(query5!=''){--}}
+{{--                    var insurance_class=document.getElementById("insurance_class").value;--}}
+{{--                    if(insurance_class=='MOTOR'){--}}
+
+
+{{--                        $('#TypeDiv').show();--}}
+
+{{--                    }else{--}}
+
+{{--                        $('#TypeDivNA').show();--}}
+{{--                        document.getElementById("insurance_type_na").disabled = false;--}}
+{{--                    }--}}
+
+{{--                    $('#priceDiv').show();--}}
+{{--                    $('#commissionDiv').show();--}}
+{{--                    $('#insurance_currencyDiv').show();--}}
+{{--                    $('#billing').show();--}}
+{{--                }--}}
+{{--                else{--}}
+{{--                    $('#TypeDiv').hide();--}}
+{{--                    var ele7 = document.getElementById("insurance_type");--}}
+{{--                    ele7.required = false;--}}
+{{--                    $('#priceDiv').hide();--}}
+{{--                    $('#commissionDiv').hide();--}}
+{{--                    $('#insurance_currencyDiv').hide();--}}
+{{--                    $('#TypeDivNA').hide();--}}
+{{--                    $('#billing').hide();--}}
+{{--                    document.getElementById("insurance_type_na").disabled = true;--}}
+{{--                }--}}
+
+
+
+
+{{--        };--}}
+{{--    </script>--}}
 
 
     <script type="text/javascript">

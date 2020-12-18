@@ -57,7 +57,7 @@ hr {
 .form-inline .form-check {
   justify-content: left;
   padding-left: 10px;
-}  
+}
 </style>
 
 @endsection
@@ -69,7 +69,7 @@ hr {
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -87,22 +87,14 @@ hr {
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li class="active_nav_item"><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -124,8 +116,7 @@ hr {
   use App\client;
   ?>
 <div class="container" style="max-width: 1308px;">
-  <br>
-  <br>
+
   @if ($message = Session::get('errors'))
           <div class="alert alert-danger">
             <p>{{$message}}</p>
@@ -140,15 +131,15 @@ hr {
     <br>
     <div class="tab">
       @if ($category=='Real Estate only' OR $category=='All')
-            <button class="tablinks space_clients" onclick="openClients(event, 'space')" id="defaultOpen"><strong>Space Clients</strong></button>
+            <button class="tablinks space_clients" onclick="openClients(event, 'space')" id="defaultOpen"><strong>Space</strong></button>
             @else
             @endif
             @if ($category=='CPTU only' OR $category=='All')
-            <button class="tablinks car_clients" onclick="openClients(event, 'car')"><strong>Car Rental Clients</strong></button>
+            <button class="tablinks car_clients" onclick="openClients(event, 'car')"><strong>Car Rental</strong></button>
             @else
             @endif
              @if($category=='Insurance only' OR $category=='All')
-             <button class="tablinks insurance_clients" onclick="openClients(event, 'insurance')"><strong>Insurance Clients</strong></button>
+             <button class="tablinks insurance_clients" onclick="openClients(event, 'insurance')"><strong>Insurance</strong></button>
              @else
              @endif
         </div>
@@ -158,7 +149,7 @@ hr {
                 <br>
                 {{-- <h3>Space Clients</h3> --}}
             </div>
-  <div class="tab2">
+  <div class="tab2"  style="border-top-right-radius: 50px 20px;" >
             <button class="tablinks2" onclick="openSpace(event, 'sp_current')" id="defaultOpen2"><strong>Active</strong></button>
             <button class="tablinks2" onclick="openSpace(event, 'Sp_previous')"><strong>Inactive</strong></button>
         </div>
@@ -196,8 +187,8 @@ hr {
             <input type="text" id="asp_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="asp_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="asp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label></label>
             <div class="col-sm-9">
@@ -479,8 +470,8 @@ hr {
           </div>
         </div>
          <br>
-        
-        
+
+
 
         <div class="form-group row">
             <label for="inasp_message" class="col-sm-2">Body<span style="color: red;">*</span></label>
@@ -494,7 +485,7 @@ hr {
             <label for="inasp_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="inasp_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center> 
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -641,7 +632,7 @@ hr {
           </div>
         </div>
         <br>
-      
+
         <div class="form-group row">
             <label for="inasp_subject{{$client->client_id}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -670,7 +661,7 @@ hr {
             <label for="inasp_attachment{{$client->client_id}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="inasp_attachment{{$client->client_id}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span> 
+              <span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
           </div>
         </div>
         <br>
@@ -745,8 +736,8 @@ hr {
             <input type="text" id="acp_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="acp_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="acp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -991,8 +982,8 @@ hr {
             <input type="text" id="incp_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="incp_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="incp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -1245,8 +1236,8 @@ hr {
             <input type="text" id="aia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="aia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="aia_subject" class="col-sm-2">Subject<span style="color:red;">*</span></label>
             <div class="col-sm-9">
@@ -1345,7 +1336,7 @@ hr {
           </div>
         </div>
 
-        
+
 <br>
 
 <div class="form-group">
@@ -1496,8 +1487,8 @@ hr {
             <input type="text" id="inia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="inia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="inia_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -1866,10 +1857,10 @@ function myFunction() {
 </script>
 <script type="text/javascript">
   $(document).ready(function(){
-     // document.getElementById("dropdowncon").addEventListener('click', function (event) { 
-     //        //alert("click outside"); 
-     //        event.stopPropagation(); 
-     //    }); 
+     // document.getElementById("dropdowncon").addEventListener('click', function (event) {
+     //        //alert("click outside");
+     //        event.stopPropagation();
+     //    });
   var table0 = $('#myTable').DataTable( {
         dom: '<"top"fl>rt<"bottom"pi>'
     } );
@@ -1896,7 +1887,7 @@ var table5 = $('#myTable5').DataTable( {
 
 
     var table6 = $('#myTable').DataTable();
- 
+
     $('#myTable tbody').on( 'click', 'tr', function () {
       document.getElementById("asp_par_names").innerHTML="";
       document.getElementById("asp_greetings").value="Dear ";
@@ -1917,8 +1908,8 @@ var table5 = $('#myTable5').DataTable( {
     }
     });
 
-    
-  
+
+
      $('#asp_btn_mail').click( function () {
       document.getElementById("asp_par_names").innerHTML="";
       document.getElementById("asp_greetings").value="Dear ";
@@ -1930,7 +1921,7 @@ var table5 = $('#myTable5').DataTable( {
         }
 
         $('#asp_client_names').val(result6).toString();
-        
+
         var content6 = document.getElementById("asp_par_names");
         for(var i=0; i< result6.length;i++){
           if(i==(result6.length-1)){
@@ -1939,7 +1930,7 @@ var table5 = $('#myTable5').DataTable( {
           else{
             content6.innerHTML += result6[i] + ', ';
           }
-          
+
         }
 
         var salutation6 = document.getElementById("asp_greetings");
@@ -1950,14 +1941,14 @@ var table5 = $('#myTable5').DataTable( {
           else{
             salutation6.value += result6[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     } );
 
-   
+
     var table1 = $('#myTable1').DataTable();
- 
+
     $('#myTable1 tbody').on( 'click', 'tr', function () {
       document.getElementById("par_names").innerHTML="";
       document.getElementById("inasp_greetings").value="Dear ";
@@ -1981,8 +1972,8 @@ var table5 = $('#myTable5').DataTable( {
   }
     } );
 
-    
-  
+
+
      $('#btn_mail').click( function () {
       document.getElementById("par_names").innerHTML="";
       document.getElementById("inasp_greetings").value="Dear ";
@@ -1994,7 +1985,7 @@ var table5 = $('#myTable5').DataTable( {
         }
 
         $('#client_names').val(result).toString();
-        
+
         var content = document.getElementById("par_names");
         for(var i=0; i< result.length;i++){
           if(i==(result.length-1)){
@@ -2003,7 +1994,7 @@ var table5 = $('#myTable5').DataTable( {
           else{
             content.innerHTML += result[i] + ', ';
           }
-          
+
         }
 
         var salutation7 = document.getElementById("inasp_greetings");
@@ -2014,14 +2005,14 @@ var table5 = $('#myTable5').DataTable( {
           else{
             salutation7.value += result[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     } );
 
 
      var table7 = $('#myTable2').DataTable();
- 
+
     $('#myTable2 tbody').on( 'click', 'tr', function () {
       document.getElementById("acp_par_names").innerHTML="";
       document.getElementById("acp_greetings").value="Dear ";
@@ -2041,8 +2032,8 @@ var table5 = $('#myTable5').DataTable( {
   }
     });
 
-    
-  
+
+
      $('#acp_btn_mail').click( function () {
       document.getElementById("acp_par_names").innerHTML="";
       document.getElementById("acp_greetings").value="Dear ";
@@ -2054,7 +2045,7 @@ var table5 = $('#myTable5').DataTable( {
         }
 
         $('#acp_client_names').val(result7).toString();
-        
+
         var content7 = document.getElementById("acp_par_names");
         for(var i=0; i< result7.length;i++){
           if(i==(result7.length-1)){
@@ -2063,7 +2054,7 @@ var table5 = $('#myTable5').DataTable( {
           else{
             content7.innerHTML += result7[i] + ', ';
           }
-          
+
         }
 
         var salutation8 = document.getElementById("acp_greetings");
@@ -2074,14 +2065,14 @@ var table5 = $('#myTable5').DataTable( {
           else{
             salutation8.value += result7[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     } );
 
 
      var table8 = $('#myTable5').DataTable();
- 
+
     $('#myTable5 tbody').on( 'click', 'tr', function () {
       document.getElementById("incp_par_names").innerHTML="";
       document.getElementById("incp_greetings").value="Dear ";
@@ -2100,11 +2091,11 @@ var table5 = $('#myTable5').DataTable( {
           }
       }
 
-        
+
     });
 
-    
-  
+
+
      $('#incp_btn_mail').click( function () {
       document.getElementById("incp_par_names").innerHTML="";
       document.getElementById("incp_greetings").value="Dear ";
@@ -2116,7 +2107,7 @@ var table5 = $('#myTable5').DataTable( {
         }
 
         $('#incp_client_names').val(result8).toString();
-        
+
         var content8 = document.getElementById("incp_par_names");
         for(var i=0; i< result8.length;i++){
           if(i==(result8.length-1)){
@@ -2125,7 +2116,7 @@ var table5 = $('#myTable5').DataTable( {
           else{
             content8.innerHTML += result8[i] + ', ';
           }
-          
+
         }
 
         var salutation9 = document.getElementById("incp_greetings");
@@ -2136,14 +2127,14 @@ var table5 = $('#myTable5').DataTable( {
           else{
             salutation9.value += result8[i] + ', ';
           }
-          
+
         }
-         
+
     } );
 
 
      var table9 = $('#myTable3').DataTable();
- 
+
     $('#myTable3 tbody').on( 'click', 'tr', function () {
       document.getElementById("aia_par_names").innerHTML="";
       document.getElementById("aia_greetings").value="Dear ";
@@ -2160,11 +2151,11 @@ var table5 = $('#myTable5').DataTable( {
             }
         }
 
-        
+
     });
 
-    
-  
+
+
      $('#aia_btn_mail').click( function () {
        document.getElementById("aia_par_names").innerHTML="";
       document.getElementById("aia_greetings").value="Dear ";
@@ -2176,7 +2167,7 @@ var table5 = $('#myTable5').DataTable( {
         }
 
         $('#aia_client_names').val(result9).toString();
-        
+
         var content9 = document.getElementById("aia_par_names");
         for(var i=0; i< result9.length;i++){
           if(i==(result9.length-1)){
@@ -2185,7 +2176,7 @@ var table5 = $('#myTable5').DataTable( {
           else{
             content9.innerHTML += result9[i] + ', ';
           }
-          
+
         }
 
         var salutation10 = document.getElementById("aia_greetings");
@@ -2196,14 +2187,14 @@ var table5 = $('#myTable5').DataTable( {
           else{
             salutation10.value += result9[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     } );
 
 
      var table10 = $('#myTable4').DataTable();
- 
+
     $('#myTable4 tbody').on( 'click', 'tr', function () {
       document.getElementById("inia_par_names").innerHTML="";
       document.getElementById("inia_greetings").value="Dear ";
@@ -2219,11 +2210,11 @@ var table5 = $('#myTable5').DataTable( {
             $('#inia_btn_mail').hide();
           }
         }
-        
+
     });
 
-    
-  
+
+
      $('#inia_btn_mail').click( function () {
       document.getElementById("inia_par_names").innerHTML="";
       document.getElementById("inia_greetings").value="Dear ";
@@ -2235,7 +2226,7 @@ var table5 = $('#myTable5').DataTable( {
         }
 
         $('#inia_client_names').val(result10).toString();
-        
+
         var content10 = document.getElementById("inia_par_names");
         for(var i=0; i< result10.length;i++){
           if(i==(result10.length-1)){
@@ -2244,7 +2235,7 @@ var table5 = $('#myTable5').DataTable( {
           else{
             content10.innerHTML += result10[i] + ', ';
           }
-          
+
         }
 
         var salutation11 = document.getElementById("inia_greetings");
@@ -2255,12 +2246,12 @@ var table5 = $('#myTable5').DataTable( {
           else{
             salutation11.value += result10[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     });
 
-   
+
 
 });
 

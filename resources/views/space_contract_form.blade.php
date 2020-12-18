@@ -272,19 +272,11 @@ $today=date('Y-m-d');
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
@@ -389,67 +381,85 @@ $today=date('Y-m-d');
                                 <div class="form-card">
                                   <h2 class="fs-title">Renting Space Information</h2>
 
-                                    <div class="form-group row pt-1">
 
-                                        <div class="form-wrapper col-12 ">
+
+                                    <div class="form-group row">
+
+
+
+
+                                        <div class="form-wrapper col-12 pt-1">
+                                            <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                            <select id="getMajor"  class="form-control" name="major_industry" required>
+                                                <option value="" selected></option>
+
+                                                <?php
+                                                $major_industries=DB::table('space_classification')->get();
+
+
+                                                $tempOut = array();
+                                                foreach($major_industries as $values){
+                                                    $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                    $val = (iterator_to_array($iterator,true));
+                                                    $tempoIn=$val['major_industry'];
+
+                                                    if(!in_array($tempoIn, $tempOut))
+                                                    {
+                                                        print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
+                                                        array_push($tempOut,$tempoIn);
+                                                    }
+
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-wrapper col-12 pt-2">
+                                            <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                            <select id="minor_list" required class="form-control" name="minor_industry" >
+
+
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-wrapper col-12 pt-2">
+                                            <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                            <select class="form-control" id="space_location" required name="space_location" >
+
+                                            </select>
+                                        </div>
+
+
+
+                                        <div class="form-wrapper col-12 pt-2">
+                                            <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                            <select class="form-control" id="space_sub_location" required name="space_sub_location" >
+
+                                            </select>
+
+
+                                        </div>
+
+
+
+                                        <div class="form-wrapper col-12 pt-2">
                                             <label for="" ><strong>Space Number <span style="color: red;"> *</span></strong></label>
-                                            <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="" Required autocomplete="off">
-                                            <div id="nameListSpaceId"></div>
+
+                                            <select class="form-control" id="space_id_contract" required name="space_id_contract" >
+
+                                            </select>
                                         </div>
+
 
 
                                     </div>
 
-                                    <div class="form-group row">
-
-                                        <div class="form-wrapper col-6">
-                                            <label for="major_industry"  ><strong>Major industry</strong></label>
-                                            <input type="text" class="form-control"  name="major_industry" id="major_industry"  value="" readonly autocomplete="off">
-                                        </div>
-
-                                        <div class="form-wrapper col-6">
-                                            <label for=""  ><strong>Minor industry</strong></label>
-                                            <input type="text" class="form-control" id="minor_industry" name="minor_industry" value="" readonly autocomplete="off">
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group row">
-
-                                        <div class="form-wrapper col-6">
-                                            <label for="space_location"  ><strong>Location</strong></label>
-                                            <input type="text" class="form-control"  name="space_location" value="" id="location" readonly autocomplete="off">
-                                        </div>
-
-                                        <div class="form-wrapper col-6">
-                                            <label for="space_location"  ><strong>Sub location</strong></label>
-                                            <input type="text"  class="form-control" id="sub_location" name="space_sub_location" value="" readonly autocomplete="off">
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group row">
 
 
 
-                                        <div class="form-wrapper col-12">
-                                            <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                            <input type="number" min="1" step="0.01" class="form-control" id="space_size" name="space_size" value="" readonly autocomplete="off">
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group row">
 
-                                        <div class="form-wrapper col-6">
-                                            <label for="has_water_bill"  ><strong>Required to also pay Water bill</strong></label>
-                                            <input type="text"  class="form-control" id="has_water_bill" name="has_water_bill" value="" readonly autocomplete="off">
-                                        </div>
-
-                                        <div class="form-wrapper col-6">
-                                            <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill</strong></label>
-                                            <input type="text"  class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="" readonly autocomplete="off">
-                                        </div>
-                                    </div>
 
 
 
@@ -914,108 +924,140 @@ return true;
 </script>
 
 
+
+
+
 <script>
-    $( document ).ready(function() {
+
+    $('#getMajor').on('input',function(e){
+        e.preventDefault();
+        var major = $(this).val();
 
 
-        $('#space_id_contract').keyup(function(e){
-            e.preventDefault();
-            var query = $(this).val();
-
-
-
-            if(query != '')
-            {
-                var _token = $('input[name="_token"]').val();
-
-
-
-
-                $.ajax({
-                    url:"{{ route('space_id_suggestions') }}",
-                    method:"GET",
-                    data:{query:query,_token:_token},
-                    success:function(data){
-                        if(data=='0'){
-                            $('#space_id_contract').attr('style','border:1px solid #f00');
-
-                        }
-                        else{
-
-                            $('#space_id_contract').attr('style','border:1px solid #ced4da');
-                            $('#nameListSpaceId').fadeIn();
-                            $('#nameListSpaceId').html(data);
-                        }
-                    }
-                });
-            }
-            else if(query==''){
-
-                $('#space_id_contract').attr('style','border:1px solid #ced4da');
-                $('#nameListSpaceId').fadeOut();
-            }
-        });
-
-        $(document).on('click', '#listSpacePerTypeLocation', function(){
-
-
-            $('#space_id_contract').attr('style','border:1px solid #ced4da');
-
-            $('#space_id_contract').val($(this).text());
-
-
-
-            $('#nameListSpaceId').fadeOut();
-
-            //space already selected, fill size automatically
-            var selected_space_id=$(this).text();
-
+        if(major != '')
+        {
+            var _token = $('input[name="_token"]').val();
             $.ajax({
-                url:"{{ route('autocomplete.space_fields') }}",
-                method:"get",
-                data:{selected_space_id:selected_space_id},
+                url:"{{ route('generate_minor_list') }}",
+                method:"POST",
+                data:{major:major, _token:_token},
                 success:function(data){
                     if(data=='0'){
-                        $('#space_size').attr('style','border:1px solid #f00');
-
 
                     }
                     else{
 
 
-
-                        var final_data=JSON.parse(data);
-
-
-                        $('#space_size').val(final_data.size);
-                        $('#major_industry').val(final_data.major_industry);
-                        $('#minor_industry').val(final_data.minor_industry);
-                        $('#location').val(final_data.location);
-                        $('#sub_location').val(final_data.sub_location);
-                        $('#has_water_bill').val(final_data.has_water_bill);
-                        $('#has_electricity_bill').val(final_data.has_electricity_bill);
-
-
-
+                        $('#minor_list').html(data);
                     }
                 }
             });
+        }
+        else if(major==''){
 
-
-
-
-        });
-
-
-
-
-
-
-
-
+        }
     });
 
 
+
+    $('#minor_list').on('input',function(e){
+        e.preventDefault();
+        var minor = $(this).val();
+        var major = $('#getMajor').val();
+
+        if(minor != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('generate_location_list') }}",
+                method:"POST",
+                data:{minor:minor,major:major, _token:_token},
+                success:function(data){
+                    if(data=='0'){
+
+                    }
+                    else{
+
+
+                        $('#space_location').html(data);
+                    }
+                }
+            });
+        }
+        else if(minor==''){
+
+        }
+    });
+
+
+
+    $('#space_location').on('input',function(e){
+        e.preventDefault();
+        var location = $(this).val();
+        var minor = $('#minor_list').val();
+        var major = $('#getMajor').val();
+
+        if(location != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('generate_sub_location_list') }}",
+                method:"POST",
+                data:{location:location,major:major,minor:minor, _token:_token},
+                success:function(data){
+                    if(data=='0'){
+
+                    }
+                    else{
+
+                        $('#space_sub_location').html(data);
+                    }
+                }
+            });
+        }
+        else if(location==''){
+
+        }
+    });
+
+
+
+    $('#space_sub_location').on('click',function(e){
+        e.preventDefault();
+        var sub_location = $(this).val();
+        var location = $('#space_location').val();
+        var minor = $('#minor_list').val();
+        var major = $('#getMajor').val();
+
+
+        if(sub_location != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('generate_space_id_list') }}",
+                method:"POST",
+                data:{sub_location:sub_location,location:location,major:major,minor:minor, _token:_token},
+                success:function(data){
+                    if(data=='0'){
+
+                    }
+                    else{
+
+                        $('#space_id_contract').html(data);
+                    }
+                }
+            });
+        }
+        else if(sub_location==''){
+
+        }
+    });
+
+
+
 </script>
+
+
+
 
 @endsection
