@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Auth;
+use View;
 
 class PaymentController extends Controller
 {
@@ -11,7 +13,13 @@ class PaymentController extends Controller
     {
 
         $space_payments=DB::table('space_payments')->join('invoices','space_payments.invoice_number','=','invoices.invoice_number')->where('space_payments.invoice_number_votebook','!=','')->get();
-        $car_rental_payments=DB::table('car_rental_payments')->join('car_rental_invoices','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')->where('car_rental_payments.invoice_number_votebook','!=','')->get();
+        if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
+            $car_rental_payments=DB::table('car_rental_payments')->join('car_rental_invoices','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')->where('cost_centre',Auth::user()->cost_centre)->where('car_rental_payments.invoice_number_votebook','!=','')->get();
+        }
+        else{
+            $car_rental_payments=DB::table('car_rental_payments')->join('car_rental_invoices','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')->where('car_rental_payments.invoice_number_votebook','!=','')->get();
+        }
+        
         $insurance_payments=DB::table('insurance_payments')->join('insurance_invoices','insurance_payments.invoice_number','=','insurance_invoices.invoice_number')->where('insurance_payments.invoice_number_votebook','!=','')->get();
         $water_bill_payments=DB::table('water_bill_payments')->join('water_bill_invoices','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('water_bill_payments.invoice_number_votebook','!=','')->get();
         $electricity_bill_payments=DB::table('electricity_bill_payments')->join('electricity_bill_invoices','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('electricity_bill_payments.invoice_number_votebook','!=','')->get();
@@ -323,6 +331,11 @@ class PaymentController extends Controller
 
 
 
+    }
+
+
+    public function payment_filtered(){
+        return View::make('payments_filtered');
     }
 
 

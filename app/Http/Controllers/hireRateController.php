@@ -11,7 +11,7 @@ class hireRateController extends Controller
     //
     public function addhirerate( Request $request){
       $model=$request->get('vehicle_model');
-      $check=hire_rate::where('vehicle_model',$model)->get();
+      $check=hire_rate::where('vehicle_model',$model)->where('flag',1)->get();
       if(count($check)>0){
         return redirect()->back()->with('errors', "'$model' Model Already Exists.");
       }
@@ -44,7 +44,8 @@ class hireRateController extends Controller
     //    ->where('id', $id)
     //    ->update(['flag' => '0']);
       $hire=hire_rate::find($id);
-      $hire->delete();
+      $hire->flag=0;
+      $hire->save();
    return redirect()->back()->with('success', 'Hire Rate Deleted Successfully');
     }
 }

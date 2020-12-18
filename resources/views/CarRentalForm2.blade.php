@@ -328,6 +328,19 @@ $today=date('Y-m-d');
     </div>
 
     <div class="form-group row" id="namediv">
+
+        <div class="form-wrapper col-4">
+                            <label for="first_name">First Name<span style="color: red;">*</span></label>
+                            <span id="name1msg"></span>
+                            <input type="text" id="first_name" name="first_name" class="form-control"  required="" autocomplete="off" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
+                            <span id="nameList"></span>
+                        </div>
+                        <div class="form-wrapper col-4">
+                            <label for="last_name">Last Name<span style="color: red;">*</span></label>
+                            <span id="name2msg"></span>
+                            <input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                        </div>
+
                         <div class="form-wrapper col-4">
                             <label for="designation">Designation<span style="color: red;">*</span></label>
                             <span id="designationmsg"></span>
@@ -343,16 +356,7 @@ $today=date('Y-m-d');
             </select> --}}
                         </div>
 
-						<div class="form-wrapper col-4">
-							<label for="first_name">First Name<span style="color: red;">*</span></label>
-                            <span id="name1msg"></span>
-							<input type="text" id="first_name" name="first_name" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
-						</div>
-						<div class="form-wrapper col-4">
-							<label for="last_name">Last Name<span style="color: red;">*</span></label>
-                            <span id="name2msg"></span>
-							<input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-						</div>
+						
 					</div>
 
                     <div class="form-group">
@@ -454,7 +458,8 @@ $today=date('Y-m-d');
 					</div>
 
                                 </div>
- <button class="btn btn-primary" type="submit">Forward</button>
+                                    <button class="btn btn-primary" type="submit" id="forward">Forward</button>
+                                    <button class="btn btn-primary" type="submit" id="next" style="display: none;">Next</button>
                             </fieldset>
 
                         </form>
@@ -488,6 +493,17 @@ $today=date('Y-m-d');
 </script>
 <script type="text/javascript">
      $(document).ready(function(){
+        $('#trip_nature').click(function(e){
+            var values = $(this).val();
+            if(values == 'Private'){
+                $('#next').show();
+                $('#forward').hide();
+            }
+            else{
+                $('#next').hide();
+                $('#forward').show(); 
+            }
+        });
     $('#centre_name').click(function(e){
         $('#faculty_name').val("");
     var query = $('#centre_name').val();
@@ -505,6 +521,72 @@ $today=date('Y-m-d');
 
      }
          });
+
+    $('#first_name').keyup(function(){
+        // $('#last_name').val('');
+        // $('#centre_name').val('');
+        // $('#faculty_name').val('');
+        // $('#email').val('');
+        // $('#designation').val('');
+        var query = $(this).val();
+        if(query != ''){
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+            url:"{{ route('autocomplete.cptu') }}",
+            method:"POST",
+            data:{query:query, _token:_token},
+            success:function(data){
+            if(data!='0'){
+                $('#nameList').fadeIn();
+                $('#nameList').html(data);
+            }
+            else{
+                   
+          }
+            }
+         });           
+        }
+            else if(query==''){
+                
+        }
+    });
+
+$(document).on('click', '#list', function(){
+   az ='1';
+   //$('#message2').hide();
+  $('#first_name').attr('style','border-bottom:1px solid #ced4da');
+        var name = $(this).text();
+        var details=[]
+        var details=name.split(' ');
+        var first = details[0];
+        var last = details[1];
+        var _token = $('input[name="_token"]').val();
+        //console.log(name);
+        $.ajax({
+            url:"{{ route('autocomplete.allcptu') }}",
+            method:"GET",
+            data:{first:first, last:last, _token:_token}
+            //success:function(data){
+            //console.log(data); 
+        })
+
+      .done(function(data){
+        //console.log(data);
+        $('#first_name').val(data.first);
+        $('#last_name').val(data.last);
+        $('#centre_name').val(data.centre);
+        $('#faculty_name').val(data.dep);
+        $('#email').val(data.email);
+        $('#designation').val(data.designation);
+      });      
+       // $('#first_name').val($(this).text());
+        //$('#nameList').fadeOut();
+
+    });
+
+   $(document).on('click', 'form', function(){
+     $('#nameList').fadeOut();
+    });
 
     $("#centre_name").change(function(){
          var query = $(this).val();  

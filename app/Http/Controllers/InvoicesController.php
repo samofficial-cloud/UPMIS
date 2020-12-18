@@ -13,6 +13,7 @@ use PDF;
 use Riskihajar\Terbilang\Facades\Terbilang;
 use Notification;
 use Auth;
+use View;
 
 class InvoicesController extends Controller
 {
@@ -357,7 +358,13 @@ class InvoicesController extends Controller
 
         $space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->orderBy('invoices.invoice_number','desc')->get();
         $insurance_invoices=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->get();
-        $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get();
+         if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
+            $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->orderBy('car_rental_invoices.invoice_number','desc')->get();
+         }
+         else{
+           $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get(); 
+         }
+        
         $water_bill_invoices=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->orderBy('water_bill_invoices.invoice_number','desc')->get();
         $electricity_bill_invoices=DB::table('electricity_bill_invoices')->join('space_contracts','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->orderBy('electricity_bill_invoices.invoice_number','desc')->get();
 
@@ -366,6 +373,10 @@ class InvoicesController extends Controller
 
         return view('invoices_management')->with('space_invoices',$space_invoices)->with('insurance_invoices',$insurance_invoices)->with('car_rental_invoices',$car_rental_invoices)->with('water_bill_invoices',$water_bill_invoices)->with('electricity_bill_invoices',$electricity_bill_invoices);
 
+    }
+
+    public function space_filter(){
+       return View::make('invoice_filtered');
     }
 
 

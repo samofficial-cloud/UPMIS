@@ -12,6 +12,9 @@ use Auth;
 use App\cost_centre;
 use Riskihajar\Terbilang\Facades\Terbilang;
 use App\carRental;
+use App\Notifications\RequestAccepted;
+use Response;
+
 
 class carContractsController extends Controller
 {
@@ -89,12 +92,14 @@ class carContractsController extends Controller
 
     public function addContractFormB($id){
         $contract=carContract::find($id);
-         return view('CarRentalFormB1')->with('contract',$contract);
+        $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
+         return view('CarRentalFormB1')->with('contract',$contract)->with('nature', $nature);
     }
 
     public function addContractFormC($id){
         $contract=carContract::find($id);
-         return view('CarRentalFormB2')->with('contract',$contract);
+        $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
+         return view('CarRentalFormB2')->with('contract',$contract)->with('nature', $nature);
     }
 
     public function addContractFormD($id){
@@ -140,22 +145,37 @@ class carContractsController extends Controller
       $start_date=$request->input('start_date');
       $end_date=$request->input('end_date');
     }
-        DB::table('car_contracts')->insert(
+        
+        if($request->get('trip_nature')=='Private'){
+            $id = DB::table('car_contracts')->insertGetId(
+                    ['fullName' => $full_name, 'area_of_travel' => $request->get('area'), 'faculty' => $request->get('faculty_name'), 'cost_centre' => $request->get('centre_name'),'designation' => $request->get('designation'), 'start_date' => $start_date, 'end_date' => $end_date, 'start_time' => $request->get('start_time'), 'end_time' => $request->get('end_time'),'overtime'=>$request->get('overtime'), 'destination'=>$request->get('destination'), 'purpose'=>$request->get('purpose'), 'trip_nature'=>$request->get('trip_nature'), 'estimated_distance'=>$request->get('estimated_distance'), 'estimated_cost'=>$request->get('estimated_cost'), 'form_initiator' => Auth::user()->name, 'cptu_msg_status'=>'inbox', 'form_status'=>'Transport Officer-CPTU', 'form_completion'=>'0', 'email'=> $request->get('email'), 'first_name'=> $request->input('first_name'), 'last_name'=> $request->input('last_name')]
+                );
+            $nature = 'Private';
+             $contract=carContract::find($id);
+              return redirect()->route('carRentalFormB',['id' => $id]);
+            
+        }
+        else{
+            DB::table('car_contracts')->insert(
                     ['fullName' => $full_name, 'area_of_travel' => $request->get('area'), 'faculty' => $request->get('faculty_name'), 'cost_centre' => $request->get('centre_name'),'designation' => $request->get('designation'), 'start_date' => $start_date, 'end_date' => $end_date, 'start_time' => $request->get('start_time'), 'end_time' => $request->get('end_time'),'overtime'=>$request->get('overtime'), 'destination'=>$request->get('destination'), 'purpose'=>$request->get('purpose'), 'trip_nature'=>$request->get('trip_nature'), 'estimated_distance'=>$request->get('estimated_distance'), 'estimated_cost'=>$request->get('estimated_cost'), 'form_initiator' => Auth::user()->name, 'cptu_msg_status'=>'outbox', 'form_status'=>'Vote Holder', 'head_msg_status'=> 'inbox', 'form_completion'=>'0', 'email'=> $request->get('email'), 'first_name'=> $request->input('first_name'), 'last_name'=> $request->input('last_name')]
                 );
-        DB::table('notifications')->insert(['role'=>'Vote Holder', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract']);
-        return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
+           DB::table('notifications')->insert(['role'=>'Vote Holder', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract']);
+            return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully'); 
+        }
+        
     }
 
     public function newContractB(Request $request){
         $id=$request->get('contract_id');
-        DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['transport_code' => $request->get('code_no')]);
+
+        $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
+                 DB::table('car_contracts')
+                        ->where('id', $id)
+                        ->update(['transport_code' => $request->get('code_no')]);
 
                 DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['funds_available' => $request->get('fund_available')]);
+                        ->where('id', $id)
+                        ->update(['funds_available' => $request->get('fund_available')]);
 
                 DB::table('car_contracts')
                 ->where('id', $id)
@@ -177,7 +197,29 @@ class carContractsController extends Controller
                 ->where('id', $id)
                 ->update(['acc_date' => $request->get('approve_date')]);
 
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['vote_remarks' =>  $request->get('vote_remarks')]);
+
+        if($nature=='Private'){
+
                  DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['form_status' => 'Transport Officer-CPTU']);
+
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['cptu_msg_status' => 'inbox']);
+
+                 $contract=carContract::find($id);
+
+            return redirect()->route('carRentalFormC',['id' => $id]);
+
+                //return View('CarRentalFormB2',compact('contract','nature'));
+                
+        }
+        else{
+             DB::table('car_contracts')
                 ->where('id', $id)
                 ->update(['head_msg_status' => 'outbox']);
 
@@ -189,19 +231,19 @@ class carContractsController extends Controller
                 ->where('id', $id)
                 ->update(['acc_msg_status' => 'inbox']);
 
-                DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['vote_remarks' =>  $request->get('vote_remarks')]);
 
                  DB::table('notifications')->insert(['role'=>'Accountant', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
 
                  return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
+        }
+                    
     }
 
     public function newContractC(Request $request){
         $id=$request->get('contract_id');
         $area=carContract::select('area_of_travel')->where('id',$id)->value('area_of_travel');
+        $nature=carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
 
         DB::table('car_contracts')
                 ->where('id', $id)
@@ -227,52 +269,93 @@ class carContractsController extends Controller
                 ->where('id', $id)
                 ->update(['head_approval_status' => $request->get('head_approval_status')]);
 
-              DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['acc_msg_status' => 'outbox']);
+                if($nature=='Private'){
+                     DB::table('car_contracts')
+                            ->where('id', $id)
+                            ->update(['cptu_msg_status' => 'outbox']);
 
-                if($request->get('head_approval_status')=='Rejected'){
-                DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['form_status' => 'Vote Holder']);
+                    if($area=='Within'){
+                        DB::table('car_contracts')
+                            ->where('id', $id)
+                            ->update(['form_status' => 'Head of CPTU']);
 
-                 DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['head_msg_status' => 'inbox']);
+                        DB::table('car_contracts')
+                            ->where('id', $id)
+                            ->update(['head_cptu_msg_status' => 'inbox']);
 
-                DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['acc_remark' => $request->get('acc_remark')]);
+                        DB::table('notifications')->insert(['role'=>'Head of CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+                    }
 
-                 DB::table('notifications')->insert(['role'=>'Vote Holder', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+                    elseif($area=='Outside'){
 
+                    DB::table('car_contracts')
+                    ->where('id', $id)
+                    ->update(['form_status' => 'DVC Administrator']);
+
+                    DB::table('car_contracts')
+                    ->where('id', $id)
+                    ->update(['dvc_msg_status' => 'inbox']);
+
+                    DB::table('notifications')->insert(['role'=>'DVC Administrator', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+                    }
                 }
                 else{
-                   if($area=='Within'){
-                  DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['form_status' => 'Head of CPTU']);
+                        DB::table('car_contracts')
+                            ->where('id', $id)
+                            ->update(['acc_msg_status' => 'outbox']);
 
-                DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['head_cptu_msg_status' => 'inbox']);
+                        if($request->get('head_approval_status')=='Rejected'){
+                            DB::table('car_contracts')
+                            ->where('id', $id)
+                            ->update(['form_status' => 'Vote Holder']);
 
-                 DB::table('notifications')->insert(['role'=>'Head of CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
-                }
+                             DB::table('car_contracts')
+                            ->where('id', $id)
+                            ->update(['head_msg_status' => 'inbox']);
 
-                elseif($area=='Outside'){
+                            DB::table('car_contracts')
+                            ->where('id', $id)
+                            ->update(['acc_remark' => $request->get('acc_remark')]);
 
-                DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['form_status' => 'DVC Administrator']);
 
-                DB::table('car_contracts')
-                ->where('id', $id)
-                ->update(['dvc_msg_status' => 'inbox']);
+                             DB::table('notifications')->insert(['role'=>'Vote Holder', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
-                 DB::table('notifications')->insert(['role'=>'DVC Administrator', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
-                }
-                }
+                            }
+
+                            else{
+                               if($area=='Within'){
+                                    DB::table('car_contracts')
+                                        ->where('id', $id)
+                                        ->update(['form_status' => 'Head of CPTU']);
+
+                                    DB::table('car_contracts')
+                                        ->where('id', $id)
+                                        ->update(['head_cptu_msg_status' => 'inbox']);
+
+                                    DB::table('notifications')->insert(['role'=>'Head of CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+                            }
+
+                            elseif($area=='Outside'){
+
+                                DB::table('car_contracts')
+                                ->where('id', $id)
+                                ->update(['form_status' => 'DVC Administrator']);
+
+                                DB::table('car_contracts')
+                                ->where('id', $id)
+                                ->update(['dvc_msg_status' => 'inbox']);
+
+                                DB::table('notifications')->insert(['role'=>'DVC Administrator', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+                            }
+                        }
+                    }
+
+              
+
+               
+
+                
+                
 
 
                return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
@@ -317,6 +400,16 @@ class carContractsController extends Controller
                 ->where('id', $id)
                 ->update(['charge_km' => $hire_rate]);
 
+                $client = carContract::where('id', $id)->first();
+                $start = carContract::select('start_date')->where('id', $id)->value('start_date');
+                $end = carContract::select('end_date')->where('id', $id)->value('end_date');
+                $dest = carContract::select('destination')->where('id', $id)->value('destination');
+                $vehicle = $request->get('vehicle_reg');
+                $name = carContract::select('fullName')->where('id', $id)->value('fullName');
+
+                $client->notify(new RequestAccepted($start, $end, $dest, $vehicle, $name));
+
+
                  DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
                 return redirect()->route('contracts_management')->with('success', 'Details Forwaded Successfully');
@@ -360,6 +453,15 @@ class carContractsController extends Controller
                  DB::table('car_contracts')
                 ->where('id', $id)
                 ->update(['charge_km' => $hire_rate]);
+
+                $client = carContract::where('id', $id)->first();
+                $start = carContract::select('start_date')->where('id', $id)->value('start_date');
+                $end = carContract::select('end_date')->where('id', $id)->value('end_date');
+                $dest = carContract::select('destination')->where('id', $id)->value('destination');
+                $vehicle = $request->get('vehicle_reg');
+                $name = carContract::select('fullName')->where('id', $id)->value('fullName');
+
+                $client->notify(new RequestAccepted($start, $end, $dest, $vehicle, $name));
 
                  DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
@@ -631,6 +733,42 @@ public function deletecontract($id){
     $contract->save();
     return redirect()->back()->with('success', 'Contract Deleted Successfully');
 
+}
+
+public function fetchclient_details(Request $request){
+  if($request->get('query')){
+      $query = $request->get('query');
+      $data = carContract::select('first_name', 'last_name')->where('first_name', 'LIKE', "%{$query}%")->distinct()->get();
+      if(count($data)!=0){
+      $output = '<ul class="dropdown-menu form-card" style="display: block;
+    width: 100%; margin-left: 0%; position:absolute;margin-top: -8%;">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li id="list" style="margin-left: -3%;">'.$row->first_name. " ".$row->last_name.'</li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
+     else{
+      echo "0";
+     }
+
+   }
+}
+
+public function fetchallclient_details(Request $request){
+  //if($request->get('name')){
+    $names = $request->get('name');
+    $details= carContract::where('first_name', $request->get('first'))->where('last_name', $request->get('last'))->distinct()->first();
+    //dd($names);
+    //dd($details);
+    return response()->json(['first'=>$details->first_name, 'last'=>$details->last_name, 'email'=>$details->email, 'centre'=>$details->cost_centre, 'dep'=>$details->faculty, 'designation'=>$details->designation]);
+  
+  
+//return $names;
+  
 }
 
 public function renewContractForm($id){

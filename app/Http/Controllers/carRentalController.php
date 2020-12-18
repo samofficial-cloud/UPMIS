@@ -9,6 +9,7 @@ use App\operational_expenditure;
 use App\hire_rate;
 use App\carContract;
 use App\cost_centre;
+use View;
 
 class carRentalController extends Controller
 {
@@ -247,9 +248,25 @@ public function deletecentre($id){
 
  public function viewMore(){
   $ops=operational_expenditure::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->get();
-  $bookings=carContract::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->whereDate('end_date','>=',date('Y-m-d'))->get();
-  $bookings2=carContract::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->whereDate('end_date','<',date('Y-m-d'))->get();
+  $bookings=carContract::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->whereDate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->get();
+  $bookings2=carContract::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->whereDate('end_date','<',date('Y-m-d'))->where('form_completion','1')->get();
   $details=carRental::where('vehicle_reg_no',$_GET['vehicle_reg_no'])->get();
   return view('car_view_more')->with('ops',$ops)->with('bookings',$bookings)->with('details',$details)->with('bookings2',$bookings2);
  }
+
+ public function viewMore2(){
+  
+  return View::make('car_expenditure_filtered');
+ }
+
+ public function viewMore3(){
+  
+  return View::make('car_booking_filtered2');
+ }
+
+ public function viewMore4(){
+  
+  return View::make('car_booking_filtered');
+ }
+
 }

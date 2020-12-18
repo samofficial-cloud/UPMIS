@@ -109,7 +109,8 @@ width:100%;
 
 
 .color_navbar{
-  background-color: #72b4ea
+  /*background-color: #72b4ea*/
+  background-color: #225dcd;
 }
 
 .color_login{
@@ -420,8 +421,9 @@ margin-left: 43.5%;
 .tab2 {
     overflow: hidden;
     border: 1px solid #ccc;
-    background: #dbe7ef;
-    border-top-right-radius: 50px 20px;
+    background-color: #e2e5e8;
+    /*background: #dbe7ef;
+    border-top-right-radius: 50px 20px;*/
     /*border-bottom: none;*/
 }
 /* Style the buttons that are used to open the tab content */
@@ -454,7 +456,8 @@ margin-left: 43.5%;
 }
 
 .tab2 button {
-  background-color: #79c4e1;
+  /*background-color: #79c4e1;*/
+  background-color: #d1d8da;
   float: left;
   border: none;
   outline: none;
@@ -464,7 +467,7 @@ margin-left: 43.5%;
   border-top-left-radius: 7px;
   border-top-right-radius: 7px;
   margin: 1px 0px 1px 2px;
-  border-radius: 50px 20px;
+  /*border-radius: 50px 20px;*/
   /*margin: 5px 5px 5px 5px;*/
   /*border-radius: 7px;
   box-shadow: 0 2px rgba(0,0,0,0.2);
@@ -492,10 +495,10 @@ margin-left: 43.5%;
 
 .tabcontent2 {
   display: none;
-  padding: 5px 12px;
+  padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
-  border-bottom-left-radius: 50px 20px;
+ /* border-bottom-left-radius: 50px 20px;*/
 }
 
 .udiacontent{
