@@ -114,9 +114,10 @@
  @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
-@admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-          @endadmin
+                @admin
+                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+                @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -132,23 +133,50 @@
   $grounded_cars=carRental::where('flag','1')->where('vehicle_status','Grounded')->count();
   $within=carContract::where('area_of_travel','Within')->whereYear('start_date',date('Y'))->where('form_completion','1')->count();
   $outside=carContract::where('area_of_travel','Outside')->whereYear('start_date',date('Y'))->where('form_completion','1')->count();
+  $year= date('Y');
   ?>
     <br>
 
     <div class="container">
       <br>
-      @if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+       @if ($message = Session::get('errors'))
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
         <div class="card">
+          <br>
+          <div class="col-sm-12">
+    <div>
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group" style="margin-right: 5px;">
+           
+          <select name="activity_year" id="activity_year" class="form-control" required="">
+              <option value=" " disabled selected hidden>Select Year</option>
+                @for($x=-5;$x<=0; $x++)
+                  <option value="{{$year + $x}}">{{$year + $x}}</option>
+                @endfor
+          </select>
+          <span id="activity_error"></span>
+        </div>
+      
+      <div class="form-group"  style="margin-right: 5px;">
+          <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-success">
+      </div>
+
+     
+    </form>   
+  </div>
+</div>
           <div class="card-body">
         <div class="card-columns" style="font-size: 15px; font-family: sans-serif;">
 
@@ -167,10 +195,12 @@
     margin-bottom: 1rem;
     border: 0;
     border: 1px solid #505559;">
+    <div id="cardData">
       <h5>Clients Statistics {{date('Y')}}</h5>
       Within Dar es Salaam: {{$within}}
       <br>Outside Dar es Salaam: {{$outside}}
       <br>Total Clients: {{$within + $outside}}
+    </div>
     </div>
   </div>
   <div class="card border-success">
@@ -550,9 +580,57 @@ function myFunction() {
 
         }
          //console.log(result);
-    } );
+    });
 
-} );
+   $("#activity_filter").click(function(e){
+    e.preventDefault();
+    
+    var query = $('#activity_year').val();
+
+    if(query==null){
+      $('#activity_error').show();
+      var message=document.getElementById('activity_error');
+      message.style.color='red';
+      message.innerHTML="Required";
+      $('#activity_year').attr('style','border:1px solid #f00');
+    }
+    else{
+      
+      $('#activity_error').hide();
+      $('#activity_year').attr('style','border:1px solid #ccc');
+      $.ajax({
+      url: "/home9/activity_filter?",
+      context: document.body,
+      async : false,
+      data:{year:query}
+      })
+    .done(function(data) {
+      {{$chart->id}}.options.title.text = 'Rental Activities '+query;
+      {{ $chart->id }}.data.datasets[0].data =data.activity;
+      {{ $chart->id }}.update(); 
+
+      {{$chart2->id}}.options.title.text = 'Income Generation '+query;
+      {{ $chart2->id }}.data.datasets[0].data =data.income;
+      {{ $chart2->id }}.update();
+      var bodyData0 = '';
+      var bodyData = '';
+      console.log(query);
+      bodyData= "<div>"
+      bodyData+="<h5 class='card-title'>Client Statistics "
+      bodyData+=query+"</h5>"
+      bodyData+="Within Dar es Salaam: "+data.within
+      bodyData+="<br>Outside Dar es Salaam: "+data.outside
+      bodyData+="<br>Total Clients: "+ data.total
+      bodyData+="</div>";
+      $("#cardData").html(bodyData);
+      //$("#clientdiv").load(location.href + " #clientdiv");
+    });
+    }  
+    return false;
+
+});
+
+});
 </script>
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script> --}}
         {!! $chart->script() !!}

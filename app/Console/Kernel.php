@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+       Commands\NotifyUsers::class
     ];
 
     /**
@@ -31,8 +32,14 @@ class Kernel extends ConsoleKernel
             ->everyMinute();
 
 
+
 //        $schedule->command('command:sendEmailsSpace')
 //            ->everyMinute();
+
+            //$schedule->command('command:ContractEnd')->everyFiveMinutes();
+
+      //  $schedule->command('command:ContractEnd')->dailyAt('19:13')->timezone('Africa/Dar_es_Salaam');
+
 
     }
 

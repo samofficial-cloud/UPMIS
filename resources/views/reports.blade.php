@@ -580,7 +580,7 @@ $year=$current-3;
             <select class="form-control" id="payment_status" name="payment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
               <option value="Paid">Paid</option>
-              <option value="Not Paid">Not Paid</option>
+              <option value="Not paid">Not Paid</option>
             </select>
         </div>
     </div>
@@ -643,7 +643,7 @@ $year=$current-3;
             <select class="form-control" id="t_invoicepayment_status" name="t_invoicepayment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
               <option value="Paid">Paid</option>
-              <option value="Not Paid">Not Paid</option>
+              <option value="Not paid">Not Paid</option>
             </select>
         </div>
     </div>
@@ -762,6 +762,34 @@ $year=$current-3;
             <span id="nameList"></span>
           </div>
         </div>
+
+
+  <div class="form-group" id="carhistoryfilterBydiv" style="display: none;">
+      <div class="form-wrapper">
+          <label for="Criteria">Filter By</label>
+            <div class="row">
+                  <div class="col-3 form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="cardate_histfil" id="cardate_histfil" value="">
+                  <label class="form-check-label" for="cardate_histfil">Date
+                </label>
+                 </div>
+               </div>
+         </div>
+       </div>
+
+
+       <div class="form-group row" id="carhistorydatediv" style="display: none;">
+            <div class="form-wrapper col-6">
+              <label for="carhistory_start_date">From<span style="color: red;">*</span></label>
+              <span id="carhistory_startdatemsg"></span>
+              <input type="date" id="carhistory_start_date" name="carhistory_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>" >
+            </div>
+            <div class="form-wrapper col-6">
+              <label for="carhistory_end_date">To<span style="color: red;">*</span></label>
+              <span id="carhistory_enddatemsg"></span>
+              <input type="date" id="carhistory_end_date" name="carhistory_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>" >
+            </div>
+          </div>
 
 
     <div class="form-group" id="carsfilterBydiv" style="display: none;">
@@ -930,11 +958,16 @@ $year=$current-3;
 
                   <div class="col-3 form-check-inline">
                     <input class="form-check-input" type="radio" name="clientpayment" id="clientpayment_paid" value="Paid" checked="">
-                  <label for="clientpayment_active" class="form-check-label">Paid</label>
+                  <label for="clientpayment_paid" class="form-check-label">Paid</label>
                  </div>
 
                  <div class="col-3 form-check-inline">
-                  <input class="form-check-input" type="radio" name="clientpayment" id="clientpayment_unpaid" value="Not Paid" >
+                  <input class="form-check-input" type="radio" name="clientpayment" id="clientpayment_partial" value="Partially Paid" >
+                  <label for="clientpayment_partial" class="form-check-label">Partially paid</label>
+                </div>
+
+                 <div class="col-3 form-check-inline">
+                  <input class="form-check-input" type="radio" name="clientpayment" id="clientpayment_unpaid" value="Not paid" >
                   <label for="clientpayment_unpaid" class="form-check-label">Not Paid</label>
                 </div>
               </div>
@@ -1136,7 +1169,7 @@ $year=$current-3;
 
                  <div class="col-3 form-check-inline">
                   <input class="form-check-input" type="radio" name="Conyearcategory" id="Con_end_year" value="end" >
-                  <label for="electricity_bill" class="form-check-label">Lease End</label>
+                  <label for="Con_end_year" class="form-check-label">Lease End</label>
                 </div>
               </div>
             </div>
@@ -1200,6 +1233,9 @@ $year=$current-3;
               @endif
               @if ($category=='Real Estate only' OR $category=='All')
                 <option value="Space">Real Estate</option>
+              @endif
+               @if ($category=='All')
+                <option value="All">All Businesses</option>
               @endif
             </select>
         </div>
@@ -1279,7 +1315,7 @@ $year=$current-3;
 
                 <div class="col-3 form-check form-check-inline">
                    <input class="form-check-input" type="checkbox" name="summary_year_filter" id="summary_year_filter" value="">
-                  <label for="summary_year_filter" class="form-check-label">Year</label>
+                  <label for="summary_year_filter" class="form-check-label">Date</label>
                 </div>
             </div>
        </div>
@@ -1291,23 +1327,25 @@ $year=$current-3;
               <div class="row">
                 <div class="col-3 form-check form-check-inline">
                    <input class="form-check-input" type="checkbox" name="summary_year_filter2" id="summary_year_filter2" value="">
-                  <label for="summary_year_filter2" class="form-check-label">Year</label>
+                  <label for="summary_year_filter2" class="form-check-label">Date</label>
                 </div>
             </div>
        </div>
      </div>
 
-     <div class="form-group" id="summary_yeardiv2" style="display: none;">
-          <div class="form-wrapper">
-          <label for="summary_year2">Select Year<span style="color: red;">*</span></label>
-          <span id="summaryyearmsg2"></span>
-            <select class="form-control" id="summary_year2" name="summary_year2">
-            <option value=" " disabled selected hidden>Select Year</option>
-            @for($x=0;$x<=5; $x++)
-              <option value="{{$year + $x}}">{{$year + $x}}</option>
-              @endfor
-            </select>
+     <div class="form-group row" id="summary_yeardiv2" style="display: none;">
+        <div class="form-wrapper col-6">
+          <label for="summary2_start_date">From<span style="color: red;">*</span></label>
+          <span id="summary2_startdatemsg"></span>
+          <input type="date" id="summary2_start_date" name="summary2_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
         </div>
+
+        <div class="form-wrapper col-6">
+          <label for="summary2_end_date">To<span style="color: red;">*</span></label>
+          <span id="summary2_enddatemsg"></span>
+          <input type="date" id="summary2_end_date" name="summary2_end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+        </div>
+
     </div>
 
      <div class="form-group" id="summary_businessdiv" style="display: none;">
@@ -1343,16 +1381,17 @@ $year=$current-3;
         </div>
     </div>
 
-    <div class="form-group" id="summary_yeardiv" style="display: none;">
-          <div class="form-wrapper">
-          <label for="summary_year">Select Year<span style="color: red;">*</span></label>
-          <span id="summaryyearmsg"></span>
-            <select class="form-control" id="summary_year" name="summary_year">
-            <option value=" " disabled selected hidden>Select Year</option>
-            @for($x=0;$x<=5; $x++)
-              <option value="{{$year + $x}}">{{$year + $x}}</option>
-              @endfor
-            </select>
+    <div class="form-group row" id="summary_yeardiv" style="display: none;">
+        <div class="form-wrapper col-6">
+          <label for="summary_start_date">From<span style="color: red;">*</span></label>
+          <span id="summary_startdatemsg"></span>
+          <input type="date" id="summary_start_date" name="summary_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+        </div>
+
+        <div class="form-wrapper col-6">
+          <label for="summary_end_date">To<span style="color: red;">*</span></label>
+          <span id="summary_enddatemsg"></span>
+          <input type="date" id="summary_end_date" name="summary_end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
         </div>
     </div>
 
@@ -1362,26 +1401,21 @@ $year=$current-3;
                   <span id="InspaceCriteriamsg"></span>
                   <div class="row">
 
-                  <div class="form-wrapper col-3">
-                  <label for="In_space_rent" style=" display: block;
-    white-space: nowrap;">Space Rent
-                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="space_rent" value="rent" checked="">
-                </label>
-                 </div>
-
-                 <div class="form-wrapper col-3">
-                  <label for="electricity_bill" style=" display: block;
-    white-space: nowrap;">Electricity Bill
-                   <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="electricity_bill" value="electricity" >
-                   </label>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="space_rent2" value="rent" checked="">
+                  <label for="space_rent2" class="form-check-label">Space Rent</label>
                 </div>
 
-                <div class="form-wrapper col-3">
-                  <label for="water_bill" style=" display: block;
-    white-space: nowrap;">Water Bill
-                   <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="water_bill" value="water">
-                   </label>
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="electricity_bill2" value="electricity" >
+                  <label for="electricity_bill2" class="form-check-label">Electricity Bill</label>
                 </div>
+
+                <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="water_bill2" value="water" >
+                  <label for="water_bill2" class="form-check-label">Water Bill</label>
+                </div>
+
                </div>
              </div>
            </div>
@@ -1428,7 +1462,8 @@ $year=$current-3;
             <select class="form-control" id="In_payment_status" name="In_payment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
               <option value="Paid">Paid</option>
-              <option value="Not Paid">Not Paid</option>
+              <option value="Partially Paid">Partially Paid</option>
+              <option value="Not paid">Not Paid</option>
             </select>
         </div>
     </div>
@@ -1575,6 +1610,18 @@ function myFunction() {
     $('#carmin_price').val("");
     $('#carmax_price').val("");
     $('#rent_status').val("");
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#carhistoryfilterBydiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -1640,7 +1687,8 @@ function myFunction() {
       $('#summary_businessdiv').hide();
       $('#summary_locationdiv').hide();
       $('#summary_yeardiv').hide();
-      $('#summary_year').val(" ");
+      $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
       $('#summarybiztypediv').hide();
       $('#summarybiztype').val(" ");
       $('#summary_business').val(" ");
@@ -1713,6 +1761,18 @@ function myFunction() {
     $('#carmin_price').val("");
     $('#carmax_price').val("");
     $('#rent_status').val("");
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#carhistoryfilterBydiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -1780,7 +1840,8 @@ function myFunction() {
       $('#summary_locationdiv').hide();
       $('#summarybiztypediv').hide();
       $('#summary_yeardiv').hide();
-      $('#summary_year').val(" ");
+     $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
       $('#summarybiztype').val(" ");
       $('#summary_business').val(" ");
       $('#summary_location').val(" ");
@@ -1845,6 +1906,18 @@ function myFunction() {
     $('#carmin_price').val("");
     $('#carmax_price').val("");
     $('#rent_status').val("");
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#carhistoryfilterBydiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -1907,7 +1980,8 @@ function myFunction() {
       $('#summary_businessdiv').hide();
       $('#summary_locationdiv').hide();
       $('#summary_yeardiv').hide();
-      $('#summary_year').val(" ");
+      $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
       $('#summarybiztypediv').hide();
       $('#summarybiztype').val(" ");
       $('#summary_business').val(" ");
@@ -2031,7 +2105,8 @@ function myFunction() {
       $('#summary_locationdiv').hide();
       $('#summarybiztypediv').hide();
       $('#summary_yeardiv').hide();
-      $('#summary_year').val(" ");
+      $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
       $('#summarybiztype').val(" ");
       $('#summary_business').val(" ");
       $('#summary_location').val(" ");
@@ -2094,6 +2169,18 @@ function myFunction() {
     $('#carmin_price').val("");
     $('#carmax_price').val("");
     $('#rent_status').val("");
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#carhistoryfilterBydiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -2160,7 +2247,8 @@ function myFunction() {
       $('#summary_locationdiv').hide();
       $('#summarybiztypediv').hide();
       $('#summary_yeardiv').hide();
-      $('#summary_year').val(" ");
+      $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
       $('#summarybiztype').val(" ");
       $('#summary_business').val(" ");
       $('#summary_location').val(" ");
@@ -2224,6 +2312,18 @@ function myFunction() {
     $('#carmin_price').val("");
     $('#carmax_price').val("");
     $('#rent_status').val("");
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#carhistoryfilterBydiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -2362,6 +2462,18 @@ function myFunction() {
     $('#carmin_price').val("");
     $('#carmax_price').val("");
     $('#rent_status').val("");
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#carhistoryfilterBydiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -2424,7 +2536,8 @@ function myFunction() {
       $('#summary_locationdiv').hide();
       $('#summarybiztypediv').hide();
       $('#summary_yeardiv').hide();
-      $('#summary_year').val(" ");
+      $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
       $('#summarybiztype').val(" ");
       $('#summary_business').val(" ");
       $('#summary_location').val(" ");
@@ -2447,7 +2560,8 @@ function myFunction() {
       $('#summary_businessdiv').hide();
       $('#summary_locationdiv').hide();
       $('#summary_yeardiv').hide();
-      $('#summary_year').val(" ");
+      $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
       $('#summarybiztype').val(" ");
       $('#summary_business').val(" ");
       $('#summary_location').val(" ");
@@ -2485,7 +2599,8 @@ function myFunction() {
         $('#summaryspacecriteriadiv').show();
         $('#summaryspacefilterBydiv2').hide();
         $('#summary_yeardiv2').hide();
-        $('#summary_year2').val(" ");
+        $('#summary2_start_date').val("");
+        $('#summary2_end_date').val("");
         $("#summary_year_filter2:checked").prop("checked", false);
         var query472=$('input[name="summary_show"]:checked').val();
         if(query472=='clients'){
@@ -2500,7 +2615,8 @@ function myFunction() {
         $('#summary_businessdiv').hide();
         $('#summary_locationdiv').hide();
         $('#summary_yeardiv').hide();
-        $('#summary_year').val(" ");
+        $('#summary_start_date').val("");
+        $('#summary_end_date').val("");
         $('#summary_business').val(" ");
         $('#summary_location').val(" ");
         $('#summaryshowcriteriadiv').hide();
@@ -2574,7 +2690,8 @@ function myFunction() {
     else{
        $(this).val("");
      $('#summary_yeardiv').hide();
-      $('#summary_year').val(" ");
+      $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
     }
     });
 
@@ -2586,7 +2703,8 @@ function myFunction() {
     else{
        $(this).val("");
      $('#summary_yeardiv2').hide();
-      $('#summary_year2').val(" ");
+      $('#summary2_start_date').val("");
+      $('#summary2_end_date').val("");
     }
     });
 
@@ -2596,15 +2714,16 @@ function myFunction() {
       bz=1;
       if(query!=null){
        $('#InvoicefilterBydiv').show();
-      }
-      else{
-        $('#InvoicefilterBydiv').hide();
-        if(query=='Space'){
+       if(query=='Space'){
         $('#InSpaceCriteriadiv').show();
       }
       else{
          $('#InSpaceCriteriadiv').hide();
       }
+      }
+      else{
+        $('#InvoicefilterBydiv').hide();
+        $('#InSpaceCriteriadiv').hide();
       }
 
        });
@@ -3218,20 +3337,33 @@ $(document).on('click', '#list', function(){
 $("#car_type").click(function(){
     var query= $(this).val();
  if(query=='revenue'){
+  $('#carrevenuefilterBydiv').hide();
    $('#revenue_durationdiv').show();
     $('#carsfilterBydiv').hide();
+    $('#carhistoryfilterBydiv').hide();
     $('#carclientfilterBydiv').hide();
      $('#vehicleregdiv').hide();
      $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
     $('#rentstatusdiv').hide();
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
     $('#model').val("");
     $('#vehicle_status').val("");
     $('#carmin_price').val("");
     $('#carmax_price').val("");
     $('#rent_status').val("");
     $('#vehicle_reg').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -3240,17 +3372,47 @@ $("#car_type").click(function(){
         $("input[name='clientcontract_filter']:checked").prop("checked", false);
         $("input[name='clientdate_filter']:checked").prop("checked", false);
         $("input[name='clientpayment_filter']:checked").prop("checked", false);
+    $('#carrevenuedatediv').hide();
+     $('#carrevenueregdiv').hide();
+     $('#carrevenuemodeldiv').hide();
+     $("input[name='carrevenuedate_filter']:checked").prop("checked", false);
+   $("input[name='carrevenuemodel_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuereg_filter']:checked").prop("checked", false);
  }
  else if(query=='cars'){
+  $('#carrevenuefilterBydiv').hide();
   $('#carsfilterBydiv').show();
   $('#carclientfilterBydiv').hide();
   $('#revenue_durationdiv').hide();
+  $('#carhistoryfilterBydiv').hide();
    $('#vehicleregdiv').hide();
    $('#rev_start_date').val("");
    $('#rev_end_date').val("");
    $('#vehicle_reg').val("");
+   $('#carrevenuedatediv').hide();
+   $('#carrevenueregdiv').hide();
+   $('#carrevenuemodeldiv').hide();
+   $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
+   $("input[name='carrevenuedate_filter']:checked").prop("checked", false);
+   $("input[name='carrevenuemodel_filter']:checked").prop("checked", false);
+   $("input[name='carrevenuereg_filter']:checked").prop("checked", false);
+   $("input[name='clientcostcentre_filter']:checked").prop("checked", false);
+  $("input[name='clientcontract_filter']:checked").prop("checked", false);
+  $("input[name='clientdate_filter']:checked").prop("checked", false);
+  $("input[name='clientpayment_filter']:checked").prop("checked", false);
  }
  else if(query=='history'){
+  $('#carrevenuefilterBydiv').hide();
   $('#carsfilterBydiv').hide();
   $('#carclientfilterBydiv').hide();
   $('#revenue_durationdiv').hide();
@@ -3259,6 +3421,7 @@ $("#car_type").click(function(){
     $('#carrangediv').hide();
     $('#rentstatusdiv').hide();
   $('#vehicleregdiv').show();
+  $('#carhistoryfilterBydiv').show();
   $('#model').val("");
     $('#vehicle_status').val("");
     $('#carmin_price').val("");
@@ -3266,6 +3429,19 @@ $("#car_type").click(function(){
     $('#rent_status').val("");
     $('#rev_start_date').val("");
    $('#rev_end_date').val("");
+   $('#carrevenuedatediv').hide();
+     $('#carrevenueregdiv').hide();
+     $('#carrevenuemodeldiv').hide();
+     $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+     $("input[name='carrevenuedate_filter']:checked").prop("checked", false);
+    $("input[name='carrevenuemodel_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuereg_filter']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -3276,14 +3452,22 @@ $("#car_type").click(function(){
         $("input[name='clientpayment_filter']:checked").prop("checked", false);
  }
  else if(query=='clients'){
+  $('#carrevenuefilterBydiv').hide();
   $('#carclientfilterBydiv').show();
   $('#revenue_durationdiv').hide();
    $('#carsfilterBydiv').hide();
+    $('#carhistoryfilterBydiv').hide();
    $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
     $('#rentstatusdiv').hide();
      $('#vehicleregdiv').hide();
+     $('#carrevenuedatediv').hide();
+     $('#carrevenueregdiv').hide();
+     $('#carrevenuemodeldiv').hide();
+     $("input[name='carrevenuedate_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuemodel_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuereg_filter']:checked").prop("checked", false);
     $('#model').val("");
     $('#vehicle_status').val("");
     $('#carmin_price').val("");
@@ -3292,8 +3476,12 @@ $("#car_type").click(function(){
     $('#rev_start_date').val("");
    $('#rev_end_date').val("");
    $('#vehicle_reg').val("");
+   $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
-     $("input[name='carstatus_filter']:checked").prop("checked", false);
+    $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
        $("input[name='rentstatus_filter']:checked").prop("checked", false);
  }
@@ -3301,8 +3489,16 @@ $("#car_type").click(function(){
    $('#carrevenuefilterBydiv').show();
   $('#revenue_durationdiv').hide();
    $('#carsfilterBydiv').hide();
+    $('#carhistoryfilterBydiv').hide();
    $('#carclientfilterBydiv').hide();
    $('#carmodeldiv').hide();
+   $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
     $('#rentstatusdiv').hide();
@@ -3315,6 +3511,10 @@ $("#car_type").click(function(){
     $('#rev_start_date').val("");
    $('#rev_end_date').val("");
    $('#vehicle_reg').val("");
+   $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -3327,11 +3527,19 @@ $("#car_type").click(function(){
  else{
   $('#revenue_durationdiv').hide();
    $('#carsfilterBydiv').hide();
+    $('#carhistoryfilterBydiv').hide();
    $('#carclientfilterBydiv').hide();
    $('#carrevenuefilterBydiv').hide();
    $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
     $('#rentstatusdiv').hide();
      $('#vehicleregdiv').hide();
     $('#model').val("");
@@ -3342,6 +3550,12 @@ $("#car_type").click(function(){
     $('#rev_start_date').val("");
    $('#rev_end_date').val("");
    $('#vehicle_reg').val("");
+   $('#carrevenuedatediv').hide();
+     $('#carrevenueregdiv').hide();
+     $('#carrevenuemodeldiv').hide();
+     $("input[name='carrevenuedate_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuemodel_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuereg_filter']:checked").prop("checked", false);
    $("input[name='carmodel_filter']:checked").prop("checked", false);
      $("input[name='carstatus_filter']:checked").prop("checked", false);
       $("input[name='carrange_filter']:checked").prop("checked", false);
@@ -3352,6 +3566,19 @@ $("#car_type").click(function(){
         $("input[name='clientpayment_filter']:checked").prop("checked", false);
  }
   });
+
+$("#cardate_histfil").click(function(){
+    if($(this).is(":checked")){
+      $('#carhistorydatediv').show();
+      $('#cardate_histfil').val('true');
+    }
+    else{
+    $('#cardate_histfil').val('');
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+    }
+});
 
 $("#carmodel_filter").click(function(){
     if($(this).is(":checked")){
@@ -3585,7 +3812,7 @@ var a100=0;
 
    $("#submitbutton").click(function(e){
        e.preventDefault();
-       var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32,p33,p34,p35,p36;
+       var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32,p33,p34,p35,p36,p490,p491
        var query = $("#module").val();
 
        if(query=='space'){
@@ -4060,7 +4287,7 @@ var a100=0;
         }
     }
     else if(query34=='summary'){
-      var p480,p481,p482,p483,p484;
+      var p480,p481,p482,p483,p484,p485,p4831;
       var query480=$('#summarybiztype').val();
       if(query480==null){
         p480=0;
@@ -4117,47 +4344,103 @@ var a100=0;
       }
 
       if($('#summary_year_filter').is(":checked")){
-        var query483=$('#summary_year').val();
-        if(query483==null){
+          var query483 = $('#summary_start_date').val(),
+            query4831 = $('#summary_end_date').val();
+
+       
+        if(query483==""){
           p483=0;
-          $('#summaryyearmsg').show();
-          var message=document.getElementById('summaryyearmsg');
+          $('#summary_startdatemsg').show();
+          var message=document.getElementById('summary_startdatemsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#summary_year').attr('style','border:1px solid #f00');
+           $('#summary_start_date').attr('style','border-bottom:1px solid #f00');
         }
         else{
          p483=1;
-          $('#summaryyearmsg').hide();
-           $('#summary_year').attr('style','border:1px solid #ccc');
+          $('#summary_startdatemsg').hide();
+          $('#summary_start_date').attr('style','border-bottom:1px solid #ccc');
+        }
+
+        if(query4831==""){
+          p4831=0;
+          $('#summary_enddatemsg').show();
+          var message=document.getElementById('summary_enddatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#summary_end_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+         p4831=1;
+          $('#summary_enddatemsg').hide();
+          $('#summary_end_date').attr('style','border-bottom:1px solid #ccc');
+        }
+
+        if(query483!='' && query4831!=''){
+          if(query483 > query4831){
+            var query4832 = query483;
+            query483 = query4831;
+            query4831 = query4832;
+          }
         }
       }
       else{
         p483=1;
+
+        p4831 =1; 
+
       }
 
       if($('#summary_year_filter2').is(":checked")){
-        var query484=$('#summary_year2').val();
-        if(query484==null){
+        var query484 = $('#summary2_start_date').val(),
+            query485 = $('#summary2_end_date').val();
+
+       
+        if(query484==""){
           p484=0;
-          $('#summaryyearmsg2').show();
-          var message=document.getElementById('summaryyearmsg2');
+          $('#summary2_startdatemsg').show();
+          var message=document.getElementById('summary2_startdatemsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#summary_year2').attr('style','border:1px solid #f00');
+           $('#summary2_start_date').attr('style','border-bottom:1px solid #f00');
         }
         else{
          p484=1;
-          $('#summaryyearmsg2').hide();
-           $('#summary_year2').attr('style','border:1px solid #ccc');
+          $('#summary2_startdatemsg').hide();
+          $('#summary2_start_date').attr('style','border-bottom:1px solid #ccc');
+        }
+
+        if(query485==""){
+          p485=0;
+          $('#summary2_enddatemsg').show();
+          var message=document.getElementById('summary2_enddatemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#summary2_end_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+         p485=1;
+          $('#summary2_enddatemsg').hide();
+          $('#summary2_end_date').attr('style','border-bottom:1px solid #ccc');
+        }
+
+        if(query484!='' && query485!=''){
+          if(query484 > query485){
+            var query486 = query484;
+            query484 = query485;
+            query485 = query486;
+          }
         }
       }
       else{
         p484=1;
+
+        p485=1; 
+
       }
-      if(p480==1 && p481==1 && p482==1&&p483==1 &&p484==1){
+      if(p480==1 && p481==1 && p482==1&&p483==1 &&p4831==1 &&p484==1&&p485==1){
         var _token = $('input[name="_token"]').val();
-          var postData7 = "report_type="+ query34+ "&b_type="+ query480+ "&criteria=" + $("input[name='summary_criteria']:checked").val() + "&show=" + $("input[name='summary_show']:checked").val() +"&bus_fil="+$('#summary_business_filter').val()+"&loc_fil="+$('#summary_location_filter').val()+"&biz="+ query481+ "&loc="+query482+"&yr_fil="+$('#summary_year_filter').val()+"&yr="+query483+"&yr2_fil="+$('#summary_year_filter2').val()+"&yr2="+query484;
+          var postData7 = "report_type="+ query34+ "&b_type="+ query480+ "&criteria=" + $("input[name='summary_criteria']:checked").val() + "&show=" + $("input[name='summary_show']:checked").val() +"&bus_fil="+$('#summary_business_filter').val()+"&loc_fil="+$('#summary_location_filter').val()+"&biz="+ query481+ "&loc="+query482+"&yr_fil="+$('#summary_year_filter').val()+"&start="+query483+"&end="+query4831+"&yr2_fil="+$('#summary_year_filter2').val()+"&start2="+query484+"&end2="+query485;
 
             $.ajax({
             url: "{{ route('spacereport1') }}",
@@ -4729,11 +5012,59 @@ var a100=0;
            message.innerHTML="Required";
            $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
         }
-        if(az=='1' && reg!=""){
+        else{
+          $('#vehicleregmsg').hide();
+          $('#vehicle_reg').attr('style','border-bottom:1px solid #ccc');
+        }
+         if($('#cardate_histfil').is(":checked")){
+          var query490 =$('#carhistory_start_date').val(),
+              query491 =$('#carhistory_end_date').val();
+
+              if(query490==''){
+                p490 =0;
+                $('#carhistory_startdatemsg').show();
+              var message=document.getElementById('carhistory_startdatemsg');
+              message.style.color='red';
+              message.innerHTML="Required";
+              $('#carhistory_start_date').attr('style','border-bottom:1px solid #f00'); 
+              }
+              else{
+                p490=1;
+                $('#carhistory_startdatemsg').hide();
+                $('#carhistory_start_date').attr('style','border-bottom:1px solid #ccc');
+              }
+              if(query491==''){
+                p491=0;
+                $('#carhistory_enddatemsg').show();
+                var message=document.getElementById('carhistory_enddatemsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#carhistory_end_date').attr('style','border-bottom:1px solid #f00'); 
+              }
+              else{
+                p491=1;
+                $('#carhistory_enddatemsg').hide();
+                 $('#carhistory_end_date').attr('style','border-bottom:1px solid #ccc'); 
+              }
+              if(query490!='' && query491!=''){
+                if(query490>query491){
+                var query492 = query490;
+                    query490 = query491;
+                    query491 = query492;
+                }
+              }
+              
+
+         }
+         else{
+          p490=1;
+          p491=1;
+         }
+        if(az=='1' && reg!="" &&p490=='1' && p491=='1'){
           $('#vehicleregmsg').hide();
         $('#vehicle_reg').attr('style','border-bottom: 1px solid #ccc');
          var _token = $('input[name="_token"]').val();
-          var postData5 = "report_type="+ query16+"&reg="+reg;
+          var postData5 = "report_type="+ query16+"&reg="+reg+"&start="+query490+"&end="+query491+"&date_fil="+$('#cardate_histfil').val();
 
             $.ajax({
             url: "{{ route('spacereport1') }}",

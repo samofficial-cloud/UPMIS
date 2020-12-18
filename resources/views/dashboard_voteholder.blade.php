@@ -84,6 +84,7 @@
 
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            $year= date('Y');
             ?>
 
             @if($category=='All')
@@ -119,9 +120,10 @@
  @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
-@admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-          @endadmin
+          @admin
+                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+                @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -131,14 +133,16 @@
 
     <div class="container">
       <br>
-      @if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+       @if ($message = Session::get('errors'))
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
@@ -161,6 +165,30 @@
   </div>
   <br>
   <div class="card">
+      <br>
+           <div class="col-sm-12">
+    <div>
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group" style="margin-right: 5px;">
+           
+          <select name="activity_year" id="activity_year" class="form-control" required="">
+              <option value=" " disabled selected hidden>Select Year</option>
+                @for($x=-5;$x<=0; $x++)
+                  <option value="{{$year + $x}}">{{$year + $x}}</option>
+                @endfor
+          </select>
+          <span id="activity_error"></span>
+        </div>
+      
+      <div class="form-group"  style="margin-right: 5px;">
+          <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-success">
+      </div>
+
+     
+    </form>   
+  </div>
+</div>
     <div class="card-body">
 
         <div class="card-deck" style="font-size: 15px; font-family: sans-serif;">
@@ -282,6 +310,43 @@
   var table1 = $('#myTable1').DataTable( {
     dom: '<"top"l>rt<"bottom"pi>'
   } );
+
+      $("#activity_filter").click(function(e){
+    e.preventDefault();
+    
+    var query = $('#activity_year').val();
+
+    if(query==null){
+      $('#activity_error').show();
+      var message=document.getElementById('activity_error');
+      message.style.color='red';
+      message.innerHTML="Required";
+      $('#activity_year').attr('style','border:1px solid #f00');
+    }
+    else{
+      
+      $('#activity_error').hide();
+      $('#activity_year').attr('style','border:1px solid #ccc');
+      $.ajax({
+      url: "/home23/activity_filter?",
+      context: document.body,
+      async : false,
+      data:{year:query}
+      })
+    .done(function(data) {
+      {{$chart->id}}.options.title.text = 'Rental Activities '+query;
+      {{ $chart->id }}.data.datasets[0].data =data.activity;
+      {{ $chart->id }}.update(); 
+
+      {{$chart2->id}}.options.title.text = 'Amount Paid to CPTU '+query;
+      {{ $chart2->id }}.data.datasets[0].data =data.income;
+      {{ $chart2->id }}.update();
+      //$("#clientdiv").load(location.href + " #clientdiv");
+    });
+    }  
+    return false;
+
+});
   } );
 </script>
 

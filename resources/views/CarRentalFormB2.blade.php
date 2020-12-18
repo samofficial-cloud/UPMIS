@@ -92,6 +92,12 @@ html {
     outline-width: 0
 }
 
+#msform input[type=radio]{
+  width: 30%;
+  float: left;
+  margin-bottom: 0px;
+}
+
 #msform .action-button {
     width: 100px;
     background: skyblue;
@@ -495,7 +501,7 @@ $today=date('Y-m-d');
                     <div id="collapse3" class="collapse show">
                         <form id="msform" method="post" action="{{ route('newCarcontractC') }}" style="font-size: 17px;" onsubmit="return getdata()" name="myForm">
                             {{csrf_field()}}
-                            <div class="form-card">
+                            <div >
                                 @if($contract->vote_remarks!=null)
                         <p style="text-align: left;">This Application has the following remark(s) from the Vote Holder, <b>{{$contract->acc_name}}</b>.</p>
                         <div class="form-group">
@@ -524,18 +530,15 @@ $today=date('Y-m-d');
                         <div class="form-wrapper">
                   <label for="approval_status">This Application is therefore<span style="color: red;">*</span></label>
                   <div class="row">
-                  <div class="form-wrapper col-2">
-                  <label for="business_filter" style=" display: block;
-    white-space: nowrap;">Accepted
-                  <input class="form-check-input" type="radio" name="head_approval_status" id="Accepted" value="Accepted" checked>
-                </label>
+                     
+                  <div class="form-check-inline col-3">
+                    <input class="form-check-input" type="radio" name="head_approval_status" id="Accepted" value="Accepted" checked="">
+                  <label for="Accepted" class="form-check-label">Accepted</label>
                  </div>
 
-                 <div class="form-wrapper col-2">
-                  <label for="contract_filter" style=" display: block;
-    white-space: nowrap;">Rejected
-                   <input class="form-check-input" type="radio" name="head_approval_status" id="Rejected" value="Rejected">
-                   </label>
+                 <div class="form-check-inline col-3">
+                    <input class="form-check-input" type="radio" name="head_approval_status" id="Rejected" value="Rejected">
+                  <label for="Rejected" class="form-check-label">Rejected</label>
                 </div>
                </div>
                                 </div>

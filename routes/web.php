@@ -30,6 +30,15 @@ Route::post('/login/custom', [
     Route::get('/home9', 'ChartController@cptuindex')->name('home3');
      Route::get('/home16', 'ChartController@spaceindex')->name('home4');
      Route::get('/home23', 'ChartController@voteholderindex')->name('home5');
+
+     Route::get('/dashboard/income_filter','ChartController@income_filter');
+     Route::get('/dashboard/activity_filter','ChartController@activity_filter');
+     Route::get('/home2/activity_filter','ChartController@udia_activity_filter');
+     Route::get('/home2/income_filter','ChartController@udia_income_filter');
+     Route::get('/home9/activity_filter','ChartController@cptu_activity_filter');
+     Route::get('/home16/activity_filter','ChartController@space_activity_filter');
+    Route::get('/home23/activity_filter','ChartController@voteholder_activity_filter');
+
     Route::get('/Space', 'SpaceController@index');
     Route::get('/space_contract_on_fly/{id}/', 'ContractsController@OnFlySpaceContractForm')->name('space_contract_on_fly');
 
@@ -42,7 +51,14 @@ Route::post('/login/custom', [
     Route::get('/contracts_management', 'ContractsController@ContractsManagement')->name('contracts_management');
 
     Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
+
     Route::get('/businesses', 'HomeController@businesses');
+
+
+    Route::get('/invoice_management/space/filter', 'InvoicesController@space_filter');
+
+    
+
 
 
         //Invoices car rental
@@ -59,6 +75,9 @@ Route::post('/login/custom', [
 
         //payment
         Route::get('/payment_management', 'PaymentController@paymentManagement');
+
+        Route::get('/payment_management/filtered', 'PaymentController@payment_filtered');
+
         Route::get('/check_availability_car', 'PaymentController@checkAvailabilityCar')->name('check_availability_car');
 
 
@@ -99,6 +118,13 @@ Route::get('/car/operational_expenditure/delete/{id}', 'operational_expenditureC
 Route::get('/car/edit_car','carRentalController@editcar')->name('editcar');
 
 Route::get('/car/view_more','carRentalController@viewMore')->name('CarViewMore');
+
+Route::get('/car/view_more/filter','carRentalController@viewMore2')->name('CarViewMore2');
+
+Route::get('/car/view_more/filter2','carRentalController@viewMore3')->name('CarViewMore3');
+
+Route::get('/car/view_more/filter3','carRentalController@viewMore4')->name('CarViewMore4');
+
 
 
 
@@ -171,7 +197,12 @@ Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('aut
 
 Route::post('/autocomplete/cost_centres', 'carRentalController@fetchcostcentres')->name('autocomplete.costcentres');
 
+
 Route::post('/autocomplete/client_name', 'clientsController@fetchclient_name')->name('autocomplete.client_name');
+
+Route::post('/autocomplete/cptu', 'carContractsController@fetchclient_details')->name('autocomplete.cptu');
+
+Route::get('/autocomplete/cptu/all', 'carContractsController@fetchallclient_details')->name('autocomplete.allcptu');
 
 Route::get('/reports', 'HomeController@report')->name('reports');
 

@@ -27,14 +27,16 @@ class SendMessage extends Notification
     protected $extension;
     protected $mime;
     protected $filepaths;
+    protected $salutation;
 
-    public function __construct($name, $subject, $message,$filepaths)
+    public function __construct($name, $subject, $message,$filepaths, $salutation)
     {
         //
         $this->name = $name;
         $this->subject = $subject;
         $this->message = $message;
         $this->filepaths = $filepaths;
+        $this->salutation = $salutation;
         
     }
 
@@ -56,7 +58,7 @@ class SendMessage extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable){
-        return (new Mailable($notifiable, $this->name, $this->subject, $this->message, $this->filepaths));
+        return (new Mailable($notifiable, $this->name, $this->subject, $this->message, $this->filepaths, $this->salutation));
                                   
     }
 

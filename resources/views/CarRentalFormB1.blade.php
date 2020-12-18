@@ -582,7 +582,11 @@ $today=date('Y-m-d');
                     <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
 
                                 </div>
- <button class="btn btn-primary" type="submit">Forward</button>
+                                @if($nature =='Private')
+                                     <button class="btn btn-primary" type="submit">Next</button>
+                                @else
+                                   <button class="btn btn-primary" type="submit">Forward</button>
+                                @endif
                             </fieldset>
 
                         </form>
@@ -598,4 +602,7 @@ $today=date('Y-m-d');
 </div>
 </div>
 </div>
+@endsection
+
+@section('pagescript')
 @endsection
