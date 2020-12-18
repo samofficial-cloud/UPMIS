@@ -204,7 +204,7 @@ class ChartController extends Controller
         ]);
 
 
-        $contracts=DB::table('insurance_contracts')->whereRaw('DATEDIFF(end_date,CURDATE()) < 15')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
+        $contracts=DB::table('insurance_contracts')->whereRaw('DATEDIFF(end_date,CURDATE()) <= 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
 
       return view('dashboard_udia',compact('chart','chart1','chart2','contracts'));
     }
@@ -1004,7 +1004,7 @@ class ChartController extends Controller
         ]);
         $today=date('Y-m-d');
 
-        $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->whereRaw('DATEDIFF(end_date,CURDATE()) < 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
+        $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->whereRaw('DATEDIFF(end_date,CURDATE()) <= 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
 
         $invoices=DB::table('invoices')->join('clients','clients.full_name','=','invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
 

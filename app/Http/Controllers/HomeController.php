@@ -135,9 +135,10 @@ class HomeController extends Controller
          return redirect()->back()->with('errors', "No data found to generate the requested report");
       }
       else{
-        $pdf = PDF::loadView('tenancyschedule',['details'=>$details])->setPaper('a4', 'landscape');
+        return View('tenancyschedule_new',compact('details'));
+        // $pdf = PDF::loadView('tenancyschedule',['details'=>$details])->setPaper('a4', 'landscape');
   
-        return $pdf->stream('Tenancy Schedule.pdf');
+        // return $pdf->stream('Tenancy Schedule.pdf');
       }
        
     }
@@ -942,9 +943,10 @@ class HomeController extends Controller
          return redirect()->back()->with('errors', "No data found to generate the requested report");
       }
       else{
-        $pdf = PDF::loadView('spacereport1pdf',['spaces'=>$spaces])->setPaper('a4', 'landscape');
+        return View('spacereport1_new', compact('spaces'));
+        // $pdf = PDF::loadView('spacereport1pdf',['spaces'=>$spaces])->setPaper('a4', 'landscape');
   
-        return $pdf->stream('List of Spaces.pdf');
+        // return $pdf->stream('List of Spaces.pdf');
       }
        
         
@@ -974,9 +976,11 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
    return redirect()->back()->with('errors', "No data found to generate the requested report");
   }
   else{
-     $pdf = PDF::loadView('spacereport2pdf',['details'=>$details, 'space'=>$space,'invoices'=>$invoices])->setPaper('a4', 'landscape');
+     // $pdf = PDF::loadView('spacereport2pdf',['details'=>$details, 'space'=>$space,'invoices'=>$invoices])->setPaper('a4', 'landscape');
   
-        return $pdf->stream('Spaces History.pdf');
+     //    return $pdf->stream('Spaces History.pdf');
+
+    return View('spacereport2_new', compact('details','space','invoices'));
   }
        
       }
@@ -1000,9 +1004,10 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
            return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
         else{
-           $pdf = PDF::loadView('userreportpdf',['users'=>$users])->setPaper('a4', 'landscape');
+          return View('userreport_new',compact('users'));
+           // $pdf = PDF::loadView('userreportpdf',['users'=>$users])->setPaper('a4', 'landscape');
   
-            return $pdf->stream('System User Report.pdf');
+           //  return $pdf->stream('System User Report.pdf');
         }
       }
 
@@ -1099,7 +1104,8 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         return redirect()->back()->with('errors', "No data found to generate the requested report");
       }
       else{
-        $pdf = PDF::loadView('insurancereportpdf',['insurance'=>$insurance])->setPaper('a4', 'landscape');
+        return View('insurancereport_new',compact('insurance'));
+        // $pdf = PDF::loadView('insurancereportpdf',['insurance'=>$insurance])->setPaper('a4', 'landscape');
       }
         
       }
@@ -1110,7 +1116,8 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         return redirect()->back()->with('errors', "No data found to generate the requested report");
       }
       else{
-        $pdf = PDF::loadView('insurancereportpdf',['principal'=>$principal]);
+        return View('insurancereport_new',compact('principal'));
+        //$pdf = PDF::loadView('insurancereportpdf',['principal'=>$principal]);
       }
     }
 
@@ -1207,11 +1214,12 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         return redirect()->back()->with('errors', "No data found to generate the requested report");
       }
       else{
-        $pdf = PDF::loadView('insurancereportpdf',['clients'=>$clients])->setPaper('a4', 'landscape');
+        return View('insurancereport_new',compact('clients'));
+        // $pdf = PDF::loadView('insurancereportpdf',['clients'=>$clients])->setPaper('a4', 'landscape');
       }
     }
   
-        return $pdf->stream('Insurance Report.pdf');
+        //return $pdf->stream('Insurance Report.pdf');
       }
 
       public function tenantreportPDF(){
@@ -1278,8 +1286,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
                return redirect()->back()->with('errors', "No data found to generate the requested report");
           }
           else{
-             $pdf=PDF::loadView('tenantreportpdf',['tenants'=>$tenants])->setPaper('a4', 'landscape');
-           return $pdf->stream('Tenant Report.pdf');
+            return View('tenantreport_new',compact('tenants'));
+           //   $pdf=PDF::loadView('tenantreportpdf',['tenants'=>$tenants])->setPaper('a4', 'landscape');
+           // return $pdf->stream('Tenant Report.pdf');
           }
           
         }
@@ -1310,8 +1319,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
   return redirect()->back()->with('errors', "No data found to generate the requested report");
   }
   else{
-     $pdf=PDF::loadView('tenantreportpdf',['invoices'=>$invoices])->setPaper('a4', 'landscape');;
-           return $pdf->stream('Tenant Invoice Report.pdf');
+    return View('tenantreport_new',compact('invoices'));
+     // $pdf=PDF::loadView('tenantreportpdf',['invoices'=>$invoices])->setPaper('a4', 'landscape');;
+     //       return $pdf->stream('Tenant Invoice Report.pdf');
   }
          
         }
@@ -1615,8 +1625,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
            return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
         else{
-          $pdf=PDF::loadView('carreportpdf',['clients'=>$clients])->setPaper('a4', 'landscape');
-        return $pdf->stream('Car Rental Report.pdf');
+        //   $pdf=PDF::loadView('carreportpdf',['clients'=>$clients])->setPaper('a4', 'landscape');
+        // return $pdf->stream('Car Rental Report.pdf');
+          return View('carreport_new',compact('clients'));
         }
         }
          elseif($_GET['report_type']=='cars'){
@@ -1834,10 +1845,17 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           }
            else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']=='true')){
             if($_GET['rent']=='Rented'){
-          $cars=carRental::whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
-            ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['end'])
+          // $cars=carRental::whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
+          //   ->where('vehicle_reg_no','!=',null)
+          //   ->whereDate('start_date','>=',$_GET['start'])
+          //   ->orwhereDate('end_date', '<=',$_GET['end'])
+          //   ->distinct()
+          //   ->pluck('vehicle_reg_no')->toArray())
+          // ->get();
+
+            $cars=carRental::whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
+            ->where('vehicle_reg_no','!=',null)->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
@@ -1861,8 +1879,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
            return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
         else{
-          $pdf=PDF::loadView('carreportpdf',['cars'=>$cars]);
-        return $pdf->stream('Car Rental Report.pdf');
+        //   $pdf=PDF::loadView('carreportpdf',['cars'=>$cars]);
+        // return $pdf->stream('Car Rental Report.pdf');
+          return View('carreport_new',compact('cars'));
         }
         
         }
@@ -1878,8 +1897,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
            return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
         else{
-          $pdf=PDF::loadView('carreportpdf',['revenues'=>$revenues]);
-        return $pdf->stream('Car Rental Report.pdf');
+        //   $pdf=PDF::loadView('carreportpdf',['revenues'=>$revenues]);
+        // return $pdf->stream('Car Rental Report.pdf');
+          return View('carreport_new',compact('revenues'));
         }
         }
       }
@@ -1951,8 +1971,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
            return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
         else{
-          $pdf=PDF::loadView('operationalreportpdf',['operational'=>$operational])->setPaper('a4', 'landscape');    
-         return $pdf->stream('Car Rental Operational Report.pdf');
+         //  $pdf=PDF::loadView('operationalreportpdf',['operational'=>$operational])->setPaper('a4', 'landscape');    
+         // return $pdf->stream('Car Rental Operational Report.pdf');
+          return View('operationalreport_new',compact('operational'));
         }
 
          
@@ -1973,9 +1994,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
             return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
        else{
-        $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations])->setPaper('a4', 'landscape');    
-         return $pdf->stream('Car History Report.pdf');
-         //return view('carhistoryreport',compact('details','bookings','operations'));
+        // $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations])->setPaper('a4', 'landscape');    
+        //  return $pdf->stream('Car History Report.pdf');
+         return view('carhistoryreport',compact('details','bookings','operations'));
        }
       }    
 
@@ -2195,8 +2216,9 @@ elseif(($_GET['business_type']=='Car Rental')&&($_GET['lease']=='end')){
             return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
        else{
-        $pdf=PDF::loadView('contractreportpdf',['contracts'=>$contracts])->setPaper('a4', 'landscape');
-        return $pdf->stream('Contract Report.pdf');
+        return View('contractreport_new',compact('contracts'));
+        // $pdf=PDF::loadView('contractreportpdf',['contracts'=>$contracts])->setPaper('a4', 'landscape');
+        // return $pdf->stream('Contract Report.pdf');
        }
 
         

@@ -458,7 +458,8 @@ $today=date('Y-m-d');
 					</div>
 
                                 </div>
- <button class="btn btn-primary" type="submit">Forward</button>
+                                    <button class="btn btn-primary" type="submit" id="forward">Forward</button>
+                                    <button class="btn btn-primary" type="submit" id="next" style="display: none;">Next</button>
                             </fieldset>
 
                         </form>
@@ -492,6 +493,17 @@ $today=date('Y-m-d');
 </script>
 <script type="text/javascript">
      $(document).ready(function(){
+        $('#trip_nature').click(function(e){
+            var values = $(this).val();
+            if(values == 'Private'){
+                $('#next').show();
+                $('#forward').hide();
+            }
+            else{
+                $('#next').hide();
+                $('#forward').show(); 
+            }
+        });
     $('#centre_name').click(function(e){
         $('#faculty_name').val("");
     var query = $('#centre_name').val();

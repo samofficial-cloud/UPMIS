@@ -21,8 +21,9 @@ class SendMessage extends Mailable
     public $message;
     public $name;
     public $filepaths;
+    public $salutation;
 
-    public function __construct( $user, $name, $subject, $message, $filepaths)
+    public function __construct( $user, $name, $subject, $message, $filepaths,$salutation)
     {
         //
         $this->user=$user;
@@ -30,10 +31,12 @@ class SendMessage extends Mailable
         $this->subject = $subject;
         $this->message = $message;
         $this->filepaths = $filepaths;
+        $this->salutation = 'Regards, <br>'.$salutation;
         $this->message= (new MailMessage)
             ->greeting('Dear '.($this->name).',')
             ->subject(($this->subject))
-            ->line(($this->message));
+            ->line(($this->message))
+            ->salutation(($this->salutation));
         
 
     }

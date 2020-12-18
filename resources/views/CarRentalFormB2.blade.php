@@ -509,7 +509,7 @@ $today=date('Y-m-d');
                     <div id="collapse3" class="collapse show">
                         <form id="msform" method="post" action="{{ route('newCarcontractC') }}" style="font-size: 17px;" onsubmit="return getdata()" name="myForm">
                             {{csrf_field()}}
-                            <div class="form-card">
+                            <div >
                                 @if($contract->vote_remarks!=null)
                         <p style="text-align: left;">This Application has the following remark(s) from the Vote Holder, <b>{{$contract->acc_name}}</b>.</p>
                         <div class="form-group">

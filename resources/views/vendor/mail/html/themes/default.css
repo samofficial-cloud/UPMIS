@@ -38,6 +38,10 @@ a img {
     border: none;
 }
 
+b{
+    font-weight: bold;
+}
+
 /* Typography */
 
 h1 {

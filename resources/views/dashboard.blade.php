@@ -304,7 +304,7 @@
         <div class="form-group row">
             <label for="inia_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="inia_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="inia_closing" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -522,7 +522,7 @@
         <div class="form-group row">
             <label for="closing{{$space->contract_id}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="closing{{$space->contract_id}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="closing{{$space->contract_id}}" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -663,7 +663,7 @@
         <div class="form-group row">
             <label for="debt_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="debt_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="debt_closing" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -925,7 +925,7 @@
         <div class="form-group row">
             <label for="spaceclosing{{$var->invoice_number}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="spaceclosing{{$var->invoice_number}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="spaceclosing{{$var->invoice_number}}" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1019,7 +1019,7 @@
         <div class="form-group row">
             <label for="aia_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="aia_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="aia_closing" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1220,7 +1220,7 @@
         <div class="form-group row">
             <label for="carclosing{{$var->invoice_number}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="carclosing{{$var->invoice_number}}" name="closing" class="form-control" value="Regards, DPDI." readonly="">
+            <input type="text" id="carclosing{{$var->invoice_number}}" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
           </div>
         </div>
         <br>

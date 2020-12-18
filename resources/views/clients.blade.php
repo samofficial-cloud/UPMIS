@@ -245,7 +245,7 @@ hr {
         <div class="form-group row">
             <label for="asp_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="asp_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM" readonly="">
+            <input type="text" id="asp_closing" name="closing" class="form-control" value="Regards, Real Estate Department UDSM" readonly="">
           </div>
         </div>
         <br>
@@ -415,7 +415,7 @@ hr {
          <div class="form-group row">
             <label for="closing{{$client->client_id}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM" readonly="">
+            <input type="text" id="closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -521,7 +521,7 @@ hr {
         <div class="form-group row">
             <label for="inasp_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="inasp_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="inasp_closing" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -699,7 +699,7 @@ hr {
         <div class="form-group row">
             <label for="inasp_closing{{$client->client_id}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="inasp_closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="inasp_closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -809,7 +809,7 @@ hr {
         <div class="form-group row">
             <label for="acp_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="acp_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="acp_closing" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -982,7 +982,7 @@ hr {
         <div class="form-group row">
             <label for="carclosing{{$i}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1086,7 +1086,7 @@ hr {
         <div class="form-group row">
             <label for="incp_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="incp_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="incp_closing" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1256,7 +1256,7 @@ hr {
         <div class="form-group row">
             <label for="carclosing{{$i}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
           </div>
         </div>
         <br>
@@ -1368,7 +1368,7 @@ hr {
         <div class="form-group row">
             <label for="aia_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="aia_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="aia_closing" name="closing" class="form-control" value="Regards, University of Dar es Salaam Insurance Agency." readonly="">
           </div>
         </div>
         <br>
@@ -1534,7 +1534,7 @@ hr {
         <div class="form-group row">
             <label for="udia_closing{{$j}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="udia_closing{{$j}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="udia_closing{{$j}}" name="closing" class="form-control" value="Regards, University of Dar es Salaam Insurance Agency." readonly="">
           </div>
         </div>
         <br>
@@ -1635,7 +1635,7 @@ hr {
         <div class="form-group row">
             <label for="inia_closing" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="inia_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="inia_closing" name="closing" class="form-control" value="Regards, University of Dar es Salaam Insurance Agency." readonly="">
           </div>
         </div>
         <br>
@@ -1802,7 +1802,7 @@ hr {
         <div class="form-group row">
             <label for="udia_inact_closing{{$k}}" class="col-sm-2">Closing</label>
             <div class="col-sm-9">
-            <input type="text" id="udia_inact_closing{{$k}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+            <input type="text" id="udia_inact_closing{{$k}}" name="closing" class="form-control" value="Regards, University of Dar es Salaam Insurance Agency." readonly="">
           </div>
         </div>
         <br>

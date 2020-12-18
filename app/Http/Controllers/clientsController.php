@@ -125,30 +125,35 @@ class clientsController extends Controller
         // $file->move($destinationPath,$filename);
         if($type=='space'){
            $client=client::where('full_name',$name)->first();
+           $salutation = "Real Estate Department UDSM.";
         }
         elseif ($type=='car') {
           $client=carContract::where('fullName',$name)->first();
-          dd("Ignored");
+          $salutation = "Central Pool Transport Unit UDSM.";
         }
         elseif($type=='udia'){
            $client=insurance_contract::where('full_name',$name)->first();
+           $salutation = "University of Dar es Salaam Insurance Agency.";
         }
     // \Notification::send($recipients, new Announcement($centre));
 
-      $client->notify(new SendMessage($name, $subject, $message, $filepaths));
+      $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
       return redirect()->back()->with('success', 'Message Sent Successfully');
       }
       else{
         if($type=='space'){
            $client=client::where('full_name',$name)->first();
+           $salutation = "Real Estate Department UDSM.";
         }
         elseif ($type=='car') {
           $client=carContract::where('fullName',$name)->first();
+          $salutation = "Central Pool Transport Unit UDSM.";
         }
         elseif($type=='udia'){
            $client=insurance_contract::where('full_name',$name)->first();
+           $salutation = "University of Dar es Salaam Insurance Agency.";
         }
-         $client->notify(new SendMessage2($name, $subject, $message));
+         $client->notify(new SendMessage2($name, $subject, $message, $salutation));
          return redirect()->back()->with('success', 'Message Sent Successfully');
       } 
     }
@@ -173,16 +178,18 @@ class clientsController extends Controller
         foreach($names as $name){
           if($type=='space'){
            $client=client::where('full_name',$name)->first();
+           $salutation = "Real Estate Department UDSM.";
         }
         elseif ($type=='car') {
           $client=carContract::where('fullName',$name)->first();
-          dd("Ignored");
+          $salutation = "Central Pool Transport Unit UDSM.";
         }
         elseif($type=='udia'){
            $client=insurance_contract::where('full_name',$name)->first();
+           $salutation = "University of Dar es Salaam Insurance Agency.";
         }
     // \Notification::send($recipients, new Announcement($centre));
-        $client->notify(new SendMessage($name, $subject, $message, $filepaths));
+        $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
      
         }
     
@@ -192,16 +199,18 @@ class clientsController extends Controller
         foreach($names as $name){
           if($type=='space'){
            $client=client::where('full_name',$name)->first();
+           $salutation = "Real Estate Department UDSM.";
         }
         elseif ($type=='car') {
           $client=carContract::where('fullName',$name)->first();
-          dd("Ignored");
+          $salutation = "Central Pool Transport Unit UDSM.";
         }
         elseif($type=='udia'){
            $client=insurance_contract::where('full_name',$name)->first();
+           $salutation = "University of Dar es Salaam Insurance Agency.";
         }
     // \Notification::send($recipients, new Announcement($centre));
-        $client->notify(new SendMessage2($name, $subject, $message));
+        $client->notify(new SendMessage2($name, $subject, $message, $salutation));
         }
          return redirect()->back()->with('success', 'Message Sent Successfully');
       } 

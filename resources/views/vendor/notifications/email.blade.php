@@ -41,7 +41,7 @@
 
 {{-- Salutation --}}
 @if (! empty($salutation))
-{{ $salutation }}
+<span style="font-style: oblique; font-size: 15px;">{!! $salutation !!}</span>
 @else
 @lang('Regards'),<br><span style="font-style: oblique; font-size: 15px;">Directorate of Planning, Development and Investment, UDSM.</span>
 @endif
