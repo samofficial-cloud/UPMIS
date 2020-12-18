@@ -37,7 +37,7 @@ td{
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -55,22 +55,14 @@ td{
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -137,9 +129,9 @@ td{
             </div>
           </div>
         </div>
-        
+
          <br>
-         
+
         <div class="form-group row">
             <label for="message" class="col-sm-2">Message</label>
             <div class="col-sm-9">
@@ -149,7 +141,7 @@ td{
         <br>
       <input type="text" name="sender_name" hidden="" value="{{ Auth::user()->name }}">
        <input type="text" name="time" value="{{$time}}" hidden="">
-        
+
 
         <div align="right">
   <button class="btn btn-primary" type="submit">Send</button>
@@ -184,11 +176,11 @@ td{
 </table>
 </div>
 </div>
-        
+
     </div>
     <div class="col-9 hero-image">
       <br>
-      
+
       <input type="text" name="cid" id="cid" value="{{$_GET['id']}}" hidden="">
       {{-- <div id="loading" style="margin: auto;"></div> --}}
     <div id="content">
@@ -201,7 +193,7 @@ td{
     </div>
       </div>
     </div>
-         
+
     </div>
 
 </div>
@@ -220,7 +212,7 @@ td{
     $.ajax({
       url: theurl,
       context: document.body
-    }).done(function(fragment) { 
+    }).done(function(fragment) {
       $("#content").html(fragment);
     });
     return false;
@@ -239,11 +231,11 @@ td{
     $.ajax({
     url: tablink,
     context: document.body
-    }).done(function(fragment) { 
+    }).done(function(fragment) {
       $("#content").html(fragment);
     });
     return false;
-  }    
+  }
  });
 </script>
 <script type="text/javascript">
@@ -271,5 +263,5 @@ $(document).ajaxComplete(function(){
     $("#loading").fadeOut(250);
 });
 </script> --}}
-   
+
 @endsection

@@ -63,7 +63,7 @@ hr {
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -81,22 +81,14 @@ hr {
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -225,8 +217,8 @@ hr {
                                           @else
                                           <td>{{$var->currency}} {{number_format($var->academic_season)}}</td>
                                           @endif
-                                      
-                                          
+
+
                                            @if(empty($var->vacation_season))
                                            <td><center>-</center></td>
                                            @else
@@ -271,13 +263,13 @@ hr {
               @else
               <a title="Edit this Contract Details" href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
                 <a title="Terminate this Contract" data-toggle="modal" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-                    
+
                     <div class="modal fade" id="terminate{{$var->contract_id}}" role="dialog">
 
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                     <h5 style="color: red;">WARNING !!!</h5>   
+                                     <h5 style="color: red;">WARNING !!!</h5>
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
 
@@ -374,8 +366,8 @@ hr {
                                           @else
                                           <td>{{$var->currency}} {{number_format($var->academic_season)}}</td>
                                           @endif
-                                      
-                                          
+
+
                                            @if(empty($var->vacation_season))
                                            <td><center>-</center></td>
                                            @else

@@ -226,7 +226,7 @@ class SpaceController extends Controller
 
 
         return redirect('/Space')
-            ->with('success', 'Renting space deleted successfully');
+            ->with('success', 'Renting space deactivated successfully');
     }
 
 
@@ -334,6 +334,64 @@ foreach($minor_industries as $minor_industry) {
 
     }
 
+
+
+
+    public function generateLocationList(Request $request) {
+
+
+        $locations= DB::table('spaces')->where('minor_industry',$request->get('minor'))->where('major_industry',$request->get('major'))->get();
+        $output='';
+
+        foreach($locations as $location) {
+
+            $output .= '<option value="'.$location->location.'">'.$location->location.'</option>';
+
+
+        }
+
+        echo $output;
+
+
+    }
+
+
+    public function generateSubLocationList(Request $request) {
+
+
+        $sub_locations= DB::table('spaces')->where('location',$request->get('location'))->where('major_industry',$request->get('major'))->where('minor_industry',$request->get('minor'))->get();
+        $output='';
+
+        foreach($sub_locations as $sub_location) {
+
+            $output .= '<option value="'.$sub_location->sub_location.'">'.$sub_location->sub_location.'</option>';
+
+
+        }
+
+        echo $output;
+
+
+    }
+
+
+    public function generateSpaceIdList(Request $request) {
+
+
+        $space_ids= DB::table('spaces')->where('sub_location',$request->get('sub_location'))->where('location',$request->get('location'))->where('major_industry',$request->get('major'))->where('minor_industry',$request->get('minor'))->get();
+        $output='';
+
+        foreach($space_ids as $space_id) {
+
+            $output .= '<option value="'.$space_id->space_id.'">'.$space_id->space_id.'</option>';
+
+
+        }
+
+        echo $output;
+
+
+    }
 
 
 

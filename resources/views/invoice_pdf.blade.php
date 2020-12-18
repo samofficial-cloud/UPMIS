@@ -92,7 +92,7 @@
             <p><b>Debtor Account Code: {{$debtor_account_code}}</b></p>
             <p><b>Debtor Name: {{$debtor_name}}</b></p>
             <p><b>Debtor Address: {{$debtor_address}}</b></p>
-            <p><b>Amount: {{$amount_to_be_paid}}</b></p>
+            <p><b>Amount: {{number_format($amount_to_be_paid)}}</b></p>
             <p><b>Currency: {{$currency}}</b></p>
             <p><b>GEPG Control No.: {{$gepg_control_no}}</b></p>
             <p><b>TIN: {{$tin}}</b></p>
@@ -130,7 +130,7 @@
             <tr>
                 <td ><center>{{$inc_code}}</center></td>
                 <td><center>{{$description}}</center></td>
-                <td><center>{{$amount_to_be_paid}}</center></td>
+                <td><center>{{number_format($amount_to_be_paid)}}</center></td>
 
             </tr>
 
@@ -142,7 +142,7 @@
             <tr>
                 <td ><center></center></td>
                 <td style="text-align: right">Total:</td>
-                <td><center>{{$amount_to_be_paid}}</center></td>
+                <td><center>{{number_format($amount_to_be_paid)}}</center></td>
 
             </tr>
 

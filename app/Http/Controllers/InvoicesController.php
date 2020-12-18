@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmailsSpaceJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\SendInvoice;
@@ -14,6 +15,7 @@ use Riskihajar\Terbilang\Facades\Terbilang;
 use Notification;
 use Auth;
 use View;
+
 
 class InvoicesController extends Controller
 {
@@ -584,6 +586,181 @@ class InvoicesController extends Controller
 
     }
 
+
+public function sendAllInvoicesSpace(Request $request){
+
+    DB::table('invoice_notifications')
+        ->where('invoice_category','space')
+        ->update(['to_be_sent' => 1]);
+
+    SendEmailsSpaceJob::dispatch()->delay(now()->addSeconds(5));;
+
+    return redirect('/invoice_management')
+        ->with('success', 'Emails Sent Successfully');
+}
+
+
+    public function sendAllInvoicesWater(Request $request){
+
+        DB::table('invoice_notifications')
+            ->where('invoice_category','space')
+            ->update(['to_be_sent' => 1]);
+        echo 'Success';
+    }
+
+
+    public function sendAllInvoicesElectricity(Request $request){
+
+        DB::table('invoice_notifications')
+            ->where('invoice_category','space')
+            ->update(['to_be_sent' => 1]);
+        echo 'Success';
+    }
+
+
+
+    public function sendAllInvoicesInsurance(Request $request){
+
+        DB::table('invoice_notifications')
+            ->where('invoice_category','insurance')
+            ->update(['to_be_sent' => 1]);
+        echo 'Success';
+    }
+
+    public function sendAllInvoicesCar(Request $request){
+
+        DB::table('invoice_notifications')
+            ->where('invoice_category','car_rental')
+            ->update(['to_be_sent' => 1]);
+
+        echo 'Success';
+    }
+
+
+    public function addControlNumberSpace(Request $request,$id){
+
+        DB::table('invoices')
+            ->where('invoice_number',$id)
+            ->update(['gepg_control_no' =>$request->get('gepg_control_no')]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'GEPG control number saved successfully');
+    }
+
+
+
+    public function addControlNumberInsurance(Request $request,$id){
+
+        DB::table('insurance_invoices')
+            ->where('invoice_number',$id)
+            ->update(['gepg_control_no' =>$request->get('gepg_control_no')]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'GEPG control number saved successfully');
+    }
+
+
+
+    public function addControlNumberCar(Request $request,$id){
+
+        DB::table('car_rental_invoices')
+            ->where('invoice_number',$id)
+            ->update(['gepg_control_no' =>$request->get('gepg_control_no')]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'GEPG control number saved successfully');
+    }
+
+
+
+    public function addControlNumberWater(Request $request,$id){
+
+
+        $invoice_data=DB::table('water_bill_invoices')->where('invoice_number', $id)->get();
+
+        foreach($invoice_data as $var){
+
+
+            DB::table('water_bill_invoices')
+                ->where('invoice_number', $id)
+                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
+
+            DB::table('water_bill_invoices')
+                ->where('invoice_number', $id)
+                ->update(['current_amount' => $request->get('current_amount')]);
+
+
+            DB::table('water_bill_invoices')
+                ->where('invoice_number', $id)
+                ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
+
+
+
+            DB::table('water_bill_invoices')
+                ->where('invoice_number', $id)
+                ->update(['currency_invoice' => $request->get('currency')]);
+
+
+//            DB::table('water_bill_payments')->insert(
+//                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->cumulative_amount,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+//            );
+
+
+
+        }
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Information saved successfully');
+    }
+
+
+
+
+    public function addControlNumberElectricity(Request $request,$id){
+
+
+        $invoice_data=DB::table('electricity_bill_invoices')->where('invoice_number', $id)->get();
+
+        foreach($invoice_data as $var){
+
+
+
+            DB::table('electricity_bill_invoices')
+                ->where('invoice_number', $id)
+                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
+
+            DB::table('electricity_bill_invoices')
+                ->where('invoice_number', $id)
+                ->update(['current_amount' => $request->get('current_amount')]);
+
+
+            DB::table('electricity_bill_invoices')
+                ->where('invoice_number', $id)
+                ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
+
+
+
+            DB::table('electricity_bill_invoices')
+                ->where('invoice_number', $id)
+                ->update(['currency_invoice' => $request->get('currency')]);
+
+
+//            DB::table('water_bill_payments')->insert(
+//                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->cumulative_amount,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
+//            );
+
+
+
+        }
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Information saved successfully');
+    }
 
 
 

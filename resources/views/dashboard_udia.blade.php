@@ -59,7 +59,7 @@
   .modal:hover{
     animation: none !important;
   }
-  
+
   @keyframes wiggle {
   0% { transform: translate(0px, 0); }
  /* 10% { transform: translate(-1px, 0); }
@@ -84,7 +84,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -102,22 +102,14 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -166,6 +158,7 @@
       </div>
     @endif
   <div class="card">
+
      <br>
      <center><div id="loading"></div></center>
   <div class="col-sm-12">
@@ -192,6 +185,7 @@
   </div>
 </div>
   <div class="card-body"> 
+
 <div class="card-columns" style="margin-top: 10px;">
   <div class="card border-primary">
     {!! $chart->container() !!}
@@ -221,7 +215,7 @@
     {!! $chart1->container() !!}
   </div>
 </div>
-</div> 
+</div>
 </div>
     <br>
     <div class="card ">
@@ -253,7 +247,7 @@
       <div class="card-body">
         <h4 class="card-title" style="font-family: sans-serif;">Income Collected from Cover Note Sales per each Class</h4>
             <hr>
-          <div class="card ">  
+          <div class="card ">
     {!! $chart2->container() !!}
   </div>
     </div>
@@ -288,8 +282,8 @@
             <input type="text" id="inia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
             <p id="inia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
           </div>
-        </div>    
-        
+        </div>
+
         <div class="form-group row">
             <label for="inia_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
@@ -521,8 +515,8 @@
       </table>
     </div>
   </div>
-   
-      
+
+
     </div>
 </div>
 </div>
@@ -557,7 +551,7 @@ function myFunction() {
   } );
 
   var table2 = $('#myTable').DataTable();
- 
+
     $('#myTable tbody').on( 'click', 'tr', function () {
       document.getElementById("inia_par_names").innerHTML="";
        document.getElementById("inia_greetings").value="Dear ";
@@ -575,7 +569,7 @@ function myFunction() {
         $('#notify_all').hide();
         }
      }
-        
+
     });
 
     $('#notify_all').click( function () {
@@ -590,7 +584,7 @@ function myFunction() {
         }
 
         $('#inia_client_names').val(result6).toString();
-        
+
         var content6 = document.getElementById("inia_par_names");
         for(var i=0; i< result6.length;i++){
           if(i==(result6.length-1)){
@@ -599,7 +593,7 @@ function myFunction() {
           else{
             content6.innerHTML += result6[i] + ', ';
           }
-          
+
         }
 
         var salutation6 = document.getElementById("inia_greetings");
@@ -610,7 +604,7 @@ function myFunction() {
           else{
             salutation6.value += result6[i] + ', ';
           }
-          
+
         }
          //console.log(result);
     } );
