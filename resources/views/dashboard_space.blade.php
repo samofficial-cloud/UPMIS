@@ -118,9 +118,10 @@
  @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
-@admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-          @endadmin
+              @admin
+                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+                @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -143,24 +144,53 @@
   $ubungo=space_contract::join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('location','Ubungo')->whereDate('end_date','>=',date('Y-m-d'))->count();
 
   $i='1';
+  $year= date('Y');
   ?>
     <br>
 
     <div class="container" style="max-width: 1180px;">
       <br>
-      @if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+       @if ($message = Session::get('errors'))
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
  <div class="card">
-   <div class="card-body">
+
+  <br>
+   <div class="col-sm-12">
+    <div>
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group" style="margin-right: 5px;">
+           
+          <select name="activity_year" id="activity_year" class="form-control" required="">
+              <option value=" " disabled selected hidden>Select Year</option>
+                @for($x=-5;$x<=0; $x++)
+                  <option value="{{$year + $x}}">{{$year + $x}}</option>
+                @endfor
+          </select>
+          <span id="activity_error"></span>
+        </div>
+      
+      <div class="form-group"  style="margin-right: 5px;">
+          <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
+      </div>
+
+     
+    </form>   
+  </div>
+</div>
+   <div class="card-body">  
+
 <div class="card-columns" style="margin-top: 10px;">
   <div class="card border-primary">
     {!! $chart->container() !!}
@@ -175,6 +205,7 @@
     margin-bottom: 1rem;
     border: 0;
     border: 1px solid #505559;">
+    <div id="cardData">
     <h5 class="card-title">Client Statistics {{date('Y')}}</h5>
       J.K. Nyerere Clients: {{$main}}
       <br>Kijitonyama Clients: {{$knyama}}
@@ -184,6 +215,7 @@
       <br>Mlimani City Clients: {{$mlimani}}
       <br>Ubungo Clients: {{$ubungo}}
       <br>Total Clients: {{$main + $knyama + $kunduchi +  $mabibo +$mikocheni + $mlimani + $ubungo}}
+    </div>
     </div>
   </div>
 
@@ -1869,7 +1901,60 @@ function myFunction() {
           }
 
         }
-    } );
+    });
+
+        $("#activity_filter").click(function(e){
+    e.preventDefault();
+    
+    var query = $('#activity_year').val();
+
+    if(query==null){
+      $('#activity_error').show();
+      var message=document.getElementById('activity_error');
+      message.style.color='red';
+      message.innerHTML="Required";
+      $('#activity_year').attr('style','border:1px solid #f00');
+    }
+    else{
+      
+      $('#activity_error').hide();
+      $('#activity_year').attr('style','border:1px solid #ccc');
+      $.ajax({
+      url: "/home16/activity_filter?",
+      context: document.body,
+      async : false,
+      data:{year:query}
+      })
+    .done(function(data) {
+      {{$chart->id}}.options.title.text = 'Lease Activities '+query;
+      {{ $chart->id }}.data.datasets[0].data =data.activity;
+      {{ $chart->id }}.update(); 
+
+      {{$chart1->id}}.options.title.text = 'Space Income Generation '+query;
+      {{ $chart1->id }}.data.datasets[0].data =data.income;
+      {{ $chart1->id }}.data.datasets[1].data =data.income2;
+      {{ $chart1->id }}.update();
+      var bodyData = '';
+      console.log(query);
+      bodyData= "<div>"
+      bodyData+="<h5 class='card-title'>Client Statistics "
+      bodyData+=query+"</h5>"
+      bodyData+="J.K. Nyerere Clients: "+data.main
+      bodyData+="<br>Kijitonyama Clients: "+data.knyama
+      bodyData+="<br>Kunduchi Clients Clients: "+data.kunduchi
+      bodyData+="<br>Mabibo Clients: "+ data.mabibo
+      bodyData+="<br>Mikocheni Clients: "+ data.mikocheni
+      bodyData+="<br>Mlimani City Clients: "+ data.mlimani
+      bodyData+="<br>Ubungo Clients: "+ data.ubungo
+      bodyData+="<br>Total Clients: "+ data.total
+      bodyData+="</div>";
+      $("#cardData").html(bodyData);
+      //$("#clientdiv").load(location.href + " #clientdiv");
+    });
+    }  
+    return false;
+
+});
     });
 
 </script>

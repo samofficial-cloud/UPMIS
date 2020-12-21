@@ -300,7 +300,7 @@ $today=date('Y-m-d');
                 <h4><strong>CENTRAL POOL TRANSPORTATION UNIT<br>VEHICLE REQUISTION FORM</strong></h4>
                 <div class="row">
                     <div class="col-md-12 mx-0">
-                        <form id="msform" method="post" action="{{ route('newCarcontractA') }}">
+                        <form id="msform" method="post" onsubmit="return getvalidation()" action="{{ route('newCarcontractA') }}">
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
@@ -320,6 +320,19 @@ $today=date('Y-m-d');
     </div>
 
     <div class="form-group row" id="namediv">
+
+        <div class="form-wrapper col-4">
+                            <label for="first_name">First Name<span style="color: red;">*</span></label>
+                            <span id="name1msg"></span>
+                            <input type="text" id="first_name" name="first_name" class="form-control"  required="" autocomplete="off" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
+                            <span id="nameList"></span>
+                        </div>
+                        <div class="form-wrapper col-4">
+                            <label for="last_name">Last Name<span style="color: red;">*</span></label>
+                            <span id="name2msg"></span>
+                            <input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                        </div>
+
                         <div class="form-wrapper col-4">
                             <label for="designation">Designation<span style="color: red;">*</span></label>
                             <span id="designationmsg"></span>
@@ -335,16 +348,7 @@ $today=date('Y-m-d');
             </select> --}}
                         </div>
 
-						<div class="form-wrapper col-4">
-							<label for="first_name">First Name<span style="color: red;">*</span></label>
-                            <span id="name1msg"></span>
-							<input type="text" id="first_name" name="first_name" class="form-control"  required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
-						</div>
-						<div class="form-wrapper col-4">
-							<label for="last_name">Last Name<span style="color: red;">*</span></label>
-                            <span id="name2msg"></span>
-							<input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-						</div>
+						
 					</div>
 
                     <div class="form-group">
@@ -432,7 +436,7 @@ $today=date('Y-m-d');
         </div>
     </div>
 
-    <div class="form-group row" id="estimationdiv">
+    <div class="form-group row" id="estimationdiv" style="display: none;">
 						<div class="form-wrapper col-6">
 							<label for="estimated_distance">Estimated Distance in Kms<span style="color: red;">*</span></label>
                             <span id="estimated_distancemsg"></span>
@@ -445,8 +449,41 @@ $today=date('Y-m-d');
 						</div>
 					</div>
 
+        <div class="form-group" id="initial_amountdiv" style="display: none;">
+            {{-- <div class="form-wrapper col-6">
+                <label for="initial_pay">Initial Payment in %<span style="color: red;">*</span></label>
+                <input type="text" id="initial_pay" name="initial_pay" class="form-control" required="" onkeypress="if((this.value.length<=2) && ((event.charCode >= 48 && event.charCode <= 57)||(event.charCode==46))){return true} else return false;" onblur="if(this.value>100){document.getElementById('initial_pay').style='border-bottom: 1px solid #f00;'}else{document.getElementById('initial_pay').style='border-bottom: 1px solid #ccc;'}">
+            </div> --}}
+
+            <div class="form-wrapper" >
+                <label for="initial_pay">Initial Amount<span style="color: red;">*</span></label>
+                <span id="initialmsg"></span>
+                <input type="text" id="initial_amount" name="initial_amount" class="form-control" autocomplete="off" onkeypress="if((this.value.length<=13) && ((event.charCode >= 48 && event.charCode <= 57)||(event.charCode==46))){return true} else return false;" onkeyup="var query = document.getElementById('estimated_cost').value,
+                query2 = this.value,
+                percent = (query2/query)*100;
+                console.log(query2);
+                if(percent<50){
+                    document.getElementById('initial_amount').style='border-bottom: 1px solid #f00;';
+                    var message=document.getElementById('initialmsg');
+                            message.style.color='red';
+                            message.innerHTML='This amount is less than 50%.';
+                }
+                else if(percent>100){
+                    document.getElementById('initial_amount').style='border-bottom: 1px solid #f00;';
+                    var message=document.getElementById('initialmsg');
+                            message.style.color='red';
+                            message.innerHTML='This amount is greater than estimated cost.';
+                }
+                else{
+                  document.getElementById('initial_amount').style='border-bottom: 1px solid #ccc;';
+                  document.getElementById('initialmsg').innerHTML=' ';  
+                }">
+            </div>
+        </div>
+
                                 </div>
- <button class="btn btn-primary" type="submit">Forward</button>
+                                    <button class="btn btn-primary" type="submit" id="forward">Forward</button>
+                                    <button class="btn btn-primary" type="submit" id="next" style="display: none;">Next</button>
                             </fieldset>
 
                         </form>
@@ -478,8 +515,75 @@ $today=date('Y-m-d');
   }
 }
 </script>
+<script>
+function getvalidation(){
+
+       var txtone = document.getElementById('initial_amount').value;
+        var txttwo = document.getElementById('trip_nature').value;
+
+        if(txttwo=='Private'){
+            if(txtone==''){
+            var message=document.getElementById('initialmsg');
+            message.style.color='red';
+            message.innerHTML='Required';
+            document.getElementById('initial_amount').style='border-bottom: 1px solid #f00;';
+            // console.log('Returning False');
+            return false;
+            }
+            else{
+                return true;
+            }
+        }
+
+        else{
+            return true;
+        }
+}
+</script>
 <script type="text/javascript">
      $(document).ready(function(){
+        $('#trip_nature').click(function(e){
+            var values = $(this).val();
+            if(values!=null){
+                $('#estimationdiv').show();
+                $('#estimated_cost').val('');
+            }
+            else{
+                $('#estimationdiv').hide();
+            }
+            if(values == 'Private'){
+                $('#next').show();
+                $('#forward').hide();
+                $('#initial_amount').val('');
+                //$('#initialmsg').show();
+            }
+            else{
+                $('#next').hide();
+                $('#forward').show();
+                $('#initial_amount').val('');
+                $('#initial_amountdiv').hide();
+                $('#initial_amount').attr('style','border-bottom:1px solid #ccc');
+                document.getElementById('initialmsg').innerHTML=' ' 
+            }
+        });
+
+        $('#estimated_cost').keyup(function(e){
+            var query = $(this).val();
+            if(query != ''){
+                var trip_nature = $('#trip_nature').val();
+                if(trip_nature=='Private'){
+                    $('#initial_amountdiv').show();
+                }
+                else{
+                    $('#initial_amountdiv').hide(); 
+                }
+            }
+            else{
+                 $('#initial_amountdiv').hide();
+            }
+        });
+
+    
     $('#centre_name').click(function(e){
         $('#faculty_name').val("");
     var query = $('#centre_name').val();
@@ -497,6 +601,72 @@ $today=date('Y-m-d');
 
      }
          });
+
+    $('#first_name').keyup(function(){
+        // $('#last_name').val('');
+        // $('#centre_name').val('');
+        // $('#faculty_name').val('');
+        // $('#email').val('');
+        // $('#designation').val('');
+        var query = $(this).val();
+        if(query != ''){
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+            url:"{{ route('autocomplete.cptu') }}",
+            method:"POST",
+            data:{query:query, _token:_token},
+            success:function(data){
+            if(data!='0'){
+                $('#nameList').fadeIn();
+                $('#nameList').html(data);
+            }
+            else{
+                   
+          }
+            }
+         });           
+        }
+            else if(query==''){
+                
+        }
+    });
+
+$(document).on('click', '#list', function(){
+   az ='1';
+   //$('#message2').hide();
+  $('#first_name').attr('style','border-bottom:1px solid #ced4da');
+        var name = $(this).text();
+        var details=[]
+        var details=name.split(' ');
+        var first = details[0];
+        var last = details[1];
+        var _token = $('input[name="_token"]').val();
+        //console.log(name);
+        $.ajax({
+            url:"{{ route('autocomplete.allcptu') }}",
+            method:"GET",
+            data:{first:first, last:last, _token:_token}
+            //success:function(data){
+            //console.log(data); 
+        })
+
+      .done(function(data){
+        //console.log(data);
+        $('#first_name').val(data.first);
+        $('#last_name').val(data.last);
+        $('#centre_name').val(data.centre);
+        $('#faculty_name').val(data.dep);
+        $('#email').val(data.email);
+        $('#designation').val(data.designation);
+      });      
+       // $('#first_name').val($(this).text());
+        //$('#nameList').fadeOut();
+
+    });
+
+   $(document).on('click', 'form', function(){
+     $('#nameList').fadeOut();
+    });
 
     $("#centre_name").change(function(){
          var query = $(this).val();

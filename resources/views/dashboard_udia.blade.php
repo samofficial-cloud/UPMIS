@@ -118,9 +118,10 @@
  @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
-@admin
-            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-          @endadmin
+      @admin
+                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+                @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -137,29 +138,59 @@
   $marine_client=insurance_contract::where('insurance_class','MARINE HULL')->whereYear('commission_date',date('Y'))->count();
   $prof_client=insurance_contract::where('insurance_class','PROFFESIONAL INDEMNITY')->whereYear('commission_date',date('Y'))->count();
   $i='1';
+  $year = date('Y');
   ?>
     <br>
 
-    <div class="container">
+    <div class="container" style="max-width: 100%;">
       <br>
-      @if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+       @if ($message = Session::get('errors'))
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
   <div class="card">
-  <div class="card-body">
+
+     <br>
+     <center><div id="loading"></div></center>
+  <div class="col-sm-12">
+    <div>
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group" style="margin-right: 5px;">
+           
+          <select name="activity_year" id="activity_year" class="form-control" required="">
+              <option value=" " disabled selected hidden>Select Year</option>
+                @for($x=-5;$x<=0; $x++)
+                  <option value="{{$year + $x}}">{{$year + $x}}</option>
+                @endfor
+          </select>
+          <span id="activity_error"></span>
+        </div>
+      
+      <div class="form-group"  style="margin-right: 5px;">
+          <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
+      </div>
+
+     
+    </form>   
+  </div>
+</div>
+  <div class="card-body"> 
+
 <div class="card-columns" style="margin-top: 10px;">
   <div class="card border-primary">
     {!! $chart->container() !!}
   </div>
-  <div class="card bg-primary text-white">
+  <div class="card bg-primary text-white" id="clientdiv">
     <div class="card-body" style="line-height: 25px;" >
       <h5 class="card-title">General Statistics<i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
       Principals: {{$total_insurance}}
@@ -168,6 +199,7 @@
     margin-bottom: 1rem;
     border: 0;
     border: 1px solid #505559;">
+    <div id="cardData">
     <h5 class="card-title">Client Statistics {{date('Y')}}</h5>
       Fire Package Clients: {{$fire_client}}
       <br>Fidelity Clients: {{$fidelity_client}}
@@ -176,6 +208,7 @@
       <br>Proffesional Indemnity Clients: {{$prof_client}}
       <br>Public Liabilty Clients: {{$public_client}}
       <br>Total Clients: {{$motor_client + $fire_client + $fidelity_client +  $marine_client + $prof_client + $public_client}}
+    </div>
     </div>
   </div>
    <div class="card border-primary">
@@ -186,8 +219,33 @@
 </div>
     <br>
     <div class="card ">
+       <br>
+       <center><div id="loading2"></div></center>
+  <div class="col-sm-12">
+    <div>
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group" style="margin-right: 5px;">
+           
+          <select name="income_year" id="income_year" class="form-control" required="">
+              <option value=" " disabled selected hidden>Select Year</option>
+                @for($x=-5;$x<=0; $x++)
+                  <option value="{{$year + $x}}">{{$year + $x}}</option>
+                @endfor
+          </select>
+          <span id="error_msg"></span>
+        </div>
+      
+      <div class="form-group"  style="margin-right: 5px;">
+          <input type="submit" name="filter" value="Filter" id="income_filter" class="btn btn-primary">
+      </div>
+
+     
+    </form>   
+  </div>
+</div>
       <div class="card-body">
-        <h4 class="card-title" style="font-family: sans-serif;">Income Collected from Cover Note Sales per each Class {{date('Y')}}</h4>
+        <h4 class="card-title" style="font-family: sans-serif;">Income Collected from Cover Note Sales per each Class</h4>
             <hr>
           <div class="card ">
     {!! $chart2->container() !!}
@@ -473,6 +531,17 @@ function myFunction() {
 
 <script type="text/javascript">
    $(document).ready(function(){
+
+      $(document).ajaxSend(function(){
+        //$("#loading").fadeIn(250);
+         //$("#loading2").fadeIn(250);
+      });
+
+    $(document).ajaxComplete(function(){
+      //$("#loading").fadeOut(250);
+       //$("#loading2").fadeIn(250);
+    });
+
   var table = $('#myTable').DataTable( {
     dom: '<"top"l>rt<"bottom"pi>'
   } );
@@ -539,6 +608,96 @@ function myFunction() {
         }
          //console.log(result);
     } );
+
+    $("#activity_filter").click(function(e){
+    e.preventDefault();
+    
+    var query = $('#activity_year').val();
+
+    if(query==null){
+      $('#activity_error').show();
+      var message=document.getElementById('activity_error');
+      message.style.color='red';
+      message.innerHTML="Required";
+      $('#activity_year').attr('style','border:1px solid #f00');
+    }
+    else{
+      
+      $('#activity_error').hide();
+      $('#activity_year').attr('style','border:1px solid #ccc');
+      $.ajax({
+      url: "/home2/activity_filter?",
+      context: document.body,
+      async : false,
+      data:{year:query}
+      })
+    .done(function(data) {
+      {{$chart->id}}.options.title.text = 'Cover Note Sales Activities '+query;
+      {{ $chart->id }}.data.datasets[0].data =data.activity;
+      {{ $chart->id }}.update(); 
+
+      {{$chart1->id}}.options.title.text = 'Income Generated from Principals '+query;
+      {{ $chart1->id }}.data.datasets[0].data =data.udia;
+      {{ $chart1->id }}.update();
+      var bodyData0 = '';
+      var bodyData = '';
+      console.log(query);
+      bodyData= "<div>"
+      bodyData+="<h5 class='card-title'>Client Statistics "
+      bodyData+=query+"</h5>"
+      bodyData+="Fire Package Clients: "+data.fire
+      bodyData+="<br>Fidelity Clients: "+data.fidelity
+      bodyData+="<br>Marine Hull Clients: "+ data.marine
+      bodyData+="<br>Motor Package Clients: "+data.motor
+      bodyData+="<br>Proffesional Indemnity Clients: "+ data.prof
+      bodyData+="<br>Public Liabilty Clients: "+ data.public
+      bodyData+="<br>Total Clients: "+ data.total
+      bodyData+="</div>";
+      $("#cardData").html(bodyData);
+      //$("#clientdiv").load(location.href + " #clientdiv");
+    });
+    }  
+    return false;
+
+});
+
+    $("#income_filter").click(function(e){
+    e.preventDefault();
+
+    var query = $('#income_year').val();
+
+
+    if(query==null){
+      $('#error_msg').show();
+      var message=document.getElementById('error_msg');
+      message.style.color='red';
+      message.innerHTML="Required";
+      $('#income_year').attr('style','border:1px solid #f00');
+    }
+    else{
+      $('#error_msg').hide();
+      $('#income_year').attr('style','border:1px solid #ccc');
+      $.ajax({
+      url: "/home2/income_filter?",
+      context: document.body,
+      async : false,
+      data:{year:query}
+      })
+    .done(function(data) {
+      console.log(data.motor);
+      {{$chart2->id}}.options.title.text = 'Year '+query;
+      {{ $chart2->id }}.data.datasets[0].data =data.motor;
+      {{ $chart2->id }}.data.datasets[1].data =data.marine;
+      {{ $chart2->id }}.data.datasets[2].data =data.fidelity;
+      {{ $chart2->id }}.data.datasets[3].data =data.fire;
+      {{ $chart2->id }}.data.datasets[4].data =data.public;
+      {{ $chart2->id }}.data.datasets[5].data =data.prof;
+      {{ $chart2->id }}.update(); 
+    });
+    }  
+    return false;
+
+});
     });
 
 </script>

@@ -12,14 +12,14 @@ table {
 table, td, th {
   border: 1px solid black;
 }
-table {
+/*table {
   counter-reset: tableCount;
   }
 
   .counterCell:before {
   content: counter(tableCount);
   counter-increment: tableCount;
-  }
+  }*/
 
   #header,
 #footer {

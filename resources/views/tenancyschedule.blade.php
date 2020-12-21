@@ -122,7 +122,7 @@ table, td, th {
     								->where('contract_id',$id)
     								->whereMonth('invoicing_period_start_date',$days_backwards)
     								->whereYear('invoicing_period_start_date',$_GET['year'])
-    								->where('payment_status','!=','Not Paid')
+    								->where('invoices.payment_status','!=','Not paid')
     								->pluck('amount_paid')
     								->toArray();
       				}

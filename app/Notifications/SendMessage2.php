@@ -20,13 +20,15 @@ class SendMessage2 extends Notification
     protected $subject;
     protected $message;
     protected $name;
+    protected $salutation;
 
-    public function __construct($name, $subject, $message)
+    public function __construct($name, $subject, $message, $salutation)
     {
         //
         $this->name = $name;
         $this->subject = $subject;
         $this->message = $message;
+        $this->salutation = $salutation;
        
     }
 
@@ -52,7 +54,8 @@ class SendMessage2 extends Notification
         return (new MailMessage)
                     ->greeting('Dear '.($this->name).',')
                     ->subject(($this->subject))
-                    ->line(($this->message));
+                    ->line(($this->message))
+                    ->salutation('Regards, <br>'.($this->salutation));
                     // ->attachData(($this->path), ($this->filename));
                     
                         # code...

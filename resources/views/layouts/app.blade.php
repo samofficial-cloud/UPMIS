@@ -54,8 +54,39 @@
                     {{-- {{ config('app.name', 'Laravel') }} --}}
                     <div class="d-flex flex-row">
                      <div class="pl-2">
-                         <a class="navbar-brand" href="{{ url('/') }}">
-                      <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+                        <?php
+                            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+                        ?>
+                    @if(Auth::user()->password_flag=='1')
+                       @if($category=='All')
+                            <a class="navbar-brand" href="{{ url('/') }}">
+                            <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+                        @elseif($category=='Insurance only')
+                            <a class="navbar-brand" href="{{ route('home2') }}">
+                            <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+                        @elseif($category=='Real Estate only')
+                            <a class="navbar-brand" href="{{ route('home4') }}">
+                            <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+                        @endif
+
+                        @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+                            <a class="navbar-brand" href="{{ route('home3') }}">
+                            <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+                        @endif
+
+                        @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+                            <a class="navbar-brand" href="{{ route('home5') }}">
+                            <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+                        @endif
+
+                        @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
+                            <a class="navbar-brand" href="{{ route('home5') }}">
+                            <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+                        @endif
+                    @else
+                    <a class="navbar-brand" href="{{ url('#') }}">
+                            <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+                    @endif
                     </div>
                     <div class="pl-3 pt-3" style="color: #111;"><h2 style="font-size: 2vw">UDSM's PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
 

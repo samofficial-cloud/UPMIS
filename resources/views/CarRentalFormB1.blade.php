@@ -412,6 +412,15 @@ $today=date('Y-m-d');
 							<input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{number_format($contract->estimated_cost)}}"  readonly onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 						</div>
 					</div>
+    @if($nature =='Private')
+        <div class="form-group" id="initial_amountdiv">
+            <div class="form-wrapper" >
+                <label for="initial_pay">Initial Amount<span style="color: red;">*</span></label>
+                <span id="initialmsg"></span>
+                <input type="text" id="initial_amount" name="initial_amount" class="form-control" autocomplete="off" value="{{number_format($contract->initial_payment)}}" readonly="">
+            </div>
+        </div>
+    @endif
 
                                 </div>
                             </fieldset>
@@ -582,7 +591,11 @@ $today=date('Y-m-d');
                     <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
 
                                 </div>
- <button class="btn btn-primary" type="submit">Forward</button>
+                                @if($nature =='Private')
+                                     <button class="btn btn-primary" type="submit">Next</button>
+                                @else
+                                   <button class="btn btn-primary" type="submit">Forward</button>
+                                @endif
                             </fieldset>
 
                         </form>
@@ -598,4 +611,7 @@ $today=date('Y-m-d');
 </div>
 </div>
 </div>
+@endsection
+
+@section('pagescript')
 @endsection
