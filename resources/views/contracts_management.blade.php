@@ -702,7 +702,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -719,50 +719,8 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-            <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
+          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
 
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -781,7 +739,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -798,50 +756,8 @@ $i=1;
          <td>{{$closed->destination}}</td>
         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-            <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+           
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -928,7 +844,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -945,50 +861,8 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+          
+          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1008,7 +882,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1025,50 +899,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1155,7 +986,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1172,50 +1003,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+         <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1234,7 +1022,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1251,50 +1039,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+         <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1385,7 +1130,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1402,50 +1147,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+         <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1464,7 +1166,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1481,50 +1183,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+         <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1611,7 +1270,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1628,50 +1287,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1690,7 +1306,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1707,50 +1323,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1782,7 +1355,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1799,50 +1372,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -1868,7 +1398,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Department/Faculty/unit</center></th>
+      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
@@ -1885,50 +1415,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          <a title="View Invoice Details" data-toggle="modal" data-target="#carinvoice{{$closed->id}}" role="button" aria-pressed="true" id="{{$closed->id}}"><i class="fa fa-eye" style="font-size:20px; color:#3490dc;"></i></a>
-           <div class="modal fade" id="carinvoice{{$closed->id}}" role="dialog">
-
-              <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <table style="width: 100%;">
-                                   <tr>
-                                          <td>Client Name:</td>
-                                          <td>{{$closed->debtor_name}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Start Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_start_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>End Date:</td>
-                                          <td>{{date("d/m/Y",strtotime($closed->invoicing_period_end_date))}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Amount:</td>
-                                          <td>{{$closed->currency_invoice}} {{number_format($closed->amount_to_be_paid)}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Payment Status:</td>
-                                          <td>{{$closed->payment_status}}</td>
-                                      </tr>
-                  </table>
-                  <br>
-                  <div><center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach

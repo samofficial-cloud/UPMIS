@@ -178,6 +178,8 @@ Route::post('/contracts/car_rental/edit/submit','carContractsController@editcont
 
 Route::get('/contracts/car_rental/delete/{id}', 'carContractsController@deletecontract')->name('deletecontract');
 
+Route::get('/contracts/car_rental/view_more/{id}', 'carContractsController@viewmore')->name('carcontractviewmore');
+
 Route::get('/contracts/car_rental/renew/{id}','carContractsController@renewContractForm')->name('RenewcarRentalForm');
 
 Route::post('/autocomplete/vehicle', 'carRentalController@fetch')->name('autocomplete.fetch');

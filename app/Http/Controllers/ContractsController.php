@@ -36,8 +36,8 @@ class ContractsController extends Controller
         if(Auth::user()->role=='Transport Officer-CPTU'){
         $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','0')->orderBy('id','dsc')->get();
         $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','0')->orderBy('id','dsc')->get();
-         $closed_act=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('form_completion','1')->wheredate('end_date','>=',date('Y-m-d'))->orderBy('id','dsc')->get();
-         $closed_inact=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('form_completion','1')->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
+         $closed_act=carContract::where('form_completion','1')->wheredate('end_date','>=',date('Y-m-d'))->orderBy('id','dsc')->get();
+         $closed_inact=carContract::where('form_completion','1')->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
         foreach ($inbox as $msg) {
             # code...
              DB::table('notifications')
@@ -49,8 +49,8 @@ class ContractsController extends Controller
      elseif(Auth::user()->role=='Vote Holder'){
         $inbox=carContract::where('head_msg_status','inbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
         $outbox=carContract::where('head_msg_status','outbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
-         $closed_act=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->wheredate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
-         $closed_inact=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->wheredate('end_date','<',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
+         $closed_act=carContract::where('cost_centre',Auth::user()->cost_centre)->wheredate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
+         $closed_inact=carContract::where('cost_centre',Auth::user()->cost_centre)->wheredate('end_date','<',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
         foreach ($inbox as $msg) {
             # code...
              DB::table('notifications')
@@ -62,8 +62,8 @@ class ContractsController extends Controller
       elseif(Auth::user()->role=='Accountant-Cost Centre'){
          $inbox=carContract::where('acc_msg_status','inbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
         $outbox=carContract::where('acc_msg_status','outbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
-         $closed_act=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->wheredate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
-         $closed_inact=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->wheredate('end_date','<',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
+         $closed_act=carContract::where('cost_centre',Auth::user()->cost_centre)->wheredate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
+         $closed_inact=carContract::where('cost_centre',Auth::user()->cost_centre)->wheredate('end_date','<',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
         foreach ($inbox as $msg) {
             # code...
              DB::table('notifications')
@@ -75,8 +75,8 @@ class ContractsController extends Controller
       elseif(Auth::user()->role=='Head of CPTU'){
          $inbox=carContract::where('head_cptu_msg_status','inbox')->where('form_completion','0')->orderBy('id','dsc')->get();
         $outbox=carContract::where('head_cptu_msg_status','outbox')->where('form_completion','0')->orderBy('id','dsc')->get();
-        $closed_act=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->wheredate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
-         $closed_inact=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->wheredate('end_date','<',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
+        $closed_act=carContract::wheredate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
+         $closed_inact=carContract::wheredate('end_date','<',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
         foreach ($inbox as $msg) {
             # code...
              DB::table('notifications')
@@ -88,8 +88,8 @@ class ContractsController extends Controller
       elseif(Auth::user()->role=='DVC Administrator'){
          $inbox=carContract::where('dvc_msg_status','inbox')->where('form_completion','0')->orderBy('id','dsc')->get();
         $outbox=carContract::where('dvc_msg_status','outbox')->where('form_completion','0')->orderBy('id','dsc')->get();
-        $closed_act=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->wheredate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
-         $closed_inact=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->wheredate('end_date','<',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
+        $closed_act=carContract::wheredate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
+         $closed_inact=carContract::wheredate('end_date','<',date('Y-m-d'))->where('form_completion','1')->orderBy('id','dsc')->get();
         foreach ($inbox as $msg) {
             # code...
              DB::table('notifications')
@@ -100,8 +100,8 @@ class ContractsController extends Controller
       }
 
       elseif(Auth::user()->role=='Director DPDI'){
-       $closed_act=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('form_completion','1')->wheredate('end_date','>=',date('Y-m-d'))->orderBy('id','dsc')->get();
-         $closed_inact=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('form_completion','1')->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
+       $closed_act=carContract::where('form_completion','1')->wheredate('end_date','>=',date('Y-m-d'))->orderBy('id','dsc')->get();
+         $closed_inact=carContract::where('form_completion','1')->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
          $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','1')->orderBy('id','dsc')->get();
         $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','1')->orderBy('id','dsc')->get();
       }
@@ -109,8 +109,8 @@ class ContractsController extends Controller
       else{
          $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','1')->orderBy('id','dsc')->get();
         $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','1')->orderBy('id','dsc')->get();
-        $closed_act=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('form_completion','1')->wheredate('end_date','>=',date('Y-m-d'))->orderBy('id','dsc')->get();
-         $closed_inact=carContract::join('car_rental_invoices','car_rental_invoices.contract_id','=','car_contracts.id')->where('form_completion','1')->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
+        $closed_act=carContract::where('form_completion','1')->wheredate('end_date','>=',date('Y-m-d'))->orderBy('id','dsc')->get();
+         $closed_inact=carContract::where('form_completion','1')->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
         foreach ($inbox as $msg) {
             # code...
              DB::table('notifications')
