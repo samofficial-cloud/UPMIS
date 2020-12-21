@@ -158,6 +158,29 @@
 
     </div>
 
+    @if($mode_of_payment=='By installment')
+
+    <div style="width: 100%; clear: both; padding-top: 1.3%;">
+        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Mode of payment:</div>
+        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b> {{$mode_of_payment}}</b></div>
+
+    </div>
+
+
+    <div style="width: 100%; clear: both; padding-top: 1.3%;">
+        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+    </div>
+
+    <div style="width: 100%; clear: both; padding-top: 1.3%;">
+        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+    </div>
+
+    @else
+    @endif
 
     <div style="width: 100%; clear: both; padding-top: 1.3%;">
         <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Actual (Excluding VAT):</div>

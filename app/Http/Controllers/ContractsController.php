@@ -186,27 +186,30 @@ class ContractsController extends Controller
 
     public function CreateSpaceContract(Request $request)
     {
-        $end_date="";
-        if($request->get('duration_period')=="Months"){
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $monthsToAdd = $request->get('duration');
-            $end_date = $end_date->addMonths($monthsToAdd);
 
-        }elseif($request->get('duration_period')=="Years"){
+        if($request->get('submit')=='Save and print') {
 
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $yearsToAdd = $request->get('duration');
-            $end_date = $end_date->addYears($yearsToAdd);
-        }else{
+            $end_date="";
+            if($request->get('duration_period')=="Months"){
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+                $monthsToAdd = $request->get('duration');
+                $end_date = $end_date->addMonths($monthsToAdd);
 
+            }elseif($request->get('duration_period')=="Years"){
 
-        }
-
-
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+                $yearsToAdd = $request->get('duration');
+                $end_date = $end_date->addYears($yearsToAdd);
+            }else{
 
 
-    $programming_end_date='';
-        //for programming purposes
+            }
+
+
+
+
+            $programming_end_date='';
+            //for programming purposes
 
             $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
@@ -219,104 +222,275 @@ class ContractsController extends Controller
 
 
 
-        if($request->get('client_type')==1){
-            $client_type="Individual";
-            $full_name=$request->get('first_name').' '.$request->get('last_name');
+            if($request->get('client_type')==1){
+                $client_type="Individual";
+                $full_name=$request->get('first_name').' '.$request->get('last_name');
+
+
+            }else{
+                $client_type="Company/Organization";
+                $full_name=$request->get('company_name');
+            }
+
+
+
+
+            if(DB::table('clients')->where('full_name',$full_name)->where('contract','Space')->count()>0){
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['address' => $request->get('address')]);
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['email' => $request->get('email')]);
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['phone_number' => $request->get('phone_number')]);
+
+
+                $rent_sqm="";
+
+                if($request->get('rent_sqm')==''){
+                    $rent_sqm='N/A';
+
+                }else{
+
+                    $rent_sqm=$request->get('rent_sqm');
+                }
+
+
+                DB::table('space_contracts')->insert(
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                );
+
+            }else {
+
+                if($request->get('company_name')=="") {
+
+
+
+                    DB::table('clients')->insert(
+                        ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
+                    );
+
+                    $rent_sqm="";
+
+                    if($request->get('rent_sqm')==''){
+                        $rent_sqm='N/A';
+
+                    }else{
+
+                        $rent_sqm=$request->get('rent_sqm');
+                    }
+
+
+                    DB::table('space_contracts')->insert(
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                    );
+
+                } else {
+
+                    DB::table('clients')->insert(
+                        ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
+                    );
+
+
+                    $rent_sqm="";
+
+                    if($request->get('rent_sqm')==''){
+                        $rent_sqm='N/A';
+
+                    }else{
+
+                        $rent_sqm=$request->get('rent_sqm');
+                    }
+
+
+                    DB::table('space_contracts')->insert(
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                    );
+
+
+                }
+            }
+
+
+
+            $data = [
+
+                'first_name'   => $request->get('first_name'),
+                'last_name'   => $request->get('last_name'),
+                'company_name'   => $request->get('company_name'),
+                'client_type'   => $request->get('client_type'),
+                'address'   => $request->get('address'),
+                'phone_number'   => $request->get('phone_number'),
+                'email'   => $request->get('email'),
+                'major_industry'   => $request->get('major_industry'),
+                'minor_industry'   => $request->get('minor_industry'),
+                'location'   => $request->get('space_location'),
+                'sub_location'   => $request->get('space_sub_location'),
+                'academic_dependence'   => $request->get('academic_dependence'),
+                'space_number'   => $request->get('space_id_contract'),
+                'space_size'   => $request->get('space_size'),
+                'has_water_bill'   => $request->get('has_water_bill'),
+                'has_electricity_bill'   => $request->get('has_electricity_bill'),
+                'start_date'   => $request->get('start_date'),
+                'duration'   => $request->get('duration'),
+                'duration_period'   => $request->get('duration_period'),
+                'academic_season'   => $request->get('academic_season'),
+                'vacation_season'   => $request->get('vacation_season'),
+                'amount'   => $request->get('amount'),
+                'rent_sqm'   => $request->get('rent_sqm'),
+                'payment_cycle'   => $request->get('payment_cycle'),
+                'escalation_rate'   => $request->get('escalation_rate'),
+                'currency'   => $request->get('currency'),
+
+            ];
+
+            $pdf = PDF::loadView('space_contract_pdf',$data);
+
+            return $pdf->stream();
 
 
         }else{
-            $client_type="Company/Organization";
-            $full_name=$request->get('company_name');
-        }
 
+            $end_date="";
+            if($request->get('duration_period')=="Months"){
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+                $monthsToAdd = $request->get('duration');
+                $end_date = $end_date->addMonths($monthsToAdd);
 
+            }elseif($request->get('duration_period')=="Years"){
 
-
-        if(DB::table('clients')->where('full_name',$full_name)->where('contract','Space')->count()>0){
-
-            DB::table('clients')
-                ->where('full_name', $full_name)
-                ->update(['address' => $request->get('address')]);
-
-            DB::table('clients')
-                ->where('full_name', $full_name)
-                ->update(['email' => $request->get('email')]);
-
-            DB::table('clients')
-                ->where('full_name', $full_name)
-                ->update(['phone_number' => $request->get('phone_number')]);
-
-
-$rent_sqm="";
-
-if($request->get('rent_sqm')==''){
-    $rent_sqm='N/A';
-
-}else{
-
-    $rent_sqm=$request->get('rent_sqm');
-}
-
-
-            DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
-            );
-
-        }else {
-
-            if($request->get('company_name')=="") {
-
-
-
-                DB::table('clients')->insert(
-                    ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
-                );
-
-                $rent_sqm="";
-
-                if($request->get('rent_sqm')==''){
-                    $rent_sqm='N/A';
-
-                }else{
-
-                    $rent_sqm=$request->get('rent_sqm');
-                }
-
-
-                DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
-                );
-
-            } else {
-
-                DB::table('clients')->insert(
-                    ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
-                );
-
-
-                $rent_sqm="";
-
-                if($request->get('rent_sqm')==''){
-                    $rent_sqm='N/A';
-
-                }else{
-
-                    $rent_sqm=$request->get('rent_sqm');
-                }
-
-
-                DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
-                );
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+                $yearsToAdd = $request->get('duration');
+                $end_date = $end_date->addYears($yearsToAdd);
+            }else{
 
 
             }
+
+
+
+
+            $programming_end_date='';
+            //for programming purposes
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+
+            $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+
+
+
+
+
+
+            if($request->get('client_type')==1){
+                $client_type="Individual";
+                $full_name=$request->get('first_name').' '.$request->get('last_name');
+
+
+            }else{
+                $client_type="Company/Organization";
+                $full_name=$request->get('company_name');
+            }
+
+
+
+
+            if(DB::table('clients')->where('full_name',$full_name)->where('contract','Space')->count()>0){
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['address' => $request->get('address')]);
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['email' => $request->get('email')]);
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['phone_number' => $request->get('phone_number')]);
+
+
+                $rent_sqm="";
+
+                if($request->get('rent_sqm')==''){
+                    $rent_sqm='N/A';
+
+                }else{
+
+                    $rent_sqm=$request->get('rent_sqm');
+                }
+
+
+                DB::table('space_contracts')->insert(
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                );
+
+            }else {
+
+                if($request->get('company_name')=="") {
+
+
+
+                    DB::table('clients')->insert(
+                        ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
+                    );
+
+                    $rent_sqm="";
+
+                    if($request->get('rent_sqm')==''){
+                        $rent_sqm='N/A';
+
+                    }else{
+
+                        $rent_sqm=$request->get('rent_sqm');
+                    }
+
+
+                    DB::table('space_contracts')->insert(
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                    );
+
+                } else {
+
+                    DB::table('clients')->insert(
+                        ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
+                    );
+
+
+                    $rent_sqm="";
+
+                    if($request->get('rent_sqm')==''){
+                        $rent_sqm='N/A';
+
+                    }else{
+
+                        $rent_sqm=$request->get('rent_sqm');
+                    }
+
+
+                    DB::table('space_contracts')->insert(
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                    );
+
+
+                }
+            }
+
+
+
+            return redirect('/contracts_management')
+                ->with('success', 'Contract created successfully');
+
         }
 
 
-
-        return redirect('/contracts_management')
-            ->with('success', 'Contract created successfully');
     }
 
 
@@ -506,232 +680,492 @@ if($request->get('rent_sqm')==''){
     public function EditSpaceContractFinalProcessing(Request $request,$contract_id,$client_id)
     {
 
-        $end_date="";
-        if($request->get('duration_period')=="Months"){
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $monthsToAdd = $request->get('duration');
-            $end_date = $end_date->addMonths($monthsToAdd);
-
-        }elseif($request->get('duration_period')=="Years"){
-
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-            $yearsToAdd = $request->get('duration');
-            $end_date = $end_date->addYears($yearsToAdd);
-        }else{
+        if($request->get('submit')=='Save and print') {
 
 
-        }
+            $end_date = "";
+            if ($request->get('duration_period') == "Months") {
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+                $monthsToAdd = $request->get('duration');
+                $end_date = $end_date->addMonths($monthsToAdd);
+
+            } elseif ($request->get('duration_period') == "Years") {
+
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+                $yearsToAdd = $request->get('duration');
+                $end_date = $end_date->addYears($yearsToAdd);
+            } else {
 
 
-        if($request->get('company_name')=="") {
+            }
+
+
+            if ($request->get('company_name') == "") {
+
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['first_name' => $request->get('first_name')]);
+
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['last_name' => $request->get('last_name')]);
+
+                $full_name = $request->get('first_name') . ' ' . $request->get('last_name');
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['full_name' => $full_name]);
+
+
+            } else {
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['first_name' => $request->get('company_name')]);
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['last_name' => '']);
+
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['full_name' => $request->get('company_name')]);
+
+            }
+
+            if ($request->get('client_type') == 1) {
+                $client_type = "Individual";
+
+            } else {
+                $client_type = "Company/Organization";
+            }
 
 
             DB::table('clients')
                 ->where('client_id', $client_id)
-                ->update(['first_name' => $request->get('first_name')]);
-
-
-            DB::table('clients')
-                ->where('client_id', $client_id)
-                ->update(['last_name' => $request->get('last_name')]);
-
-            $full_name=$request->get('first_name').' '.$request->get('last_name');
+                ->update(['type' => $client_type]);
 
             DB::table('clients')
                 ->where('client_id', $client_id)
-                ->update(['full_name' => $full_name]);
-
-
-        } else {
-
+                ->update(['address' => $request->get('address')]);
             DB::table('clients')
                 ->where('client_id', $client_id)
-                ->update(['first_name' => $request->get('company_name')]);
-
+                ->update(['email' => $request->get('email')]);
             DB::table('clients')
                 ->where('client_id', $client_id)
-                ->update(['last_name' => '']);
+                ->update(['phone_number' => $request->get('phone_number')]);
 
+            //SPACE CONTRACT STARTS
 
-            DB::table('clients')
-                ->where('client_id', $client_id)
-                ->update(['full_name' => $request->get('company_name')]);
+            $full_name = $request->get('first_name') . ' ' . $request->get('last_name');
 
-        }
+            $old_full_name = DB::table('space_contracts')->where('contract_id', $contract_id)->value('full_name');
 
-        if($request->get('client_type')==1){
-            $client_type="Individual";
+            if ($request->get('company_name') == "") {
+                DB::table('space_contracts')
+                    ->where('full_name', $old_full_name)
+                    ->update(['full_name' => $full_name]);
 
-        }else{
-            $client_type="Company/Organization";
-        }
+            } else {
 
+                DB::table('space_contracts')
+                    ->where('full_name', $old_full_name)
+                    ->update(['full_name' => $request->get('company_name')]);
 
-        DB::table('clients')
-            ->where('client_id', $client_id)
-            ->update(['type' => $client_type]);
-
-        DB::table('clients')
-            ->where('client_id', $client_id)
-            ->update(['address' => $request->get('address')]);
-        DB::table('clients')
-            ->where('client_id', $client_id)
-            ->update(['email' => $request->get('email')]);
-        DB::table('clients')
-            ->where('client_id', $client_id)
-            ->update(['phone_number' => $request->get('phone_number')]);
-
-        //SPACE CONTRACT STARTS
-
-        $full_name=$request->get('first_name').' '.$request->get('last_name');
-
-        $old_full_name=DB::table('space_contracts')->where('contract_id', $contract_id)->value('full_name');
-
-        if($request->get('company_name')=="") {
-            DB::table('space_contracts')
-                ->where('full_name', $old_full_name)
-                ->update(['full_name' => $full_name]);
-
-        } else {
-
-            DB::table('space_contracts')
-                ->where('full_name', $old_full_name)
-                ->update(['full_name' => $request->get('company_name')]);
-
-        }
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['space_id_contract' => $request->get('space_id_contract')]);
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['academic_dependence' => $request->get('academic_dependence')]);
-
-
-        if($request->get('academic_dependence')=='Yes'){
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['academic_season' => $request->get('academic_season')]);
-
+            }
 
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
-                ->update(['vacation_season' => $request->get('vacation_season')]);
+                ->update(['space_id_contract' => $request->get('space_id_contract')]);
 
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
-                ->update(['amount' => 0]);
+                ->update(['academic_dependence' => $request->get('academic_dependence')]);
 
 
+            if ($request->get('academic_dependence') == 'Yes') {
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['academic_season' => $request->get('academic_season')]);
 
-        }elseif($request->get('academic_dependence')=='No') {
 
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['amount' => $request->get('amount')]);
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['vacation_season' => $request->get('vacation_season')]);
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['amount' => 0]);
+
+
+            } elseif ($request->get('academic_dependence') == 'No') {
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['amount' => $request->get('amount')]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['academic_season' => 0]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['vacation_season' => 0]);
+
+
+            } else {
+
+
+            }
 
 
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
-                ->update(['academic_season' => 0]);
+                ->update(['currency' => $request->get('currency')]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['payment_cycle' => $request->get('payment_cycle')]);
 
 
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
-                ->update(['vacation_season' => 0]);
+                ->update(['start_date' => $request->get('start_date')]);
 
 
-        }else{
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['end_date' => $end_date]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['duration' => $request->get('duration')]);
 
 
-
-        }
-
-
-
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['duration_period' => $request->get('duration_period')]);
 
 
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['currency' => $request->get('currency')]);
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['payment_cycle' => $request->get('payment_cycle')]);
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['has_water_bill' => $request->get('has_water_bill')]);
 
 
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['start_date' => $request->get('start_date')]);
-
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['end_date' => $end_date]);
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['duration' => $request->get('duration')]);
-
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['duration_period' => $request->get('duration_period')]);
-
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['has_water_bill' => $request->get('has_water_bill')]);
-
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['has_electricity_bill' => $request->get('has_electricity_bill')]);
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['has_electricity_bill' => $request->get('has_electricity_bill')]);
 
 //for programming purposes
 
-        $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
-        $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
-        $programming_end_date = $programming_end_date->addDays($daysToAdd);
+            $daysToAdd = DB::table('payment_cycle_settings')->where('cycle', $request->get('payment_cycle'))->value('days');
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
 
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['programming_end_date' => $programming_end_date]);
-
-
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['programming_start_date' => $request->get('start_date')]);
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['programming_end_date' => $programming_end_date]);
 
 
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['programming_start_date' => $request->get('start_date')]);
 
 
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['escalation_rate' => $request->get('escalation_rate')]);
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['escalation_rate' => $request->get('escalation_rate')]);
 
 
-        $rent_sqm="";
+            $rent_sqm = "";
 
-        if($request->get('rent_sqm')==''){
-            $rent_sqm='N/A';
+            if ($request->get('rent_sqm') == '') {
+                $rent_sqm = 'N/A';
+
+            } else {
+
+                $rent_sqm = $request->get('rent_sqm');
+            }
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['rent_sqm' => $rent_sqm]);
+
+
+            $data = [
+
+                'first_name'   => $request->get('first_name'),
+                'last_name'   => $request->get('last_name'),
+                'company_name'   => $request->get('company_name'),
+                'client_type'   => $request->get('client_type'),
+                'address'   => $request->get('address'),
+                'phone_number'   => $request->get('phone_number'),
+                'email'   => $request->get('email'),
+                'major_industry'   => $request->get('major_industry'),
+                'minor_industry'   => $request->get('minor_industry'),
+                'location'   => $request->get('space_location'),
+                'sub_location'   => $request->get('space_sub_location'),
+                'academic_dependence'   => $request->get('academic_dependence'),
+                'space_number'   => $request->get('space_id_contract'),
+                'space_size'   => $request->get('space_size'),
+                'has_water_bill'   => $request->get('has_water_bill'),
+                'has_electricity_bill'   => $request->get('has_electricity_bill'),
+                'start_date'   => $request->get('start_date'),
+                'duration'   => $request->get('duration'),
+                'duration_period'   => $request->get('duration_period'),
+                'academic_season'   => $request->get('academic_season'),
+                'vacation_season'   => $request->get('vacation_season'),
+                'amount'   => $request->get('amount'),
+                'rent_sqm'   => $request->get('rent_sqm'),
+                'payment_cycle'   => $request->get('payment_cycle'),
+                'escalation_rate'   => $request->get('escalation_rate'),
+                'currency'   => $request->get('currency'),
+
+            ];
+
+            $pdf = PDF::loadView('space_contract_pdf',$data);
+
+            return $pdf->stream();
+
 
         }else{
 
-            $rent_sqm=$request->get('rent_sqm');
+
+
+
+            $end_date = "";
+            if ($request->get('duration_period') == "Months") {
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+                $monthsToAdd = $request->get('duration');
+                $end_date = $end_date->addMonths($monthsToAdd);
+
+            } elseif ($request->get('duration_period') == "Years") {
+
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+                $yearsToAdd = $request->get('duration');
+                $end_date = $end_date->addYears($yearsToAdd);
+            } else {
+
+
+            }
+
+
+            if ($request->get('company_name') == "") {
+
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['first_name' => $request->get('first_name')]);
+
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['last_name' => $request->get('last_name')]);
+
+                $full_name = $request->get('first_name') . ' ' . $request->get('last_name');
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['full_name' => $full_name]);
+
+
+            } else {
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['first_name' => $request->get('company_name')]);
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['last_name' => '']);
+
+
+                DB::table('clients')
+                    ->where('client_id', $client_id)
+                    ->update(['full_name' => $request->get('company_name')]);
+
+            }
+
+            if ($request->get('client_type') == 1) {
+                $client_type = "Individual";
+
+            } else {
+                $client_type = "Company/Organization";
+            }
+
+
+            DB::table('clients')
+                ->where('client_id', $client_id)
+                ->update(['type' => $client_type]);
+
+            DB::table('clients')
+                ->where('client_id', $client_id)
+                ->update(['address' => $request->get('address')]);
+            DB::table('clients')
+                ->where('client_id', $client_id)
+                ->update(['email' => $request->get('email')]);
+            DB::table('clients')
+                ->where('client_id', $client_id)
+                ->update(['phone_number' => $request->get('phone_number')]);
+
+            //SPACE CONTRACT STARTS
+
+            $full_name = $request->get('first_name') . ' ' . $request->get('last_name');
+
+            $old_full_name = DB::table('space_contracts')->where('contract_id', $contract_id)->value('full_name');
+
+            if ($request->get('company_name') == "") {
+                DB::table('space_contracts')
+                    ->where('full_name', $old_full_name)
+                    ->update(['full_name' => $full_name]);
+
+            } else {
+
+                DB::table('space_contracts')
+                    ->where('full_name', $old_full_name)
+                    ->update(['full_name' => $request->get('company_name')]);
+
+            }
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['space_id_contract' => $request->get('space_id_contract')]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['academic_dependence' => $request->get('academic_dependence')]);
+
+
+            if ($request->get('academic_dependence') == 'Yes') {
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['academic_season' => $request->get('academic_season')]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['vacation_season' => $request->get('vacation_season')]);
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['amount' => 0]);
+
+
+            } elseif ($request->get('academic_dependence') == 'No') {
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['amount' => $request->get('amount')]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['academic_season' => 0]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['vacation_season' => 0]);
+
+
+            } else {
+
+
+            }
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['currency' => $request->get('currency')]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['payment_cycle' => $request->get('payment_cycle')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['start_date' => $request->get('start_date')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['end_date' => $end_date]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['duration' => $request->get('duration')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['duration_period' => $request->get('duration_period')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['has_water_bill' => $request->get('has_water_bill')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['has_electricity_bill' => $request->get('has_electricity_bill')]);
+
+//for programming purposes
+
+            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
+
+            $daysToAdd = DB::table('payment_cycle_settings')->where('cycle', $request->get('payment_cycle'))->value('days');
+            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['programming_end_date' => $programming_end_date]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['programming_start_date' => $request->get('start_date')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['escalation_rate' => $request->get('escalation_rate')]);
+
+
+            $rent_sqm = "";
+
+            if ($request->get('rent_sqm') == '') {
+                $rent_sqm = 'N/A';
+
+            } else {
+
+                $rent_sqm = $request->get('rent_sqm');
+            }
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['rent_sqm' => $rent_sqm]);
+
+
+            return redirect('/contracts_management')
+                ->with('success', 'Contract details edited successfully');
+
+
+
         }
 
 
-        DB::table('space_contracts')
-            ->where('contract_id', $contract_id)
-            ->update(['rent_sqm' => $rent_sqm]);
 
 
-
-        return redirect('/contracts_management')
-            ->with('success', 'Contract details edited successfully');
     }
 
 
@@ -876,7 +1310,7 @@ if($request->get('rent_sqm')==''){
 
 
             DB::table('insurance_contracts')->insert(
-                ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value]
+                ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $request->get('mode_of_payment'),'first_installment'   => $request->get('first_installment'),'second_installment'   => $request->get('second_installment')]
             );
 
 
@@ -938,6 +1372,9 @@ if($request->get('rent_sqm')==''){
                 'commission_date'   => $request->get('commission_date'),
                 'sum_insured'   => $request->get('sum_insured'),
                 'premium'   => $request->get('premium'),
+                'mode_of_payment'   => $request->get('mode_of_payment'),
+                'first_installment'   => $request->get('first_installment'),
+                'second_installment'   => $request->get('second_installment'),
                 'actual_ex_vat'   => $request->get('actual_ex_vat'),
                 'value'   => $request->get('value'),
                 'commission_percentage'   => $request->get('commission_percentage'),
@@ -1035,7 +1472,7 @@ if($request->get('rent_sqm')==''){
 
 
             DB::table('insurance_contracts')->insert(
-                ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value]
+                ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $request->get('mode_of_payment'),'first_installment'   => $request->get('first_installment'), 'second_installment'   => $request->get('second_installment')]
             );
 
             $contract_id_created=DB::table('insurance_contracts')->orderBy('id','desc')->limit(1)->value('id');

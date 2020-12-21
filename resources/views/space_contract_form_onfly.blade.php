@@ -82,7 +82,7 @@
         }
 
         #msform .action-button {
-            width: 100px;
+            width: 150px;
             background: skyblue;
             font-weight: bold;
             color: white;
@@ -99,7 +99,7 @@
         }
 
         #msform .action-button-previous {
-            width: 100px;
+            width: 150px;
             background: #616161;
             font-weight: bold;
             color: white;
@@ -146,7 +146,7 @@
             margin-bottom: 30px;
             overflow: hidden;
             color: lightgrey;
-            margin-left: 20%;
+            margin-left: 0%;
         }
 
         #progressbar .active {
@@ -305,10 +305,11 @@
                                 <div class="col-md-12 mx-0">
                                     <form id="msform" METHOD="GET" action="{{ route('create_space_contract')}}">
                                         <!-- progressbar -->
-                                        <ul id="progressbar">
+                                        <ul  id="progressbar">
                                             <li class="active" id="personal"><strong>Client</strong></li>
                                             <li  id="account"><strong>Renting Space</strong></li>
                                             <li id="payment"><strong>Payment</strong></li>
+                                            <li id="confirm"><strong>Confirm</strong></li>
                                         </ul>
                                         <!-- fieldsets -->
                                         <fieldset>
@@ -385,12 +386,12 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="major_industry"  ><strong>Major industry</strong></label>
-                                                        <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
+                                                        <input type="text" class="form-control" id="getMajor" name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for=""  ><strong>Minor industry</strong></label>
-                                                        <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+                                                        <input type="text" class="form-control" id="minor_list" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -399,12 +400,12 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="space_location"  ><strong>Location</strong></label>
-                                                        <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
+                                                        <input type="text" class="form-control" id="space_location" name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="space_location"  ><strong>Sub location</strong></label>
-                                                        <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
+                                                        <input type="text" readonly class="form-control" id="space_sub_location" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -413,12 +414,12 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="" ><strong>Space Number</strong></label>
-                                                        <input type="text" class="form-control" id="" name="space_id_contract" value="{{$var->space_id}}" readonly Required autocomplete="off">
+                                                        <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" readonly Required autocomplete="off">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                                        <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
+                                                        <input type="number" min="1" step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -426,12 +427,12 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="has_water_bill"  ><strong>Required to also pay Water bill</strong></label>
-                                                        <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
+                                                        <input type="text" readonly class="form-control" id="has_water_bill" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill</strong></label>
-                                                        <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
+                                                        <input type="text" readonly class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -469,7 +470,7 @@
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="currency">Period <span style="color: red;"> *</span></label>
-                                                        <select id="currency" class="form-control" name="duration_period" required>
+                                                        <select id="duration_period" class="form-control" name="duration_period" required>
                                                             <option value="" ></option>
                                                             <option value="Months" >Months</option>
                                                             <option value="Years" >Years</option>
@@ -555,9 +556,171 @@
 
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="submit" name="make_payment" class="submit action-button" value="Confirm" />
+                                            <input type="button" name="next" id="next3" class="next action-button" value="Next" />
                                             <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
+
+
+
+                                        <fieldset>
+                                            <div class="form-card">
+                                                <h2 style="text-align: center !important;" class="fs-title">Full contract details</h2>
+                                                <table class="table table-bordered table-striped" style="width: 100%; margin-top:3%;">
+
+
+
+                                                    <tr>
+                                                        <td>Client type</td>
+                                                        <td id="client_type_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr id="first_name_row_confirm" style="display: none;">
+                                                        <td>First name:</td>
+                                                        <td id="first_name_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr id="last_name_row_confirm" style="display: none;">
+                                                        <td>Last name:</td>
+                                                        <td id="last_name_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr id="company_name_row_confirm" style="display: none;">
+                                                        <td>Company name:</td>
+                                                        <td id="company_name_confirm"></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td> Email:</td>
+                                                        <td id="email_confirm"> </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td> Phone number:</td>
+                                                        <td id="phone_number_confirm"></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td> Address:</td>
+                                                        <td id="address_confirm"></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td> Major industry:</td>
+                                                        <td id="major_industry_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td> Minor industry:</td>
+                                                        <td id="minor_industry_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td> Location:</td>
+                                                        <td id="location_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td>Sub location:</td>
+                                                        <td id="sub_location_confirm"></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Space number:</td>
+                                                        <td id="space_number_confirm"></td>
+                                                    </tr>
+
+
+
+                                                    <tr>
+                                                        <td>Space size(SQM):</td>
+                                                        <td id="space_size_confirm"></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Has electricity bill:</td>
+                                                        <td id="has_electricity_bill_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td>Has water bill:</td>
+                                                        <td id="has_water_bill_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td>Start date:</td>
+                                                        <td id="start_date_confirm"></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Duration:</td>
+                                                        <td id="duration_confirm"></td>
+                                                    </tr>
+
+
+
+                                                    <tr>
+                                                        <td>Depend on academic year:</td>
+                                                        <td id="academic_dependance_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr id="amount_academic_row_confirm" style="display: none;" >
+                                                        <td>Amount(Academic season):</td>
+                                                        <td id="amount_academic_confirm"></td>
+                                                    </tr>
+
+                                                    <tr id="amount_vacation_row_confirm" style="display: none;">
+                                                        <td>Amount(Vacation season):</td>
+                                                        <td id="amount_vacation_confirm"></td>
+                                                    </tr>
+
+                                                    <tr id="amount_row_confirm" style="display: none;">
+                                                        <td>Amount:</td>
+                                                        <td id="amount_confirm"></td>
+                                                    </tr>
+
+
+                                                    <tr >
+                                                        <td>Rent/SQM:</td>
+                                                        <td id="rent_sqm_confirm"></td>
+                                                    </tr>
+
+
+
+                                                    <tr>
+                                                        <td>Payment cycle:</td>
+                                                        <td id="payment_cycle_confirm"></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Escalation Rate:</td>
+                                                        <td id="escalation_rate_confirm"></td>
+                                                    </tr>
+
+
+
+
+
+                                                </table>
+
+
+                                            </div>
+                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                            <input type="submit" name="submit" class="submit action-button" value="Save"/>
+                                            <input type="submit" name="submit" class="submit action-button" value="Save and print"/>
+                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                        </fieldset>
+
+
+
                                     </form>
                                 </div>
                             </div>
@@ -679,6 +842,229 @@
                 gonext();
 
             });
+
+
+
+            $("#next3").click(function(){
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
+
+                var first_name=document.getElementById('first_name').value;
+                var last_name=document.getElementById('last_name').value;
+                var company_name=document.getElementById('company_name').value;
+                var client_type=document.getElementById('client_type').value;
+                var email=$("#email").val();
+                var phone_number=document.getElementById('phone_number').value;
+                var address=document.getElementById('address').value;
+                var sub_location = $('#space_sub_location').val();
+                var location = $('#space_location').val();
+                var minor = $('#minor_list').val();
+                var major = $('#getMajor').val();
+                var space_id = $('#space_id_contract').val();
+
+
+
+
+
+
+                var start_date=document.getElementById('start_date').value;
+                var duration=document.getElementById('duration').value;
+                var duration_period=document.getElementById('duration_period').value;
+
+                var academic_dependence=document.getElementById('academic_dependence').value;
+                var vacation_season=document.getElementById('vacation_season').value;
+                var academic_season=document.getElementById('academic_season').value;
+                var amount=document.getElementById('amount').value;
+                var rent_sqm=document.getElementById('rent_sqm').value;
+                var currency=document.getElementById('currency').value;
+                var payment_cycle=document.getElementById('payment_cycle').value;
+                var escalation_rate=document.getElementById('escalation_rate').value;
+                var space_size=document.getElementById('space_size').value;
+                var has_water_bill=document.getElementById('has_water_bill').value;
+                var has_electricity_bill=document.getElementById('has_electricity_bill').value;
+
+
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+                const dateObj = new Date(start_date);
+                const month = dateObj.getMonth()+1;
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                const year = dateObj.getFullYear();
+                const output = day  + '/'+ month  + '/' + year;
+
+
+                function thousands_separators(num)
+                {
+                    var num_parts = num.toString().split(".");
+                    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    return num_parts.join(".");
+                }
+
+
+
+                // document.getElementById("client").innerHTML ='';
+
+
+
+
+
+
+                $("#first_name_confirm").html(first_name);
+                $("#first_name_confirm").css('font-weight', 'bold');
+
+                $("#last_name_confirm").html(last_name);
+                $("#last_name_confirm").css('font-weight', 'bold');
+
+
+
+                $("#company_name_confirm").html(company_name);
+                $("#company_name_confirm").css('font-weight', 'bold');
+
+
+                $("#email_confirm").html(email);
+                $("#email_confirm").css('font-weight', 'bold');
+
+                $("#phone_number_confirm").html(phone_number);
+                $("#phone_number_confirm").css('font-weight', 'bold');
+
+
+                $("#address_confirm").html(address);
+                $("#address_confirm").css('font-weight', 'bold');
+
+                $("#major_industry_confirm").html(major);
+                $("#major_industry_confirm").css('font-weight', 'bold');
+
+                $("#minor_industry_confirm").html(minor);
+                $("#minor_industry_confirm").css('font-weight', 'bold');
+
+
+                $("#location_confirm").html(location);
+                $("#location_confirm").css('font-weight', 'bold');
+
+                $("#sub_location_confirm").html(sub_location);
+                $("#sub_location_confirm").css('font-weight', 'bold');
+
+
+                $("#space_number_confirm").html(space_id);
+                $("#space_number_confirm").css('font-weight', 'bold');
+
+                $("#space_size_confirm").html(space_size);
+                $("#space_size_confirm").css('font-weight', 'bold');
+
+
+                $("#has_electricity_bill_confirm").html(has_electricity_bill);
+                $("#has_electricity_bill_confirm").css('font-weight', 'bold');
+
+
+                $("#has_water_bill_confirm").html(has_water_bill);
+                $("#has_water_bill_confirm").css('font-weight', 'bold');
+
+
+
+
+                $("#start_date_confirm").html(output);
+                $("#start_date_confirm").css('font-weight', 'bold');
+
+
+                $("#duration_confirm").html(duration+" "+duration_period);
+                $("#duration_confirm").css('font-weight', 'bold');
+
+                $("#academic_dependance_confirm").html(academic_dependence);
+                $("#academic_dependance_confirm").css('font-weight', 'bold');
+
+
+                $("#amount_academic_confirm").html(thousands_separators(academic_season)+" "+currency);
+                $("#amount_academic_confirm").css('font-weight', 'bold');
+
+
+                $("#amount_vacation_confirm").html(thousands_separators(vacation_season)+" "+currency);
+                $("#amount_vacation_confirm").css('font-weight', 'bold');
+
+                $("#amount_confirm").html(thousands_separators(amount)+" "+currency);
+                $("#amount_confirm").css('font-weight', 'bold');
+
+                if(rent_sqm==''){
+
+                    $("#rent_sqm_confirm").html('N/A');
+                    $("#rent_sqm_confirm").css('font-weight', 'bold');
+
+
+                }else{
+
+                    $("#rent_sqm_confirm").html(thousands_separators(rent_sqm)+" "+currency);
+                    $("#rent_sqm_confirm").css('font-weight', 'bold');
+
+
+                }
+
+
+
+                $("#payment_cycle_confirm").html(payment_cycle);
+                $("#payment_cycle_confirm").css('font-weight', 'bold');
+
+
+                $("#escalation_rate_confirm").html(escalation_rate);
+                $("#escalation_rate_confirm").css('font-weight', 'bold');
+
+
+
+                if(client_type=='1'){
+
+                    $("#client_type_confirm").html("Individual");
+                    $("#client_type_confirm").css('font-weight', 'bold');
+
+
+                    $("#first_name_row_confirm").show();
+                    $("#last_name_row_confirm").show();
+                    $("#company_name_row_confirm").hide();
+
+
+                }else if(client_type=='2'){
+
+                    $("#client_type_confirm").html("Company");
+                    $("#client_type_confirm").css('font-weight', 'bold');
+
+                    $("#first_name_row_confirm").hide();
+                    $("#last_name_row_confirm").hide();
+                    $("#company_name_row_confirm").show();
+
+                }else{
+
+                    $("#first_name_row_confirm").hide();
+                    $("#last_name_row_confirm").hide();
+                    $("#company_name_row_confirm").hide();
+
+                }
+
+
+                if(academic_dependence=='Yes'){
+
+                    $("#amount_academic_row_confirm").show();
+                    $("#amount_vacation_row_confirm").show();
+                    $("#amount_row_confirm").hide();
+
+                }else if(academic_dependence=='No'){
+
+                    $("#amount_academic_row_confirm").hide();
+                    $("#amount_vacation_row_confirm").hide();
+                    $("#amount_row_confirm").show();
+
+                }else{
+                    $("#amount_academic_row_confirm").hide();
+                    $("#amount_vacation_row_confirm").hide();
+                    $("#amount_row_confirm").hide();
+                }
+
+
+
+
+                gonext();
+
+
+            });
+
+
+
 
             function gonext(){
                 console.log(3);
