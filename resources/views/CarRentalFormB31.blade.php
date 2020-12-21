@@ -433,6 +433,16 @@ $today=date('Y-m-d');
 						</div>
 					</div>
 
+                    @if($nature =='Private')
+        <div class="form-group" id="initial_amountdiv">
+            <div class="form-wrapper" >
+                <label for="initial_pay">Initial Amount<span style="color: red;">*</span></label>
+                <span id="initialmsg"></span>
+                <input type="text" id="initial_amount" name="initial_amount" class="form-control" autocomplete="off" value="{{number_format($contract->initial_payment)}}" readonly="">
+            </div>
+        </div>
+    @endif
+
                                 </div>
                             </fieldset>
 
@@ -538,62 +548,76 @@ $today=date('Y-m-d');
                        <form id="msform" method="post" action="{{ route('newCarcontractD1') }}" style="font-size: 17px;">
                             {{csrf_field()}}
                             <fieldset>
-                                <div class="form-card">
-                                   {{--  <div class="form-group">
-                        <div class="form-wrapper">
-                  <div class="row">
-                  <div class="form-wrapper col-2">
-                  <label for="business_filter" style=" display: block;
-    white-space: nowrap;">Approve
-                  <input class="form-check-input" type="radio" name="head_cptu_approval_status" id="Accepted" value="Accepted">
-                </label>
-                 </div>
-
-                 <div class="form-wrapper col-2">
-                  <label for="contract_filter" style=" display: block;
-    white-space: nowrap;">Not Approve
-                   <input class="form-check-input" type="radio" name="head_cptu_approval_status" id="Rejected" value="Rejected">
-                   </label>
-                </div>
-               </div>
-                                </div>
-<br>
-                                 <div class="form-group" id="cptu_reasondiv" style="display: none;">
-                    <div class="form-wrapper">
-                        <label for="cptu_reason">Reason</label>
-                         <textarea type="text" id="cptu_reason" name="cptu_reason" class="form-control" value="" style="border: inset !important;"></textarea>
-                    </div>
-                </div>
-                            </div> --}}
+                @if($nature=='Private')
+                    @if($payment_status=='Paid')
+                        <div class="form-card">        
                             <div class="form-group">
-                    <div class="form-wrapper">
-                        <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
-                         <span id="vehiclemsg"></span>
-                        {{-- <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
-                         <span id="nameList"></span> --}}
-                         <select id="vehicle_reg" name="vehicle_reg" class="form-control" required="">
-                        <option value="" disabled selected hidden>Select Vehicle Reg No</option>
-                        @foreach($data as $data)
-                        <option value="{{$data->vehicle_reg_no}}">{{$data->vehicle_reg_no}} - {{$data->vehicle_model}}</option>
-                        @endforeach
-                         </select>
-                    </div>
-                </div>
-                <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
-                            <label for="approve_name">Name<span style="color: red;">*</span></label>
-                            <span id="approve_namemsg"></span>
-                            <input type="text" id="head_cptu_name" name="head_cptu_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
-                        </div>
-                        <div class="form-wrapper col-6">
-                            <label for="approve_date">Date<span style="color: red;">*</span></label>
-                            <span id="approve_datemsg"></span>
-                            <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$today}}" readonly="">
-                        </div>
-                    </div>
-                    <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
+                                <div class="form-wrapper">
+                                    <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
+                                     <span id="vehiclemsg"></span>
+                                    {{-- <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
+                                     <span id="nameList"></span> --}}
+                                     <select id="vehicle_reg" name="vehicle_reg" class="form-control" required="">
+                                    <option value="" disabled selected hidden>Select Vehicle Reg No</option>
+                                    @foreach($data as $data)
+                                    <option value="{{$data->vehicle_reg_no}}">{{$data->vehicle_reg_no}} - {{$data->vehicle_model}}</option>
+                                    @endforeach
+                                     </select>
+                                </div>
                             </div>
-                             <button class="btn btn-primary" type="submit">Forward</button>
+                            <div class="form-group row" id="approvedbydiv">
+                                <div class="form-wrapper col-6">
+                                    <label for="approve_name">Name<span style="color: red;">*</span></label>
+                                    <span id="approve_namemsg"></span>
+                                    <input type="text" id="head_cptu_name" name="head_cptu_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
+                                </div>
+                                <div class="form-wrapper col-6">
+                                    <label for="approve_date">Date<span style="color: red;">*</span></label>
+                                    <span id="approve_datemsg"></span>
+                                    <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$today}}" readonly="">
+                                </div>
+                            </div>
+                                <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
+                            </div>
+                            <button class="btn btn-primary" type="submit">Forward</button>
+                    @else
+                        <div class="form-card">
+                            <p>This Client has not yet paid the initial amount for the trip of TZS {{$contract->initial_payment}}</p>
+                        </div>
+                    @endif
+                    @else
+                        <div class="form-card">        
+                            <div class="form-group">
+                                <div class="form-wrapper">
+                                    <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
+                                     <span id="vehiclemsg"></span>
+                                    {{-- <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
+                                     <span id="nameList"></span> --}}
+                                     <select id="vehicle_reg" name="vehicle_reg" class="form-control" required="">
+                                    <option value="" disabled selected hidden>Select Vehicle Reg No</option>
+                                    @foreach($data as $data)
+                                    <option value="{{$data->vehicle_reg_no}}">{{$data->vehicle_reg_no}} - {{$data->vehicle_model}}</option>
+                                    @endforeach
+                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="approvedbydiv">
+                                <div class="form-wrapper col-6">
+                                    <label for="approve_name">Name<span style="color: red;">*</span></label>
+                                    <span id="approve_namemsg"></span>
+                                    <input type="text" id="head_cptu_name" name="head_cptu_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
+                                </div>
+                                <div class="form-wrapper col-6">
+                                    <label for="approve_date">Date<span style="color: red;">*</span></label>
+                                    <span id="approve_datemsg"></span>
+                                    <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$today}}" readonly="">
+                                </div>
+                            </div>
+                                <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
+                            </div>
+                            <button class="btn btn-primary" type="submit">Forward</button>
+                    @endif
+                         
                         </fieldset>
                     </form>
 

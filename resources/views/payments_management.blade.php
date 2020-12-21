@@ -176,19 +176,23 @@
                     @endif
 
 
-                    @if ($category=='Real Estate only' OR $category=='All')
-                        <button class="tablinks bills" onclick="openInvoices(event, 'water_payments')"><strong>Water Bills</strong></button>
-                        <button class="tablinks bills" onclick="openInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
-                    @else
-                    @endif
+
 
 
                 </div>
 
 
+
                 <div id="space_payments" class="tabcontent">
                     <br>
-                    <h5>Real Estate Payments</h5>
+                    <div class="tab" style="">
+
+                        <button class="tablinks_inner " onclick="openInnerInvoices(event, 'space_payments_inner')" id="defaultOpen"><strong>Space</strong></button>
+                        <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'water_payments')"><strong>Water Bills</strong></button>
+                        <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
+                    </div>
+
+                <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
                     <br>
 
                     @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
@@ -490,8 +494,658 @@
                     @else
                         <p>No records found</p>
                     @endif
+                </div>
+
+                <div id="water_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%;">
+                    <br>
+                    <h5>Water Bill Payments</h5>
+                    <br>
+
+                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                    @else
+                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @endif
+
+
+                    <div class="modal fade" id="new_payment_water" role="dialog">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <b><h5 class="modal-title">Adding New Water bill Payment</h5></b>
+
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <form method="post" action="{{ route('create_water_payment_manually')}}"  id="form1" >
+                                        {{csrf_field()}}
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                    <input type="number" min="1" class="form-control" id="invoice_number_water" name="invoice_number" value="" Required autocomplete="off">
+                                                    <p id="invoice_availability_water" ></p>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group col-md-6">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
+                                                    <input type="number" min="1" class="form-control" id="votebook_water" name="invoice_number_votebook" value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                    <input type="number" min="0" class="form-control" id="amount_paid_water" name="amount_paid" value="" Required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+
+
+
+                                            <div class="form-group col-md-12">
+                                                <label>Currency <span style="color: red;">*</span></label>
+                                                <div  class="form-wrapper">
+{{--                                                    <select id="currency_water" class="form-control" required name="currency_payments">--}}
+{{--                                                        <option value="" ></option>--}}
+{{--                                                        <option value="TZS" >TZS</option>--}}
+{{--                                                        <option value="USD" >USD</option>--}}
+{{--                                                    </select>--}}
+                                                    <input type="text"  class="form-control" id="currency_water" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="receipt_water" name="receipt_number" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+
+
+
+
+
+
+                                        </div>
+
+
+                                        <div align="right">
+                                            <button id="submit_water" class="btn btn-primary" type="submit">Save</button>
+                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+
+
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <?php
+                    $i=1;
+                    ?>
+
+                    @if(count($water_bill_payments)>0)
+<br><br>
+
+<div class="col-sm-12">
+    <div class="pull-right">
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group row" style="margin-right: 5px;">
+          <div style="padding: 0px 7px;">
+              From 
+            </div>
+            <div >
+              <input type="date" id="start_date4" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+               <span id="start_msg4"></span>
+            </div>
+
+           <div style="padding: 0px 7px;">
+              To 
+            </div>
+
+            <div >
+           <input type="date" id="end_date4" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+            <span id="end_msg4"></span>
+            </div>
+        </div>
+      
+      <div class="form-group"  style="margin-right: -13px;">
+          <input type="submit" name="filter" value="Filter" id="water_filter" class="btn btn-primary">
+      </div>
+    </form>   
+  </div>
+</div>
+<div id="water_content">
+                        <table class="hover table table-striped  table-bordered" id="myTable4">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+
+                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach($water_bill_payments as $var)
+                                <tr>
+
+                                    <td><center>{{$i}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
+                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                    <td><center>{{$var->receipt_number}}</center></td>
+                                    <td><center>
+
+
+
+                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                            <div class="modal fade" id="invoice_water{{$var->invoice_number}}" role="dialog">
+
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Number:</td>
+                                                                    <td>{{$var->invoice_number}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Start Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> End Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Period:</td>
+                                                                    <td> {{$var->period}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Project ID:</td>
+                                                                    <td> {{$var->project_id}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Debt:</td>
+                                                                    <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Current Amount:</td>
+                                                                    @if($var->current_amount==0)
+                                                                        <td>N/A</td>
+                                                                    @else
+                                                                        <td>{{number_format($var->current_amount)}} {{$var->currency_invoice}}</td>
+                                                                    @endif
+
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <td>Cumulative Amount:</td>
+                                                                    @if($var->cumulative_amount==0)
+                                                                        <td>N/A</td>
+                                                                    @else
+                                                                        <td>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
+                                                                    @endif
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>{{$var->gepg_control_no}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Payment Status:</td>
+                                                                    <td>{{$var->payment_status}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>Comments:</td>
+                                                                    <td>{{$var->user_comments}}</td>
+                                                                </tr>
+
+
+
+
+
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </center></td>
+
+
+
+
+
+                                </tr>
+                                <?php
+                                $i=$i+1;
+                                ?>
+
+                            @endforeach
+
+
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @else
+                        <p>No records found</p>
+                    @endif
 
                 </div>
+
+
+                <div id="electricity_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%;">
+                    <br>
+                    <h5>Electricity Bill Payments</h5>
+                    <br>
+
+                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                    @else
+                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_electricity" title="Record new electricity bill payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @endif
+
+
+                    <div class="modal fade" id="new_payment_electricity" role="dialog">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <b><h5 class="modal-title">Adding New Electricity bill Payment</h5></b>
+
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <form method="post" action="{{ route('create_electricity_payment_manually')}}"  id="form1" >
+                                        {{csrf_field()}}
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                    <input type="number" min="1" class="form-control" id="invoice_number_electricity" name="invoice_number" value="" Required autocomplete="off">
+                                                    <p id="invoice_availability_electricity" ></p>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group col-md-6">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
+                                                    <input type="number" min="1" class="form-control" id="votebook_electricity" name="invoice_number_votebook" value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                    <input type="number" min="0" class="form-control" id="amount_paid_electricity" name="amount_paid" value="" Required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+
+
+
+                                            <div class="form-group col-md-12">
+                                                <label>Currency <span style="color: red;">*</span></label>
+                                                <div  class="form-wrapper">
+{{--                                                    <select id="currency_electricity" class="form-control" required name="currency_payments">--}}
+{{--                                                        <option value="" ></option>--}}
+{{--                                                        <option value="TZS" >TZS</option>--}}
+{{--                                                        <option value="USD" >USD</option>--}}
+{{--                                                    </select>--}}
+                                                    <input type="text"  class="form-control" id="currency_electricity" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="receipt_electricity" name="receipt_number" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+
+
+
+
+
+
+                                        </div>
+
+
+                                        <div align="right">
+                                            <button id="submit_electricity" class="btn btn-primary" type="submit">Save</button>
+                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+
+
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <?php
+                    $i=1;
+                    ?>
+
+                    @if(count($electricity_bill_payments)>0)
+    <br><br>
+    <div class="col-sm-12">
+    <div class="pull-right">
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group row" style="margin-right: 5px;">
+          <div style="padding: 0px 7px;">
+              From 
+            </div>
+            <div >
+              <input type="date" id="start_date5" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+               <span id="start_msg5"></span>
+            </div>
+
+           <div style="padding: 0px 7px;">
+              To 
+            </div>
+
+            <div >
+           <input type="date" id="end_date5" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+            <span id="end_msg5"></span>
+            </div>
+        </div>
+      
+      <div class="form-group"  style="margin-right: -13px;">
+          <input type="submit" name="filter" value="Filter" id="electricity_filter" class="btn btn-primary">
+      </div>
+    </form>   
+  </div>
+</div>
+
+<div id="electricity_content">
+                        <table class="hover table table-striped  table-bordered" id="myTable5">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+
+                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+
+                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach($electricity_bill_payments as $var)
+                                <tr>
+
+                                    <td><center>{{$i}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
+                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                    <td><center>{{$var->receipt_number}}</center></td>
+                                    <td><center>
+
+
+
+                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                            <div class="modal fade" id="invoice_electricity{{$var->invoice_number}}" role="dialog">
+
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Number:</td>
+                                                                    <td>{{$var->invoice_number}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Start Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> End Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Period:</td>
+                                                                    <td> {{$var->period}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Project ID:</td>
+                                                                    <td> {{$var->project_id}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Debt:</td>
+                                                                    <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Current Amount:</td>
+                                                                    @if($var->current_amount==0)
+                                                                        <td>N/A</td>
+                                                                    @else
+                                                                        <td>{{number_format($var->current_amount)}} {{$var->currency_invoice}}</td>
+                                                                    @endif
+
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <td>Cumulative Amount:</td>
+                                                                    @if($var->cumulative_amount==0)
+                                                                        <td>N/A</td>
+                                                                    @else
+                                                                        <td>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
+                                                                    @endif
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>{{$var->gepg_control_no}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Payment Status:</td>
+                                                                    <td>{{$var->payment_status}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>Comments:</td>
+                                                                    <td>{{$var->user_comments}}</td>
+                                                                </tr>
+
+
+
+
+
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </center></td>
+
+
+
+
+
+                                </tr>
+                                <?php
+                                $i=$i+1;
+                                ?>
+
+                            @endforeach
+
+
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @else
+                        <p>No records found</p>
+                    @endif
+
+                </div>
+
+            </div>
 
 
 
@@ -1102,654 +1756,7 @@
                 </div>
 
 
-                <div id="water_payments" class="tabcontent">
-                    <br>
-                    <h5>Water Bill Payments</h5>
-                    <br>
 
-                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
-                    @else
-                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true">Add New Payment</a>
-                    @endif
-
-
-                    <div class="modal fade" id="new_payment_water" role="dialog">
-
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <b><h5 class="modal-title">Adding New Water bill Payment</h5></b>
-
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-
-                                <div class="modal-body">
-
-                                    <form method="post" action="{{ route('create_water_payment_manually')}}"  id="form1" >
-                                        {{csrf_field()}}
-
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="invoice_number_water" name="invoice_number" value="" Required autocomplete="off">
-                                                    <p id="invoice_availability_water" ></p>
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="votebook_water" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""> Amount paid <span style="color: red;">*</span></label>
-                                                    <input type="number" min="0" class="form-control" id="amount_paid_water" name="amount_paid" value="" Required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-                                            <div class="form-group col-md-12">
-                                                <label>Currency <span style="color: red;">*</span></label>
-                                                <div  class="form-wrapper">
-{{--                                                    <select id="currency_water" class="form-control" required name="currency_payments">--}}
-{{--                                                        <option value="" ></option>--}}
-{{--                                                        <option value="TZS" >TZS</option>--}}
-{{--                                                        <option value="USD" >USD</option>--}}
-{{--                                                    </select>--}}
-                                                    <input type="text"  class="form-control" id="currency_water" name="currency_payments" readonly value="" Required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Receipt Number <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="receipt_water" name="receipt_number" value="" required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-
-
-
-                                        </div>
-
-
-                                        <div align="right">
-                                            <button id="submit_water" class="btn btn-primary" type="submit">Save</button>
-                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </form>
-
-
-
-
-
-
-
-
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-                    <?php
-                    $i=1;
-                    ?>
-
-                    @if(count($water_bill_payments)>0)
-<br><br>
-
-<div class="col-sm-12">
-    <div class="pull-right">
-        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
-
-        <div class="form-group row" style="margin-right: 5px;">
-          <div style="padding: 0px 7px;">
-              From 
-            </div>
-            <div >
-              <input type="date" id="start_date4" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
-               <span id="start_msg4"></span>
-            </div>
-
-           <div style="padding: 0px 7px;">
-              To 
-            </div>
-
-            <div >
-           <input type="date" id="end_date4" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
-            <span id="end_msg4"></span>
-            </div>
-        </div>
-      
-      <div class="form-group"  style="margin-right: -13px;">
-          <input type="submit" name="filter" value="Filter" id="water_filter" class="btn btn-primary">
-      </div>
-    </form>   
-  </div>
-</div>
-<div id="water_content">
-                        <table class="hover table table-striped  table-bordered" id="myTable4">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
-
-                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
-                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            @foreach($water_bill_payments as $var)
-                                <tr>
-
-                                    <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
-                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                    <td><center>{{$var->receipt_number}}</center></td>
-                                    <td><center>
-
-
-
-                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                            <div class="modal fade" id="invoice_water{{$var->invoice_number}}" role="dialog">
-
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <table style="width: 100%">
-
-                                                                <tr>
-                                                                    <td>Client:</td>
-                                                                    <td>{{$var->debtor_name}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Start Date:</td>
-                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td> End Date:</td>
-                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Period:</td>
-                                                                    <td> {{$var->period}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td> Project ID:</td>
-                                                                    <td> {{$var->project_id}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Debt:</td>
-                                                                    <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Current Amount:</td>
-                                                                    @if($var->current_amount==0)
-                                                                        <td>N/A</td>
-                                                                    @else
-                                                                        <td>{{number_format($var->current_amount)}} {{$var->currency_invoice}}</td>
-                                                                    @endif
-
-                                                                </tr>
-
-                                                                <tr>
-
-                                                                    <td>Cumulative Amount:</td>
-                                                                    @if($var->cumulative_amount==0)
-                                                                        <td>N/A</td>
-                                                                    @else
-                                                                        <td>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
-                                                                    @endif
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>GEPG Control Number:</td>
-                                                                    <td>{{$var->gepg_control_no}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Payment Status:</td>
-                                                                    <td>{{$var->payment_status}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Invoice Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
-                                                                </tr>
-
-
-
-                                                                <tr>
-                                                                    <td>Comments:</td>
-                                                                    <td>{{$var->user_comments}}</td>
-                                                                </tr>
-
-
-
-
-
-
-                                                            </table>
-                                                            <br>
-                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                        </center></td>
-
-
-
-
-
-                                </tr>
-                                <?php
-                                $i=$i+1;
-                                ?>
-
-                            @endforeach
-
-
-
-
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    @else
-                        <p>No records found</p>
-                    @endif
-
-                </div>
-
-
-                <div id="electricity_payments" class="tabcontent">
-                    <br>
-                    <h5>Electricity Bill Payments</h5>
-                    <br>
-
-                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
-                    @else
-                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_electricity" title="Record new electricity bill payment" role="button" aria-pressed="true">Add New Payment</a>
-                    @endif
-
-
-                    <div class="modal fade" id="new_payment_electricity" role="dialog">
-
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <b><h5 class="modal-title">Adding New Electricity bill Payment</h5></b>
-
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-
-                                <div class="modal-body">
-
-                                    <form method="post" action="{{ route('create_electricity_payment_manually')}}"  id="form1" >
-                                        {{csrf_field()}}
-
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="invoice_number_electricity" name="invoice_number" value="" Required autocomplete="off">
-                                                    <p id="invoice_availability_electricity" ></p>
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="votebook_electricity" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""> Amount paid <span style="color: red;">*</span></label>
-                                                    <input type="number" min="0" class="form-control" id="amount_paid_electricity" name="amount_paid" value="" Required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-                                            <div class="form-group col-md-12">
-                                                <label>Currency <span style="color: red;">*</span></label>
-                                                <div  class="form-wrapper">
-{{--                                                    <select id="currency_electricity" class="form-control" required name="currency_payments">--}}
-{{--                                                        <option value="" ></option>--}}
-{{--                                                        <option value="TZS" >TZS</option>--}}
-{{--                                                        <option value="USD" >USD</option>--}}
-{{--                                                    </select>--}}
-                                                    <input type="text"  class="form-control" id="currency_electricity" name="currency_payments" readonly value="" Required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Receipt Number <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="receipt_electricity" name="receipt_number" value="" required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-
-
-
-                                        </div>
-
-
-                                        <div align="right">
-                                            <button id="submit_electricity" class="btn btn-primary" type="submit">Save</button>
-                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </form>
-
-
-
-
-
-
-
-
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-
-                    <?php
-                    $i=1;
-                    ?>
-
-                    @if(count($electricity_bill_payments)>0)
-    <br><br>
-    <div class="col-sm-12">
-    <div class="pull-right">
-        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
-
-        <div class="form-group row" style="margin-right: 5px;">
-          <div style="padding: 0px 7px;">
-              From 
-            </div>
-            <div >
-              <input type="date" id="start_date5" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
-               <span id="start_msg5"></span>
-            </div>
-
-           <div style="padding: 0px 7px;">
-              To 
-            </div>
-
-            <div >
-           <input type="date" id="end_date5" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
-            <span id="end_msg5"></span>
-            </div>
-        </div>
-      
-      <div class="form-group"  style="margin-right: -13px;">
-          <input type="submit" name="filter" value="Filter" id="electricity_filter" class="btn btn-primary">
-      </div>
-    </form>   
-  </div>
-</div>
-
-<div id="electricity_content">
-                        <table class="hover table table-striped  table-bordered" id="myTable5">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
-
-                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
-                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-
-                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            @foreach($electricity_bill_payments as $var)
-                                <tr>
-
-                                    <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
-                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                    <td><center>{{$var->receipt_number}}</center></td>
-                                    <td><center>
-
-
-
-                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                            <div class="modal fade" id="invoice_electricity{{$var->invoice_number}}" role="dialog">
-
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <table style="width: 100%">
-
-                                                                <tr>
-                                                                    <td>Client:</td>
-                                                                    <td>{{$var->debtor_name}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Start Date:</td>
-                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td> End Date:</td>
-                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Period:</td>
-                                                                    <td> {{$var->period}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td> Project ID:</td>
-                                                                    <td> {{$var->project_id}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Debt:</td>
-                                                                    <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Current Amount:</td>
-                                                                    @if($var->current_amount==0)
-                                                                        <td>N/A</td>
-                                                                    @else
-                                                                        <td>{{number_format($var->current_amount)}} {{$var->currency_invoice}}</td>
-                                                                    @endif
-
-                                                                </tr>
-
-                                                                <tr>
-
-                                                                    <td>Cumulative Amount:</td>
-                                                                    @if($var->cumulative_amount==0)
-                                                                        <td>N/A</td>
-                                                                    @else
-                                                                        <td>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
-                                                                    @endif
-                                                                </tr>
-
-
-
-                                                                <tr>
-                                                                    <td>GEPG Control Number:</td>
-                                                                    <td>{{$var->gepg_control_no}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Payment Status:</td>
-                                                                    <td>{{$var->payment_status}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Invoice Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
-                                                                </tr>
-
-
-
-                                                                <tr>
-                                                                    <td>Comments:</td>
-                                                                    <td>{{$var->user_comments}}</td>
-                                                                </tr>
-
-
-
-
-
-
-                                                            </table>
-                                                            <br>
-                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                        </center></td>
-
-
-
-
-
-                                </tr>
-                                <?php
-                                $i=$i+1;
-                                ?>
-
-                            @endforeach
-
-
-
-
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    @else
-                        <p>No records found</p>
-                    @endif
-
-                </div>
 
 
 
@@ -1762,7 +1769,7 @@
 @endsection
 
 @section('pagescript')
-    <script type="text/javascript">
+     <script type="text/javascript">
         window.onload=function(){
                 <?php
                 $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
@@ -1850,6 +1857,33 @@
             evt.currentTarget.className += " active";
         }
 
+    </script>
+
+
+
+    <script type="text/javascript">
+        function openInnerInvoices(evt, evtName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent_inner");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks_inner");
+
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(evtName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        document.getElementById("defaultOpen").click();
     </script>
 
 

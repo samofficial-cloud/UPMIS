@@ -85,6 +85,12 @@ class carContractsController extends Controller
 
     }
 
+    public function viewmore($id){
+        $invoices=DB::table('car_rental_invoices')->where('contract_id',$id)->orderBy('invoice_date','asc')->get();
+        $payments = DB::table('car_rental_payments')->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')->where('contract_id',$id)->orderBy('date_of_payment','asc')->get();
+        return View('carcontracts_viewmore',compact('invoices','payments'));
+    }
+
     public function addContractFormA(){
         $cost_centres=cost_centre::orderBy('costcentre_id','asc')->get();
          return view('CarRentalForm2')->with('cost_centres',$cost_centres);
@@ -109,7 +115,9 @@ class carContractsController extends Controller
         ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')->where('vehicle_reg_no','!=',null)->whereDate('end_date','>=', $start_date)->pluck('vehicle_reg_no')->toArray())
         ->where('vehicle_status','!=','Grounded')
         ->get();
-         return view('CarRentalFormB3')->with('contract',$contract)->with('data',$data);
+        $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
+        $payment_status=DB::table('car_rental_invoices')->select('payment_status')->where('contract_id',$id)->value('payment_status');
+         return view('CarRentalFormB3')->with('contract',$contract)->with('data',$data)->with('nature', $nature)->with('payment_status',$payment_status);
     }
 
     public function addContractFormD1($id){
@@ -119,12 +127,15 @@ class carContractsController extends Controller
         ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')->where('vehicle_reg_no','!=',null)->whereDate('end_date','>=', $start_date)->pluck('vehicle_reg_no')->toArray())
         ->where('vehicle_status','!=','Grounded')
         ->get();
-         return view('CarRentalFormB31')->with('contract',$contract)->with('data',$data);
+        $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
+        $payment_status=DB::table('car_rental_invoices')->select('payment_status')->where('contract_id',$id)->value('payment_status');
+         return view('CarRentalFormB31')->with('contract',$contract)->with('data',$data)->with('nature', $nature)->with('payment_status',$payment_status);
     }
 
     public function addContractFormE($id){
         $contract=carContract::find($id);
-         return view('CarRentalFormB4')->with('contract',$contract);
+        $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
+         return view('CarRentalFormB4')->with('contract',$contract)->with('nature', $nature);
     }
 
     // public function addContractForm(){
@@ -148,11 +159,50 @@ class carContractsController extends Controller
         
         if($request->get('trip_nature')=='Private'){
             $id = DB::table('car_contracts')->insertGetId(
-                    ['fullName' => $full_name, 'area_of_travel' => $request->get('area'), 'faculty' => $request->get('faculty_name'), 'cost_centre' => $request->get('centre_name'),'designation' => $request->get('designation'), 'start_date' => $start_date, 'end_date' => $end_date, 'start_time' => $request->get('start_time'), 'end_time' => $request->get('end_time'),'overtime'=>$request->get('overtime'), 'destination'=>$request->get('destination'), 'purpose'=>$request->get('purpose'), 'trip_nature'=>$request->get('trip_nature'), 'estimated_distance'=>$request->get('estimated_distance'), 'estimated_cost'=>$request->get('estimated_cost'), 'form_initiator' => Auth::user()->name, 'cptu_msg_status'=>'inbox', 'form_status'=>'Transport Officer-CPTU', 'form_completion'=>'0', 'email'=> $request->get('email'), 'first_name'=> $request->input('first_name'), 'last_name'=> $request->input('last_name')]
+                    ['fullName' => $full_name, 'area_of_travel' => $request->get('area'), 'faculty' => $request->get('faculty_name'), 'cost_centre' => $request->get('centre_name'),'designation' => $request->get('designation'), 'start_date' => $start_date, 'end_date' => $end_date, 'start_time' => $request->get('start_time'), 'end_time' => $request->get('end_time'),'overtime'=>$request->get('overtime'), 'destination'=>$request->get('destination'), 'purpose'=>$request->get('purpose'), 'trip_nature'=>$request->get('trip_nature'), 'estimated_distance'=>$request->get('estimated_distance'), 'estimated_cost'=>$request->get('estimated_cost'), 'form_initiator' => Auth::user()->name, 'cptu_msg_status'=>'inbox', 'form_status'=>'Transport Officer-CPTU', 'form_completion'=>'0', 'email'=> $request->get('email'), 'first_name'=> $request->input('first_name'), 'last_name'=> $request->input('last_name'), 'initial_payment'=>$request->get('initial_amount')]
                 );
+
+           $inserted_contract=DB::table('car_contracts')->where('id',$id)->get();
+
+            foreach($inserted_contract as $var) {
+
+                $period= date("d/m/Y",strtotime($var->start_date)).' to  '. date("d/m/Y",strtotime($var->end_date));
+
+                $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+                $amount_in_words='';
+
+                $amount_in_words=Terbilang::make($var->initial_payment,' TZS',' ');
+
+
+                $today=date('Y-m-d');
+
+                $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+
+
+
+
+                DB::table('car_rental_invoices')->insert(
+                    ['contract_id' => $var->id, 'invoicing_period_start_date' => $var->start_date,'invoicing_period_end_date' => $var->end_date,'period' => $period,'project_id' => 'Car rental','debtor_account_code' => '','debtor_name' => $var->fullName,'debtor_address' => '','amount_to_be_paid' => $var->initial_payment,'currency_invoice'=>'TZS','gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'1234','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Car Rental','prepared_by'=>Auth::user()->name,'approved_by'=>'N/A']
+                );
+
+
+            }
+
+            $invoice_number_created=DB::table('car_rental_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'car_rental']
+            );
+
+               DB::table('car_rental_payments')->insert(
+                   ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' =>null,'amount_paid' => 0,'amount_not_paid' =>$var->initial_payment,'currency_payments' => 'TZS','receipt_number' => '']
+               );
+
             $nature = 'Private';
              $contract=carContract::find($id);
-              return redirect()->route('carRentalFormB',['id' => $id]);
+          return redirect()->route('carRentalFormB',['id' => $id]);
             
         }
         else{
@@ -406,8 +456,9 @@ class carContractsController extends Controller
                 $dest = carContract::select('destination')->where('id', $id)->value('destination');
                 $vehicle = $request->get('vehicle_reg');
                 $name = carContract::select('fullName')->where('id', $id)->value('fullName');
+                $salutation = 'Central Pool Transport Unit UDSM.';
 
-                $client->notify(new RequestAccepted($start, $end, $dest, $vehicle, $name));
+                $client->notify(new RequestAccepted($start, $end, $dest, $vehicle, $name, $salutation));
 
 
                  DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
@@ -460,8 +511,8 @@ class carContractsController extends Controller
                 $dest = carContract::select('destination')->where('id', $id)->value('destination');
                 $vehicle = $request->get('vehicle_reg');
                 $name = carContract::select('fullName')->where('id', $id)->value('fullName');
-
-                $client->notify(new RequestAccepted($start, $end, $dest, $vehicle, $name));
+                 $salutation = 'Central Pool Transport Unit UDSM.';
+                $client->notify(new RequestAccepted($start, $end, $dest, $vehicle, $name, $salutation));
 
                  DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
@@ -572,7 +623,7 @@ class carContractsController extends Controller
             );
 
                DB::table('car_rental_payments')->insert(
-                   ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->grand_total,'currency_payments' => 'TZS','receipt_number' => '']
+                   ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => null,'amount_paid' => 0,'amount_not_paid' =>$var->grand_total,'currency_payments' => 'TZS','receipt_number' => '']
                );
 
              return redirect()->route('contracts_management')->with('success', 'Details Saved and Closed Successfully');

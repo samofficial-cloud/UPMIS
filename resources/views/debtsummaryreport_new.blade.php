@@ -1601,16 +1601,16 @@ function revenuetzs(row, data, start, end, display){
                     } );
                     //console.log(test);
 
-                    doc.content.splice( 4, 0, {
-                        margin: [ 0, 0, 0, 0],
-                        table: {
-                                widths: ['*', 70, 110, 180, 49, 60, 59],
-                                body: [
-                                [{text: 'TOTAL',  colSpan: 4, rowSpan: 2, alignment: 'left'}, {}, {}, {}, {text: 'TZS', alignment: 'center'},{text: revenuetzss, alignment: 'right'}, {text: debttzs, alignment: 'right'}],
-                                [{}, {}, {}, {}, {text: 'USD', alignment: 'center'},{text: revenueusd, alignment: 'right'}, {text: debtusd, alignment: 'right'}]
-                              ]
-                        }
-                    });
+                    // doc.content.splice( 4, 0, {
+                    //     margin: [ 0, 0, 0, 0],
+                    //     table: {
+                    //             widths: ['*', 70, 110, 180, 49, 60, 59],
+                    //             body: [
+                    //             [{text: 'TOTAL',  colSpan: 4, rowSpan: 2, alignment: 'left'}, {}, {}, {}, {text: 'TZS', alignment: 'center'},{text: revenuetzss, alignment: 'right'}, {text: debttzs, alignment: 'right'}],
+                    //             [{}, {}, {}, {}, {text: 'USD', alignment: 'center'},{text: revenueusd, alignment: 'right'}, {text: debtusd, alignment: 'right'}]
+                    //           ]
+                    //     }
+                    // });
                 }
             },
 
@@ -1641,11 +1641,13 @@ function revenuetzs(row, data, start, end, display){
                         i : 0;
             };
 
+
+
              var CurrencyTypeSymbol = api.cell(0, 5).data();
 
             //console.log($('#spaceTable').DataTable().rows().count());
 
-            console.log(table.rows({ page: 'current' }).nodes())
+            //console.log(table.rows({ page: 'current' }).nodes())
 
 
             var NumRows = $('#carTable').DataTable().rows().count();
@@ -1805,16 +1807,16 @@ function revenuetzs(row, data, start, end, display){
                     } );
                     //console.log(test);
 
-                    doc.content.splice( 4, 0, {
-                        margin: [ 0, 0, 0, 0],
-                        table: {
-                                widths: ['*', 70, 110, 180, 49, 60, 59],
-                                body: [
-                                [{text: 'TOTAL',  colSpan: 4, rowSpan: 2, alignment: 'left'}, {}, {}, {}, {text: 'TZS', alignment: 'center'},{text: revenuetzss, alignment: 'right'}, {text: debttzs, alignment: 'right'}],
-                                [{}, {}, {}, {}, {text: 'USD', alignment: 'center'},{text: revenueusd, alignment: 'right'}, {text: debtusd, alignment: 'right'}]
-                              ]
-                        }
-                    });
+                    // doc.content.splice( 4, 0, {
+                    //     margin: [ 0, 0, 0, 0],
+                    //     table: {
+                    //             widths: ['*', 70, 110, 180, 49, 60, 59],
+                    //             body: [
+                    //             [{text: 'TOTAL',  colSpan: 4, rowSpan: 2, alignment: 'left'}, {}, {}, {}, {text: 'TZS', alignment: 'center'},{text: revenuetzss, alignment: 'right'}, {text: debttzs, alignment: 'right'}],
+                    //             [{}, {}, {}, {}, {text: 'USD', alignment: 'center'},{text: revenueusd, alignment: 'right'}, {text: debtusd, alignment: 'right'}]
+                    //           ]
+                    //     }
+                    // });
                 }
             },
 
@@ -2007,16 +2009,16 @@ function revenuetzs(row, data, start, end, display){
                     } );
                     //console.log(test);
 
-                    doc.content.splice( 4, 0, {
-                        margin: [ 0, 0, 0, 0],
-                        table: {
-                                widths: ['*',50, 49, 80, 79],
-                                body: [
-                                [{text: 'TOTAL',  colSpan: 2, rowSpan: 2, alignment: 'left'}, {}, {text: 'TZS', alignment: 'center'},{text: revenuetzss, alignment: 'right'}, {text: debttzs, alignment: 'right'}],
-                                [{}, {}, {text: 'USD', alignment: 'center'},{text: revenueusd, alignment: 'right'}, {text: debtusd, alignment: 'right'}]
-                              ]
-                        }
-                    });
+                    // doc.content.splice( 4, 0, {
+                    //     margin: [ 0, 0, 0, 0],
+                    //     table: {
+                    //             widths: ['*',50, 49, 80, 79],
+                    //             body: [
+                    //             [{text: 'TOTAL',  colSpan: 2, rowSpan: 2, alignment: 'left'}, {}, {text: 'TZS', alignment: 'center'},{text: revenuetzss, alignment: 'right'}, {text: debttzs, alignment: 'right'}],
+                    //             [{}, {}, {text: 'USD', alignment: 'center'},{text: revenueusd, alignment: 'right'}, {text: debtusd, alignment: 'right'}]
+                    //           ]
+                    //     }
+                    // });
                 }
             },
 
