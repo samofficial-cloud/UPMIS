@@ -135,7 +135,7 @@ $year=$current-3;
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -153,29 +153,21 @@ $year=$current-3;
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
  @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+            <li class="active_nav_item"><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
 @admin
             <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
@@ -376,7 +368,7 @@ $year=$current-3;
                   <label for="principal_filter" id="principal_filter" class="form-check-label">Principal</label>
                  </div>
 
-                 
+
 
                 <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="insurance_packagefilter" id="insurance_packagefilter"  value="">
@@ -677,7 +669,7 @@ $year=$current-3;
                   <option value="{{$ay}}">{{$ay}} Months</option>
                 @endfor
               </select>
-              
+
         </div>
 
         <div class="form-wrapper col-4">
@@ -689,7 +681,7 @@ $year=$current-3;
                   <option value="{{$x}}">{{DateTime::createFromFormat('!m', $x)->format('F')}}</option>
                 @endfor
               </select>
-        </div>    
+        </div>
    </div>
 
 
@@ -1003,7 +995,7 @@ $year=$current-3;
                   <input class="form-check-input" type="checkbox" name="carrevenuereg_filter" id="carrevenuereg_filter" value="">
                   <label class="form-check-label" for="carrevenuereg_filter">Vehicle Registration No.
                    </label>
-                </div>  
+                </div>
                </div>
              </div>
            </div>
@@ -1249,7 +1241,7 @@ $year=$current-3;
         </div>
     </div>
 
- 
+
 
      <div class="form-group" id="summaryspacecriteriadiv" style="display: none;">
       <div class="form-wrapper">
@@ -2419,7 +2411,7 @@ function myFunction() {
        $("input[name='location_filter']:checked").prop("checked", false);
        $("input[name='industry_filter']:checked").prop("checked", false);
        $("input[name='status']:checked").prop("checked", false);
-       
+
        $('#insurancereporttypediv').hide();
        $('#InsurancefilterBydiv').hide();
        $('#InsurancefilterBytype').hide();
@@ -2646,7 +2638,7 @@ function myFunction() {
         // $('#summary_businessdiv').show();
         // $('#summary_locationdiv').show();
       }
-      
+
       else if(query471=='industry'){
         $('#summary_business_filter_div').hide();
         $('#summary_location_filter_div').hide();
@@ -2663,7 +2655,7 @@ function myFunction() {
       else{
         $('#summaryspacefilterBydiv').hide();
       }
-      
+
     });
 
     $("#summary_business_filter").click(function(){
@@ -3281,7 +3273,7 @@ $("#tenancy_location_filter").click(function(){
       $('#tenancy_location').val(" ");
     }
 });
- 
+
 
 $("#t_invoice_payment_filter").click(function(){
     if($(this).is(":checked")){
@@ -4201,7 +4193,7 @@ var a100=0;
            $('#Inbusinesstypemsg').hide();
            $('#Inbusiness_type').attr('style','border:1px solid #ccc');
         }
-      
+
        if($('#In_client_filter').is(":checked")){
         $("#In_client_filter").val("true");
         var query36=$('#In_clientname').val();
@@ -4328,7 +4320,7 @@ var a100=0;
         }
       }
       else{
-       p481=1; 
+       p481=1;
       }
 
       if($('#summary_location_filter').is(":checked")){
@@ -4348,7 +4340,7 @@ var a100=0;
         }
       }
       else{
-        p482=1; 
+        p482=1;
       }
 
       if($('#summary_year_filter').is(":checked")){
@@ -4394,7 +4386,9 @@ var a100=0;
       }
       else{
         p483=1;
+
         p4831 =1; 
+
       }
 
       if($('#summary_year_filter2').is(":checked")){
@@ -4440,7 +4434,9 @@ var a100=0;
       }
       else{
         p484=1;
+
         p485=1; 
+
       }
       if(p480==1 && p481==1 && p482==1&&p483==1 &&p4831==1 &&p484==1&&p485==1){
         var _token = $('input[name="_token"]').val();
@@ -4657,9 +4653,9 @@ var a100=0;
               $('#tenancy_start').attr('style','border: 1px solid #ccc');
             }
 
-            if($('#tenancy_business_filter').is(":checked")){    
+            if($('#tenancy_business_filter').is(":checked")){
               var query453=$('#tenancy_business').val();
-              
+
               if(query453==null){
                 p453=0;
                 $('#tenancybusinessmsg').show();
@@ -4678,12 +4674,12 @@ var a100=0;
               p453=1;
               $('#tenancybusinessmsg').hide();
               $('#tenancy_business').attr('style','border:1px solid #ccc');
-            } 
+            }
 
 
-            if($('#tenancy_location_filter').is(":checked")){    
+            if($('#tenancy_location_filter').is(":checked")){
               var query454=$('#tenancy_location').val();
-              
+
               if(query454==null){
                 p454=0;
                 $('#tenancylocationmsg').show();
@@ -4702,7 +4698,7 @@ var a100=0;
               p454=1;
               $('#tenancylocationmsg').hide();
               $('#tenancy_location').attr('style','border:1px solid #ccc');
-            }         
+            }
 
             if(p450==1 && p451==1 && p452==1 && p453==1 && p454==1){
               var _token = $('input[name="_token"]').val();
@@ -5117,7 +5113,7 @@ var a100=0;
                 var message=document.getElementById('client_startdatemsg');
                 message.style.color='red';
                 message.innerHTML="Required";
-                $('#client_start_date').attr('style','border-bottom:1px solid #f00'); 
+                $('#client_start_date').attr('style','border-bottom:1px solid #f00');
               }
               else{
                 p201=1;
@@ -5128,7 +5124,7 @@ var a100=0;
                 var message=document.getElementById('client_enddatemsg');
                 message.style.color='red';
                 message.innerHTML="Required";
-                $('#client_end_date').attr('style','border-bottom:1px solid #f00'); 
+                $('#client_end_date').attr('style','border-bottom:1px solid #f00');
               }
               else{
                 p202=1;
@@ -5140,7 +5136,7 @@ var a100=0;
                     query202 = query203;
                 }
               }
-              
+
 
          }
          else{
@@ -5299,7 +5295,7 @@ var a100=0;
         else{
           p29=1; p30=1; p31=1;
         }
-        
+
 
 
         if(p25==1 && p26==1 && p27==1 &&p28==1 && p29==1&&p30==1&&p31==1){

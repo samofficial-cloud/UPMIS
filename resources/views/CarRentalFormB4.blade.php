@@ -263,7 +263,7 @@ $today=date('Y-m-d');
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -281,22 +281,14 @@ $today=date('Y-m-d');
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -800,7 +792,7 @@ $today=date('Y-m-d');
                 var covered = end - initial;
                 $('#mileage_km').val(covered);
             }
-                
+
             }
 
             var charge= parseInt($('#charge_km').val());
@@ -808,7 +800,7 @@ $today=date('Y-m-d');
             if((charge!="")&&(mileage!="")){
                 var cost = charge * mileage;
                 $('#mileage_tshs').val(cost);
-            }              
+            }
         });
 
         $('#mileage_km').keyup(function(e){
@@ -817,8 +809,8 @@ $today=date('Y-m-d');
             if((charge!="")&&(mileage!="")){
                 var cost = charge * mileage;
                 $('#mileage_tshs').val(cost);
-            }              
-         });   
+            }
+         });
 
         $('#mileage_tshs').click(function(e){
             var charge= parseInt($('#charge_km').val());
@@ -826,7 +818,7 @@ $today=date('Y-m-d');
             if((charge!="")&&(mileage!="")){
                 var cost = charge * mileage;
                 $('#mileage_tshs').val(cost);
-            }    
+            }
          });
 
          $('#charge_km').keyup(function(e){
@@ -835,9 +827,9 @@ $today=date('Y-m-d');
             if((charge!="")&&(mileage!="")){
                 var cost = charge * mileage;
                 $('#mileage_tshs').val(cost);
-            }  
+            }
 
-         });      
+         });
 
         $('#speedmeter_km').keyup(function(e){
              $('#mileage_km').val("");
@@ -850,19 +842,19 @@ $today=date('Y-m-d');
             if(initial!=""){
                 var covered = end - initial;
                 $('#mileage_km').val(covered);
-            
+
             var charge= parseInt($('#charge_km').val());
             var mileage= parseInt($('#mileage_km').val());
             if((charge!="")&&(mileage!="")){
                 var cost = charge * mileage;
                 $('#mileage_tshs').val(cost);
-            }                  
+            }
             }
             else{
              $('#mileage_km').val("");
              $('#mileage_tshs').val("");
             }
-            
+
         });
 
 

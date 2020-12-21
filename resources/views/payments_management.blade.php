@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 @section('style')
     <style type="text/css">
@@ -3481,3 +3482,4 @@ $("#electricity_filter").click(function(e){
     </script>
 
 @endsection
+

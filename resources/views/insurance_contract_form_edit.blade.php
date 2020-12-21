@@ -273,19 +273,11 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
@@ -316,7 +308,6 @@
                                         <!-- progressbar -->
                                         <ul id="progressbar">
                                             <li class="active" id="personal"><strong>Insurance</strong></li>
-                                            <li  id="vehicle"><strong>Vehicle</strong></li>
                                             <li id="payment"><strong>Payment</strong></li>
                                         </ul>
                                         <!-- fieldsets -->
@@ -332,14 +323,6 @@
 
                                                         <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="space_location"  ><strong>Client Name</strong> <span style="color: red;"> *</span></label>
-                                                            <span id="client_msg"></span>
-                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" class="form-control" required>
-                                                        </div>
-
-
-                                                        <div class="form-wrapper col-12">
-                                                            <br>
                                                             <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
                                                             <span id="class_msg"></span>
                                                             <select id="insurance_class" class="form-control"  Required name="insurance_class">
@@ -351,36 +334,18 @@
                                                                     @if($class->classes!=$var->insurance_class)
                                                                         @if($class->classes!='')
 
-                                                                    <option value="{{$class->classes}}">{{$class->classes}}</option>
-                                                                            @else
-                                                                            @endif
-
+                                                                            <option value="{{$class->classes}}">{{$class->classes}}</option>
                                                                         @else
                                                                         @endif
+
+                                                                    @else
+                                                                    @endif
 
                                                                 @endforeach
                                                             </select>
 
 
                                                         </div>
-
-
-
-                                                        <div class="form-wrapper col-6 pt-4">
-                                                            <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
-                                                            <span id="phone_msg"></span>
-                                                            <input type="text" id="phone_number"  value="{{$var->phone_number}}" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-                                                        </div>
-
-                                                        <div class="form-wrapper col-6 pt-4">
-                                                            <label for="email">Email <span style="color: red;"> *</span></label>
-                                                            <span id="email_msg"></span>
-                                                            <input type="text" name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
-                                                        </div>
-
-
-
-
 
 
                                                         <div class="form-wrapper col-12">
@@ -414,7 +379,7 @@
                                                                     <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
                                                                     <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
                                                                 @elseif($var->insurance_type=="THIRD PARTY")
-                                                                <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
+                                                                    <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
                                                                     <option value="{{$var->insurance_type}}" id="Option" selected>{{$var->insurance_type}}</option>
                                                                 @elseif($var->insurance_type=="COMPREHENSIVE")
                                                                     <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
@@ -430,6 +395,69 @@
                                                             <label for="insurance_type_na"><strong>Type <span style="color: red;"> *</span></strong></label>
                                                             <input type="text" class="form-control" id="insurance_type_na" name="insurance_type" readonly  value="N/A" autocomplete="off">
 
+                                                        </div>
+
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-wrapper col-12">
+                                                            <br>
+                                                            <label for="space_location"  ><strong>Client Name</strong> <span style="color: red;"> *</span></label>
+                                                            <span id="client_msg"></span>
+                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" class="form-control" required>
+                                                        </div>
+
+
+
+                                                        <div class="form-wrapper col-6 pt-4">
+                                                            <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
+                                                            <span id="phone_msg"></span>
+                                                            <input type="text" id="phone_number"  value="{{$var->phone_number}}" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                        </div>
+
+                                                        <div class="form-wrapper col-6 pt-4">
+                                                            <label for="email">Email <span style="color: red;"> *</span></label>
+                                                            <span id="email_msg"></span>
+                                                            <input type="text" name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
+                                                        </div>
+
+
+
+
+
+
+
+
+                                                        <div id="vehicle_registration_noDiv" class="form-wrapper col-12">
+                                                            <br>
+                                                            <label for="client_type"><strong>Vehicle Registration Number</strong></label>
+                                                            <span id="vehicle_registration_no_msg"></span>
+
+                                                            <input type="text" id="vehicle_registration_no" value="{{$var->vehicle_registration_no}}" name="vehicle_registration_no" class="form-control" >
+                                                        </div>
+
+                                                        <br>
+                                                        <div id="vehicle_useDiv" class="form-wrapper col-12">
+                                                            <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
+                                                            <span id="vehicle_use_msg"></span>
+                                                            <select class="form-control" id="vehicle_use" name="vehicle_use">
+
+                                                                @if($var->vehicle_use=='PRIVATE')
+                                                                    <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
+                                                                    <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
+                                                                @elseif($var->vehicle_use=='COMMERCIAL')
+                                                                    <option value="PRIVATE" id="Option" >PRIVATE</option>
+                                                                    <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
+                                                                @else
+                                                                    <option value="" id="Option"></option>
+                                                                    <option value="PRIVATE" id="Option" >PRIVATE</option>
+                                                                    <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
+                                                                @endif
+
+                                                            </select>
                                                         </div>
 
 
@@ -453,54 +481,7 @@
 
 
 
-                                        {{-- Second Form --}}
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 style="text-align: center" class="fs-title">Vehicle Information</h2>
 
-
-
-
-                                                <div class="form-group row">
-                                                    <div class="form-wrapper col-12">
-                                                        <br>
-                                                        <label for="client_type"><strong>Vehicle Registration Number</strong></label>
-                                                        <span id="v_regno_msg"></span>
-
-                                                        <input type="text" id="vehicle_registration_no" value="{{$var->vehicle_registration_no}}" name="vehicle_registration_no" class="form-control" >
-                                                    </div>
-
-                                                    <br>
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
-                                                        <span id="v_use_msg"></span>
-                                                        <select class="form-control" id="vehicle_use" name="vehicle_use">
-
-                                                            @if($var->vehicle_use=='PRIVATE')
-                                                                <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
-                                                                <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
-                                                            @elseif($var->vehicle_use=='COMMERCIAL')
-                                                            <option value="PRIVATE" id="Option" >PRIVATE</option>
-                                                            <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
-                                                                @else
-                                                                <option value="" id="Option"></option>
-                                                                <option value="PRIVATE" id="Option" >PRIVATE</option>
-                                                                <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
-                                                                @endif
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-
-                                                <br>
-                                                <br>
-                                            </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
-                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
-                                        </fieldset>
                                         {{-- Third Form --}}
 
                                         <fieldset>
@@ -511,42 +492,23 @@
                                                         <label for="start_date">Commission Date <span style="color: red;"> *</span></label>
                                                         <input type="date" id="commission_date" value="{{$var->commission_date}}" name="commission_date" class="form-control" required="" >
                                                     </div>
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="duration">Duration <span style="color: red;"> *</span></label>
-                                                        <input type="number"  min="1" max="50" id="duration" value="{{$var->duration}}" name="duration" class="form-control" required="" >
-                                                    </div>
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="cur">Period <span style="color: red;"> *</span></label>
-                                                        <select id="cur" class="form-control" name="duration_period"  required>
+                                                    <input type="hidden"  min="1" max="50" id="duration" name="duration" class="form-control" value="1" >
 
+                                                    <input type="hidden"  id="duration_period" name="duration_period" class="form-control" value="Years" >
 
-                                                            @if($var->duration_period=='Months')
-                                                                <option value="Years" >Years</option>
-                                                                <option value="{{$var->duration_period}}" selected id="Option">{{$var->duration_period}}</option>
-                                                            @elseif($var->duration_period=='Years')
-                                                                <option value="Months" >Months</option>
-                                                                <option value="{{$var->duration_period}}" selected id="Option">{{$var->duration_period}}</option>
-                                                            @else
-
-                                                            @endif
-
-
-                                                        </select>
-                                                    </div>
                                                 </div>
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-6">
+                                                    <div class="form-wrapper col-12">
                                                         <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
                                                         <input type="number" min="20" id="sum_insured" name="sum_insured"  value="{{$var->sum_insured}}" class="form-control" required="">
                                                     </div>
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Premium <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="0"  id="premium" readonly name="premium" value="{{$var->premium}}" class="form-control" required="">
-                                                    </div>
+
+                                                        <input type="hidden" min="0" id="premium" readonly name="premium" value="{{$var->premium}}" class="form-control">
+
 
 
 
@@ -573,15 +535,11 @@
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Commission(%) <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="1"  step="0.01" class="form-control"  readonly name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage" autocomplete="off">
-                                                    </div>
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="amount">Commission <span style="color: red;"> *</span></label>
-                                                        <input type="number" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value="{{$var->commission}}" required autocomplete="off">
-                                                    </div>
+                                                    <input type="hidden" min="1"  step="0.01" class="form-control"  readonly name="commission_percentage"  value="{{$var->commission_percentage}}"  id="commission_percentage" autocomplete="off">
+
+
+                                                    <input type="hidden" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value="{{$var->commission}}"  autocomplete="off">
 
 
                                                     <div class="form-wrapper col-12">
@@ -1090,6 +1048,11 @@
                 var query=$(this).val();
                 if(query=='MOTOR'){
                     $('#vehicle').show();
+
+
+                    $('#vehicle_registration_noDiv').show();
+                    $('#vehicle_useDiv').show();
+
                     properNextZero();
 
                     $('#cover_noteDiv').show();
@@ -1110,9 +1073,12 @@
 
                 }else{
                     $('#vehicle').hide();
-                    properNext();
+                    // properNext();
+                    properNextZero();
                     $('#vehicle_registration_no').val("");
+                    $('#vehicle_registration_noDiv').hide();
                     $('#vehicle_use').val("");
+                    $('#vehicle_useDiv').hide();
 
                     $('#cover_noteDiv').hide();
                     document.getElementById("cover_note").disabled = true;
@@ -1147,7 +1113,7 @@
 
         var current_fs, next_fs, previous_fs; //fieldsets
         var opacity;
-        var p1, p2,p3,p4;
+        var p1, p2,p3,p4,p7,p8;
         var temp;
 
         function properNext(){
@@ -1179,6 +1145,8 @@
                 var insurance_type_na=document.getElementById('insurance_type_na').value;
                 var email=$("#email").val();
                 var insurance_typ=$("#insurance_type").val();
+                var vehicle_registration_no=$("#vehicle_registration_no").val();
+                var vehicle_use=$("#vehicle_use").val();
 
 
                 if (client_name==""){
@@ -1246,8 +1214,35 @@
                 }
 
 
+                if (vehicle_registration_no == "") {
+                    p7 = 0;
+                    $('#vehicle_registration_no_msg').show();
+                    var message = document.getElementById('vehicle_registration_no_msg');
+                    message.style.color = 'red';
+                    message.innerHTML = "Required";
+                    $('#vehicle_registration_no').attr('style', 'border-bottom:1px solid #f00');
 
+                } else {
+                    p7 = 1;
+                    $('#vehicle_registration_no_msg').hide();
+                    $('#vehicle_registration_no').attr('style', 'border-bottom: 1px solid #ccc');
 
+                }
+
+                if (vehicle_use == "") {
+                    p8 = 0;
+                    $('#vehicle_use_msg').show();
+                    var message = document.getElementById('vehicle_use_msg');
+                    message.style.color = 'red';
+                    message.innerHTML = "Required";
+                    $('#vehicle_use').attr('style', 'border-bottom:1px solid #f00');
+
+                } else {
+                    p8 = 1;
+                    $('#vehicle_use_msg').hide();
+                    $('#vehicle_use').attr('style', 'border-bottom: 1px solid #ccc');
+
+                }
 
 
 
@@ -1287,90 +1282,192 @@
 
                     var visible_status=$('#TypeDivNA:visible').length;
 
-                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1'){
+
+                    if (insurance_company=="MOTOR"){
 
 
-                        var type_var= document.getElementById("insurance_type").value;
-                        var type_na_var=document.getElementById("insurance_type_na").value;
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p7=='1' & p8=='1'){
 
-                        var _token = $('input[name="_token"]').val();
 
-                        if(visible_status!=0) {
-                            console.log('type_na');
-                            var type_var
-                            $.ajax({
-                                url: "{{ route('autofill_insurance_parameters') }}",
-                                method: "GET",
-                                data: {
-                                    insurance_class: insurance_class,
-                                    insurance_company: insurance_company,
-                                    insurance_type_na: insurance_type_na,
-                                    _token: _token
-                                },
-                                success: function (data) {
-                                    if(data!=""){
-                                        gonext();
-                                        document.getElementById("premium").value=data[0].price;
-                                        document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                        document.getElementById("commission").value=data[0].commission;
-                                        document.getElementById("currency").value=data[0].insurance_currency;
-                                        document.getElementById("availability_status").innerHTML ='';
+                            var type_var= document.getElementById("insurance_type").value;
+                            var type_na_var=document.getElementById("insurance_type_na").value;
 
-                                    }else{
-                                        document.getElementById("availability_status").style.color='Red';
-                                        document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            var _token = $('input[name="_token"]').val();
+
+                            if(visible_status!=0) {
+                                console.log('type_na');
+                                var type_var
+                                $.ajax({
+                                    url: "{{ route('autofill_insurance_parameters') }}",
+                                    method: "GET",
+                                    data: {
+                                        insurance_class: insurance_class,
+                                        insurance_company: insurance_company,
+                                        insurance_type_na: insurance_type_na,
+                                        _token: _token
+                                    },
+                                    success: function (data) {
+                                        if(data!=""){
+                                            gonext();
+                                            document.getElementById("premium").value=data[0].price;
+                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                            document.getElementById("commission").value=data[0].commission;
+                                            document.getElementById("currency").value=data[0].insurance_currency;
+                                            document.getElementById("availability_status").innerHTML ='';
+
+                                        }else{
+                                            document.getElementById("availability_status").style.color='Red';
+                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                        }
+                                    },
+
+                                    error : function(data) {
+
+
 
                                     }
-                                },
+                                });
+                            }else {
+                                console.log('type');
+                                $.ajax({
+                                    url: "{{ route('autofill_insurance_parameters') }}",
+                                    method: "GET",
+                                    data: {
+                                        insurance_class: insurance_class,
+                                        insurance_company: insurance_company,
+                                        insurance_type: insurance_type,
+                                        _token: _token
+                                    },
+                                    success: function (data) {
 
-                                error : function(data) {
+                                        if(data!=""){
+                                            gonext();
+                                            document.getElementById("premium").value=data[0].price;
+                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                            document.getElementById("commission").value=data[0].commission;
+                                            document.getElementById("currency").value=data[0].insurance_currency;
+                                            document.getElementById("availability_status").innerHTML ='';
+
+                                        }else{
+
+                                            document.getElementById("availability_status").style.color='Red';
+                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                        }
+
+                                    },
+
+                                    error : function(data) {
 
 
-
-                                }
-                            });
-                        }else {
-                            console.log('type');
-                            $.ajax({
-                                url: "{{ route('autofill_insurance_parameters') }}",
-                                method: "GET",
-                                data: {
-                                    insurance_class: insurance_class,
-                                    insurance_company: insurance_company,
-                                    insurance_type: insurance_type,
-                                    _token: _token
-                                },
-                                success: function (data) {
-
-                                    if(data!=""){
-                                        gonext();
-                                        document.getElementById("premium").value=data[0].price;
-                                        document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                        document.getElementById("commission").value=data[0].commission;
-                                        document.getElementById("currency").value=data[0].insurance_currency;
-                                        document.getElementById("availability_status").innerHTML ='';
-
-                                    }else{
-
-                                        document.getElementById("availability_status").style.color='Red';
-                                        document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
 
                                     }
+                                });
 
-                                },
-
-                                error : function(data) {
-
+                            }
 
 
-                                }
-                            });
+
+                        }
+
+
+
+
+                    }else{
+
+
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1'){
+
+
+                            var type_var= document.getElementById("insurance_type").value;
+                            var type_na_var=document.getElementById("insurance_type_na").value;
+
+                            var _token = $('input[name="_token"]').val();
+
+                            if(visible_status!=0) {
+                                console.log('type_na');
+                                var type_var
+                                $.ajax({
+                                    url: "{{ route('autofill_insurance_parameters') }}",
+                                    method: "GET",
+                                    data: {
+                                        insurance_class: insurance_class,
+                                        insurance_company: insurance_company,
+                                        insurance_type_na: insurance_type_na,
+                                        _token: _token
+                                    },
+                                    success: function (data) {
+                                        if(data!=""){
+                                            gonext();
+                                            document.getElementById("premium").value=data[0].price;
+                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                            document.getElementById("commission").value=data[0].commission;
+                                            document.getElementById("currency").value=data[0].insurance_currency;
+                                            document.getElementById("availability_status").innerHTML ='';
+
+                                        }else{
+                                            document.getElementById("availability_status").style.color='Red';
+                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                        }
+                                    },
+
+                                    error : function(data) {
+
+
+
+                                    }
+                                });
+                            }else {
+                                console.log('type');
+                                $.ajax({
+                                    url: "{{ route('autofill_insurance_parameters') }}",
+                                    method: "GET",
+                                    data: {
+                                        insurance_class: insurance_class,
+                                        insurance_company: insurance_company,
+                                        insurance_type: insurance_type,
+                                        _token: _token
+                                    },
+                                    success: function (data) {
+
+                                        if(data!=""){
+                                            gonext();
+                                            document.getElementById("premium").value=data[0].price;
+                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                            document.getElementById("commission").value=data[0].commission;
+                                            document.getElementById("currency").value=data[0].insurance_currency;
+                                            document.getElementById("availability_status").innerHTML ='';
+
+                                        }else{
+
+                                            document.getElementById("availability_status").style.color='Red';
+                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                        }
+
+                                    },
+
+                                    error : function(data) {
+
+
+
+                                    }
+                                });
+
+                            }
+
+
 
                         }
 
 
 
                     }
+
+
+
 
 
 
@@ -1382,90 +1479,192 @@
 
                     var visible_status=$('#TypeDivNA:visible').length;
 
-                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1'){
+                    if (insurance_company=="MOTOR"){
 
 
-                        var type_var= document.getElementById("insurance_type").value;
-                        var type_na_var=document.getElementById("insurance_type_na").value;
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1' & p7=='1' & p8=='1'){
 
-                        var _token = $('input[name="_token"]').val();
 
-                        if(visible_status!=0) {
-                            console.log('type_na');
-                            var type_var
-                            $.ajax({
-                                url: "{{ route('autofill_insurance_parameters') }}",
-                                method: "GET",
-                                data: {
-                                    insurance_class: insurance_class,
-                                    insurance_company: insurance_company,
-                                    insurance_type_na: insurance_type_na,
-                                    _token: _token
-                                },
-                                success: function (data) {
-                                    if(data!=""){
-                                        gonext();
-                                        document.getElementById("premium").value=data[0].price;
-                                        document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                        document.getElementById("commission").value=data[0].commission;
-                                        document.getElementById("currency").value=data[0].insurance_currency;
-                                        document.getElementById("availability_status").innerHTML ='';
+                            var type_var= document.getElementById("insurance_type").value;
+                            var type_na_var=document.getElementById("insurance_type_na").value;
 
-                                    }else{
-                                        document.getElementById("availability_status").style.color='Red';
-                                        document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            var _token = $('input[name="_token"]').val();
+
+                            if(visible_status!=0) {
+                                console.log('type_na');
+                                var type_var
+                                $.ajax({
+                                    url: "{{ route('autofill_insurance_parameters') }}",
+                                    method: "GET",
+                                    data: {
+                                        insurance_class: insurance_class,
+                                        insurance_company: insurance_company,
+                                        insurance_type_na: insurance_type_na,
+                                        _token: _token
+                                    },
+                                    success: function (data) {
+                                        if(data!=""){
+                                            gonext();
+                                            document.getElementById("premium").value=data[0].price;
+                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                            document.getElementById("commission").value=data[0].commission;
+                                            document.getElementById("currency").value=data[0].insurance_currency;
+                                            document.getElementById("availability_status").innerHTML ='';
+
+                                        }else{
+                                            document.getElementById("availability_status").style.color='Red';
+                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                        }
+                                    },
+
+                                    error : function(data) {
+
+
 
                                     }
-                                },
+                                });
+                            }else {
+                                console.log('type');
+                                $.ajax({
+                                    url: "{{ route('autofill_insurance_parameters') }}",
+                                    method: "GET",
+                                    data: {
+                                        insurance_class: insurance_class,
+                                        insurance_company: insurance_company,
+                                        insurance_type: insurance_type,
+                                        _token: _token
+                                    },
+                                    success: function (data) {
 
-                                error : function(data) {
+                                        if(data!=""){
+                                            gonext();
+                                            document.getElementById("premium").value=data[0].price;
+                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                            document.getElementById("commission").value=data[0].commission;
+                                            document.getElementById("currency").value=data[0].insurance_currency;
+                                            document.getElementById("availability_status").innerHTML ='';
+
+                                        }else{
+
+                                            document.getElementById("availability_status").style.color='Red';
+                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                        }
+
+                                    },
+
+                                    error : function(data) {
 
 
-
-                                }
-                            });
-                        }else {
-                            console.log('type');
-                            $.ajax({
-                                url: "{{ route('autofill_insurance_parameters') }}",
-                                method: "GET",
-                                data: {
-                                    insurance_class: insurance_class,
-                                    insurance_company: insurance_company,
-                                    insurance_type: insurance_type,
-                                    _token: _token
-                                },
-                                success: function (data) {
-
-                                    if(data!=""){
-                                        gonext();
-                                        document.getElementById("premium").value=data[0].price;
-                                        document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                        document.getElementById("commission").value=data[0].commission;
-                                        document.getElementById("currency").value=data[0].insurance_currency;
-                                        document.getElementById("availability_status").innerHTML ='';
-
-                                    }else{
-
-                                        document.getElementById("availability_status").style.color='Red';
-                                        document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
 
                                     }
+                                });
 
-                                },
-
-                                error : function(data) {
-
+                            }
 
 
-                                }
-                            });
 
                         }
 
 
 
+                    }else{
+
+
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1'){
+
+
+                            var type_var= document.getElementById("insurance_type").value;
+                            var type_na_var=document.getElementById("insurance_type_na").value;
+
+                            var _token = $('input[name="_token"]').val();
+
+                            if(visible_status!=0) {
+                                console.log('type_na');
+                                var type_var
+                                $.ajax({
+                                    url: "{{ route('autofill_insurance_parameters') }}",
+                                    method: "GET",
+                                    data: {
+                                        insurance_class: insurance_class,
+                                        insurance_company: insurance_company,
+                                        insurance_type_na: insurance_type_na,
+                                        _token: _token
+                                    },
+                                    success: function (data) {
+                                        if(data!=""){
+                                            gonext();
+                                            document.getElementById("premium").value=data[0].price;
+                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                            document.getElementById("commission").value=data[0].commission;
+                                            document.getElementById("currency").value=data[0].insurance_currency;
+                                            document.getElementById("availability_status").innerHTML ='';
+
+                                        }else{
+                                            document.getElementById("availability_status").style.color='Red';
+                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                        }
+                                    },
+
+                                    error : function(data) {
+
+
+
+                                    }
+                                });
+                            }else {
+                                console.log('type');
+                                $.ajax({
+                                    url: "{{ route('autofill_insurance_parameters') }}",
+                                    method: "GET",
+                                    data: {
+                                        insurance_class: insurance_class,
+                                        insurance_company: insurance_company,
+                                        insurance_type: insurance_type,
+                                        _token: _token
+                                    },
+                                    success: function (data) {
+
+                                        if(data!=""){
+                                            gonext();
+                                            document.getElementById("premium").value=data[0].price;
+                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                                            document.getElementById("commission").value=data[0].commission;
+                                            document.getElementById("currency").value=data[0].insurance_currency;
+                                            document.getElementById("availability_status").innerHTML ='';
+
+                                        }else{
+
+                                            document.getElementById("availability_status").style.color='Red';
+                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+
+                                        }
+
+                                    },
+
+                                    error : function(data) {
+
+
+
+                                    }
+                                });
+
+                            }
+
+
+
+                        }
+
+
                     }
+
+
+
+
+
+
 
 
                 }

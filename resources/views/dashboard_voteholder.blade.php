@@ -60,7 +60,7 @@
     animation-iteration-count: 10;
     animation-name: wiggle;
   }*/
-  
+
   @keyframes wiggle {
   0% { transform: translate(0px, 0); }
  /* 10% { transform: translate(-1px, 0); }
@@ -86,7 +86,7 @@
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             $year= date('Y');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -104,22 +104,14 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -154,7 +146,7 @@
         <p>{{$message}}</p>
       </div>
     @endif
-        
+
         <div class="card">
        <div class="card-body">
     <b><h3>Cost Centre Details</h3></b>
@@ -198,14 +190,14 @@
   </div>
 </div>
     <div class="card-body">
-    
+
         <div class="card-deck" style="font-size: 15px; font-family: sans-serif;">
 
           <div class="card border-success">
      {!! $chart->container() !!}
   </div>
-  
-  
+
+
   <div class="card border-success">
      {!! $chart2->container() !!}
   </div>
@@ -229,7 +221,7 @@
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" >Amount</th>
                                 {{-- <th scope="col" >GEPG Control No</th> --}}
-                                <th scope="col" >Invoice Date</th> 
+                                <th scope="col" >Invoice Date</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -296,9 +288,9 @@
                                      </td>
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_to_be_paid)}}</td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
-                                  
+
                                   </tr>
-                                  
+
                                   @endforeach
                                 </tbody>
 </table>

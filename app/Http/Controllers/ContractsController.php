@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
 use App\carContract;
+use PDF;
+use Riskihajar\Terbilang\Facades\Terbilang;
 
 class ContractsController extends Controller
 {
@@ -257,7 +259,7 @@ if($request->get('rent_sqm')==''){
 
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
+                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
             );
 
         }else {
@@ -282,7 +284,7 @@ if($request->get('rent_sqm')==''){
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
                 );
 
             } else {
@@ -304,7 +306,7 @@ if($request->get('rent_sqm')==''){
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
                 );
 
 
@@ -397,7 +399,7 @@ if($request->get('rent_sqm')==''){
 
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
+                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
             );
 
         }else {
@@ -422,7 +424,7 @@ if($request->get('rent_sqm')==''){
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
                 );
 
             } else {
@@ -444,7 +446,7 @@ if($request->get('rent_sqm')==''){
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
                 );
 
 
@@ -469,7 +471,12 @@ if($request->get('rent_sqm')==''){
                 ->where('contract_id', $id)
                 ->update(['contract_status' => 0]);
 
-            return redirect('/contracts_management')
+        DB::table('space_contracts')
+            ->where('contract_id', $id)
+            ->update(['reason_for_termination' => $request->get("reason_for_termination")]);
+
+
+        return redirect('/contracts_management')
                 ->with('success', 'Contract terminated successfully');
 
 
@@ -751,9 +758,25 @@ if($request->get('rent_sqm')==''){
             ->where('id', $id)
             ->update(['contract_status' => 0]);
 
+
+        DB::table('insurance_contracts')
+            ->where('id', $id)
+            ->update(['reason_for_termination' => $request->get("reason_for_termination")]);
+
+
         return redirect('/contracts_management')
             ->with('success', 'Contract terminated successfully');
 
+
+    }
+
+
+    public function testing()
+    {
+
+        $pdf = PDF::loadView('insurance_contract_pdf');
+        return $pdf->stream();
+//        return view('invoice_pdf');
 
     }
 
@@ -769,89 +792,307 @@ if($request->get('rent_sqm')==''){
     public function CreateInsuranceContract(Request $request)
     {
 
-        $end_date="";
-        if($request->get('duration_period')=="Months"){
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
-            $monthsToAdd = $request->get('duration');
-            $end_date = $end_date->addMonths($monthsToAdd);
+        if($request->get('submit')=='Save and print'){
 
-        }elseif($request->get('duration_period')=="Years"){
 
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
-            $yearsToAdd = $request->get('duration');
-            $end_date = $end_date->addYears($yearsToAdd);
+
+
+
+
+
+            $end_date="";
+            if($request->get('duration_period')=="Months"){
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
+                $monthsToAdd = $request->get('duration');
+                $end_date = $end_date->addMonths($monthsToAdd);
+
+            }elseif($request->get('duration_period')=="Years"){
+
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
+                $yearsToAdd = $request->get('duration');
+                $end_date = $end_date->addYears($yearsToAdd);
+            }else{
+
+
+            }
+
+
+            $vehicle_reg_var="";
+            $vehicle_use_var="";
+            $cover_note="";
+            $sticker_no="";
+            $value="";
+
+
+            if($request->get('vehicle_registration_no')==""){
+                $vehicle_reg_var='N/A';
+
+            }else{
+
+                $vehicle_reg_var=$request->get('vehicle_registration_no');
+
+            }
+
+
+            if($request->get('vehicle_use')==""){
+                $vehicle_use_var='N/A';
+
+            }else{
+
+                $vehicle_use_var=$request->get('vehicle_use');
+
+            }
+
+
+            if($request->get('cover_note')==""){
+                $cover_note='N/A';
+
+            }else{
+
+                $cover_note=$request->get('cover_note');
+
+            }
+
+
+            if($request->get('sticker_no')==""){
+                $sticker_no='N/A';
+
+            }else{
+
+                $sticker_no=$request->get('sticker_no');
+
+            }
+
+
+            if($request->get('value')==""){
+                $value='N/A';
+
+            }else{
+
+                $value=$request->get('value');
+
+            }
+
+
+
+            DB::table('insurance_contracts')->insert(
+                ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value]
+            );
+
+
+            $contract_id_created=DB::table('insurance_contracts')->orderBy('id','desc')->limit(1)->value('id');
+
+
+            $period= date("d/m/Y",strtotime($request->get('commission_date'))).' to  '. date("d/m/Y",strtotime($end_date));
+
+
+
+
+
+            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+            $amount_in_words='';
+
+
+            if($request->get('currency')=='TZS'){
+                $amount_in_words=Terbilang::make($request->get('premium'),' TZS',' ');
+
+            }if ($request->get('currency')=='USD'){
+
+                $amount_in_words=Terbilang::make($request->get('premium'),' USD',' ');
+            }
+
+            else{
+
+
+            }
+
+            $today=date('Y-m-d');
+            $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+
+
+            DB::table('insurance_invoices')->insert(
+                ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $request->get('premium'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+            );
+
+
+            $invoice_number_created=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance']
+            );
+
+
+
+
+            $data = [
+                'insurance_class'   => $request->get('insurance_class'),
+                'insurance_type'   => $request->get('insurance_type'),
+                'insurance_company'   => $request->get('insurance_company'),
+                'vehicle_registration_no'   => $request->get('vehicle_registration_no'),
+                'vehicle_use'   => $request->get('vehicle_use'),
+                'client_name'   => $request->get('full_name'),
+                'phone_number'   => $request->get('phone_number'),
+                'email'   => $request->get('email'),
+                'commission_date'   => $request->get('commission_date'),
+                'sum_insured'   => $request->get('sum_insured'),
+                'premium'   => $request->get('premium'),
+                'actual_ex_vat'   => $request->get('actual_ex_vat'),
+                'value'   => $request->get('value'),
+                'commission_percentage'   => $request->get('commission_percentage'),
+                'commission'   => $request->get('commission'),
+                'cover_note'   => $request->get('cover_note'),
+                'sticker_no'   => $request->get('sticker_no'),
+                'receipt_no'   => $request->get('receipt_no'),
+                'currency'   => $request->get('currency'),
+
+            ];
+
+            $pdf = PDF::loadView('insurance_contract_pdf',$data);
+
+            return $pdf->stream();
+
+
+
+
         }else{
 
+
+            $end_date="";
+            if($request->get('duration_period')=="Months"){
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
+                $monthsToAdd = $request->get('duration');
+                $end_date = $end_date->addMonths($monthsToAdd);
+
+            }elseif($request->get('duration_period')=="Years"){
+
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
+                $yearsToAdd = $request->get('duration');
+                $end_date = $end_date->addYears($yearsToAdd);
+            }else{
+
+
+            }
+
+
+            $vehicle_reg_var="";
+            $vehicle_use_var="";
+            $cover_note="";
+            $sticker_no="";
+            $value="";
+
+
+            if($request->get('vehicle_registration_no')==""){
+                $vehicle_reg_var='N/A';
+
+            }else{
+
+                $vehicle_reg_var=$request->get('vehicle_registration_no');
+
+            }
+
+
+            if($request->get('vehicle_use')==""){
+                $vehicle_use_var='N/A';
+
+            }else{
+
+                $vehicle_use_var=$request->get('vehicle_use');
+
+            }
+
+
+            if($request->get('cover_note')==""){
+                $cover_note='N/A';
+
+            }else{
+
+                $cover_note=$request->get('cover_note');
+
+            }
+
+
+            if($request->get('sticker_no')==""){
+                $sticker_no='N/A';
+
+            }else{
+
+                $sticker_no=$request->get('sticker_no');
+
+            }
+
+
+            if($request->get('value')==""){
+                $value='N/A';
+
+            }else{
+
+                $value=$request->get('value');
+
+            }
+
+
+
+            DB::table('insurance_contracts')->insert(
+                ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value]
+            );
+
+            $contract_id_created=DB::table('insurance_contracts')->orderBy('id','desc')->limit(1)->value('id');
+
+
+            $period= date("d/m/Y",strtotime($request->get('commission_date'))).' to  '. date("d/m/Y",strtotime($end_date));
+
+
+
+
+
+            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+            $amount_in_words='';
+
+
+            if($request->get('currency')=='TZS'){
+                $amount_in_words=Terbilang::make($request->get('premium'),' TZS',' ');
+
+            }if ($request->get('currency')=='USD'){
+
+                $amount_in_words=Terbilang::make($request->get('premium'),' USD',' ');
+            }
+
+            else{
+
+
+            }
+
+            $today=date('Y-m-d');
+            $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+
+
+            DB::table('insurance_invoices')->insert(
+                ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $request->get('premium'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+            );
+
+
+            $invoice_number_created=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance']
+            );
+
+            DB::table('insurance_payments')->insert(
+                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('premium'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
+            );
+
+
+
+            return redirect('/contracts_management')
+                ->with('success', 'Contract created successfully');
 
         }
 
 
-        $vehicle_reg_var="";
-        $vehicle_use_var="";
-        $cover_note="";
-        $sticker_no="";
-        $value="";
-
-
-        if($request->get('vehicle_registration_no')==""){
-            $vehicle_reg_var='N/A';
-
-        }else{
-
-            $vehicle_reg_var=$request->get('vehicle_registration_no');
-
-        }
-
-
-        if($request->get('vehicle_use')==""){
-            $vehicle_use_var='N/A';
-
-        }else{
-
-            $vehicle_use_var=$request->get('vehicle_use');
-
-        }
-
-
-        if($request->get('cover_note')==""){
-            $cover_note='N/A';
-
-        }else{
-
-            $cover_note=$request->get('cover_note');
-
-        }
-
-
-        if($request->get('sticker_no')==""){
-            $sticker_no='N/A';
-
-        }else{
-
-            $sticker_no=$request->get('sticker_no');
-
-        }
-
-
-        if($request->get('value')==""){
-            $value='N/A';
-
-        }else{
-
-            $value=$request->get('value');
-
-        }
-
-
-
-        DB::table('insurance_contracts')->insert(
-            ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value]
-        );
-
-
-
-        return redirect('/contracts_management')
-            ->with('success', 'Contract created successfully');
     }
 
 

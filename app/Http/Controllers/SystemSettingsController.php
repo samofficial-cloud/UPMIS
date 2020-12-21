@@ -197,6 +197,7 @@ if($request->get('cost_centre')=='')
 
             'user_roles' => $request->get('user_roles'),
             'category' => $request->get('category'),
+            'privileges' => $request->get('privileges'),
 
         ]);
 
@@ -280,6 +281,11 @@ if($request->get('cost_centre')=='')
         DB::table('general_settings')
             ->where('id', $id)
             ->update(['category' => $request->get('category')]);
+
+
+        DB::table('general_settings')
+            ->where('id', $id)
+            ->update(['privileges' => $request->get('privileges')]);
 
 
         return redirect('/role_management')
