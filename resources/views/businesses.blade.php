@@ -2191,8 +2191,8 @@
             var second_installment=0.40*price;
 
 
-           var new_first_installment= Math.round((first_installment + Number.EPSILON) * 100) / 100
-           var new_second_installment= Math.round((second_installment + Number.EPSILON) * 100) / 100
+           var new_first_installment= Math.round((first_installment + Number.EPSILON) * 100) / 100;
+           var new_second_installment= Math.round((second_installment + Number.EPSILON) * 100) / 100;
 
             $('#first_installment').val(new_first_installment);
             $('#second_installment').val(new_second_installment);

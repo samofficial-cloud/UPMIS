@@ -321,12 +321,17 @@ class SpaceController extends Controller
 
         $minor_industries= DB::table('space_classification')->where('major_industry',$request->get('major'))->get();
         $output='';
+        $output .= '<option value="'."".'">'."".'</option>';
+
+        $tempOut = array();
 
 foreach($minor_industries as $minor_industry) {
 
-    $output .= '<option value="'.$minor_industry->minor_industry.'">'.$minor_industry->minor_industry.'</option>';
-
-
+    $tempoIn=$minor_industry->minor_industry;
+    if(!in_array($tempoIn, $tempOut)) {
+        $output .= '<option value="' . $minor_industry->minor_industry . '">' . $minor_industry->minor_industry . '</option>';
+        array_push($tempOut,$tempoIn);
+    }
 }
 
         echo $output;
@@ -342,11 +347,16 @@ foreach($minor_industries as $minor_industry) {
 
         $locations= DB::table('spaces')->where('minor_industry',$request->get('minor'))->where('major_industry',$request->get('major'))->get();
         $output='';
+        $output .= '<option value="'."".'">'."".'</option>';
 
+        $tempOut = array();
         foreach($locations as $location) {
+            $tempoIn=$location->location;
 
-            $output .= '<option value="'.$location->location.'">'.$location->location.'</option>';
-
+            if(!in_array($tempoIn, $tempOut)) {
+                $output .= '<option value="' . $location->location . '">' . $location->location . '</option>';
+                array_push($tempOut,$tempoIn);
+            }
 
         }
 
@@ -361,11 +371,16 @@ foreach($minor_industries as $minor_industry) {
 
         $sub_locations= DB::table('spaces')->where('location',$request->get('location'))->where('major_industry',$request->get('major'))->where('minor_industry',$request->get('minor'))->get();
         $output='';
+        $output .= '<option value="'."".'">'."".'</option>';
 
+        $tempOut = array();
         foreach($sub_locations as $sub_location) {
-
+            $tempoIn=$sub_location->sub_location;
+            if(!in_array($tempoIn, $tempOut))
+            {
             $output .= '<option value="'.$sub_location->sub_location.'">'.$sub_location->sub_location.'</option>';
-
+                array_push($tempOut,$tempoIn);
+            }
 
         }
 
@@ -380,11 +395,15 @@ foreach($minor_industries as $minor_industry) {
 
         $space_ids= DB::table('spaces')->where('sub_location',$request->get('sub_location'))->where('location',$request->get('location'))->where('major_industry',$request->get('major'))->where('minor_industry',$request->get('minor'))->get();
         $output='';
-
+        $output .= '<option value="'."".'">'."".'</option>';
+        $tempOut = array();
         foreach($space_ids as $space_id) {
-
+            $tempoIn=$space_id->space_id;
+            if(!in_array($tempoIn, $tempOut))
+            {
             $output .= '<option value="'.$space_id->space_id.'">'.$space_id->space_id.'</option>';
-
+                array_push($tempOut,$tempoIn);
+            }
 
         }
 

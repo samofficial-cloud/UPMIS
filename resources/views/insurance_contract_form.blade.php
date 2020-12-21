@@ -603,13 +603,33 @@ $today=date('Y-m-d');
 						<input type="number" min="20" id="sum_insured" name="sum_insured" class="form-control" required="">
 					</div>
 
-{{--                        <div class="form-wrapper col-6">--}}
-{{--                            <label for="amount">Premium <span style="color: red;"> *</span></label>--}}
-{{--                        </div>--}}
-                        <input type="hidden" min="0"  id="premium" readonly name="premium" class="form-control" >
+                        <div id="premiumDiv" class="form-wrapper col-12" style="display: none;">
+                            <label for="amount">Premium </label>
+                            <input type="number" min="0" id="premium" readonly name="premium" class="form-control" >
+                        </div>
+
+                        <div id="mode_of_paymentDiv" class="form-wrapper col-12" style="display: none;">
+                            <label for="mode_of_payment">Mode of payment <span style="color: red;"> *</span></label>
+                            <select id="mode_of_payment" class="form-control" name="mode_of_payment" >
+                                <option value="" ></option>
+                                <option value="By installment" >By installment</option>
+                                <option value="Full payment" >Full payment</option>
+                            </select>
+                        </div>
 
 
 
+
+                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" style="display: none;">
+                            <label for="amount">First installment(60%) </label>
+                            <input type="text" id="first_installment" readonly name="first_installment" class="form-control">
+                        </div>
+
+
+                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" style="display: none;">
+                            <label for="amount">Second installment(40%) </label>
+                            <input type="text" id="second_installment" readonly name="second_installment" class="form-control">
+                        </div>
 
 
 				</div>
@@ -755,6 +775,25 @@ $today=date('Y-m-d');
                                         <tr>
                                             <td>Premium:</td>
                                             <td id="premium_confirm"></td>
+                                        </tr>
+
+
+
+                                        <tr id="mode_of_payment_row_confirm" style="display: none;">
+                                            <td>Mode of payment:</td>
+                                            <td id="mode_of_payment_confirm"></td>
+                                        </tr>
+
+
+                                        <tr id="first_installment_row_confirm" style="display: none;">
+                                            <td>First installment:</td>
+                                            <td id="first_installment_confirm"></td>
+                                        </tr>
+
+
+                                        <tr id="second_installment_row_confirm" style="display: none;">
+                                            <td>Second installment:</td>
+                                            <td id="second_installment_confirm"></td>
                                         </tr>
 
 
@@ -1221,6 +1260,24 @@ current_fs = $(this).parent();
     var email=$("#email").val();
 
 
+    if(insurance_type=='COMPREHENSIVE'){
+        $('#mode_of_paymentDiv').show();
+        $('#premiumDiv').show();
+
+    }else{
+        $('#premiumDiv').hide();
+        $('#mode_of_paymentDiv').hide();
+
+        $('#first_installmentDiv').hide();
+        $('#second_installmentDiv').hide();
+
+        $('#first_installment').val("");
+        $('#second_installment').val("");
+
+    }
+
+
+
 if (client_name==""){
     p1=0;
     $('#client_msg').show();
@@ -1569,6 +1626,9 @@ $("#next2").click(function(){
     var receipt_no=document.getElementById('receipt_no').value;
     var currency=document.getElementById('currency').value;
     var email=$("#email").val();
+    var mode_of_payment=$("#mode_of_payment").val();
+    var first_installment=$("#first_installment").val();
+    var second_installment=$("#second_installment").val();
 
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -1615,8 +1675,22 @@ $("#next2").click(function(){
         $("#value_row_confirm").show();
     }
 
-    $("#insurance_type_confirm").css('font-weight', 'bold');
 
+    if(mode_of_payment=='By installment'){
+        $('#mode_of_payment_row_confirm').show();
+        $('#first_installment_row_confirm').show();
+        $('#second_installment_row_confirm').show();
+
+    }else{
+
+        $('#mode_of_payment_row_confirm').hide();
+        $('#first_installment_row_confirm').hide();
+        $('#second_installment_row_confirm').hide();
+    }
+
+
+
+    $("#insurance_type_confirm").css('font-weight', 'bold');
 
     $("#client_name_confirm").html(client_name);
     $("#client_name_confirm").css('font-weight', 'bold');
@@ -1653,6 +1727,16 @@ $("#next2").click(function(){
 
     $("#value_confirm").html(thousands_separators(value)+" "+currency);
     $("#value_confirm").css('font-weight', 'bold');
+
+    $("#mode_of_payment_confirm").html(mode_of_payment);
+    $("#mode_of_payment_confirm").css('font-weight', 'bold');
+
+
+    $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+    $("#first_installment_confirm").css('font-weight', 'bold');
+
+    $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+    $("#second_installment_confirm").css('font-weight', 'bold');
 
 
     $("#commission_percentage_confirm").html(commission_percentage+"%");
@@ -1770,6 +1854,59 @@ return true;
 
 });
 </script>
+
+
+    <script>
+
+      $('#mode_of_payment').on('change',function(e){
+        e.preventDefault();
+        var mode_of_payment = $(this).val();
+        var premium=$('#premium').val();
+
+
+        if(mode_of_payment == 'By installment')
+        {
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+
+            function thousands_separators(num)
+            {
+                var num_parts = num.toString().split(".");
+                num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return num_parts.join(".");
+            }
+
+
+            var first_installment= Math.round(((0.60*premium) + Number.EPSILON) * 100) / 100;
+            var second_installment=Math.round(((0.40*premium) + Number.EPSILON) * 100) / 100;
+
+
+            $('#first_installment').val(first_installment);
+            $('#second_installment').val(second_installment);
+
+
+        }
+        else if(mode_of_payment=='Full payment'){
+
+            $('#first_installmentDiv').hide();
+            $('#second_installmentDiv').hide();
+
+            $('#first_installment').val("");
+            $('#second_installment').val("");
+
+        }
+
+        else{
+            $('#first_installmentDiv').hide();
+            $('#second_installmentDiv').hide();
+        }
+      });
+
+    </script>
+
+
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
