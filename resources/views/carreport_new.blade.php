@@ -77,7 +77,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -95,22 +95,14 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -119,10 +111,10 @@
  @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
-                @admin
-                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
-                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-                @endadmin
+@admin
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -164,22 +156,27 @@
           <br><br>List of Rental Vehicles
       @endif
     @elseif($_GET['report_type']=='clients')
+      <?php
+        if($_GET['centre_fil']=='true'){
+          $centre_name= DB::table('cost_centres')->select('costcentre')->where('costcentre_id',$_GET['centre'])->value('costcentre_id');
+        }
+      ?>
          @if($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true')
-          <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>, Contract Status is <strong>{{$_GET['cont']}}</strong>, Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+          <br><br>List of Car Rental Clients whose Cost Centre is {{$_GET['centre']}} - {{$centre_name}}, Contract Status is <strong>{{$_GET['cont']}}</strong>, Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
         @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true')
-         <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>, Contract Status is <strong>{{$_GET['cont']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+         <br><br>List of Car Rental Clients whose Cost Centre is {{$_GET['centre']}} - {{$centre_name}}, Contract Status is <strong>{{$_GET['cont']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
         @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true')
-          <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>, Contract Status is <strong>{{$_GET['cont']}}</strong> and Payment Status is <strong>{{$_GET['pay']}}</strong>
+          <br><br>List of Car Rental Clients whose Cost Centre is {{$_GET['centre']}} - {{$centre_name}}, Contract Status is <strong>{{$_GET['cont']}}</strong> and Payment Status is <strong>{{$_GET['pay']}}</strong>
         @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true')
-          <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong> and Contract Status is <strong>{{$_GET['cont']}}</strong>
+          <br><br>List of Car Rental Clients whose Cost Centre is {{$_GET['centre']}} - {{$centre_name}} and Contract Status is <strong>{{$_GET['cont']}}</strong>
         @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true')
-          <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>, Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+          <br><br>List of Car Rental Clients whose Cost Centre is {{$_GET['centre']}} - {{$centre_name}}, Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
         @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true') 
-          <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
+          <br><br>List of Car Rental Clients whose Cost Centre is {{$_GET['centre']}} - {{$centre_name}} and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
         @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true')
-          <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong> and Payment Status is <strong>{{$_GET['pay']}}</strong>
+          <br><br>List of Car Rental Clients whose Cost Centre is {{$_GET['centre']}} - {{$centre_name}} and Payment Status is <strong>{{$_GET['pay']}}</strong>
         @elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true')
-          <br><br>List of Car Rental Clients whose Cost Centre Id is <strong>{{$_GET['centre']}}</strong>
+          <br><br>List of Car Rental Clients whose Cost Centre is {{$_GET['centre']}} - {{$centre_name}}
         @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true')
           <br><br>List of Car Rental Clients whose Contract Status is <strong>{{$_GET['cont']}}</strong>, Payment Status is <strong>{{$_GET['pay']}}</strong> and Contract Date is Between <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> and <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>
         @elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true')
@@ -453,7 +450,7 @@ else{
               <td><center>{{$client->vehicle_reg_no}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($client->invoicing_period_start_date))}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($client->invoicing_period_end_date))}}</center></td>
-              <td style="text-align: right;">{{number_format($client->amount_to_be_paid)}}</td>
+              <td style="text-align: right;">{{number_format($client->amount_paid)}}</td>
           </tr>
           <?php $a3= $a3+1; ?>
           <?php
@@ -551,29 +548,32 @@ function settitle(){
     }
   } 
   elseif($_GET['report_type']=='clients'){
+    if($_GET['centre_fil']=='true'){
+          $centre_name= DB::table('cost_centres')->select('costcentre')->where('costcentre_id',$_GET['centre'])->value('costcentre_id');
+        }
     if($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
-      echo 'List of Car Rental Clients whose Cost Centre Id is '.$_GET['centre'].', Contract Status is '.$_GET['cont'].', Payment Status is '.$_GET['pay'].' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
+      echo 'List of Car Rental Clients whose Cost Centre is '.$_GET['centre'].' - '.$centre_name.', Contract Status is '.$_GET['cont'].', Payment Status is '.$_GET['pay'].' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
     }
     elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true'){
-       echo 'List of Car Rental Clients whose Cost Centre Id is '.$_GET['centre'].', Contract Status is '.$_GET['cont'].' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
+       echo 'List of Car Rental Clients whose Cost Centre is '.$_GET['centre'].' - '.$centre_name.', Contract Status is '.$_GET['cont'].' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
     }
     elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true'){
-      echo 'List of Car Rental Clients whose Cost Centre Id is '.$_GET['centre'].', Contract Status is '.$_GET['cont'].' and Payment Status is '.$_GET['pay'];
+      echo 'List of Car Rental Clients whose Cost Centre is '.$_GET['centre'].' - '.$centre_name.', Contract Status is '.$_GET['cont'].' and Payment Status is '.$_GET['pay'];
     }
     elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true'){
-      echo 'List of Car Rental Clients whose Cost Centre Id is '.$_GET['centre'].' and Contract Status is '.$_GET['cont'];
+      echo 'List of Car Rental Clients whose Cost Centre is '.$_GET['centre'].' - '.$centre_name.' and Contract Status is '.$_GET['cont'];
     }
     elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
-      echo 'List of Car Rental Clients whose Cost Centre Id is '.$_GET['centre'].', Payment Status is '.$_GET['pay'].' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
+      echo 'List of Car Rental Clients whose Cost Centre is '.$_GET['centre'].' - '.$centre_name.', Payment Status is '.$_GET['pay'].' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
     }
     elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']!='true'){ 
-      echo 'List of Car Rental Clients whose Cost Centre Id is '.$_GET['centre'].' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
+      echo 'List of Car Rental Clients whose Cost Centre is '.$_GET['centre'].' - '.$centre_name.' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
     }
     elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']=='true'){
-      echo 'List of Car Rental Clients whose Cost Centre Id is '.$_GET['centre'].' and Payment Status is '.$_GET['pay'];
+      echo 'List of Car Rental Clients whose Cost Centre is '.$_GET['centre'].' - '.$centre_name.' and Payment Status is '.$_GET['pay'];
     }
     elseif($_GET['centre_fil']=='true' && $_GET['cont_fil']!='true' && $_GET['date_fil']!='true' && $_GET['pay_fil']!='true'){
-        echo 'List of Car Rental Clients whose Cost Centre Id is '.$_GET['centre'];
+        echo 'List of Car Rental Clients whose Cost Centre is '.$_GET['centre'].' - '.$centre_name;
     }
     elseif($_GET['centre_fil']!='true' && $_GET['cont_fil']=='true' && $_GET['date_fil']=='true' && $_GET['pay_fil']=='true'){
       echo 'List of Car Rental Clients whose Contract Status is '.$_GET['cont'].', Payment Status is '.$_GET['pay'].' and Contract Date is Between '.date("d/m/Y",strtotime($_GET['start'])).' and '.date("d/m/Y",strtotime($_GET['end']));
@@ -871,12 +871,12 @@ if(urlParams.get('report_type')=='clients'){
  
             // Update footer
             $( api.column( 7 ).footer() ).html(
-              'Current: '+$.fn.dataTable.render.number(',').display(pagetotala)+'<hr style="margin-bottom:5px; margin-top: 5px;">'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
                
             );
 
             $( api.column( 8 ).footer() ).html(
-              'Current: '+$.fn.dataTable.render.number(',').display(pagetotalb)+'<hr style="margin-bottom:5px; margin-top: 5px;">'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
                
             );
 
@@ -1013,7 +1013,7 @@ if(urlParams.get('report_type')=='clients'){
  
             // Update footer
             $( api.column( 7 ).footer() ).html(
-              'Current: '+$.fn.dataTable.render.number(',').display(pagetotala)+'<hr style="margin-bottom:5px; margin-top: 5px;">'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
                
             );
 
@@ -1252,7 +1252,7 @@ if(urlParams.get('report_type')=='clients'){
  
             // Update footer
             $( api.column( 5 ).footer() ).html(
-              'Current: '+$.fn.dataTable.render.number(',').display(pagetotal)+'<hr style="margin-bottom:5px; margin-top: 5px;">'+' Out of: ' +$.fn.dataTable.render.number(',').display(total)
+              $.fn.dataTable.render.number(',').display(pagetotal)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(total)
                
             );
 

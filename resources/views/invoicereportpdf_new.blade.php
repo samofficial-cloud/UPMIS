@@ -29,13 +29,13 @@
   table.dataTable {
     font-family:"Nunito", sans-serif;
     font-size: 15px;
-
-
-
   }
   table.dataTable.no-footer {
     border-bottom: 0px solid #111;
   }
+  tfoot th, table.dataTable tfoot td {
+    border-top: 0px solid #ccc !important;
+}
 
   hr {
     margin-top: 0rem;
@@ -66,7 +66,7 @@
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -84,22 +84,14 @@
             <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
 
-            @if($category=='Real Estate only' OR $category=='All')
-            <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
-            @else
-            @endif
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            @if($category=='Insurance only' OR $category=='All')
-            <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-    @else
-    @endif
-            @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-    @else
-    @endif
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -108,10 +100,10 @@
  @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
-                @admin
-                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
-                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-                @endadmin
+@admin
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
         </ul>
     </div>
 <div class="main_content">
@@ -212,13 +204,19 @@
                                 <th scope="col" ><center>End date</center></th>
                                {{--  <th scope="col" ><center>Period</center></th> --}}
                                 <th scope="col"><center>Contract Id</center></th>
-                                <th scope="col"><center>Currency</center></th>
-                                <th scope="col" style="width: 13%;"><center>Amount</center></th>
                                 <th scope="col" ><center>GEPG Control No</center></th>
                                 <th scope="col" ><center>Invoice Date</center></th>
                                 @if($_GET['payment_filter']=='')
-                                <th scope="col" ><center>Remarks</center></th>
+                                  <th scope="col" ><center>Remarks</center></th>
                                 @endif
+                                <th scope="col"><center>Currency</center></th>
+                                @if($_GET['payment_filter']=='true' && $_GET['payment_status']=='Partially Paid')
+                                  <th scope="col" style="width: 10%;"><center>Amount Paid</center></th>
+                                  <th scope="col" style="width: 10%;"><center>Amount Remaining</center></th>
+                                @else
+                                  <th scope="col" style="width: 13%;"><center>Amount</center></th>
+                                @endif
+                                
                             </tr>
                             </thead>
                             <tbody>
@@ -232,23 +230,70 @@
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                    {{--  <td><center>{{$var->period}}</center></td> --}}
                                     <td><center>{{$var->contract_id}}</center></td>
-                                    <td><center>{{$var->currency_invoice}}</center></td>
-                                    @if($_GET['In_type']=='rent')
-                                    <td style="text-align: right;">{{number_format($var->amount_to_be_paid)}}</td>
-                                    @else
-                                       <td style="text-align: right;">{{number_format($var->cumulative_amount)}}</td>
-                                    @endif
                                     <td><center>{{$var->gepg_control_no}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
-                                     @if($_GET['payment_filter']=='')
+                                    @if($_GET['payment_filter']=='')
                                      <td><center>{{$var->payment_status}}</center></td>
                                      @endif
+                                    <td><center>{{$var->currency_invoice}}</center></td>
+                                    @if($_GET['payment_filter']=='true' && $_GET['payment_status']=='Partially Paid')
+                                      <td style="text-align: right;">{{number_format($var->amount_paid)}}</td>
+                                      <td style="text-align: right;">{{number_format($var->amount_not_paid)}}</td>
+                                    @else
+                                      @if($_GET['In_type']=='rent')
+                                      <td style="text-align: right;">{{number_format($var->amount_to_be_paid)}}</td>
+                                      @else
+                                         <td style="text-align: right;">{{number_format($var->cumulative_amount)}}</td>
+                                      @endif
+                                    @endif
+                                     
                                   </tr>
                                   <?php
                                   $i=$i+1;
                                   ?>
                                   @endforeach
                                 </tbody>
+                                @if($_GET['payment_filter']=='true')
+                                 @if($_GET['payment_status']=='Partially Paid')
+                                    <tfoot class="table-striped table-bordered">
+                                      <tr>
+                                          <th colspan="8" rowspan="2" style="text-align:left">TOTAL</th>
+                                              <th style="padding-left: 12px;"><center>TZS</center></th>
+                                              <th style="padding-left: 12px;"></th>
+                                              <th style="padding-left: 12px;"></th>
+                                      </tr>
+                                       <tr>
+                                        <th style="padding-left: 12px;"><center>USD</center></th>
+                                        <th style="padding-left: 12px;"></th>
+                                        <th style="padding-left: 12px;"></th>
+                                      </tr>
+                                    </tfoot>
+                                  @else
+                                    <tfoot class="table-striped table-bordered">
+                                      <tr>
+                                          <th colspan="8" rowspan="2" style="text-align:left">TOTAL</th>
+                                          <th style="padding-left: 12px;"><center>TZS</center></th>
+                                          <th style="padding-left: 12px;"></th>
+                                      </tr>
+                                      <tr>
+                                        <th style="padding-left: 12px;"><center>USD</center></th>
+                                        <th style="padding-left: 12px;"></th>
+                                      </tr>
+                                    </tfoot>
+                                  @endif
+                                @else
+                                <tfoot class="table-striped table-bordered">
+                                      <tr>
+                                          <th colspan="9" rowspan="2" style="text-align:left">TOTAL</th>
+                                          <th style="padding-left: 12px;"><center>TZS</center></th>
+                                          <th style="padding-left: 12px;"></th>
+                                      </tr>
+                                      <tr>
+                                        <th style="padding-left: 12px;"><center>USD</center></th>
+                                        <th style="padding-left: 12px;"></th>
+                                      </tr>
+                                </tfoot>
+                                @endif
                               </table>
                             </div>
 </div>
@@ -428,110 +473,601 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     
   }
 
-       const queryString2 = window.location.search;
+     const queryString2 = window.location.search;
       const urlPay = new URLSearchParams(queryString2);
       var pay = urlPay.get('payment_filter');
+      var status =urlPay.get('payment_status');
 
       if(pay=='true'){
-        var table = $('#myTable').DataTable({ 
-        dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
-        buttons: [
-            {   extend: 'pdfHtml5',
-                filename:'CPTU Vehicle Fleet',
-                download: 'open',
-                text: '<i class="fa fa-file-pdf-o"></i> PDF',
-                className: 'excelButton',
-                orientation: 'Landscape',
-                title: 'UNIVERSITY OF DAR ES SALAAM',
-                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
-                pageSize: 'A4',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4,5, 6, 7, 8, 9]
-                },
+        if(status=='Partially Paid'){
+            var table = $('#myTable').DataTable({
+           "footerCallback": function ( row, data, start, end, display ){
+            var api = this.api(), data;
+            var columns = [8, 9],
+            columnsa = [8, 10];
 
-                customize: function ( doc ) {
+            _.each(columns, function(idx) {
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
 
-                  doc.defaultStyle.font = 'Times';
+             // Total over all pages
+             console.log(idx);
+            totala = api
+                .column( idx )
+                .data()
+                .reduce( function (a, b) {
+                    var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "TZS") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                }, 0 );
 
-                  doc['footer'] = (function (page, pages) {
-                                    return {
-                                        alignment: 'center',
-                                        text: [{ text: page.toString() }]
-                                        
-                                    }
-                  });
+
+            totalb = api
+                .column( idx )
+                .data()
+                .reduce( function (a, b) {
+                    var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "USD") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                }, 0 );
+
+            
+
+            
+            
 
 
-
-                  doc.content[2].table.widths = [22, '*', 60, 60, 60, 60, 40, 70, 70, 60];
-                  var rowCount = doc.content[2].table.body.length;
-                      for (i = 1; i < rowCount; i++) {
-                         doc.content[2].table.body[i][0]=i+'.';
-                      doc.content[2].table.body[i][1].alignment = 'left';
-                      doc.content[2].table.body[i][7].alignment = 'right';
-                     // doc.content[2].table.body[i][7].alignment = 'left';
-                      //doc.content[2].table.body[i][9].alignment = 'left';
-                    };
-
-                  doc.defaultStyle.alignment = 'center';
-
-                  doc.content[2].table.body[0].forEach(function (h) {
-                    h.fillColor = 'white';
-                    alignment: 'center';
-                  });
-
-                  doc.styles.title = {
-                    bold: 'true',
-                      fontSize: '12',
-                      alignment: 'center'
-                    };
-
-        doc.styles.tableHeader.color = 'black';
-        doc.styles.tableHeader.bold = 'false';
-        doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
-        doc.content[2].layout ={
-          hLineWidth: function (i, node) {
-          return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
-        },
-        vLineWidth: function (i, node) {
-          return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
-        },
-        hLineColor: function (i, node) {
-          return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
-        },
-        vLineColor: function (i, node) {
-          return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
-        },
-        fillColor: function (rowIndex, node, columnIndex) {
-          return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
-        }
-        };
+            // Total over this page
+            pagetotala = api
+                .column( idx, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "TZS") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
                   
+                }, 0 );
 
-                    doc.content.splice( 1, 0, {
-                        margin: [ 0, 0, 0, 12 ],
-                        alignment: 'center',
-                        image: 'data:image/png;base64,'+base64,
-                         fit: [40, 40]
-                    } );
-                }
+
+                pagetotalb = api
+                .column( idx, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "USD") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                  
+                }, 0 );
+
+
+               });
+
+
+          _.each(columnsa, function(idx) {
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+             // Total over all pages
+             console.log(idx);
+            totalc = api
+                .column( idx )
+                .data()
+                .reduce( function (a, b) {
+                    var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "TZS") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                }, 0 );
+
+
+            totald = api
+                .column( idx )
+                .data()
+                .reduce( function (a, b) {
+                    var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "USD") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                }, 0 );
+
+            
+
+            
+            
+
+
+            // Total over this page
+            pagetotalc = api
+                .column( idx, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "TZS") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                  
+                }, 0 );
+
+
+                pagetotald = api
+                .column( idx, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "USD") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                  
+                }, 0 );
+
+
+               });
+
+            
+
+
+ 
+            // Update footer
+            
+             $('tr:eq(0) th:eq(2)', api.table().footer()).html(
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+            );
+             $('tr:eq(0) th:eq(3)', api.table().footer()).html(
+              $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)  
+            );
+
+            $('tr:eq(1) th:eq(1)', api.table().footer()).html(
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+            );
+            $('tr:eq(1) th:eq(2)', api.table().footer()).html(
+              $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)  
+            );
+
+        },
+            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            buttons: [
+                {   extend: 'pdfHtml5',
+                    filename:'CPTU Vehicle Fleet',
+                    download: 'open',
+                    text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                    className: 'excelButton',
+                    orientation: 'Landscape',
+                    title: 'UNIVERSITY OF DAR ES SALAAM',
+                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
+                    pageSize: 'A4',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4,5, 6, 7, 8, 9, 10]
+                    },
+
+                    customize: function ( doc ) {
+
+                      doc.defaultStyle.font = 'Times';
+
+                      doc['footer'] = (function (page, pages) {
+                                        return {
+                                            alignment: 'center',
+                                            text: [{ text: page.toString() }]
+                                            
+                                        }
+                      });
+
+
+
+                      doc.content[2].table.widths = [22, '*', 60, 60, 60, 60,70, 60, 40, 70, 70];
+                      var rowCount = doc.content[2].table.body.length;
+                          for (i = 1; i < rowCount; i++) {
+                             doc.content[2].table.body[i][0]=i+'.';
+                          doc.content[2].table.body[i][1].alignment = 'left';
+                          doc.content[2].table.body[i][9].alignment = 'right';
+                          doc.content[2].table.body[i][10].alignment = 'right';
+                         // doc.content[2].table.body[i][7].alignment = 'left';
+                          //doc.content[2].table.body[i][9].alignment = 'left';
+                        };
+
+                      doc.defaultStyle.alignment = 'center';
+
+                      doc.content[2].table.body[0].forEach(function (h) {
+                        h.fillColor = 'white';
+                        alignment: 'center';
+                      });
+
+                      doc.styles.title = {
+                        bold: 'true',
+                          fontSize: '12',
+                          alignment: 'center'
+                        };
+
+            doc.styles.tableHeader.color = 'black';
+            doc.styles.tableHeader.bold = 'false';
+            doc.styles.tableBodyOdd.fillColor='';
+            doc.styles.tableHeader.fontSize = 10;  
+            doc.content[2].layout ={
+              hLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
             },
-            {   extend: 'excelHtml5',
-                text: '<i class="fa fa-file-excel-o"></i> EXCEL',
-                className: 'excelButton',
-                title: settitle(),
-                exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            vLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
+            },
+            hLineColor: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+            },
+            vLineColor: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+            },
+            fillColor: function (rowIndex, node, columnIndex) {
+              return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
+            }
+            };
+                      
+
+                        doc.content.splice( 1, 0, {
+                            margin: [ 0, 0, 0, 12 ],
+                            alignment: 'center',
+                            image: 'data:image/png;base64,'+base64,
+                             fit: [40, 40]
+                        } );
+                    }
                 },
-            },
-          ]
-      });
+                {   extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i> EXCEL',
+                    className: 'excelButton',
+                    title: settitle(),
+                    exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                    },
+                },
+              ]
+          });
+        }
+        else{
+          var table = $('#myTable').DataTable({
+           "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            var columns = [8, 9];
+
+            _.each(columns, function(idx) {
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+             // Total over all pages
+            totala = api
+                .column( idx )
+                .data()
+                .reduce( function (a, b) {
+                    var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "TZS") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                }, 0 );
+
+
+            totalb = api
+                .column( idx )
+                .data()
+                .reduce( function (a, b) {
+                    var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "USD") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                }, 0 );
+
+            
+
+            
+            
+
+
+            // Total over this page
+            pagetotala = api
+                .column( idx, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "TZS") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                  
+                }, 0 );
+
+
+                pagetotalb = api
+                .column( idx, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(8).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "USD") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                  
+                }, 0 );
+
+
+               });
+
+            
+
+
+ 
+            // Update footer
+            
+             $('tr:eq(0) th:eq(2)', api.table().footer()).html(
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+            );
+
+            $('tr:eq(1) th:eq(1)', api.table().footer()).html(
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+            );
+
+        },
+          dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+          buttons: [
+              {   extend: 'pdfHtml5',
+                  filename:'CPTU Vehicle Fleet',
+                  download: 'open',
+                  text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                  className: 'excelButton',
+                  orientation: 'Landscape',
+                  title: 'UNIVERSITY OF DAR ES SALAAM',
+                  messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
+                  pageSize: 'A4',
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4,5, 6, 7, 8, 9]
+                  },
+
+                  customize: function ( doc ) {
+
+                    doc.defaultStyle.font = 'Times';
+
+                    doc['footer'] = (function (page, pages) {
+                                      return {
+                                          alignment: 'center',
+                                          text: [{ text: page.toString() }]
+                                          
+                                      }
+                    });
+
+
+
+                    doc.content[2].table.widths = [22, '*', 60, 60, 60, 60, 70, 60, 40, 70];
+                    var rowCount = doc.content[2].table.body.length;
+                        for (i = 1; i < rowCount; i++) {
+                           doc.content[2].table.body[i][0]=i+'.';
+                        doc.content[2].table.body[i][1].alignment = 'left';
+                        doc.content[2].table.body[i][9].alignment = 'right';
+                       // doc.content[2].table.body[i][7].alignment = 'left';
+                        //doc.content[2].table.body[i][9].alignment = 'left';
+                      };
+
+                    doc.defaultStyle.alignment = 'center';
+
+                    doc.content[2].table.body[0].forEach(function (h) {
+                      h.fillColor = 'white';
+                      alignment: 'center';
+                    });
+
+                    doc.styles.title = {
+                      bold: 'true',
+                        fontSize: '12',
+                        alignment: 'center'
+                      };
+
+          doc.styles.tableHeader.color = 'black';
+          doc.styles.tableHeader.bold = 'false';
+          doc.styles.tableBodyOdd.fillColor='';
+          doc.styles.tableHeader.fontSize = 10;  
+          doc.content[2].layout ={
+            hLineWidth: function (i, node) {
+            return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
+          },
+          vLineWidth: function (i, node) {
+            return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
+          },
+          hLineColor: function (i, node) {
+            return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+          },
+          vLineColor: function (i, node) {
+            return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+          },
+          fillColor: function (rowIndex, node, columnIndex) {
+            return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
+          }
+          };
+                    
+
+                      doc.content.splice( 1, 0, {
+                          margin: [ 0, 0, 0, 12 ],
+                          alignment: 'center',
+                          image: 'data:image/png;base64,'+base64,
+                           fit: [40, 40]
+                      } );
+                  }
+              },
+              {   extend: 'excelHtml5',
+                  text: '<i class="fa fa-file-excel-o"></i> EXCEL',
+                  className: 'excelButton',
+                  title: settitle(),
+                  exportOptions: {
+                  columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                  },
+              },
+            ]
+        });
       }
+    }
 
 
       else{
-        var table = $('#myTable').DataTable({ 
+        var table = $('#myTable').DataTable({
+           "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            var columns = [9, 10];
+
+            _.each(columns, function(idx) {
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+             // Total over all pages
+            totala = api
+                .column( idx )
+                .data()
+                .reduce( function (a, b) {
+                    var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(9).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "TZS") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                }, 0 );
+
+
+            totalb = api
+                .column( idx )
+                .data()
+                .reduce( function (a, b) {
+                    var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(9).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "USD") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                }, 0 );
+
+            
+
+            
+            
+
+
+            // Total over this page
+            pagetotala = api
+                .column( idx, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(9).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "TZS") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                  
+                }, 0 );
+
+
+                pagetotalb = api
+                .column( idx, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  var cur_index = api.column(idx).data().indexOf(b),
+                  currency = api.column(9).data()[cur_index].split('<center>').pop().split('</center>')[0];
+                  if (currency == "USD") {
+                    return intVal(a) + intVal(b);
+                  }
+                  else{
+                    return intVal(a);
+                  }
+                  
+                }, 0 );
+
+
+               });
+
+            
+
+
+ 
+            // Update footer
+            
+             $('tr:eq(0) th:eq(2)', api.table().footer()).html(
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+            );
+
+            $('tr:eq(1) th:eq(1)', api.table().footer()).html(
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+            );
+
+        }, 
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -561,12 +1097,12 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
 
 
-                  doc.content[2].table.widths = [22, '*', 50, 60, 60, 60, 40, 60, 70, 60, 60];
+                  doc.content[2].table.widths = [22, '*', 50, 60, 60, 60, 70, 60, 60, 40, 60];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
                       doc.content[2].table.body[i][1].alignment = 'left';
-                      doc.content[2].table.body[i][7].alignment = 'right';
+                      doc.content[2].table.body[i][10].alignment = 'right';
                       
                       //doc.content[2].table.body[i][9].alignment = 'left';
                     };
@@ -620,7 +1156,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 className: 'excelButton',
                 title: settitle(),
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                 },
             },
           ]

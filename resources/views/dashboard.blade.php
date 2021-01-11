@@ -74,6 +74,7 @@
 @endsection
 @section('content')
 <div class="wrapper">
+  <?php $a=1; $b=1; $c=1; ?>
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
@@ -333,7 +334,7 @@
           @foreach($space_contract as $space)
           <tr>
 
-            <th scope="row" class="counterCell">.</th>
+            <th scope="row">{{$a}}.</th>
 
                          <td>
                                       <a title="View More Client Details" class="link_style" data-toggle="modal" data-target="#clienta{{$space->contract_id}}" style="color: blue !important; cursor: pointer;" aria-pressed="true">{{$space->full_name}}</a>
@@ -538,7 +539,7 @@
               </td>
               @endif
           </tr>
-
+          <?php $a = $a+1; ?>
           @endforeach
 
         </tbody>
@@ -695,7 +696,7 @@
                             <tbody>
                             @foreach($invoices as $var)
                                  <tr>
-                                    <th scope="row" class="counterCell">.</th>
+                                    <th scope="row">{{$b}}.</th>
                                     <td>
                                       <a title="View More Client Details" class="link_style" data-toggle="modal" data-target="#clienta{{$var->contract_id}}" style="color: blue !important; cursor: pointer;" aria-pressed="true">{{$var->debtor_name}}</a>
                   <div class="modal fade" id="clienta{{$var->contract_id}}" role="dialog">
@@ -861,7 +862,7 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_to_be_paid)}}</td>
+                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     @if(Auth::user()->role=='System Administrator')
                                     <td>
@@ -942,7 +943,7 @@
                                     </td>
                                     @endif
                                   </tr>
-
+                                    <?php $b = $b+1; ?>
                                   @endforeach
                                 </tbody>
 </table>
@@ -1050,7 +1051,7 @@
                             <tbody>
                             @foreach($cptu_invoices as $var)
                                 <tr>
-                                    <th scope="row" class="counterCell">.</th>
+                                    <th scope="row">{{$c}}.</th>
                                     <td>
                                       <?php $centre_name=cost_centre::select('costcentre')->where('costcentre_id',$var->cost_centre)->value('costcentre');?>
                                       <a title="View Client Details" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#clienta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->debtor_name}}</a>
@@ -1155,7 +1156,7 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_to_be_paid)}}</td>
+                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     @if(Auth::user()->role=='System Administrator')
@@ -1237,7 +1238,7 @@
                                     </td>
                                     @endif
                                   </tr>
-
+                                    <?php $c = $c + 1; ?>
                                   @endforeach
                                 </tbody>
 </table>
@@ -1257,15 +1258,15 @@ function myFunction() {
 <script type="text/javascript">
   $(document).ready(function(){
   var table = $('#myTable').DataTable( {
-    dom: '<"top"l>rt<"bottom">'
+    dom: '<"top"l>rt<"bottom"pi>'
   } );
 
   var table1 = $('#myTable1').DataTable( {
-    dom: '<"top"l>rt<"bottom">'
+    dom: '<"top"l>rt<"bottom"pi>'
   } );
 
   var tablee = $('#myTable2').DataTable( {
-    dom: '<"top"l>rt<"bottom">'
+    dom: '<"top"l>rt<"bottom"pi>'
   } );
 
   var table2 = $('#myTable').DataTable();

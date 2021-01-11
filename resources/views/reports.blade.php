@@ -124,9 +124,12 @@ select.list-dt:focus {
 $current=date('Y');
 $year=$current-3;
     use App\hire_rate;
+    use App\carRental;
+    use App\space;
       $model= hire_rate::select('vehicle_model')->get();
       $sp_industry= DB::table('space_classification')->select('major_industry')->distinct()->orderBy('major_industry','asc')->get();
       $ay=0;
+      $spacesids= [];
     ?>
 <div class="wrapper">
 <div class="sidebar">
@@ -250,12 +253,30 @@ $year=$current-3;
       </div>
     </div>
 
+
+    <div class="form-group" id="space_industrydiv2" style="display: none;">
+          <div class="form-wrapper">
+      <label for="space_industry2">Major Industry<span style="color: red;">*</span></label>
+          <span id="spaceindustrymsg2"></span>
+            <select class="form-control" id="space_industry2" name="space_industry2">
+              <option value="" disabled selected hidden>Select Major Industry</option>
+              @foreach($sp_industry as $var)
+              <option value="{{$var->major_industry}}">{{$var->major_industry}}</option>
+              @endforeach
+            </select>
+        </div>
+    </div>
+
     <div class="form-group" id="space_idDiv" style="display: none;">
       <div class="form-wrapper">
       <label for="space_id"  >Space Id<span style="color: red;">*</span></label>
       <span id="spaceidmsg"></span>
-      <input type="text" class="form-control" id="space_id" name="space_id" value="" autocomplete="off">
-      <div id="nameListSpaceId"></div>
+     {{-- <input type="text" class="form-control" id="space_id" name="space_id" value="" autocomplete="off"> --}}
+       {{-- <select class="form-control" id="space_id" name="space_id">
+        <option value="" disabled selected hidden>Select Space</option>
+         
+       </select> --}}
+        <span id="nameListSpaceId"></span>
       </div>
     </div>
 
@@ -580,6 +601,7 @@ $year=$current-3;
             <select class="form-control" id="payment_status" name="payment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
               <option value="Paid">Paid</option>
+              <option value="Partially Paid">Partially Paid</option>
               <option value="Not paid">Not Paid</option>
             </select>
         </div>
@@ -643,6 +665,7 @@ $year=$current-3;
             <select class="form-control" id="t_invoicepayment_status" name="t_invoicepayment_status">
               <option value=" " disabled selected hidden>Select Payment Status</option>
               <option value="Paid">Paid</option>
+              <option value="Partially Paid">Partially Paid</option>
               <option value="Not paid">Not Paid</option>
             </select>
         </div>
@@ -754,12 +777,29 @@ $year=$current-3;
         </div>
     </div>
 
-    <div class="form-group" id="vehicleregdiv" style="display: none;">
+    {{-- <div class="form-group" id="vehicleregdiv" style="display: none;">
           <div class="form-wrapper">
             <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
             <span id="vehicleregmsg"></span>
             <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
             <span id="nameList"></span>
+          </div>
+        </div> --}}
+
+        <div class="form-group" id="vehicleregdiv" style="display: none;">
+          <div class="form-wrapper">
+            <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
+            <span id="vehicleregmsg"></span>
+            <select id="vehicle_reg" name="vehicle_reg" class="form-control">
+              <option value=""disabled selected hidden>Select Vehicle</option>
+              <?php
+                $vehicles =carRental::where('flag',1)->get();
+              ?>
+              @foreach($vehicles as $vehicle)
+                <option value="{{$vehicle->vehicle_reg_no}}">{{$vehicle->vehicle_reg_no}} {{$vehicle->vehicle_model}}</option>
+              @endforeach
+            </select>
+            
           </div>
         </div>
 
@@ -913,8 +953,17 @@ $year=$current-3;
           <div class="form-wrapper">
             <label for="clientcostcentre">Cost Centre Id<span style="color: red;">*</span></label>
             <span id="clientcostcentremsg"></span>
-            <input type="text" id="clientcostcentre" name="clientcostcentre" class="form-control" autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-            <span id="costcentres"></span>
+           {{--  <input type="text" id="clientcostcentre" name="clientcostcentre" class="form-control" autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;"> --}}
+            <select type="text" id="clientcostcentre" name="clientcostcentre" class="form-control">
+              <option value="" disabled selected hidden> </option>
+                <?php $cost_centres = DB::table('cost_centres')->orderBy('costcentre_id','asc')->get(); ?>
+                  @foreach($cost_centres as $cost_centre)
+                    <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}-{{$cost_centre->costcentre}}
+              </option>
+                  @endforeach
+            </select>
+
+            {{-- <span id="costcentres"></span> --}}
           </div>
         </div>
 
@@ -1596,6 +1645,7 @@ function myFunction() {
        $('#carsfilterBydiv').hide();
        $('#carclientfilterBydiv').hide();
        $('#carrevenuefilterBydiv').hide();
+       $('#carrevenuemodeldiv').hide();
    $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
@@ -1647,6 +1697,7 @@ function myFunction() {
        $('#In_clientnamediv').hide();
        $('#Inpaymentstatusdiv').hide();
        $('#Inyeardiv').hide();
+       $('#InSpaceCriteriadiv').hide();
        $('#invoice_type').val(" ");
        $('#Inbusiness_type').val(" ");
        $('#In_clientname').val("");
@@ -1702,6 +1753,7 @@ function myFunction() {
      else if(query=='insurance'){
        $('#spacetypediv').hide();
        $('#spacefilterdiv').hide();
+       $('#space_industrydiv2').hide();
        $('#space_idDiv').hide();
        $('#spacefilterBydate').hide();
        $('#spacefilterBydiv').hide();
@@ -1747,6 +1799,7 @@ function myFunction() {
        $('#carsfilterBydiv').hide();
        $('#carclientfilterBydiv').hide();
        $('#carrevenuefilterBydiv').hide();
+       $('#carrevenuemodeldiv').hide();
    $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
@@ -1799,6 +1852,7 @@ function myFunction() {
        $('#In_clientnamediv').hide();
        $('#Inpaymentstatusdiv').hide();
        $('#Inyeardiv').hide();
+       $('#InSpaceCriteriadiv').hide();
        $('#invoice_type').val(" ");
        $('#Inbusiness_type').val(" ");
        $('#In_clientname').val("");
@@ -1854,6 +1908,7 @@ function myFunction() {
        $('#tenanttypediv').show();
        $('#spacetypediv').hide();
        $('#spacefilterdiv').hide();
+       $('#space_industrydiv2').hide();
        $('#space_idDiv').hide();
        $('#spacefilterBydate').hide();
        $('#spacefilterBydiv').hide();
@@ -1892,6 +1947,7 @@ function myFunction() {
        $('#carsfilterBydiv').hide();
        $('#carclientfilterBydiv').hide();
        $('#carrevenuefilterBydiv').hide();
+       $('#carrevenuemodeldiv').hide();
    $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
@@ -1947,6 +2003,7 @@ function myFunction() {
        $('#In_clientnamediv').hide();
        $('#Inpaymentstatusdiv').hide();
        $('#Inyeardiv').hide();
+       $('#InSpaceCriteriadiv').hide();
        $('#invoice_type').val(" ");
        $('#Inbusiness_type').val(" ");
        $('#In_clientname').val("");
@@ -2003,6 +2060,7 @@ function myFunction() {
       $('#cartypediv').show();
        $('#spacetypediv').hide();
        $('#spacefilterdiv').hide();
+       $('#space_industrydiv2').hide();
        $('#space_idDiv').hide();
        $('#spacefilterBydate').hide();
        $('#spacefilterBydiv').hide();
@@ -2064,6 +2122,7 @@ function myFunction() {
        $('#In_clientnamediv').hide();
        $('#Inpaymentstatusdiv').hide();
        $('#Inyeardiv').hide();
+       $('#InSpaceCriteriadiv').hide();
        $('#invoice_type').val(" ");
        $('#Inbusiness_type').val(" ");
        $('#In_clientname').val("");
@@ -2155,6 +2214,7 @@ function myFunction() {
        $('#carsfilterBydiv').hide();
        $('#carclientfilterBydiv').hide();
        $('#carrevenuefilterBydiv').hide();
+       $('#carrevenuemodeldiv').hide();
    $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
@@ -2192,6 +2252,7 @@ function myFunction() {
        $('#tenanttypediv').hide();
        $('#spacetypediv').hide();
        $('#spacefilterdiv').hide();
+       $('#space_industrydiv2').hide();
        $('#space_idDiv').hide();
        $('#spacefilterBydate').hide();
        $('#spacefilterBydiv').hide();
@@ -2219,6 +2280,7 @@ function myFunction() {
        $('#In_clientnamediv').hide();
        $('#Inpaymentstatusdiv').hide();
        $('#Inyeardiv').hide();
+       $('#InSpaceCriteriadiv').hide();
        $('#invoice_type').val(" ");
        $('#Inbusiness_type').val(" ");
        $('#In_clientname').val("");
@@ -2298,6 +2360,7 @@ function myFunction() {
        $('#carsfilterBydiv').hide();
        $('#carclientfilterBydiv').hide();
        $('#carrevenuefilterBydiv').hide();
+       $('#carrevenuemodeldiv').hide();
    $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
@@ -2335,6 +2398,7 @@ function myFunction() {
        $('#tenanttypediv').hide();
        $('#spacetypediv').hide();
        $('#spacefilterdiv').hide();
+       $('#space_industrydiv2').hide();
        $('#space_idDiv').hide();
        $('#spacefilterBydate').hide();
        $('#spacefilterBydiv').hide();
@@ -2385,6 +2449,7 @@ function myFunction() {
      else if(query=='system'){
       $('#spacetypediv').hide();
       $('#spacefilterdiv').hide();
+      $('#space_industrydiv2').hide();
        $('#space_idDiv').hide();
        $('#spacefilterBydate').hide();
        $('#spacefilterBydiv').hide();
@@ -2448,6 +2513,7 @@ function myFunction() {
        $('#carsfilterBydiv').hide();
        $('#carclientfilterBydiv').hide();
        $('#carrevenuefilterBydiv').hide();
+       $('#carrevenuemodeldiv').hide();
    $('#carmodeldiv').hide();
     $('#carstatusdiv').hide();
     $('#carrangediv').hide();
@@ -2499,6 +2565,7 @@ function myFunction() {
        $('#In_clientnamediv').hide();
        $('#Inpaymentstatusdiv').hide();
        $('#Inyeardiv').hide();
+       $('#InSpaceCriteriadiv').hide();
        $('#invoice_type').val(" ");
        $('#Inbusiness_type').val(" ");
        $('#In_clientname').val("");
@@ -2881,6 +2948,7 @@ function myFunction() {
      var query = $(this).val();
      if(query=='list'){
       $('#space_idDiv').hide();
+      $('#space_industrydiv2').hide();
       $('#spacefilterBydiv').show();
       $('#spacefilterBydate').hide();
       $('#spacedatediv').hide();
@@ -2891,7 +2959,8 @@ function myFunction() {
      }
      else if(query=='history'){
       $('#spacefilterBydate').show();
-      $('#space_idDiv').show();
+     // $('#space_idDiv').show();
+      $('#space_industrydiv2').show();
       $('#spacefilterBydiv').hide();
       $('#spacepricediv').hide();
       $('#Locationtypediv').hide();
@@ -2910,6 +2979,7 @@ function myFunction() {
      }
      else{
       $('#space_idDiv').hide();
+      $('#space_industrydiv2').hide();
       $('#spacefilterBydate').hide();
       $('#spacepricediv').hide();
       $('#Locationtypediv').hide();
@@ -2918,6 +2988,37 @@ function myFunction() {
      }
 
      });
+
+    $("#space_industry2").click(function(){
+      var industry = $(this).val();
+      console.log(industry);
+      if(industry!=null){
+        $('#space_idDiv').show();
+        var query = $('#space_industry2').val();
+        if(query != ''){
+          var _token = $('input[name="_token"]').val();
+          $.ajax({
+          url:"{{ route('autocomplete.spaces2') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+            console.log(data);
+             $('#nameListSpaceId').fadeIn();
+            $('#nameListSpaceId').html(data);
+          }
+         });
+        }
+        else if(query==''){
+          // a ='1';
+          //     //$('#message2').hide();
+          //     $('#space_id').attr('style','border:1px solid #ced4da');
+        }
+      }
+      else{
+        $('#space_idDiv').hide();
+      }
+
+    });
 
    $("#space_filter").click(function(){
     if($(this).is(":checked")){
@@ -3117,52 +3218,26 @@ function myFunction() {
 
 
 var a;
-   $('#space_id').keyup(function(e){
-    e.preventDefault();
-        var query = $(this).val();
-        if(query != ''){
-         var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.spaces') }}",
-          method:"POST",
-          data:{query:query, _token:_token},
-          success:function(data){
-            if(data=='0'){
-             $('#space_id').attr('style','border:1px solid #f00');
-             a = '0';
-            }
-            else{
-              a ='1';
-              //$('#message2').hide();
-              $('#space_id').attr('style','border:1px solid #ced4da');
-              $('#nameListSpaceId').fadeIn();
-              $('#nameListSpaceId').html(data);
-          }
-        }
-         });
-        }
-        else if(query==''){
-          a ='1';
-              //$('#message2').hide();
-              $('#space_id').attr('style','border:1px solid #ced4da');
-        }
+   // $('#space_id').click(function(e){
+   //  e.preventDefault();
+        
 
 
-    });
+   //  });
 
-   $(document).on('click', '#list', function(){
-   a ='1';
-   //$('#message2').hide();
-  $('#space_id').attr('style','border:1px solid #ced4da');
+  //  $(document).on('click', '#list', function(){
+  //  a ='1';
+  //  //$('#message2').hide();
+  // $('#space_id').attr('style','border:1px solid #ced4da');
 
-        $('#space_id').val($(this).text());
-        $('#nameListSpaceId').fadeOut();
+  //       $('#space_id').val($(this).text());
+  //       $('#nameListSpaceId').fadeOut();
 
-        });
+  //       });
 
-   $(document).on('click', 'form', function(){
-     $('#nameListSpaceId').fadeOut();
-    });
+  //  $(document).on('click', 'form', function(){
+  //    $('#nameListSpaceId').fadeOut();
+  //   });
 
 $("#tenant_type").click(function(){
  var query= $(this).val();
@@ -3287,52 +3362,52 @@ $("#t_invoice_payment_filter").click(function(){
     }
     });
 
-$('#vehicle_reg').keyup(function(e){
-        console.log(4);
+// $('#vehicle_reg').keyup(function(e){
+//         console.log(4);
 
-        e.preventDefault();
-        var query = $(this).val();
-        if(query != ''){
-         var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.fetch') }}",
-          method:"POST",
-          data:{query:query, _token:_token},
-          success:function(data){
-            if(data=='0'){
-             $('#vehicle_reg').attr('style','border:1px solid #f00');
-             az = '0';
-            }
-            else{
-              az ='1';
-              //$('#message2').hide();
-              $('#vehicle_reg').attr('style','border:1px solid #ced4da');
-              $('#nameList').fadeIn();
-              $('#nameList').html(data);
-          }
-        }
-         });
-        }
-        else if(query==''){
-          az ='1';
-              //$('#message2').hide();
-              $('#vehicle_reg').attr('style','border:1px solid #ced4da');
-        }
-     });
+//         e.preventDefault();
+//         var query = $(this).val();
+//         if(query != ''){
+//          var _token = $('input[name="_token"]').val();
+//          $.ajax({
+//           url:"{ route('autocomplete.fetch') }}",
+//           method:"POST",
+//           data:{query:query, _token:_token},
+//           success:function(data){
+//             if(data=='0'){
+//              $('#vehicle_reg').attr('style','border:1px solid #f00');
+//              az = '0';
+//             }
+//             else{
+//               az ='1';
+//               //$('#message2').hide();
+//               $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+//               $('#nameList').fadeIn();
+//               $('#nameList').html(data);
+//           }
+//         }
+//          });
+//         }
+//         else if(query==''){
+//           az ='1';
+//               //$('#message2').hide();
+//               $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+//         }
+//      });
 
-$(document).on('click', '#list', function(){
-   az ='1';
-   //$('#message2').hide();
-  $('#vehicle_reg').attr('style','border:1px solid #ced4da');
+// $(document).on('click', '#list', function(){
+//    az ='1';
+//    //$('#message2').hide();
+//   $('#vehicle_reg').attr('style','border:1px solid #ced4da');
 
-        $('#vehicle_reg').val($(this).text());
-        $('#nameList').fadeOut();
+//         $('#vehicle_reg').val($(this).text());
+//         $('#nameList').fadeOut();
 
-    });
+//     });
 
-   $(document).on('click', 'form', function(){
-     $('#nameList').fadeOut();
-    });
+   // $(document).on('click', 'form', function(){
+   //   $('#nameList').fadeOut();
+   //  });
 
 $("#car_type").click(function(){
     var query= $(this).val();
@@ -3763,52 +3838,52 @@ $(document).on('click', '#list', function(){
     });
 
 var a100=0;
-     $('#clientcostcentre').keyup(function(e){
-      e.preventDefault();
-        var query = $(this).val();
-        if(query != ''){
-         var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.costcentres') }}",
-          method:"POST",
-          data:{query:query, _token:_token},
-          success:function(data){
-            if(data=='0'){
-             $('#clientcostcentre').attr('style','border-bottom:1px solid #f00');
-             a100 = '0';
-            }
-            else{
-              a100 ='1';
-              //$('#message2').hide();
-              $('#clientcostcentre').attr('style','border-bottom:1px solid #ced4da');
-              $('#costcentres').fadeIn();
-              $('#costcentres').html(data);
-          }
-        }
-         });
-        }
-        else if(query==''){
-          a100 ='1';
-              //$('#message2').hide();
-              $('#clientcostcentre').attr('style','border-bottom:1px solid #ced4da');
-        }
+    //  $('#clientcostcentre').keyup(function(e){
+    //   e.preventDefault();
+    //     var query = $(this).val();
+    //     if(query != ''){
+    //      var _token = $('input[name="_token"]').val();
+    //      $.ajax({
+    //       url:"{{ route('autocomplete.costcentres') }}",
+    //       method:"POST",
+    //       data:{query:query, _token:_token},
+    //       success:function(data){
+    //         if(data=='0'){
+    //          $('#clientcostcentre').attr('style','border-bottom:1px solid #f00');
+    //          a100 = '0';
+    //         }
+    //         else{
+    //           a100 ='1';
+    //           //$('#message2').hide();
+    //           $('#clientcostcentre').attr('style','border-bottom:1px solid #ced4da');
+    //           $('#costcentres').fadeIn();
+    //           $('#costcentres').html(data);
+    //       }
+    //     }
+    //      });
+    //     }
+    //     else if(query==''){
+    //       a100 ='1';
+    //           //$('#message2').hide();
+    //           $('#clientcostcentre').attr('style','border-bottom:1px solid #ced4da');
+    //     }
 
 
-    });
+    // });
 
-     $(document).on('click', '#list', function(){
-      a100 ='1';
-      $('#clientcostcentre').attr('style','border-bottom:1px solid #ced4da');
+   //   $(document).on('click', '#list', function(){
+   //    a100 ='1';
+   //    $('#clientcostcentre').attr('style','border-bottom:1px solid #ced4da');
 
-        $('#clientcostcentre').val($(this).text().match(/\d+/g));
-        //$('#clientcostcentre_name').val($(this).text().match(/[a-zA-Z]+/g));
-        $('#costcentres').fadeOut();
+   //      $('#clientcostcentre').val($(this).text().match(/\d+/g));
+   //      //$('#clientcostcentre_name').val($(this).text().match(/[a-zA-Z]+/g));
+   //      $('#costcentres').fadeOut();
 
-        });
+   //      });
 
-   $(document).on('click', 'form', function(){
-     $('#costcentres').fadeOut();
-    });
+   // $(document).on('click', 'form', function(){
+   //   $('#costcentres').fadeOut();
+   //  });
 
    $("#submitbutton").click(function(e){
        e.preventDefault();
@@ -3957,18 +4032,18 @@ var a100=0;
         p1=1;
         var query6=$('#space_id').val();
         console.log(query6);
-        if(query6==""){
+        if(query6==null){
           p5=0;
           $('#spaceidmsg').show();
           var message=document.getElementById('spaceidmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#space_id').attr('style','border-bottom:1px solid #f00');
+           $('#space_id').attr('style','border:1px solid #f00');
         }
         else{
           p5=1;
           $('#spaceidmsg').hide();
-          $('#space_id').attr('style','border-bottom: 1px solid #ccc');
+          $('#space_id').attr('style','border: 1px solid #ccc');
         }
 
          if($('#space_filter_date').is(":checked")){
@@ -5000,19 +5075,22 @@ var a100=0;
       }
       else if(query16=='history'){
         var reg=$('#vehicle_reg').val();
-         if(az=="0"){
-          var message=document.getElementById('vehicleregmsg');
-           message.style.color='red';
-           message.innerHTML="This Vehicle does not exists";
-           $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
-        }
-        if(reg==""){
+        console.log(reg);
+        //  if(az=="0"){
+        //   var message=document.getElementById('vehicleregmsg');
+        //    message.style.color='red';
+        //    message.innerHTML="This Vehicle does not exists";
+        //    $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
+        // }
+        if(reg==null){
+          az=0;
           var message=document.getElementById('vehicleregmsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#vehicle_reg').attr('style','border-bottom:1px solid #f00');
+           $('#vehicle_reg').attr('style','border:1px solid #f00');
         }
         else{
+          az=1;
           $('#vehicleregmsg').hide();
           $('#vehicle_reg').attr('style','border-bottom:1px solid #ccc');
         }
@@ -5086,18 +5164,18 @@ var a100=0;
 
         if($('#clientcostcentre_filter').is(":checked")){
           var query200=$('#clientcostcentre').val();
-          if(query200==""){
+          if(query200==null){
             p200=0;
           $('#clientcostcentremsg').show();
           var message=document.getElementById('clientcostcentremsg');
            message.style.color='red';
            message.innerHTML="Required";
-           $('#clientcostcentre').attr('style','border-bottom:1px solid #f00');
+           $('#clientcostcentre').attr('style','border:1px solid #f00');
           }
           else{
             p200=1;
           $('#clientcostcentremsg').hide();
-          $('#clientcostcentre').attr('style','border-bottom:1px solid #ccc');
+          $('#clientcostcentre').attr('style','border:1px solid #ccc');
         }
         }
         else{
@@ -5571,6 +5649,20 @@ var a100=0;
     }
 
     });
+
+    $("#vehicle_reg").select2({
+    placeholder: "Select Vehicle",
+    theme: "bootstrap",
+    allowClear: true,
+  });
+
+    $("#clientcostcentre").select2({
+    placeholder: "Select Cost Centre",
+    theme: "bootstrap",
+    allowClear: true,
+  });
+
+    
 
     });
 </script>

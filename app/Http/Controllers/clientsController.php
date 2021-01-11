@@ -217,7 +217,6 @@ class clientsController extends Controller
     }
     public function editCarclients(Request $request){
       
-
        DB::table('car_contracts')
             ->where('email',$request->get('Caremail'))
             ->where('fullName',$request->get('Carfullname'))

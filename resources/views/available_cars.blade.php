@@ -22,7 +22,7 @@
 	<div class="container">
 <h4>Available Car(s) for Hire from {{date("d/m/Y",strtotime($_GET['start_date']))}} to {{date("d/m/Y",strtotime($_GET['end_date']))}}</h4>
 <br>
-<table class="hover table table-striped table-bordered" id="myTable4">
+<table class="hover table table-striped table-bordered" id="myTables4">
   <thead class="thead-dark">
     <tr>
       <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>

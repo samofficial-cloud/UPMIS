@@ -64,12 +64,16 @@ div.dt-buttons{
     float: right;
     color: blue;
 }
+
+
 </style>
 
 @endsection
 
 @section('content')
 <div class="wrapper">
+  <div id="coverScreen"  class="pageLoad">
+</div>
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
@@ -103,7 +107,7 @@ div.dt-buttons{
 
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
-            <li class="active_nav_item"><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
@@ -637,7 +641,7 @@ $i=1;
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Contract Id</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -667,7 +671,7 @@ $i=1;
   @if(count($outbox)>0)
   <table>
     <thead>
-      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Contract Id</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -700,7 +704,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -737,7 +741,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar3">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -780,7 +784,7 @@ $i=1;
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Contract Id</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -810,7 +814,7 @@ $i=1;
   @if(count($outbox)>0)
 <table>
    <thead>
-      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Contract Id</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -842,7 +846,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -880,7 +884,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar4">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -922,7 +926,7 @@ $i=1;
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Contract Id</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -952,7 +956,7 @@ $i=1;
   @if(count($outbox)>0)
 <table>
    <thead>
-      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Contract Id</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -984,7 +988,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1020,7 +1024,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar5">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1066,7 +1070,7 @@ $i=1;
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Contract Id</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -1096,7 +1100,7 @@ $i=1;
   @if(count($outbox)>0)
 <table>
    <thead>
-      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Contract Id</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -1128,7 +1132,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1164,7 +1168,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar6">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1206,7 +1210,7 @@ $i=1;
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Form Id</center></th>
+      <th style="width: 16%"><center>Contract Id</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -1236,7 +1240,7 @@ $i=1;
   @if(count($outbox)>0)
 <table>
    <thead>
-      <th style="width: 14%"><center>Form Id</center></th>
+      <th style="width: 14%"><center>Contract Id</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -1268,7 +1272,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1304,7 +1308,7 @@ $i=1;
 <table class="hover table table-striped table-bordered" id="myTablecar7">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1353,7 +1357,7 @@ $i=1;
   <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
@@ -1396,7 +1400,7 @@ $i=1;
     <table class="hover table table-striped table-bordered" id="myTablecar2">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Form Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
@@ -1487,6 +1491,9 @@ $i=1;
 
 
 <script type="text/javascript">
+  $(window).on('load', function () {
+$("#coverScreen").hide();
+});
     window.onload=function(){
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');

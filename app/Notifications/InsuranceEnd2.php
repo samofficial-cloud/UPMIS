@@ -54,7 +54,7 @@ class InsuranceEnd2 extends Notification
                     ->greeting('Dear '.($this->name).',')
                     ->subject('INSURANCE_ABOUT_TO_EXPIRE')
                     ->line(new HtmlString('This is to remind you that your insurance commissioned on '.date("d/m/Y",strtotime($this->start)).' is about to expire on '.date("d/m/Y",strtotime($this->end)).'.'))
-                    ->line('Please visit our office to renew your contract')
+                    ->line('Please visit our office to renew your insurance.')
                     ->salutation('Regards, <br>'.($this->salutation));
     }
 
