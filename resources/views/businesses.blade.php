@@ -56,6 +56,12 @@
             <ul style="list-style-type:none;">
 
                 <?php
+
+                $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+                ?>
+
+
+                <?php
                 $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
                 ?>
 
@@ -131,7 +137,7 @@
                     <div id="space_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
 <br>
 
-                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
+                        @if($privileges=='Read only')
                         @else
                             <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
     margin-left: -2px;
@@ -504,7 +510,7 @@
                                                     </div>
                                                 </div>
 
-                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
+                                                @if($privileges=='Read only')
                                                 @else
                                                     <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
@@ -773,7 +779,7 @@
                     <div id="insurance_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
 <br>
 
-                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI'  OR Auth::user()->role=='Accountant')
+                        @if($privileges=='Read only')
                         @else
                             <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="  color: white;  background-color: #38c172;
     padding: 10px;
@@ -986,7 +992,7 @@
                                     <th scope="col"  style="color:#fff;"><center>Commission(%)</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Commission</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Billing</center></th>
-                                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant')
+                                    @if($privileges=='Read only')
                                     @else
                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                     @endif
@@ -1005,7 +1011,7 @@
                                         <td><center>{{$var->commission_percentage}}%</center></td>
                                         <td><center>{{number_format($var->commission)}} {{$var->insurance_currency}} </center></td>
                                         <td><center> {{$var->billing}} </center></td>
-                                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
+                                        @if($privileges=='Read only')
                                         @else
                                             <td><center>
 

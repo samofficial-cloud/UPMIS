@@ -43,7 +43,7 @@
             border: 0;
             border: 2px solid #505559;
         }
-       
+
         .form-inline .form-control {
             width: 100%;
              height: auto;
@@ -78,10 +78,18 @@
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+
+            <?php
+
+            $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+            ?>
+
+
+
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
-            
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -113,8 +121,8 @@
     @else
     @endif
     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-    
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>      
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
@@ -196,7 +204,7 @@
                 <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
                     <br>
 
-                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                    @if($privileges=='Read only')
                     @else
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
@@ -324,7 +332,7 @@
 
         <div class="form-group row" style="margin-right: 5px;">
           <div style="padding: 0px 7px;">
-              From 
+              From
             </div>
             <div >
               <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
@@ -332,7 +340,7 @@
             </div>
 
            <div style="padding: 0px 7px;">
-              To 
+              To
             </div>
 
             <div >
@@ -340,11 +348,11 @@
             <span id="end_msg"></span>
             </div>
         </div>
-      
+
       <div class="form-group"  style="margin-right: -13px;">
           <input type="submit" name="filter" value="Filter" id="space_filter" class="btn btn-primary">
       </div>
-    </form>   
+    </form>
   </div>
 </div>
     <div id="space_content">
@@ -502,7 +510,7 @@
                     <h5>Water Bill Payments</h5>
                     <br>
 
-                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                    @if($privileges=='Read only')
                     @else
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
@@ -629,7 +637,7 @@
 
         <div class="form-group row" style="margin-right: 5px;">
           <div style="padding: 0px 7px;">
-              From 
+              From
             </div>
             <div >
               <input type="date" id="start_date4" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
@@ -637,7 +645,7 @@
             </div>
 
            <div style="padding: 0px 7px;">
-              To 
+              To
             </div>
 
             <div >
@@ -645,11 +653,11 @@
             <span id="end_msg4"></span>
             </div>
         </div>
-      
+
       <div class="form-group"  style="margin-right: -13px;">
           <input type="submit" name="filter" value="Filter" id="water_filter" class="btn btn-primary">
       </div>
-    </form>   
+    </form>
   </div>
 </div>
 <div id="water_content">
@@ -825,7 +833,7 @@
                     <h5>Electricity Bill Payments</h5>
                     <br>
 
-                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                    @if($privileges=='Read only')
                     @else
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_electricity" title="Record new electricity bill payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
@@ -953,7 +961,7 @@
 
         <div class="form-group row" style="margin-right: 5px;">
           <div style="padding: 0px 7px;">
-              From 
+              From
             </div>
             <div >
               <input type="date" id="start_date5" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
@@ -961,7 +969,7 @@
             </div>
 
            <div style="padding: 0px 7px;">
-              To 
+              To
             </div>
 
             <div >
@@ -969,11 +977,11 @@
             <span id="end_msg5"></span>
             </div>
         </div>
-      
+
       <div class="form-group"  style="margin-right: -13px;">
           <input type="submit" name="filter" value="Filter" id="electricity_filter" class="btn btn-primary">
       </div>
-    </form>   
+    </form>
   </div>
 </div>
 
@@ -1155,7 +1163,7 @@
                     <h5>Car Rental Payments</h5>
                     <br>
 
-                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                    @if($privileges=='Read only')
                     @else
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_car" title="Record new car rental payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
@@ -1282,7 +1290,7 @@
 
         <div class="form-group row" style="margin-right: 5px;">
           <div style="padding: 0px 7px;">
-              From 
+              From
             </div>
             <div >
               <input type="date" id="start_date2" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
@@ -1290,7 +1298,7 @@
             </div>
 
            <div style="padding: 0px 7px;">
-              To 
+              To
             </div>
 
             <div >
@@ -1298,11 +1306,11 @@
             <span id="end_msg2"></span>
             </div>
         </div>
-      
+
       <div class="form-group"  style="margin-right: -13px;">
           <input type="submit" name="filter" value="Filter" id="car_filter" class="btn btn-primary">
       </div>
-    </form>   
+    </form>
   </div>
 </div>
         <div id="car_content">
@@ -1459,7 +1467,7 @@
                     <br>
                     <h5>Insurance Payments</h5>
                     <br>
-                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                    @if($privileges=='Read only')
                     @else
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
@@ -1584,7 +1592,7 @@
 
         <div class="form-group row" style="margin-right: 5px;">
           <div style="padding: 0px 7px;">
-              From 
+              From
             </div>
             <div >
               <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
@@ -1592,7 +1600,7 @@
             </div>
 
            <div style="padding: 0px 7px;">
-              To 
+              To
             </div>
 
             <div >
@@ -1600,11 +1608,11 @@
             <span id="end_msg3"></span>
             </div>
         </div>
-      
+
       <div class="form-group"  style="margin-right: -13px;">
           <input type="submit" name="filter" value="Filter" id="insurance_filter" class="btn btn-primary">
       </div>
-    </form>   
+    </form>
   </div>
 </div>
 
@@ -2009,7 +2017,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2020,7 +2028,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2032,7 +2040,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2051,7 +2059,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2069,7 +2077,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2108,7 +2116,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2119,7 +2127,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2131,7 +2139,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2150,7 +2158,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2168,7 +2176,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2208,7 +2216,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2219,7 +2227,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2231,7 +2239,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2250,7 +2258,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2268,7 +2276,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2306,7 +2314,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2317,7 +2325,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2329,7 +2337,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2348,7 +2356,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2366,7 +2374,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2404,7 +2412,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2415,7 +2423,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2427,7 +2435,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2446,7 +2454,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2464,7 +2472,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2808,7 +2816,7 @@ $("#space_filter").click(function(e){
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2819,7 +2827,7 @@ $("#space_filter").click(function(e){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2831,7 +2839,7 @@ $("#space_filter").click(function(e){
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2850,7 +2858,7 @@ $("#space_filter").click(function(e){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2868,7 +2876,7 @@ $("#space_filter").click(function(e){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2954,7 +2962,7 @@ $("#car_filter").click(function(e){
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2965,7 +2973,7 @@ $("#car_filter").click(function(e){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2977,7 +2985,7 @@ $("#car_filter").click(function(e){
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2996,7 +3004,7 @@ $("#car_filter").click(function(e){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -3014,7 +3022,7 @@ $("#car_filter").click(function(e){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -3100,7 +3108,7 @@ $("#insurance_filter").click(function(e){
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -3111,7 +3119,7 @@ $("#insurance_filter").click(function(e){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -3123,7 +3131,7 @@ $("#insurance_filter").click(function(e){
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -3142,7 +3150,7 @@ $("#insurance_filter").click(function(e){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -3160,7 +3168,7 @@ $("#insurance_filter").click(function(e){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -3246,7 +3254,7 @@ $("#water_filter").click(function(e){
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -3257,7 +3265,7 @@ $("#water_filter").click(function(e){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -3269,7 +3277,7 @@ $("#water_filter").click(function(e){
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -3288,7 +3296,7 @@ $("#water_filter").click(function(e){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -3306,7 +3314,7 @@ $("#water_filter").click(function(e){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -3393,7 +3401,7 @@ $("#electricity_filter").click(function(e){
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -3404,7 +3412,7 @@ $("#electricity_filter").click(function(e){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -3416,7 +3424,7 @@ $("#electricity_filter").click(function(e){
                          doc.content[2].table.body[i][2].alignment = 'left';
                          doc.content[2].table.body[i][3].alignment = 'left';
                          doc.content[2].table.body[i][5].alignment = 'left';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -3435,7 +3443,7 @@ $("#electricity_filter").click(function(e){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -3453,7 +3461,7 @@ $("#electricity_filter").click(function(e){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],

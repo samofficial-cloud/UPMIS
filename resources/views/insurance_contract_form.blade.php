@@ -582,6 +582,7 @@ $today=date('Y-m-d');
 				<div class="form-group row">
 						<div class="form-wrapper col-12">
 							<label for="start_date">Commission Date <span style="color: red;"> *</span></label>
+                            <span id="commission_date_msg"></span>
 							<input type="date" id="commission_date" name="commission_date" class="form-control" required="" min="{{$today}}">
 						</div>
 {{--                    <div class="form-wrapper col-6">--}}
@@ -600,16 +601,19 @@ $today=date('Y-m-d');
 
 					<div class="form-wrapper col-12">
 						<label for="amount">Sum Insured <span style="color: red;"> *</span></label>
+                        <span id="sum_insured_msg"></span>
 						<input type="number" min="20" id="sum_insured" name="sum_insured" class="form-control" required="">
 					</div>
 
                         <div id="premiumDiv" class="form-wrapper col-12" style="display: none;">
                             <label for="amount">Premium </label>
+                            <span id="premium_msg"></span>
                             <input type="number" min="0" id="premium" readonly name="premium" class="form-control" >
                         </div>
 
                         <div id="mode_of_paymentDiv" class="form-wrapper col-12" style="display: none;">
                             <label for="mode_of_payment">Mode of payment <span style="color: red;"> *</span></label>
+                            <span id="mode_of_payment_msg"></span>
                             <select id="mode_of_payment" class="form-control" name="mode_of_payment" >
                                 <option value="" ></option>
                                 <option value="By installment" >By installment</option>
@@ -638,11 +642,13 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-12">
                                             <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
+                                            <span id="actual_ex_vat_msg"></span>
                                             <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
                                         </div>
 
                                         <div id="valueDiv" style="display: none;" class="form-wrapper col-12">
                                             <label for="amount">Value <span style="color: red;"> *</span></label>
+                                            <span id="value_msg"></span>
                                             <input type="number" min="20" id="value" name="value" class="form-control" >
                                         </div>
 
@@ -664,24 +670,27 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-12">
                                             <label for="currency">Currency <span style="color: red;"> *</span></label>
-
+                                            <span id="currency_msg"></span>
                                             <input type="text" id="currency" class="form-control" readonly required name="currency">
                                         </div>
 
 
                                         <div id="cover_noteDiv" style="display: none;" class="form-wrapper col-6">
                                             <label for="amount">Cover note<span style="color: red;"> *</span></label>
+                                            <span id="cover_note_msg"></span>
                                             <input type="text" id="cover_note" name="cover_note" class="form-control">
                                         </div>
 
                                         <div id="sticker_noDiv" style="display: none;" class="form-wrapper col-6">
                                             <label for="amount">Sticker number <span style="color: red;"> *</span></label>
+                                            <span id="sticker_no_msg"></span>
                                             <input type="text" id="sticker_no" name="sticker_no" class="form-control">
                                         </div>
 
 
                                         <div class="form-wrapper col-12">
                                             <label for="amount">Receipt Number <span style="color: red;"> *</span></label>
+                                            <span id="receipt_no_msg"></span>
                                             <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="">
                                         </div>
 
@@ -972,7 +981,6 @@ $today=date('Y-m-d');
                     if(query=='MOTOR'){
                         $('#TypeDiv').show();
                         $('#TypeDivNA').hide();
-
 
                         $('#cover_noteDiv').show();
                         document.getElementById("cover_note").disabled = false;
@@ -1371,7 +1379,6 @@ $('#principal_msg').hide();
 $('#insurance_company').attr('style','border-bottom: 1px solid #ccc');
 
 
-
     }
 
 
@@ -1605,7 +1612,7 @@ $('#insurance_company').attr('style','border-bottom: 1px solid #ccc');
 $("#next2").click(function(){
     current_fs = $(this).parent();
     next_fs = $(this).parent().next();
-
+    var p1, p2,p3,p4,p5,p6,p7,p8;
     var client_name=document.getElementById('full_name').value;
     var insurance_class=document.getElementById('insurance_class').value;
     var insurance_company=document.getElementById('insurance_company').value;
@@ -1618,17 +1625,153 @@ $("#next2").click(function(){
     var sum_insured=document.getElementById('sum_insured').value;
     var premium=document.getElementById('premium').value;
     var actual_ex_vat=document.getElementById('actual_ex_vat').value;
-    var value=document.getElementById('value').value;
+    var value=$("#value").val();
     var commission_percentage=document.getElementById('commission_percentage').value;
     var commission=document.getElementById('commission').value;
-    var cover_note=document.getElementById('cover_note').value;
-    var sticker_no=document.getElementById('sticker_no').value;
-    var receipt_no=document.getElementById('receipt_no').value;
+    var cover_note=$("#cover_note").val();
+    var sticker_no=$("#sticker_no").val();
+    var receipt_no=$("#receipt_no").val();
     var currency=document.getElementById('currency').value;
     var email=$("#email").val();
     var mode_of_payment=$("#mode_of_payment").val();
     var first_installment=$("#first_installment").val();
     var second_installment=$("#second_installment").val();
+
+
+
+    if(commission_date==""){
+        p1=0;
+        $('#commission_date_msg').show();
+        var message=document.getElementById('commission_date_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#commission_date').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p1=1;
+        $('#commission_date_msg').hide();
+        $('#commission_date').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+
+    if(sum_insured==""){
+        p2=0;
+        $('#sum_insured_msg').show();
+        var message=document.getElementById('sum_insured_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#sum_insured').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p2=1;
+        $('#sum_insured_msg').hide();
+        $('#sum_insured').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+
+    if(mode_of_payment==""){
+        p3=0;
+        $('#mode_of_payment_msg').show();
+        var message=document.getElementById('mode_of_payment_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#mode_of_payment').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p3=1;
+        $('#mode_of_payment_msg').hide();
+        $('#mode_of_payment').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+
+    if(actual_ex_vat==""){
+        p4=0;
+        $('#actual_ex_vat_msg').show();
+        var message=document.getElementById('actual_ex_vat_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#actual_ex_vat').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p4=1;
+        $('#actual_ex_vat_msg').hide();
+        $('#actual_ex_vat').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+    if(cover_note==""){
+        p5=0;
+        $('#cover_note_msg').show();
+        var message=document.getElementById('cover_note_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#cover_note').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p5=1;
+        $('#cover_note_msg').hide();
+        $('#cover_note').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+    if(sticker_no==""){
+        p6=0;
+        $('#sticker_no_msg').show();
+        var message=document.getElementById('sticker_no_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#sticker_no').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p6=1;
+        $('#sticker_no_msg').hide();
+        $('#sticker_no').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+
+    if(receipt_no==""){
+        p7=0;
+        $('#receipt_no_msg').show();
+        var message=document.getElementById('receipt_no_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#receipt_no').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p7=1;
+        $('#receipt_no_msg').hide();
+        $('#receipt_no').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+    if(value==""){
+        p8=0;
+        $('#value_msg').show();
+        var message=document.getElementById('value_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#value').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p8=1;
+        $('#value_msg').hide();
+        $('#value').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+
+
 
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -1758,7 +1901,58 @@ $("#next2").click(function(){
     $("#receipt_no_confirm").html(receipt_no);
     $("#receipt_no_confirm").css('font-weight', 'bold');
 
-    gonext();
+
+ if(insurance_class=='MOTOR'){
+
+     if(insurance_type=='COMPREHENSIVE'){
+
+         if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1') {
+
+             gonext();
+
+         }else{
+
+
+
+         }
+
+
+
+     }
+
+     else{
+
+         if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' ) {
+
+             gonext();
+
+         }else{
+
+
+
+         }
+
+     }
+
+
+
+
+
+    }else{
+
+     if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' ) {
+
+         gonext();
+
+     }else{
+
+
+
+     }
+
+
+ }
+
 
 
   });
