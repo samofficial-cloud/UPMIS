@@ -73,6 +73,13 @@ div.dt-buttons{
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
+
+            <?php
+
+            $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+            ?>
+
+
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
@@ -177,10 +184,10 @@ div.dt-buttons{
 
             <div id="space_contracts" class="tabcontentOuter">
                 <br>
-                <h4 style="text-align: center">Real Estate Contracts</h4>
 
 
-                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
+
+                @if($privileges=='Read only')
                 @else
         <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
     padding: 10px;
@@ -188,6 +195,10 @@ div.dt-buttons{
     margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true" title="Add new Space Contract">Add New Contract</a>
                 @endif
+
+                <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>
+
+                <hr>
 <?php
 $i=1;
 ?>
@@ -201,7 +212,6 @@ $i=1;
           <th scope="col" style="color:#fff;"><center>Space Number</center></th>
           <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
           <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
-
 
           <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
           <th scope="col"  style="color:#fff;"><center>End Date</center></th>
@@ -390,7 +400,7 @@ $i=1;
 
 
                     @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
-                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
+                        @if($privileges=='Read only')
                         @else
                         <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
                         <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
@@ -438,7 +448,7 @@ $i=1;
 
                     @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
 {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
-                        @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant')
+                        @if($privileges=='Read only')
                         @else
                         <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
                         @endif
@@ -471,10 +481,9 @@ $i=1;
 
             <div id="insurance_contracts" class="tabcontentOuter">
                 <br>
-                <h4 style="text-align: center">Insurance Contracts</h4>
 
 
-                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant' )
+                @if($privileges=='Read only')
                 @else
                 <a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
     padding: 10px;
@@ -484,7 +493,8 @@ $i=1;
                 @endif
 
                 <div class="">
-
+                    <h3 style="text-align: center"><strong>Insurance Contracts</strong></h3>
+                    <hr>
 
 
                     <table class="hover table table-striped table-bordered" id="myTableInsurance">
@@ -542,7 +552,7 @@ $i=1;
                                         <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details_insurance',$var->id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
 
 
-                                    @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' OR Auth::user()->role=='Accountant')
+                                    @if($privileges=='Read only')
                                         @else
 
 
@@ -757,7 +767,7 @@ $i=1;
         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-           
+
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
       @endforeach
@@ -861,7 +871,7 @@ $i=1;
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
-          
+
           <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
       </tr>
@@ -1610,19 +1620,19 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
                 },
-                
+
 
 
                 customize: function ( doc ) {
                   var form_data  = table.rows().data();
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1654,7 +1664,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1672,7 +1682,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1721,18 +1731,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8,9,10]
                 },
-                
+
 
 
                 customize: function ( doc ) {
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1762,7 +1772,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1780,7 +1790,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1824,18 +1834,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6]
                 },
-                
+
 
 
                 customize: function ( doc ) {
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1865,7 +1875,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1883,7 +1893,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1927,18 +1937,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6]
                 },
-                
+
 
 
                 customize: function ( doc ) {
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1968,7 +1978,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1986,7 +1996,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2030,18 +2040,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6]
                 },
-                
+
 
 
                 customize: function ( doc ) {
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2071,7 +2081,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2089,7 +2099,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2133,18 +2143,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6]
                 },
-                
+
 
 
                 customize: function ( doc ) {
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2174,7 +2184,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2192,7 +2202,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2236,18 +2246,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6]
                 },
-                
+
 
 
                 customize: function ( doc ) {
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2277,7 +2287,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2295,7 +2305,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2339,18 +2349,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6]
                 },
-                
+
 
 
                 customize: function ( doc ) {
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2380,7 +2390,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2398,7 +2408,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2442,18 +2452,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6]
                 },
-                
+
 
 
                 customize: function ( doc ) {
-                  
+
                   doc.defaultStyle.font = 'Times';
 
                   doc['footer'] = (function (page, pages) {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2483,7 +2493,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[1].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2501,7 +2511,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],

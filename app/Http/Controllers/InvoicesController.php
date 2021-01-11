@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendEmailsSpaceJob;
+use App\Jobs\SendEmailsInsuranceJob;
+use App\Jobs\SendEmailsWaterJob;
+use App\Jobs\SendEmailsElectricityJob;
+use App\Jobs\SendEmailsCarJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\SendInvoice;
@@ -198,7 +202,7 @@ class InvoicesController extends Controller
 
             $contract_invoice_no=DB::table('invoices')->where('contract_id',$var->contract_id)->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
-            $amount_not_paid=DB::table('space_payments')->where('invoice_number',$contract_invoice_no)->value('amount_not_paid');
+            $amount_not_paid=DB::table('space_payments')->where('invoice_number',$contract_invoice_no)->where('invoice_number_votebook','!=','')->value('amount_not_paid');
 
             if($amount_not_paid==null){
 
@@ -364,9 +368,9 @@ class InvoicesController extends Controller
             $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->orderBy('car_rental_invoices.invoice_number','desc')->get();
          }
          else{
-           $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get(); 
+           $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get();
          }
-        
+
         $water_bill_invoices=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->orderBy('water_bill_invoices.invoice_number','desc')->get();
         $electricity_bill_invoices=DB::table('electricity_bill_invoices')->join('space_contracts','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->orderBy('electricity_bill_invoices.invoice_number','desc')->get();
 
@@ -593,7 +597,9 @@ public function sendAllInvoicesSpace(Request $request){
         ->where('invoice_category','space')
         ->update(['to_be_sent' => 1]);
 
-    SendEmailsSpaceJob::dispatch()->delay(now()->addSeconds(5));;
+//    SendEmailsSpaceJob::dispatch()->delay(now()->addSeconds(5));
+
+    SendEmailsSpaceJob::dispatch();
 
     return redirect('/invoice_management')
         ->with('success', 'Emails Sent Successfully');
@@ -603,18 +609,26 @@ public function sendAllInvoicesSpace(Request $request){
     public function sendAllInvoicesWater(Request $request){
 
         DB::table('invoice_notifications')
-            ->where('invoice_category','space')
+            ->where('invoice_category','water bill')
             ->update(['to_be_sent' => 1]);
-        echo 'Success';
+
+        SendEmailsWaterJob::dispatch();
+
+        return redirect('/invoice_management')
+            ->with('success', 'Emails Sent Successfully');
     }
 
 
     public function sendAllInvoicesElectricity(Request $request){
 
         DB::table('invoice_notifications')
-            ->where('invoice_category','space')
+            ->where('invoice_category','electricity bill')
             ->update(['to_be_sent' => 1]);
-        echo 'Success';
+
+        SendEmailsElectricityJob::dispatch();
+
+        return redirect('/invoice_management')
+            ->with('success', 'Emails Sent Successfully');
     }
 
 
@@ -624,7 +638,11 @@ public function sendAllInvoicesSpace(Request $request){
         DB::table('invoice_notifications')
             ->where('invoice_category','insurance')
             ->update(['to_be_sent' => 1]);
-        echo 'Success';
+
+        SendEmailsInsuranceJob::dispatch();
+
+        return redirect('/invoice_management')
+            ->with('success', 'Emails Sent Successfully');
     }
 
     public function sendAllInvoicesCar(Request $request){
@@ -633,7 +651,10 @@ public function sendAllInvoicesSpace(Request $request){
             ->where('invoice_category','car_rental')
             ->update(['to_be_sent' => 1]);
 
-        echo 'Success';
+        SendEmailsCarJob::dispatch();
+
+        return redirect('/invoice_management')
+            ->with('success', 'Emails Sent Successfully');
     }
 
 
@@ -688,20 +709,20 @@ public function sendAllInvoicesSpace(Request $request){
                 ->where('invoice_number', $id)
                 ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['current_amount' => $request->get('current_amount')]);
-
-
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
-
-
-
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['currency_invoice' => $request->get('currency')]);
+//            DB::table('water_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['current_amount' => $request->get('current_amount')]);
+//
+//
+//            DB::table('water_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
+//
+//
+//
+//            DB::table('water_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['currency_invoice' => $request->get('currency')]);
 
 
 //            DB::table('water_bill_payments')->insert(
@@ -714,7 +735,7 @@ public function sendAllInvoicesSpace(Request $request){
 
 
         return redirect('/invoice_management')
-            ->with('success', 'Information saved successfully');
+            ->with('success', 'GEPG control number saved successfully');
     }
 
 
@@ -733,20 +754,20 @@ public function sendAllInvoicesSpace(Request $request){
                 ->where('invoice_number', $id)
                 ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['current_amount' => $request->get('current_amount')]);
-
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
-
-
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['currency_invoice' => $request->get('currency')]);
+//            DB::table('electricity_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['current_amount' => $request->get('current_amount')]);
+//
+//
+//            DB::table('electricity_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
+//
+//
+//
+//            DB::table('electricity_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['currency_invoice' => $request->get('currency')]);
 
 
 //            DB::table('water_bill_payments')->insert(
@@ -759,7 +780,7 @@ public function sendAllInvoicesSpace(Request $request){
 
 
         return redirect('/invoice_management')
-            ->with('success', 'Information saved successfully');
+            ->with('success', 'GEPG control number saved successfully');
     }
 
 
@@ -1255,12 +1276,12 @@ public function sendAllInvoicesSpace(Request $request){
 
             $amount_in_words='';
 
-            if($request->get('currency')=='TZS'){
-                $amount_in_words=Terbilang::make(($request->get('current_amount')+$var->debt),' TZS',' ');
+            if($var->currency_invoice=='TZS'){
+                $amount_in_words=Terbilang::make(($var->cumulative_amount),' TZS',' ');
 
-            }if ($request->get('currency')=='USD'){
+            }if ($var->currency_invoice=='USD'){
 
-                $amount_in_words=Terbilang::make(($request->get('current_amount')+$var->debt),' USD',' ');
+                $amount_in_words=Terbilang::make(($var->cumulative_amount),' USD',' ');
             }
 
             else{
@@ -1274,7 +1295,7 @@ public function sendAllInvoicesSpace(Request $request){
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'inc_code',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->cumulative_amount,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'inc_code',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('electricity_bill_invoices')
                 ->where('invoice_number', $id)
@@ -1289,20 +1310,20 @@ public function sendAllInvoicesSpace(Request $request){
                 ->where('invoice_number', $id)
                 ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['current_amount' => $request->get('current_amount')]);
-
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
-
-
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['currency_invoice' => $request->get('currency')]);
+//            DB::table('electricity_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['current_amount' => $request->get('current_amount')]);
+//
+//
+//            DB::table('electricity_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
+//
+//
+//
+//            DB::table('electricity_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['currency_invoice' => $request->get('currency')]);
 
 
 //            DB::table('electricity_bill_payments')->insert(
@@ -1422,7 +1443,7 @@ public function sendAllInvoicesSpace(Request $request){
             if(count($contract_data)!=0){
 
                 $contract_invoice_no=DB::table('electricity_bill_invoices')->where('contract_id',$query)->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
-                $amount_not_paid=DB::table('electricity_bill_payments')->where('invoice_number',$contract_invoice_no)->value('amount_not_paid');
+                $amount_not_paid=DB::table('electricity_bill_payments')->where('invoice_number',$contract_invoice_no)->where('invoice_number_votebook','!=','')->value('amount_not_paid');
                 $currency=DB::table('electricity_bill_payments')->where('invoice_number',$contract_invoice_no)->value('currency_payments');
 
                 $data="";
@@ -1492,7 +1513,7 @@ public function sendAllInvoicesSpace(Request $request){
 
                 $contract_invoice_no=DB::table('water_bill_invoices')->where('contract_id',$query)->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
-                $amount_not_paid=DB::table('water_bill_payments')->where('invoice_number',$contract_invoice_no)->value('amount_not_paid');
+                $amount_not_paid=DB::table('water_bill_payments')->where('invoice_number',$contract_invoice_no)->where('invoice_number_votebook','!=','')->value('amount_not_paid');
                 $currency=DB::table('water_bill_payments')->where('invoice_number',$contract_invoice_no)->value('currency_payments');
                 $data="";
                 if($amount_not_paid==null){
@@ -1764,12 +1785,12 @@ public function sendAllInvoicesSpace(Request $request){
 
             $amount_in_words='';
 
-            if($request->get('currency')=='TZS'){
-                $amount_in_words=Terbilang::make(($request->get('current_amount')+$var->debt),' TZS',' ');
+            if($var->currency_invoice=='TZS'){
+                $amount_in_words=Terbilang::make(($var->cumulative_amount),' TZS',' ');
 
-            }if ($request->get('currency')=='USD'){
+            }if ($var->currency_invoice=='USD'){
 
-                $amount_in_words=Terbilang::make(($request->get('current_amount')+$var->debt),' USD',' ');
+                $amount_in_words=Terbilang::make(($var->cumulative_amount),' USD',' ');
             }
 
             else{
@@ -1783,7 +1804,7 @@ public function sendAllInvoicesSpace(Request $request){
 
 
             Notification::route('mail','upmistesting@gmail.com')
-                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,($request->get('current_amount')+$var->debt),$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'1234',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,($var->cumulative_amount),$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'1234',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
             DB::table('water_bill_invoices')
                 ->where('invoice_number', $id)
@@ -1798,20 +1819,20 @@ public function sendAllInvoicesSpace(Request $request){
                 ->where('invoice_number', $id)
                 ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['current_amount' => $request->get('current_amount')]);
-
-
-            DB::table('water_bill_invoices')
-                       ->where('invoice_number', $id)
-                       ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
-
-
-
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['currency_invoice' => $request->get('currency')]);
+//            DB::table('water_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['current_amount' => $request->get('current_amount')]);
+//
+//
+//            DB::table('water_bill_invoices')
+//                       ->where('invoice_number', $id)
+//                       ->update(['cumulative_amount' => ($request->get('current_amount')+$var->debt)]);
+//
+//
+//
+//            DB::table('water_bill_invoices')
+//                ->where('invoice_number', $id)
+//                ->update(['currency_invoice' => $request->get('currency')]);
 
 
 //            DB::table('water_bill_payments')->insert(
