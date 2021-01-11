@@ -82,7 +82,7 @@
         }
 
         #msform .action-button {
-            width: 100px;
+            width: 150px;
             background: skyblue;
             font-weight: bold;
             color: white;
@@ -99,7 +99,7 @@
         }
 
         #msform .action-button-previous {
-            width: 100px;
+            width: 150px;
             background: #616161;
             font-weight: bold;
             color: white;
@@ -296,6 +296,7 @@
                                             <li class="" id="insurance"><strong>Insurance</strong></li>
 
                                             <li id="payment"><strong>Payment</strong></li>
+                                            <li id="confirm"><strong>Confirm</strong></li>
                                         </ul>
                                         @foreach($insurance_data as $var)
 
@@ -343,7 +344,8 @@
                                                             <br>
                                                             <label for="space_location"  ><strong>Client Name</strong> <span style="color: red;"> *</span></label>
                                                             <span id="client_msg"></span>
-                                                            <input type="text" id="full_name" name="full_name" class="form-control" >
+                                                            <input type="text" id="full_name" name="full_name" class="form-control" autocomplete="off">
+                                                            <div id="nameListClientName"></div>
                                                         </div>
 
 
@@ -364,7 +366,8 @@
                                                             <br>
                                                             <label for="client_type"><strong>Vehicle Registration Number</strong></label>
                                                             <span id="vehicle_registration_no_msg"></span>
-                                                            <input type="text" id="vehicle_registration_no" name="vehicle_registration_no" class="form-control" >
+                                                            <input type="text" id="vehicle_registration_no" name="vehicle_registration_no" class="form-control" autocomplete="off">
+                                                            <div id="nameListVehicleRegistrationNumber"></div>
                                                         </div>
 
                                                         <br>
@@ -412,6 +415,7 @@
                                                 <div class="form-group row">
                                                     <div class="form-wrapper col-12">
                                                         <label for="start_date">Commission Date <span style="color: red;"> *</span></label>
+                                                        <span id="commission_date_msg"></span>
                                                         <input type="date" id="commission_date" name="commission_date" class="form-control" required="" min="{{$today}}">
                                                     </div>
                                                     <input type="hidden"  min="1" max="50" id="duration" name="duration" class="form-control" value="1" >
@@ -426,13 +430,41 @@
 
                                                     <div class="form-wrapper col-12">
                                                         <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
+                                                        <span id="sum_insured_msg"></span>
                                                         <input type="number" min="20" id="sum_insured" name="sum_insured" class="form-control" required="">
                                                     </div>
 
 
 
-                                                    <input type="hidden" min="0"  id="premium" readonly name="premium" value="{{$var->price}}" class="form-control" >
+                                                    <div id="premiumDiv" class="form-wrapper col-12" style="display: none;">
+                                                        <label for="amount">Premium </label>
+                                                        <span id="premium_msg"></span>
+                                                        <input type="number" min="0" id="premium" readonly name="premium" class="form-control" >
+                                                    </div>
 
+                                                    <div id="mode_of_paymentDiv" class="form-wrapper col-12" style="display: none;">
+                                                        <label for="mode_of_payment">Mode of payment <span style="color: red;"> *</span></label>
+                                                        <span id="mode_of_payment_msg"></span>
+                                                        <select id="mode_of_payment" class="form-control" name="mode_of_payment" >
+                                                            <option value="" ></option>
+                                                            <option value="By installment" >By installment</option>
+                                                            <option value="Full payment" >Full payment</option>
+                                                        </select>
+                                                    </div>
+
+
+
+
+                                                    <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" style="display: none;">
+                                                        <label for="amount">First installment(60%) </label>
+                                                        <input type="text" id="first_installment" readonly name="first_installment" class="form-control">
+                                                    </div>
+
+
+                                                    <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" style="display: none;">
+                                                        <label for="amount">Second installment(40%) </label>
+                                                        <input type="text" id="second_installment" readonly name="second_installment" class="form-control">
+                                                    </div>
 
 
 
@@ -444,12 +476,14 @@
 
                                                     <div class="form-wrapper col-12">
                                                         <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
+                                                        <span id="actual_ex_vat_msg"></span>
                                                         <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
                                                     </div>
 
                                                     @if($var->class!="MOTOR")
                                                         <div id="valueDiv"  class="form-wrapper col-12">
                                                             <label for="amount">Value <span style="color: red;"> *</span></label>
+                                                            <span id="value_msg"></span>
                                                             <input type="number" min="20" id="value" name="value" class="form-control" required="" >
                                                         </div>
                                                     @else
@@ -472,13 +506,14 @@
 
                                                     <div class="form-wrapper col-12">
                                                         <label for="currency">Currency <span style="color: red;"> *</span></label>
-
+                                                        <span id="currency_msg"></span>
                                                         <input type="text" id="currency" class="form-control" readonly value="{{$var->insurance_currency}}" required name="currency">
                                                     </div>
 
                                                     @if($var->class=="MOTOR")
                                                     <div id="cover_noteDiv"   class="form-wrapper col-6">
                                                         <label for="amount">Cover note<span style="color: red;"> *</span></label>
+                                                        <span id="cover_note_msg"></span>
                                                         <input type="text" id="cover_note" name="cover_note" class="form-control" required="">
                                                     </div>
 
@@ -486,6 +521,7 @@
 
                                                     <div id="sticker_noDiv"  class="form-wrapper col-6">
                                                         <label for="amount">Sticker number<span style="color: red;"> *</span></label>
+                                                        <span id="sticker_no_msg"></span>
                                                         <input type="text" id="sticker_no" name="sticker_no" class="form-control" required="">
                                                     </div>
                                                     @else
@@ -494,6 +530,7 @@
 
                                                     <div class="form-wrapper col-12">
                                                         <label for="amount">Receipt Number <span style="color: red;"> *</span></label>
+                                                        <span id="receipt_no_msg"></span>
                                                         <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="">
                                                     </div>
 
@@ -503,9 +540,162 @@
 
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="submit" name="make_payment" class="submit action-button" value="Confirm"/>
+                                            <input id="next2" type="button" name="next" class="next action-button" value="Next"/>
                                             <a href="/businesses" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
+
+                                            <fieldset>
+                                                <div class="form-card">
+                                                    <h2 style="text-align: center !important;" class="fs-title">Full contract details</h2>
+                                                    <table class="table table-bordered table-striped" style="width: 100%; margin-top:3%;">
+
+
+
+                                                        <tr>
+                                                            <td>Insurance class</td>
+                                                            <td id="insurance_class_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td>Principal:</td>
+                                                            <td id="insurance_company_confirm"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Insurance type</td>
+                                                            <td id="insurance_type_confirm"> </td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td>Client name:</td>
+                                                            <td id="client_name_confirm"> </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td> Phone number:</td>
+                                                            <td id="phone_number_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td> Email:</td>
+                                                            <td id="email_confirm"> </td>
+                                                        </tr>
+
+                                                        <tr id="vehicle_registration_no_row_confirm" style="display: none;">
+                                                            <td> Vehicle Registration Number:</td>
+                                                            <td id="vehicle_registration_no_confirm"> </td>
+                                                        </tr>
+
+
+                                                        <tr id="vehicle_use_row_confirm" style="display: none;">
+                                                            <td>Vehicle Use:</td>
+                                                            <td id="vehicle_use_confirm"></td>
+                                                        </tr>
+
+
+
+                                                        <tr>
+                                                            <td>Commission date:</td>
+                                                            <td id="commission_date_confirm"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Duration:</td>
+                                                            <td><b>1 year</b></td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td>Sum insured:</td>
+                                                            <td id="sum_insured_confirm"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Premium:</td>
+                                                            <td id="premium_confirm"></td>
+                                                        </tr>
+
+
+
+                                                        <tr id="mode_of_payment_row_confirm" style="display: none;">
+                                                            <td>Mode of payment:</td>
+                                                            <td id="mode_of_payment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="first_installment_row_confirm" style="display: none;">
+                                                            <td>First installment:</td>
+                                                            <td id="first_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="second_installment_row_confirm" style="display: none;">
+                                                            <td>Second installment:</td>
+                                                            <td id="second_installment_confirm"></td>
+                                                        </tr>
+
+
+
+                                                        <tr>
+                                                            <td>Actual (Excluding VAT):</td>
+                                                            <td id="actual_ex_vat_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="value_row_confirm" style="display: none;" >
+                                                            <td>Value:</td>
+                                                            <td id="value_confirm"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Commission percentage:</td>
+                                                            <td id="commission_percentage_confirm"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Commission:</td>
+                                                            <td id="commission_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="cover_note_row_confirm" style="display: none;">
+                                                            <td>Cover note:</td>
+                                                            <td id="cover_note_confirm"></td>
+                                                        </tr>
+
+                                                        <tr id="sticker_no_row_confirm" style="display: none;">
+                                                            <td>Sticker number:</td>
+                                                            <td id="sticker_no_confirm"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Receipt number:</td>
+                                                            <td id="receipt_no_confirm"></td>
+                                                        </tr>
+
+
+
+
+
+
+
+                                                    </table>
+
+
+                                                </div>
+                                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                                <input type="submit" name="submit" class="submit action-button" value="Save"/>
+                                                <input type="submit" name="submit" class="submit action-button" value="Save and print"/>
+                                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                            </fieldset>
+
+
+
+
+
                                             @endforeach
                                     </form>
                                 </div>
@@ -525,6 +715,113 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+
+            $('#full_name').keyup(function(e){
+                e.preventDefault();
+                var query = $(this).val();
+
+
+
+                if(query != '')
+                {
+                    var _token = $('input[name="_token"]').val();
+
+                    $.ajax({
+                        url:"{{ route('client_name_suggestions') }}",
+                        method:"GET",
+                        data:{query:query,_token:_token},
+                        success:function(data){
+                            if(data=='0'){
+                                // $('#space_id_contract').attr('style','border:1px solid #f00');
+
+                            }
+                            else{
+
+                                // $('#space_id_contract').attr('style','border:1px solid #ced4da');
+                                $('#nameListClientName').fadeIn();
+                                $('#nameListClientName').html(data);
+                            }
+                        }
+                    });
+                }
+                else if(query==''){
+
+                    // $('#space_id_contract').attr('style','border:1px solid #ced4da');
+                    $('#nameListClientName').fadeOut();
+                }
+            });
+
+            $(document).on('click', '#listClientName', function(){
+
+                $('#full_name').val($(this).text());
+
+                $('#nameListClientName').fadeOut();
+
+            });
+
+            $(document).on('blur', '#full_name', function(){
+
+
+
+                $('#nameListClientName').fadeOut();
+
+            });
+
+
+
+            //For vehicle registration number
+            $('#vehicle_registration_no').keyup(function(e){
+                e.preventDefault();
+                var query = $('#full_name').val();
+
+
+
+                if(query != '')
+                {
+                    var _token = $('input[name="_token"]').val();
+
+                    $.ajax({
+                        url:"{{ route('vehicle_registration_no_suggestions') }}",
+                        method:"GET",
+                        data:{query:query,_token:_token},
+                        success:function(data){
+                            if(data=='0'){
+                                // $('#space_id_contract').attr('style','border:1px solid #f00');
+
+                            }
+                            else{
+
+                                // $('#space_id_contract').attr('style','border:1px solid #ced4da');
+                                $('#nameListVehicleRegistrationNumber').fadeIn();
+                                $('#nameListVehicleRegistrationNumber').html(data);
+                            }
+                        }
+                    });
+                }
+                else if(query==''){
+
+                    // $('#space_id_contract').attr('style','border:1px solid #ced4da');
+                    $('#nameListVehicleRegistrationNumber').fadeOut();
+                }
+            });
+
+            $(document).on('click', '#listVehicleRegistrationNumber', function(){
+
+                $('#vehicle_registration_no').val($(this).text());
+
+                $('#nameListVehicleRegistrationNumber').fadeOut();
+
+            });
+
+            $(document).on('blur', '#vehicle_registration_no', function(){
+
+
+                $('#nameListVehicleRegistrationNumber').fadeOut();
+
+            });
+
+
+
 
             $('#insurance_class').click(function(){
                 var query3=$(this).val();
@@ -808,6 +1105,24 @@
 
 
                 var email = $("#email").val();
+
+
+                if(insurance_type=='COMPREHENSIVE'){
+                    $('#mode_of_paymentDiv').show();
+                    $('#premiumDiv').show();
+
+                }else{
+                    $('#premiumDiv').hide();
+                    $('#mode_of_paymentDiv').hide();
+
+                    $('#first_installmentDiv').hide();
+                    $('#second_installmentDiv').hide();
+
+                    $('#first_installment').val("");
+                    $('#second_installment').val("");
+
+                }
+
 
 
                 if (client_name == "") {
@@ -1097,45 +1412,372 @@
             $("#next2").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
+
+                var client_name=document.getElementById('full_name').value;
+                var insurance_class=document.getElementById('insurance_class').value;
+                var insurance_company=document.getElementById('insurance_company').value;
+                var insurance_type=$("#insurance_type").val();
+
                 var vehicle_registration_no=$("#vehicle_registration_no").val();
                 var vehicle_use=$("#vehicle_use").val();
-                var p1,p2;
+                var insurance_type_na=$("#insurance_type_na").val();
 
-                if(vehicle_registration_no==""){
+
+                var phone_number=document.getElementById('phone_number').value;
+                var commission_date=document.getElementById('commission_date').value;
+                var sum_insured=document.getElementById('sum_insured').value;
+                var premium=document.getElementById('premium').value;
+                var actual_ex_vat=document.getElementById('actual_ex_vat').value;
+                var value=$("#value").val();
+                var commission_percentage=document.getElementById('commission_percentage').value;
+                var commission=document.getElementById('commission').value;
+                var cover_note=$("#cover_note").val();
+                var sticker_no=$("#sticker_no").val();
+                var receipt_no=$("#receipt_no").val();
+                var currency=document.getElementById('currency').value;
+                var email=$("#email").val();
+                var mode_of_payment=$("#mode_of_payment").val();
+                var first_installment=$("#first_installment").val();
+                var second_installment=$("#second_installment").val();
+
+                if(commission_date==""){
                     p1=0;
-                    $('#v_regno_msg').show();
-                    var message=document.getElementById('v_regno_msg');
+                    $('#commission_date_msg').show();
+                    var message=document.getElementById('commission_date_msg');
                     message.style.color='red';
                     message.innerHTML="Required";
-                    $('#vehicle_registration_no').attr('style','border-bottom:1px solid #f00');
+                    $('#commission_date').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
                     p1=1;
-                    $('#v_regno_msg').hide();
-                    $('#vehicle_registration_no').attr('style','border-bottom: 1px solid #ccc');
+                    $('#commission_date_msg').hide();
+                    $('#commission_date').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
-                if(vehicle_use==""){
+
+                if(sum_insured==""){
                     p2=0;
-                    $('#v_use_msg').show();
-                    var message=document.getElementById('v_use_msg');
+                    $('#sum_insured_msg').show();
+                    var message=document.getElementById('sum_insured_msg');
                     message.style.color='red';
                     message.innerHTML="Required";
-                    $('#vehicle_use').attr('style','border-bottom:1px solid #f00');
+                    $('#sum_insured').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
                     p2=1;
-                    $('#v_use_msg').hide();
-                    $('#vehicle_use').attr('style','border-bottom: 1px solid #ccc');
+                    $('#sum_insured_msg').hide();
+                    $('#sum_insured').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
-                if(p1=='1' & p2=='1' ) {
-                    gonext();
+
+                if(mode_of_payment==""){
+                    p3=0;
+                    $('#mode_of_payment_msg').show();
+                    var message=document.getElementById('mode_of_payment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#mode_of_payment').attr('style','border-bottom:1px solid #f00');
                 }
+                else{
+                    p3=1;
+                    $('#mode_of_payment_msg').hide();
+                    $('#mode_of_payment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(actual_ex_vat==""){
+                    p4=0;
+                    $('#actual_ex_vat_msg').show();
+                    var message=document.getElementById('actual_ex_vat_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#actual_ex_vat').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p4=1;
+                    $('#actual_ex_vat_msg').hide();
+                    $('#actual_ex_vat').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(cover_note==""){
+                    p5=0;
+                    $('#cover_note_msg').show();
+                    var message=document.getElementById('cover_note_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#cover_note').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p5=1;
+                    $('#cover_note_msg').hide();
+                    $('#cover_note').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(sticker_no==""){
+                    p6=0;
+                    $('#sticker_no_msg').show();
+                    var message=document.getElementById('sticker_no_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#sticker_no').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p6=1;
+                    $('#sticker_no_msg').hide();
+                    $('#sticker_no').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(receipt_no==""){
+                    p7=0;
+                    $('#receipt_no_msg').show();
+                    var message=document.getElementById('receipt_no_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#receipt_no').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p7=1;
+                    $('#receipt_no_msg').hide();
+                    $('#receipt_no').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(value==""){
+                    p8=0;
+                    $('#value_msg').show();
+                    var message=document.getElementById('value_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#value').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p8=1;
+                    $('#value_msg').hide();
+                    $('#value').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+                const dateObj = new Date(commission_date);
+                const month = dateObj.getMonth()+1;
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                const year = dateObj.getFullYear();
+                const output = day  + '/'+ month  + '/' + year;
+
+
+                function thousands_separators(num)
+                {
+                    var num_parts = num.toString().split(".");
+                    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    return num_parts.join(".");
+                }
+
+
+
+                // document.getElementById("client").innerHTML ='';
+                $("#insurance_class_confirm").html(insurance_class);
+                $("#insurance_class_confirm").css('font-weight', 'bold');
+
+                $("#insurance_company_confirm").html(insurance_company);
+                $("#insurance_company_confirm").css('font-weight', 'bold');
+
+
+
+
+
+
+                if(insurance_class=='MOTOR'){
+                    $("#insurance_type_confirm").html(insurance_type);
+                    $("#vehicle_registration_no_row_confirm").show();
+                    $("#vehicle_use_row_confirm").show();
+                    $("#sticker_no_row_confirm").show();
+                    $("#cover_note_row_confirm").show();
+                    $("#value_row_confirm").hide();
+
+                }else{
+                    $("#insurance_type_confirm").html(insurance_type);
+                    $("#vehicle_registration_no_row_confirm").hide();
+                    $("#vehicle_use_row_confirm").hide();
+                    $("#sticker_no_row_confirm").hide();
+                    $("#cover_note_row_confirm").hide();
+                    $("#value_row_confirm").show();
+                }
+
+
+                if(mode_of_payment=='By installment'){
+                    $('#mode_of_payment_row_confirm').show();
+                    $('#first_installment_row_confirm').show();
+                    $('#second_installment_row_confirm').show();
+
+                }else{
+
+                    $('#mode_of_payment_row_confirm').hide();
+                    $('#first_installment_row_confirm').hide();
+                    $('#second_installment_row_confirm').hide();
+                }
+
+
+
+
+
+
+                $("#insurance_type_confirm").css('font-weight', 'bold');
+
+                $("#client_name_confirm").html(client_name);
+                $("#client_name_confirm").css('font-weight', 'bold');
+
+                $("#phone_number_confirm").html(phone_number);
+                $("#phone_number_confirm").css('font-weight', 'bold');
+
+                $("#email_confirm").html(email);
+                $("#email_confirm").css('font-weight', 'bold');
+
+
+                $("#vehicle_registration_no_confirm").html(vehicle_registration_no);
+                $("#vehicle_registration_no_confirm").css('font-weight', 'bold');
+
+
+                $("#vehicle_use_confirm").html(vehicle_use);
+                $("#vehicle_use_confirm").css('font-weight', 'bold');
+
+
+                $("#commission_date_confirm").html(output);
+                $("#commission_date_confirm").css('font-weight', 'bold');
+
+                $("#sum_insured_confirm").html(thousands_separators(sum_insured) +" "+currency);
+                $("#sum_insured_confirm").css('font-weight', 'bold');
+
+
+                $("#premium_confirm").html(thousands_separators(premium)+" "+currency);
+                $("#premium_confirm").css('font-weight', 'bold');
+
+
+                $("#actual_ex_vat_confirm").html(thousands_separators(actual_ex_vat)+" "+currency);
+                $("#actual_ex_vat_confirm").css('font-weight', 'bold');
+
+
+
+
+                if(insurance_class=='MOTOR'){
+
+                    $("#cover_note_confirm").html(cover_note);
+                    $("#cover_note_confirm").css('font-weight', 'bold');
+
+
+                    $("#sticker_no_confirm").html(sticker_no);
+                    $("#sticker_no_confirm").css('font-weight', 'bold');
+                }else{
+                    $("#value_confirm").html(thousands_separators(value)+" "+currency);
+                    $("#value_confirm").css('font-weight', 'bold');
+
+
+                }
+
+
+
+                if(insurance_type=='COMPREHENSIVE'){
+
+                    $("#mode_of_payment_confirm").html(mode_of_payment);
+                    $("#mode_of_payment_confirm").css('font-weight', 'bold');
+
+
+                    $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                    $("#first_installment_confirm").css('font-weight', 'bold');
+
+                    $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                    $("#second_installment_confirm").css('font-weight', 'bold');
+
+
+                }else{
+
+
+
+                }
+
+
+
+
+                $("#commission_percentage_confirm").html(commission_percentage+"%");
+                $("#commission_percentage_confirm").css('font-weight', 'bold');
+
+
+                $("#commission_confirm").html(thousands_separators(commission)+" "+currency);
+                $("#commission_confirm").css('font-weight', 'bold');
+
+
+                $("#receipt_no_confirm").html(receipt_no);
+                $("#receipt_no_confirm").css('font-weight', 'bold');
+
+                if(insurance_class=='MOTOR'){
+
+                    if(insurance_type=='COMPREHENSIVE'){
+
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1') {
+
+                            gonext();
+
+                        }else{
+
+
+
+                        }
+
+
+
+                    }
+
+                    else{
+
+                        if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' ) {
+
+                            gonext();
+
+                        }else{
+
+
+
+                        }
+
+                    }
+
+
+
+
+
+                }else{
+
+                    if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' ) {
+
+                        gonext();
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+
 
             });
 
@@ -1257,6 +1899,57 @@
             });
         });
     </script>
+
+
+    <script>
+
+        $('#mode_of_payment').on('change',function(e){
+            e.preventDefault();
+            var mode_of_payment = $(this).val();
+            var premium=$('#premium').val();
+
+
+            if(mode_of_payment == 'By installment')
+            {
+
+                $('#first_installmentDiv').show();
+                $('#second_installmentDiv').show();
+
+                function thousands_separators(num)
+                {
+                    var num_parts = num.toString().split(".");
+                    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    return num_parts.join(".");
+                }
+
+
+                var first_installment= Math.round(((0.60*premium) + Number.EPSILON) * 100) / 100;
+                var second_installment=Math.round(((0.40*premium) + Number.EPSILON) * 100) / 100;
+
+
+                $('#first_installment').val(first_installment);
+                $('#second_installment').val(second_installment);
+
+
+            }
+            else if(mode_of_payment=='Full payment'){
+
+                $('#first_installmentDiv').hide();
+                $('#second_installmentDiv').hide();
+
+                $('#first_installment').val("");
+                $('#second_installment').val("");
+
+            }
+
+            else{
+                $('#first_installmentDiv').hide();
+                $('#second_installmentDiv').hide();
+            }
+        });
+
+    </script>
+
 
 
     {{--<script>--}}

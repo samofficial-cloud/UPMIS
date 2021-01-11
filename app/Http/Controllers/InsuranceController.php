@@ -154,7 +154,6 @@ $billing="";
             $client_name=DB::table('insurance_contracts')->where('full_name', 'LIKE', "%{$query}%")->get();
 
 
-
             if(count($client_name)!=0){
                 $output = '<ul class="dropdown-menu_custom" style="display:block; width: 100%; margin-top: -25px;
     margin-bottom: 10px; ">';

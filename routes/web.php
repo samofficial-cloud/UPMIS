@@ -57,7 +57,7 @@ Route::post('/login/custom', [
 
     Route::get('/invoice_management/space/filter', 'InvoicesController@space_filter');
 
-    
+
 
 
 
@@ -325,7 +325,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/generate_sub_location_list', 'SpaceController@generateSubLocationList')->name('generate_sub_location_list');
     Route::post('/generate_space_id_list', 'SpaceController@generateSpaceIdList')->name('generate_space_id_list');
     Route::get('/send_all_invoices_space', 'InvoicesController@sendAllInvoicesSpace')->name('send_all_invoices_space');
-    Route::get('/add_control_no_space', 'InvoicesController@addControlNumberSpace')->name('add_control_no_space');
+    Route::post('/add_control_no_space/{id}', 'InvoicesController@addControlNumberSpace')->name('add_control_no_space');
     Route::get('/space_contract_on_fly/{id}/', 'ContractsController@OnFlySpaceContractForm')->name('space_contract_on_fly');
     Route::get('/space_id_suggestions', 'SpaceController@spaceIdSuggestions')->name('space_id_suggestions');
     Route::get('/autocomplete.space_fields', 'SpaceController@autoCompleteSpaceFields')->name('autocomplete.space_fields');
@@ -344,7 +344,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/create_water_invoice_manually', 'InvoicesController@CreateWaterBillInvoiceManually')->name('create_water_invoice_manually');
     Route::get('/contract_availability_water', 'InvoicesController@contractAvailabilityWater')->name('contract_availability_water');
     Route::get('/send_all_invoices_water', 'InvoicesController@sendAllInvoicesWater')->name('send_all_invoices_water');
-    Route::get('/add_control_no_water', 'InvoicesController@addControlNumberWater')->name('add_control_no_water');
+    Route::post('/add_control_no_water/{id}', 'InvoicesController@addControlNumberWater')->name('add_control_no_water');
 
 
     // Electricity Bills
@@ -355,7 +355,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/create_electricity_invoice_manually', 'InvoicesController@CreateElectricityBillInvoiceManually')->name('create_electricity_invoice_manually');
     Route::get('/contract_availability_electricity', 'InvoicesController@contractAvailabilityElectricity')->name('contract_availability_electricity');
     Route::get('/send_all_invoices_electricity', 'InvoicesController@sendAllInvoicesElectricity')->name('send_all_invoices_electricity');
-    Route::get('/add_control_no_electricity', 'InvoicesController@addControlNumberElectricity')->name('add_control_no_electricity');
+    Route::post('/add_control_no_electricity/{id}', 'InvoicesController@addControlNumberElectricity')->name('add_control_no_electricity');
 
 
 
@@ -393,7 +393,7 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::get('/autofill_insurance_parameters/', 'ContractsController@autofillParameters')->name('autofill_insurance_parameters');
     Route::get('/contract_details_insurance/{contract_id}', 'ContractsController@ContractDetailsInsurance')->name('contract_details_insurance');
     Route::get('/send_all_invoices_insurance', 'InvoicesController@sendAllInvoicesInsurance')->name('send_all_invoices_insurance');
-    Route::get('/add_control_no_insurance', 'InvoicesController@addControlNumberInsurance')->name('add_control_no_insurance');
+    Route::post('/add_control_no_insurance/{id}', 'InvoicesController@addControlNumberInsurance')->name('add_control_no_insurance');
 
 
 //Insurance
@@ -428,7 +428,7 @@ Route::group(['middleware' => ['auth', 'car']], function() {
 
     Route::get('/contract_availability_car', 'InvoicesController@contractAvailabilityCar')->name('contract_availability_car');
     Route::get('/send_all_invoices_car', 'InvoicesController@sendAllInvoicesCar')->name('send_all_invoices_car');
-    Route::get('/add_control_no_car', 'InvoicesController@addControlNumberCar')->name('add_control_no_car');
+    Route::post('/add_control_no_car/{id}', 'InvoicesController@addControlNumberCar')->name('add_control_no_car');
 
 
 

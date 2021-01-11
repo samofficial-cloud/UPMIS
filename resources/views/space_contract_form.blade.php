@@ -498,16 +498,19 @@ $today=date('Y-m-d');
 				<div class="form-group row">
 						<div class="form-wrapper col-12">
 							<label for="start_date">Start Date <span style="color: red;"> *</span></label>
+                            <span id="start_date_msg"></span>
 							<input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
 						</div>
 
                     <div class="form-wrapper col-6">
                         <label for="duration">Duration <span style="color: red;"> *</span></label>
+                        <span id="duration_msg"></span>
                         <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control" required="" >
                     </div>
 
                     <div class="form-wrapper col-6">
                         <label for="currency">Period <span style="color: red;"> *</span></label>
+                        <span id="duration_period_msg"></span>
                         <select id="duration_period" class="form-control" name="duration_period" required>
                             <option value="" ></option>
                             <option value="Months" >Months</option>
@@ -520,6 +523,7 @@ $today=date('Y-m-d');
 
                         <div class="form-wrapper col-12">
                             <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
+                            <span id="academic_dependence_msg"></span>
                             <select id="academic_dependence" class="form-control" name="academic_dependence" required>
                                 <option value="" ></option>
                                 <option value="No" >No</option>
@@ -530,17 +534,20 @@ $today=date('Y-m-d');
 
                         <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
                             <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
+                            <span id="academic_season_msg"></span>
                             <input type="number" min="20" id="academic_season" name="academic_season" class="form-control" >
                         </div>
 
 
                         <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
                             <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
+                            <span id="vacation_season_msg"></span>
                             <input type="number" min="20" id="vacation_season" name="vacation_season" class="form-control" >
                         </div>
 
                         <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
                             <label for="amount">Amount <span style="color: red;"> *</span></label>
+                            <span id="amount_msg"></span>
                             <input type="number" min="20" id="amount" name="amount" class="form-control" >
                         </div>
 
@@ -552,7 +559,8 @@ $today=date('Y-m-d');
 
                         <div class="form-wrapper col-12">
                             <label for="currency">Currency <span style="color: red;"> *</span></label>
-                            <select id="currency" class="form-control" required name="currency">
+                            <span id="currency_msg"></span>
+                            <select id="currency" class="form-control"  name="currency">
                                 <option value="" ></option>
                                 <option value="TZS" >TZS</option>
                                 <option value="USD" >USD</option>
@@ -567,6 +575,7 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-6">
                                             <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
+                                            <span id="payment_cycle_msg"></span>
                                             <select id="payment_cycle" required class="form-control" name="payment_cycle" >
                                                 <?php
                                                 $payment_cycles=DB::table('payment_cycle_settings')->get();
@@ -583,6 +592,7 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-6">
                                             <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
+                                            <span id="escalation_rate_msg"></span>
                                             <input type="number" min="0" id="escalation_rate" name="escalation_rate" class="form-control" required>
                                         </div>
 
@@ -1064,7 +1074,7 @@ $("#next2").click(function(){
     $("#next3").click(function(){
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
-
+        var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10;
         var first_name=document.getElementById('first_name').value;
         var last_name=document.getElementById('last_name').value;
         var company_name=document.getElementById('company_name').value;
@@ -1077,11 +1087,6 @@ $("#next2").click(function(){
         var minor = $('#minor_list').val();
         var major = $('#getMajor').val();
         var space_id = $('#space_id_contract').val();
-
-
-
-
-
 
         var start_date=document.getElementById('start_date').value;
         var duration=document.getElementById('duration').value;
@@ -1098,6 +1103,176 @@ $("#next2").click(function(){
         var space_size=document.getElementById('space_size').value;
         var has_water_bill=document.getElementById('has_water_bill').value;
         var has_electricity_bill=document.getElementById('has_electricity_bill').value;
+
+
+        if(start_date==""){
+            p1=0;
+            $('#start_date_msg').show();
+            var message=document.getElementById('start_date_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#start_date').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p1=1;
+            $('#start_date_msg').hide();
+            $('#start_date').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(duration==""){
+            p2=0;
+            $('#duration_msg').show();
+            var message=document.getElementById('duration_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#duration').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p2=1;
+            $('#duration_msg').hide();
+            $('#duration').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(duration_period==""){
+            p3=0;
+            $('#duration_period_msg').show();
+            var message=document.getElementById('duration_period_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#duration_period').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p3=1;
+            $('#duration_period_msg').hide();
+            $('#duration_period').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(academic_dependence==""){
+            p4=0;
+            $('#academic_dependence_msg').show();
+            var message=document.getElementById('academic_dependence_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#academic_dependence').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p4=1;
+            $('#academic_dependence_msg').hide();
+            $('#academic_dependence').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(academic_season==""){
+            p5=0;
+            $('#academic_season_msg').show();
+            var message=document.getElementById('academic_season_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#academic_season').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p5=1;
+            $('#academic_season_msg').hide();
+            $('#academic_season').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(vacation_season==""){
+            p6=0;
+            $('#vacation_season_msg').show();
+            var message=document.getElementById('vacation_season_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#vacation_season').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p6=1;
+            $('#vacation_season_msg').hide();
+            $('#vacation_season').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+        if(amount==""){
+            p7=0;
+            $('#amount_msg').show();
+            var message=document.getElementById('amount_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#amount').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p7=1;
+            $('#amount_msg').hide();
+            $('#amount').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+        if(currency==""){
+            p8=0;
+            $('#currency_msg').show();
+            var message=document.getElementById('currency_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#currency').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p8=1;
+            $('#currency_msg').hide();
+            $('#currency').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+        if(payment_cycle==""){
+            p9=0;
+            $('#payment_cycle_msg').show();
+            var message=document.getElementById('payment_cycle_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#payment_cycle').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p9=1;
+            $('#payment_cycle_msg').hide();
+            $('#payment_cycle').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+        if(escalation_rate==""){
+            p10=0;
+            $('#escalation_rate_msg').show();
+            var message=document.getElementById('escalation_rate_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#escalation_rate').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p10=1;
+            $('#escalation_rate_msg').hide();
+            $('#escalation_rate').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+
+
 
 
         const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -1273,8 +1448,29 @@ if(rent_sqm==''){
 
 
 
+        if(academic_dependence=='Yes'){
 
-        gonext();
+            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1'){
+                gonext();
+            }
+
+
+
+        }else if(academic_dependence=='No'){
+
+            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1'){
+                gonext();
+            }
+
+        }else{
+
+
+
+        }
+
+
+
+
 
 
     });

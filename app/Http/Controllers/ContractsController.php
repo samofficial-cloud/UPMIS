@@ -1310,12 +1310,117 @@ class ContractsController extends Controller
 
             }
 
+
+
+            if($request->get('mode_payment')==""){
+                $mode_of_payment='N/A';
+
+            }else{
+
+                $mode_of_payment=$request->get('mode_of_payment');
+
+            }
+
+
+
+            if($request->get('first_installment')==""){
+                $first_installment='N/A';
+
+            }else{
+
+                $first_installment=$request->get('first_installment');
+
+            }
+
+
+
+            if($request->get('second_installment')==""){
+                $second_installment='N/A';
+
+            }else{
+
+                $second_installment=$request->get('second_installment');
+
+            }
+
+
+
 if($request->get('mode_of_payment')=='By installment'){
 
 
+    DB::table('insurance_contracts')->insert(
+        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment]
+    );
+
+
+    $contract_id_created=DB::table('insurance_contracts')->orderBy('id','desc')->limit(1)->value('id');
+
+
+    $period= date("d/m/Y",strtotime($request->get('commission_date'))).' to  '. date("d/m/Y",strtotime($end_date));
 
 
 
+
+
+    $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+    $amount_in_words='';
+
+
+    if($request->get('currency')=='TZS'){
+        $amount_in_words=Terbilang::make($request->get('premium'),' TZS',' ');
+
+    }if ($request->get('currency')=='USD'){
+
+        $amount_in_words=Terbilang::make($request->get('premium'),' USD',' ');
+    }
+
+    else{
+
+
+    }
+
+    $today=date('Y-m-d');
+    $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+
+
+    DB::table('insurance_invoices')->insert(
+        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $first_installment,'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+    );
+
+
+    $invoice_number_created_first_installment=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+    DB::table('invoice_notifications')->insert(
+        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+    );
+
+
+
+    DB::table('insurance_payments')->insert(
+        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$first_installment,'currency_payments' => $request->get('currency'),'receipt_number' => '']
+    );
+
+
+
+    //For second installment
+    DB::table('insurance_invoices')->insert(
+        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $second_installment,'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+    );
+
+
+    $invoice_number_created_second_installment=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+    DB::table('invoice_notifications')->insert(
+        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+    );
+
+
+
+    DB::table('insurance_payments')->insert(
+        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$second_installment,'currency_payments' => $request->get('currency'),'receipt_number' => '']
+    );
 
 
 }else{
@@ -1371,7 +1476,7 @@ if($request->get('mode_of_payment')=='By installment'){
 
 
     DB::table('insurance_payments')->insert(
-        ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
+        ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('premium'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
     );
 
 
@@ -1440,7 +1545,9 @@ if($request->get('mode_of_payment')=='By installment'){
             $cover_note="";
             $sticker_no="";
             $value="";
-
+            $mode_of_payment="";
+            $first_installment="";
+            $second_installment="";
 
             if($request->get('vehicle_registration_no')==""){
                 $vehicle_reg_var='N/A';
@@ -1492,57 +1599,177 @@ if($request->get('mode_of_payment')=='By installment'){
             }
 
 
+            if($request->get('mode_payment')==""){
+                $mode_of_payment='N/A';
 
-            DB::table('insurance_contracts')->insert(
-                ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $request->get('mode_of_payment'),'first_installment'   => $request->get('first_installment'), 'second_installment'   => $request->get('second_installment')]
-            );
+            }else{
 
-            $contract_id_created=DB::table('insurance_contracts')->orderBy('id','desc')->limit(1)->value('id');
-
-
-            $period= date("d/m/Y",strtotime($request->get('commission_date'))).' to  '. date("d/m/Y",strtotime($end_date));
-
-
-
-
-
-            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
-
-
-            $amount_in_words='';
-
-
-            if($request->get('currency')=='TZS'){
-                $amount_in_words=Terbilang::make($request->get('premium'),' TZS',' ');
-
-            }if ($request->get('currency')=='USD'){
-
-                $amount_in_words=Terbilang::make($request->get('premium'),' USD',' ');
-            }
-
-            else{
-
+                $mode_of_payment=$request->get('mode_of_payment');
 
             }
 
-            $today=date('Y-m-d');
-            $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
 
 
-            DB::table('insurance_invoices')->insert(
-                ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $request->get('premium'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
-            );
+            if($request->get('first_installment')==""){
+                $first_installment='N/A';
+
+            }else{
+
+                $first_installment=$request->get('first_installment');
+
+            }
 
 
-            $invoice_number_created=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
-            DB::table('invoice_notifications')->insert(
-                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance']
-            );
+            if($request->get('second_installment')==""){
+                $second_installment='N/A';
 
-            DB::table('insurance_payments')->insert(
-                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('premium'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
-            );
+            }else{
+
+                $second_installment=$request->get('second_installment');
+
+            }
+
+
+
+            if($request->get('mode_of_payment')=='By installment'){
+
+
+                DB::table('insurance_contracts')->insert(
+                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment]
+                );
+
+
+                $contract_id_created=DB::table('insurance_contracts')->orderBy('id','desc')->limit(1)->value('id');
+
+
+                $period= date("d/m/Y",strtotime($request->get('commission_date'))).' to  '. date("d/m/Y",strtotime($end_date));
+
+
+
+
+
+                $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+                $amount_in_words='';
+
+
+                if($request->get('currency')=='TZS'){
+                    $amount_in_words=Terbilang::make($request->get('premium'),' TZS',' ');
+
+                }if ($request->get('currency')=='USD'){
+
+                    $amount_in_words=Terbilang::make($request->get('premium'),' USD',' ');
+                }
+
+                else{
+
+
+                }
+
+                $today=date('Y-m-d');
+                $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+
+
+                DB::table('insurance_invoices')->insert(
+                    ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $first_installment,'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                );
+
+
+                $invoice_number_created_first_installment=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+                DB::table('invoice_notifications')->insert(
+                    ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                );
+
+
+
+                DB::table('insurance_payments')->insert(
+                    ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$first_installment,'currency_payments' => $request->get('currency'),'receipt_number' => '']
+                );
+
+
+
+                //For second installment
+                DB::table('insurance_invoices')->insert(
+                    ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $second_installment,'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                );
+
+
+                $invoice_number_created_second_installment=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+                DB::table('invoice_notifications')->insert(
+                    ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                );
+
+
+
+                DB::table('insurance_payments')->insert(
+                    ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$second_installment,'currency_payments' => $request->get('currency'),'receipt_number' => '']
+                );
+
+
+            }else{
+
+                DB::table('insurance_contracts')->insert(
+                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment]
+                );
+
+
+                $contract_id_created=DB::table('insurance_contracts')->orderBy('id','desc')->limit(1)->value('id');
+
+
+                $period= date("d/m/Y",strtotime($request->get('commission_date'))).' to  '. date("d/m/Y",strtotime($end_date));
+
+
+
+
+
+                $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+                $amount_in_words='';
+
+
+                if($request->get('currency')=='TZS'){
+                    $amount_in_words=Terbilang::make($request->get('premium'),' TZS',' ');
+
+                }if ($request->get('currency')=='USD'){
+
+                    $amount_in_words=Terbilang::make($request->get('premium'),' USD',' ');
+                }
+
+                else{
+
+
+                }
+
+                $today=date('Y-m-d');
+                $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+
+
+                DB::table('insurance_invoices')->insert(
+                    ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $request->get('premium'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                );
+
+
+                $invoice_number_created=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+                DB::table('invoice_notifications')->insert(
+                    ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance']
+                );
+
+
+
+                DB::table('insurance_payments')->insert(
+                    ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('premium'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
+                );
+
+
+            }
+
+
 
 
 
@@ -1590,184 +1817,402 @@ if($request->get('mode_of_payment')=='By installment'){
     {
 
 
+        if($request->get('submit')=='Save and print') {
 
-        $end_date="";
-        if($request->get('duration_period')=="Months"){
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
-            $monthsToAdd = $request->get('duration');
-            $end_date = $end_date->addMonths($monthsToAdd);
 
-        }elseif($request->get('duration_period')=="Years"){
+            $end_date = "";
+            if ($request->get('duration_period') == "Months") {
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
+                $monthsToAdd = $request->get('duration');
+                $end_date = $end_date->addMonths($monthsToAdd);
 
-            $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
-            $yearsToAdd = $request->get('duration');
-            $end_date = $end_date->addYears($yearsToAdd);
+            } elseif ($request->get('duration_period') == "Years") {
+
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
+                $yearsToAdd = $request->get('duration');
+                $end_date = $end_date->addYears($yearsToAdd);
+            } else {
+
+
+            }
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['principal' => $request->get('insurance_company')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['insurance_type' => $request->get('insurance_type')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['commission_date' => $request->get('commission_date')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['end_date' => $end_date]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['sum_insured' => $request->get('sum_insured')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['premium' => $request->get('premium')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['actual_ex_vat' => $request->get('actual_ex_vat')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['currency' => $request->get('currency')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['commission' => $request->get('commission')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['commission_percentage' => $request->get('commission_percentage')]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['duration' => $request->get('duration')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['duration_period' => $request->get('duration_period')]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['phone_number' => $request->get('phone_number')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['email' => $request->get('email')]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['insurance_class' => $request->get('insurance_class')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['receipt_no' => $request->get('receipt_no')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['full_name' => $request->get('full_name')]);
+
+
+            $vehicle_reg_var = "";
+            $vehicle_use_var = "";
+
+            $value = "";
+            $sticker_no = "";
+            $cover_note = "";
+
+
+            if ($request->get('vehicle_registration_no') == "") {
+                $vehicle_reg_var = 'N/A';
+
+            } else {
+
+                $vehicle_reg_var = $request->get('vehicle_registration_no');
+
+            }
+
+
+            if ($request->get('vehicle_use') == "") {
+                $vehicle_use_var = 'N/A';
+
+            } else {
+
+                $vehicle_use_var = $request->get('vehicle_use');
+
+            }
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['vehicle_use' => $vehicle_use_var]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['vehicle_registration_no' => $vehicle_reg_var]);
+
+
+            if ($request->get('cover_note') == "") {
+                $cover_note = 'N/A';
+
+            } else {
+
+                $cover_note = $request->get('cover_note');
+
+            }
+
+
+            if ($request->get('sticker_no') == "") {
+                $sticker_no = 'N/A';
+
+            } else {
+
+                $sticker_no = $request->get('sticker_no');
+
+            }
+
+
+            if ($request->get('value') == "") {
+                $value = 'N/A';
+
+            } else {
+
+                $value = $request->get('value');
+
+            }
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['value' => $value]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['sticker_no' => $sticker_no]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['cover_note' => $cover_note]);
+
+
+
+            $data = [
+                'insurance_class'   => $request->get('insurance_class'),
+                'insurance_type'   => $request->get('insurance_type'),
+                'insurance_company'   => $request->get('insurance_company'),
+                'vehicle_registration_no'   => $request->get('vehicle_registration_no'),
+                'vehicle_use'   => $request->get('vehicle_use'),
+                'client_name'   => $request->get('full_name'),
+                'phone_number'   => $request->get('phone_number'),
+                'email'   => $request->get('email'),
+                'commission_date'   => $request->get('commission_date'),
+                'sum_insured'   => $request->get('sum_insured'),
+                'premium'   => $request->get('premium'),
+                'mode_of_payment'   => $request->get('mode_of_payment'),
+                'first_installment'   => $request->get('first_installment'),
+                'second_installment'   => $request->get('second_installment'),
+                'actual_ex_vat'   => $request->get('actual_ex_vat'),
+                'value'   => $request->get('value'),
+                'commission_percentage'   => $request->get('commission_percentage'),
+                'commission'   => $request->get('commission'),
+                'cover_note'   => $request->get('cover_note'),
+                'sticker_no'   => $request->get('sticker_no'),
+                'receipt_no'   => $request->get('receipt_no'),
+                'currency'   => $request->get('currency'),
+
+            ];
+
+            $pdf = PDF::loadView('insurance_contract_pdf',$data);
+
+            return $pdf->stream();
+
+
+
+
+//            return redirect('/contracts_management')
+//                ->with('success', 'Contract details edited successfully');
+
+
+
+
+
+
         }else{
 
 
+
+            $end_date = "";
+            if ($request->get('duration_period') == "Months") {
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
+                $monthsToAdd = $request->get('duration');
+                $end_date = $end_date->addMonths($monthsToAdd);
+
+            } elseif ($request->get('duration_period') == "Years") {
+
+                $end_date = Carbon::createFromFormat('Y-m-d', $request->get('commission_date'));
+                $yearsToAdd = $request->get('duration');
+                $end_date = $end_date->addYears($yearsToAdd);
+            } else {
+
+
+            }
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['principal' => $request->get('insurance_company')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['insurance_type' => $request->get('insurance_type')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['commission_date' => $request->get('commission_date')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['end_date' => $end_date]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['sum_insured' => $request->get('sum_insured')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['premium' => $request->get('premium')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['actual_ex_vat' => $request->get('actual_ex_vat')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['currency' => $request->get('currency')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['commission' => $request->get('commission')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['commission_percentage' => $request->get('commission_percentage')]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['duration' => $request->get('duration')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['duration_period' => $request->get('duration_period')]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['phone_number' => $request->get('phone_number')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['email' => $request->get('email')]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['insurance_class' => $request->get('insurance_class')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['receipt_no' => $request->get('receipt_no')]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['full_name' => $request->get('full_name')]);
+
+
+            $vehicle_reg_var = "";
+            $vehicle_use_var = "";
+
+            $value = "";
+            $sticker_no = "";
+            $cover_note = "";
+
+
+            if ($request->get('vehicle_registration_no') == "") {
+                $vehicle_reg_var = 'N/A';
+
+            } else {
+
+                $vehicle_reg_var = $request->get('vehicle_registration_no');
+
+            }
+
+
+            if ($request->get('vehicle_use') == "") {
+                $vehicle_use_var = 'N/A';
+
+            } else {
+
+                $vehicle_use_var = $request->get('vehicle_use');
+
+            }
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['vehicle_use' => $vehicle_use_var]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['vehicle_registration_no' => $vehicle_reg_var]);
+
+
+            if ($request->get('cover_note') == "") {
+                $cover_note = 'N/A';
+
+            } else {
+
+                $cover_note = $request->get('cover_note');
+
+            }
+
+
+            if ($request->get('sticker_no') == "") {
+                $sticker_no = 'N/A';
+
+            } else {
+
+                $sticker_no = $request->get('sticker_no');
+
+            }
+
+
+            if ($request->get('value') == "") {
+                $value = 'N/A';
+
+            } else {
+
+                $value = $request->get('value');
+
+            }
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['value' => $value]);
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['sticker_no' => $sticker_no]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['cover_note' => $cover_note]);
+
+
+            return redirect('/contracts_management')
+                ->with('success', 'Contract details edited successfully');
+
+
+
+
         }
-
-
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['principal' => $request->get('insurance_company')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['insurance_type' => $request->get('insurance_type')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['commission_date' => $request->get('commission_date')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['end_date' => $end_date]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['sum_insured' => $request->get('sum_insured')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['premium' => $request->get('premium')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['actual_ex_vat' => $request->get('actual_ex_vat')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['currency' => $request->get('currency')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['commission' => $request->get('commission')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['commission_percentage' => $request->get('commission_percentage')]);
-
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['duration' => $request->get('duration')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['duration_period' => $request->get('duration_period')]);
-
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['phone_number' => $request->get('phone_number')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['email' => $request->get('email')]);
-
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['insurance_class' => $request->get('insurance_class')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['receipt_no' => $request->get('receipt_no')]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['full_name' => $request->get('full_name')]);
-
-
-        $vehicle_reg_var="";
-        $vehicle_use_var="";
-
-        $value="";
-        $sticker_no="";
-        $cover_note="";
-
-
-        if($request->get('vehicle_registration_no')==""){
-            $vehicle_reg_var='N/A';
-
-        }else{
-
-            $vehicle_reg_var=$request->get('vehicle_registration_no');
-
-        }
-
-
-        if($request->get('vehicle_use')==""){
-            $vehicle_use_var='N/A';
-
-        }else{
-
-            $vehicle_use_var=$request->get('vehicle_use');
-
-        }
-
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['vehicle_use' => $vehicle_use_var]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['vehicle_registration_no' => $vehicle_reg_var]);
-
-
-
-
-        if($request->get('cover_note')==""){
-            $cover_note='N/A';
-
-        }else{
-
-            $cover_note=$request->get('cover_note');
-
-        }
-
-
-        if($request->get('sticker_no')==""){
-            $sticker_no='N/A';
-
-        }else{
-
-            $sticker_no=$request->get('sticker_no');
-
-        }
-
-
-        if($request->get('value')==""){
-            $value='N/A';
-
-        }else{
-
-            $value=$request->get('value');
-
-        }
-
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['value' => $value]);
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['sticker_no' => $sticker_no]);
-
-
-        DB::table('insurance_contracts')
-            ->where('id', $contract_id)
-            ->update(['cover_note' => $cover_note]);
-
-
-
-
-        return redirect('/contracts_management')
-            ->with('success', 'Contract details edited successfully');
     }
 
 
