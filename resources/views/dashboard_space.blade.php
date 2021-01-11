@@ -1935,7 +1935,7 @@ function myFunction() {
       {{ $chart1->id }}.data.datasets[1].data =data.income2;
       {{ $chart1->id }}.update();
       var bodyData = '';
-      console.log(query);
+      
       bodyData= "<div>"
       bodyData+="<h5 class='card-title'>Client Statistics "
       bodyData+=query+"</h5>"

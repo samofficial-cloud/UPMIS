@@ -73,6 +73,7 @@ hr {
   use App\cost_centre;
  ?>
 <div class="wrapper">
+   <div id="coverScreen"  class="pageLoad"></div>
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
@@ -126,8 +127,6 @@ hr {
   use App\client;
   ?>
 <div class="container" style="max-width: 1308px;">
-
-  <br>
   <br>
    @if ($message = Session::get('errors'))
           <div class="alert alert-danger alert-dismissible">
@@ -842,7 +841,7 @@ hr {
       <th scope="row" style="text-align: center;">{{$a3}}.</th>
       <td>{{$client->fullName}}</td>
       <td><center>{{$client->cost_centre}}</center></td>
-      <td><center>{{$client->faculty}}</center></td>
+      <td>{{$client->faculty}}</td>
       <td>{{$client->email}}</td>
       {{-- <td><center>{{date("d/m/Y",strtotime($client->start_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td> --}}
       <td><center>
@@ -1834,6 +1833,10 @@ hr {
 @endsection
 @section('pagescript')
 <script type="text/javascript">
+   $(window).on('load', function () {
+      $("#coverScreen").hide();
+  });
+
     window.onload=function(){
             <?php $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>

@@ -439,6 +439,26 @@ foreach($minor_industries as $minor_industry) {
    }
  }
 
+ public function fetchspaceidss(Request $request){
+if($request->get('query')){
+    $data = space::select('space_id', 'sub_location')->where('major_industry', $request->get('query'))->orderBy('space_id','asc')->get();
+     if(count($data)!=0){
+        $output = '<select class="form-control" id="space_id" name="space_id">';
+        $output .='<option value="" disabled selected hidden>Select Space</option>';
+          foreach($data as $row){
+            $output .= '<option value="'.$row->space_id.'"> '.$row->space_id.' - '.$row->sub_location.'</option>';
+          }
+        $output .= '</select>';
+        echo $output;
+     }
+     else{
+         $output = '<select class="form-control" id="space_id" name="space_id">';
+        $output .='<option value="" disabled selected hidden>No any registered space for this industry</option>';
+        echo $output;
+     }
+  }
+}
+
 
 
 

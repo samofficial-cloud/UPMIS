@@ -31,6 +31,7 @@
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('js/sidebar.js') }}" ></script>
+<script src="{{asset('select2/dist/js/select2.min.js')}}" type="text/javascript"></script>
 
 
     <!-- Fonts -->
@@ -42,6 +43,8 @@
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/free.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{asset('select2/dist/css/select2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('select2-bootstrap/dist/select2-bootstrap.min.css')}}">
 
      @yield('style')
 </head>
@@ -154,115 +157,84 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
 
-
-
                          <a title="View Chats" class="nav-link " href="/system_chats?id=" role="button"><i class='fas fa-comment-dots' style='font-size:26px;color:#282727'></i> <span class="badge badge-danger">{{$chats}}</span>
                         </a>
 
 
-
-
-
-                                @if($all_notifications_count==0)
+                        @if($all_notifications_count==0)
                             <a title="View Notifications" id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger"></span>
                             </a>
 
-                            @else
+                        @else
                                   <a title="View Notifications" id="navbarDropdownNotifications" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <i class="fa fa-bell" style="font-size:26px;color:#282727"></i> <span class="badge badge-danger">{{$all_notifications_count}}</span>
                                 </a>
-                                @endif
+                        @endif
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
+                            @if($space_invoice_notifications_count==1 AND ($category=='Real Estate only' OR $category=='All'))
+
+                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
+
+                                <?php $i=$i+1; ?>
+
+                            @elseif($space_invoice_notifications_count!=0 AND ($category=='Real Estate only' OR $category=='All'))
+
+                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
+
+                                        <?php $i=$i+1; ?>
+
+                            @else
+                            @endif
 
 
+                            @if($car_invoice_notifications_count==1 AND ($category=='CPTU only' OR $category=='All'))
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
-                                    @if($space_invoice_notifications_count==1 AND ($category=='Real Estate only' OR $category=='All'))
-
-
-
-                                        <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
-
-                                        <?php
-                                        $i=$i+1;
-                                        ?>
-                                    @elseif($space_invoice_notifications_count!=0 AND ($category=='Real Estate only' OR $category=='All'))
+                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoice to review</a>
+                                            <?php $i=$i+1; ?>
 
 
-
-                                        <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
-
-                                        <?php
-                                        $i=$i+1;
-                                        ?>
-
-                                    @else
-                                    @endif
+                            @elseif($car_invoice_notifications_count!=0 AND ($category=='CPTU only' OR $category=='All'))
 
 
+                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoices to review</a>
 
-                                        @if($car_invoice_notifications_count==1 AND ($category=='CPTU only' OR $category=='All'))
+                                            <?php $i=$i+1; ?>
+                            @else
+                            @endif
 
+                            @if($insurance_invoice_notifications_count==1 AND ($category=='Insurance only' OR $category=='All'))
 
-
-
-                                            <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoice to review</a>
+                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
                                             <?php
                                             $i=$i+1;
                                             ?>
 
+                            @elseif($insurance_invoice_notifications_count!=0 AND ($category=='Insurance only' OR $category=='All'))
 
-                                        @elseif($car_invoice_notifications_count!=0 AND ($category=='CPTU only' OR $category=='All'))
+                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
 
+                                    <?php $i=$i+1; ?>
 
-                                            <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoices to review</a>
+                            @else
+                            @endif
 
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-                                        @else
-                                        @endif
-
-                                        @if($insurance_invoice_notifications_count==1 AND ($category=='Insurance only' OR $category=='All'))
-
-                                            <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-                                        @elseif($insurance_invoice_notifications_count!=0 AND ($category=='Insurance only' OR $category=='All'))
-
-                                            <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-                                        @else
-                                        @endif
+                            @if($total==0)
 
 
 
 
+                            @elseif($total>0)
 
 
+                                @foreach($notifications as $notifications)
+                                    <a class="dropdown-item" href="{{ route('ShowNotifications',$notifications->id ) }}">{{$i}}. {{$notifications->message}}</a>
 
+                                        <?php $i=$i+1; ?>
+                                @endforeach
 
-
-
-                                        @if($total==0)
-
-
-
-
-                                        @elseif($total>0)
-
-
-                                            @foreach($notifications as $notifications)
-                                                <a class="dropdown-item" href="{{ route('ShowNotifications',$notifications->id ) }}">{{$i}}. {{$notifications->message}}</a>
-                                                <?php
-                                                $i=$i+1;
-                                                ?>
-                                            @endforeach
-
-                                        @endif
+                            @endif
 
 
                                 </div>

@@ -16,8 +16,17 @@ class hireRateController extends Controller
         return redirect()->back()->with('errors', "'$model' Model Already Exists.");
       }
       else{
-        DB::table('hire_rates')
-             ->insert(['vehicle_model' => $request->get('vehicle_model'), 'hire_rate' => $request->get('hire_rate')]);
+        $deactivated = hire_rate::where('vehicle_model',$model)->where('flag',0)->first();
+        if(is_null($deactivated)){
+            DB::table('hire_rates')
+             ->insert(['vehicle_model' => strtoupper($request->get('vehicle_model')), 'hire_rate' => $request->get('hire_rate')]);
+        }
+        else{
+          $deactivated->flag = '1';
+          $deactivated->hire_rate = $request->get('hire_rate');
+          $deactivated->save();
+        }
+      
 
               return redirect()->back()->with('success', 'Hire Rate Details Added Successfully');
       }

@@ -197,6 +197,8 @@ Route::post('/autocomplete/faculty', 'carRentalController@faculty')->name('autoc
 
 Route::post('/autocomplete/space_id', 'SpaceController@fetchspaceid')->name('autocomplete.spaces');
 
+Route::post('/autocomplete/spaces_ids/fetch', 'SpaceController@fetchspaceidss')->name('autocomplete.spaces2');
+
 Route::post('/autocomplete/cost_centres', 'carRentalController@fetchcostcentres')->name('autocomplete.costcentres');
 
 
