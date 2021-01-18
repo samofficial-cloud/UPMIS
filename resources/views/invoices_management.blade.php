@@ -153,9 +153,9 @@
 
                 <div style="width:100%; text-align: center ">
                     <br>
-                    <h2>INVOICES</h2>
 
-                    <br>
+
+
 
                 </div>
 
@@ -203,8 +203,10 @@
 
                     <div id="space_invoices_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; " class="tabcontent_inner">
                         <br>
-                        <br>
 
+                        <h3 style="text-align: center"><strong>Space invoices</strong></h3>
+
+                        <hr>
 
                         @if($privileges=='Read only')
                         @else
@@ -214,6 +216,8 @@
 
                             </div>
                         @endif
+
+
 
 
 
@@ -655,16 +659,34 @@
                                                                         </tr>
 
 
+
+                                                                        <tr>
+                                                                            <td>Contract Status:</td>
+                                                                            <td>@if($var->contract_status==0)
+                                                                                    TERMINATED
+                                                                                @elseif($var->end_date<date('Y-m-d'))
+                                                                                    EXPIRED
+                                                                                @else
+                                                                                    ACTIVE
+                                                                                @endif</td>
+                                                                        </tr>
+
+
+                                                                        @if($var->programming_start_date=='')
+                                                                            @else
                                                                         <tr>
                                                                             <td>Payment Cycle Start Date:</td>
                                                                             <td>{{date("d/m/Y",strtotime($var->programming_start_date))}}</td>
                                                                         </tr>
 
 
+
                                                                         <tr>
                                                                             <td>Payment Cycle End Date:</td>
                                                                             <td>{{date("d/m/Y",strtotime($var->programming_end_date))}}</td>
                                                                         </tr>
+
+                                                                        @endif
 
                                                                         <tr>
                                                                             <td>Escalation Rate:</td>
@@ -940,11 +962,10 @@
                     </div>
 
                     <div id="water_invoices" class="tabcontent_inner" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
-                        <br>
-                        <h5>Water bill Invoices</h5>
-                        <br>
+<br>
+                        <h3 style="text-align: center"><strong>Water bill Invoices</strong></h3>
 
-
+                        <hr>
 
                         @if($privileges=='Read only')
                         @else
@@ -959,6 +980,10 @@
 
 
                         @endif
+
+
+
+
 
 
 
@@ -1773,8 +1798,9 @@
                     </div>
                     <div id="electricity_invoices" class="tabcontent_inner" style="border-bottom-left-radius: 50px 20px;  border: 1px solid #ccc; padding: 1%;">
                         <br>
-                        <h5 >Electricity bill Invoices</h5>
-                        <br>
+                        <h3 style="text-align: center"><strong>Electricity bill Invoices</strong></h3>
+
+                        <hr>
                         @if($privileges=='Read only')
                         @else
 
@@ -1787,6 +1813,10 @@
                             </div>
 
                         @endif
+
+
+
+
 
                         <div class="modal fade" id="send_invoice_electricity" role="dialog">
 
@@ -2593,8 +2623,9 @@
 
                 <div id="insurance_invoices" class="tabcontent" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; ">
                     <br>
-                    <h5>Insurance Invoices</h5>
-                    <br>
+                    <h3 style="text-align: center"><strong>Insurance invoices</strong></h3>
+
+                    <hr>
                     <?php
                     $i=1;
                     ?>
@@ -2611,6 +2642,9 @@
 
                         </div>
                     @endif
+
+
+
 
 
                     <div class="modal fade" id="send_invoice_insurance" role="dialog">
@@ -3421,8 +3455,9 @@
 
                 <div id="car_invoices" class="tabcontent"  style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; " >
                     <br>
-                    <h5>Car Rental Invoices</h5>
-                    <br>
+                    <h3 style="text-align: center"><strong>Car rental invoices</strong></h3>
+
+                    <hr>
                     @if($privileges=='Read only')
                     @else
                         <div style="margin-bottom: 3%;"><div style="float:left;"></div> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice_car" title="Add new car rental invoice" role="button" aria-pressed="true">Add New Invoice</a>  <div style="float:right;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_car" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>
@@ -3431,6 +3466,10 @@
 
                         </div>
                     @endif
+
+
+
+
 
 
                     <div class="modal fade" id="send_invoice_car" role="dialog">

@@ -150,9 +150,7 @@
 
                 <div style="width:100%; text-align: center ">
                     <br>
-                    <h2>PAYMENTS</h2>
 
-                    <br>
 
                 </div>
 
@@ -196,10 +194,19 @@
                 <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; " class="tabcontent_inner">
                     <br>
 
+                    <h3 style="text-align: center"><strong>Space payments</strong></h3>
+
+                    <hr>
+
                     @if($privileges=='Read only')
                     @else
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
+
+
+
+
+
 
 
                     <div class="modal fade" id="new_payment_space" role="dialog">
@@ -499,8 +506,9 @@
 
                 <div id="water_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; ">
                     <br>
-                    <h5>Water Bill Payments</h5>
-                    <br>
+                    <h3 style="text-align: center"><strong>Water bill payments</strong></h3>
+
+                    <hr>
 
                     @if($privileges=='Read only')
                     @else
@@ -821,8 +829,9 @@
 
                 <div id="electricity_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; ">
                     <br>
-                    <h5>Electricity Bill Payments</h5>
-                    <br>
+                    <h3 style="text-align: center"><strong>Electricity bill payments</strong></h3>
+
+                    <hr>
 
                     @if($privileges=='Read only')
                     @else
@@ -1151,8 +1160,10 @@
 
                 <div id="car_rental_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "  class="tabcontent">
                     <br>
-                    <h5>Car Rental Payments</h5>
-                    <br>
+
+
+                    <h3 style="text-align: center"><strong>Car rental payments</strong></h3>
+                    <hr>
 
                     @if($privileges=='Read only')
                     @else
@@ -1456,8 +1467,11 @@
 
                 <div id="insurance_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "   class="tabcontent">
                     <br>
-                    <h5>Insurance Payments</h5>
-                    <br>
+
+                    <h3 style="text-align: center"><strong>Insurance payments</strong></h3>
+                    <hr>
+
+
                     @if($privileges=='Read only')
                     @else
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true">Add New Payment</a>
