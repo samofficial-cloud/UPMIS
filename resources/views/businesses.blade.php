@@ -64,7 +64,7 @@
 
 @section('content')
     <div class="wrapper">
-        <div id="coverScreen"  class="pageLoad"></div>
+{{--        <div id="coverScreen"  class="pageLoad"></div>--}}
         <div class="sidebar">
             <ul style="list-style-type:none;">
 
@@ -110,20 +110,20 @@
 
         <div class="main_content">
             <div class="container " style="max-width: 100%;">
-                 @if ($message = Session::get('errors'))
-                  <div class="alert alert-danger alert-dismissible">
+                 @if ($message = Session::get('error'))
+                  <div class="alert alert-danger alert-dismissible mt-1">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <p>{{$message}}</p>
                   </div>
                 @endif
 
                 @if ($message = Session::get('success'))
-                  <div class="alert alert-success alert-dismissible">
+                  <div class="alert alert-success alert-dismissible mt-1">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <p>{{$message}}</p>
                   </div>
                 @endif
-                
+
                 <br>
 
                     <div class="tab" style="">
@@ -149,7 +149,7 @@
 
                     </div>
 
-                    <div id="space_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
+                    <div id="space_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
 <br>
 
                         @if($privileges=='Read only')
@@ -791,7 +791,7 @@
 
                     </div>
 
-                    <div id="insurance_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
+                    <div id="insurance_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_inner">
 <br>
 
                         @if($privileges=='Read only')
@@ -890,92 +890,27 @@
                                                 </div>
 
 
-                                                <div id="priceDiv" class="form-group" style="display: none;">
-                                                    <div class="form-wrapper">
-                                                        <label for="price"  ><strong>Price <span style="color: red;"> *</span></strong></label>
-                                                        <input type="number" min="1" step="0.01" class="form-control" id="price" name="price"  required  autocomplete="off">
-                                                    </div>
-                                                </div>
+
 
 
 
                                                 <div id="commissionDiv" class="form-group"  style="display: none;">
-                                                    <div class="form-wrapper">
-                                                        <label><strong>Commission</strong></label>
 
                                                         <div  id=""  class="form-group row">
 
-                                                            <div class="col-6 inline_block form-wrapper">
-                                                                <label  for="commission_percentage" class=" col-form-label">Percentage (%) <strong><span style="color: red;"> *</span></strong></label>
+                                                            <div class="col-12 inline_block form-wrapper">
+                                                                <label  for="commission_percentage" class=" col-form-label"><Strong>Commission percentage (%)<strong><span style="color: red;"> *</span></strong></label>
                                                                 <div class="">
                                                                     <input type="number" min="1"  step="0.01" class="form-control"  name="commission_percentage" required value=""  id="commission_percentage" autocomplete="off">
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-6 inline_block form-wrapper">
-                                                                <label  for="commission" class=" col-form-label">Amount <strong><span style="color: red;"> *</span></strong></label>
-                                                                <div  class="">
-                                                                    <input type="number" min="10" step="0.01" id="commission"  class="form-control" name="commission" value="" required autocomplete="off">
-                                                                </div>
-                                                            </div>
-
-
-
 
                                                         </div>
 
 
-
-
-                                                    </div>
                                                 </div>
 
-
-                                                <div id="insurance_currencyDiv" class="form-group" style="display: none;">
-                                                    <div class="form-wrapper">
-                                                        <label for="insurance_currency"><strong>Currency <span style="color: red;"> *</span></strong></label>
-                                                        <select id="insurance_currency" class="form-control" required name="insurance_currency" >
-                                                            <option value=""></option>
-                                                            <option value="TZS" >TZS</option>
-                                                            <option value="USD" >USD</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div id="billing" class="form-group" style="display: none;">
-                                                    <div class="form-wrapper">
-                                                        <label for="billing"><strong>Billing <span style="color: red;"> *</span></strong></label>
-                                                        <select id="billing_input" class="form-control" name="billing">
-                                                            <option value=""></option>
-                                                            <option value="Single billing" >Single billing</option>
-                                                            <option value="Multiple billing" >Multiple billing</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-                                                <div id="number_of_installmentsDiv" style="display: none;"  class="form-group">
-                                                    <label  for="number_of_installments" class=" col-form-label">Number of installments</label>
-
-                                                        <input type="number" id="number_of_installments"  class="form-control" name="number_of_installments" readonly value="2" >
-
-                                                </div>
-
-
-                                                <div  id="first_installmentDiv" style="display: none;" class="form-group">
-                                                    <label  for="first_installment" class=" col-form-label">First installment (60%)</label>
-
-                                                        <input type="number" readonly id="first_installment"  class="form-control" name="first_installment" value="">
-
-                                                </div>
-
-
-                                                <div id="second_installmentDiv" style="display: none;" class="form-group">
-                                                    <label  for="second_installment" class=" col-form-label">Second installment (40%)</label>
-
-                                                        <input type="number" readonly id="second_installment"  class="form-control" name="second_installment" value="">
-
-                                                </div>
 
 
                                                 <div align="right">
@@ -1003,10 +938,8 @@
                                     <th scope="col" style="color:#fff;"><center>Class</center></th>
                                     <th scope="col" style="color:#fff;"><center>Insurance Company</center></th>
                                     <th scope="col" style="color:#fff;"><center>Type</center></th>
-                                    <th scope="col"  style="color:#fff;"><center>Price </center></th>
-                                    <th scope="col"  style="color:#fff;"><center>Commission(%)</center></th>
                                     <th scope="col"  style="color:#fff;"><center>Commission</center></th>
-                                    <th scope="col"  style="color:#fff;"><center>Billing</center></th>
+
                                     @if($privileges=='Read only')
                                     @else
                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
@@ -1022,10 +955,8 @@
                                         <td><center>{{$var->class}}</center></td>
                                         <td><center>{{$var->insurance_company}}</center></td>
                                         <td><center>{{$var->insurance_type}}</center></td>
-                                        <td><center>{{number_format($var->price)}} {{$var->insurance_currency}}</center></td>
                                         <td><center>{{$var->commission_percentage}}%</center></td>
-                                        <td><center>{{number_format($var->commission)}} {{$var->insurance_currency}} </center></td>
-                                        <td><center> {{$var->billing}} </center></td>
+
                                         @if($privileges=='Read only')
                                         @else
                                             <td><center>
@@ -1085,106 +1016,41 @@
 
 
 
-
                                                                         <div  class="form-group" >
-                                                                            <div class="form-wrapper">
-                                                                                <label for="price"  ><strong>Price <span style="color: red;"> *</span></strong></label>
-                                                                                <input type="number" min="10" step="0.01" class="form-control" id="price_edit" name="price"  required value="{{$var->price}}" autocomplete="off">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
 
 
 
-                                                                        <div  class="form-group"  >
-                                                                            <div class="form-wrapper">
-                                                                                <label  ><strong>Commission</strong></label>
+                                                                                    <div class="form-wrapper">
+                                                                                        <label  for="commission_percentage" class=" col-form-label"><strong>Commission percentage (%)</strong> <strong> <span style="color: red;"> *</span></strong></label>
 
-                                                                                <div  id=""  class="form-group row">
-
-                                                                                    <div class="col-6 inline_block form-wrapper">
-                                                                                        <label  for="commission_percentage" class=" col-form-label">Percentage (%) <strong> <span style="color: red;"> *</span></strong></label>
-                                                                                        <div class="">
                                                                                             <input type="number" min="1"  step="0.01" class="form-control"  name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage_edit" autocomplete="off">
-                                                                                        </div>
-                                                                                    </div>
 
-                                                                                    <div class="col-6 inline_block form-wrapper">
-                                                                                        <label  for="commission" class=" col-form-label">Amount <strong> <span style="color: red;">  *</span></strong></label>
-                                                                                        <div  class="">
-                                                                                            <input type="number" min="10" step="0.01" id="commission_edit"  class="form-control" name="commission" value="{{$var->commission}}" required autocomplete="off">
-                                                                                        </div>
                                                                                     </div>
 
 
 
 
-                                                                                </div>
 
 
 
 
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
 
-
-                                                                        <div class="form-group" >
-                                                                            <div class="form-wrapper">
-                                                                                <label for="insurance_currency"><strong>Currency <span style="color: red;"> *</span></strong></label>
-                                                                                <select id="insurance_currency_edit" class="form-control" required name="insurance_currency" >
-                                                                                    @if($var->insurance_currency=="TZS")
-                                                                                        <option value="USD" >USD</option>
-                                                                                        <option value="{{$var->insurance_currency}}" selected>{{$var->insurance_currency}}</option>
-                                                                                    @elseif($var->insurance_currency=="USD")
-                                                                                        <option value="TZS" >TZS</option>
-                                                                                        <option value="{{$var->insurance_currency}}" selected>{{$var->insurance_currency}}</option>
-                                                                                    @else
-                                                                                    @endif
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        @if($var->billing=='Multiple billing')
-                                                                        <div id="billing_edit" class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="billing"><strong>Billing <span style="color: red;"> *</span></strong></label>
-                                                                                <select id="billing" class="form-control" required name="billing" >
-                                                                                        <option value="Multiple billing" >Multiple billing</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-
-                                                                        <div id="number_of_installmentsDivEdit"   class="form-group">
-                                                                            <label  for="number_of_installments" class=" col-form-label">Number of installments</label>
-
-                                                                                <input type="number" id="number_of_installmentsEdit"  class="form-control" name="number_of_installments" readonly value="2" >
 
                                                                         </div>
                                                                         <br>
 
 
-                                                                        <div  id="first_installmentDivEdit"  class="form-group">
-                                                                            <label  for="first_installment" class=" col-form-label">First installment</label>
-
-                                                                                <input type="number" readonly id="first_installmentEdit"  class="form-control" name="first_installment" value="">
-
-                                                                        </div>
-                                                                        <br>
 
 
-                                                                        <div id="second_installmentDivEdit"  class="form-group">
-                                                                            <label  for="second_installment" class=" col-form-label">Second installment</label>
 
-                                                                                <input type="number" readonly id="second_installmentEdit"  class="form-control" name="second_installment" value="">
-                                                                        </div>
-                                                                        <br>
 
-                                                                        @else
-                                                                        @endif
+
+
+
+
+
+
+
 
 
                                                                         <div align="right">
@@ -1253,7 +1119,7 @@
                     </div>
 
 
-                    <div id="car_rental_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
+                    <div id="car_rental_inner" style=" padding-top: 1%;" class="tabcontent_inner">
 
                         <div class="tab">
                             <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>VEHICLE FLEET</strong></button>
@@ -1263,7 +1129,7 @@
                             <button class="tablinks" onclick="openContracts(event, 'availability')"><strong>VEHICLE AVAILABILITY</strong></button>
 
                         </div>
-                        <div id="car_list" class="tabcontent">
+                        <div id="car_list" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent">
                             <br>
                             <center><h3><strong>Vehicle Fleet</strong></h3></center>
                             <hr>
@@ -1475,7 +1341,7 @@
                             </table>
                         </div>
 
-                        <div id="hire" class="tabcontent" >
+                        <div id="hire" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent" >
                             <br>
                             <center><h3><strong>Hire Rates</strong></h3></center>
                             <hr>
@@ -1623,7 +1489,7 @@
                         $today=date('Y-m-d');
                         ?>
 
-                        <div id="availability" class="tabcontent">
+                        <div id="availability" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent">
                             <br>
                             <center><h3><strong>Vehicle Availability</strong></h3></center>
                             <hr>
@@ -1652,7 +1518,7 @@
 
                         </div>
                         <?php $k=1;?>
-                        <div id="cost_centres" class="tabcontent">
+                        <div id="cost_centres" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent">
                             <br>
                             <center><h3><strong>Cost Centres</strong></h3></center>
                             <hr>
@@ -1806,9 +1672,9 @@
 @section('pagescript')
 
     <script type="text/javascript">
-         $(window).on('load', function () {
-            $("#coverScreen").hide();
-        });
+        //  $(window).on('load', function () {
+        //     $("#coverScreen").hide();
+        // });
         window.onload=function(){
             $("#getMajor").trigger('change');
         };
@@ -2023,7 +1889,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2034,7 +1900,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2066,7 +1932,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2084,7 +1950,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2126,7 +1992,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2137,7 +2003,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2169,7 +2035,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2187,7 +2053,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2224,7 +2090,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2235,7 +2101,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2261,15 +2127,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2287,7 +2153,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2325,7 +2191,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2336,7 +2202,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2361,15 +2227,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2387,7 +2253,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2425,7 +2291,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2436,7 +2302,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2460,15 +2326,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2486,7 +2352,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2697,71 +2563,8 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         });
 
 
-        $('#price').on('input', function(e) {
-            var price=document.getElementById('price').value;
-
-            var first_installment=0.60*price;
-            var second_installment=0.40*price;
 
 
-           var new_first_installment= Math.round((first_installment + Number.EPSILON) * 100) / 100;
-           var new_second_installment= Math.round((second_installment + Number.EPSILON) * 100) / 100;
-
-            $('#first_installment').val(new_first_installment);
-            $('#second_installment').val(new_second_installment);
-
-        });
-
-
-        $('#insurance_type').click(function() {
-            var insurance_type=document.getElementById('insurance_type').value;
-
-            if(insurance_type=='COMPREHENSIVE'){
-
-                $('#billing').show();
-
-            }else{
-                $('#billing').hide();
-                $('#billing_input').val("");
-            }
-
-
-        });
-
-
-        $('#billing_input').click(function() {
-
-            var insurance_type=document.getElementById('insurance_type').value;
-            var billing_type=document.getElementById('billing_input').value;
-
-            if(billing_type=='Multiple billing') {
-
-                if (insurance_type == 'COMPREHENSIVE') {
-
-                    $('#number_of_installmentsDiv').show();
-                    $('#first_installmentDiv').show();
-                    $('#second_installmentDiv').show();
-
-
-                } else {
-
-                    $('#number_of_installmentsDiv').hide();
-                    $('#first_installmentDiv').hide();
-                    $('#second_installmentDiv').hide();
-
-                }
-
-            }else{
-
-                $('#number_of_installmentsDiv').hide();
-                $('#first_installmentDiv').hide();
-                $('#second_installmentDiv').hide();
-
-
-            }
-
-
-        });
 
 
 
@@ -2879,9 +2682,9 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                     ele4.required = false;
                     $('#TypeDivNA').hide();
                     document.getElementById("insurance_type_na").disabled = true;
-                    $('#priceDiv').hide();
+
                     $('#commissionDiv').hide();
-                    $('#insurance_currencyDiv').hide();
+
 
                 }
 
@@ -2933,18 +2736,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                         document.getElementById("insurance_type_na").disabled = false;
                     }
 
-                    $('#priceDiv').show();
+
                     $('#commissionDiv').show();
-                    $('#insurance_currencyDiv').show();
+
 
                 }
                 else{
                     $('#TypeDiv').hide();
                     var ele7 = document.getElementById("insurance_type");
                     ele7.required = false;
-                    $('#priceDiv').hide();
+
                     $('#commissionDiv').hide();
-                    $('#insurance_currencyDiv').hide();
+
                     $('#TypeDivNA').hide();
 
                     document.getElementById("insurance_type_na").disabled = true;

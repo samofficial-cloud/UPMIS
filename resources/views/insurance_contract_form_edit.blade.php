@@ -510,10 +510,10 @@
                                                     </div>
 
 
-                                                    <div id="premiumDiv" class="form-wrapper col-12" style="display: none;">
+                                                    <div id="premiumDiv" class="form-wrapper col-12">
                                                         <label for="amount">Premium </label>
                                                         <span id="premium_msg"></span>
-                                                        <input type="number" min="0" id="premium" readonly name="premium" class="form-control" >
+                                                        <input type="number" min="20" id="premium" value="{{$var->premium}}" name="premium" class="form-control" >
                                                     </div>
 
                                                     <div id="mode_of_paymentDiv" class="form-wrapper col-12" style="display: none;">
@@ -568,32 +568,53 @@
                                                 <div class="form-group row">
 
 
-                                                    <input type="hidden" min="1"  step="0.01" class="form-control"  readonly name="commission_percentage"  value="{{$var->commission_percentage}}"  id="commission_percentage" autocomplete="off">
 
 
-                                                    <input type="hidden" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value="{{$var->commission}}"  autocomplete="off">
+
+
+
+                                                    <div class="form-wrapper col-6">
+                                                        <label for="amount">Commission(%) <span style="color: red;"> *</span></label>
+                                                        <input type="text" class="form-control"  readonly name="commission_percentage"  value="{{$var->commission_percentage}}"  id="commission_percentage" autocomplete="off">
+                                                    </div>
+
+                                                    <div class="form-wrapper col-6">
+                                                        <label for="amount">Commission <span style="color: red;"> *</span></label>
+                                                        <input type="text"  id="commission"  class="form-control" name="commission" value="{{$var->commission}}" readonly autocomplete="off">
+                                                    </div>
+
+
 
 
                                                     <div class="form-wrapper col-12">
                                                         <label for="currency">Currency <span style="color: red;"> *</span></label>
 
-                                                        <input type="text" id="currency" class="form-control" value="{{$var->currency}}" readonly required name="currency">
+                                                        <span id="currency_msg"></span>
+                                                        <select id="currency" class="form-control" name="currency">
+                                                            @if($var->currency=='TZS')
+                                                                <option value="USD" >USD</option>
+                                                            @elseif($var->currency=='USD')
+                                                                <option value="TZS" >TZS</option>
+                                                            @else
+                                                            @endif
+                                                        </select>
+
                                                     </div>
 
-                                                    <div id="cover_noteDiv" style="display: none;" class="form-wrapper col-6">
+                                                    <div id="cover_noteDiv" style="display: none;" class="form-wrapper col-6 pt-4">
                                                         <label for="amount">Cover note<span style="color: red;"> *</span></label>
                                                         <span id="cover_note_msg"></span>
                                                         <input type="text" id="cover_note" name="cover_note" value="{{$var->cover_note}}" class="form-control">
                                                     </div>
 
-                                                    <div id="sticker_noDiv" style="display: none;" class="form-wrapper col-6">
+                                                    <div id="sticker_noDiv" style="display: none;" class="form-wrapper col-6 pt-4">
                                                         <label for="amount">Sticker number <span style="color: red;"> *</span></label>
                                                         <span id="sticker_no_msg"></span>
                                                         <input type="text" id="sticker_no" name="sticker_no" value="{{$var->sticker_no}}" class="form-control">
                                                     </div>
 
 
-                                                    <div class="form-wrapper col-12">
+                                                    <div class="form-wrapper col-12 pt-4">
                                                         <label for="amount">Receipt Number <span style="color: red;"> *</span></label>
                                                         <span id="receipt_no_msg"></span>
                                                         <input type="text" id="receipt_no" name="receipt_no" class="form-control" value="{{$var->receipt_no}}" required="">
@@ -1314,7 +1335,7 @@
 
         var current_fs, next_fs, previous_fs; //fieldsets
         var opacity;
-        var p1, p2,p3,p4,p5,p6,p7,p8;
+        var p1, p2,p3,p4,p5,p6,p7,p8,p9,p10;
         var temp;
 
         function properNext(){
@@ -1352,10 +1373,10 @@
 
                 if(insurance_type=='COMPREHENSIVE'){
                     $('#mode_of_paymentDiv').show();
-                    $('#premiumDiv').show();
+
 
                 }else{
-                    $('#premiumDiv').hide();
+
                     $('#mode_of_paymentDiv').hide();
 
                     $('#first_installmentDiv').hide();
@@ -1528,10 +1549,9 @@
                                     success: function (data) {
                                         if(data!=""){
                                             gonext();
-                                            document.getElementById("premium").value=data[0].price;
+
                                             document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("commission").value=data[0].commission;
-                                            document.getElementById("currency").value=data[0].insurance_currency;
+
                                             document.getElementById("availability_status").innerHTML ='';
 
                                         }else{
@@ -1562,10 +1582,9 @@
 
                                         if(data!=""){
                                             gonext();
-                                            document.getElementById("premium").value=data[0].price;
+
                                             document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("commission").value=data[0].commission;
-                                            document.getElementById("currency").value=data[0].insurance_currency;
+
                                             document.getElementById("availability_status").innerHTML ='';
 
                                         }else{
@@ -1619,10 +1638,9 @@
                                     success: function (data) {
                                         if(data!=""){
                                             gonext();
-                                            document.getElementById("premium").value=data[0].price;
+
                                             document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("commission").value=data[0].commission;
-                                            document.getElementById("currency").value=data[0].insurance_currency;
+
                                             document.getElementById("availability_status").innerHTML ='';
 
                                         }else{
@@ -1653,10 +1671,9 @@
 
                                         if(data!=""){
                                             gonext();
-                                            document.getElementById("premium").value=data[0].price;
+
                                             document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("commission").value=data[0].commission;
-                                            document.getElementById("currency").value=data[0].insurance_currency;
+
                                             document.getElementById("availability_status").innerHTML ='';
 
                                         }else{
@@ -1724,10 +1741,9 @@
                                     success: function (data) {
                                         if(data!=""){
                                             gonext();
-                                            document.getElementById("premium").value=data[0].price;
+
                                             document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("commission").value=data[0].commission;
-                                            document.getElementById("currency").value=data[0].insurance_currency;
+
                                             document.getElementById("availability_status").innerHTML ='';
 
                                         }else{
@@ -1758,10 +1774,9 @@
 
                                         if(data!=""){
                                             gonext();
-                                            document.getElementById("premium").value=data[0].price;
+
                                             document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("commission").value=data[0].commission;
-                                            document.getElementById("currency").value=data[0].insurance_currency;
+
                                             document.getElementById("availability_status").innerHTML ='';
 
                                         }else{
@@ -1814,10 +1829,8 @@
                                     success: function (data) {
                                         if(data!=""){
                                             gonext();
-                                            document.getElementById("premium").value=data[0].price;
+
                                             document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("commission").value=data[0].commission;
-                                            document.getElementById("currency").value=data[0].insurance_currency;
                                             document.getElementById("availability_status").innerHTML ='';
 
                                         }else{
@@ -1848,10 +1861,9 @@
 
                                         if(data!=""){
                                             gonext();
-                                            document.getElementById("premium").value=data[0].price;
+
                                             document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("commission").value=data[0].commission;
-                                            document.getElementById("currency").value=data[0].insurance_currency;
+
                                             document.getElementById("availability_status").innerHTML ='';
 
                                         }else{
@@ -2055,6 +2067,42 @@
                 }
 
 
+
+                if(currency==""){
+                    p9=0;
+                    $('#currency_msg').show();
+                    var message=document.getElementById('currency_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#currency').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p9=1;
+                    $('#currency_msg').hide();
+                    $('#currency').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(premium==""){
+                    p10=0;
+                    $('#premium_msg').show();
+                    var message=document.getElementById('premium_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#premium').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p10=1;
+                    $('#premium_msg').hide();
+                    $('#premium').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
                 const dateObj = new Date(commission_date);
@@ -2211,7 +2259,7 @@
 
                     if(insurance_type=='COMPREHENSIVE'){
 
-                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1') {
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1'  & p9=='1'  & p10=='1') {
 
                             gonext();
 
@@ -2227,7 +2275,7 @@
 
                     else{
 
-                        if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' ) {
+                        if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1') {
 
                             gonext();
 
@@ -2245,7 +2293,7 @@
 
                 }else{
 
-                    if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' ) {
+                    if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' & p9=='1'  & p10=='1' ) {
 
                         gonext();
 
@@ -2428,6 +2476,26 @@
         });
 
     </script>
+
+
+    <script>
+
+        $('#premium').on('input',function(e){
+            e.preventDefault();
+
+            var premium=$('#premium').val();
+
+            var commission_percentage=$('#commission_percentage').val();
+
+            var commission= Math.round(((commission_percentage/100*premium) + Number.EPSILON) * 100) / 100;
+
+            $('#commission').val(commission);
+
+
+        });
+
+    </script>
+
 
 
 @endsection

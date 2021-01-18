@@ -59,6 +59,13 @@
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
 
+            <?php
+
+            $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+            ?>
+
+
+
             @if($category=='All')
            <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Insurance only')
@@ -257,7 +264,7 @@
                     <br>
 
 
-                            @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                            @if($privileges=='Read only')
                             @else
 
                                 <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice" title="Add new Space Invoice" role="button" aria-pressed="true">Add New Invoice</a>
@@ -583,7 +590,7 @@
 
 
                                             @if($var->email_sent_status=='NOT SENT')
-                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI')
+                                                @if($privileges=='Read only')
                                                 @else
                                                 <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
                                                 @endif
@@ -640,7 +647,7 @@
                                             @if($var->email_sent_status=='SENT')
 
 
-                                                @if(Auth::user()->role=='DVC Administrator' OR Auth::user()->role=='Director DPDI' )
+                                                @if($privileges=='Read only')
                                                 @else
                                             <a title="Receive payment" data-toggle="modal" data-target="#add_comment{{$var->invoice_number}}"  role="button" aria-pressed="true" class=""  name="editC"><i class="fa fa-money" style="font-size:20px;" aria-hidden="true"></i></a>
 @endif

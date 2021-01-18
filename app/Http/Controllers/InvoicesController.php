@@ -1037,6 +1037,78 @@ public function sendAllInvoicesSpace(Request $request){
 
 
 
+    public function CreateInsuranceInvoiceClientsManually(Request $request)
+    {
+
+
+
+        if ($request->get('invoicing_period_start_date')>$request->get('invoicing_period_end_date')) {
+
+            return redirect()->back()->with("error","Invoice start date cannot be greater than invoice end date. Please try again");
+        }
+
+
+
+        $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+        $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+        $today=date('Y-m-d');
+
+        $amount_in_words='';
+
+        if($request->get('currency')=='TZS'){
+            $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' TZS',' ');
+
+        }if ($request->get('currency')=='USD'){
+
+        $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' USD',' ');
+    }
+
+    else{
+
+
+    }
+
+
+        $period= date("d/m/Y",strtotime($request->get('invoicing_period_start_date'))).' to  '. date("d/m/Y",strtotime($request->get('invoicing_period_end_date')));
+
+
+        $invoice_to_be_created=DB::select('call invoice_exists_insurance_clients (?,?,?)',[$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date'),$request->get('debtor_name')]);
+
+
+        if(count($invoice_to_be_created)==0){
+
+            DB::table('insurance_invoices_clients')->insert(
+                ['contract_id' => $request->get("contract_id"), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A']
+            );
+
+            $invoice_number_created=DB::table('insurance_invoices_clients')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+            DB::table('invoice_notifications')->insert(
+                ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance']
+            );
+
+            DB::table('insurance_payments')->insert(
+                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
+            );
+
+
+        }else{
+            return redirect()->back()->with("error","Invoice already exists. Please try again");
+
+        }
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Insurance invoice created Successfully');
+
+
+
+
+    }
+
+
+
+
 
 
 
