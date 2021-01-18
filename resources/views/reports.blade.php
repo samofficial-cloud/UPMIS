@@ -796,7 +796,7 @@ $year=$current-3;
                 $vehicles =carRental::where('flag',1)->get();
               ?>
               @foreach($vehicles as $vehicle)
-                <option value="{{$vehicle->vehicle_reg_no}}">{{$vehicle->vehicle_reg_no}} {{$vehicle->vehicle_model}}</option>
+                <option value="{{$vehicle->vehicle_reg_no}}">{{$vehicle->vehicle_reg_no}} - {{$vehicle->vehicle_model}}</option>
               @endforeach
             </select>
             
@@ -1066,7 +1066,7 @@ $year=$current-3;
           <div class="form-wrapper">
             <label for="carrevenuemodel">Vehicle Model<span style="color: red;">*</span></label>
              <span id="carrevenuemodelmsg"></span>
-            <select class="form-control" required="" id="carrevenuemodel" name="carrevenuemodel" required="">
+            <select class="form-control" id="carrevenuemodel" name="carrevenuemodel">
               <option value=""disabled selected hidden>Select Vehicle Model</option>
               @foreach($model as $var)
               <option value="{{$var->vehicle_model}}">{{$var->vehicle_model}}</option>
@@ -1079,8 +1079,15 @@ $year=$current-3;
           <div class="form-wrapper">
             <label for="carrevenuereg">Vehicle Reg. No<span style="color: red;">*</span></label>
             <span id="carrevenueregmsg"></span>
-            <input type="text" id="carrevenuereg" name="carrevenuereg" class="form-control" autocomplete="off">
-            <span id="carrevenuenameList"></span>
+            {{-- <input type="text" id="carrevenuereg" name="carrevenuereg" class="form-control" autocomplete="off"> --}}
+            <select class="form-control"  id="carrevenuereg" name="carrevenuereg">
+              <option value=""disabled selected hidden>Select Vehicle Registration</option>
+              <?php $vehicles= DB::table('car_rentals')->orderBy('vehicle_reg_no','asc')->get(); ?>
+                @foreach($vehicles as $var)
+                  <option value="{{$var->vehicle_reg_no}}">{{$var->vehicle_reg_no}} - {{$var->vehicle_model}}</option>
+                @endforeach
+            </select>
+            {{-- <span id="carrevenuenameList"></span> --}}
           </div>
         </div>
 
@@ -1088,12 +1095,12 @@ $year=$current-3;
             <div class="form-wrapper col-6">
               <label for="rent_start_date">From<span style="color: red;">*</span></label>
               <span id="rent_startdatemsg"></span>
-              <input type="date" id="rent_start_date" name="rent_start_date" class="form-control" >
+              <input type="date" id="rent_start_date" name="rent_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
             </div>
             <div class="form-wrapper col-6">
               <label for="rent_end_date">To<span style="color: red;">*</span></label>
               <span id="rent_enddatemsg"></span>
-              <input type="date" id="rent_end_date" name="rent_end_date" class="form-control" >
+              <input type="date" id="rent_end_date" name="rent_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
             </div>
           </div>
 
@@ -1188,7 +1195,10 @@ $year=$current-3;
           <div class="form-wrapper">
             <label for="Con_clientname">Client Name<span style="color: red;">*</span></label>
             <span id="Conclientnamemsg"></span>
-            <input type="text" id="Con_clientname" name="Con_clientname" class="form-control" autocomplete="off">
+            {{-- <input type="text" id="Con_clientname" name="Con_clientname" class="form-control" autocomplete="off"> --}}
+            <select class="form-control" id="Con_clientname" name="Con_clientname">
+              <option value=" " disabled selected hidden>Select Client Type</option>
+            </select>
             <span id="ConnameList"></span>
           </div>
         </div>
@@ -1499,8 +1509,11 @@ $year=$current-3;
           <div class="form-wrapper">
             <label for="In_clientname">Client Name<span style="color: red;">*</span></label>
             <span id="Inclientnamemsg"></span>
-            <input type="text" id="In_clientname" name="In_clientname" class="form-control" autocomplete="off">
-            <span id="nameListClient"></span>
+           {{--  <input type="text" id="In_clientname" name="In_clientname" class="form-control" autocomplete="off"> --}}
+            <select class="form-control" id="In_clientname" name="In_clientname">
+              <option value=" " disabled selected hidden>Select Client</option>
+            </select>
+            {{-- <span id="nameListClient"></span> --}}
           </div>
         </div>
 
@@ -2802,7 +2815,7 @@ function myFunction() {
     }
     else{
       $('#In_clientnamediv').hide();
-      $('#In_clientname').val("");
+      $('#In_clientname').val('').trigger('change');
     }
     });
 
@@ -2827,56 +2840,56 @@ function myFunction() {
     });
 
 
-          $('#In_clientname').keyup(function(e){
-    //e.preventDefault();
-    var queryy=$('#Inbusiness_type').val();
-        var query = $(this).val();
-        if(query != ''){
-         var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.client_name') }}",
-          method:"POST",
-          data:{query:query, _token:_token,queryy:queryy},
-          success:function(data){
-            if(data=='0'){
-             $('#In_clientname').attr('style','border-bottom:1px solid #f00');
-             bz = '0';
-            }
-            else{
-              bz ='1';
-              //$('#message2').hide();
-              $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
-              $('#nameListClient').fadeIn();
-              $('#nameListClient').html(data);
-          }
-        }
-         });
-        }
-        else if(query==''){
-          bz ='1';
-              //$('#message2').hide();
-              $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
-        }
+    //       $('#In_clientname').keyup(function(e){
+    // //e.preventDefault();
+    // var queryy=$('#Inbusiness_type').val();
+    //     var query = $(this).val();
+    //     if(query != ''){
+    //      var _token = $('input[name="_token"]').val();
+    //      $.ajax({
+    //       url:"{ route('autocomplete.client_name') }}",
+    //       method:"POST",
+    //       data:{query:query, _token:_token,queryy:queryy},
+    //       success:function(data){
+    //         if(data=='0'){
+    //          $('#In_clientname').attr('style','border-bottom:1px solid #f00');
+    //          bz = '0';
+    //         }
+    //         else{
+    //           bz ='1';
+    //           //$('#message2').hide();
+    //           $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
+    //           $('#nameListClient').fadeIn();
+    //           $('#nameListClient').html(data);
+    //       }
+    //     }
+    //      });
+    //     }
+    //     else if(query==''){
+    //       bz ='1';
+    //           //$('#message2').hide();
+    //           $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
+    //     }
 
 
-    });
+    // });
 
-  $(document).on('click', '#list', function(){
-   bz ='1';
-   //$('#message2').hide();
-  $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
+  // $(document).on('click', '#list', function(){
+  //  bz ='1';
+  //  //$('#message2').hide();
+  // $('#In_clientname').attr('style','border-bottom:1px solid #ced4da');
 
-        $('#In_clientname').val($(this).text());
-        $('#nameListClient').fadeOut();
+  //       $('#In_clientname').val($(this).text());
+  //       $('#nameListClient').fadeOut();
 
-        });
+  //       });
 
-   $(document).on('click', 'form', function(){
-     $('#nameListClient').fadeOut();
-    });
+  //  $(document).on('click', 'form', function(){
+  //    $('#nameListClient').fadeOut();
+  //   });
 
 
-   $('#Con_clientname').keyup(function(e){
+   $('#Con_clientnamesss').keyup(function(e){
     //e.preventDefault();
     var query = $(this).val();
     var queryy=$('#contractbusiness_type').val();
@@ -3002,9 +3015,13 @@ function myFunction() {
           method:"POST",
           data:{query:query, _token:_token},
           success:function(data){
-            console.log(data);
-             $('#nameListSpaceId').fadeIn();
+            $('#nameListSpaceId').fadeIn();
             $('#nameListSpaceId').html(data);
+            $("#space_id").select2({
+              placeholder: "Select Space Id",
+              theme: "bootstrap",
+              allowClear: true,
+            });
           }
          });
         }
@@ -3788,54 +3805,54 @@ $("#rentstatus_filter").click(function(){
     else{
     $('#carrevenuereg_filter').val('');
     $('#carrevenueregdiv').hide();
-    $('#carrevenuereg').val("");
+    $('#carrevenuereg').val(null);
     }
     });
 
-    $('#carrevenuereg').keyup(function(e){
-        e.preventDefault();
-        var query209 = $(this).val();
-        if(query209 != ''){
-         var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.fetch') }}",
-          method:"POST",
-          data:{query:query209, _token:_token},
-          success:function(data){
-            if(data=='0'){
-             $('#carrevenuereg').attr('style','border-bottom:1px solid #f00');
-             az1 = '0';
-            }
-            else{
-              az1 ='1';
-              //$('#message2').hide();
-              $('#carrevenuereg').attr('style','border-bottom:1px solid #ced4da');
-              $('#carrevenuenameList').fadeIn();
-              $('#carrevenuenameList').html(data);
-          }
-        }
-         });
-        }
-        else if(query209==''){
-          az1 ='1';
-              //$('#message2').hide();
-              $('#carrevenuereg').attr('style','border-bottom:1px solid #ced4da');
-        }
-     });
+    // $('#carrevenuereg').keyup(function(e){
+    //     e.preventDefault();
+    //     var query209 = $(this).val();
+    //     if(query209 != ''){
+    //      var _token = $('input[name="_token"]').val();
+    //      $.ajax({
+    //       url:"{ route('autocomplete.fetch') }}",
+    //       method:"POST",
+    //       data:{query:query209, _token:_token},
+    //       success:function(data){
+    //         if(data=='0'){
+    //          $('#carrevenuereg').attr('style','border-bottom:1px solid #f00');
+    //          az1 = '0';
+    //         }
+    //         else{
+    //           az1 ='1';
+    //           //$('#message2').hide();
+    //           $('#carrevenuereg').attr('style','border-bottom:1px solid #ced4da');
+    //           $('#carrevenuenameList').fadeIn();
+    //           $('#carrevenuenameList').html(data);
+    //       }
+    //     }
+    //      });
+    //     }
+    //     else if(query209==''){
+    //       az1 ='1';
+    //           //$('#message2').hide();
+    //           $('#carrevenuereg').attr('style','border-bottom:1px solid #ced4da');
+    //     }
+    //  });
 
-$(document).on('click', '#list', function(){
-   az1 ='1';
-   //$('#message2').hide();
-  $('#carrevenuereg').attr('style','border-bottom:1px solid #ced4da');
+// $(document).on('click', '#list', function(){
+//    az1 ='1';
+//    //$('#message2').hide();
+//   $('#carrevenuereg').attr('style','border-bottom:1px solid #ced4da');
 
-        $('#carrevenuereg').val($(this).text());
-        $('#carrevenuenameList').fadeOut();
+//         $('#carrevenuereg').val($(this).text());
+//         $('#carrevenuenameList').fadeOut();
 
-    });
+//     });
 
-   $(document).on('click', 'form', function(){
-     $('#carrevenuenameList').fadeOut();
-    });
+//    $(document).on('click', 'form', function(){
+//      $('#carrevenuenameList').fadeOut();
+//     });
 
 var a100=0;
     //  $('#clientcostcentre').keyup(function(e){
@@ -4031,7 +4048,7 @@ var a100=0;
        else if (query2=='history'){
         p1=1;
         var query6=$('#space_id').val();
-        console.log(query6);
+        
         if(query6==null){
           p5=0;
           $('#spaceidmsg').show();
@@ -4272,7 +4289,7 @@ var a100=0;
        if($('#In_client_filter').is(":checked")){
         $("#In_client_filter").val("true");
         var query36=$('#In_clientname').val();
-        if(query36==""){
+        if(query36==null){
           p33=0;
            $('#Inclientnamemsg').show();
           var message=document.getElementById('Inclientnamemsg');
@@ -4285,19 +4302,19 @@ var a100=0;
           $('#Inclientnamemsg').hide();
            $('#In_clientname').attr('style','border-bottom:1px solid #ccc');
         }
-        if(bz==0){
-          p33=0;
-           $('#Inclientnamemsg').show();
-          var message=document.getElementById('Inclientnamemsg');
-           message.style.color='red';
-           message.innerHTML="This client does not exists in the system";
-           $('#In_clientname').attr('style','border-bottom:1px solid #f00');
-        }
-        else if(bz==1){
-           p33=1;
-          $('#Inclientnamemsg').hide();
-           $('#In_clientname').attr('style','border-bottom:1px solid #ccc');
-        }
+        // if(bz==0){
+        //   p33=0;
+        //    $('#Inclientnamemsg').show();
+        //   var message=document.getElementById('Inclientnamemsg');
+        //    message.style.color='red';
+        //    message.innerHTML="This client does not exists in the system";
+        //    $('#In_clientname').attr('style','border-bottom:1px solid #f00');
+        // }
+        // else if(bz==1){
+        //    p33=1;
+        //   $('#Inclientnamemsg').hide();
+        //    $('#In_clientname').attr('style','border-bottom:1px solid #ccc');
+        // }
       }
       else{
         p33=1;
@@ -4951,7 +4968,7 @@ var a100=0;
 
         if($('#carrevenuereg_filter').is(":checked")){
           var query301=$('#carrevenuereg').val();
-          if(query301==""){
+          if(query301==null){
             p301=0;
           $('#carrevenueregmsg').show();
           var message=document.getElementById('carrevenueregmsg');
@@ -5451,7 +5468,8 @@ var a100=0;
         if($('#Con_client_filter').is(":checked")){
         $("#Con_client_filter").val("true");
         var query36=$('#Con_clientname').val();
-        if(query36==""){
+        console.log(query36);
+        if(query36==null){
           p33=0;
            $('#Conclientnamemsg').show();
           var message=document.getElementById('Conclientnamemsg');
@@ -5464,19 +5482,19 @@ var a100=0;
           $('#Conclientnamemsg').hide();
            $('#Con_clientname').attr('style','border-bottom:1px solid #ccc');
         }
-        if(cz==0){
-          p33=0;
-           $('#Conclientnamemsg').show();
-          var message=document.getElementById('Conclientnamemsg');
-           message.style.color='red';
-           message.innerHTML="This client does not exists in the system";
-           $('#Con_clientname').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-         p33=1;
-          $('#Conclientnamemsg').hide();
-           $('#Con_clientname').attr('style','border-bottom:1px solid #ccc');
-        }
+        // if(cz==0){
+        //   p33=0;
+        //    $('#Conclientnamemsg').show();
+        //   var message=document.getElementById('Conclientnamemsg');
+        //    message.style.color='red';
+        //    message.innerHTML="This client does not exists in the system";
+        //    $('#Con_clientname').attr('style','border-bottom:1px solid #f00');
+        // }
+        // else{
+        //  p33=1;
+        //   $('#Conclientnamemsg').hide();
+        //    $('#Con_clientname').attr('style','border-bottom:1px solid #ccc');
+        // }
       }
       else{
         p33=1;
@@ -5656,11 +5674,76 @@ var a100=0;
     allowClear: true,
   });
 
+       $("#carrevenuereg").select2({
+    placeholder: "Select Vehicle Registration",
+    theme: "bootstrap",
+    allowClear: true,
+  });
+
     $("#clientcostcentre").select2({
     placeholder: "Select Cost Centre",
     theme: "bootstrap",
     allowClear: true,
   });
+
+  
+   
+    $("#Con_clientname" ).select2({
+      placeholder: "Select Client",
+      theme: "bootstrap",
+      allowClear: true,
+        ajax: { 
+          url: "{{route('ajax.client_names')}}",
+         method:"POST",
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            //console.log($('#contractbusiness_type').val());
+            return {
+              _token:$('input[name="_token"]').val(),
+              queryy:$('#contractbusiness_type').val(),
+              query: params.term // search term
+            };
+          },
+          processResults: function (response) {
+            //console.log(response);
+            return {
+              results: response
+            };
+          },
+          cache: true
+        }
+
+      });
+
+
+      $("#In_clientname" ).select2({
+      placeholder: "Select Client",
+      theme: "bootstrap",
+      allowClear: true,
+        ajax: { 
+          url: "{{route('ajax.client_names')}}",
+         method:"POST",
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            //console.log($('#contractbusiness_type').val());
+            return {
+              _token:$('input[name="_token"]').val(),
+              queryy:$('#Inbusiness_type').val(),
+              query: params.term // search term
+            };
+          },
+          processResults: function (response) {
+            //console.log(response);
+            return {
+              results: response
+            };
+          },
+          cache: true
+        }
+
+      });
 
     
 

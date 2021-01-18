@@ -1671,12 +1671,11 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           if($_GET['rent']=='Rented'){
           $cars=carRental::where('vehicle_model',$_GET['model'])
           ->where('vehicle_status',$_GET['status'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+          ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
            ->whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['end'])
+            ->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+              ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
@@ -1684,12 +1683,13 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
         else if($_GET['rent']=='Available'){
           $cars=carRental::where('vehicle_model',$_GET['model'])
           ->where('vehicle_status',$_GET['status'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+           ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
+          ->where('flag','1')
            ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->wherebetween('start_date',[$_GET['start'] , $_GET['end'] ])
-            ->orwherebetween('end_date',[$_GET['start'] , $_GET['end'] ])
+            ->whereBetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwhereBetween('end_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->where('vehicle_reg_no','!=',null)
             ->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
@@ -1698,9 +1698,9 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
         }
          else if(($_GET['model_fil']=='true')&&($_GET['stat_fil']=='true')&&($_GET['range_fil']=='true')&&($_GET['rent_fil']!='true')){
            $cars=carRental::where('vehicle_model',$_GET['model'])
+           ->where('flag','1')
           ->where('vehicle_status',$_GET['status'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+          ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
           ->get();
          }
         else if(($_GET['model_fil']=='true')&&($_GET['stat_fil']=='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']=='true')){
@@ -1709,8 +1709,8 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           ->where('vehicle_status',$_GET['status'])
            ->whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['end'])
+             ->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
@@ -1718,10 +1718,12 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
         else if($_GET['rent']=='Available'){
           $cars=carRental::where('vehicle_model',$_GET['model'])
           ->where('vehicle_status',$_GET['status'])
+          ->where('flag','1')
            ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['start'])
+            ->whereBetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwhereBetween('end_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
@@ -1730,6 +1732,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
 
         else if(($_GET['model_fil']=='true')&&($_GET['stat_fil']=='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']!='true')){
            $cars=carRental::where('vehicle_model',$_GET['model'])
+           ->where('flag','1')
           ->where('vehicle_status',$_GET['status'])
           ->get();
         }
@@ -1737,24 +1740,24 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
         else if(($_GET['model_fil']=='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']=='true')&&($_GET['rent_fil']=='true')){
           if($_GET['rent']=='Rented'){
           $cars=carRental::where('vehicle_model',$_GET['model'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+          ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
            ->whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['end'])
+             ->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
         }
         else if($_GET['rent']=='Available'){
           $cars=carRental::where('vehicle_model',$_GET['model'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+          ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
+          ->where('flag','1')
            ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['start'])
+            ->whereBetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwhereBetween('end_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
@@ -1762,8 +1765,8 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
         }
         else if(($_GET['model_fil']=='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']=='true')&&($_GET['rent_fil']!='true')){
           $cars=carRental::where('vehicle_model',$_GET['model'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+           ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
+          ->where('flag','1')
           ->get();
         }
         else if(($_GET['model_fil']=='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']=='true')){
@@ -1771,47 +1774,49 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           $cars=carRental::where('vehicle_model',$_GET['model'])
            ->whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['end'])
+             ->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
         }
         else if($_GET['rent']=='Available'){
           $cars=carRental::where('vehicle_model',$_GET['model'])
+          ->where('flag','1')
            ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->OrwhereDate('end_date', '<=',$_GET['end'])
+            ->whereBetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
         }
         }
         else if(($_GET['model_fil']=='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']!='true')){
-           $cars=carRental::where('vehicle_model',$_GET['model'])->get();
+           $cars=carRental::where('vehicle_model',$_GET['model'])->where('flag','1')->get();
         }
         else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']=='true')&&($_GET['range_fil']=='true')&&($_GET['rent_fil']=='true')){
           if($_GET['rent']=='Rented'){
           $cars=carRental::where('vehicle_status',$_GET['status'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+          ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
            ->whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['end'])
+            ->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
         }
         else if($_GET['rent']=='Available'){
           $cars=carRental::where('vehicle_status',$_GET['status'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+           ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
+          ->where('flag','1')
            ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['start'])
+            ->whereBetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
@@ -1819,17 +1824,18 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
         }
          else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']=='true')&&($_GET['range_fil']=='true')&&($_GET['rent_fil']!='true')){
           $cars=carRental::where('vehicle_status',$_GET['status'])
-          ->where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+          ->where('flag','1')
+          ->whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
           ->get();
          }
+
          else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']=='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']=='true')){
           if($_GET['rent']=='Rented'){
           $cars=carRental::where('vehicle_status',$_GET['status'])
            ->whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['end'])
+             ->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
@@ -1838,36 +1844,38 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           $cars=carRental::where('vehicle_status',$_GET['status'])
            ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['start'])
+            ->whereBetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
+           ->where('flag','1')
           ->get();
         }
          }
          else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']=='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']!='true')){
-           $cars=carRental::where('vehicle_status',$_GET['status'])->get();
+           $cars=carRental::where('vehicle_status',$_GET['status'])->where('flag','1')->get();
          }
 
           else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']=='true')&&($_GET['rent_fil']=='true')){
             if($_GET['rent']=='Rented'){
-          $cars=carRental::where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+          $cars=carRental::whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
            ->whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['end'])
+             ->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
         }
         else if($_GET['rent']=='Available'){
-          $cars=carRental::where('hire_rate','>=',$_GET['min'])
-          ->where('hire_rate','<=',$_GET['max'])
+          $cars=carRental::whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
+          ->where('flag','1')
            ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['start'])
+             ->whereBetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+              ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])
+             ->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
           ->get();
@@ -1875,8 +1883,8 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           }
 
           else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']=='true')&&($_GET['rent_fil']!='true')){
-             $cars=carRental::where('hire_rate','>=',$_GET['min'])
-             ->where('hire_rate','<=',$_GET['max'])
+             $cars=carRental::whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
+             ->where('flag','1')
              ->get();
           }
            else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']=='true')){
@@ -1889,26 +1897,32 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           //   ->pluck('vehicle_reg_no')->toArray())
           // ->get();
 
-            $cars=carRental::whereIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
-            ->where('vehicle_reg_no','!=',null)->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
-            ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
-            ->distinct()
-            ->pluck('vehicle_reg_no')->toArray())
-          ->get();
+            $cars=carRental::whereIn('vehicle_reg_no',DB::table('car_contracts')
+              ->select('vehicle_reg_no')
+              ->where('vehicle_reg_no','!=',null)
+              ->wherebetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+              ->orwherebetween('end_date',[ $_GET['start'] ,$_GET['end'] ])->where('vehicle_reg_no','!=',null)
+              ->distinct()
+              ->pluck('vehicle_reg_no')->toArray())
+              ->get();
         }
         else if($_GET['rent']=='Available'){
           $cars=carRental::whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)
-            ->whereDate('start_date','>=',$_GET['start'])
-            ->orwhereDate('end_date', '<=',$_GET['start'])
+            // ->whereDate('start_date','>=',$_GET['start'])
+            // ->whereDate('end_date', '<=',$_GET['start'])
+            ->whereBetween('start_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->orwhereBetween('end_date',[ $_GET['start'] ,$_GET['end'] ])
+            ->where('vehicle_reg_no','!=',null)
             ->distinct()
             ->pluck('vehicle_reg_no')->toArray())
+          ->where('flag','1')
           ->get();
         }
            }
 
            else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']!='true')&&($_GET['rent_fil']!='true')){
-            $cars=carRental::get();
+            $cars=carRental::where('flag','1')->get();
            }
 
            if(count($cars)==0){

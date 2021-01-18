@@ -225,69 +225,76 @@ else{
         @if(count($cars)>0)
           @if(($_GET['rent_fil']=='true'))
               @if($_GET['rent']=='Rented')
-                  @foreach($cars as $cars)
-                    <h4>{{$i}}. {{ $cars->vehicle_reg_no}}</h4>
-                    <br>
-                    <table class="t_id" style="width: 60%;">
-                      <tr>
-                        <td>Vehicle Registration No.</td>
-                        <td style="width: 50%;">{{$cars->vehicle_reg_no}}</td>
-                      </tr>
-                      <tr>
-                        <td>Vehicle Model</td>
-                        <td>{{$cars->vehicle_model}}</td>
-                      </tr>
-                      <tr>
-                        <td>Vehicle Status</td>
-                        <td>{{$cars->vehicle_status}}</td>
-                      </tr>
-                      <tr>
-                        <td>Hire Rate (TZS)</td>
-                        <td>{{ number_format($cars->hire_rate)}}</td>
-                      </tr>
-                    </table>
-                        <?php
-                        $i=$i+1;
-                        $j=1;
-                        $from=date('Y-m-d',strtotime($_GET['start']));
-                        $to=date('Y-m-d',strtotime($_GET['end']));
-                        $clients=carContract::wherebetween('start_date',[ $from ,$to ])->where('vehicle_reg_no',$cars->vehicle_reg_no)
-                          ->orwherebetween('end_date',[ $from ,$to ])->where('vehicle_reg_no',$cars->vehicle_reg_no)
-                          ->orderBy('start_date','asc')
-                          ->get();
-                          $b= $i-1;
-                          $table_id = 'myTablea'.$b;
-                        ?>
-  <br>
-<h5>Detailed Information:</h5>
-        <table class="hover table table-striped table-bordered" id="{{$table_id}}">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col" style="width: 8%;"><center>S/N</center></th>
-              <th scope="col" style="width: 40%;"><center>Client Name</center></th>
-              <th scope="col" style="width: 15%;"><center>Start Date</center></th>
-              <th scope="col" style="width: 15%;"><center>End date</center></th>
-              <th scope="col"  ><center>Destination</center></th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach($clients as $client)
-              <tr>
-              <td style="text-align: center;">{{$j}}.</td>
-              <td>{{ $client->fullName}}</td>
-              <td><center>{{date("d/m/Y",strtotime($client->start_date))}}</center></td>
-              <td><center>{{ date("d/m/Y",strtotime($client->end_date))}}</center></td>
-              <td>{{ $client->destination}}</td>
-              </tr>
-              <?php
-              $j=$j+1;
-              ?>
-              @endforeach
-          </tbody>
-        </table>
-        <br>
-        <hr>
-  @endforeach
+                  
+                      @foreach($cars as $cars)
+                        <div class="card">
+                            <div class="card-body">
+                        <h4>{{$i}}. {{ $cars->vehicle_reg_no}}</h4>
+                        <hr>
+                        <br>
+                        <table class="t_id" style="width: 60%;">
+                          <tr>
+                            <td>Vehicle Registration No.</td>
+                            <td style="width: 50%;">{{$cars->vehicle_reg_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Vehicle Model</td>
+                            <td>{{$cars->vehicle_model}}</td>
+                          </tr>
+                          <tr>
+                            <td>Vehicle Status</td>
+                            <td>{{$cars->vehicle_status}}</td>
+                          </tr>
+                          <tr>
+                            <td>Hire Rate (TZS)</td>
+                            <td>{{ number_format($cars->hire_rate)}}</td>
+                          </tr>
+                        </table>
+                            <?php
+                            $i=$i+1;
+                            $j=1;
+                            $from=date('Y-m-d',strtotime($_GET['start']));
+                            $to=date('Y-m-d',strtotime($_GET['end']));
+                            $clients=carContract::wherebetween('start_date',[ $from ,$to ])->where('vehicle_reg_no',$cars->vehicle_reg_no)
+                              ->orwherebetween('end_date',[ $from ,$to ])->where('vehicle_reg_no',$cars->vehicle_reg_no)
+                              ->orderBy('start_date','asc')
+                              ->get();
+                              $b= $i-1;
+                              $table_id = 'myTablea'.$b;
+                            ?>
+                                <br>
+                              <h5>Detailed Information:</h5>
+                                      <table class="hover table table-striped table-bordered" id="{{$table_id}}">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th scope="col" style="width: 8%;"><center>S/N</center></th>
+                                            <th scope="col" style="width: 40%;"><center>Client Name</center></th>
+                                            <th scope="col" style="width: 15%;"><center>Start Date</center></th>
+                                            <th scope="col" style="width: 15%;"><center>End date</center></th>
+                                            <th scope="col"  ><center>Destination</center></th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          @foreach($clients as $client)
+                                            <tr>
+                                            <td style="text-align: center;">{{$j}}.</td>
+                                            <td>{{ $client->fullName}}</td>
+                                            <td><center>{{date("d/m/Y",strtotime($client->start_date))}}</center></td>
+                                            <td><center>{{ date("d/m/Y",strtotime($client->end_date))}}</center></td>
+                                            <td>{{ $client->destination}}</td>
+                                            </tr>
+                                            <?php
+                                            $j=$j+1;
+                                            ?>
+                                            @endforeach
+                                        </tbody>
+                                      </table>
+                                      </div>
+                                  </div>
+                                      <br>
+                                      
+                                @endforeach
+                      
 @elseif($_GET['rent']=='Available')
           <table class="hover table table-striped table-bordered" id="myTable">
             <thead class="thead-dark">
@@ -614,7 +621,7 @@ if(urlParams.get('report_type')=='cars'){
 var totalcars= '<?php echo $tcars;?>', z;
 
 for(z=1 ; z<=totalcars; z++){
-  console.log(z);
+  
 var table = $('#myTablea'+z).DataTable({ 
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [

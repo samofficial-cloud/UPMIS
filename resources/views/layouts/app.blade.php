@@ -107,8 +107,9 @@
                     </ul>
 
                         <?php
-
+                            use App\notification;
                         $chats=DB::table('system_chats')->where('receiver',Auth::user()->name)->where('flag','1')->count('id');
+                        $i=1;
                         $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
                         $insurance_invoice_notifications_count_total=0;
                         $car_invoice_notifications_count_total=0;
@@ -116,39 +117,83 @@
                         $water_invoice_notifications_count_total=0;
                         $electricity_invoice_notifications_count_total=0;
 
-                        $insurance_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','insurance')->count('id');
-                        if($insurance_invoice_notifications_count!=0){
-                            $insurance_invoice_notifications_count_total=1;
-                        }else{}
+                        if($category=='Insurance only' OR $category=='All'){
+                           $insurance_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','insurance')->count('id');
+                            if($insurance_invoice_notifications_count!=0){
+                                $insurance_invoice_notifications_count_total=1;
+                            }else{} 
+                        }
+                        
 
-                        $car_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','car_rental')->count('id');
-                        if($car_invoice_notifications_count!=0){
-                            $car_invoice_notifications_count_total=1;
-                        }else{}
+                        if($category=='CPTU only' OR $category=='All'){
+                            if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
 
-                        $space_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','space')->count('id');
-                        if($space_invoice_notifications_count!=0){
-                            $space_invoice_notifications_count_total=1;
-                        }else{}
+                            }
+                            else{
+                              $car_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','car_rental')->count('id');
+                                if($car_invoice_notifications_count!=0){
+                                    $car_invoice_notifications_count_total=1;
+                                }
+                                else{}  
+                            }
+                            
 
-                        $water_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','water bill')->count('id');
-                        if($water_invoice_notifications_count!=0){
-                            $water_invoice_notifications_count_total=1;
-                        }else{}
+                            
+                            $notifications=notification::where('flag','1')->where('role',Auth::user()->role)->get();
 
-                        $electricity_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','electricity bill')->count('id');
-                        if($electricity_invoice_notifications_count!=0){
-                            $electricity_invoice_notifications_count_total=1;
-                        }else{}
+                            if(count($notifications)>0){
+                               $total = 1; 
+                            }
+                            else{
+                                $total = 0;
+                            }
+                            
 
-                        use App\notification;
-                        $notifications=notification::where('flag','1')->where('role',Auth::user()->role)->get();
-                        $i=1;
+                            
+                        }
 
-                        $total=count($notifications);
+                         if($category=='Real Estate only' OR $category=='All'){
+                            $space_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','space')->count('id');
+                            if($space_invoice_notifications_count!=0){
+                                $space_invoice_notifications_count_total=1;
+                            }else{}
 
+                            $water_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','water bill')->count('id');
+                            if($water_invoice_notifications_count!=0){
+                                $water_invoice_notifications_count_total=1;
+                            }else{}
 
-                        $all_notifications_count=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
+                            $electricity_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','electricity bill')->count('id');
+                            if($electricity_invoice_notifications_count!=0){
+                                $electricity_invoice_notifications_count_total=1;
+                            }else{}
+                         }
+
+                        
+
+                        
+
+                        if($category=='All'){
+                            $all_notifications_count=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
+                        }
+                        elseif($category=='CPTU only'){
+                            if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
+                                $all_notifications_count=$total;
+                            }
+                            else{
+                               $all_notifications_count=$car_invoice_notifications_count_total+$total; 
+                            }
+                            
+                        }
+                        elseif($category=='Real Estate only') {
+                          $all_notifications_count = $space_invoice_notifications_count_total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;  
+                        }
+                        elseif($category=='Insurance only') {
+                          $all_notifications_count = $insurance_invoice_notifications_count_total;  
+                        }
+                        else{
+                            $all_notifications_count = 0;
+                        }
 
                         ?>
                     {{-- heree --}}
@@ -157,8 +202,8 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
 
-                         <a title="View Chats" class="nav-link " href="/system_chats?id=" role="button"><i class='fas fa-comment-dots' style='font-size:26px;color:#282727'></i> <span class="badge badge-danger">{{$chats}}</span>
-                        </a>
+                        {{--  <a title="View Chats" class="nav-link " href="/system_chats?id=" role="button"><i class='fas fa-comment-dots' style='font-size:26px;color:#282727'></i> <span class="badge badge-danger">{{$chats}}</span>
+                        </a> --}}
 
 
                         @if($all_notifications_count==0)
@@ -173,71 +218,88 @@
                         @endif
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
-                            @if($space_invoice_notifications_count==1 AND ($category=='Real Estate only' OR $category=='All'))
-
-                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoice to review</a>
-
-                                <?php $i=$i+1; ?>
-
-                            @elseif($space_invoice_notifications_count!=0 AND ($category=='Real Estate only' OR $category=='All'))
-
-                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
-
-                                        <?php $i=$i+1; ?>
-
-                            @else
-                            @endif
-
-
-                            @if($car_invoice_notifications_count==1 AND ($category=='CPTU only' OR $category=='All'))
-
-                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoice to review</a>
-                                            <?php $i=$i+1; ?>
-
-
-                            @elseif($car_invoice_notifications_count!=0 AND ($category=='CPTU only' OR $category=='All'))
-
-
-                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoices to review</a>
-
-                                            <?php $i=$i+1; ?>
-                            @else
-                            @endif
-
-                            @if($insurance_invoice_notifications_count==1 AND ($category=='Insurance only' OR $category=='All'))
-
-                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-
-                            @elseif($insurance_invoice_notifications_count!=0 AND ($category=='Insurance only' OR $category=='All'))
-
-                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
+                            @if($category=='Real Estate only' OR $category=='All')
+                                @if($space_invoice_notifications_count==1)
+                                    <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
 
                                     <?php $i=$i+1; ?>
 
-                            @else
+                                @elseif($space_invoice_notifications_count!=0)
+                                    <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
+
+                                            <?php $i=$i+1; ?>
+
+                                @else
+                                @endif
+
+                                @if($water_invoice_notifications_count==1)
+                                    <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water bill invoices to review</a>
+
+                                    <?php $i=$i+1; ?>
+
+                                @elseif($water_invoice_notifications_count!=0)
+                                    <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$water_invoice_notifications_count}} water bill invoices to review</a>
+
+                                            <?php $i=$i+1; ?>
+
+                                @else
+                                @endif
+
+
+                                @if($electricity_invoice_notifications_count==1)
+                                    <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity bill invoices to review</a>
+
+                                    <?php $i=$i+1; ?>
+
+                                @elseif($electricity_invoice_notifications_count!=0)
+                                    <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$electricity_invoice_notifications_count}} electricity bill invoices to review</a>
+
+                                            <?php $i=$i+1; ?>
+
+                                @else
+                                @endif
                             @endif
 
-                            @if($total==0)
 
 
+                            @if($category=='CPTU only' OR $category=='All')
+                                @if(Auth::user()->role!='Vote Holder' && Auth::user()->role!='Accountant-Cost Centre')
+                                    @if($car_invoice_notifications_count==1)
+                                        <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoice to review</a>
+                                                <?php $i=$i+1; ?>
 
 
-                            @elseif($total>0)
+                                    @elseif($car_invoice_notifications_count!=0)
+                                        <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$car_invoice_notifications_count}} car rental invoices to review</a>
 
+                                                <?php $i=$i+1; ?>
+                                    @else
+                                    @endif
+                                @endif
 
-                                @foreach($notifications as $notifications)
-                                    <a class="dropdown-item" href="{{ route('ShowNotifications',$notifications->id ) }}">{{$i}}. {{$notifications->message}}</a>
+                                @if($total==0)
 
-                                        <?php $i=$i+1; ?>
-                                @endforeach
+                                @elseif($total>0)
 
+                                    <a class="dropdown-item" href="/contracts_management">{{$i}}. You have {{count($notifications)}} pending car rental application(s)</a>
+                                    <?php $i=$i+1; ?>
+                                @endif
                             @endif
 
+                            @if($category=='Insurance only' OR $category=='All')
+                                @if($insurance_invoice_notifications_count==1)
+                                    <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
+                                        
+                                @elseif($insurance_invoice_notifications_count!=0)
 
-                                </div>
+                                    <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
+
+                                    
+
+                                @else
+                                @endif
+                            @endif
+                         </div>
 
 
                        {{--  @guest
