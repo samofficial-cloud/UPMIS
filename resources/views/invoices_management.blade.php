@@ -135,7 +135,7 @@
         </div>
 
         <div class="main_content">
-            <div class="container " style="max-width: 1308px;">
+            <div class="container " style="max-width: 100%;">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
     margin-bottom: -1px;
@@ -201,7 +201,7 @@
                         <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'electricity_invoices')"><strong>Electricity Bills</strong></button>
                     </div>
 
-                    <div id="space_invoices_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
+                    <div id="space_invoices_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; " class="tabcontent_inner">
                         <br>
                         <br>
 
@@ -935,11 +935,11 @@
                             </div>
 
                         @else
-                            <p>No records found</p>
+                            <p class="mt-4" style="text-align:center;">No records found</p>
                         @endif
                     </div>
 
-                    <div id="water_invoices" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%;">
+                    <div id="water_invoices" class="tabcontent_inner" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
                         <br>
                         <h5>Water bill Invoices</h5>
                         <br>
@@ -1767,11 +1767,11 @@
                             </div>
 
                         @else
-                            <p>No records found</p>
+                            <p class="mt-4" style="text-align:center;">No records found</p>
                         @endif
 
                     </div>
-                    <div id="electricity_invoices" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%;">
+                    <div id="electricity_invoices" class="tabcontent_inner" style="border-bottom-left-radius: 50px 20px;  border: 1px solid #ccc; padding: 1%;">
                         <br>
                         <h5 >Electricity bill Invoices</h5>
                         <br>
@@ -2583,7 +2583,7 @@
                             </div>
 
                         @else
-                            <p>No records found</p>
+                            <p class="mt-4" style="text-align:center;">No records found</p>
                         @endif
 
                     </div>
@@ -2591,7 +2591,7 @@
                 </div>
 
 
-                <div id="insurance_invoices" class="tabcontent">
+                <div id="insurance_invoices" class="tabcontent" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; ">
                     <br>
                     <h5>Insurance Invoices</h5>
                     <br>
@@ -2605,7 +2605,7 @@
                     @if($privileges=='Read only')
                     @else
 
-                        <div style="margin-bottom:3%;"><div style="float:left;"></div> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice_insurance" title="Add new insurance invoice" role="button" aria-pressed="true">Add New Invoice</a>  <div style="float:right;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_insurance" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>
+                        <div style="margin-bottom:3%;"><div style="float:left;"></div> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice_insurance" title="Add new insurance invoice" role="button" aria-pressed="true">Add new invoice</a> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice_insurance_clients" title="Add new insurance invoice" role="button" aria-pressed="true">Add new invoice(For clients)</a> <div style="float:right;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_insurance" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>
 
                             <div style="clear: both;"></div>
 
@@ -2816,6 +2816,176 @@
 
 
                     </div>
+
+
+
+
+                    <div class="modal fade" id="new_invoice_insurance_clients" role="dialog">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <b><h5 class="modal-title">Create New Insurance Invoice(For clients)</h5></b>
+
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <form method="post" action="{{ route('create_insurance_invoice_clients_manually')}}"  id="form1" >
+                                        {{csrf_field()}}
+
+
+
+                                        <div class="form-row">
+
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                    <input type="number" min="1" class="form-control" id="contract_id_insurance" name="contract_id" value=""  required autocomplete="off">
+                                                    <p style="display: none;" class="mt-2 p-1" id="insurance_contract_availability"></p>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div style="display: none;" id="debtor_name_insurance_clientsDiv" class="form-group col-md-12 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="debtor_name_insurance_clients" name="debtor_name" readonly value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            <div style="display: none;" id="invoicing_period_start_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                    <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+
+                                            <div style="display: none;" id="invoicing_period_end_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                    <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+                                            <div style="display: none;" id="period_insurance_clientsDiv" class="form-group col-md-12 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for="">Period <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+                                            <div style="display: none;" id="project_id_insurance_clientsDiv"  class="form-group col-md-12 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+
+
+                                            <div id="amount_insurance_clientsDiv" style="display: none;" class="form-group col-md-6 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for="">Amount <span style="color: red;">*</span></label>
+                                                    <input type="number" min="20" class="form-control" id="" name="amount_to_be_paid" value="" Required  autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+
+                                            <div id="currency_insurance_clientsDiv" style="display: none;" class="form-group col-md-6 mt-1">
+                                                <label>Currency <span style="color: red;">*</span></label>
+                                                <div  class="form-wrapper">
+                                                    <select id="" class="form-control" required name="currency">
+                                                        <option value="" ></option>
+                                                        <option value="TZS" >TZS</option>
+                                                        <option value="USD" >USD</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div id="status_insurance_clientsDiv" style="display: none;" class="form-group col-md-12 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Status <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="" name="status" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+                                            <div id="description_insurance_clientsDiv" style="display: none;" class="form-group col-md-12 mt-1">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Description <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="" name="description" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+                                        </div>
+
+
+
+
+
+
+
+                                        <div align="right">
+                                            <button id="submit_insurance" class="btn btn-primary" type="submit">Save</button>
+                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+
+
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
 
 
 
@@ -3244,12 +3414,12 @@
                         </div>
 
                     @else
-                        <p>No records found</p>
+                        <p class="mt-4" style="text-align:center;">No records found</p>
                     @endif
 
                 </div>
 
-                <div id="car_invoices" class="tabcontent">
+                <div id="car_invoices" class="tabcontent"  style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; " >
                     <br>
                     <h5>Car Rental Invoices</h5>
                     <br>
@@ -3971,7 +4141,7 @@
                         </div>
 
                     @else
-                        <p>No records found</p>
+                        <p class="mt-4" style="text-align:center;">No records found</p>
                     @endif
 
                 </div>
@@ -5372,6 +5542,76 @@
                 $('#contract_id_space').attr('style','border:1px solid #ced4da');
             }
         });
+
+
+
+
+
+        $('#contract_id_insurance').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('contract_availability_insurance') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+                            $('#contract_id_insurance').attr('style','border:1px solid #f00');
+                            $("#insurance_contract_availability").show();
+                            $("#insurance_contract_availability").css("color","red");
+                            $("#insurance_contract_availability").css("background-color","#ccd8e263");
+                            $("#insurance_contract_availability").html("Contract does not exist");
+                            $('#amount_insurance_clientsDiv').hide();
+                            $('#currency_insurance_clientsDiv').hide();
+                            $('#status_insurance_clientsDiv').hide();
+                            $('#description_insurance_clientsDiv').hide();
+                            $('#debtor_name_insurance_clientsDiv').hide();
+                            $('#invoicing_period_start_date_insurance_clientsDiv').hide();
+                            $('#invoicing_period_end_date_insurance_clientsDiv').hide();
+                            $('#period_insurance_clientsDiv').hide();
+                            $('#project_id_insurance_clientsDiv').hide();
+                            $('#submit_insurance').prop('disabled', true);
+
+                        }
+
+                        else{
+
+
+                            $("#insurance_contract_availability").html("");
+                            $("#insurance_contract_availability").hide();
+                            $('#contract_id_insurance').attr('style','border:1px solid #ced4da');
+                            $('#amount_insurance_clientsDiv').show();
+                            $('#currency_insurance_clientsDiv').show();
+                            $('#status_insurance_clientsDiv').show();
+                            $('#description_insurance_clientsDiv').show();
+                            $('#submit_insurance').prop('disabled', false);
+                            $('#debtor_name_insurance_clientsDiv').show();
+                            $('#invoicing_period_start_date_insurance_clientsDiv').show();
+                            $('#invoicing_period_end_date_insurance_clientsDiv').show();
+                            $('#period_insurance_clientsDiv').show();
+                            $('#project_id_insurance_clientsDiv').show();
+
+                            //for data
+
+                            $('#debtor_name_insurance_clients').val(data[0].full_name);
+
+
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#contract_id_insurance').attr('style','border:1px solid #ced4da');
+            }
+        });
+
+
 
 
 
