@@ -72,8 +72,8 @@ div.dt-buttons{
 
 @section('content')
 <div class="wrapper">
-{{--  <div id="coverScreen"  class="pageLoad">--}}
-{{--</div>--}}
+  <div id="coverScreen"  class="pageLoad">
+  </div>
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
@@ -89,20 +89,20 @@ div.dt-buttons{
             ?>
 
             @if($category=='All')
-           <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+           <li><a href="/"><i class="fas fa-home"></i>Home</a></li>
           @elseif($category=='Insurance only')
-          <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
+          <li><a href="{{ route('home2') }}"><i class="fas fa-home"></i>Home</a></li>
           @elseif($category=='Real Estate only')
-          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+          <li><a href="{{ route('home4') }}"><i class="fas fa-home"></i>Home</a></li>
            @endif
           @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+          <li><a href="{{ route('home3') }}"><i class="fas fa-home"></i>Home</a></li>
           @endif
           @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-          <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          <li><a href="{{ route('home5') }}"><i class="fas fa-home"></i>Home</a></li>
           @endif
           @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
-            <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+            <li><a href="{{ route('home5') }}"><i class="fas fa-home"></i>Home</a></li>
           @endif
 
             @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
@@ -114,7 +114,7 @@ div.dt-buttons{
 
             <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
     @endif
-            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li class="active_nav_item"><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
 <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
@@ -680,7 +680,7 @@ $i=1;
                             <tr>
 
                                 <td class="counterCell text-center"></td>
-                                <td><center>{{$var->full_name}}</center></td>
+                                <td>{{$var->full_name}}</td>
                                 <td><center>{{$var->insurance_class}}</center></td>
 
                                 <td><center>{{$var->principal}}</center></td>
@@ -1953,6 +1953,9 @@ $i=1;
 
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
 
+          @if($privileges=='Read only')
+            @else
+
           <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 
         <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
@@ -1990,6 +1993,7 @@ $i=1;
               </div>
             </div>
           </div>
+          @endif
         </center></td>
       </tr>
       @endforeach

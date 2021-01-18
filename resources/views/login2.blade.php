@@ -241,7 +241,7 @@ input#search:focus {
                             </div>
                         </div>
 
-					<div class="form-group row">
+					{{-- <div class="form-group row">
                             <div class="col-md-10 offset-md-2">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -251,7 +251,7 @@ input#search:focus {
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
 					 <div class="form-group">
                             <div>
