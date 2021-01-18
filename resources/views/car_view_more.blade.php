@@ -74,7 +74,8 @@ hr {
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             $year = date('Y');
-            $i=1;
+            $i=1;  
+            $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
             ?>
 
             @if($category=='All')
@@ -159,7 +160,9 @@ hr {
 			 <div class="card-body">
           <b><h3>Operational Expenditures</h3></b>
           <hr>
-          @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+          {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+          @if($privileges=='Read only')
+          @else
             <a title="Add Operational Expenditure" data-toggle="modal" data-target="#car_operational" class="btn btn-success btn-sm" style="
     padding: 10px;
     color: #fff;font-size: 16px;
@@ -291,8 +294,10 @@ hr {
       <th scope="col" style="color:#fff;"><center>Fuel Consumed (litres)</center></th>
       <th scope="col" style="color:#fff;"><center>Amount (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Total (TZS)</center></th>
-      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
+     {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+     @if($privileges=='Read only')
+      @else
+        <th scope="col" style="color:#fff;"><center>Action</center></th>
       @endif
     </tr>
   </thead>
@@ -308,7 +313,9 @@ hr {
         <td>{{$operational->fuel_consumed}}</td>
         <td style="text-align: right;">{{number_format($operational->amount)}}</td>
         <td style="text-align: right;">{{number_format($operational->total)}}</td>
-        @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+        @if($privileges=='Read only')
+        @else
         <td>
           <a title="Edit Operational Expenditure" data-toggle="modal" data-target="#editops{{$operational->id}}" role="button" aria-pressed="true" id="{{$operational->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
          <div class="modal fade" id="editops{{$operational->id}}" role="dialog">
@@ -436,7 +443,9 @@ hr {
 <div class="card-body">
 <h3>Bookings</h3>
 <hr>
-@if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+{{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+@if($privileges=='Read only')
+@else
 <a title="Book Vehicle" class="btn btn-success btn-sm" style="
     padding: 10px;
     color: #fff;font-size: 16px;

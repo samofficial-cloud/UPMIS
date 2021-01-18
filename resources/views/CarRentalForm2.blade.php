@@ -363,7 +363,7 @@ $today=date('Y-m-d');
 							<label for="centre_name">Cost Centre No.<span style="color: red;">*</span></label>
                             <span id="name2msg"></span>
                             <div id="myDropdown">
-                            <select type="text" id="centre_name" name="centre_name" class="form-control" required="" onkeyup="filterFunction()">
+                            <select type="text" id="centre_name" name="centre_name" class="form-control" required="">
 							<option value="" disabled selected hidden> </option>
                             @foreach($cost_centres as $cost_centre)
                             <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}-{{$cost_centre->costcentre}}</option>
@@ -515,6 +515,7 @@ $today=date('Y-m-d');
   }
 }
 </script>
+
 <script>
 function getvalidation(){
 
@@ -540,6 +541,7 @@ function getvalidation(){
         }
 }
 </script>
+
 <script type="text/javascript">
      $(document).ready(function(){
         $('#trip_nature').click(function(e){
@@ -586,21 +588,22 @@ function getvalidation(){
     
     $('#centre_name').click(function(e){
         $('#faculty_name').val("");
-    var query = $('#centre_name').val();
+            var query = $('#centre_name').val();
         //console.log(query);
         if(query!=''){
-       var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.faculty') }}",
-          method:"POST",
-          data:{query:query, _token:_token},
-          success:function(data){
-            $('#faculty_name').val(data);
-          }
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+            url:"{{ route('autocomplete.faculty') }}",
+            method:"POST",
+            data:{query:query, _token:_token},
+
+              success:function(data){
+                $('#faculty_name').val(data);
+              }
           });
 
-     }
-         });
+        }
+    });
 
     $('#first_name').keyup(function(){
         // $('#last_name').val('');
@@ -654,7 +657,7 @@ $(document).on('click', '#list', function(){
         //console.log(data);
         $('#first_name').val(data.first);
         $('#last_name').val(data.last);
-        $('#centre_name').val(data.centre);
+        $('#centre_name').val(data.centre).trigger('change');
         $('#faculty_name').val(data.dep);
         $('#email').val(data.email);
         $('#designation').val(data.designation);
@@ -668,10 +671,17 @@ $(document).on('click', '#list', function(){
      $('#nameList').fadeOut();
     });
 
-    $("#centre_name").change(function(){
-         var query = $(this).val();
-        $("#centre_name option:selected").text(query);
-    });
+    // $("#centre_name").change(function(){
+    //      var query = $(this).val();
+    //     $("#centre_name option:selected").text(query);
+    // });
+
+    $("#centre_name").select2({
+    placeholder: "Select Cost Centre",
+    theme: "bootstrap",
+    allowClear: true,
+  });
+
 });
 </script>
 @endsection

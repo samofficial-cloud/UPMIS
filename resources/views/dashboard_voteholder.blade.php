@@ -131,7 +131,7 @@
   ?>
     <br>
 
-    <div class="container">
+    <div class="container"  style="max-width: 100%;">
       <br>
        @if ($message = Session::get('errors'))
           <div class="alert alert-danger alert-dismissible">
@@ -286,7 +286,7 @@
                                                 </div>
                                             </div>
                                      </td>
-                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_to_be_paid)}}</td>
+                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
 
                                   </tr>

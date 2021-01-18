@@ -148,7 +148,7 @@
   ?>
     <br>
 
-    <div class="container" style="max-width: 1180px;">
+    <div class="container" style="max-width: 100%;">
       <br>
        @if ($message = Session::get('errors'))
           <div class="alert alert-danger alert-dismissible">
@@ -810,7 +810,7 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td>{{$var->currency_invoice}} {{$var->amount_to_be_paid}}</td>
+                                    <td>{{$var->currency_invoice}} {{$var->amount_not_paid}}</td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td>
                                       @if($var->email!="")
@@ -1171,7 +1171,7 @@
                                                 </div>
                                             </div>
                                       </td>
-                                    <td>{{$var->currency_invoice}} {{$var->cumulative_amount}}</td>
+                                    <td>{{$var->currency_invoice}} {{$var->amount_not_paid}}</td>
                                    {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td>
@@ -1534,7 +1534,7 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td>{{$var->currency_invoice}} {{$var->cumulative_amount}}</td>
+                                    <td>{{$var->currency_invoice}} {{$var->amount_not_paid}}</td>
                                    {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td>

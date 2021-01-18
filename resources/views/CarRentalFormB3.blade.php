@@ -551,10 +551,10 @@ $today=date('Y-m-d');
                                     {{-- <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
                                      <span id="nameList"></span> --}}
                                      <select id="vehicle_reg" name="vehicle_reg" class="form-control" required="">
-                                    <option value="" disabled selected hidden>Select Vehicle Reg No</option>
-                                    @foreach($data as $data)
-                                    <option value="{{$data->vehicle_reg_no}}">{{$data->vehicle_reg_no}} - {{$data->vehicle_model}}</option>
-                                    @endforeach
+                                        <option value="" disabled selected hidden>Select Vehicle Reg No</option>
+                                        @foreach($data as $data)
+                                        <option value="{{$data->vehicle_reg_no}}">{{$data->vehicle_reg_no}} - {{$data->vehicle_model}}</option>
+                                        @endforeach
                                      </select>
                                 </div>
                             </div>
@@ -587,10 +587,10 @@ $today=date('Y-m-d');
                                     {{-- <input type="text" id="vehicle_reg" name="vehicle_reg" class="form-control" autocomplete="off">
                                      <span id="nameList"></span> --}}
                                      <select id="vehicle_reg" name="vehicle_reg" class="form-control" required="">
-                                    <option value="" disabled selected hidden>Select Vehicle Reg No</option>
-                                    @foreach($data as $data)
-                                    <option value="{{$data->vehicle_reg_no}}">{{$data->vehicle_reg_no}} - {{$data->vehicle_model}}</option>
-                                    @endforeach
+                                        <option value="" disabled selected hidden>Select Vehicle Reg No</option>
+                                        @foreach($data as $data)
+                                            <option value="{{$data->vehicle_reg_no}}">{{$data->vehicle_reg_no}} - {{$data->vehicle_model}}</option>
+                                        @endforeach
                                      </select>
                                 </div>
                             </div>
@@ -699,6 +699,7 @@ $today=date('Y-m-d');
    $(document).on('click', 'form', function(){
      $('#nameList').fadeOut();
     });
+
    $('[name="head_cptu_approval_status"]').click(function(){
        var query=$(this).val();
        if(query=='Rejected'){
@@ -708,6 +709,14 @@ $today=date('Y-m-d');
         $('#cptu_reasondiv').hide();
        }
      });
+
+
+    $("#vehicle_reg").select2({
+        placeholder: "Select Vehicle",
+        theme: "bootstrap",
+        allowClear: true,
+    });
+
    });
 </script>
 @endsection

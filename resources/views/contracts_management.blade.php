@@ -661,7 +661,32 @@ $i=1;
     <tbody>
       @foreach($inbox as $inbox)
       <tr>
-        <td><center><a href="{{ route('carRentalFormE',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        @if($inbox->start_date< date('Y-m-d'))
+        <td>
+          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          </td>
+        @else
+          <td><center><a href="{{ route('carRentalFormE',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        @endif 
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -692,7 +717,35 @@ $i=1;
     <tbody>
       @foreach($outbox as $outbox)
       <tr>
-        <td><center>{{$outbox->id}}</center></td>
+        @if($outbox->start_date < date('Y-m-d'))
+          <td>
+             <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center>{{$outbox->id}}</center></a>
+
+        <div class="modal fade" id="delete{{$outbox->id}}" role="dialog">
+
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">Are you sure you want to delete this form?</p>
+                    <br>
+                  <div align="right">
+                    <a href="{{ route('deletecontract',$outbox->id) }}" class="btn btn-primary">Proceed</a>
+                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                  </div>
+
+               </div>
+              </div>
+            </div>
+          </div>
+          </td>
+        @else
+          <td><center>{{$outbox->id}}</center></td>
+        @endif
         <td><center>{{$outbox->form_initiator}}</center></td>
         <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
@@ -735,7 +788,46 @@ $i=1;
          <td><center>
           <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
 
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+         <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+        <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
+
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
+                    
+                    <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
+                        {{csrf_field()}}
+
+                          <div class="form-group">
+                              <div class="form-wrapper">
+                                  <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
+                                    <textarea required name="reason_for_termination" class="form-control"></textarea>
+
+                              </div>
+                          </div>
+                            <br>
+
+                            <div align="right">
+                              <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                            </div>
+
+                    </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </center></td>
       </tr>
       @endforeach
     </tbody>
@@ -783,7 +875,7 @@ $i=1;
   @endif
 </div>
 @elseif(Auth::user()->role=='Vote Holder')
-  <div class="tab2">
+      <div class="tab2">
             <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button>
@@ -804,7 +896,32 @@ $i=1;
     <tbody>
       @foreach($inbox as $inbox)
       <tr>
-        <td><center><a href="{{ route('carRentalFormB',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+         @if($inbox->start_date< date('Y-m-d'))
+        <td>
+          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          </td>
+        @else
+           <td><center><a href="{{ route('carRentalFormB',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        @endif 
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -946,7 +1063,33 @@ $i=1;
     <tbody>
       @foreach($inbox as $inbox)
       <tr>
-        <td><center><a href="{{ route('carRentalFormC',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+          @if($inbox->start_date< date('Y-m-d'))
+        <td>
+          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          </td>
+        @else
+            <td><center><a href="{{ route('carRentalFormC',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        @endif 
+       
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1090,7 +1233,34 @@ $i=1;
     <tbody>
       @foreach($inbox as $inbox)
       <tr>
-        <td><center><a href="{{ route('carRentalFormD',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        @if($inbox->start_date< date('Y-m-d'))
+          <td>
+          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          </td>
+
+        @else
+          <td><center><a href="{{ route('carRentalFormD',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        @endif
+        
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1121,7 +1291,35 @@ $i=1;
     <tbody>
       @foreach($outbox as $outbox)
       <tr>
-        <td><center>{{$outbox->id}}</center></td>
+         @if($outbox->start_date < date('Y-m-d'))
+          <td>
+             <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center>{{$outbox->id}}</center></a>
+
+        <div class="modal fade" id="delete{{$outbox->id}}" role="dialog">
+
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">Are you sure you want to delete this form?</p>
+                    <br>
+                  <div align="right">
+                    <a href="{{ route('deletecontract',$outbox->id) }}" class="btn btn-primary">Proceed</a>
+                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                  </div>
+
+               </div>
+              </div>
+            </div>
+          </div>
+          </td>
+        @else
+          <td><center>{{$outbox->id}}</center></td>
+        @endif
         <td><center>{{$outbox->form_initiator}}</center></td>
         <td><center>{{$outbox->fullName}}</center></td>
         <td><center>{{$outbox->faculty}}</center></td>
@@ -1162,7 +1360,47 @@ $i=1;
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+
+          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+          <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+        <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
+
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
+                    
+                    <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
+                        {{csrf_field()}}
+
+                          <div class="form-group">
+                              <div class="form-wrapper">
+                                  <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
+                                    <textarea required name="reason_for_termination" class="form-control"></textarea>
+
+                              </div>
+                          </div>
+                            <br>
+
+                            <div align="right">
+                              <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                            </div>
+
+                    </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1214,7 +1452,7 @@ $i=1;
             <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Inactive Contract</strong></button>
-        </div>
+    </div>
 <div id="inbox" class="tabcontent">
   <br>
   @if(count($inbox)>0)
@@ -1230,7 +1468,32 @@ $i=1;
     <tbody>
       @foreach($inbox as $inbox)
       <tr>
-        <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+      @if($inbox->start_date< date('Y-m-d'))
+        <td>
+          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          </td>
+        @else
+           <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+        @endif 
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1356,10 +1619,11 @@ $i=1;
   </div>
   <div id="active" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
     <br>
-    @if(Auth::user()->role=='System Administrator')
- <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
-  </a>
+    @if($privileges=='Read only')
+    @else
+      <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
+        padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+      </a>
   @endif
    <h4 style="text-align: center"><strong>Active Car Rental Contracts</strong></h4>
    <hr>
@@ -1373,7 +1637,7 @@ $i=1;
       <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
       <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
+      <th scope="col" style="color:#fff;  width: 8%"><center>Action</center></th>
     </thead>
     <tbody>
       @foreach($closed_act as $closed)
@@ -1387,7 +1651,47 @@ $i=1;
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
           <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+
+          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+          <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+        <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
+
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+                   <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
+                    
+                    <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
+                        {{csrf_field()}}
+
+                          <div class="form-group">
+                              <div class="form-wrapper">
+                                  <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
+                                    <textarea required name="reason_for_termination" class="form-control"></textarea>
+
+                              </div>
+                          </div>
+                            <br>
+
+                            <div align="right">
+                              <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                            </div>
+
+                    </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1399,10 +1703,11 @@ $i=1;
   </div>
   <div id="inactive" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
     <br>
-    @if(Auth::user()->role=='System Administrator')
- <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
-  </a>
+     @if($privileges=='Read only')
+    @else
+       <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
+          padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+        </a>
   @endif
    <h4 style="text-align: center"><strong>Inactive Car Rental Contracts</strong></h4>
    <hr>
@@ -1431,6 +1736,7 @@ $i=1;
          <td><center>
           <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
           <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+
       </tr>
       @endforeach
     </tbody>
@@ -1502,8 +1808,9 @@ $i=1;
 
 <script type="text/javascript">
   $(window).on('load', function () {
-$("#coverScreen").hide();
-});
+    $("#coverScreen").hide();
+  });
+
     window.onload=function(){
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');

@@ -367,6 +367,7 @@ class InvoicesController extends Controller
          if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
             $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->orderBy('car_rental_invoices.invoice_number','desc')->get();
          }
+         
          else{
            $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get();
          }

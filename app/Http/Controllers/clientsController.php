@@ -241,6 +241,69 @@ class clientsController extends Controller
              return redirect()->back()->with('success', 'Details Edited Successfully');
     }
 
+    public function ajaxclient_names(Request $request){
+       
+      $query = $request->get('query');
+      $queryy= $request->get('queryy');
+
+      if($queryy=='Space'){
+        if($query== ''){
+          $data = space_contract::select('full_name')->distinct()->orderBy('full_name','asc')->limit(10)->get();
+        }
+        else{
+         $data = space_contract::select('full_name')->where('full_name', 'LIKE', "%{$query}%")->distinct()->orderBy('full_name','asc')->limit(10)->get(); 
+        }
+        
+      }
+
+      elseif ($queryy=='Insurance') {
+        if($query== ''){
+          $data = insurance_contract::select('full_name')->distinct()->orderBy('full_name','asc')->limit(10)->get();
+        }
+        else{
+          $data = insurance_contract::select('full_name')->where('full_name', 'LIKE', "%{$query}%")->distinct()->orderBy('full_name','asc')->limit(10)->get();
+        }
+       
+      }
+
+      elseif($queryy=='Car Rental'){
+        if($query== ''){
+          $data = carContract::select('fullName')->where('form_completion','1')->distinct()->orderBy('fullName','asc')->limit(10)->get();
+        }
+        else{
+          $data = carContract::select('fullName')->where('form_completion','1')->where('fullName', 'LIKE', "%{$query}%")->distinct()->orderBy('fullName','asc')->limit(10)->get();
+        }
+    
+      }
+
+     
+    if($queryy=='Car Rental'){
+
+         $response = array();
+
+      foreach($data as $client){
+         $response[] = array(
+            "id"=>$client->fullName,
+            "text"=>$client->fullName
+         );
+      }
+    }
+
+    else{
+      $response = array();
+      foreach($data as $client){
+         $response[] = array(
+              "id"=>$client->full_name,
+              "text"=>$client->full_name
+         );
+      }
+    }
+     
+
+      echo json_encode($response);
+      exit;
+    }
+
     public function fetchclient_name(Request $request){
      if($request->get('query')){
       $query = $request->get('query');

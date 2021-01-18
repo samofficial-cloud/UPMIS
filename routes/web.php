@@ -182,6 +182,8 @@ Route::get('/contracts/car_rental/view_more/{id}', 'carContractsController@viewm
 
 Route::get('/contracts/car_rental/renew/{id}','carContractsController@renewContractForm')->name('RenewcarRentalForm');
 
+Route::get('/contracts/car_rental/terminate/{id}','carContractsController@terminateContract')->name('terminateCarRental');
+
 Route::post('/autocomplete/vehicle', 'carRentalController@fetch')->name('autocomplete.fetch');
 
 Route::post('/autocomplete2/vehicle', 'carRentalController@fetchs2')->name('autocomplete2.fetch');
@@ -203,6 +205,8 @@ Route::post('/autocomplete/cost_centres', 'carRentalController@fetchcostcentres'
 
 
 Route::post('/autocomplete/client_name', 'clientsController@fetchclient_name')->name('autocomplete.client_name');
+
+Route::post('/autocomplete/client_name/ajax', 'clientsController@ajaxclient_names')->name('ajax.client_names');
 
 Route::post('/autocomplete/cptu', 'carContractsController@fetchclient_details')->name('autocomplete.cptu');
 

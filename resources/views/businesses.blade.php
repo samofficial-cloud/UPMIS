@@ -1268,7 +1268,9 @@
                             <center><h3><strong>Vehicle Fleet</strong></h3></center>
                             <hr>
                             <br>
-                            @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                            @if($privileges=='Read only')
+                            @else
                                 <a title="Add a Vehicle" data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -1362,7 +1364,9 @@
                                         <td><center>{{ number_format($cars->hire_rate)}}</center></td>
                                         <td><center>
                                                 <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-                                                @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+                                               {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                               @if($privileges=='Read only')
+                                                @else
                                                     <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                                                     <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
 
@@ -1461,7 +1465,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @endif</center>
+                                                @endif
+                                            </center>
                                         </td>
 
 
@@ -1479,7 +1484,9 @@
                             <br>
                             <center><h3><strong>Hire Rates</strong></h3></center>
                             <hr>
-                            @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                            @if($privileges=='Read only')
+                                @else
                                 <a data-toggle="modal" data-target="#hiree" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -1532,7 +1539,9 @@
                                         <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
                                         <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
                                         <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                        @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+                                        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                        @if($privileges=='Read only')
+                                        @else
                                             <th scope="col" style="color:#fff;"><center>Action</center></th>
                                         @endif
                                     </tr>
@@ -1543,7 +1552,9 @@
                                             <th scope="row" class="counterCell text-center">.</th>
                                             <td>{{$rate->vehicle_model}}</td>
                                             <td><center>{{number_format($rate->hire_rate)}}</center></td>
-                                            @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+                                           {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                           @if($privileges=='Read only')
+                                            @else
                                                 <td><center>
                                                         <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;cursor: pointer;"></i></a>
                                                         <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
@@ -1656,7 +1667,9 @@
                             <br>
                             <center><h3><strong>Cost Centres</strong></h3></center>
                             <hr>
-                            @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                            @if($privileges=='Read only')
+                            @else
                                 <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -1707,7 +1720,9 @@
                                         <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
                                         <th scope="col" style="color:#fff;"><center>Cost Centre Id</center></th>
                                         <th scope="col" style="color:#fff;"><center>Cost Centre Name</center></th>
-                                        @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+                                        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                        @if($privileges=='Read only')
+                                        @else
                                             <th scope="col" style="color:#fff;"><center>Action</center></th>
                                         @endif
                                     </tr>
@@ -1718,7 +1733,9 @@
                                             <td><center>{{$k}}.</center></td>
                                             <td><center>{{$var->costcentre_id}}</center></td>
                                             <td>{{$var->costcentre}}</td>
-                                            @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+                                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                            @if($privileges=='Read only')
+                                            @else
                                                 <td><center>
                                                         <a title="Edit this Cost Centre Details" data-toggle="modal" data-target="#centre{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                                                         <div class="modal fade" id="centre{{$var->id}}" role="dialog">

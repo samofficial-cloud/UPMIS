@@ -486,7 +486,12 @@ class ChartController extends Controller
             "backgroundColor"=>'#38c172'
         ]);
 
-        $invoices=DB::table('car_rental_invoices')->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(invoice_date,CURDATE()) < 30')->orderBy('invoice_date','asc')->get();
+    $invoices=DB::table('car_rental_invoices')
+            ->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')
+            ->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
+            ->where('payment_status','!=','Paid')
+            ->whereRaw('DATEDIFF(invoice_date,CURDATE()) < 30')
+            ->orderBy('invoice_date','asc')->get();
 
         return view('dashboard_cptu',compact('chart','chart2','invoices'));
     }
@@ -614,10 +619,35 @@ class ChartController extends Controller
         // $contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->whereRaw('DATEDIFF(end_date,CURDATE()) < 15')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
         $contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->whereRaw('DATEDIFF(end_date,CURDATE()) < 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
 
-        $invoices=DB::table('invoices')->join('clients','clients.full_name','=','invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+        $invoices = DB::table('invoices')
+            ->join('clients','clients.full_name','=','invoices.debtor_name')
+            ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+            ->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')
+            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+            ->where('payment_status','Not Paid')
+            ->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')
+            ->orderBy('invoice_date','asc')
+            ->get();
 
-        $electric_invoices=DB::table('electricity_bill_invoices')->join('clients','clients.full_name','=','electricity_bill_invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
-        $water_invoices=DB::table('water_bill_invoices')->join('clients','clients.full_name','=','water_bill_invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('payment_status','Not Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+        $electric_invoices = DB::table('electricity_bill_invoices')
+            ->join('clients','clients.full_name','=','electricity_bill_invoices.debtor_name')
+            ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
+            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+            ->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')
+            ->where('payment_status','Not Paid')
+            ->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')
+            ->orderBy('invoice_date','asc')
+            ->get();
+
+        $water_invoices = DB::table('water_bill_invoices')
+            ->join('clients','clients.full_name','=','water_bill_invoices.debtor_name')
+            ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
+            ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+            ->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')
+            ->where('payment_status','Not Paid')
+            ->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')
+            ->orderBy('invoice_date','asc')
+            ->get();
 
 
         return view('dashboard_space',compact('chart','chart1','contracts','invoices','electric_invoices','water_invoices'));
@@ -765,8 +795,9 @@ class ChartController extends Controller
 
         $unpaid=DB::table('car_rental_invoices')
         ->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')
-        ->where('payment_status','Not Paid')
-         ->where('cost_centre',$centre)
+        ->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
+        ->where('payment_status','!=','Paid')
+        ->where('cost_centre',$centre)
         ->get();
 
         return view('dashboard_voteholder',compact('chart','chart2','unpaid','centre','centre_name'));
