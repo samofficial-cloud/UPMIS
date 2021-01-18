@@ -60,79 +60,68 @@
 
 @section('content')
     <div class="wrapper">
+         <div id="coverScreen"  class="pageLoad"></div>
+
         <div class="sidebar">
-            <ul style="list-style-type:none;">
-                <?php
-
-                $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
-                ?>
-
-                <?php
+        <ul style="list-style-type:none;">
 
 
+            <?php
 
-                $today=date('Y-m-d');
+            $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+            $today=date('Y-m-d');
 
                 $date=date_create($today);
 
                 date_sub($date,date_interval_create_from_date_string("366 days"));
+            ?>
 
 
 
-                ?>
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
 
+            @if($category=='All')
+           <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Insurance only')
+          <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Real Estate only')
+          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+           @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
+            <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
 
-                <?php
-                $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
-                ?>
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-                @if($category=='All')
-                    <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
-                @elseif($category=='Insurance only')
-                    <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @elseif($category=='Real Estate only')
-                    <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @endif
-                @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-                    <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @endif
-                @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-                    <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @endif
-                @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
-                    <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @endif
-
-                @if($category=='Real Estate only' OR $category=='All')
-                    <li><a href="/Space"><i class="fas fa-building"></i>Space</a></li>
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
                 @else
                 @endif
+    @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-                @if($category=='Insurance only' OR $category=='All')
-                    <li><a href="/insurance"><i class="fas fa-address-card"></i>Insurance</a></li>
-                @else
-                @endif
-                @if(($category=='CPTU only' OR $category=='All') && (Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-                    <li><a href="/car"><i class="fas fa-car-side"></i>Car Rental</a></li>
-                @else
-                @endif
-                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
+    @endif
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li class="active_nav_item"><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-                    <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-                @endif
-                <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
-                <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+ @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+            <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+  @endif
+@admin
+            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
+    </div>
 
-                <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
-                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-                    <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-                @endif
-                @admin
-                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
-                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-                @endadmin
-            </ul>
-        </div>
 
         <div class="main_content">
             <div class="container " style="max-width: 100%;">
@@ -4445,6 +4434,10 @@
             document.querySelector('.defaultInvoice').click();
 
         };
+
+         $(window).on('load', function () {
+         $("#coverScreen").hide();
+        });
     </script>
 
 

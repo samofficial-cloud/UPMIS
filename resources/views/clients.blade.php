@@ -162,9 +162,9 @@ hr {
      @endif
     </div>
 
-  <div id="space" class="tabcontent">
+  <div id="space" class="tabcontent" style="padding-top: 10px;">
  
-  <div class="tab2"  style="border-top-right-radius: 50px 20px;" >
+  <div class="tab2">
             <button class="tablinks2" onclick="openSpace(event, 'sp_current')" id="defaultOpen2"><strong>Active</strong></button>
             <button class="tablinks2" onclick="openSpace(event, 'Sp_previous')"><strong>Inactive</strong></button>
   </div>
@@ -736,14 +736,14 @@ hr {
 </div>
 </div>
 
-<div id="car" class="tabcontent">
-  <br>
+<div id="car" class="tabcontent" style="padding-top: 10px;">
+ 
      <div class="tab2">
             <button class="cptulink" onclick="opencptu(event, 'cptu_active')" id="defaultOpencptu"><strong>Active</strong></button>
             <button class="cptulink" onclick="opencptu(event, 'cptu_inactive')"><strong>Inactive</strong></button>
     </div>
      <div id="cptu_active" class="cptucontent">
-    <br>
+   
     {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
     @if($privileges=='Read only')
     @else
@@ -1302,15 +1302,13 @@ hr {
   </div>
 </div>
 
-<div id="insurance" class="tabcontent" >
-  <br>
+<div id="insurance" class="tabcontent" style="padding-top: 10px;">
   <div class="tab2">
             <button class="udialink" onclick="openInsurance(event, 'udia_current')" id="defaultOpenIns"><strong>Active</strong></button>
             <button class="udialink" onclick="openInsurance(event, 'udia_previous')"><strong>Inactive</strong></button>
   </div>
 
   <div id="udia_current" class="udiacontent" >
-  <br>
   {{-- @if(Auth::user()->role=='Insurance Officer' OR Auth::user()->role=='System Administrator') --}}
   @if($privileges=='Read only')
   @else

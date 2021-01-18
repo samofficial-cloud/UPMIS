@@ -62,6 +62,7 @@
 
 @section('content')
     <div class="wrapper">
+        <div id="coverScreen"  class="pageLoad"></div>
          <?php
 
 
@@ -119,7 +120,7 @@
             <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
             <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+<li class="active_nav_item"><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
  @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
             <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
   @endif
@@ -1830,6 +1831,10 @@
             document.querySelector('.defaultPayment').click();
 
         };
+
+        $(window).on('load', function () {
+         $("#coverScreen").hide();
+        });
     </script>
 
 

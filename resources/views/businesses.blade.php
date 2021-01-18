@@ -64,7 +64,7 @@
 
 @section('content')
     <div class="wrapper">
-{{--        <div id="coverScreen"  class="pageLoad"></div>--}}
+        <div id="coverScreen"  class="pageLoad"></div>
         <div class="sidebar">
             <ul style="list-style-type:none;">
 
@@ -899,7 +899,7 @@
                                                         <div  id=""  class="form-group row">
 
                                                             <div class="col-12 inline_block form-wrapper">
-                                                                <label  for="commission_percentage" class=" col-form-label"><Strong>Commission percentage (%)<strong><span style="color: red;"> *</span></strong></label>
+                                                                <label  for="commission_percentage" class=" col-form-label"><strong>Commission percentage (%)</strong><strong><span style="color: red;"> *</span></strong></label>
                                                                 <div class="">
                                                                     <input type="number" min="1"  step="0.01" class="form-control"  name="commission_percentage" required value=""  id="commission_percentage" autocomplete="off">
                                                                 </div>
@@ -1689,9 +1689,10 @@
 @section('pagescript')
 
     <script type="text/javascript">
-        //  $(window).on('load', function () {
-        //     $("#coverScreen").hide();
-        // });
+        $(window).on('load', function () {
+         $("#coverScreen").hide();
+        });
+
         window.onload=function(){
             $("#getMajor").trigger('change');
         };
