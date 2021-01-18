@@ -175,7 +175,7 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotifications">
                             @if($space_invoice_notifications_count==1 AND ($category=='Real Estate only' OR $category=='All'))
 
-                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoices to review</a>
+                                <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$space_invoice_notifications_count}} space invoice to review</a>
 
                                 <?php $i=$i+1; ?>
 

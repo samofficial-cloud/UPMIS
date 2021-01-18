@@ -58,6 +58,14 @@
                 <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             ?>
+
+
+                <?php
+
+                $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+                ?>
+
+
             <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
                     @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))

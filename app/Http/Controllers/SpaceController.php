@@ -105,7 +105,7 @@ class SpaceController extends Controller
 
 
 
-        return redirect('/Space')
+        return redirect('/businesses')
             ->with('success', 'New Renting space added successfully');
     }
 
@@ -213,7 +213,7 @@ class SpaceController extends Controller
 
         }
 
-        return redirect('/Space')
+        return redirect('/businesses')
             ->with('success', 'Renting space details edited successfully');
     }
 
@@ -225,7 +225,7 @@ class SpaceController extends Controller
             ->update(['status' => 0]);
 
 
-        return redirect('/Space')
+        return redirect('/businesses')
             ->with('success', 'Renting space deactivated successfully');
     }
 

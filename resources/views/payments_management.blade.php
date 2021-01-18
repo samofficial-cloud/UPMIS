@@ -132,7 +132,7 @@
 
 
         <div class="main_content">
-            <div class="container " style="max-width: 1308px;">
+            <div class="container " style="max-width: 100%;">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
     margin-bottom: -1px;
@@ -193,7 +193,7 @@
                         <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
                     </div>
 
-                <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
+                <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; " class="tabcontent_inner">
                     <br>
 
                     @if($privileges=='Read only')
@@ -493,11 +493,11 @@
                     </div>
 
                     @else
-                        <p>No records found</p>
+                        <p class="mt-4" style="text-align:center;">No records found</p>
                     @endif
                 </div>
 
-                <div id="water_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%;">
+                <div id="water_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; ">
                     <br>
                     <h5>Water Bill Payments</h5>
                     <br>
@@ -657,7 +657,6 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
-
                                 <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
@@ -814,13 +813,13 @@
                     </div>
 
                     @else
-                        <p>No records found</p>
+                        <p class="mt-4" style="text-align:center;">No records found</p>
                     @endif
 
                 </div>
 
 
-                <div id="electricity_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%;">
+                <div id="electricity_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; ">
                     <br>
                     <h5>Electricity Bill Payments</h5>
                     <br>
@@ -858,7 +857,7 @@
 
                                             <div class="form-group col-md-6">
                                                 <div class="form-wrapper">
-                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
+                                                    <label for="">Votebook Invoice Number <span style="color: red;">*</span></label>
                                                     <input type="number" min="1" class="form-control" id="votebook_electricity" name="invoice_number_votebook" value="" Required autocomplete="off">
                                                 </div>
                                             </div>
@@ -1141,7 +1140,7 @@
                     </div>
 
                     @else
-                        <p>No records found</p>
+                        <p class="mt-4" style="text-align:center;">No records found</p>
                     @endif
 
                 </div>
@@ -1150,7 +1149,7 @@
 
 
 
-                <div id="car_rental_payments" class="tabcontent">
+                <div id="car_rental_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "  class="tabcontent">
                     <br>
                     <h5>Car Rental Payments</h5>
                     <br>
@@ -1293,7 +1292,7 @@
               To
             </div>
 
-            <div >
+            <div>
            <input type="date" id="end_date2" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
             <span id="end_msg2"></span>
             </div>
@@ -1449,13 +1448,13 @@
 
                     @else
                     <br><br>
-                        <p>No records found</p>
+                        <p class="mt-4" style="text-align:center;">No records found</p>
                     @endif
 
                 </div>
 
 
-                <div id="insurance_payments" class="tabcontent">
+                <div id="insurance_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "   class="tabcontent">
                     <br>
                     <h5>Insurance Payments</h5>
                     <br>
@@ -1483,7 +1482,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <div class="form-wrapper">
-                                                    <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                    <label for="">Invoice Number <span style="color: red;">*</span></label>
                                                     <input type="number" min="1" class="form-control" id="invoice_number_insurance" name="invoice_number" value="" Required autocomplete="off">
                                                     <p id="invoice_availability_insurance" ></p>
                                                 </div>
@@ -1751,7 +1750,7 @@
                     </div>
 
                     @else
-                        <p>No records found</p>
+                        <p class="mt-4" style="text-align:center;">No records found</p>
                     @endif
 
                 </div>

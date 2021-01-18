@@ -467,11 +467,12 @@
                                                         {{--                        <div class="form-wrapper col-6">--}}
                                                         {{--                            <label for="amount">Premium <span style="color: red;"> *</span></label>--}}
                                                         {{--                        </div>--}}
-                                                        <div id="premiumDiv" class="form-wrapper col-12" style="display: none;">
-                                                            <label for="amount">Premium </label>
+                                                        <div id="premiumDiv" class="form-wrapper col-12">
+                                                            <label for="amount">Premium</label>
                                                             <span id="premium_msg"></span>
-                                                            <input type="number" min="0" id="premium" readonly name="premium" class="form-control" >
+                                                            <input type="number" min="20" id="premium" name="premium" class="form-control" autocomplete="off">
                                                         </div>
+
 
                                                         <div id="mode_of_paymentDiv" class="form-wrapper col-12" style="display: none;">
                                                             <label for="mode_of_payment">Mode of payment <span style="color: red;"> *</span></label>
@@ -526,33 +527,37 @@
 
                                                     <div class="form-group row">
 
-                                                        {{--                                        <div class="form-wrapper col-6">--}}
-                                                        {{--                                            <label for="amount">Commission(%) <span style="color: red;"> *</span></label>--}}
-                                                        {{--                                        </div>--}}
-                                                        <input type="hidden" min="1"  step="0.01" class="form-control"  readonly name="commission_percentage"  value=""  id="commission_percentage" autocomplete="off">
+                                                                                                <div class="form-wrapper col-6">
+                                                                                                    <label for="amount">Commission(%) <span style="color: red;"> *</span></label>
+                                                                                                    <input type="text"  class="form-control"  readonly name="commission_percentage"  value=""  id="commission_percentage" autocomplete="off">
+                                                                                                </div>
 
-                                                        {{--                                        <div class="form-wrapper col-6">--}}
-                                                        {{--                                            <label for="amount">Commission <span style="color: red;"> *</span></label>--}}
-                                                        {{--                                        </div>--}}
-                                                        <input type="hidden" min="10" step="0.01" id="commission" readonly class="form-control" name="commission" value=""  autocomplete="off">
+                                                                                                <div class="form-wrapper col-6">
+                                                                                                    <label for="amount">Commission <span style="color: red;"> *</span></label>
+                                                                                                    <input type="text"  id="commission" readonly class="form-control" name="commission" value="" autocomplete="off">
+                                                                                                </div>
 
 
                                                         <div class="form-wrapper col-12">
                                                             <label for="currency">Currency <span style="color: red;"> *</span></label>
                                                             <span id="currency_msg"></span>
-
-                                                            <input type="text" id="currency" class="form-control" readonly required name="currency">
+                                                            <select id="currency" class="form-control" name="currency">
+                                                                <option value=""></option>
+                                                                <option value="TZS" >TZS</option>
+                                                                <option value="USD" >USD</option>
+                                                            </select>
                                                         </div>
+
 
                                                         @if($var->vehicle_registration_no=='N/A')
                                                         @else
-                                                        <div id="cover_noteDiv"  class="form-wrapper col-6">
+                                                        <div id="cover_noteDiv"  class="form-wrapper col-6 pt-4">
                                                             <label for="amount">Cover note<span style="color: red;"> *</span></label>
                                                             <span id="cover_note_msg"></span>
                                                             <input type="text" id="cover_note" name="cover_note" class="form-control">
                                                         </div>
 
-                                                        <div id="sticker_noDiv"  class="form-wrapper col-6">
+                                                        <div id="sticker_noDiv"  class="form-wrapper col-6 pt-4">
                                                             <label for="amount">Sticker number <span style="color: red;"> *</span></label>
                                                             <span id="sticker_no_msg"></span>
                                                             <input type="text" id="sticker_no" name="sticker_no" class="form-control">
@@ -1093,7 +1098,7 @@
 
         var current_fs, next_fs, previous_fs; //fieldsets
         var opacity;
-        var p1, p2,p3,p4,p5,p6,p7,p8;
+        var p1, p2,p3,p4,p5,p6,p7,p8,p9,p10;
         var temp;
 
         function properNext(){
@@ -1278,10 +1283,9 @@
                                 success: function (data) {
                                     if(data!=""){
                                         gonext();
-                                        document.getElementById("premium").value=data[0].price;
+
                                         document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                        document.getElementById("commission").value=data[0].commission;
-                                        document.getElementById("currency").value=data[0].insurance_currency;
+
                                         document.getElementById("availability_status").innerHTML ='';
 
                                     }else{
@@ -1312,10 +1316,9 @@
 
                                     if(data!=""){
                                         gonext();
-                                        document.getElementById("premium").value=data[0].price;
+
                                         document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                        document.getElementById("commission").value=data[0].commission;
-                                        document.getElementById("currency").value=data[0].insurance_currency;
+
                                         document.getElementById("availability_status").innerHTML ='';
 
                                     }else{
@@ -1373,10 +1376,9 @@
                                 success: function (data) {
                                     if(data!=""){
                                         gonext();
-                                        document.getElementById("premium").value=data[0].price;
+
                                         document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                        document.getElementById("commission").value=data[0].commission;
-                                        document.getElementById("currency").value=data[0].insurance_currency;
+
                                         document.getElementById("availability_status").innerHTML ='';
 
                                     }else{
@@ -1407,10 +1409,9 @@
 
                                     if(data!=""){
                                         gonext();
-                                        document.getElementById("premium").value=data[0].price;
+
                                         document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                        document.getElementById("commission").value=data[0].commission;
-                                        document.getElementById("currency").value=data[0].insurance_currency;
+
                                         document.getElementById("availability_status").innerHTML ='';
 
                                     }else{
@@ -1608,6 +1609,42 @@
 
 
 
+                if(currency==""){
+                    p9=0;
+                    $('#currency_msg').show();
+                    var message=document.getElementById('currency_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#currency').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p9=1;
+                    $('#currency_msg').hide();
+                    $('#currency').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(premium==""){
+                    p10=0;
+                    $('#premium_msg').show();
+                    var message=document.getElementById('premium_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#premium').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p10=1;
+                    $('#premium_msg').hide();
+                    $('#premium').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
                 const dateObj = new Date(commission_date);
@@ -1764,7 +1801,7 @@
 
                     if(insurance_type=='COMPREHENSIVE'){
 
-                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1') {
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1') {
 
                             gonext();
 
@@ -1780,7 +1817,7 @@
 
                     else{
 
-                        if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' ) {
+                        if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1'  & p9=='1'  & p10=='1') {
 
                             gonext();
 
@@ -1798,7 +1835,7 @@
 
                 }else{
 
-                    if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' ) {
+                    if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' & p9=='1'  & p10=='1') {
 
                         gonext();
 
@@ -1905,6 +1942,29 @@
 
         });
     </script>
+
+
+
+    <script>
+
+        $('#premium').on('input',function(e){
+            e.preventDefault();
+
+            var premium=$('#premium').val();
+
+            var commission_percentage=$('#commission_percentage').val();
+
+            var commission= Math.round(((commission_percentage/100*premium) + Number.EPSILON) * 100) / 100;
+
+            $('#commission').val(commission);
+
+
+        });
+
+    </script>
+
+
+
 
     <script type="text/javascript">
         $(document).ready(function() {

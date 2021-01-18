@@ -34,6 +34,8 @@ class InsuranceController extends Controller
     public function addinsurance(Request $request)
     {
 
+
+
         if(DB::table('insurance')->where('class',$request->get('class'))->where('insurance_company',$request->get('insurance_company'))->where('insurance_type',$request->get('insurance_type'))->exists()){
 
             return redirect()->back()->with("error","Insurance package already exists. Please try again ");
@@ -41,33 +43,9 @@ class InsuranceController extends Controller
         }
 
 
-        if ($request->get('price')<=$request->get('commission')) {
-
-            return redirect()->back()->with("error","Commission cannot be greater than price. Please try again");
-        }
-
-$number_of_installments="";
-$first_installment="";
-$second_installment="";
-$billing="";
-
-
-        if($request->get('billing')=='Multiple billing'){
-
-            $number_of_installments=$request->get('number_of_installments');
-            $first_installment=$request->get('first_installment');
-            $second_installment=$request->get('second_installment');
-            $billing=$request->get('billing');
-
-        }else{
-
-            $billing='N/A';
-
-        }
-
 
         DB::table('insurance')->insert(
-            ['class' => $request->get('class'),'insurance_company' => $request->get('insurance_company'),'insurance_type' => $request->get('insurance_type'), 'price' => $request->get('price'), 'commission' => $request->get('commission'),'commission_percentage'=>$request->get('commission_percentage'),'insurance_currency' => $request->get('insurance_currency'),'billing' => $billing,'number_of_installments' => $number_of_installments,'first_installment' => $first_installment,'second_installment' => $second_installment]
+            ['class' => $request->get('class'),'insurance_company' => $request->get('insurance_company'),'insurance_type' => $request->get('insurance_type'),'commission_percentage'=>$request->get('commission_percentage')]
         );
 
 
@@ -78,10 +56,7 @@ $billing="";
     public function editInsurance(Request $request,$id)
     {
 
-        if ($request->get('price')<=$request->get('commission')) {
 
-            return redirect()->back()->with("error","Commission cannot be greater than price. Please try again");
-        }
 
         DB::table('insurance')
             ->where('id', $id)
@@ -99,31 +74,13 @@ $billing="";
 
         DB::table('insurance')
             ->where('id', $id)
-            ->update(['price' => $request->get('price')]);
-
-
-
-        DB::table('insurance')
-            ->where('id', $id)
-            ->update(['commission' => $request->get('commission')]);
-
-        DB::table('insurance')
-            ->where('id', $id)
             ->update(['commission_percentage' => $request->get('commission_percentage')]);
-
-        DB::table('insurance')
-            ->where('id', $id)
-            ->update(['insurance_currency' => $request->get('insurance_currency')]);
-
-        DB::table('insurance')
-            ->where('id', $id)
-            ->update(['billing' => $request->get('billing')]);
-
 
 
         return redirect('/businesses')
             ->with('success', 'Insurance package details edited successfully');
     }
+
 
     public function deactivateInsurance(Request $request,$id)
     {
@@ -133,9 +90,47 @@ $billing="";
             ->update(['status' => 0]);
 
 
-
         return redirect('/businesses')
             ->with('success', 'Insurance deactivated successfully');
+    }
+
+
+
+
+    public function contractAvailabilityInsurance(Request $request)
+    {
+
+
+
+        if($request->get('query'))
+        {
+            $query = $request->get('query');
+
+            $data=DB::table('insurance_contracts')->where('id', $query)->get();
+
+            if(count($data)!=0){
+
+                return $data;
+            }
+            else{
+                echo "0";
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
     }
 
 
