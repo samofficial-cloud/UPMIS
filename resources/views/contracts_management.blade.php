@@ -1008,13 +1008,21 @@ $i=1;
       <th style="width: 15%"><center>Trip Date</center></th>
       <th style="width: 14%"><center>Destination</center></th>
       <th style="width: 14%"><center>Form Status</center></th>
+      <th style="width: 14%"><center>Action</center></th>
     </thead>
     <tbody>
       @foreach($outbox as $outbox)
       <tr>
-        @if($outbox->start_date < date('Y-m-d'))
+        <td><center>{{$outbox->id}}</center></td>
+        <td><center>{{$outbox->form_initiator}}</center></td>
+        <td><center>{{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->faculty}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+         <td><center>{{$outbox->destination}}</center></td>
+        <td><center>{{$outbox->form_status}} Stage</center></td>
+         @if($outbox->start_date < date('Y-m-d'))
           <td>
-             <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center>{{$outbox->id}}</center></a>
+             <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center><i class="fa fa-trash" aria-hidden="true" style="font-size:18px; color:red; cursor: pointer;"></i></center></a>
 
         <div class="modal fade" id="delete{{$outbox->id}}" role="dialog">
 
@@ -1039,14 +1047,8 @@ $i=1;
           </div>
           </td>
         @else
-          <td><center>{{$outbox->id}}</center></td>
+          <td><center>N/A</center></td>
         @endif
-        <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->fullName}}</center></td>
-        <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
-         <td><center>{{$outbox->destination}}</center></td>
-        <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
       @endforeach
     </tbody>
@@ -1582,13 +1584,21 @@ $i=1;
       <th style="width: 15%"><center>Trip Date</center></th>
       <th style="width: 14%"><center>Destination</center></th>
       <th style="width: 14%"><center>Form Status</center></th>
+      <th style="width: 14%"><center>Action</center></th>
     </thead>
     <tbody>
       @foreach($outbox as $outbox)
       <tr>
-         @if($outbox->start_date < date('Y-m-d'))
+        <td><center>{{$outbox->id}}</center></td>
+        <td><center>{{$outbox->form_initiator}}</center></td>
+        <td><center>{{$outbox->fullName}}</center></td>
+        <td><center>{{$outbox->faculty}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+         <td><center>{{$outbox->destination}}</center></td>
+        <td><center>{{$outbox->form_status}} Stage</center></td>
+       @if($outbox->start_date < date('Y-m-d'))
           <td>
-             <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center>{{$outbox->id}}</center></a>
+             <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center><i class="fa fa-trash" aria-hidden="true" style="font-size:18px; color:red;"></i></center></a>
 
         <div class="modal fade" id="delete{{$outbox->id}}" role="dialog">
 
@@ -1613,14 +1623,8 @@ $i=1;
           </div>
           </td>
         @else
-          <td><center>{{$outbox->id}}</center></td>
+          <td><center>N/A</center></td>
         @endif
-        <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->fullName}}</center></td>
-        <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
-         <td><center>{{$outbox->destination}}</center></td>
-        <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
       @endforeach
     </tbody>
