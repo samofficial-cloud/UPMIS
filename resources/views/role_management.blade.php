@@ -114,7 +114,7 @@
     </div>
 
     <div class="main_content">
-      <div class="container " style="max-width: 1308px;">
+      <div class="container " style="max-width: 100%;">
         @if (session('error'))
           <div class="alert alert-danger row col-xs-12" style="margin-left: -13px; margin-bottom: -1px; margin-top: 4px;">
             {{ session('error') }}
@@ -435,7 +435,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -446,7 +446,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -474,7 +474,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -492,7 +492,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],

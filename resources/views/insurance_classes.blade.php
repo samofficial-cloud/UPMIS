@@ -86,7 +86,7 @@
         </div>
 
         <div class="main_content">
-            <div class="container " style="max-width: 1308px;">
+            <div class="container " style="max-width: 100%;">
                 @if (session('error'))
                     <div class="alert alert-danger row col-xs-12" style="margin-left: -13px; margin-bottom: -1px; margin-top: 4px;">
                         {{ session('error') }}
