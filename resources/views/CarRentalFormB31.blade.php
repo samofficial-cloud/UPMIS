@@ -574,7 +574,7 @@ $today=date('Y-m-d');
                             <button class="btn btn-primary" type="submit">Forward</button>
                     @else
                         <div class="form-card">
-                            <p>This Client has not yet paid the initial amount for the trip of TZS {{$contract->initial_payment}}</p>
+                            <p>This Client has not yet paid the initial amount for the trip of TZS {{number_format($contract->initial_payment)}}</p>
                         </div>
                     @endif
                     @else

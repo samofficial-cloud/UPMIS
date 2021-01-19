@@ -307,8 +307,8 @@
   <th scope="col"><center>S/N</center></th>
           <th scope="col"><center>Principal</center></th>
           <th scope="col" ><center>Insurance Type</center></th>
-          <th scope="col" ><center>Currency</center></th>
-          <th scope="col" ><center>Commision</center></th>
+          {{-- <th scope="col" ><center>Currency</center></th> --}}
+          <th scope="col" ><center>Commision Percentage</center></th>
       </tr>
       </thead>
       <tbody>
@@ -317,8 +317,8 @@
             <td scope="row" class="counterCell" style="text-align: center;">.</td>
             <td>{{$var->insurance_company}}</td>
             <td>{{$var->insurance_type}}</td>
-            <td><center>{{$var->insurance_currency}}</center></td>
-            <td style="text-align: right;">{{number_format($var->commission)}}</td>
+           {{--  <td><center>{{$var->insurance_currency}}</center></td> --}}
+            <td style="text-align: right;">{{$var->commission_percentage}}</td>
 
           </tr>
           @endforeach
@@ -763,7 +763,7 @@ elseif($_GET['report_type']=='clients'){
                 messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4]
+                    columns: [ 0, 1, 2, 3]
                 },
 
                 customize: function ( doc ) {
@@ -780,13 +780,13 @@ elseif($_GET['report_type']=='clients'){
 
 
 
-                  doc.content[2].table.widths = [22, '*', 80, 60, 100];
+                  doc.content[2].table.widths = [22, '*', 180, 120];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
                       doc.content[2].table.body[i][1].alignment = 'left';
                       doc.content[2].table.body[i][2].alignment = 'left';
-                      doc.content[2].table.body[i][4].alignment = 'right';
+                      //doc.content[2].table.body[i][4].alignment = 'right';
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -850,7 +850,7 @@ elseif($_GET['report_type']=='clients'){
                 className: 'excelButton',
                 title: settitle(),
                 exportOptions: {
-                columns: [1, 2, 3, 4]
+                columns: [1, 2, 3]
                 },
             },
           ]

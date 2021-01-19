@@ -553,11 +553,12 @@ $today=date('Y-m-d');
                     <div class="form-wrapper" id="balance_statusdiv">
           <label for="balance_status">Balance Status<span style="color: red;">*</span></label>
           <span id="balance_statusmsg"></span>
-            <select class="form-control" required="" id="balance_status" name="balance_status">
+          <input type="text" name="balance_status" class="form-control" required="" id="balance_status" readonly="">
+            {{-- <select class="form-control" required="" id="balance_status" name="balance_status">
               <option value="" disabled selected hidden>Select balance status</option>
               <option value="Sufficient">Sufficient</option>
               <option value="Not Sufficient">Not Sufficient</option>
-            </select>
+            </select> --}}
 
         </div>
     </div>

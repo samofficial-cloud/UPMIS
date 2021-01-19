@@ -114,6 +114,7 @@ class carContractsController extends Controller
          $data= DB::table('car_rentals')
         ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')->where('vehicle_reg_no','!=',null)->whereDate('end_date','>=', $start_date)->pluck('vehicle_reg_no')->toArray())
         ->where('vehicle_status','!=','Grounded')
+        ->where('flag','1')
         ->get();
         $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
         $payment_status=DB::table('car_rental_invoices')->select('payment_status')->where('contract_id',$id)->value('payment_status');
@@ -126,6 +127,7 @@ class carContractsController extends Controller
          $data= DB::table('car_rentals')
         ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')->where('vehicle_reg_no','!=',null)->whereDate('end_date','>=', $start_date)->pluck('vehicle_reg_no')->toArray())
         ->where('vehicle_status','!=','Grounded')
+        ->where('flag','1')
         ->get();
         $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
         $payment_status=DB::table('car_rental_invoices')->select('payment_status')->where('contract_id',$id)->value('payment_status');

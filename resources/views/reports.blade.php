@@ -768,9 +768,10 @@ $year=$current-3;
             <select class="form-control" id="car_type" name="car_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
               {{-- <option value="car history">List of Car Rental History</option> --}}
-              <option value="history">Car Rental History</option>
+              
               <option value="clients">List of Clients</option>
               <option value="cars">List of Rental Cars</option>
+              <option value="history">Car Rental History</option>
               <option value="revenue">Revenue Report From CPTU Vehicles</option>
               <option value="operational">Revenue Report For Service, Repairs and Fuel For Motor Vehicles</option>
             </select>

@@ -104,6 +104,7 @@ class clientsController extends Controller
         $subject=$request->get('subject');
         $message=$request->get('message');
         $type=$request->get('type');
+       
 
         if($request->hasfile('filenames')){
 
