@@ -90,7 +90,7 @@
           @elseif($category=='Insurance only')
           <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Real Estate only')
-          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+          <li class="active_nav_item"><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
            @endif
           @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
           <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
@@ -514,6 +514,8 @@
           </div>
         </div>
         <br>
+
+        <input type="text" name="type" value="space" hidden="">
 
         <div align="right">
   <button class="btn btn-primary" type="submit">Send</button>

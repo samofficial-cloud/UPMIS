@@ -1863,7 +1863,7 @@ function revenuetzs(row, data, start, end, display){
 
 
             for (i = 0; i < NumRows; i++){
-              var currency = api.cell(i, 4).data();
+              var currency = api.cell(i, 2).data();
                if(currency == 'TZS'){
                  var pageTotals2 = intVal(api.cell(i, 4).data());
                   pageTotal2 = pageTotal2 + pageTotals2;

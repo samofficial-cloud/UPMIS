@@ -81,26 +81,51 @@
                 <?php
                 use App\hire_rate;
                 use App\operational_expenditure;
-                $model=hire_rate::select('vehicle_model')->get();
-                $model1=hire_rate::select('vehicle_model')->get();
+                $model=hire_rate::select('vehicle_model')->where('flag','1')->orderBy('vehicle_model','asc')->get();
+                $model1=hire_rate::select('vehicle_model')->where('flag','1')->orderBy('vehicle_model','asc')->get();
                 ?>
 
                 <?php
                 $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
                 ?>
-                <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
 
-                    @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+               @if($category=='All')
+           <li ><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Insurance only')
+          <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Real Estate only')
+          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+           @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
+            <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
 
-                        <li class="active_nav_item"><a href="/businesses" ><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
-                    @else
-                    @endif
-                <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-                <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
-                <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-                <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
-                <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+
+                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+
+                <li class="active_nav_item"><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                @else
+                @endif
+
+
+    @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
+    @endif
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
+
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+ @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+            <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+  @endif
                 @admin
                 <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
                 <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
@@ -1375,7 +1400,7 @@
                                                     <div class="form-group" id="modeldiv">
                                                         <div class="form-wrapper">
                                                             <label for="model">Vehicle Model<span style="color: red;">*</span></label>
-                                                            <input type="text" id="hire_model" name="vehicle_model" class="form-control" required="">
+                                                            <input type="text" id="hire_model" name="vehicle_model" class="form-control" required="" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -2002,13 +2027,13 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
-                orientation: 'Landscape',
+                orientation: 'Potrait',
                 title: 'UNIVERSITY OF DAR ES SALAAM',
                 messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Packages',
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
+                    columns: [ 0, 1, 2, 3, 4]
                 },
 
 
@@ -2025,7 +2050,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     }
                   });
 
-                  doc.content[2].table.widths=[22, 80, 100, 80, 100, 80, 100, '*'];
+                  doc.content[2].table.widths=[22, 120, 120, '*', 100];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -2033,8 +2058,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       doc.content[2].table.body[i][2].alignment = 'left';
                       doc.content[2].table.body[i][3].alignment = 'left';
                       doc.content[2].table.body[i][4].alignment = 'right';
-                      doc.content[2].table.body[i][6].alignment = 'right';
-                      doc.content[2].table.body[i][7].alignment = 'left';
+                     
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2087,7 +2111,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 className: 'excelButton',
                 title: 'Insurance Packages',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7]
+                columns: [1, 2, 3, 4]
                 },
             },
         ]

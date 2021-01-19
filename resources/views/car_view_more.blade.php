@@ -121,13 +121,15 @@ hr {
 	<div class="container" style="max-width: 1308px;">
 		<br>
 		@if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
@@ -187,21 +189,21 @@ hr {
 
         <div class="form-group" id="lpodiv">
           <div class="form-wrapper">
-            <label for="model">LPO Number</label>
+            <label for="model">LPO Number<span style="color: red;">*</span></label>
             <input type="text" id="lpo_no" name="lpo_no" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 
         <div class="form-group" id="datediv">
           <div class="form-wrapper">
-            <label for="date_received">Date Received</label>
+            <label for="date_received">Date Received<span style="color: red;">*</span></label>
             <input type="date" id="date_received" name="date_received" class="form-control" required="" max="{{(date('Y-m-d'))}}">
           </div>
         </div>
 
         <div class="form-group" id="providerdiv">
           <div class="form-wrapper">
-            <label for="model">Service Provider</label>
+            <label for="model">Service Provider<span style="color: red;">*</span></label>
             <input type="text" id="provider" name="provider" class="form-control" required="">
           </div>
         </div>
@@ -209,28 +211,28 @@ hr {
 
         <div class="form-group" id="fueldiv">
           <div class="form-wrapper">
-            <label for="model">Fuel Consumed in Litres</label>
+            <label for="model">Fuel Consumed in Litres<span style="color: red;">*</span></label>
             <input type="text" id="fuel" name="fuel" class="form-control" required="" onkeypress="if((this.value.length<5)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 
         <div class="form-group" id="amountdiv">
           <div class="form-wrapper">
-            <label for="amount">Amount (TZS)</label>
-            <input type="text" id="amount" name="amount" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+            <label for="amount">Amount (TZS)<span style="color: red;">*</span></label>
+            <input type="text" id="amount" name="amount" class="form-control" required="" autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 
         <div class="form-group" id="totaldiv">
           <div class="form-wrapper">
-            <label for="total">Total (TZS)</label>
-            <input type="text" id="total" name="total" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+            <label for="total">Total (TZS)<span style="color: red;">*</span></label>
+            <input type="text" id="total" name="total" class="form-control" required="" autocomplete="off" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
 
         <div class="form-group" id="descriptiondiv">
           <div class="form-wrapper">
-            <label for="description">Description of Work</label>
+            <label for="description">Description of Work<span style="color: red;">*</span></label>
             <textarea type="text" id="description" name="description" class="form-control" maxlength="100" required=""></textarea>
           </div>
         </div>
@@ -369,7 +371,7 @@ hr {
         <div class="form-group" id="amountdiv">
           <div class="form-wrapper">
             <label for="amount{{$operational->id}}">Amount</label>
-            <input type="text" id="amount{{$operational->id}}" name="amount" class="form-control" required="" value="{{$operational->amount}}"  onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+            <input type="text" id="amount{{$operational->id}}" name="amount" class="form-control" required="" value="{{$operational->amount}}" autocomplete="off" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
         <br>
@@ -377,7 +379,7 @@ hr {
         <div class="form-group" id="totaldiv">
           <div class="form-wrapper">
             <label for="total{{$operational->id}}">Total</label>
-            <input type="text" id="total{{$operational->id}}" name="total" class="form-control" required="" value="{{$operational->total}}"  onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+            <input type="text" id="total{{$operational->id}}" name="total" class="form-control" required="" value="{{$operational->total}}" autocomplete="off" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
           </div>
         </div>
         <br>
