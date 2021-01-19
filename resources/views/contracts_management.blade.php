@@ -130,15 +130,21 @@ div.dt-buttons{
 
     <div class="main_content">
       <div class="container " style="max-width: 100%;">
-        @if ($message = Session::get('success'))
-          <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
-    margin-bottom: -1px;
-    margin-top: 4px;">
-            <p>{{$message}}</p>
-          </div>
-        @endif
+          @if ($message = Session::get('error'))
+              <div class="alert alert-danger alert-dismissible mt-1">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <p>{{$message}}</p>
+              </div>
+          @endif
 
-           <br>
+          @if ($message = Session::get('success'))
+              <div class="alert alert-success alert-dismissible mt-1">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <p>{{$message}}</p>
+              </div>
+          @endif
+
+          <br>
 
             <div class="tab">
 
@@ -981,7 +987,7 @@ $i=1;
           </td>
         @else
           <td><center><a href="{{ route('carRentalFormE',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif 
+        @endif
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1100,7 +1106,7 @@ $i=1;
 
                   <div class="modal-body">
                    <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-                    
+
                     <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
                         {{csrf_field()}}
 
@@ -1218,7 +1224,7 @@ $i=1;
           </td>
         @else
            <td><center><a href="{{ route('carRentalFormB',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif 
+        @endif
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1385,8 +1391,8 @@ $i=1;
           </td>
         @else
             <td><center><a href="{{ route('carRentalFormC',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif 
-       
+        @endif
+
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1557,7 +1563,7 @@ $i=1;
         @else
           <td><center><a href="{{ route('carRentalFormD',$inbox->id) }}">{{$inbox->id}}</a></center></td>
         @endif
-        
+
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1675,7 +1681,7 @@ $i=1;
 
                   <div class="modal-body">
                    <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-                    
+
                     <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
                         {{csrf_field()}}
 
@@ -1792,7 +1798,7 @@ $i=1;
           </td>
         @else
            <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif 
+        @endif
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1969,7 +1975,7 @@ $i=1;
 
                   <div class="modal-body">
                    <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-                    
+
                     <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
                         {{csrf_field()}}
 

@@ -250,7 +250,7 @@
   @elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']!='true')&&($_GET['yr_fil']!='true'))
     <br><br>List of Insurance Clients
   @endif
-      
+
 @endif
     </h4></center>
     <hr>
@@ -269,7 +269,7 @@
           <th scope="col" style="width: 12%;"><center>Premium (TZS)</center></th>
             <th scope="col" style="width: 12%;"><center>Actual(Excluding VAT- TZS) </center></th>
             <th scope="col" style="width: 12%;"><center>Commission (TZS)</center></th>
-           
+
         </tr>
         </thead>
         <tbody>
@@ -279,7 +279,7 @@
 
             <td scope="row" class="counterCell" style="text-align: center;">.</td>
             <td>{{$var->full_name}}</td>
-            <td>{{$var->insurance_class}}</td> 
+            <td>{{$var->insurance_class}}</td>
             <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
             <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
             <td>{{$var->receipt_no}}</td>
@@ -287,7 +287,7 @@
              {{--  <td style="text-align: right;">{{number_format($var->sum_insured)}}</td> --}}
               <td style="text-align: right;">{{number_format($var->premium)}}</td>
             <td style="text-align: right;">{{number_format($var->actual_ex_vat)}}</td>
-            <td style="text-align: right;">{{number_format($var->commission)}}</td>   
+            <td style="text-align: right;">{{number_format($var->commission)}}</td>
           </tr>
           @endforeach
       </tbody>
@@ -307,8 +307,8 @@
   <th scope="col"><center>S/N</center></th>
           <th scope="col"><center>Principal</center></th>
           <th scope="col" ><center>Insurance Type</center></th>
-          <th scope="col" ><center>Currency</center></th>
-          <th scope="col" ><center>Commision</center></th>
+{{--          <th scope="col" ><center>Currency</center></th>--}}
+          <th scope="col" ><center>Commision(%)</center></th>
       </tr>
       </thead>
       <tbody>
@@ -317,12 +317,12 @@
             <td scope="row" class="counterCell" style="text-align: center;">.</td>
             <td>{{$var->insurance_company}}</td>
             <td>{{$var->insurance_type}}</td>
-            <td><center>{{$var->insurance_currency}}</center></td>
-            <td style="text-align: right;">{{number_format($var->commission)}}</td>
+{{--            <td><center>{{$var->insurance_currency}}</center></td>--}}
+            <td style="text-align: right;">{{$var->commission_percentage}}</td>
 
           </tr>
           @endforeach
-        
+
       </tbody>
 </table>
  @elseif($_GET['report_type']=='clients')
@@ -337,7 +337,7 @@
           <th scope="col" style="width: 9%;" ><center>Commission Date</center></th>
           <th scope="col" style="width: 9%;" ><center>End Date</center></th>
           <th scope="col" style="width: 10%;"><center>Premium (TZS)</center></th>
-         {{--  <th scope="col" style="width: 10%;"><center>Receipt No</center></th> --}}      
+         {{--  <th scope="col" style="width: 10%;"><center>Receipt No</center></th> --}}
         </tr>
     </thead>
 
@@ -353,7 +353,7 @@
             <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
             <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
             <td style="text-align: right;">{{number_format($var->premium)}}</td>
-            {{-- <td><center>{{$var->receipt_no}}</center></td> --}}        
+            {{-- <td><center>{{$var->receipt_no}}</center></td> --}}
           </tr>
           @endforeach
       </tbody>
@@ -407,7 +407,7 @@ function settitle(){
        echo 'Sales Report Whose Principal is '.$_GET['principaltype'].' and Insurance Package is '.$_GET['package'];
       }
     }
-     
+
 
     elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true')&&($_GET['yr_fil']=='true')){
       if($_GET['yr_cat']=='start'){
@@ -417,7 +417,7 @@ function settitle(){
          echo 'Sales Report Whose Principal is '.$_GET['principaltype'].' and Expiry Year is '.$_GET['yr'];
       }
     }
-    
+
 
     elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true')&&($_GET['yr_fil']!='true')){
      echo 'Sales Report Whose Principal is '.$_GET['principaltype'];
@@ -521,7 +521,7 @@ elseif($_GET['report_type']=='clients'){
          elseif($_GET['yr_cat']=='end'){
             echo 'List of Insurance Clients Whose Insurance Package is '.$_GET['package'].', Insurance Type is '.$_GET['insurance_type'].' and Expiry Year is '.$_GET['yr'];
           }
-      }   
+      }
       else{
          if($_GET['yr_cat']=='start'){
           echo 'List of Insurance Clients Whose Insurance Package is '.$_GET['package'].' and Commission Year is '.$_GET['yr'];
@@ -555,7 +555,7 @@ elseif($_GET['report_type']=='clients'){
   }
 
 }
-  
+
     ?>';
 }
 
@@ -565,7 +565,7 @@ elseif($_GET['report_type']=='clients'){
 
            "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -573,7 +573,7 @@ elseif($_GET['report_type']=='clients'){
                     typeof i === 'number' ?
                         i : 0;
             };
- 
+
             // Total over all pages
             premium = api
                 .column( 6 )
@@ -598,7 +598,7 @@ elseif($_GET['report_type']=='clients'){
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
- 
+
             // Total over this page
             pagepremium = api
                 .column( 6, { page: 'current'} )
@@ -622,23 +622,23 @@ elseif($_GET['report_type']=='clients'){
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
- 
+
             // Update footer
             $( api.column( 6 ).footer() ).html(
               $.fn.dataTable.render.number(',').display(pagepremium)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(premium)
-               
+
             );
 
             $( api.column( 7 ).footer() ).html(
               $.fn.dataTable.render.number(',').display(pageactual)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(actual)
-               
+
             );
 
             $( api.column( 8 ).footer() ).html(
               $.fn.dataTable.render.number(',').display(pagecommission)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(commission)
-               
+
             );
-        }, 
+        },
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -662,7 +662,7 @@ elseif($_GET['report_type']=='clients'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -696,7 +696,7 @@ elseif($_GET['report_type']=='clients'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -714,7 +714,7 @@ elseif($_GET['report_type']=='clients'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -763,7 +763,7 @@ elseif($_GET['report_type']=='clients'){
                 messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4]
+                    columns: [ 0, 1, 2, 3]
                 },
 
                 customize: function ( doc ) {
@@ -774,19 +774,19 @@ elseif($_GET['report_type']=='clients'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
 
 
-                  doc.content[2].table.widths = [22, '*', 80, 60, 100];
+                  doc.content[2].table.widths = [22, '*', 180, 120];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
                       doc.content[2].table.body[i][1].alignment = 'left';
                       doc.content[2].table.body[i][2].alignment = 'left';
-                      doc.content[2].table.body[i][4].alignment = 'right';
+                      // doc.content[2].table.body[i][4].alignment = 'right';
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -805,7 +805,7 @@ elseif($_GET['report_type']=='clients'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -823,7 +823,7 @@ elseif($_GET['report_type']=='clients'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -850,7 +850,7 @@ elseif($_GET['report_type']=='clients'){
                 className: 'excelButton',
                 title: settitle(),
                 exportOptions: {
-                columns: [1, 2, 3, 4]
+                columns: [1, 2, 3]
                 },
             },
           ]
@@ -881,7 +881,7 @@ var table2 = $('#myTable2').DataTable({
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -913,7 +913,7 @@ var table2 = $('#myTable2').DataTable({
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -931,7 +931,7 @@ var table2 = $('#myTable2').DataTable({
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],

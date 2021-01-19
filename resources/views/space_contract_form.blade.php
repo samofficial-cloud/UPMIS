@@ -303,7 +303,7 @@ $today=date('Y-m-d');
                 <p>Fill all form fields with (*) to go to the next step</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
-                        <form id="msform" METHOD="GET" action="{{ route('create_space_contract')}}">
+                        <form id="msform" METHOD="GET"  action="{{ route('create_space_contract')}}">
                             <!-- progressbar -->
                             <ul id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>

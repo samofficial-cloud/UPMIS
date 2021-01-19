@@ -290,12 +290,12 @@
 
 
 
-                                                <div style="display: none;" id="tinDiv" class="form-group col-md-12 mt-1">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client TIN</label>
-                                                        <input type="text" class="form-control" id="tin_space" readonly name="tin" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
+{{--                                                <div style="display: none;" id="tinDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                    <div class="form-wrapper">--}}
+{{--                                                        <label for=""  >Client TIN</label>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+                                                <input type="hidden" class="form-control" id="tin_space" readonly name="tin" value=""  autocomplete="off">
 
 
 
@@ -1055,12 +1055,12 @@
 
 
 
-                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="tin_waterDiv">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client TIN</label>
-                                                        <input type="text" class="form-control" id="tin_water" name="tin" readonly value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
+{{--                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="tin_waterDiv">--}}
+{{--                                                    <div class="form-wrapper">--}}
+{{--                                                        <label for=""  >Client TIN</label>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+                                                <input type="hidden" class="form-control" id="tin_water" name="tin" readonly value=""  autocomplete="off">
 
 
 
@@ -1885,12 +1885,12 @@
 
 
 
-                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="tin_electricityDiv">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  >Client TIN</label>
-                                                        <input type="text" class="form-control" id="tin_electricity" name="tin" value=""  readonly autocomplete="off">
-                                                    </div>
-                                                </div>
+{{--                                                <div class="form-group col-md-12 mt-1" style="display: none;" id="tin_electricityDiv">--}}
+{{--                                                    <div class="form-wrapper">--}}
+{{--                                                        <label for=""  >Client TIN</label>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+                                                <input type="hidden" class="form-control" id="tin_electricity" name="tin" value=""  readonly autocomplete="off">
 
 
 
