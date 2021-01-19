@@ -513,14 +513,16 @@ $today=date('Y-m-d');
                         <form id="msform" method="post" action="{{ route('newCarcontractC') }}" style="font-size: 17px;" onsubmit="return getdata()" name="myForm">
                             {{csrf_field()}}
                             <div >
-                                @if($contract->vote_remarks!=null)
-                        <p style="text-align: left;">This Application has the following remark(s) from the Vote Holder, <b>{{$contract->acc_name}}</b>.</p>
-                        <div class="form-group">
-                    <div class="form-wrapper">
-                        <textarea type="text" id="acc_remark" name="acc_remark" class="form-control" value="" readonly="" style="border: inset !important;">{{$contract->vote_remarks}}</textarea>
-                    </div>
-                </div>
-                @endif
+                            @if($contract->vote_remarks!=null)
+                                <div style="padding-left: 27px; padding-right: 27px;">
+                                    <p style="text-align: left;">This Application has the following remark(s) from the Vote Holder, <b>{{$contract->acc_name}}</b>.</p>
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <textarea type="text" id="acc_remark" name="acc_remark" class="form-control" value="" readonly="" style="border: inset !important;">{{$contract->vote_remarks}}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         <div class="form-card" style="padding: 4px;">
                         <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No.<span style="color: red;">*</span> <input type="text" id="centre_name" name="centre_name" required value="{{$contract->cost_centre}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();"> has a balance of Tshs.<span style="color: red;">*</span> <input type="text" id="fund_available" name="fund_available" required value="{{$contract->funds_available}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;"> for transport code No<span style="color: red;">*</span> <input type="text" id="code_no" name="code_no" required="" value="{{$contract->transport_code}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();">. This amount is<span style="color: red;">*</span> <select required="" id="balance_status" name="balance_status" style="padding: 0px; border: inset; margin: 10px;width: 15%;font-size: 16px;">
                             @if($contract->balance_status=='Sufficient')

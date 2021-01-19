@@ -524,6 +524,8 @@
         </div>
         <br>
 
+        <input type="text" name="type" value="space" hidden="">
+
         <div align="right">
   <button class="btn btn-primary" type="submit">Send</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>

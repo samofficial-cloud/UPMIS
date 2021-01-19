@@ -19,8 +19,9 @@ class operational_expenditureController extends Controller
 
     public function deleteoperational($id){
     $ops=operational_expenditure::find($id);
-    $ops->flag='0';
-    $ops->save();
+    $ops->delete();
+    // $ops->flag='0';
+    // $ops->save();
     return redirect()->back()->with('success', 'Operational Expenditure Deleted Successfully');
 
 }
