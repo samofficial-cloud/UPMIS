@@ -344,14 +344,14 @@
                                                     <div class="form-wrapper">
                                                         <label for="company_name">Company Name <span style="color: red;"> *</span></label>
                                                         <span id="cnamemsg"></span>
-                                                        <input type="text" id="company_name" required name="company_name" class="form-control">
+                                                        <input type="text" id="company_name"  name="company_name" class="form-control">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="form-wrapper">
                                                         <label for="email">Email</label>
-                                                        <input type="text" name="email" id="email" required class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                                        <input type="text" name="email" id="email"  class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
                                                     </div>
                                                 </div>
 
@@ -359,14 +359,14 @@
                                                     <div class="form-wrapper">
                                                         <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
                                                         <span id="phone_msg"></span>
-                                                        <input type="text" id="phone_number" required name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                        <input type="text" id="phone_number"  name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="form-wrapper">
                                                         <label for="address">Address <span style="color: red;"> *</span></label>
-                                                        <input type="text" id="address" name="address" required class="form-control">
+                                                        <input type="text" id="address" name="address"  class="form-control">
                                                     </div>
                                                 </div>
                                             </div>

@@ -19,7 +19,7 @@ class PaymentController extends Controller
         else{
             $car_rental_payments=DB::table('car_rental_payments')->join('car_rental_invoices','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')->where('car_rental_payments.invoice_number_votebook','!=','')->get();
         }
-        
+
         $insurance_payments=DB::table('insurance_payments')->join('insurance_invoices','insurance_payments.invoice_number','=','insurance_invoices.invoice_number')->where('insurance_payments.invoice_number_votebook','!=','')->get();
         $water_bill_payments=DB::table('water_bill_payments')->join('water_bill_invoices','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('water_bill_payments.invoice_number_votebook','!=','')->get();
         $electricity_bill_payments=DB::table('electricity_bill_payments')->join('electricity_bill_invoices','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('electricity_bill_payments.invoice_number_votebook','!=','')->get();
@@ -35,10 +35,65 @@ class PaymentController extends Controller
         $amount_to_be_paid=DB::table('invoices')->where('invoice_number', $request->get('invoice_number'))->value('amount_to_be_paid');
         $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
 
-        if(DB::table('space_payments')->where('invoice_number',$request->get('invoice_number'))->exists()){
+        if(DB::table('space_payments')->where('invoice_number',$request->get('invoice_number'))->where('invoice_number_votebook','!=','')->exists()){
 
 
             return redirect()->back()->with("error","Payment record already exists for the specified invoice number");
+
+        }else{
+
+
+            $payment_status='';
+            $amount_to_be_paid=DB::table('invoices')->where('invoice_number', $request->get('invoice_number'))->value('amount_to_be_paid');
+            $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+            if($request->get('amount_paid')<$amount_to_be_paid){
+                $payment_status='Partially Paid';
+
+
+            }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+                $payment_status='Paid';
+
+
+            }else{
+
+
+            }
+
+
+            DB::table('invoices')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['payment_status' => $payment_status]);
+
+
+
+
+            DB::table('space_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+            DB::table('space_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_paid' => $request->get('amount_paid')]);
+
+            DB::table('space_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_not_paid' => $amount_not_paid]);
+
+            DB::table('space_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['currency_payments' => $request->get('currency_payments')]);
+
+            DB::table('space_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['receipt_number' => $request->get('receipt_number')]);
+
+            DB::table('space_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['date_of_payment' => $request->get('date_of_payment')]);
+
+
 
         }
 
@@ -96,10 +151,66 @@ class PaymentController extends Controller
         $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
 
 
-        if(DB::table('insurance_payments')->where('invoice_number',$request->get('invoice_number'))->exists()){
+        if(DB::table('insurance_payments')->where('invoice_number',$request->get('invoice_number'))->where('invoice_number_votebook','!=','')->exists()){
 
 
             return redirect()->back()->with("error","Payment record already exists for the specified invoice number");
+
+        }else{
+
+
+
+            $payment_status='';
+            $amount_to_be_paid=DB::table('insurance_invoices')->where('invoice_number', $request->get('invoice_number'))->value('amount_to_be_paid');
+            $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+            if($request->get('amount_paid')<$amount_to_be_paid){
+                $payment_status='Partially Paid';
+
+
+            }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+                $payment_status='Paid';
+
+
+            }else{
+
+
+            }
+
+
+            DB::table('insurance_invoices')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['payment_status' => $payment_status]);
+
+
+
+
+            DB::table('insurance_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+            DB::table('insurance_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_paid' => $request->get('amount_paid')]);
+
+            DB::table('insurance_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_not_paid' => $amount_not_paid]);
+
+            DB::table('insurance_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['currency_payments' => $request->get('currency_payments')]);
+
+            DB::table('insurance_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['receipt_number' => $request->get('receipt_number')]);
+
+            DB::table('insurance_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['date_of_payment' => $request->get('date_of_payment')]);
+
+
 
         }
 
@@ -157,10 +268,65 @@ class PaymentController extends Controller
         $amount_to_be_paid=DB::table('car_rental_invoices')->where('invoice_number', $request->get('invoice_number'))->value('amount_to_be_paid');
         $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
 
-        if(DB::table('car_rental_payments')->where('invoice_number',$request->get('invoice_number'))->exists()){
+        if(DB::table('car_rental_payments')->where('invoice_number',$request->get('invoice_number'))->where('invoice_number_votebook','!=','')->exists()){
 
 
             return redirect()->back()->with("error","Payment record already exists for the specified invoice number");
+
+        }else{
+
+
+            $payment_status='';
+            $amount_to_be_paid=DB::table('car_rental_invoices')->where('invoice_number', $request->get('invoice_number'))->value('amount_to_be_paid');
+            $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+            if($request->get('amount_paid')<$amount_to_be_paid){
+                $payment_status='Partially Paid';
+
+
+            }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+                $payment_status='Paid';
+
+
+            }else{
+
+
+            }
+
+
+            DB::table('car_rental_invoices')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['payment_status' => $payment_status]);
+
+
+
+            DB::table('car_rental_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+            DB::table('car_rental_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_paid' => $request->get('amount_paid')]);
+
+            DB::table('car_rental_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_not_paid' => $amount_not_paid]);
+
+            DB::table('car_rental_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['currency_payments' => $request->get('currency_payments')]);
+
+            DB::table('car_rental_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['receipt_number' => $request->get('receipt_number')]);
+
+            DB::table('car_rental_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['date_of_payment' => $request->get('date_of_payment')]);
+
+
+
 
         }
 
@@ -221,10 +387,64 @@ class PaymentController extends Controller
 
 
 
-        if(DB::table('water_bill_payments')->where('invoice_number',$request->get('invoice_number'))->exists()){
+        if(DB::table('water_bill_payments')->where('invoice_number',$request->get('invoice_number'))->where('invoice_number_votebook','!=','')->exists()){
 
 
             return redirect()->back()->with("error","Payment record already exists for the specified invoice number");
+
+        }else{
+
+            $payment_status='';
+            $amount_to_be_paid=DB::table('water_bill_invoices')->where('invoice_number', $request->get('invoice_number'))->value('cumulative_amount');
+            $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+            if($request->get('amount_paid')<$amount_to_be_paid){
+                $payment_status='Partially Paid';
+
+
+            }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+                $payment_status='Paid';
+
+
+            }else{
+
+
+            }
+
+
+            DB::table('water_bill_invoices')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['payment_status' => $payment_status]);
+
+
+
+
+
+            DB::table('water_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+            DB::table('water_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_paid' => $request->get('amount_paid')]);
+
+            DB::table('water_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_not_paid' => $amount_not_paid]);
+
+            DB::table('water_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['currency_payments' => $request->get('currency_payments')]);
+
+            DB::table('water_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['receipt_number' => $request->get('receipt_number')]);
+
+            DB::table('water_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['date_of_payment' => $request->get('date_of_payment')]);
+
 
         }
 
@@ -282,10 +502,66 @@ class PaymentController extends Controller
         $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
 
 
-        if(DB::table('electricity_bill_payments')->where('invoice_number',$request->get('invoice_number'))->exists()){
+        if(DB::table('electricity_bill_payments')->where('invoice_number',$request->get('invoice_number'))->where('invoice_number_votebook','!=','')->exists()){
 
 
             return redirect()->back()->with("error","Payment record already exists for the specified invoice number");
+
+        }else{
+
+
+            $payment_status='';
+            $amount_to_be_paid=DB::table('electricity_bill_invoices')->where('invoice_number', $request->get('invoice_number'))->value('cumulative_amount');
+            $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+            if($request->get('amount_paid')<$amount_to_be_paid){
+                $payment_status='Partially Paid';
+
+
+            }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+                $payment_status='Paid';
+
+
+            }else{
+
+
+            }
+
+
+            DB::table('electricity_bill_invoices')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['payment_status' => $payment_status]);
+
+
+
+
+            DB::table('electricity_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+
+            DB::table('electricity_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_paid' => $request->get('amount_paid')]);
+
+            DB::table('electricity_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['amount_not_paid' => $amount_not_paid]);
+
+            DB::table('electricity_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['currency_payments' => $request->get('currency_payments')]);
+
+            DB::table('electricity_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['receipt_number' => $request->get('receipt_number')]);
+
+            DB::table('electricity_bill_payments')
+                ->where('invoice_number', $request->get('invoice_number'))
+                ->update(['date_of_payment' => $request->get('date_of_payment')]);
+
+
+
 
         }
 

@@ -162,7 +162,7 @@ $electric_usdincome = 0;
           @elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true'))
             <br><br>Real Estate Revenue Collection and Debts Summary for <strong>Rent</strong>, whose business is <strong>{{$_GET['biz']}}</strong> and Location is <strong>{{$_GET['loc']}}</strong>
           @elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true'))
-            <br><br>Real Estate Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>, for <strong>Rent</strong> and whose business is <strong>{{$_GET['biz']}}</strong> 
+            <br><br>Real Estate Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>, for <strong>Rent</strong> and whose business is <strong>{{$_GET['biz']}}</strong>
           @elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true'))
             <br><br>Real Estate Revenue Collection and Debts Summary for <strong>Rent</strong>, whose business is <strong>{{$_GET['biz']}}</strong>
           @elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true'))
@@ -181,7 +181,7 @@ $electric_usdincome = 0;
           @elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true'))
             <br><br>Real Estate Revenue Collection and Debts Summary for <strong>Electricity</strong>, whose business is <strong>{{$_GET['biz']}}</strong> and Location is <strong>{{$_GET['loc']}}</strong>
           @elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true'))
-            <br><br>Real Estate Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>, for <strong>Electricity</strong> and whose business is <strong>{{$_GET['biz']}}</strong> 
+            <br><br>Real Estate Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>, for <strong>Electricity</strong> and whose business is <strong>{{$_GET['biz']}}</strong>
           @elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true'))
             <br><br>Real Estate Revenue Collection and Debts Summary for <strong>Electricity</strong>, whose business is <strong>{{$_GET['biz']}}</strong>
           @elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true'))
@@ -213,7 +213,7 @@ $electric_usdincome = 0;
             <br><br>Real Estate Revenue Collection and Debts Summary for <strong>Water</strong>
           @endif
         @endif
-          
+
       @elseif($_GET['b_type']=='Car Rental')
         @if($_GET['yr2_fil']=='true')
           <br><br>CPTU Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start2']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end2']))}}</strong>
@@ -254,7 +254,7 @@ $electric_usdincome = 0;
 
         @for($z = 0; $z < count($contract_id); $z++)
           @foreach($contract_id[$z] as $contract)
-            <?php $a = $a+1;?>  
+            <?php $a = $a+1;?>
           <tr>
             <td style="text-align: center">{{$a}}.</td>
             <td>{{$contract->debtor_name}}</td>
@@ -271,7 +271,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('invoices.contract_id',$contract->contract_id)
                             ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('space_payments')
                         ->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
@@ -286,7 +286,7 @@ $electric_usdincome = 0;
                             ->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('invoices.contract_id',$contract->contract_id)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('space_payments')
                         ->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
@@ -295,7 +295,7 @@ $electric_usdincome = 0;
                         ->orderBy('amount_not_paid','dsc')
                         ->first();
                   }
-                    
+
                 }
                 elseif($_GET['criteria']=='electricity'){
                   if($_GET['yr_fil']=='true'){
@@ -304,7 +304,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('electricity_bill_invoices.contract_id',$contract->contract_id)
                             ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('electricity_bill_payments')
                         ->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
@@ -319,17 +319,17 @@ $electric_usdincome = 0;
                             ->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('electricity_bill_invoices.contract_id',$contract->contract_id)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('electricity_bill_payments')
                         ->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
                         ->select('amount_not_paid')
                         ->where('electricity_bill_invoices.contract_id',$contract->contract_id)
                         ->orderBy('amount_not_paid','dsc')
-                        ->first();  
+                        ->first();
                   }
 
-                        
+
                 }
 
                 elseif($_GET['criteria']=='water'){
@@ -339,7 +339,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('water_bill_invoices.contract_id',$contract->contract_id)
                             ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('water_bill_payments')
                         ->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
@@ -354,7 +354,7 @@ $electric_usdincome = 0;
                             ->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('water_bill_invoices.contract_id',$contract->contract_id)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('water_bill_payments')
                         ->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
@@ -363,8 +363,8 @@ $electric_usdincome = 0;
                         ->orderBy('amount_not_paid','dsc')
                         ->first();
                   }
-                  
-                        
+
+
                 }
 
 
@@ -399,7 +399,7 @@ $electric_usdincome = 0;
               }
              ?>
              @endif
-            
+
           </tr>
           @endforeach
         @endfor
@@ -412,14 +412,14 @@ $electric_usdincome = 0;
                 <th style="text-align: right;"></th>
             </tr>
             <tr>
-                
+
                 <th style="text-align: center;"></th>
                 <th style="text-align: right;"></th>
                 <th style="text-align: right;"></th>
             </tr>
       </tfoot>
     </table>
-    
+
   @endif
   @elseif($_GET['b_type']=='Car Rental')
   <table class="hover table table-striped table-bordered" id="carTable">
@@ -439,7 +439,7 @@ $electric_usdincome = 0;
 
         @for($z = 0; $z < count($contract_id); $z++)
           @foreach($contract_id[$z] as $contract)
-            <?php $a = $a+1;?>  
+            <?php $a = $a+1;?>
           <tr>
             <td style="text-align: center">{{$a}}.</td>
             <td>{{$contract->debtor_name}}</td>
@@ -456,7 +456,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('car_rental_invoices.contract_id',$contract->contract_id)
                             ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('car_rental_payments')
                         ->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
@@ -471,7 +471,7 @@ $electric_usdincome = 0;
                             ->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('car_rental_invoices.contract_id',$contract->contract_id)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('car_rental_payments')
                         ->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
@@ -480,9 +480,9 @@ $electric_usdincome = 0;
                         ->orderBy('amount_not_paid','dsc')
                         ->first();
               }
-                
-                    
-                
+
+
+
             ?>
             <td style="text-align: right;">{{number_format($income)}}</td>
             <?php $cptu_income= $cptu_income + $income; ?>
@@ -505,7 +505,7 @@ $electric_usdincome = 0;
                 <th style="text-align: right;"></th>
             </tr>
             <tr>
-                
+
                 <th style="text-align: center;"></th>
                 <th style="text-align: right;"></th>
                 <th style="text-align: right;"></th>
@@ -546,7 +546,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('insurance_invoices.debtor_name',$contract->debtor_name)
                             ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('insurance_payments')
                         ->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
@@ -561,7 +561,7 @@ $electric_usdincome = 0;
                             ->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('insurance_invoices.debtor_name',$contract->debtor_name)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('insurance_payments')
                         ->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
@@ -571,27 +571,27 @@ $electric_usdincome = 0;
                         ->first();
 
                 }
-                    
-                
+
+
             ?>
             <td style="text-align: right;">{{number_format($income)}}</td>
 
-            <?php 
+            <?php
               if($contract->currency_invoice=='USD'){
                 $udia_usdincome= $udia_usdincome + $income;
               }
               elseif($contract->currency_invoice=='TZS'){
-                $udia_tzsincome= $udia_tzsincome + $income; 
+                $udia_tzsincome= $udia_tzsincome + $income;
               }
             ?>
             @if(!isset($debt))
               <td style="text-align: right;">0</td>
-              <?php 
+              <?php
               if($contract->currency_invoice=='USD'){
                 $udia_usddebt= $udia_usddebt +0;
               }
               elseif($contract->currency_invoice=='TZS'){
-                $udia_tzsdebt= $udia_tzsdebt +0; 
+                $udia_tzsdebt= $udia_tzsdebt +0;
               }
               ?>
             @else
@@ -601,7 +601,7 @@ $electric_usdincome = 0;
                 $udia_usddebt= $udia_usddebt +$debt->amount_not_paid;
               }
               elseif($contract->currency_invoice=='TZS'){
-                $udia_tzsdebt= $udia_tzsdebt +$debt->amount_not_paid; 
+                $udia_tzsdebt= $udia_tzsdebt +$debt->amount_not_paid;
               }
                ?>
              @endif
@@ -618,7 +618,7 @@ $electric_usdincome = 0;
                 <th style="text-align: right;"></th>
             </tr>
             <tr>
-                
+
                 <th style="text-align: center;"></th>
                 <th style="text-align: right;"></th>
                 <th style="text-align: right;"></th>
@@ -633,7 +633,7 @@ $electric_usdincome = 0;
             <td style="width: 18%; text-align: right;">{{number_format($udia_tzsdebt)}}</td>
         </tr>
         <tr style="width: 100%">
-          
+
           <td style="width: 12%; text-align: right;"><center>USD</center></td>
           <td style="width: 18%; text-align: right;">{{number_format($udia_usdincome)}}</td>
             <td style="width: 18%; text-align: right;">{{number_format($udia_usddebt)}}</td>
@@ -658,7 +658,7 @@ $electric_usdincome = 0;
 
         @for($z = 0; $z < count($contract_id); $z++)
           @foreach($contract_id[$z] as $contract)
-            <?php $a = $a+1;?>  
+            <?php $a = $a+1;?>
           <tr>
             <td style="text-align: center">{{$a}}.</td>
             <td>{{$contract->debtor_name}}</td>
@@ -668,14 +668,14 @@ $electric_usdincome = 0;
             <td style="text-align: center">{{$contract->currency}}</td>
             <?php
               $income=array();
-                
+
                   if($_GET['yr2_fil']=='true'){
                     $income=DB::table('space_payments')
                             ->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('invoices.contract_id',$contract->contract_id)
                             ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('space_payments')
                         ->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
@@ -690,7 +690,7 @@ $electric_usdincome = 0;
                             ->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('invoices.contract_id',$contract->contract_id)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('space_payments')
                         ->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
@@ -699,8 +699,8 @@ $electric_usdincome = 0;
                         ->orderBy('amount_not_paid','dsc')
                         ->first();
                   }
-                    
-                
+
+
 
 
             ?>
@@ -734,11 +734,11 @@ $electric_usdincome = 0;
               }
              ?>
              @endif
-            
+
           </tr>
           @endforeach
         @endfor
-        
+
       </tbody>
     </table>
     <table>
@@ -775,7 +775,7 @@ $electric_usdincome = 0;
 
         @for($z = 0; $z < count($contract_id2); $z++)
           @foreach($contract_id2[$z] as $contract)
-            <?php $b = $b+1;?>  
+            <?php $b = $b+1;?>
           <tr>
             <td style="text-align: center">{{$b}}.</td>
             <td>{{$contract->debtor_name}}</td>
@@ -791,7 +791,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('water_bill_invoices.contract_id',$contract->contract_id)
                             ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('water_bill_payments')
                         ->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
@@ -806,7 +806,7 @@ $electric_usdincome = 0;
                             ->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('water_bill_invoices.contract_id',$contract->contract_id)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('water_bill_payments')
                         ->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
@@ -815,7 +815,7 @@ $electric_usdincome = 0;
                         ->orderBy('amount_not_paid','dsc')
                         ->first();
                   }
-                  
+
             ?>
              <td style="text-align: right;">{{number_format($income)}}</td>
              <?php
@@ -847,11 +847,11 @@ $electric_usdincome = 0;
               }
              ?>
              @endif
-            
+
           </tr>
           @endforeach
         @endfor
-        
+
       </tbody>
     </table>
     <table>
@@ -888,7 +888,7 @@ $electric_usdincome = 0;
 
         @for($z = 0; $z < count($contract_id3); $z++)
           @foreach($contract_id3[$z] as $contract)
-            <?php $c = $c+1;?>  
+            <?php $c = $c+1;?>
           <tr>
             <td style="text-align: center">{{$c}}.</td>
             <td>{{$contract->debtor_name}}</td>
@@ -904,7 +904,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('electricity_bill_invoices.contract_id',$contract->contract_id)
                             ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('electricity_bill_payments')
                         ->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
@@ -919,14 +919,14 @@ $electric_usdincome = 0;
                             ->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('electricity_bill_invoices.contract_id',$contract->contract_id)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('electricity_bill_payments')
                         ->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
                         ->select('amount_not_paid')
                         ->where('electricity_bill_invoices.contract_id',$contract->contract_id)
                         ->orderBy('amount_not_paid','dsc')
-                        ->first();  
+                        ->first();
                   }
 
 
@@ -961,11 +961,11 @@ $electric_usdincome = 0;
               }
              ?>
              @endif
-            
+
           </tr>
           @endforeach
         @endfor
-        
+
       </tbody>
     </table>
     <table>
@@ -1010,7 +1010,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('insurance_invoices.debtor_name',$contract->debtor_name)
                             ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('insurance_payments')
                         ->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
@@ -1025,7 +1025,7 @@ $electric_usdincome = 0;
                             ->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('insurance_invoices.debtor_name',$contract->debtor_name)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('insurance_payments')
                         ->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
@@ -1035,27 +1035,27 @@ $electric_usdincome = 0;
                         ->first();
 
                 }
-                    
-                
+
+
             ?>
             <td style="text-align: right;">{{number_format($income)}}</td>
 
-            <?php 
+            <?php
               if($contract->currency_invoice=='USD'){
                 $udia_usdincome= $udia_usdincome + $income;
               }
               elseif($contract->currency_invoice=='TZS'){
-                $udia_tzsincome= $udia_tzsincome + $income; 
+                $udia_tzsincome= $udia_tzsincome + $income;
               }
             ?>
             @if(!isset($debt))
               <td style="text-align: right;">0</td>
-              <?php 
+              <?php
               if($contract->currency_invoice=='USD'){
                 $udia_usddebt= $udia_usddebt +0;
               }
               elseif($contract->currency_invoice=='TZS'){
-                $udia_tzsdebt= $udia_tzsdebt +0; 
+                $udia_tzsdebt= $udia_tzsdebt +0;
               }
               ?>
             @else
@@ -1065,7 +1065,7 @@ $electric_usdincome = 0;
                 $udia_usddebt= $udia_usddebt +$debt->amount_not_paid;
               }
               elseif($contract->currency_invoice=='TZS'){
-                $udia_tzsdebt= $udia_tzsdebt +$debt->amount_not_paid; 
+                $udia_tzsdebt= $udia_tzsdebt +$debt->amount_not_paid;
               }
                ?>
              @endif
@@ -1106,7 +1106,7 @@ $electric_usdincome = 0;
 
         @for($z = 0; $z < count($contract_id4); $z++)
           @foreach($contract_id4[$z] as $contract)
-            <?php $e = $e+1;?>  
+            <?php $e = $e+1;?>
           <tr>
             <td style="text-align: center">{{$e}}.</td>
             <td>{{$contract->debtor_name}}</td>
@@ -1123,7 +1123,7 @@ $electric_usdincome = 0;
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('car_rental_invoices.contract_id',$contract->contract_id)
                             ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('car_rental_payments')
                         ->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
@@ -1138,7 +1138,7 @@ $electric_usdincome = 0;
                             ->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
                             ->select(array(DB::raw('sum(amount_paid) as total')))
                             ->where('car_rental_invoices.contract_id',$contract->contract_id)
-                            ->value('total'); 
+                            ->value('total');
 
                     $debt=DB::table('car_rental_payments')
                         ->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
@@ -1147,9 +1147,9 @@ $electric_usdincome = 0;
                         ->orderBy('amount_not_paid','dsc')
                         ->first();
               }
-                
-                    
-                
+
+
+
             ?>
             <td style="text-align: right;">{{number_format($income)}}</td>
             <?php $cptu_income= $cptu_income + $income; ?>
@@ -1272,7 +1272,7 @@ function settitle(){
             echo 'Real Estate Revenue Collection and Debts Summary for Rent, whose business is '.$_GET["biz"].' and Location is '.$_GET["loc"];
           }
           else if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
-            echo 'Real Estate Revenue Collection and Debts Summary of the Duration '.date("d/m/Y",strtotime($_GET["start"])).' to '.date("d/m/Y",strtotime($_GET["end"])).', for Rent and whose business is '.$_GET["biz"]; 
+            echo 'Real Estate Revenue Collection and Debts Summary of the Duration '.date("d/m/Y",strtotime($_GET["start"])).' to '.date("d/m/Y",strtotime($_GET["end"])).', for Rent and whose business is '.$_GET["biz"];
           }
           else if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
             echo 'Real Estate Revenue Collection and Debts Summary for Rent, whose business is '.$_GET['biz'];
@@ -1299,7 +1299,7 @@ function settitle(){
             echo 'Real Estate Revenue Collection and Debts Summary for Electricity, whose business is '.$_GET["biz"].' and Location is '.$_GET["loc"];
           }
           else if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
-            echo 'Real Estate Revenue Collection and Debts Summary of the Duration '.date("d/m/Y",strtotime($_GET["start"])).' to '.date("d/m/Y",strtotime($_GET["end"])).', for Electricity and whose business is '.$_GET["biz"]; 
+            echo 'Real Estate Revenue Collection and Debts Summary of the Duration '.date("d/m/Y",strtotime($_GET["start"])).' to '.date("d/m/Y",strtotime($_GET["end"])).', for Electricity and whose business is '.$_GET["biz"];
           }
           else if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
             echo 'Real Estate Revenue Collection and Debts Summary for Electricity, whose business is '.$_GET['biz'];
@@ -1326,7 +1326,7 @@ function settitle(){
             echo 'Real Estate Revenue Collection and Debts Summary for water, whose business is '.$_GET["biz"].' and Location is '.$_GET["loc"];
           }
           else if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true')){
-            echo 'Real Estate Revenue Collection and Debts Summary of the Duration '.date("d/m/Y",strtotime($_GET["start"])).' to '.date("d/m/Y",strtotime($_GET["end"])).', for water and whose business is '.$_GET["biz"]; 
+            echo 'Real Estate Revenue Collection and Debts Summary of the Duration '.date("d/m/Y",strtotime($_GET["start"])).' to '.date("d/m/Y",strtotime($_GET["end"])).', for water and whose business is '.$_GET["biz"];
           }
           else if(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true')){
             echo 'Real Estate Revenue Collection and Debts Summary for water, whose business is '.$_GET['biz'];
@@ -1345,7 +1345,7 @@ function settitle(){
           }
         }
       }
-          
+
       else if($_GET['b_type']=='Car Rental'){
         if($_GET['yr2_fil']=='true'){
           echo 'CPTU Revenue Collection and Debts Summary of the Duration '.date("d/m/Y",strtotime($_GET["start2"])).' to '.date("d/m/Y",strtotime($_GET["end2"]));
@@ -1369,16 +1369,16 @@ function settitle(){
         else{
           echo 'Revenue Collection and Debts Summary';
         }
-      } 
+      }
   ;?>';
-      
+
 }
 var revenuetzss, revenueusd, debttzs, debtusds;
 
 function revenuetzs(row, data, start, end, display){
   var api =$('#spaceTable').DataTable().table.columns(), data;
   var tzs = 0;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1400,7 +1400,7 @@ function revenuetzs(row, data, start, end, display){
                }
                else{
                  tzs =0;
-               } 
+               }
             }
 
             return tzs;
@@ -1410,7 +1410,7 @@ function revenuetzs(row, data, start, end, display){
 
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1436,7 +1436,7 @@ function revenuetzs(row, data, start, end, display){
                else if(currency == 'USD'){
                   var pageTotals = intVal(api.cell(i, 6).data());
                   pageTotalUsd = pageTotalUsd + pageTotals;
-               } 
+               }
             }
             revenuetzss = pageTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             revenueusd = pageTotalUsd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -1451,12 +1451,12 @@ function revenuetzs(row, data, start, end, display){
                else if(currency == 'USD'){
                   var pageTotals2 = intVal(api.cell(i, 7).data());
                   pageTotalUsd2 = pageTotalUsd2 + pageTotals2;
-               } 
+               }
             }
 
             debttzs = pageTotal2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             debtusd = pageTotalUsd2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
- 
+
             // Total over all pages
             total = api
                 .column( 6 )
@@ -1471,9 +1471,9 @@ function revenuetzs(row, data, start, end, display){
                   return a;
                 });
                 //console.log(abc);
- 
+
             // Total over this page
-           
+
 
 
             // pageTotalUsd = api
@@ -1489,18 +1489,18 @@ function revenuetzs(row, data, start, end, display){
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
- 
+
             // Update footer
             $( api.column( 5 ).footer() ).html(
                 'TZS'
             );
             $( api.column( 6 ).footer() ).html(
               $.fn.dataTable.render.number(',').display(pageTotal)
-                
+
             );
 
             $( api.column( 7 ).footer() ).html(
-              $.fn.dataTable.render.number(',').display(pageTotal2)      
+              $.fn.dataTable.render.number(',').display(pageTotal2)
             );
 
             $('tr:eq(1) th:eq(0)', api.table().footer()).html('USD');
@@ -1511,8 +1511,8 @@ function revenuetzs(row, data, start, end, display){
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
-                //footer: 'true', 
-                
+                //footer: 'true',
+
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
@@ -1532,7 +1532,7 @@ function revenuetzs(row, data, start, end, display){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1565,7 +1565,7 @@ function revenuetzs(row, data, start, end, display){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1583,7 +1583,7 @@ function revenuetzs(row, data, start, end, display){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1624,7 +1624,7 @@ function revenuetzs(row, data, start, end, display){
 
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1654,7 +1654,7 @@ function revenuetzs(row, data, start, end, display){
                else if(currency == 'USD'){
                   var pageTotals = intVal(api.cell(i, 6).data());
                   pageTotalUsd = pageTotalUsd + pageTotals;
-               } 
+               }
             }
             revenuetzss = pageTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             revenueusd = pageTotalUsd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -1669,12 +1669,12 @@ function revenuetzs(row, data, start, end, display){
                else if(currency == 'USD'){
                   var pageTotals2 = intVal(api.cell(i, 7).data());
                   pageTotalUsd2 = pageTotalUsd2 + pageTotals2;
-               } 
+               }
             }
 
             debttzs = pageTotal2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             debtusd = pageTotalUsd2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
- 
+
             // Total over all pages
             total = api
                 .column( 6 )
@@ -1688,25 +1688,25 @@ function revenuetzs(row, data, start, end, display){
                 .data().reduce(function (a){
                   return a;
                 });
-                
+
             pageTotaldebt = api
                 .column( 7, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
- 
+
             // Update footer
             $( api.column( 5 ).footer() ).html(
                 'TZS'
             );
             $( api.column( 6 ).footer() ).html(
               $.fn.dataTable.render.number(',').display(pageTotal)
-                
+
             );
 
             $( api.column( 7 ).footer() ).html(
-              $.fn.dataTable.render.number(',').display(pageTotal2)      
+              $.fn.dataTable.render.number(',').display(pageTotal2)
             );
 
             $('tr:eq(1) th:eq(0)', api.table().footer()).html('USD');
@@ -1717,8 +1717,8 @@ function revenuetzs(row, data, start, end, display){
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
-                //footer: 'true', 
-                
+                //footer: 'true',
+
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
@@ -1738,7 +1738,7 @@ function revenuetzs(row, data, start, end, display){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1771,7 +1771,7 @@ function revenuetzs(row, data, start, end, display){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1789,7 +1789,7 @@ function revenuetzs(row, data, start, end, display){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1828,7 +1828,7 @@ function revenuetzs(row, data, start, end, display){
 
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1856,7 +1856,7 @@ function revenuetzs(row, data, start, end, display){
                else if(currency == 'USD'){
                   var pageTotals = intVal(api.cell(i, 3).data());
                   pageTotalUsd = pageTotalUsd + pageTotals;
-               } 
+               }
             }
             revenuetzss = pageTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             revenueusd = pageTotalUsd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -1871,12 +1871,12 @@ function revenuetzs(row, data, start, end, display){
                else if(currency == 'USD'){
                   var pageTotals2 = intVal(api.cell(i, 4).data());
                   pageTotalUsd2 = pageTotalUsd2 + pageTotals2;
-               } 
+               }
             }
 
             debttzs = pageTotal2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             debtusd = pageTotalUsd2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
- 
+
             // Total over all pages
             total = api
                 .column( 3 )
@@ -1890,25 +1890,25 @@ function revenuetzs(row, data, start, end, display){
                 .data().reduce(function (a){
                   return a;
                 });
-                
+
             pageTotaldebt = api
                 .column( 4, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
- 
+
             // Update footer
             $( api.column( 2 ).footer() ).html(
                 'TZS'
             );
             $( api.column( 3 ).footer() ).html(
               $.fn.dataTable.render.number(',').display(pageTotal)
-                
+
             );
 
             $( api.column( 4 ).footer() ).html(
-              $.fn.dataTable.render.number(',').display(pageTotal2)      
+              $.fn.dataTable.render.number(',').display(pageTotal2)
             );
 
             $('tr:eq(1) th:eq(0)', api.table().footer()).html('USD');
@@ -1919,8 +1919,8 @@ function revenuetzs(row, data, start, end, display){
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
-                //footer: 'true', 
-                
+                //footer: 'true',
+
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
@@ -1940,7 +1940,7 @@ function revenuetzs(row, data, start, end, display){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1973,7 +1973,7 @@ function revenuetzs(row, data, start, end, display){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1991,7 +1991,7 @@ function revenuetzs(row, data, start, end, display){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
