@@ -591,6 +591,58 @@ class InvoicesController extends Controller
 
     }
 
+    public function sendInvoiceCarRental2(){
+        $invoice_data=DB::table('car_rental_invoices')->where('invoice_number', $id)->get();
+        $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+        $today=date('Y-m-d');
+
+    foreach($invoice_data as $var){
+
+    $amount_in_words='';
+
+    if($var->currency_invoice=='TZS'){
+        $amount_in_words=Terbilang::make($var->amount_to_be_paid,' TZS',' ');
+
+    }if ($var->currency_invoice=='USD'){
+
+        $amount_in_words=Terbilang::make($var->amount_to_be_paid,' USD',' ');
+    }
+
+    else{
+
+
+    }
+
+
+    $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+    Notification::route('mail','upmistesting@gmail.com')
+        ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('account_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'1234',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+
+    DB::table('car_rental_invoices')
+        ->where('invoice_number', $id)
+        ->update(['email_sent_status' => 'SENT']);
+
+    DB::table('car_rental_invoices')
+        ->where('invoice_number', $id)
+        ->update(['invoice_date' => $today]);
+
+
+    DB::table('car_rental_invoices')
+        ->where('invoice_number', $id)
+        ->update(['account_no' => $request->get('account_no')]);
+
+
+
+}
+
+        DB::table('invoice_notifications')->where('invoice_category',  'car_rental')->where('invoice_id',$id)->delete();
+
+        return redirect('/invoice_management')
+            ->with('success', 'Email Sent Successfully');
+    }
+
 
 public function sendAllInvoicesSpace(Request $request){
 
@@ -1059,6 +1111,18 @@ public function sendAllInvoicesSpace(Request $request){
 
         return redirect('/invoice_management')
             ->with('success', 'GEPG control number saved successfully');
+    }
+
+
+    public function addAccountNumberCar(Request $request,$id){
+
+        DB::table('car_rental_invoices')
+            ->where('invoice_number',$id)
+            ->update(['account_no' =>$request->get('account_no')]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Account number saved successfully');
     }
 
 

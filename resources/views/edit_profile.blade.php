@@ -1,5 +1,18 @@
 @extends('layouts.app')
 
+@section('style')
+<style type="text/css">
+  .signature-pad {
+ /* position: absolute;
+  left: 0;
+  top: 0;*/
+  width:400px;
+  height:200px;
+  background-color: white;
+}
+</style>
+@endsection
+
 @section('content')
 <div class="wrapper">
 <div class="sidebar">
@@ -52,13 +65,15 @@
     <div class="container">
         <br>
         @if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
@@ -71,7 +86,7 @@
     <h4>Edit Profile</h4>
   </div>
   <div class="card-body">
-    <form  method="get" action="/edit_profile_details" >
+    <form  method="get" action="{{ route('save_editprofile') }}" onsubmit="return savesignature()" >
         {{csrf_field()}}
 
         <div class="form-group row">
@@ -94,6 +109,7 @@
           </div>
           </div>
 
+         
           <div class="form-group row">
           <div class="col-sm-3"><strong>Phone Number :</strong></div>
           <div class="col-sm-7">
@@ -103,13 +119,24 @@ class="form-control" id="phone" aria-describedby="emailHelp"  placeholder="0xxxx
           </div>
           </div>
 
-          <input type="text"  name="user_id"  value="{{ Auth::user()->id }}" hidden="">
 
 
-          <center><div class="form-group">
+      <div class="form-group row">
+        <div class="col-sm-3"><strong>Signature :</strong></div>
+          <div class="col-sm-7">
+          <canvas id="signature-pad" class="signature-pad" style="border:1px #000 solid; " width=400 height=200></canvas>
+          <center><button id="clear" type="button" class="btn btn-danger">Erase Signature</button></center>
+        </div>
+      </div>
+
+
+          <input type="text"  name="user_id" id="user_id" value="{{ Auth::user()->id }}" hidden="">
+
+
+          <div class="form-group" align="right">
             <input type="button" class="btn btn-primary" value="Back" onclick="history.back()">
-              <button type="submit" class="btn btn-danger">Change</button>
-          </div></center>
+            <button type="submit" class="btn btn-danger">Change</button>
+          </div>
   </form>
   </div>
 </div>
@@ -118,4 +145,65 @@ class="form-control" id="phone" aria-describedby="emailHelp"  placeholder="0xxxx
     </div>
 </div>
 </div>
+@endsection
+
+@section('pagescript')
+{{-- <script src="https://szimek.github.io/signature_pad/js/signature_pad.umd.js"></script> --}}
+<script src="{{ asset('js/signature_pad.umd.js') }}" ></script>
+<script type="text/javascript">
+  var canvas = document.getElementById('signature-pad');
+  function resizeCanvas() {
+    // When zoomed out to less than 100%, for some very strange reason,
+    // some browsers report devicePixelRatio as less than 1
+    // and only part of the canvas is cleared then.
+    var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext("2d").scale(ratio, ratio);
+}
+
+window.onresize = resizeCanvas;
+resizeCanvas();
+
+var signaturePad = new SignaturePad(canvas, {
+  backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+});
+
+
+document.getElementById('clear').addEventListener('click', function () {
+  signaturePad.clear();
+});
+
+function savesignature(){
+  console.log("Passed");
+  if (signaturePad.isEmpty()) {
+    return alert("Please provide a signature first.");
+  }
+ var data = signaturePad.toDataURL('image/jpeg');
+
+  if(data==''){
+
+  }
+
+  else{
+    // AJAX Code To Submit Form.
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var user_id = $('#user_id').val();
+    $.ajax({
+      type: 'POST',
+      url: '{{ route('save_signature') }}',
+      data:{"_token": "{{ csrf_token() }}","signature": data, "user_id":user_id},
+      headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+      success: function(data){
+        
+      }
+    });
+}
+return true;
+}
+</script>
 @endsection

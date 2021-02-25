@@ -37,6 +37,7 @@ Route::post('/login/custom', [
      Route::get('/home2/income_filter','ChartController@udia_income_filter');
      Route::get('/home9/activity_filter','ChartController@cptu_activity_filter');
      Route::get('/home16/activity_filter','ChartController@space_activity_filter');
+     Route::get('/home16/contract_filter','ChartController@space_contract_filter');
     Route::get('/home23/activity_filter','ChartController@voteholder_activity_filter');
 
     Route::get('/Space', 'SpaceController@index');
@@ -52,7 +53,32 @@ Route::post('/login/custom', [
 
     Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
 
-    Route::get('/businesses', 'HomeController@businesses');
+    Route::get('/businesses', 'HomeController@businesses')->name('businesses');
+
+    Route::get('/businesses/research_flats', 'HomeController@researchflats')->name('research_flats');
+
+
+    Route::post('/businesses/research_flats/add', 'HomeController@addresearchflats')->name('addflat');
+
+    Route::post('/businesses/research_flats/edit', 'HomeController@editresearchflats')->name('editflat');
+
+    Route::get('/businesses/research_flats/delete/{id}', 'HomeController@deleteresearchflats')->name('deleteflat');
+
+    Route::get('/contracts_management/research_flats', 'HomeController@contractresearchflats')->name('contractflat');
+
+    Route::post('/contracts_management/research_flats/add_contract', 'HomeController@add_research_contract')->name('addcontractflat');
+
+    Route::post('/autocomplete/research_flats/category', 'HomeController@auto_category')->name('auto_category');
+
+    Route::post('/autocomplete/research_flat/name', 'HomeController@flat_client_details')->name('autocomplete.flat_name');
+
+     Route::post('/autocomplete/research_flat/all_details', 'HomeController@flat_all_details')->name('autocomplete.allflat_details');
+
+     Route::get('/contracts_management/research_flat/print','HomeController@printResearchForm')->name('printResearchForm');
+
+     Route::get('/contracts_management/research_flat/edit/{id}','HomeController@editResearchForm')->name('editResearchForm');
+
+     Route::post('/contracts_management/research_flat/send_edit/{id}','HomeController@sendeditResearchForm')->name('sendeditResearchForm');
 
 
     Route::get('/invoice_management/space/filter', 'InvoicesController@space_filter');
@@ -65,6 +91,9 @@ Route::post('/login/custom', [
         Route::get('/car_rental_invoice_management', 'InvoicesController@CarRentalInvoiceManagement');
         Route::post('/change_payment_status_car_rental/{id}', 'InvoicesController@changePayementStatusCarRental')->name('change_payment_status_car_rental');
         Route::post('/send_invoice_car_rental/{id}', 'InvoicesController@sendInvoiceCarRental')->name('send_invoice_car_rental');
+
+        Route::post('/send_invoice_car_rental/account/{id}', 'InvoicesController@sendInvoiceCarRental2')->name('send_invoice_car_rental2');
+
         Route::post('/create_car_invoice_manually', 'InvoicesController@CreateCarInvoiceManually')->name('create_car_invoice_manually');
 
 
@@ -107,6 +136,12 @@ Route::post('/clients/Space/SendMessage_2', 'clientsController@SendMessage2')->n
 
 Route::post('/car/add_car','carRentalController@newcar')->name('addCar');
 
+Route::post('/car/add_car/step2','carRentalController@newcar_step2')->name('addCar_step2');
+
+Route::post('/car/add_car/step3','carRentalController@newcar_step3')->name('addCar_step3');
+
+Route::get('/car/add_car/step4/{id}','carRentalController@newcar_step4')->name('addCar_step4');
+
 Route::get('/car','carRentalController@index');
 
 Route::post('/car/operational_expenditure/add','operational_expenditureController@addOperational')->name('addOperational');
@@ -144,6 +179,16 @@ Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('delet
 
 Route::get('/contracts/car_rental','carContractsController@index')->name('carContracts');
 
+Route::post('/contracts_management/log_sheet','carContractsController@logsheetindex')->name('logsheetindex');
+
+Route::get('/contracts_management/log_sheet/viewmore/{id}','carContractsController@logsheet_view_more')->name('logsheetmore');
+
+Route::post('/contracts_management/log_sheet/add','carContractsController@addlogsheet')->name('addlogsheet');
+
+Route::post('/contracts_management/log_sheet/edit','carContractsController@editlogsheet')->name('editlogsheet');
+
+Route::get('/contracts_management/log_sheet/delete/{id}','carContractsController@deletelogsheet')->name('deletelogsheet');
+
 Route::get('/contracts/car_rental/add','carContractsController@addContractFormA')->name('carRentalForm');
 
 Route::get('/contracts/car_rental_B/add/{id}','carContractsController@addContractFormB')->name('carRentalFormB');
@@ -166,7 +211,7 @@ Route::post('/contracts/car_rental/add_A/submit','carContractsController@newcont
 
 Route::post('/contracts/car_rental/add_B/submit','carContractsController@newcontractB')->name('newCarcontractB');
 
-Route::post('/contracts/car_rental/add_C/submit','carContractsController@newcontractC')->name('newCarcontractC');
+Route::post('/contracts/car_rental/add_C/submit','carContractsController@newcontractC')->name('newCarcontractC'); 
 
 Route::post('/contracts/car_rental/add_D/submit','carContractsController@newcontractD')->name('newCarcontractD');
 
@@ -240,6 +285,8 @@ Route::get('/reports/system/user/pdf','HomeController@systemreportPDF')->name('s
 
 Route::get('/reports/tenancy/pdf','HomeController@tenancyreport')->name('tenancyreportpdf');
 
+Route::get('/reports/research_flats/pdf','HomeController@flatsreport')->name('flatsreportpdf');
+
 
 Route::get('/notification/{id}', 'notificationsController@ShowNotifications')->name('ShowNotifications');
 
@@ -257,7 +304,9 @@ Route::get('/login2', function () {
 
 Route::get('/edit_profile','HomeController@editprofile');
 
-Route::get('/edit_profile_details','HomeController@editprofiledetails');
+Route::get('/edit_profile_details','HomeController@editprofiledetails')->name('save_editprofile');
+
+Route::post('/edit_profile/save_signature','HomeController@save_signature')->name('save_signature');
 
 Route::get('/view_profile','HomeController@viewprofile')->name('viewprofile');
 
@@ -435,6 +484,8 @@ Route::group(['middleware' => ['auth', 'car']], function() {
     Route::get('/contract_availability_car', 'InvoicesController@contractAvailabilityCar')->name('contract_availability_car');
     Route::get('/send_all_invoices_car', 'InvoicesController@sendAllInvoicesCar')->name('send_all_invoices_car');
     Route::post('/add_control_no_car/{id}', 'InvoicesController@addControlNumberCar')->name('add_control_no_car');
+
+    Route::post('/add_account_no_car/{id}', 'InvoicesController@addAccountNumberCar')->name('add_account_no_car');
 
 
 

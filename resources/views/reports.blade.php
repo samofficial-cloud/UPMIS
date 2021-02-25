@@ -221,6 +221,9 @@ $year=$current-3;
               @endif
               <option value="invoice">Invoice and Payment Module</option>
               {{-- <option value="payment">Payments Module</option> --}}
+              @if ($category=='Research Flats only' OR $category=='All')
+              <option value="research_flats">Research Flats</option>
+              @endif
               @if ($category=='Real Estate only' OR $category=='All')
               <option value="space">Space Module</option>
               <option value="tenant">Tenants Module</option>
@@ -228,6 +231,7 @@ $year=$current-3;
               @if ($category=='All')
               <option value="system">System Settings</option>
               @endif
+
             </select>
         </div>
     </div>
@@ -396,9 +400,14 @@ $year=$current-3;
                   <label for="insurance_packagefilter" id="insurance_packagefilter" class="form-check-label">Insurance Package</label>
                 </div>
 
-                <div class="col-3 form-check form-check-inline">
+                {{-- <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="insurance_yearfilter" id="insurance_yearfilter"  value="">
                   <label for="insurance_yearfilter" id="insurance_yearfilter" class="form-check-label">Year</label>
+                </div> --}}
+
+                <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="insurance_datefilter" id="insurance_datefilter"  value="">
+                  <label for="insurance_datefilter" id="insurance_datefilter" class="form-check-label">Date</label>
                 </div>
 
                </div>
@@ -522,6 +531,20 @@ $year=$current-3;
             </select>
         </div>
     </div>
+
+ <div class="form-group row" id="insurancedatediv" style="display: none;">
+    <div class="form-wrapper col-6">
+        <label for="insurance_start_date">From<span style="color: red;">*</span></label>
+        <span id="insurance_start_datemsg"></span>
+        <input type="date" id="insurance_start_date" name="insurance_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+      </div>
+
+    <div class="form-wrapper col-6">
+      <label for="insurance_end_date">To<span style="color: red;">*</span></label>
+      <span id="insurance_end_datemsg"></span>
+      <input type="date" id="insurance_end_date" name="insurance_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+    </div>
+  </div>
 
     <div class="form-group" id="tenanttypediv" style="display: none;">
           <div class="form-wrapper">
@@ -1588,6 +1611,93 @@ $year=$current-3;
           </div>
 
 
+   <div class="form-group" id="flatsreporttypediv" style="display: none;">
+      <div class="form-wrapper">
+        <label for="flats_reporttype">Select Report Type<span style="color: red;">*</span></label>
+          <span id="flatsreporttypemsg"></span>
+            <select class="form-control" id="flats_reporttype" name="flats_reporttype">
+              <option value=" " disabled selected hidden>Select Report Type</option>
+              <option value="rooms">Research Flats Rooms</option>
+              <option value="contracts">Research Flats Contracts</option>
+              {{-- <option value="clients">List of Clients</option> --}}
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group" id="flatsrooms_filterBydiv" style="display: none;">
+      <div class="form-wrapper">
+                  <label for="Criteria">Filter By</label>
+                  <div class="row">
+
+                  <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="room_category_filter" id="room_category_filter" value="">
+                  <label for="room_category_filter" class="form-check-label">Room Category</label>
+                 </div>
+               </div>
+             </div>
+     </div>
+
+     <div class="form-group" id="room_categoryDiv" style="display: none;">
+      <div class="form-wrapper">
+        <label for="room_category">Select Room Category<span style="color: red;">*</span></label>
+          <span id="roomcategorymsg"></span>
+            <select class="form-control" id="room_category" name="room_category">
+              <option value="" disabled selected hidden>Select Room Category</option>
+              <option value="Single Room">Single Room</option>
+              <option value="Shared Room">Shared Room</option>
+              <option value="Suit Room">Suit Room</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" id="flatscontracts_filterBydiv" style="display: none;">
+      <div class="form-wrapper">
+                  <label for="Criteria">Filter By</label>
+                  <div class="row">
+
+                  <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="flats_payment_filter" id="flats_payment_filter" value="">
+                  <label for="flats_payment_filter" class="form-check-label">Payment Status</label>
+                 </div>
+
+                 <div class="col-3 form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="flats_status_filter" id="flats_status_filter" value="">
+                  <label for="flats_status_filter" class="form-check-label">Contract Status</label>
+                 </div>
+
+               </div>
+             </div>
+     </div>
+
+
+      <div class="form-group" id="flats_paymentDiv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="flats_payment">Select Payment Status<span style="color: red;">*</span></label>
+          <span id="flatspaymentmsg"></span>
+            <select class="form-control" id="flats_payment" name="flats_payment">
+              <option value="" disabled selected hidden>Select Payment Status</option>
+              <option value="Paid">Paid</option>
+              <option value="Partially Paid">Partially Paid</option>
+              <option value="Not paid">Not Paid</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group" id="flats_statusdiv" style="display: none;">
+          <div class="form-wrapper">
+          <label for="flats_status">Select Contract Status<span style="color: red;">*</span></label>
+          <span id="flats_statusmsg"></span>
+            <select class="form-control" id="flats_status" name="flats_status">
+              <option value="" disabled selected hidden>Select Contract Status</option>
+              <option value="Active">Active</option>
+              <option value="Expired">Expired</option>
+            </select>
+        </div>
+    </div>  
+
+
   </div>
   <div>
   <button class="btn btn-primary" type="submit" id="submitbutton">Generate</button>
@@ -1628,6 +1738,7 @@ function myFunction() {
        $('#principaltypediv').hide();
        $('#insurancepackagediv').hide();
        $('#insuranceyeardiv').hide();
+       $('#insurancedatediv').hide();
        $('#udiayeardiv').hide();
        $('#insurancetypediv').hide();
        $('#tenancysheduleduration').hide();
@@ -1762,6 +1873,12 @@ function myFunction() {
       $("#summary_location_filter:checked").prop("checked", false);
       $("#summary_year_filter:checked").prop("checked", false);
       $("#summary_year_filter2:checked").prop("checked", false);
+      $('#flatsreporttypediv').hide();
+      $('#flatsrooms_filterBydiv').hide();
+      $('#room_categoryDiv').hide();
+      $('#flatscontracts_filterBydiv').hide();
+      $('#flats_paymentDiv').hide();
+      $('#flats_statusdiv').hide();
      }
 
      else if(query=='insurance'){
@@ -1917,6 +2034,12 @@ function myFunction() {
       $("#summary_location_filter:checked").prop("checked", false);
       $("#summary_year_filter:checked").prop("checked", false);
       $("#summary_year_filter2:checked").prop("checked", false);
+      $('#flatsreporttypediv').hide();
+      $('#flatsrooms_filterBydiv').hide();
+      $('#room_categoryDiv').hide();
+      $('#flatscontracts_filterBydiv').hide();
+      $('#flats_paymentDiv').hide();
+      $('#flats_statusdiv').hide();
      }
      else if(query=='tenant'){
        $('#tenanttypediv').show();
@@ -1938,6 +2061,7 @@ function myFunction() {
        $('#insurancetypediv').hide();
        $('#insurancepackagediv').hide();
        $('#insuranceyeardiv').hide();
+       $('#insurancedatediv').hide();
        $('#udiayeardiv').hide();
        $('#major_industry').val(" ");
        $('#space_id').val(" ");
@@ -2061,6 +2185,12 @@ function myFunction() {
       $("#summary_location_filter:checked").prop("checked", false);
       $("#summary_year_filter:checked").prop("checked", false);
       $("#summary_year_filter2:checked").prop("checked", false);
+      $('#flatsreporttypediv').hide();
+      $('#flatsrooms_filterBydiv').hide();
+      $('#room_categoryDiv').hide();
+      $('#flatscontracts_filterBydiv').hide();
+      $('#flats_paymentDiv').hide();
+      $('#flats_statusdiv').hide();
      }
      else if(query=='car'){
       $('#insurancereporttypediv').hide();
@@ -2070,6 +2200,7 @@ function myFunction() {
        $('#insurancetypediv').hide();
        $('#insurancepackagediv').hide();
        $('#insuranceyeardiv').hide();
+       $('#insurancedatediv').hide();
        $('#udiayeardiv').hide();
       $('#cartypediv').show();
        $('#spacetypediv').hide();
@@ -2187,7 +2318,14 @@ function myFunction() {
       $("#summary_location_filter:checked").prop("checked", false);
       $("#summary_year_filter:checked").prop("checked", false);
       $("#summary_year_filter2:checked").prop("checked", false);
+      $('#flatsreporttypediv').hide();
+      $('#flatsrooms_filterBydiv').hide();
+      $('#room_categoryDiv').hide();
+      $('#flatscontracts_filterBydiv').hide();
+      $('#flats_paymentDiv').hide();
+      $('#flats_statusdiv').hide();
      }
+
      else if(query=='contract'){
       $('#contracttypediv').show();
       $('#insurancereporttypediv').hide();
@@ -2197,6 +2335,7 @@ function myFunction() {
        $('#insurancetypediv').hide();
        $('#insurancepackagediv').hide();
        $('#insuranceyeardiv').hide();
+       $('#insurancedatediv').hide();
        $('#udiayeardiv').hide();
        $('#TenantfilterBydiv').hide();
        $('#tenancysheduleduration').hide();
@@ -2332,6 +2471,12 @@ function myFunction() {
       $("#summary_location_filter:checked").prop("checked", false);
       $("#summary_year_filter:checked").prop("checked", false);
       $("#summary_year_filter2:checked").prop("checked", false);
+      $('#flatsreporttypediv').hide();
+      $('#flatsrooms_filterBydiv').hide();
+      $('#room_categoryDiv').hide();
+      $('#flatscontracts_filterBydiv').hide();
+      $('#flats_paymentDiv').hide();
+      $('#flats_statusdiv').hide();
      }
      else if(query=='invoice'){
       $('#invoicetypediv').show();
@@ -2343,6 +2488,7 @@ function myFunction() {
        $('#insurancetypediv').hide();
        $('#insurancepackagediv').hide();
        $('#insuranceyeardiv').hide();
+       $('#insurancedatediv').hide();
        $('#udiayeardiv').hide();
        $('#TenantfilterBydiv').hide();
        $('#tenancysheduleduration').hide();
@@ -2459,6 +2605,12 @@ function myFunction() {
     $("input[name='tenancy_business_filter']:checked").prop("checked", false);
     $("input[name='tenancy_location_filter']:checked").prop("checked", false);
     $("input[name='system_status_filter']:checked").prop("checked", false);
+    $('#flatsreporttypediv').hide();
+      $('#flatsrooms_filterBydiv').hide();
+      $('#room_categoryDiv').hide();
+      $('#flatscontracts_filterBydiv').hide();
+      $('#flats_paymentDiv').hide();
+      $('#flats_statusdiv').hide();
      }
      else if(query=='system'){
       $('#spacetypediv').hide();
@@ -2497,6 +2649,7 @@ function myFunction() {
        $('#principaltypediv').hide();
        $('#insurancepackagediv').hide();
        $('#insuranceyeardiv').hide();
+       $('#insurancedatediv').hide();
        $('#udiayeardiv').hide();
        $('#insurancetypediv').hide();
        $('#TenantfilterBydiv').hide();
@@ -2626,6 +2779,186 @@ function myFunction() {
       $("#summary_location_filter:checked").prop("checked", false);
       $("#summary_year_filter:checked").prop("checked", false);
       $("#summary_year_filter:checked").prop("checked", false);
+      $('#flatsreporttypediv').hide();
+      $('#flatsrooms_filterBydiv').hide();
+      $('#room_categoryDiv').hide();
+      $('#flatscontracts_filterBydiv').hide();
+      $('#flats_paymentDiv').hide();
+      $('#flats_statusdiv').hide();
+     }
+
+    else if(query=='research_flats'){
+      $('#flatsreporttypediv').show();
+      $('#spacetypediv').hide();
+      $('#spacefilterdiv').hide();
+      $('#space_industrydiv2').hide();
+       $('#space_idDiv').hide();
+       $('#spacefilterBydate').hide();
+       $('#spacefilterBydiv').hide();
+       $('#spacedatediv').hide();
+       $('#spacepricediv').hide();
+       $('#Locationtypediv').hide();
+       $('#space_industrydiv').hide();
+       $('#spaceoccupationdiv').hide();
+       $('#TenantfilterBydiv').hide();
+       $('#tenancysheduleduration').hide();
+       $('#businesstypediv').hide();
+       $('#contractstatusdiv').hide();
+       $('#paymentstatusdiv').hide();
+       $('#major_industry').val(" ");
+       $('#space_id').val(" ");
+       $('#start_date').val(" ");
+       $('#end_date').val(" ");
+       $('#min_price').val(" ");
+       $('#max_price').val(" ");
+       $('#space_status').val("");
+       $('#Locationtype').val("");
+       $("input[name='space_filter_date']:checked").prop("checked", false);
+       $("input[name='space_prize']:checked").prop("checked", false);
+       $("input[name='location_filter']:checked").prop("checked", false);
+       $("input[name='industry_filter']:checked").prop("checked", false);
+       $("input[name='status']:checked").prop("checked", false);
+
+       $('#insurancereporttypediv').hide();
+       $('#InsurancefilterBydiv').hide();
+       $('#InsurancefilterBytype').hide();
+       $('#principaltypediv').hide();
+       $('#insurancepackagediv').hide();
+       $('#insuranceyeardiv').hide();
+       $('#insurancedatediv').hide();
+       $('#udiayeardiv').hide();
+       $('#insurancetypediv').hide();
+       $('#TenantfilterBydiv').hide();
+       $('#businesstypediv').hide();
+       $('#contractstatusdiv').hide();
+       $('#paymentstatusdiv').hide();
+       $("input[name='principal_filter']:checked").prop("checked", false);
+       $("input[name='insurance_typefilter']:checked").prop("checked", false);
+       $("input[name='business_filter']:checked").prop("checked", false);
+       $("input[name='contract_filter']:checked").prop("checked", false);
+       $("input[name='payment_filter']:checked").prop("checked", false);
+       $('#TenantInvoiceCriteriadiv').hide();
+       $('#t_invoicedurationdiv').hide();
+       $('#TenantInvoicefilterBydiv').hide();
+       $('#tInvoicepaymentstatusdiv').hide();
+       $("input[name='t_invoice_payment_filter']:checked").prop("checked", false);
+       $('#t_Invoice_start_date').val('');
+       $('#t_invoice_end_date').val('');
+       $('#t_invoicepayment_status').val(' ');
+       $('#insurance_reporttype').val(" ");
+       $('#principaltype').val(" ");
+       $('#insurance_type').val(" ");
+       $('#tenant_type').val(" ");
+       $('#business_type').val(" ");
+       $('#contract_status').val(" ");
+       $('#payment_status').val(" ");
+       $('#cartypediv').hide();
+       $('#carsfilterBydiv').hide();
+       $('#carclientfilterBydiv').hide();
+       $('#carrevenuefilterBydiv').hide();
+       $('#carrevenuemodeldiv').hide();
+   $('#carmodeldiv').hide();
+    $('#carstatusdiv').hide();
+    $('#carrangediv').hide();
+    $('#rentstatusdiv').hide();
+    $('#vehicleregdiv').hide();
+    $('#rent_durationdiv').hide();
+    $('#vehicle_reg').val("");
+    $('#rent_start_date').val("");
+    $('#rent_end_date').val("");
+    $('#model').val("");
+    $('#vehicle_status').val("");
+    $('#carmin_price').val("");
+    $('#carmax_price').val("");
+    $('#rent_status').val("");
+    $('#clientcostcentrediv').hide();
+    $('#clientcontractdiv').hide();
+    $('#clientdatediv').hide();
+    $('#clientpaymentdiv').hide();
+    $('#carhistoryfilterBydiv').hide();
+    $('#clientcostcentre').val("");
+    $('#client_start_date').val("");
+    $('#client_end_date').val("");
+    $('#carhistorydatediv').hide();
+    $('#carhistory_start_date').val("");
+    $('#carhistory_end_date').val("");
+  $("input[name='cardate_histfil']:checked").prop("checked", false);
+   $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+      $("input[name='carrange_filter']:checked").prop("checked", false);
+       $("input[name='rentstatus_filter']:checked").prop("checked", false);
+        $("input[name='clientcostcentre_filter']:checked").prop("checked", false);
+        $("input[name='clientcontract_filter']:checked").prop("checked", false);
+        $("input[name='clientdate_filter']:checked").prop("checked", false);
+        $("input[name='clientpayment_filter']:checked").prop("checked", false);
+       $('#revenue_durationdiv').hide();
+       $('#car_type').val(" ");
+       $('#tenanttypediv').hide();
+       $('#contracttypediv').hide();
+       $('#contractbusinesstypediv').hide();
+       $('#ContractfilterBydiv').hide();
+       $('#clienttypediv').hide();
+       $("input[name='client_filter']:checked").prop("checked", false);
+       $('#contract_type').val(" ");
+       $('#contractbusiness_type').val(" ");
+       $('#client_type').val(" ");
+       $('#invoicetypediv').hide();
+       $('#InvoicefilterBydiv').hide();
+       $('#Inbusinesstypediv').hide();
+       $('#In_clientnamediv').hide();
+       $('#Inpaymentstatusdiv').hide();
+       $('#Inyeardiv').hide();
+       $('#InSpaceCriteriadiv').hide();
+       $('#invoice_type').val(" ");
+       $('#Inbusiness_type').val(" ");
+       $('#In_clientname').val("");
+       $('#In_payment_status').val(" ");
+       $('#In_year').val(" ");
+       $("input[name='In_client_filter']:checked").prop("checked", false);
+       $("input[name='In_payment_filter']:checked").prop("checked", false);
+       $("input[name='In_year_filter']:checked").prop("checked", false);
+    $('#contractbusinesstypediv').hide();
+    $('#contractbusiness_type').val();
+    $('#ContractfilterBydiv').hide();
+    $('#Con_clientnamediv').hide();
+    $('#Con_clientname').val("");
+    $('#Conpaymentstatusdiv').hide();
+    $('#Con_payment_status').val(" ");
+    $('#Conyeardiv').hide();
+    $('#Con_year').val(" ");
+    $('#Conyearcategorydiv').hide();
+    $("input[name='Con_client_filter']:checked").prop("checked", false);
+    $("input[name='Con_payment_filter']:checked").prop("checked", false);
+    $("input[name='Con_year_filter']:checked").prop("checked", false);
+    $('#tenancy_businessdiv').hide();
+    $('#tenancy_locationdiv').hide();
+    $('#tenancyfilterBydiv').hide();
+    $('#tenancy_business').val(" ");
+    $('#tenancy_location').val(" ");
+    $("input[name='tenancy_business_filter']:checked").prop("checked", false);
+    $("input[name='tenancy_location_filter']:checked").prop("checked", false);
+    $('#systemtypediv').show();
+    $('#summaryspacefilterBydiv').hide();
+    $('#summaryspacefilterBydiv2').hide();
+      $('#summaryshowcriteriadiv').hide();
+      $('#summaryspacecriteriadiv').hide();
+      $('#summary_businessdiv').hide();
+      $('#summary_locationdiv').hide();
+      $('#summarybiztypediv').hide();
+      $('#summary_yeardiv').hide();
+      $('#summary_start_date').val("");
+      $('#summary_end_date').val("");
+      $('#summarybiztype').val(" ");
+      $('#summary_business').val(" ");
+      $('#summary_location').val(" ");
+      $("#summary_business_filter:checked").prop("checked", false);
+      $("#summary_location_filter:checked").prop("checked", false);
+      $("#summary_year_filter:checked").prop("checked", false);
+      $("#summary_year_filter:checked").prop("checked", false);
+      $('#systemtypediv').hide();
+    $('#systemfilterBydiv').hide();
+    $('#systemstatusdiv').hide();
+    $('#system_type').val(" ");
      }
     });
 
@@ -3903,9 +4236,57 @@ var a100=0;
    //   $('#costcentres').fadeOut();
    //  });
 
+
+   $('#flats_reporttype').click(function(){
+      var type = $(this).val();
+        if(type=='rooms'){
+          $('#flatsrooms_filterBydiv').show();
+          $('#flatscontracts_filterBydiv').hide();
+          $('#flats_paymentDiv').hide();
+          $('#flats_statusdiv').hide();
+        }
+        else if(type=='contracts'){
+          $('#flatscontracts_filterBydiv').show();
+          $('#room_categoryDiv').hide();
+          $('#flatsrooms_filterBydiv').hide();
+        } 
+    });
+
+
+  $("#room_category_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#room_categoryDiv').show();
+    }
+    else{
+      $('#room_categoryDiv').hide();
+      $('#room_category').val("");
+    }
+  });
+
+
+  $("#flats_payment_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#flats_paymentDiv').show();
+    }
+    else{
+      $('#flats_paymentDiv').hide();
+      $('#flats_payment').val("");
+    }
+  });
+
+  $("#flats_status_filter").click(function(){
+    if($(this).is(":checked")){
+      $('#flats_statusdiv').show();
+    }
+    else{
+      $('#flats_statusdiv').hide();
+      $('#flats_status').val("");
+    }
+  });
+
    $("#submitbutton").click(function(e){
        e.preventDefault();
-       var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32,p33,p34,p35,p36,p490,p491
+       var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32,p33,p34,p35,p36,p490,p491, p50, p51, p52, p53, p54;
        var query = $("#module").val();
 
        if(query=='space'){
@@ -4229,9 +4610,54 @@ var a100=0;
           p102=1;
         }
 
-        if(p8==1 && p9==1 &&p10==1&&p101==1&&p102==1){
+          if($('#insurance_datefilter').is(":checked")){
+          var query102=$('#insurance_start_date').val();
+          console.log(query102);
+          var query103 = $('#insurance_end_date').val();
+              if(query102==""){
+               var p102=0;
+              $('#insurance_start_datemsg').show();
+              var message=document.getElementById('insurance_start_datemsg');
+               message.style.color='red';
+               message.innerHTML="Required";
+               $('#insurance_start_date').attr('style','border-bottom:1px solid #f00');
+              }
+            else{
+              p102=1;
+             $('#insurance_start_datemsg').hide();
+              $('#insurance_start_date').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            if(query103==""){
+               var p102a=0;
+              $('#insurance_end_datemsg').show();
+              var message=document.getElementById('insurance_end_datemsg');
+               message.style.color='red';
+               message.innerHTML="Required";
+               $('#insurance_end_date').attr('style','border-bottom:1px solid #f00');
+              }
+            else{
+              p102a=1;
+             $('#insurance_end_datemsg').hide();
+              $('#insurance_end_date').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            if(query102!='' && query103!=''){
+              if(query102 > query103){
+                var query102a = query102;
+                query102 = query103;
+                query103 = query102a;
+              }
+            }
+        }
+        else{
+          p102=1;
+          p102a=1;
+        }
+
+        if(p8==1 && p9==1 &&p10==1&&p101==1&&p102==1&&p102a==1){
           var _token = $('input[name="_token"]').val();
-          var postData2 = "report_type="+ query9+ "&principaltype="+ query10+ "&insurance_type=" + query11 + "&principal_filter=" + $('#principal_filter').val() + "&insurance_typefilter=" + $('#insurance_typefilter').val() +"&package_filter="+$('#insurance_packagefilter').val()+"&package="+query101+"&yr_fil="+$('#insurance_yearfilter').val()+"&yr_cat="+query102+"&yr="+query103;
+          var postData2 = "report_type="+ query9+ "&principaltype="+ query10+ "&insurance_type=" + query11 + "&principal_filter=" + $('#principal_filter').val() + "&insurance_typefilter=" + $('#insurance_typefilter').val() +"&package_filter="+$('#insurance_packagefilter').val()+"&package="+query101+"&yr_fil="+$('#insurance_datefilter').val()+"&start="+query102+"&end="+query103;
 
             $.ajax({
             url: "{{ route('spacereport1') }}",
@@ -4589,6 +5015,129 @@ var a100=0;
             }
         });
       }
+    }
+
+    else if(query=='research_flats'){
+        var query50 = $('#flats_reporttype').val();
+        if(query50==null){
+          p51 = 0;
+          $('#flatsreporttypemsg').show();
+          var message=document.getElementById('flatsreporttypemsg');
+           message.style.color='red';
+           message.innerHTML="Required";
+           $('#flats_reporttype').attr('style','border:1px solid #f00');
+        }
+
+        else if(query50=='rooms'){
+          p51 = 1; p53=1; p54=1;
+          $('#flatsreporttypemsg').hide();
+          $('#flats_reporttype').attr('style','border: 1px solid #ccc');
+
+
+          if($('#room_category_filter').is(":checked")){
+            $("#room_category_filter").val("true");
+            var query51=$('#room_category').val();
+
+            if(query51==null){
+              p52 = 0;
+              $('#roomcategorymsg').show();
+              var message=document.getElementById('roomcategorymsg');
+               message.style.color='red';
+               message.innerHTML="Required";
+              $('#room_category').attr('style','border:1px solid #f00');
+            }
+
+            else{
+              p52 = 1;
+              $('#roomcategorymsg').hide();
+              $('#room_category').attr('style','border:1px solid #ccc');
+            }
+          }
+          else{
+            p52 = 1;
+            $("#room_category_filter").val("");
+            $('#roomcategorymsg').hide();
+            $('#room_category').attr('style','border:1px solid #ccc');
+          }
+
+        }
+        else if(query50=='contracts'){
+          p51 = 1; p52=1; 
+          $('#flatsreporttypemsg').hide();
+          $('#flats_reporttype').attr('style','border: 1px solid #ccc');
+
+
+          if($('#flats_payment_filter').is(":checked")){
+            $("#flats_payment_filter").val("true");
+            var query52=$('#flats_payment').val();
+            if(query52==null){
+              p53 = 0;
+              $('#flatspaymentmsg').show();
+              var message=document.getElementById('flatspaymentmsg');
+               message.style.color='red';
+               message.innerHTML="Required";
+              $('#flats_payment').attr('style','border:1px solid #f00');
+            }
+
+            else{
+              p53 = 1;
+              $('#flatspaymentmsg').hide();
+              $('#flats_payment').attr('style','border:1px solid #ccc');
+            }
+          }
+
+          else{
+            p53 = 1;
+            $("#flats_payment_filter").val("");
+            $('#flatspaymentmsg').hide();
+            $('#flats_payment').attr('style','border:1px solid #ccc');
+          }
+
+
+          if($('#flats_status_filter').is(":checked")){
+            $("#flats_status_filter").val("true");
+            var query53=$('#flats_status').val();
+
+            if(query53==null){
+              p54 = 0;
+              $('#flats_statusmsg').show();
+              var message=document.getElementById('flats_statusmsg');
+               message.style.color='red';
+               message.innerHTML="Required";
+              $('#flats_status').attr('style','border:1px solid #f00');
+            }
+
+            else{
+              p54 = 1;
+              $('#flats_statusmsg').hide();
+              $('#flats_status').attr('style','border:1px solid #ccc');
+            }
+          }
+          else{
+            p54 = 1;
+            $("#flats_status_filter").val("");
+            $('#flats_statusmsg').hide();
+            $('#flats_status').attr('style','border:1px solid #ccc');
+          }
+        }
+
+        if(p51==1 && p52==1 && p53==1 && p54==1){
+          var _token = $('input[name="_token"]').val();
+          var postData51 = "report_type="+ query50+ "&room_fil="+$('#room_category_filter').val()+ "&room="+ query51 + "&pay_fil="+$('#flats_payment_filter').val()+"&pay="+query52+"&stat_fil="+$('#flats_status_filter').val()+"&status="+query53;
+
+            $.ajax({
+            url: "{{ route('spacereport1') }}",
+            method:"GET",
+            data: postData4,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(data) {
+                window.location.href = "/reports/research_flats/pdf?"+postData51;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        }
     }
 
 
@@ -5665,6 +6214,23 @@ var a100=0;
        $('#udia_year').val(" ");
        $('#insurance_year').attr('style','border: 1px solid #ccc');
        $('#udia_year').attr('style','border: 1px solid #ccc');
+    }
+
+    });
+
+     $("#insurance_datefilter").click(function(){
+    if($(this).is(":checked")){
+      $(this).val("true");
+      $('#insurancedatediv').show();
+    }
+    else{
+       $('#insurancedatediv').hide();
+       $('insurance_start_datemsg').hide();
+       $('insurance_end_datemsg').hide();
+       $('#insurance_start_date').val("");
+       $('#insurance_end_date').val("");
+       $('#insurance_start_date').attr('style','border-bottom: 1px solid #ccc');
+       $('#insurance_end_date').attr('style','border-bottom: 1px solid #ccc');
     }
 
     });

@@ -23,6 +23,76 @@ class carRentalController extends Controller
     }
 
     public function newcar(Request $request){
+      $vehicle_reg_no = strtoupper($request->input('vehicle_reg_no'));
+
+       $validate=carRental::select('vehicle_reg_no')->where('vehicle_reg_no',$vehicle_reg_no)->where('flag','1')->value('vehicle_reg_no');
+
+       if(is_null($validate)){
+        $deactivated = carRental::where('vehicle_reg_no',$vehicle_reg_no)->where('flag','0')->first();
+          if(is_null($deactivated)){
+            $vehicle_model = $request->input('model');
+            $vehicle_status = $request->input('vehicle_status');
+            $hire_rate = $request->input('hire_rate');
+            $data=array('vehicle_reg_no'=>$vehicle_reg_no,"vehicle_model"=>$vehicle_model,'vehicle_status'=>$vehicle_status, 'hire_rate'=>$hire_rate, 'flag'=>'0', 'form_status'=>'DVC Administrator','cptu_msg_status'=>'outbox','dvc_msg_status'=>'inbox');
+            DB::table('car_rentals')->insert($data);
+          }
+          else{
+            $deactivated->vehicle_model = $request->input('model');
+            $deactivated->hire_rate=$request->input('hire_rate');
+            $deactivated->form_status = 'DVC Administrator';
+            $deactivated->cptu_msg_status = 'outbox';
+            $deactivated->dvc_msg_status = 'inbox';
+
+            $deactivated->save();
+          }
+            return redirect()->back()->with('success', 'Car Details Forwarded Successfully');
+       }
+       else{
+        return redirect()->back()->with('errors', "This vehicle '$vehicle_reg_no'  could not be added because it already exists in the system");
+       }
+
+
+    }
+
+    public function newcar_step2(Request $request){
+      $vehicle=carRental::find($request->get('vehicle_id'));
+      $status = $request->get('approval_status');
+        if($status=='Accepted'){
+          $vehicle->remarks=$status;
+          $vehicle->flag = '1';
+        }
+        elseif($status=='Rejected'){
+          $vehicle->remarks=$status;
+          $vehicle->comments=$request->get('reason');
+          $vehicle->cptu_msg_status = 'inbox';
+        }
+      $vehicle->form_status='Transport Officer-CPTU';
+      $vehicle->dvc_msg_status = 'outbox';
+      $vehicle->save();
+      return redirect()->back()->with('success', 'Car Details Forwarded Successfully');
+      
+    }
+
+    public function newcar_step3(Request $request){
+      $vehicle=carRental::find($request->get('vehicle_id'));
+      $vehicle->vehicle_reg_no=$request->get('vehicle_reg_no');
+      $vehicle->vehicle_model = $request->get('model');
+      $vehicle->vehicle_status = $request->get('vehicle_status');
+      $vehicle->hire_rate = $request->get('hire_rate');
+      $vehicle->form_status = 'DVC Administrator';
+      $vehicle->dvc_msg_status = 'inbox';
+      $vehicle->cptu_msg_status = 'outbox';
+      $vehicle->save();
+      return redirect()->back()->with('success', 'Car Details Forwarded Successfully');
+    }
+
+    public function newcar_step4($id){
+      $vehicle=carRental::find($id);
+      $vehicle->delete();
+      return redirect()->back()->with('success', 'Car Details Deleted Successfully');
+    }
+
+    public function newcar2(Request $request){
     $vehicle_reg_no = strtoupper($request->input('vehicle_reg_no'));
 
     $validate=carRental::select('vehicle_reg_no')->where('vehicle_reg_no',$vehicle_reg_no)->where('flag','1')->value('vehicle_reg_no');

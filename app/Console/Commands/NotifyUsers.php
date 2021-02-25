@@ -48,6 +48,7 @@ class NotifyUsers extends Command
         $space_contracts = space_contract::select('space_contracts.full_name','email','start_date', 'end_date', 'contract_id')
                                     ->join('clients','clients.full_name','=','space_contracts.full_name')
                                     ->whereRaw('DATEDIFF(end_date,CURDATE()) = 30')
+                                    ->where('contract_category','Unsolicited')
                                     ->get();
         $salutation = "Real Estate Department UDSM.";
 
