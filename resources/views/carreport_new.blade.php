@@ -367,7 +367,10 @@ else{
                  @if($_GET['pay']=='Partially Paid')
                   <th scope="col" style="width: 12%;"><center>Paid (TZS)</center></th>
                   <th scope="col" style="width: 12%;"><center>Debt (TZS)</center></th>
-                @else
+                @elseif($_GET['pay']=='Not paid')
+                  <th scope="col" style="width: 15%;"><center>Amount (TZS)</center></th>
+                  <th scope="col" style="width: 10%;"><center> Debt Age</center></th>
+                 @else
                   <th scope="col" style="width: 15%;"><center>Amount (TZS)</center></th>
                 @endif
               @endif
@@ -389,6 +392,7 @@ else{
                 <?php $total_paid = $total_paid + $client->amount_paid;?>
               @elseif($_GET['pay']=='Not paid')
                 <td style="text-align: right;">{{number_format($client->amount_not_paid)}}</td>
+                <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($client->invoice_date)->diffForHumans(null, true) }} </td>
                 <?php $total_not = $total_not + $client->amount_not_paid;?>
               @elseif($_GET['pay']=='Partially Paid')
                 <td style="text-align: right;">{{number_format($client->amount_paid)}}</td>
@@ -407,6 +411,9 @@ else{
             <tr>
                 <th colspan="7" style="text-align:left">TOTAL</th>
                   @if($_GET['pay']=='Partially Paid')
+                    <th style="padding-left: 12px;"></th>
+                    <th style="padding-left: 12px;"></th>
+                  @elseif($_GET['pay']=='Not paid')
                     <th style="padding-left: 12px;"></th>
                     <th style="padding-left: 12px;"></th>
                   @else
@@ -983,7 +990,7 @@ if(urlParams.get('report_type')=='clients'){
           ]
       });
     }
-    else{
+    else if(urlParams.get('pay')=='Paid'){
        var table = $('#myTable1').DataTable({
        "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -1053,7 +1060,7 @@ if(urlParams.get('report_type')=='clients'){
 
 
 
-                  doc.content[2].table.widths = [22, 130, '*', 80, 60, 60, 100, 80];
+                  doc.content[2].table.widths = [22, 100, '*', 80, 60, 60, 100, 80];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -1062,7 +1069,7 @@ if(urlParams.get('report_type')=='clients'){
                       // doc.content[2].table.body[i][3].alignment = 'left';
                       doc.content[2].table.body[i][7].alignment = 'right';
                       doc.content[2].table.body[i][6].alignment = 'left';
-                    
+                      //doc.content[2].table.body[i][8].alignment = 'right';
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -1115,6 +1122,143 @@ if(urlParams.get('report_type')=='clients'){
                 title: settitle(),
                 exportOptions: {
                 columns: [1, 2, 3, 4, 5, 6 ,7]
+                },
+            },
+          ]
+      });
+    }
+    else{
+       var table = $('#myTable1').DataTable({
+       "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+             // Total over all pages
+            totala = api
+                .column( 7 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            totalpdfa = totala;
+
+
+            // Total over this page
+            pagetotala = api
+                .column( 7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            pagetotalpdfa = pagetotala;
+
+ 
+            // Update footer
+            $( api.column( 7 ).footer() ).html(
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
+               
+            );
+
+        }, 
+        dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+        buttons: [
+            {   extend: 'pdfHtml5',
+                download: 'open',
+                text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                className: 'excelButton',
+                orientation: 'Landscape',
+                title: 'UNIVERSITY OF DAR ES SALAAM',
+                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
+                pageSize: 'A4',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7,8]
+                },
+
+                customize: function ( doc ) {
+
+                  doc.defaultStyle.font = 'Times';
+
+                  doc['footer'] = (function (page, pages) {
+                                    return {
+                                        alignment: 'center',
+                                        text: [{ text: page.toString() }]
+                                        
+                                    }
+                  });
+
+
+
+                  doc.content[2].table.widths = [22, 90, '*', 80, 60, 60, 100, 80, 80];
+                  var rowCount = doc.content[2].table.body.length;
+                      for (i = 1; i < rowCount; i++) {
+                         doc.content[2].table.body[i][0]=i+'.';
+                      doc.content[2].table.body[i][1].alignment = 'left';
+                      doc.content[2].table.body[i][2].alignment = 'left';
+                      // doc.content[2].table.body[i][3].alignment = 'left';
+                      doc.content[2].table.body[i][7].alignment = 'right';
+                      doc.content[2].table.body[i][6].alignment = 'left';
+                      doc.content[2].table.body[i][8].alignment = 'right';
+                    };
+
+                  doc.defaultStyle.alignment = 'center';
+
+                  doc.content[2].table.body[0].forEach(function (h) {
+                    h.fillColor = 'white';
+                    alignment: 'center';
+                  });
+
+                  doc.styles.title = {
+                    bold: 'true',
+                      fontSize: '12',
+                      alignment: 'center'
+                    };
+
+        doc.styles.tableHeader.color = 'black';
+        doc.styles.tableHeader.bold = 'false';
+        doc.styles.tableBodyOdd.fillColor='';
+        doc.styles.tableHeader.fontSize = 10;  
+        doc.content[2].layout ={
+          hLineWidth: function (i, node) {
+          return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
+        },
+        vLineWidth: function (i, node) {
+          return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
+        },
+        hLineColor: function (i, node) {
+          return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+        },
+        vLineColor: function (i, node) {
+          return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+        },
+        fillColor: function (rowIndex, node, columnIndex) {
+          return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
+        }
+        };
+                  
+
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: 'data:image/png;base64,'+base64,
+                         fit: [40, 40]
+                    } );
+                }
+            },
+            {   extend: 'excelHtml5',
+                text: '<i class="fa fa-file-excel-o"></i> EXCEL',
+                className: 'excelButton',
+                title: settitle(),
+                exportOptions: {
+                columns: [1, 2, 3, 4, 5, 6 ,7, 8]
                 },
             },
           ]

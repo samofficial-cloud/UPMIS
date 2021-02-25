@@ -139,6 +139,7 @@
   $prof_client=insurance_contract::where('insurance_class','PROFFESIONAL INDEMNITY')->whereYear('commission_date',date('Y'))->count();
   $i='1';
   $year = date('Y');
+  $d=1;
   ?>
     <br>
 
@@ -516,6 +517,242 @@
     </div>
   </div>
 
+  <br>
+<div class="card">
+    <div class="card-body">
+     <h3 class="card-title" style="font-family: sans-serif;">Outstanding Insurance Debt(s)</h3>
+     <hr>
+         <a title="Send email to selected clients" href="#" id="notify_all_udia" class="btn btn-info btn-sm" data-toggle="modal" data-target="#mail_all_udia" role="button" style="
+    padding: 10px;
+    color: #fff;font-size: 16px;
+    margin-bottom: 5px;
+    display: none;
+    margin-top: 4px;
+    float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
+        <div class="modal fade" id="mail_all_udia" role="dialog">
+              <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content" style="width: 115%;">
+              <div class="modal-header">
+                <b><h5 class="modal-title">New Message</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('SendMessage2') }}" enctype="multipart/form-data">
+        {{csrf_field()}}
+          <div class="form-group row">
+            <label for="aia_client_names" class="col-sm-2">To</label>
+            <div class="col-sm-9">
+            <input type="text" id="udia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
+            <p id="udia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
+          </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="udia_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+            <input type="text" id="udia_subject" name="subject" class="form-control" value="" required="">
+          </div>
+        </div>
+         <br>
+
+         <div class="form-group row">
+            <label for="udia_greetings" class="col-sm-2">Salutation</label>
+            <div class="col-sm-9">
+            <input type="text" id="udia_greetings" name="greetings" class="form-control" value="Dear " readonly="">
+          </div>
+        </div>
+         <br>
+
+        <div class="form-group row">
+            <label for="udia_message" class="col-sm-2">Message<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+              <textarea type="text" id="udia_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="udia_attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="udia_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="udia_closing" class="col-sm-2">Closing</label>
+            <div class="col-sm-9">
+            <input type="text" id="aia_closing" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
+          </div>
+        </div>
+        <br>
+ <input type="text" name="type" value="principals" hidden="">
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Send</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+<table class="hover table table-striped table-bordered" id="myTable3">
+  <thead class="thead-dark">
+                            <tr>
+                                <th scope="col"><center>S/N</center></th>
+                                <th scope="col" >Debtor Name</th>
+                                <th scope="col">Invoice Number</th>
+                                <th scope="col" >Start Date</th>
+                                <th scope="col" >End date</th>
+                                <th scope="col" >Amount</th>
+                                <th scope="col" >Invoice Date</th>
+                                <th scope="col" >Debt Age</th>
+                                <th scope="col" >Action</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($insurance_invoices as $var)
+                                <tr>
+                                    <th scope="row">{{$d}}.</th>
+                                    <td>
+                                      <a title="View Client Details" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#clienta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->debtor_name}}</a>
+                                            <div class="modal fade" id="clienta{{$var->invoice_number}}" role="dialog">
+
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table style="width: 100%;">
+
+                                                                <tr>
+                                                                    <td style="width:30%;">Client Name:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+                                                                <?php $email = DB::table('insurance_parameters')->select('company_email')->where('company',$var->debtor_name)->value('company_email')?>
+                                                                <tr>
+                                                                    <td> Email:</td>
+                                                                    <td>{{$email}}</td>
+                                                                </tr>
+                                                                <?php $address = DB::table('insurance_parameters')->select('company_address')->where('company',$var->debtor_name)->value('company_address')?>
+                                                                <tr>
+                                                                  <td>Address:</td>
+                                                                  <td>{{$address}}</td>
+                                                                </tr>
+                                                                <?php $tin = DB::table('insurance_parameters')->select('company_tin')->where('company',$var->debtor_name)->value('company_tin')?>
+                                                                <tr>
+                                                                  <td>TIN No:</td>
+                                                                  <td>{{$tin}}</td>
+                                                                </tr>
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </td>
+                                    <td><center>{{$var->invoice_number}}</center></td>
+
+                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
+                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
+                                    {{-- <td>{{$var->period}}</td> --}}
+                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
+                                  {{--  <td>{{$var->gepg_control_no}}</td> --}}
+                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
+                                    <td>
+                                      @if($email!='')
+                                       <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
+      <div class="modal fade" id="carmail{{$var->invoice_number}}" role="dialog">
+              <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">New Message</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
+        {{csrf_field()}}
+          <div class="form-group row">
+            <label for="udiaclient_names{{$var->invoice_number}}" class="col-sm-2">To</label>
+            <div class="col-sm-9">
+            <input type="text" id="udiaclient_names{{$var->invoice_number}}" name="client_name" class="form-control" value="{{$var->debtor_name}}" readonly="">
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="udiasubject{{$var->invoice_number}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+            <input type="text" id="udiasubject{{$var->invoice_number}}" name="subject" class="form-control" value="" required="">
+          </div>
+        </div>
+         <br>
+         <div class="form-group row">
+            <label for="udiagreetings{{$var->invoice_number}}" class="col-sm-2">Salutation</label>
+            <div class="col-sm-9">
+            <input type="text" id="udiagreetings{{$var->invoice_number}}" name="greetings" class="form-control" value="Dear {{$var->debtor_name}}," readonly="">
+          </div>
+        </div>
+         <br>
+
+        <div class="form-group row">
+            <label for="udiamessage{{$var->invoice_number}}" class="col-sm-2">Message<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+              <textarea type="text" id="udiamessage{{$var->invoice_number}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="udiaattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="udiaattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg" >
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="udiaclosing{{$var->invoice_number}}" class="col-sm-2">Closing</label>
+            <div class="col-sm-9">
+            <input type="text" id="udiaclosing{{$var->invoice_number}}" name="closing" class="form-control" value="Regards, University of Dar es Salaam Insurance Agency." readonly="">
+          </div>
+        </div>
+        <br>
+        <input type="text" name="type" value="principals" hidden="">
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Send</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+     @else
+    <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
+     @endif
+                                    </td>
+                                  </tr>
+                                    <?php $d = $d + 1; ?>
+                                  @endforeach
+                                </tbody>
+</table>
+     </div>
+   </div>
+
 
     </div>
 </div>
@@ -548,6 +785,10 @@ function myFunction() {
 
   var table1 = $('#myTable1').DataTable( {
     dom: '<"top"l>rt<"bottom">'
+  } );
+
+  var table30 = $('#myTable3').DataTable( {
+    dom: '<"top"l>rt<"bottom"pi>'
   } );
 
   var table2 = $('#myTable').DataTable();
@@ -637,7 +878,9 @@ function myFunction() {
       {{ $chart->id }}.update(); 
 
       {{$chart1->id}}.options.title.text = 'Income Generated from Principals '+query;
-      {{ $chart1->id }}.data.datasets[0].data =data.udia;
+      {{ $chart1->id }}.data.datasets[0].data =data.britam;
+      {{ $chart1->id }}.data.datasets[1].data =data.nic;
+       {{ $chart1->id }}.data.datasets[2].data =data.icea;
       {{ $chart1->id }}.update();
       var bodyData0 = '';
       var bodyData = '';
@@ -698,6 +941,64 @@ function myFunction() {
     return false;
 
 });
+
+
+        $('#myTable3 tbody').on( 'click', 'tr', function () {
+      document.getElementById("udia_par_names").innerHTML="";
+      document.getElementById("udia_greetings").value="Dear ";
+       var email30 = $(this).find('td:eq(4)').text();
+      if(email30==" "){
+        //alert("This client has no email");
+      }
+      else{
+        $(this).toggleClass('selected');
+         var count30=table30.rows('.selected').data().length;
+         if(count30>='2'){
+      
+          $('#notify_all_udia').show();
+      }
+      else{
+        $('#notify_all_udia').hide();
+      }
+    }
+
+    });
+
+     $('#notify_all_udia').click( function () {
+      document.getElementById("udia_par_names").innerHTML="";
+      document.getElementById("udia_greetings").value="Dear ";
+        var datas30 = table30.rows('.selected').data();
+        var result30 = [];
+        for (var i = 0; i < datas30.length; i++)
+        {
+                result30.push(datas30[i][1].split('"true">').pop().split('</a>')[0]);
+        }
+
+        $('#udia_client_names').val(result30).toString();
+
+        var content30 = document.getElementById("udia_par_names");
+        for(var i=0; i< result30.length;i++){
+          if(i==(result30.length-1)){
+            content30.innerHTML += result30[i]+ '.';
+          }
+          else{
+            content30.innerHTML += result30[i] + ', ';
+          }
+
+        }
+
+        var salutation30 = document.getElementById("udia_greetings");
+        for(var i=0; i< result30.length;i++){
+          if(i==(result30.length-1)){
+            salutation30.value += result30[i]+ '.';
+          }
+          else{
+            salutation30.value += result30[i] + ', ';
+          }
+
+        }
+
+    });
     });
 
 </script>

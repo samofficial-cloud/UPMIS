@@ -50,14 +50,16 @@
 <div class="main_content">
     <div class="container">
         <br>
-        @if ($message = Session::get('errors'))
-          <div class="alert alert-danger">
+           @if ($message = Session::get('errors'))
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <p>{{$message}}</p>
           </div>
         @endif
 
       @if ($message = Session::get('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{$message}}</p>
       </div>
     @endif
@@ -94,12 +96,19 @@
           </div>
 
           <div class="form-group row">
-          <div class="col-sm-3"><strong>Phone Number :</strong></div>
-          <div class="col-sm-7">
-            <input style="color: black;" readonly="" type="text" name="phoneNumber"
+            <div class="col-sm-3"><strong>Phone Number :</strong></div>
+              <div class="col-sm-7">
+                <input style="color: black;" readonly="" type="text" name="phoneNumber"
 maxlength = "10" minlength = "10"
 class="form-control" id="phone" aria-describedby="emailHelp" placeholder="Enter phone number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 ) || event.charCode==43 " value="{{ Auth::user()->phone_number }}">
           </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-3"><strong>Signature :</strong></div>
+              <div class="col-sm-7">
+                <img src="{{ Auth::user()->signature}}" height="100px" width="380px" alt="signature">
+              </div>
           </div>
 
 

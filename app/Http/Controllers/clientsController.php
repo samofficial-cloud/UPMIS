@@ -12,6 +12,8 @@ use DB;
 use App\Http\Controllers\Controller;
 use App\carContract;
 use App\insurance_contract;
+use App\insurance_parameter;
+use Notification;
 
 class clientsController extends Controller
 {
@@ -109,8 +111,8 @@ class clientsController extends Controller
         if($request->hasfile('filenames')){
 
           foreach($request->file('filenames') as $file) {
-              $filename = $file->getClientOriginalName().'.'.$file->extension();
-                
+              //$filename = $file->getClientOriginalName().'.'.$file->extension();
+              $filename = $file->getClientOriginalName();
               $filepaths[]=public_path().'/'.'uploads'.'/'.$filename;
               // $filename[]=$file->getClientOriginalName();
               // $mime[]=$file->getMimeType();
@@ -127,35 +129,56 @@ class clientsController extends Controller
         if($type=='space'){
            $client=client::where('full_name',$name)->first();
            $salutation = "Real Estate Department UDSM.";
+           $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
+          return redirect()->back()->with('success', 'Message Sent Successfully');
         }
         elseif ($type=='car') {
           $client=carContract::where('fullName',$name)->first();
           $salutation = "Central Pool Transport Unit UDSM.";
+          $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
+          return redirect()->back()->with('success', 'Message Sent Successfully');
         }
         elseif($type=='udia'){
            $client=insurance_contract::where('full_name',$name)->first();
            $salutation = "University of Dar es Salaam Insurance Agency.";
+           $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
+          return redirect()->back()->with('success', 'Message Sent Successfully');
         }
-    // \Notification::send($recipients, new Announcement($centre));
+        elseif($type=='principals'){
+          $client = insurance_parameter::select('company_email as email')->where('company',$name)->first();
+          $salutation = "University of Dar es Salaam Insurance Agency.";
+           $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
+           return redirect()->back()->with('success', 'Message Sent Successfully');
+        }
 
-      $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
-      return redirect()->back()->with('success', 'Message Sent Successfully');
+      
       }
       else{
         if($type=='space'){
            $client=client::where('full_name',$name)->first();
            $salutation = "Real Estate Department UDSM.";
+            $client->notify(new SendMessage2($name, $subject, $message, $salutation));
+            return redirect()->back()->with('success', 'Message Sent Successfully');
         }
         elseif ($type=='car') {
           $client=carContract::where('fullName',$name)->first();
           $salutation = "Central Pool Transport Unit UDSM.";
+          $client->notify(new SendMessage2($name, $subject, $message, $salutation));
+          return redirect()->back()->with('success', 'Message Sent Successfully');
         }
         elseif($type=='udia'){
            $client=insurance_contract::where('full_name',$name)->first();
            $salutation = "University of Dar es Salaam Insurance Agency.";
+            $client->notify(new SendMessage2($name, $subject, $message, $salutation));
+            return redirect()->back()->with('success', 'Message Sent Successfully');
         }
-         $client->notify(new SendMessage2($name, $subject, $message, $salutation));
-         return redirect()->back()->with('success', 'Message Sent Successfully');
+        elseif($type=='principals'){
+          $email_address = DB::table('insurance_parameters')->where('company',$name)->value('company_email');
+          $salutation = "University of Dar es Salaam Insurance Agency.";
+          Notification::route('mail', $email_address)->notify(new SendMessage2($name, $subject, $message, $salutation));
+          return redirect()->back()->with('success', 'Message Sent Successfully');
+        }
+        
       } 
     }
 
@@ -168,7 +191,8 @@ class clientsController extends Controller
 
         if($request->hasfile('filenames')) {
           foreach($request->file('filenames') as $file) {
-              $filename = $file->getClientOriginalName().'.'.$file->extension();
+              //$filename = $file->getClientOriginalName().'.'.$file->extension();
+              $filename = $file->getClientOriginalName();
                 
               $filepaths[]=public_path().'/'.'uploads'.'/'.$filename;
               // $filename[]=$file->getClientOriginalName();
@@ -188,6 +212,10 @@ class clientsController extends Controller
         elseif($type=='udia'){
            $client=insurance_contract::where('full_name',$name)->first();
            $salutation = "University of Dar es Salaam Insurance Agency.";
+        }
+        elseif($type=='principals'){
+          $client=insurance_parameter::select('company_email as email')->where('company',$name)->first();
+          $salutation = "University of Dar es Salaam Insurance Agency.";
         }
     // \Notification::send($recipients, new Announcement($centre));
         $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
@@ -209,6 +237,10 @@ class clientsController extends Controller
         elseif($type=='udia'){
            $client=insurance_contract::where('full_name',$name)->first();
            $salutation = "University of Dar es Salaam Insurance Agency.";
+        }
+        elseif($type=='principals'){
+          $client=insurance_parameter::select('company_email as email')->where('company',$name)->first();
+          $salutation = "University of Dar es Salaam Insurance Agency.";
         }
     // \Notification::send($recipients, new Announcement($centre));
         $client->notify(new SendMessage2($name, $subject, $message, $salutation));

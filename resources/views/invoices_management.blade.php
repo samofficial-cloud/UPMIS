@@ -3699,6 +3699,7 @@
                                 <tbody>
 
                                 @foreach($car_rental_invoices as $var)
+                                    <?php $nature = DB::table('car_contracts')->select('trip_nature')->where('id', $var->contract_id)->value('trip_nature'); ?>
                                     <tr>
                                         <td><center>{{$i}}</center></td>
                                         <td>{{$var->debtor_name}}</td>
@@ -3918,14 +3919,24 @@
                                                 @if($var->email_sent_status=='NOT SENT')
                                                     @if($privileges=='Read only')
                                                     @else
+                                                        @if($nature=='Departmental')
+                                                            @if($var->account_no=='')
+                                                               <a title="Add account number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_account_number_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a> 
+                                                            @else
+                                                            @endif
 
-                                                        @if($var->gepg_control_no=='')
-                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                            <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_car2{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i>cc</a>
                                                         @else
+                                                                @if($var->gepg_control_no=='')
+                                                                    <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                @else
+                                                                @endif
+
+                                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
                                                         @endif
 
 
-                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                                        
                                                     @endif
 
 
@@ -3972,6 +3983,45 @@
                                                         </div>
 
 
+                                                          <div class="modal fade" id="add_account_number_car{{$var->invoice_number}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Adding account number for invoice number {{$var->invoice_number}} </h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <form method="post" action="{{ route('add_account_no_car',$var->invoice_number)}}"  id="form01" >
+                                                                            {{csrf_field()}}
+
+                                                                            <div class="form-group">
+                                                                                <div class="form-wrapper">
+                                                                                    <label for="course_name">Account Number</label>
+
+                                                                                    <input id="account{{$var->invoice_number}}" type="text" class="form-control" id="account_no" name="account_no" value="" Required autocomplete="off">
+
+                                                                                </div>
+                                                                            </div>
+
+
+
+                                                                            <br>
+                                                                            <div align="right">
+                                                                                <button class="btn btn-primary" type="submit">Save</button>
+                                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                            </div>
+                                                                        </form>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
 
                                                     <div class="modal fade" id="send_invoice_car{{$var->invoice_number}}" role="dialog">
 
@@ -4000,6 +4050,45 @@
                                                                         <br>
                                                                         <div align="right">
                                                                             <button id="sendbtn_car{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
+                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                        </div>
+                                                                    </form>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                     <div class="modal fade" id="send_invoice_car2{{$var->invoice_number}}" role="dialog">
+
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
+
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    <form method="post" action="{{ route('send_invoice_car_rental',$var->invoice_number)}}"  id="form1" >
+                                                                        {{csrf_field()}}
+
+                                                                        <div class="form-group">
+                                                                            <div class="form-wrapper">
+                                                                                <label for="account_no">Account Number</label>
+                                                                                <input id="account_no{{$var->invoice_number}}" type="number" class="form-control" id="account_no" name="account_no" value="" Required autocomplete="off">
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                                        <br>
+                                                                        <div align="right">
+                                                                            <button class="btn btn-primary" type="submit">Send</button>
                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                         </div>
                                                                     </form>

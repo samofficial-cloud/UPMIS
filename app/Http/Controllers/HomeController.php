@@ -17,6 +17,8 @@ use App\space;
 Use App\User;
 use Hash;
 use Auth;
+use Riskihajar\Terbilang\Facades\Terbilang;
+
 
 
 class HomeController extends Controller
@@ -50,9 +52,368 @@ class HomeController extends Controller
         $operational=operational_expenditure::where('flag','1')->get();
         $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
         $costcentres=cost_centre::orderBy('costcentre_id','asc')->get();
+        $rooms = DB::table('research_flats_rooms')->where('status','1')->orderby('room_no','asc')->get();
 
-        return view('businesses')->with('spaces',$spaces)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres);
+         if(Auth::user()->role=='Transport Officer-CPTU'){
+          $car_inbox = carRental::where('form_status','Transport Officer-CPTU')->where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','inbox')->get();
+          $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','outbox')->get();
+        }
+        elseif(Auth::user()->role=='DVC Administrator'){
+          $car_inbox = carRental::where('form_status','DVC Administrator')->where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','inbox')->get();
+          $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','outbox')->get();
+        }
+        else{
+           $car_inbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+          $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+        }
+
+        return view('businesses')->with('spaces',$spaces)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox)->with('rooms',$rooms);
     }
+
+    public function researchflats(){
+      $rooms = DB::table('research_flats_rooms')->where('status','1')->orderby('room_no','asc')->get();
+      return View('research_flats', compact('rooms'));
+    }
+
+    public function add_research_contract(Request $request){
+      $category = $request->get('category');
+
+      if($category=='Shared Room'){
+        $amount_usd = $request->get('shared_price_usd');
+        $amount_tzs = $request->get('shared_price_tzs');
+        $total_usd = $request->get('total_shared_usd');
+        $total_tzs = $request->get('total_shared_tzs');
+      }
+
+      elseif ($category=='Single Room') {
+        $amount_usd = $request->get('single_price_usd');
+        $amount_tzs = $request->get('single_price_tzs');
+        $total_usd = $request->get('total_single_usd');
+        $total_tzs = $request->get('total_single_tzs');
+      }
+
+      elseif ($category=='Suit Room') {
+        $amount_usd = $request->get('suit_price_usd');
+        $amount_tzs = $request->get('suit_price_tzs');
+        $total_usd = $request->get('total_suit_usd');
+        $total_tzs = $request->get('total_suit_tzs');
+      }
+
+      $currency = $request->get('currency');
+
+      if($currency=='TZS'){
+        $amount_in_words=Terbilang::make(($total_tzs),' TZS',' ');
+        $amount_to_be_paid = $total_tzs; 
+      }
+      elseif ($currency=='USD') {
+        $amount_in_words=Terbilang::make(($total_usd),' USD',' ');
+        $amount_to_be_paid = $total_usd;
+      }
+
+      $debtor = $request->get('debtor');
+
+      if($debtor=='individual'){
+        $debtor_name = $request->get('first_name').' '.$request->get('last_name');
+      }
+      elseif($debtor=='host'){
+        $debtor_name = $request->get('college');
+      }
+
+      
+
+      $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+
+      $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+      $today=date('Y-m-d');
+
+
+
+      $contract_id = DB::table('research_flats_contracts')->insertGetId(
+            ['first_name' => ucfirst(strtolower($request->get('first_name'))), 'last_name'=>ucfirst(strtolower($request->get('last_name'))), 'gender'=>$request->get('gender'),'professional'=>ucfirst(strtolower($request->get('professional'))),'address'=>ucfirst(strtolower($request->get('address'))), 'email'=>$request->get('email'), 'phone_number'=>$request->get('phone_number'), 'purpose'=>ucfirst(strtolower($request->get('purpose'))), 'passport_no'=>$request->get('passport_no'), 'issue_date'=>$request->get('issue_date'), 'issue_place'=>$request->get('issue_place'), 'room_no'=>$request->get('room_no'), 'arrival_date'=>$request->get('arrival_date'), 'arrival_time'=>$request->get('arrival_time'), 'departure_date'=>$request->get('departure_date'), 'payment_mode'=>'Invoice', 'receipt_no'=>$request->get('receipt_no'), 'receipt_date'=>$request->get('receipt_date'), 'total_days'=>$request->get('total_days'), 'final_payment'=>0,'amount_usd'=>$amount_usd, 'amount_tzs'=>$amount_tzs, 'total_usd'=>$total_usd, 'total_tzs'=>$total_tzs, 'nationality'=>$request->get('nationality'), 'host_name'=>$request->get('host_name'), 'college'=>$request->get('college'),'department'=>$request->get('department'), 'host_address'=>ucfirst(strtolower($request->get('host_address'))), 'host_email'=>$request->get('host_email'), 'host_phone'=>$request->get('host_phone'), 'invoice_debtor'=>$debtor, 'invoice_currency'=>$currency]);
+
+       DB::table('research_flats_invoices')->insert(
+                    ['contract_id' => $contract_id, 'invoicing_period_start_date' => $request->get('arrival_date'),'invoicing_period_end_date' => $request->get('departure_date'),'period' => '','project_id' => 'research_flats','debtor_account_code' => '','debtor_name' => $debtor_name,'debtor_address' => '','amount_to_be_paid' => $amount_to_be_paid,'currency_invoice'=>$currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Research Flats','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Research Flats','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                );
+
+       $invoice_number_created=DB::table('research_flats_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+       DB::table('invoice_notifications')->insert(
+                    ['invoice_id' => $invoice_number_created, 'invoice_category' => 'research_flats']
+                );
+
+       DB::table('research_flats_payments')->insert(
+                   ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => null,'amount_paid' => 0,'amount_not_paid' =>$amount_to_be_paid,'currency_payments' => $currency,'receipt_number' => '']
+               );
+
+      return redirect()->route('contracts_management')->with('success', 'Contract Created Successfully');
+    }
+
+    public function printResearchForm(){
+      $pdf=PDF::loadView('research_contractpdf');
+      return $pdf->stream('Research Flats Accomodation Form.pdf');
+    }
+
+    public function editResearchForm($id){
+      $contract=DB::table('research_flats_contracts')->where('id', $id)->first();
+      $room_cat = DB::table('research_flats_rooms')->select('category')->where('room_no',$contract->room_no)->value('category');
+      return View('research_flats_contract_edit',compact('contract','room_cat'));
+    }
+
+    public function sendeditResearchForm(Request $request, $id){
+       DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['first_name' => $request->get('first_name')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['last_name' => $request->get('last_name')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['gender' => $request->get('gender')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['professional' => $request->get('professional')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['address' => $request->get('address')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['email' => $request->get('email')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['phone_number' => $request->get('phone_number')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['purpose' => $request->get('purpose')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['passport_no' => $request->get('passport_no')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['issue_date' => $request->get('issue_date')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['issue_place' => $request->get('issue_place')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['room_no' => $request->get('room_no')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['arrival_date' => $request->get('arrival_date')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['arrival_time' => $request->get('arrival_time')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['departure_date' => $request->get('departure_date')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['payment_mode' => $request->get('payment_mode')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['receipt_no' => $request->get('receipt_no')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['receipt_date' => $request->get('receipt_date')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['total_days' => $request->get('total_days')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['final_payment' => $request->get('final_payment')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['nationality' => $request->get('nationality')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['host_name' => $request->get('host_name')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['college' => $request->get('college')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['department' => $request->get('department')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['host_address' => $request->get('host_address')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['host_email' => $request->get('host_email')]);
+
+        DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['host_phone' => $request->get('host_phone')]);
+
+        $category =$request->get('room_cat');
+
+      if($category=='Shared Room'){
+        $amount_usd = $request->get('shared_price_usd');
+        $amount_tzs = $request->get('shared_price_tzs');
+        $total_usd = $request->get('total_shared_usd');
+        $total_tzs = $request->get('total_shared_tzs');
+      }
+
+      elseif ($category=='Single Room') {
+        $amount_usd = $request->get('single_price_usd');
+        $amount_tzs = $request->get('single_price_tzs');
+        $total_usd = $request->get('total_single_usd');
+        $total_tzs = $request->get('total_single_tzs');
+      }
+
+      elseif ($category=='Suit Room') {
+        $amount_usd = $request->get('suit_price_usd');
+        $amount_tzs = $request->get('suit_price_tzs');
+        $total_usd = $request->get('total_suit_usd');
+        $total_tzs = $request->get('total_suit_tzs');
+      }
+
+      DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['amount_tzs' => $amount_tzs]);
+
+      DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['amount_usd' => $amount_usd]);
+
+      DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['total_usd' => $total_usd]);
+
+      DB::table('research_flats_contracts')
+                ->where('id', $id)
+                ->update(['total_tzs' => $total_tzs]);
+
+    return redirect()->route('contracts_management')->with('success', 'Contract Edited Successfully');
+    
+    }
+
+
+     public function addresearchflats(Request $request){
+
+      $check = DB::table('research_flats_rooms')->where('status','1')->where('room_no',$request->get('room_no'))->get();
+      if(count($check)>0){
+        return redirect()->back()->with('errors', 'Room Could not be be added because it already exists');
+      }
+      else{
+         DB::table('research_flats_rooms')->insert(
+            ['room_no' => $request->get('room_no'), 'category'=>$request->get('category'), 'currency'=>$request->get('currency'),'charge_workers'=>$request->get('charge_workers'),'charge_students'=>$request->get('charge_students')]);
+       return redirect()->back()->with('success', 'Room Added Successfully');
+      }
+      
+     }
+
+     public function contractresearchflats(){
+      return View('research_flats_contract');
+     }
+
+     public function editresearchflats(Request $request){
+      $id = $request->get('room_id');
+
+       DB::table('research_flats_rooms')
+      ->where('id', $id)
+      ->update(['room_no' => $request->get('room_no')]);
+
+      DB::table('research_flats_rooms')
+      ->where('id', $id)
+      ->update(['category' => $request->get('category')]);
+
+      DB::table('research_flats_rooms')
+      ->where('id', $id)
+      ->update(['currency' => $request->get('currency')]);
+
+      DB::table('research_flats_rooms')
+      ->where('id', $id)
+      ->update(['charge_workers' => $request->get('charge_workers')]);
+
+      DB::table('research_flats_rooms')
+      ->where('id', $id)
+      ->update(['charge_students' => $request->get('charge_students')]);
+
+      return redirect()->back()->with('success', 'Room Details Edited Successfully');
+     }
+
+     public function deleteresearchflats($id){
+      DB::table('research_flats_rooms')
+      ->where('id', $id)
+      ->update(['status' => '0']);
+      return redirect()->back()->with('success', 'Room Deleted Successfully');
+     }
+
+
+     public function auto_category(Request $request){
+        if($request->get('query')){
+            $query = $request->get('query');
+            $category = DB::table('research_flats_rooms')->select('category')->where('room_no',$query)->where('status',1)->value('category');
+            $currency = DB::table('research_flats_rooms')->select('currency')->where('room_no',$query)->where('status',1)->value('currency');
+
+            $query2=  strtolower($request->get('query2'));
+
+            if($query2=='student'|| $query2=='students'){
+              $price= DB::table('research_flats_rooms')->select('charge_students')->where('room_no',$query)->where('status',1)->value('charge_students');
+            }
+            else{
+              $price= DB::table('research_flats_rooms')->select('charge_workers')->where('room_no',$query)->where('status',1)->value('charge_workers');
+            }
+
+            return response()->json(['category'=>$category, 'price'=>$price, 'currency'=>$currency]);
+        }
+
+
+     }
+
+     public function flat_client_details(Request $request){
+          if($request->get('query')){
+              $query = $request->get('query');
+              $data = DB::table('research_flats_contracts')->select('first_name', 'last_name')->where('first_name', 'LIKE', "%{$query}%")->distinct()->get();
+              if(count($data)!=0){
+                  $output = '<ul class="dropdown-menu form-card" style="display: block;
+                width: 100%; margin-left: 0%; position:absolute;margin-top: -8%;">';
+
+                  foreach($data as $row){
+                     $output .= '
+                     <li id="list" style="margin-left: -3%;">'.$row->first_name. " ".$row->last_name.'</li>
+                     ';
+                  }
+                  $output .= '</ul>';
+                  echo $output;
+             }
+             else{
+              echo "0";
+             }
+
+         }
+     }
+
+     public function flat_all_details(Request $request){
+        $details= DB::table('research_flats_contracts')->where('first_name', $request->get('first'))->where('last_name', $request->get('last'))->orderby('id','dsc')->distinct()->first();
+
+      return response()->json(['first'=>$details->first_name, 'last'=>$details->last_name, 'email'=>$details->email, 'gender'=>$details->gender, 'prof'=>$details->professional, 'address'=>$details->address, 'phone'=>$details->phone_number,'purpose'=>$details->purpose,'passport_no'=>$details->passport_no, 'issue'=>$details->issue_date, 'place'=>$details->issue_place, 'nationality'=>$details->nationality]);
+     }
 
 
     public function report()
@@ -195,6 +556,14 @@ class HomeController extends Controller
     $users->save();
     return redirect()->route('viewprofile')
                     ->with('success', 'Profile Details Updated Successfully');
+    }
+
+
+    public function save_signature(Request $request){
+      $id = $request->get('user_id');
+      $user= User::find($id);
+      $user->signature = $request->get('signature');
+      $user->save();
     }
 
     public function changepassworddetails(Request $request){
@@ -1049,20 +1418,12 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
        if($_GET['report_type']=='sales'){
         if(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true')&&($_GET['yr_fil']=='true')){
           if($_GET['insurance_typefilter']=='true'){
-            if($_GET['yr_cat']=='start'){
-               $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('commission_date',$_GET['yr'])->get();
-            }
-            elseif($_GET['yr_cat']=='end'){
-              $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('end_date',$_GET['yr'])->get();
-            }
+               $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
           else{
-            if($_GET['yr_cat']=='start'){
-            $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereYear('commission_date',$_GET['yr'])->get();
-          }
-          elseif($_GET['yr_cat']=='end'){
-            $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereYear('end_date',$_GET['yr'])->get();
-          }
+            
+            $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
+          
           }
         }
 
@@ -1076,14 +1437,8 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
         }
 
-        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
-            if($_GET['yr_cat']=='start'){
-               $insurance=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('commission_date',$_GET['yr'])->get();
-            }
-            elseif($_GET['yr_cat']=='end'){
-              $insurance=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('end_date',$_GET['yr'])->get();
-            }
-
+        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){ 
+           $insurance=insurance_contract::where('principal',$_GET['principaltype'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
         }
 
         elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']!='true')){
@@ -1092,20 +1447,10 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
         elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']=='true')){
           if($_GET['insurance_typefilter']=='true'){
-            if($_GET['yr_cat']=='start'){
-               $insurance=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('commission_date',$_GET['yr'])->get();
-            }
-            elseif($_GET['yr_cat']=='end'){
-              $insurance=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('end_date',$_GET['yr'])->get();
-            }
+              $insurance=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
-          else{
-            if($_GET['yr_cat']=='start'){
-            $insurance=insurance_contract::where('insurance_class',$_GET['package'])->whereYear('commission_date',$_GET['yr'])->get();
-          }
-          elseif($_GET['yr_cat']=='end'){
-            $insurance=insurance_contract::where('insurance_class',$_GET['package'])->whereYear('end_date',$_GET['yr'])->get();
-          }
+          else{ 
+            $insurance=insurance_contract::where('insurance_class',$_GET['package'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
         }
 
@@ -1121,12 +1466,8 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         }
 
          elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
-          if($_GET['yr_cat']=='start'){
-               $insurance=insurance_contract::whereYear('commission_date',$_GET['yr'])->get();
-            }
-            elseif($_GET['yr_cat']=='end'){
-              $insurance=insurance_contract::whereYear('end_date',$_GET['yr'])->get();
-            }
+          
+             $insurance=insurance_contract::whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
 
          }
 
@@ -1158,20 +1499,13 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
      else if($_GET['report_type']=='clients'){
         if(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true')&&($_GET['yr_fil']=='true')){
           if($_GET['insurance_typefilter']=='true'){
-            if($_GET['yr_cat']=='start'){
-               $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('commission_date',$_GET['yr'])->get();
-            }
-            elseif($_GET['yr_cat']=='end'){
-              $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('end_date',$_GET['yr'])->get();
-            }
+           
+               $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
+            
           }
           else{
-            if($_GET['yr_cat']=='start'){
-            $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereYear('commission_date',$_GET['yr'])->get();
-          }
-          elseif($_GET['yr_cat']=='end'){
-            $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereYear('end_date',$_GET['yr'])->get();
-          }
+            
+            $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
         }
 
@@ -1186,12 +1520,8 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         }
 
         elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
-            if($_GET['yr_cat']=='start'){
-               $clients=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('commission_date',$_GET['yr'])->get();
-            }
-            elseif($_GET['yr_cat']=='end'){
-              $clients=insurance_contract::where('principal',$_GET['principaltype'])->whereYear('end_date',$_GET['yr'])->get();
-            }
+            
+               $clients=insurance_contract::where('principal',$_GET['principaltype'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
 
         }
 
@@ -1201,20 +1531,12 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
         elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']=='true')){
           if($_GET['insurance_typefilter']=='true'){
-            if($_GET['yr_cat']=='start'){
-               $clients=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('commission_date',$_GET['yr'])->get();
-            }
-            elseif($_GET['yr_cat']=='end'){
-              $clients=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereYear('end_date',$_GET['yr'])->get();
-            }
+            
+          $clients=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
           else{
-            if($_GET['yr_cat']=='start'){
-            $clients=insurance_contract::where('insurance_class',$_GET['package'])->whereYear('commission_date',$_GET['yr'])->get();
-          }
-          elseif($_GET['yr_cat']=='end'){
-            $clients=insurance_contract::where('insurance_class',$_GET['package'])->whereYear('end_date',$_GET['yr'])->get();
-          }
+            
+            $clients=insurance_contract::where('insurance_class',$_GET['package'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
         }
 
@@ -1230,12 +1552,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         }
 
          elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
-          if($_GET['yr_cat']=='start'){
-               $clients=insurance_contract::whereYear('commission_date',$_GET['yr'])->get();
-            }
-            elseif($_GET['yr_cat']=='end'){
-              $clients=insurance_contract::whereYear('end_date',$_GET['yr'])->get();
-            }
+          $clients=insurance_contract::whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
 
          }
 
@@ -2522,6 +2839,58 @@ else{
    //      return $pdf->stream('Invoice Report.pdf');
 }
 
+      }
+
+
+      public function flatsreport(){
+        if($_GET['report_type']=='rooms'){
+          if($_GET['room_fil']=='true'){
+            $rooms = DB::table('research_flats_rooms')->where('category',$_GET['room'])->orderBy('room_no','asc')->get();
+          }
+          else{
+            $rooms = DB::table('research_flats_rooms')->orderBy('room_no','asc')->get();
+          }
+
+          if(count($rooms)==0){
+              return redirect()->back()->with('errors', "No data found to generate the requested report");
+          }
+          else{
+            return View('researchflatspdf_new',compact('rooms'));
+          }
+        }
+        else if($_GET['report_type']=='contracts'){
+          $today= date('Y-m-d');
+          if($_GET['pay_fil']=='true' && $_GET['stat_fil']=='true'){
+            if($_GET['status']=='Active'){
+              $contracts=DB::table('research_flats_contracts')->join('research_flats_invoices','research_flats_invoices.contract_id','=', 'research_flats_contracts.id')->join('research_flats_payments','research_flats_payments.invoice_number','=', 'research_flats_invoices.invoice_number')->where('payment_status',$_GET['pay'])->where('departure_date','>=',$today)->orderBy('research_flats_contracts.id','dsc')->get();
+            }
+            else if($_GET['status']=='Expired'){
+              $contracts=DB::table('research_flats_contracts')->join('research_flats_invoices','research_flats_invoices.contract_id','=', 'research_flats_contracts.id')->join('research_flats_payments','research_flats_payments.invoice_number','=', 'research_flats_invoices.invoice_number')->where('payment_status',$_GET['pay'])->where('departure_date','<',$today)->orderBy('research_flats_contracts.id','dsc')->get();
+            }
+            
+          }
+          else if($_GET['pay_fil']=='true' && $_GET['stat_fil']!='true'){
+            $contracts=DB::table('research_flats_contracts')->join('research_flats_invoices','research_flats_invoices.contract_id','=', 'research_flats_contracts.id')->join('research_flats_payments','research_flats_payments.invoice_number','=', 'research_flats_invoices.invoice_number')->where('payment_status',$_GET['pay'])->orderBy('research_flats_contracts.id','dsc')->get();
+          }
+          else if($_GET['pay_fil']!='true' && $_GET['stat_fil']=='true'){
+            if($_GET['status']=='Active'){
+              $contracts=DB::table('research_flats_contracts')->where('departure_date','>=',$today)->orderBy('id','dsc')->get();
+            }
+            else if($_GET['status']=='Expired'){
+              $contracts=DB::table('research_flats_contracts')->where('departure_date','<',$today)->orderBy('id','dsc')->get();
+            }      
+          }
+          else if($_GET['pay_fil']!='true' && $_GET['stat_fil']!='true'){
+             $contracts=DB::table('research_flats_contracts')->orderBy('id','dsc')->get();
+          }
+
+          if(count($contracts)==0){
+              return redirect()->back()->with('errors', "No data found to generate the requested report");
+          }
+          else{
+            return View('researchflatspdf_new',compact('contracts'));
+          }
+        }
       }
 
 }
