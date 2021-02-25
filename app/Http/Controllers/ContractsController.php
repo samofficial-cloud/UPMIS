@@ -29,7 +29,7 @@ class ContractsController extends Controller
      */
     public function ContractsManagement()
     {
-        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->get();
+        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.has_clients',1)->orWhere('space_contracts.under_client',0)->get();
 //        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
         $insurance_contracts=DB::table('insurance_contracts')->get();
 
@@ -38,7 +38,7 @@ class ContractsController extends Controller
         $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','0')->orderBy('id','dsc')->get();
          $closed_act=carContract::where('form_completion','1')->where('flag',1)->wheredate('end_date','>=',date('Y-m-d'))->orderBy('id','dsc')->get();
          $closed_inact=carContract::where('form_completion','1')->where('flag',1)->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
-        
+
      }
      elseif(Auth::user()->role=='Vote Holder'){
         $inbox=carContract::where('head_msg_status','inbox')->where('cost_centre',Auth::user()->cost_centre)->where('form_completion','0')->orderBy('id','dsc')->get();
@@ -120,6 +120,21 @@ class ContractsController extends Controller
     }
 
 
+
+
+    public function SpaceContractsSubClientsManagement($client_id)
+    {
+        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.parent_client',$client_id)->get();
+
+        $parent_client_name=DB::table('clients')->where('client_id',$client_id)->value('full_name');
+
+
+        return view('contracts_management_subclients')->with('space_contracts',$space_contracts)->with('parent_client_name',$parent_client_name);
+
+    }
+
+
+
     public function ContractDetails($contract_id)
     {
         $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id',$contract_id)->get();
@@ -128,6 +143,15 @@ class ContractsController extends Controller
         return view('contract_details')->with('space_contract',$space_contract)->with('associated_invoices',$associated_invoices)->with('contract_id',$contract_id);
 
     }
+
+
+    public function SpaceDetails($space_id)
+    {
+        $space=DB::table('spaces')->where('space_id',$space_id)->get();
+        return view('space_details')->with('space',$space);
+
+    }
+
 
     public function ContractDetailsInsurance($contract_id)
     {
@@ -181,9 +205,41 @@ class ContractsController extends Controller
     public function CreateSpaceContract(Request $request)
     {
 
+        $has_clients=null;
+        $under_client=null;
+
+        if($request->get('client_type_contract')=='Direct'){
+            $has_clients=0;
+            $under_client=0;
+
+        }elseif ($request->get('client_type_contract')=='Direct and has clients'){
+
+            $has_clients=1;
+            $under_client=0;
+        }elseif($request->get('client_type_contract')=='Indirect'){
+            $has_clients=0;
+            $under_client=1;
+
+        }else{
+
+
+        }
+
+
+
         if($request->get('submit')=='Save and print') {
 
             $end_date="";
+            $brela_registration_path=null;
+            $tbs_certificates_path=null;
+            $gpsa_certificates_path=null;
+            $business_licenses_path=null;
+            $osha_certificates_path=null;
+            $tcra_registration_path=null;
+
+
+
+
             if($request->get('duration_period')=="Months"){
                 $end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
                 $monthsToAdd = $request->get('duration');
@@ -207,8 +263,8 @@ class ContractsController extends Controller
 
             $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
-            $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+            $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
 
 
 
@@ -244,6 +300,19 @@ class ContractsController extends Controller
                     ->update(['phone_number' => $request->get('phone_number')]);
 
 
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['official_client_id' => $request->get('official_client_id')]);
+
+
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['tin' => $request->get('tin')]);
+
+
+
                 $rent_sqm="";
 
                 if($request->get('rent_sqm')==''){
@@ -255,9 +324,80 @@ class ContractsController extends Controller
                 }
 
 
+
+                //file management
+
+                if($request->hasfile('tbs_certificate')){
+                    $file=$request->file('tbs_certificate');
+                    $filename=$request->file('tbs_certificate')->getClientOriginalName();
+                    $tbs_certificates_path=public_path().'/'.'uploads'.'/'.'tbs_certificates'.'/'.$filename;
+                    $file->move($tbs_certificates_path,$filename);
+
+                }
+
+                if($request->hasfile('gpsa_certificate')){
+                    $file=$request->file('gpsa_certificate');
+                    $filename=$request->file('gpsa_certificate')->getClientOriginalName();
+                    $gpsa_certificates_path=public_path().'/'.'uploads'.'/'.'gpsa_certificates'.'/'.$filename;
+                    $file->move($gpsa_certificates_path,$filename);
+
+                }
+
+
+
+                if($request->hasfile('food_business_license')){
+                    $file=$request->file('food_business_license');
+                    $filename=$request->file('food_business_license')->getClientOriginalName();
+                    $business_licenses_path=public_path().'/'.'uploads'.'/'.'business_licenses'.'/'.$filename;
+                    $file->move($business_licenses_path,$filename);
+
+                }
+
+                if($request->hasfile('business_license')){
+                    $file=$request->file('business_license');
+                    $filename=$request->file('business_license')->getClientOriginalName();
+                    $business_licenses_path=public_path().'/'.'uploads'.'/'.'business_licenses'.'/'.$filename;
+                    $file->move($business_licenses_path,$filename);
+
+                }
+
+
+
+                if($request->hasfile('osha_certificates')){
+                    $file=$request->file('osha_certificate');
+                    $filename=$request->file('osha_certificate')->getClientOriginalName();
+                    $osha_certificates_path=public_path().'/'.'uploads'.'/'.'osha_certificates'.'/'.$filename;
+                    $file->move($osha_certificates_path,$filename);
+
+                }
+
+
+
+                if($request->hasfile('tcra_registration')){
+                    $file=$request->file('tcra_registration');
+                    $filename=$request->file('tcra_registration')->getClientOriginalName();
+                    $tcra_registration_path=public_path().'/'.'uploads'.'/'.'tcra_registration'.'/'.$filename;
+                    $file->move($tcra_registration_path,$filename);
+
+                }
+
+                if($request->hasfile('brela_registration')){
+                    $file=$request->file('brela_registration');
+                    $filename=$request->file('brela_registration')->getClientOriginalName();
+                    $brela_registration_path=public_path().'/'.'uploads'.'/'.'brela_registration'.'/'.$filename;
+                    $file->move($brela_registration_path,$filename);
+
+                }
+
+                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
                 );
+
+
 
             }else {
 
@@ -266,7 +406,7 @@ class ContractsController extends Controller
 
 
                     DB::table('clients')->insert(
-                        ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
+                        ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space', 'official_client_id' => $request->get("official_client_id"), 'tin' => $request->get("tin")]
                     );
 
                     $rent_sqm="";
@@ -279,15 +419,19 @@ class ContractsController extends Controller
                         $rent_sqm=$request->get('rent_sqm');
                     }
 
+                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                    $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
                     );
 
                 } else {
 
                     DB::table('clients')->insert(
-                        ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
+                        ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space', 'official_client_id' => $request->get("official_client_id"), 'tin' => $request->get("tin")]
                     );
 
 
@@ -301,9 +445,12 @@ class ContractsController extends Controller
                         $rent_sqm=$request->get('rent_sqm');
                     }
 
+                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                    $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
                     );
 
 
@@ -343,12 +490,92 @@ class ContractsController extends Controller
 
             ];
 
+
+
+
+
             $pdf = PDF::loadView('space_contract_pdf',$data);
 
             return $pdf->stream();
 
 
         }else{
+
+
+            $brela_registration_path=null;
+            $tbs_certificates_path=null;
+            $gpsa_certificates_path=null;
+            $business_licenses_path=null;
+            $osha_certificates_path=null;
+            $tcra_registration_path=null;
+
+
+            //file management
+
+            if($request->hasfile('tbs_certificate')){
+                $file=$request->file('tbs_certificate');
+                $filename=$request->file('tbs_certificate')->getClientOriginalName();
+                $tbs_certificates_path=public_path().'/'.'uploads'.'/'.'tbs_certificates'.'/'.$filename;
+                $file->move($tbs_certificates_path,$filename);
+
+            }
+
+            if($request->hasfile('gpsa_certificate')){
+                $file=$request->file('gpsa_certificate');
+                $filename=$request->file('gpsa_certificate')->getClientOriginalName();
+                $gpsa_certificates_path=public_path().'/'.'uploads'.'/'.'gpsa_certificates'.'/'.$filename;
+                $file->move($gpsa_certificates_path,$filename);
+
+            }
+
+
+
+            if($request->hasfile('food_business_license')){
+                $file=$request->file('food_business_license');
+                $filename=$request->file('food_business_license')->getClientOriginalName();
+                $business_licenses_path=public_path().'/'.'uploads'.'/'.'business_licenses'.'/'.$filename;
+                $file->move($business_licenses_path,$filename);
+
+            }
+
+            if($request->hasfile('business_license')){
+                $file=$request->file('business_license');
+                $filename=$request->file('business_license')->getClientOriginalName();
+                $business_licenses_path=public_path().'/'.'uploads'.'/'.'business_licenses'.'/'.$filename;
+                $file->move($business_licenses_path,$filename);
+
+            }
+
+
+
+            if($request->hasfile('osha_certificates')){
+                $file=$request->file('osha_certificate');
+                $filename=$request->file('osha_certificate')->getClientOriginalName();
+                $osha_certificates_path=public_path().'/'.'uploads'.'/'.'osha_certificates'.'/'.$filename;
+                $file->move($osha_certificates_path,$filename);
+
+            }
+
+
+
+            if($request->hasfile('tcra_registration')){
+                $file=$request->file('tcra_registration');
+                $filename=$request->file('tcra_registration')->getClientOriginalName();
+                $tcra_registration_path=public_path().'/'.'uploads'.'/'.'tcra_registration'.'/'.$filename;
+                $file->move($tcra_registration_path,$filename);
+
+            }
+
+            if($request->hasfile('brela_registration')){
+                $file=$request->file('brela_registration');
+                $filename=$request->file('brela_registration')->getClientOriginalName();
+                $brela_registration_path=public_path().'/'.'uploads'.'/'.'brela_registration'.'/'.$filename;
+                $file->move($brela_registration_path,$filename);
+
+            }
+
+
+
 
             $end_date="";
             if($request->get('duration_period')=="Months"){
@@ -374,8 +601,8 @@ class ContractsController extends Controller
 
             $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
-            $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+            $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
 
 
 
@@ -411,6 +638,16 @@ class ContractsController extends Controller
                     ->update(['phone_number' => $request->get('phone_number')]);
 
 
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['tin' => $request->get('tin')]);
+
+                DB::table('clients')
+                    ->where('full_name', $full_name)
+                    ->update(['official_client_id' => $request->get('official_client_id')]);
+
+
                 $rent_sqm="";
 
                 if($request->get('rent_sqm')==''){
@@ -421,9 +658,13 @@ class ContractsController extends Controller
                     $rent_sqm=$request->get('rent_sqm');
                 }
 
+                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
                 );
 
             }else {
@@ -433,7 +674,7 @@ class ContractsController extends Controller
 
 
                     DB::table('clients')->insert(
-                        ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space']
+                        ['first_name' => $request->get('first_name'), 'last_name' => $request->get('last_name'), 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $full_name, 'type' => $client_type,'contract'=>'Space', 'official_client_id' => $request->get("official_client_id"), 'tin' => $request->get("tin")]
                     );
 
                     $rent_sqm="";
@@ -446,15 +687,19 @@ class ContractsController extends Controller
                         $rent_sqm=$request->get('rent_sqm');
                     }
 
+                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                    $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
                     );
 
                 } else {
 
                     DB::table('clients')->insert(
-                        ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space']
+                        ['first_name' => $request->get('company_name'), 'last_name' => '', 'address' => $request->get('address'), 'email' => $request->get('email'), 'phone_number' => $request->get('phone_number'), 'full_name' => $request->get('company_name'), 'type' => $client_type,'contract'=>'Space', 'official_client_id' => $request->get("official_client_id"), 'tin' => $request->get("tin")]
                     );
 
 
@@ -469,8 +714,12 @@ class ContractsController extends Controller
                     }
 
 
+                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                    $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
                     );
 
 
@@ -522,8 +771,8 @@ class ContractsController extends Controller
         //for programming purposes
         $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
-        $daysToAdd = DB::table('payment_cycle_settings')->where('cycle',$request->get('payment_cycle'))->value('days');
-        $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+        $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
 
 
 
@@ -565,9 +814,13 @@ class ContractsController extends Controller
                 $rent_sqm=$request->get('rent_sqm');
             }
 
+            $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+            $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+            $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
             );
 
         }else {
@@ -590,9 +843,12 @@ class ContractsController extends Controller
                     $rent_sqm=$request->get('rent_sqm');
                 }
 
+                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
                 );
 
             } else {
@@ -612,9 +868,12 @@ class ContractsController extends Controller
                     $rent_sqm=$request->get('rent_sqm');
                 }
 
+                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $request->get('amount'),'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$request->get('vacation_season'),'academic_season'=>$request->get('academic_season')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
                 );
 
 
@@ -927,8 +1186,8 @@ class ContractsController extends Controller
 
             $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
-            $daysToAdd = DB::table('payment_cycle_settings')->where('cycle', $request->get('payment_cycle'))->value('days');
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+            $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
 
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
@@ -1184,8 +1443,8 @@ class ContractsController extends Controller
 
             $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
 
-            $daysToAdd = DB::table('payment_cycle_settings')->where('cycle', $request->get('payment_cycle'))->value('days');
-            $programming_end_date = $programming_end_date->addDays($daysToAdd);
+
+            $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
 
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
@@ -1390,6 +1649,16 @@ class ContractsController extends Controller
             $mode_of_payment="";
             $first_installment="";
             $second_installment="";
+            $third_installment="";
+            $fourth_installment="";
+            $fifth_installment="";
+            $sixth_installment="";
+            $seventh_installment="";
+            $eighth_installment="";
+            $ninth_installment="";
+            $tenth_installment="";
+            $eleventh_installment="";
+            $twelfth_installment="";
 
 
             if($request->get('vehicle_registration_no')==""){
@@ -1476,11 +1745,113 @@ class ContractsController extends Controller
 
 
 
+            if($request->get('third_installment')==""){
+                $third_installment='N/A';
+
+            }else{
+
+                $third_installment=$request->get('third_installment');
+
+            }
+
+
+
+            if($request->get('fourth_installment')==""){
+                $fourth_installment='N/A';
+
+            }else{
+
+                $fourth_installment=$request->get('fourth_installment');
+
+            }
+
+
+            if($request->get('fifth_installment')==""){
+                $fifth_installment='N/A';
+
+            }else{
+
+                $fifth_installment=$request->get('fifth_installment');
+
+            }
+
+
+            if($request->get('sixth_installment')==""){
+                $sixth_installment='N/A';
+
+            }else{
+
+                $sixth_installment=$request->get('sixth_installment');
+
+            }
+
+
+            if($request->get('seventh_installment')==""){
+                $seventh_installment='N/A';
+
+            }else{
+
+                $seventh_installment=$request->get('seventh_installment');
+
+            }
+
+            if($request->get('eighth_installment')==""){
+                $eighth_installment='N/A';
+
+            }else{
+
+                $eighth_installment=$request->get('eighth_installment');
+
+            }
+
+
+            if($request->get('ninth_installment')==""){
+                $ninth_installment='N/A';
+
+            }else{
+
+                $ninth_installment=$request->get('ninth_installment');
+
+            }
+
+
+            if($request->get('tenth_installment')==""){
+                $tenth_installment='N/A';
+
+            }else{
+
+                $tenth_installment=$request->get('tenth_installment');
+
+            }
+
+
+
+            if($request->get('eleventh_installment')==""){
+                $eleventh_installment='N/A';
+
+            }else{
+
+                $eleventh_installment=$request->get('eleventh_installment');
+
+            }
+
+
+            if($request->get('twelfth_installment')==""){
+                $twelfth_installment='N/A';
+
+            }else{
+
+                $twelfth_installment=$request->get('twelfth_installment');
+
+            }
+
+
+
 if($request->get('mode_of_payment')=='By installment'){
 
 
     DB::table('insurance_contracts')->insert(
-        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment]
+        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
     );
 
 
@@ -1516,48 +1887,1542 @@ if($request->get('mode_of_payment')=='By installment'){
     $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
 
 
-    DB::table('insurance_invoices_clients')->insert(
-        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $first_installment,'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
-    );
+    if($request->get('number_of_installments')=='2') {
+
+//first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
 
 
-    $invoice_number_created_first_installment=DB::table('insurance_invoices_clients')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
 
-    DB::table('invoice_notifications')->insert(
-        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
-    );
-
-
-
-    DB::table('insurance_payments')->insert(
-        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$first_installment,'currency_payments' => $request->get('currency'),'receipt_number' => '']
-    );
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
 
 
-
-    //For second installment
-    DB::table('insurance_invoices_clients')->insert(
-        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $second_installment,'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
-    );
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
 
 
-    $invoice_number_created_second_installment=DB::table('insurance_invoices_clients')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
-
-    DB::table('invoice_notifications')->insert(
-        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
-    );
-
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
 
 
-    DB::table('insurance_payments')->insert(
-        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$second_installment,'currency_payments' => $request->get('currency'),'receipt_number' => '']
-    );
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+    }elseif ($request->get('number_of_installments')=='3'){
+
+
+
+
+
+//first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+
+    }elseif ($request->get('number_of_installments')=='4'){
+
+
+
+
+
+//first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+    }elseif($request->get('number_of_installments')=='5'){
+
+
+        //first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Fifth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+    }elseif($request->get('number_of_installments')=='6'){
+
+
+        //first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Fifth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Sixth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+    }elseif($request->get('number_of_installments')=='7'){
+
+
+        //first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Fifth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Sixth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Seventh installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+
+    }elseif($request->get('number_of_installments')=='8'){
+
+
+        //first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Fifth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Sixth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Seventh installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Eighth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+
+    }elseif($request->get('number_of_installments')=='9'){
+
+
+        //first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Fifth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Sixth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Seventh installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Eighth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Ninth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $ninth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_ninth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_ninth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_ninth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $ninth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+
+    }elseif($request->get('number_of_installments')=='10'){
+
+
+        //first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Fifth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Sixth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Seventh installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Eighth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Ninth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $ninth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_ninth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_ninth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_ninth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $ninth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Tenth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $tenth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_tenth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_tenth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_tenth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $tenth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+    }elseif($request->get('number_of_installments')=='11'){
+
+
+        //first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Fifth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Sixth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Seventh installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Eighth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Ninth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $ninth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_ninth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_ninth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_ninth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $ninth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Tenth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $tenth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_tenth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_tenth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_tenth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $tenth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Eleventh installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eleventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_eleventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_eleventh_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_eleventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eleventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+    }elseif($request->get('number_of_installments')=='12'){
+
+
+        //first_installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For second installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //For third installment
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+        //Fourth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Fifth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Sixth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+        //Seventh installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Eighth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Ninth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $ninth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_ninth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_ninth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_ninth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $ninth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //Tenth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $tenth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_tenth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_tenth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_tenth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $tenth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+        //Eleventh installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eleventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_eleventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_eleventh_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_eleventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eleventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+
+        //twelfth installment
+
+        DB::table('insurance_invoices_clients')->insert(
+            ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $twelfth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+        );
+
+
+        $invoice_number_created_twelfth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+        DB::table('invoice_notifications')->insert(
+            ['invoice_id' => $invoice_number_created_twelfth_installment, 'invoice_category' => 'insurance']
+        );
+
+
+        DB::table('insurance_payments')->insert(
+            ['invoice_number' => $invoice_number_created_twelfth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $twelfth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+        );
+
+
+
+    }else{
+
+
+
+
+    }
 
 
 }else{
 
     DB::table('insurance_contracts')->insert(
-        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment]
+        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
     );
 
 
@@ -1677,8 +3542,19 @@ if($request->get('mode_of_payment')=='By installment'){
             $sticker_no="";
             $value="";
             $mode_of_payment="";
+
             $first_installment="";
             $second_installment="";
+            $third_installment="";
+            $fourth_installment="";
+            $fifth_installment="";
+            $sixth_installment="";
+            $seventh_installment="";
+            $eighth_installment="";
+            $ninth_installment="";
+            $tenth_installment="";
+            $eleventh_installment="";
+            $twelfth_installment="";
 
             if($request->get('vehicle_registration_no')==""){
                 $vehicle_reg_var='N/A';
@@ -1763,11 +3639,110 @@ if($request->get('mode_of_payment')=='By installment'){
 
 
 
+            if($request->get('third_installment')==""){
+                $third_installment='N/A';
+
+            }else{
+
+                $third_installment=$request->get('third_installment');
+
+            }
+
+
+
+            if($request->get('fourth_installment')==""){
+                $fourth_installment='N/A';
+
+            }else{
+
+                $fourth_installment=$request->get('fourth_installment');
+
+            }
+
+
+            if($request->get('fifth_installment')==""){
+                $fifth_installment='N/A';
+
+            }else{
+
+                $fifth_installment=$request->get('fifth_installment');
+
+            }
+
+
+            if($request->get('sixth_installment')==""){
+                $sixth_installment='N/A';
+
+            }else{
+
+                $sixth_installment=$request->get('sixth_installment');
+
+            }
+
+
+            if($request->get('seventh_installment')==""){
+                $seventh_installment='N/A';
+
+            }else{
+
+                $seventh_installment=$request->get('seventh_installment');
+
+            }
+
+            if($request->get('eighth_installment')==""){
+                $eighth_installment='N/A';
+
+            }else{
+
+                $eighth_installment=$request->get('eighth_installment');
+
+            }
+
+
+            if($request->get('ninth_installment')==""){
+                $ninth_installment='N/A';
+
+            }else{
+
+                $ninth_installment=$request->get('ninth_installment');
+
+            }
+
+
+            if($request->get('tenth_installment')==""){
+                $tenth_installment='N/A';
+
+            }else{
+
+                $tenth_installment=$request->get('tenth_installment');
+
+            }
+
+            if($request->get('eleventh_installment')==""){
+                $eleventh_installment='N/A';
+
+            }else{
+
+                $eleventh_installment=$request->get('eleventh_installment');
+
+            }
+
+
+            if($request->get('twelfth_installment')==""){
+                $twelfth_installment='N/A';
+
+            }else{
+
+                $twelfth_installment=$request->get('twelfth_installment');
+
+            }
+
+
             if($request->get('mode_of_payment')=='By installment'){
 
 
                 DB::table('insurance_contracts')->insert(
-                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment]
+                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
                 );
 
 
@@ -1803,48 +3778,1545 @@ if($request->get('mode_of_payment')=='By installment'){
                 $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
 
 
-                DB::table('insurance_invoices_clients')->insert(
-                    ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $first_installment,'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
-                );
+                if($request->get('number_of_installments')=='2') {
+
+//first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
 
 
-                $invoice_number_created_first_installment=DB::table('insurance_invoices_clients')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
 
-                DB::table('invoice_notifications')->insert(
-                    ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
-                );
-
-
-
-                DB::table('insurance_payments')->insert(
-                    ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$first_installment,'currency_payments' => $request->get('currency'),'receipt_number' => '']
-                );
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
 
 
-
-                //For second installment
-                DB::table('insurance_invoices_clients')->insert(
-                    ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'),'invoicing_period_end_date' => $end_date,'period' => $period,'project_id' => 'UDIA','debtor_account_code' => '','debtor_name' => $request->get('full_name'),'debtor_address' => '','amount_to_be_paid' => $second_installment,'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>'','vrn'=>$vehicle_reg_var,'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$contract_id_created,'invoice_category'=>'insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Insurance fees','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
-                );
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
 
 
-                $invoice_number_created_second_installment=DB::table('insurance_invoices_clients')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
-
-                DB::table('invoice_notifications')->insert(
-                    ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
-                );
-
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
 
 
-                DB::table('insurance_payments')->insert(
-                    ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$second_installment,'currency_payments' => $request->get('currency'),'receipt_number' => '']
-                );
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                }elseif ($request->get('number_of_installments')=='3'){
+
+
+
+
+
+//first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+
+                }elseif ($request->get('number_of_installments')=='4'){
+
+
+
+
+
+//first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                }elseif($request->get('number_of_installments')=='5'){
+
+
+                    //first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Fifth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                }elseif($request->get('number_of_installments')=='6'){
+
+
+                    //first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Fifth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Sixth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                }elseif($request->get('number_of_installments')=='7'){
+
+
+                    //first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Fifth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Sixth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+            //Seventh installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+
+                }elseif($request->get('number_of_installments')=='8'){
+
+
+                    //first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Fifth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Sixth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Seventh installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Eighth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+
+                }elseif($request->get('number_of_installments')=='9'){
+
+
+                    //first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Fifth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Sixth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Seventh installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Eighth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Ninth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $ninth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_ninth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_ninth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_ninth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $ninth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+
+                }elseif($request->get('number_of_installments')=='10'){
+
+
+                    //first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Fifth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Sixth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Seventh installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Eighth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Ninth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $ninth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_ninth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_ninth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_ninth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $ninth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Tenth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $tenth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_tenth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_tenth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_tenth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $tenth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                }elseif($request->get('number_of_installments')=='11'){
+
+
+                    //first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Fifth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Sixth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Seventh installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Eighth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Ninth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $ninth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_ninth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_ninth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_ninth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $ninth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Tenth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $tenth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_tenth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_tenth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_tenth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $tenth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Eleventh installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eleventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_eleventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_eleventh_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_eleventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eleventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                }elseif($request->get('number_of_installments')=='12'){
+
+
+                    //first_installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $first_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_first_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_first_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_first_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $first_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For second installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $second_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_second_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_second_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_second_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $second_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //For third installment
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $third_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_third_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_third_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_third_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $third_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+                    //Fourth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fourth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fourth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fourth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fourth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fourth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Fifth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $fifth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_fifth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_fifth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_fifth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $fifth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Sixth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $sixth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_sixth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_sixth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_sixth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $sixth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+                    //Seventh installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $seventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_seventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_seventh_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_seventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $seventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Eighth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eighth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_eighth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_eighth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_eighth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eighth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Ninth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $ninth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_ninth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_ninth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_ninth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $ninth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //Tenth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $tenth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_tenth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_tenth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_tenth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $tenth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                    //Eleventh installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $eleventh_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_eleventh_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_eleventh_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_eleventh_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $eleventh_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+
+                    //twelfth installment
+
+                    DB::table('insurance_invoices_clients')->insert(
+                        ['contract_id' => $contract_id_created, 'invoicing_period_start_date' => $request->get('commission_date'), 'invoicing_period_end_date' => $end_date, 'period' => $period, 'project_id' => 'UDIA', 'debtor_account_code' => '', 'debtor_name' => $request->get('full_name'), 'debtor_address' => '', 'amount_to_be_paid' => $twelfth_installment, 'currency_invoice' => $request->get('currency'), 'gepg_control_no' => '', 'tin' => '', 'vrn' => $vehicle_reg_var, 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => 'OK', 'amount_in_words' => $amount_in_words, 'inc_code' => $contract_id_created, 'invoice_category' => 'insurance', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => 'Insurance fees', 'prepared_by' => Auth::user()->name, 'approved_by' => Auth::user()->name]
+                    );
+
+
+                    $invoice_number_created_twelfth_installment = DB::table('insurance_invoices_clients')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created_twelfth_installment, 'invoice_category' => 'insurance']
+                    );
+
+
+                    DB::table('insurance_payments')->insert(
+                        ['invoice_number' => $invoice_number_created_twelfth_installment, 'invoice_number_votebook' => '', 'amount_paid' => 0, 'amount_not_paid' => $twelfth_installment, 'currency_payments' => $request->get('currency'), 'receipt_number' => '']
+                    );
+
+
+
+                }else{
+
+
+
+
+                }
+
+
+
 
 
             }else{
 
                 DB::table('insurance_contracts')->insert(
-                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment]
+                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
                 );
 
 

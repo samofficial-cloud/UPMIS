@@ -130,15 +130,21 @@ div.dt-buttons{
 
     <div class="main_content">
       <div class="container " style="max-width: 100%;">
-        @if ($message = Session::get('success'))
-          <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
-    margin-bottom: -1px;
-    margin-top: 4px;">
-            <p>{{$message}}</p>
-          </div>
-        @endif
+          @if ($message = Session::get('error'))
+              <div class="alert alert-danger alert-dismissible mt-1">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <p>{{$message}}</p>
+              </div>
+          @endif
 
-           <br>
+          @if ($message = Session::get('success'))
+              <div class="alert alert-success alert-dismissible mt-1">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <p>{{$message}}</p>
+              </div>
+          @endif
+
+          <br>
 
             <div class="tab">
 
@@ -232,7 +238,14 @@ $i=1;
 
             <td><center>{{$i}}</center></td>
               <td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->full_name}}</a>
-                  <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
+
+                  @if($var->has_clients==1)
+                 &nbsp; <a href="{{route('space_contracts_subclients',$var->client_id)}}"><i  class=" fas fa-angle-double-down"></i></a>
+                  @else
+                  @endif
+
+
+                      <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
 
                       <div class="modal-dialog" role="document">
                           <div class="modal-content">
@@ -283,104 +296,40 @@ $i=1;
                       </div>
                   </div>
               </td>
-              <td><a class="link_style" data-toggle="modal" data-target="#space_id{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
-                  <div class="modal fade" id="space_id{{$var->contract_id}}" role="dialog">
+              <td>
 
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">{{$var->space_id_contract}} Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table style="width: 100%">
-                                      <tr>
-                                          <td>Space number:</td>
-                                          <td>{{$var->space_id}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Major industry :</td>
-                                          <td>{{$var->major_industry}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Minor industry :</td>
-                                          <td>{{$var->minor_industry}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Location:</td>
-                                          <td>{{$var->location}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Sub location:</td>
-                                          <td>{{$var->sub_location}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Size (SQM):</td>
-                                          <td>{{$var->size}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Rent price guide:</td>
-                                          <td>
-
-                                              @if($var->rent_price_guide_from==null)
-                                                N/A
-                                              @else
-                                                {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}
-                                              @endif
-
-                                              </td>
-                                      </tr>
-
-
-                                      <tr>
-                                          <td>Required to also pay electricity bill:</td>
-                                          <td>{{$var->has_electricity_bill_space}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>Required to also pay water bill:</td>
-                                          <td>{{$var->has_water_bill_space}}</td>
-                                      </tr>
-
-
-
-
-
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
+                  @if($var->space_id_contract!='')
+                  <a class="link_style" href="{{route('space_details',$var->space_id_contract)}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
+                  @else
+                  @endif
               </td>
 
-              <td>
-                  @if($var->academic_dependence=='Yes')
-                  {{number_format($var->academic_season)}} {{$var->currency}}
+              <td>@if($var->has_clients=="1")
                   @else
-                      {{number_format($var->amount)}} {{$var->currency}}
+                      @if($var->academic_dependence=='Yes')
+                      {{number_format($var->academic_season)}} {{$var->currency}}
+                      @else
+                          {{number_format($var->amount)}} {{$var->currency}}
+                      @endif
+
                   @endif
 
               </td>
-              <td>@if($var->academic_dependence=='Yes')
-                  @if($var->vacation_season=="0")
-                      {{number_format($var->academic_season)}} {{$var->currency}}
+              <td>
+                  @if($var->has_clients=="1")
                       @else
-                  {{number_format($var->vacation_season)}} {{$var->currency}}
-              @endif
-                    @else
-                      {{number_format($var->amount)}} {{$var->currency}}
-                    @endif
+
+                            @if($var->academic_dependence=='Yes')
+                                @if($var->vacation_season=="0")
+                                {{number_format($var->academic_season)}} {{$var->currency}}
+                                @else
+                                {{number_format($var->vacation_season)}} {{$var->currency}}
+                                @endif
+                            @else
+                              {{number_format($var->amount)}} {{$var->currency}}
+                            @endif
+
+                      @endif
               </td>
 
 
@@ -981,7 +930,7 @@ $i=1;
           </td>
         @else
           <td><center><a href="{{ route('carRentalFormE',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif 
+        @endif
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1100,7 +1049,7 @@ $i=1;
 
                   <div class="modal-body">
                    <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-                    
+
                     <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
                         {{csrf_field()}}
 
@@ -1218,7 +1167,7 @@ $i=1;
           </td>
         @else
            <td><center><a href="{{ route('carRentalFormB',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif 
+        @endif
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1385,8 +1334,8 @@ $i=1;
           </td>
         @else
             <td><center><a href="{{ route('carRentalFormC',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif 
-       
+        @endif
+
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1557,7 +1506,7 @@ $i=1;
         @else
           <td><center><a href="{{ route('carRentalFormD',$inbox->id) }}">{{$inbox->id}}</a></center></td>
         @endif
-        
+
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1675,7 +1624,7 @@ $i=1;
 
                   <div class="modal-body">
                    <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-                    
+
                     <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
                         {{csrf_field()}}
 
@@ -1792,7 +1741,7 @@ $i=1;
           </td>
         @else
            <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif 
+        @endif
         <td><center>{{$inbox->form_initiator}}</center></td>
         <td><center>{{$inbox->fullName}}</center></td>
         <td><center>{{$inbox->faculty}}</center></td>
@@ -1969,7 +1918,7 @@ $i=1;
 
                   <div class="modal-body">
                    <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-                    
+
                     <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
                         {{csrf_field()}}
 

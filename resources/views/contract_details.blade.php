@@ -139,51 +139,69 @@
 
 
                         <tr>
-                            <td>Client :</td>
+                            <td>Client ID:</td>
+                            <td>{{$var->official_client_id}}</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Client's TIN:</td>
+                            <td>{{$var->tin}}</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>Client Name:</td>
                             <td>{{$var->full_name}}</td>
                         </tr>
 
-                        <tr>
-                            <td> Space Number:</td>
-                            <td> {{$var->space_id_contract}}</td>
-                        </tr>
 
-                        <tr>
-                            <td> Amount(Academic season):</td>
-                            <td>
+                        @if($var->has_clients==1)
+                        @else
+                            <tr>
+                                <td> Space Number:</td>
+                                <td> {{$var->space_id_contract}}</td>
+                            </tr>
 
-                                @if($var->academic_dependence=='Yes')
-                                    {{number_format($var->academic_season)}} {{$var->currency}}
-                                @else
-                                    {{number_format($var->amount)}} {{$var->currency}}
-                                @endif</td>
-                        </tr>
+                            <tr>
+                                <td> Amount(Academic season):</td>
+                                <td>
 
-
-                        <tr>
-                            <td> Amount(Vacation season):</td>
-                            <td> @if($var->academic_dependence=='Yes')
-                                    @if($var->vacation_season=="0")
+                                    @if($var->academic_dependence=='Yes')
                                         {{number_format($var->academic_season)}} {{$var->currency}}
                                     @else
-                                        {{number_format($var->vacation_season)}} {{$var->currency}}
+                                        {{number_format($var->amount)}} {{$var->currency}}
+                                    @endif</td>
+                            </tr>
+
+
+                            <tr>
+                                <td> Amount(Vacation season):</td>
+                                <td> @if($var->academic_dependence=='Yes')
+                                        @if($var->vacation_season=="0")
+                                            {{number_format($var->academic_season)}} {{$var->currency}}
+                                        @else
+                                            {{number_format($var->vacation_season)}} {{$var->currency}}
+                                        @endif
+                                    @else
+                                        {{number_format($var->amount)}} {{$var->currency}}
                                     @endif
-                                @else
-                                    {{number_format($var->amount)}} {{$var->currency}}
-                                @endif
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td> Rent/SQM:</td>
-                            <td>@if($var->rent_sqm=='')
-                                    N/A
-                                @else
-                                    {{$var->rent_sqm}}
-                                @endif
-                            </td>
-                        </tr>
+                            <tr>
+                                <td> Rent/SQM:</td>
+                                <td>@if($var->rent_sqm=='')
+                                        N/A
+                                    @else
+                                        {{$var->rent_sqm}}
+                                    @endif
+                                </td>
+                            </tr>
+
+                        @endif
 
 
                         <tr>
@@ -208,7 +226,15 @@
 
                         <tr>
                             <td>Payment Cycle:</td>
-                            <td>{{$var->payment_cycle}}</td>
+                            <td>
+                                @if($var->payment_cycle=='1')
+                                {{$var->payment_cycle}} Month
+                                @else
+                                    {{$var->payment_cycle}} Months
+                                @endif
+
+
+                            </td>
                         </tr>
 
 

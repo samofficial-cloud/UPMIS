@@ -102,12 +102,63 @@ class SpaceController extends Controller
         );
     }
 
+        $newly_created_space_id=DB::table('spaces')->orderBy('id','desc')->limit('1')->value('id');
+
+//        DB::table('spaces')->where('id',$newly_created_space_id)->update(['flag'=>0]);
+        DB::table('spaces')
+            ->where('id', $newly_created_space_id)
+            ->update(['flag' => '0']);
+
+
+        return redirect('/businesses')
+            ->with('success', 'Request sent successfully');
+    }
+
+
+
+
+    public function approveSpace(Request $request)
+    {
+
+        if($request->get('approval_status')=='Rejected'){
+
+            DB::table('spaces')
+                ->where('id', $request->get('id'))
+                ->update(['flag' => '1']);
+
+
+            DB::table('spaces')
+                ->where('id', $request->get('id'))
+                ->update(['approval_remarks' => $request->get('reason')]);
+
+        }else{
+
+            DB::table('spaces')
+                ->where('id', $request->get('id'))
+                ->update(['flag' => '2']);
+
+        }
 
 
 
         return redirect('/businesses')
-            ->with('success', 'New Renting space added successfully');
+            ->with('success', 'Operation completed successfully');
     }
+
+
+
+    public function CancelSpaceAddition(Request $request,$id)
+    {
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect('/businesses')
+            ->with('success', 'Space deleted successfully');
+    }
+
+
 
     public function editSpace(Request $request,$id)
     {
@@ -216,6 +267,124 @@ class SpaceController extends Controller
         return redirect('/businesses')
             ->with('success', 'Renting space details edited successfully');
     }
+
+
+
+    public function ResubmitSpace(Request $request,$id)
+    {
+
+        if ($request->get('rent_price_guide_from')>$request->get('rent_price_guide_to')) {
+
+            return redirect()->back()->with("error","'From' field cannot be greater than 'To' field. Please try again");
+        }elseif($request->get('rent_price_guide_from')!=null AND $request->get('rent_price_guide_to')!=null  AND $request->get('rent_price_guide_from')==$request->get('rent_price_guide_to')){
+            return redirect()->back()->with("error","'From' and 'To' fields cannot be equal. Please try again");
+
+        }else{
+
+
+        }
+
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['major_industry' => $request->get('major_industry')]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['location' => $request->get('space_location')]);
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['sub_location' => $request->get('space_sub_location')]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['size' => $request->get('space_size')]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['minor_industry' => $request->get('minor_industry')]);
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['has_water_bill_space' => $request->get('has_water_bill')]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['has_electricity_bill_space' => $request->get('has_electricity_bill')]);
+
+
+        $comments='';
+
+        if($request->get('comments')!=null){
+            $comments=$request->get('comments');
+
+        }else{
+
+            $comments='None';
+        }
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['comments' => $comments]);
+
+
+
+        if($request->get('rent_price_guide_checkbox')==null) {
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_checkbox' => 0]);
+
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_from' => '']);
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_to' => '']);
+
+
+
+        }else {
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_checkbox' => 1]);
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_from' => $request->get('rent_price_guide_from')]);
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_to' => $request->get('rent_price_guide_to')]);
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['rent_price_guide_currency' => $request->get('rent_price_guide_currency')]);
+
+
+        }
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['flag' => '0']);
+
+
+        return redirect('/businesses')
+            ->with('success', 'Request sent successfully');
+    }
+
+
 
     public function deleteSpace(Request $request,$id)
     {

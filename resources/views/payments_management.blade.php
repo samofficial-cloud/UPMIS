@@ -226,7 +226,7 @@
                                         {{csrf_field()}}
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Invoice Number <span style="color: red;">*</span></label>
                                                     <input type="number" min="1" class="form-control" id="invoice_number_space" name="invoice_number" value="" Required autocomplete="off">
@@ -235,13 +235,7 @@
                                             </div>
                                             <br>
 
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
+
 
 
 
@@ -361,7 +355,8 @@
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+
+                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
@@ -378,7 +373,8 @@
                                 <tr>
 
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
+
+                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
 
@@ -410,7 +406,7 @@
 
                                                                 <tr>
                                                                     <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number}}</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -533,7 +529,7 @@
                                         {{csrf_field()}}
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Invoice Number <span style="color: red;">*</span></label>
                                                     <input type="number" min="1" class="form-control" id="invoice_number_water" name="invoice_number" value="" Required autocomplete="off">
@@ -542,13 +538,7 @@
                                             </div>
                                             <br>
 
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="votebook_water" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
+
 
 
 
@@ -666,7 +656,8 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+
+                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
@@ -681,7 +672,7 @@
                                 <tr>
 
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
@@ -712,7 +703,7 @@
 
                                                                 <tr>
                                                                     <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number}}</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -856,7 +847,7 @@
                                         {{csrf_field()}}
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Invoice Number <span style="color: red;">*</span></label>
                                                     <input type="number" min="1" class="form-control" id="invoice_number_electricity" name="invoice_number" value="" Required autocomplete="off">
@@ -865,13 +856,7 @@
                                             </div>
                                             <br>
 
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for="">Votebook Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="votebook_electricity" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
+
 
 
 
@@ -992,7 +977,8 @@
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+
+                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
@@ -1008,7 +994,7 @@
                                 <tr>
 
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
@@ -1039,7 +1025,7 @@
 
                                                                 <tr>
                                                                     <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number}}</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -1187,7 +1173,7 @@
                                         {{csrf_field()}}
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Invoice Number <span style="color: red;">*</span></label>
                                                     <input type="number" min="1" class="form-control" id="invoice_number_car" name="invoice_number" value="" Required autocomplete="off">
@@ -1196,13 +1182,7 @@
                                             </div>
                                             <br>
 
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="votebook_car" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
+
 
 
 
@@ -1322,7 +1302,8 @@
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+
+                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
@@ -1337,7 +1318,7 @@
                                 <tr>
 
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
@@ -1368,7 +1349,7 @@
 
                                                                 <tr>
                                                                     <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number}}</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -1495,7 +1476,7 @@
                                         {{csrf_field()}}
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
                                                     <label for="">Invoice Number <span style="color: red;">*</span></label>
                                                     <input type="number" min="1" class="form-control" id="invoice_number_insurance" name="invoice_number" value="" Required autocomplete="off">
@@ -1504,13 +1485,7 @@
                                             </div>
                                             <br>
 
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Votebook Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="votebook_insurance" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
+
 
 
 
@@ -1628,7 +1603,8 @@
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                <th scope="col" style="color:#fff;"><center>Votebook Invoice Number</center></th>
+
+                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
                                 <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
@@ -1643,7 +1619,7 @@
                                 <tr>
 
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
                                     <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
@@ -1674,7 +1650,7 @@
 
                                                                 <tr>
                                                                     <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number}}</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -2528,7 +2504,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                             $("#invoice_availability").css("color","red");
                             $("#invoice_availability").html("Invoice number does not exist");
 
-                            $("#votebook_space").prop('disabled', true);
+
                             $("#amount_paid_space").prop('disabled', true);
                             $("#not_paid_space").prop('disabled', true);
                             $("#currency_space").prop('disabled', true);
@@ -2543,7 +2519,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
                             $('#invoice_number_space').attr('style','border:1px solid #ced4da');
 
-                            $("#votebook_space").prop('disabled', false);
+
                             $("#amount_paid_space").prop('disabled', false);
                             $("#not_paid_space").prop('disabled', false);
                             $("#currency_space").prop('disabled', false);
@@ -2581,7 +2557,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                             $("#invoice_availability_insurance").css("color","red");
                             $("#invoice_availability_insurance").html("Invoice number does not exist");
 
-                            $("#votebook_insurance").prop('disabled', true);
+
                             $("#amount_paid_insurance").prop('disabled', true);
                             $("#not_paid_insurance").prop('disabled', true);
                             $("#currency_insurance").prop('disabled', true);
@@ -2595,7 +2571,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
                             $('#invoice_number_insurance').attr('style','border:1px solid #ced4da');
 
-                            $("#votebook_insurance").prop('disabled', false);
+
                             $("#amount_paid_insurance").prop('disabled', false);
                             $("#not_paid_insurance").prop('disabled', false);
                             $("#currency_insurance").prop('disabled', false);
@@ -2632,7 +2608,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                             $("#invoice_availability_car").css("color","red");
                             $("#invoice_availability_car").html("Invoice number does not exist");
 
-                            $("#votebook_car").prop('disabled', true);
+
                             $("#amount_paid_car").prop('disabled', true);
                             $("#not_paid_car").prop('disabled', true);
                             $("#currency_car").prop('disabled', true);
@@ -2646,7 +2622,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
                             $('#invoice_number_car').attr('style','border:1px solid #ced4da');
 
-                            $("#votebook_car").prop('disabled', false);
+
                             $("#amount_paid_car").prop('disabled', false);
                             $("#not_paid_car").prop('disabled', false);
                             $("#currency_car").prop('disabled', false);
@@ -2683,7 +2659,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                             $("#invoice_availability_water").css("color","red");
                             $("#invoice_availability_water").html("Invoice number does not exist");
 
-                            $("#votebook_water").prop('disabled', true);
+
                             $("#amount_paid_water").prop('disabled', true);
                             $("#not_paid_water").prop('disabled', true);
                             $("#currency_water").prop('disabled', true);
@@ -2696,7 +2672,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                             $("#invoice_availability_water").html("");
                             $('#invoice_number_water').attr('style','border:1px solid #ced4da');
 
-                            $("#votebook_water").prop('disabled', false);
+
                             $("#amount_paid_water").prop('disabled', false);
                             $("#not_paid_water").prop('disabled', false);
                             $("#currency_water").prop('disabled', false);
@@ -2733,7 +2709,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                             $("#invoice_availability_electricity").css("color","red");
                             $("#invoice_availability_electricity").html("Invoice number does not exist");
 
-                            $("#votebook_electricity").prop('disabled', true);
+
                             $("#amount_paid_electricity").prop('disabled', true);
                             $("#not_paid_electricity").prop('disabled', true);
                             $("#currency_electricity").prop('disabled', true);
@@ -2747,7 +2723,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
                             $('#invoice_number_electricity').attr('style','border:1px solid #ced4da');
 
-                            $("#votebook_electricity").prop('disabled', false);
+
                             $("#amount_paid_electricity").prop('disabled', false);
                             $("#not_paid_electricity").prop('disabled', false);
                             $("#currency_electricity").prop('disabled', false);

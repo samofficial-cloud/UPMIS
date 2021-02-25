@@ -344,31 +344,99 @@
                                                     <div class="form-wrapper">
                                                         <label for="company_name">Company Name <span style="color: red;"> *</span></label>
                                                         <span id="cnamemsg"></span>
-                                                        <input type="text" id="company_name" required name="company_name" class="form-control">
+                                                        <input type="text" id="company_name"  name="company_name" class="form-control">
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
+                                                <div class="form-group row">
+
+                                                    <div class="form-wrapper col-12">
+                                                        <label for="official_client_id">Client ID<span style="color: red;"> *</span></label>
+                                                        <span id="official_client_id_msg"></span>
+                                                        <input type="number" id="official_client_id" name="official_client_id" class="form-control">
+                                                    </div>
+
+
+
+                                                    <div class="form-wrapper col-6">
                                                         <label for="email">Email</label>
-                                                        <input type="text" name="email" id="email" required class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                                        <span id="email_msg"></span>
+                                                        <input type="text" name="email" id="email"  class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
                                                     </div>
-                                                </div>
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
+                                                    <div class="form-wrapper col-6">
                                                         <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
                                                         <span id="phone_msg"></span>
-                                                        <input type="text" id="phone_number" required name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                        <input type="text" id="phone_number"  name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                                     </div>
+
+
+
                                                 </div>
+
+
 
                                                 <div class="form-group">
                                                     <div class="form-wrapper">
                                                         <label for="address">Address <span style="color: red;"> *</span></label>
-                                                        <input type="text" id="address" name="address" required class="form-control">
+                                                        <span id="address_msg"></span>
+                                                        <input type="text" id="address" name="address"  class="form-control">
                                                     </div>
                                                 </div>
+
+
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper" >
+                                                        <label for="client_type_contract">Client Type<span style="color: red;"> *</span></label>
+                                                        <span id="ctype_contract_msg"></span>
+                                                        <select class="form-control"  id="client_type_contract" name="client_type_contract">
+                                                            <option value=""></option>
+                                                            <option value="Direct">Direct</option>
+                                                            <option value="Indirect">Indirect</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="form-group">
+                                                    <div id="parent_clientDiv" style="display: none;" class="form-wrapper  pt-1">
+                                                        <label for="parent_client"  ><strong>Parent client <span style="color: red;"> *</span></strong></label>
+                                                        <span id="parent_client_msg"></span>
+                                                        <select id="parent_client"  class="form-control" name="parent_client" >
+                                                            <option value="" selected></option>
+
+                                                            <?php
+                                                            $parent_clients=DB::table('space_contracts')->where('has_clients',1)->get();
+
+
+                                                            $tempOut = array();
+                                                            foreach($parent_clients as $values){
+                                                                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                                $val = (iterator_to_array($iterator,true));
+                                                                $tempoIn=$val['full_name'];
+
+                                                                if(!in_array($tempoIn, $tempOut))
+                                                                {
+                                                                    print('<option value="'.$val['full_name'].'">'.$val['full_name'].'</option>');
+                                                                    array_push($tempOut,$tempoIn);
+                                                                }
+
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+
                                             </div>
                                             <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
                                             <a href="/businesses" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
@@ -458,35 +526,131 @@
                                             <div class="form-card">
                                                 <h2 class="fs-title">Payment Information</h2>
                                                 <div class="form-group row">
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="start_date">Start Date <span style="color: red;"> *</span></label>
+
+
+                                                    <div id="contract_categoryDiv" class="form-wrapper col-12" style="display: none">
+                                                        <label for="contract_category">Category of contract <span style="color: red;"> *</span></label>
+                                                        <span id="contract_category_msg"></span>
+                                                        <select id="contract_category" class="form-control" name="contract_category" required>
+                                                            <option value="" ></option>
+                                                            <option value="Solicited" >Solicited</option>
+                                                            <option value="Unsolicited" >Unsolicited</option>
+                                                        </select>
+                                                    </div>
+
+
+
+                                                    <div class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                            <span id="tin_msg"></span>
+                                                            <input type="number" id="tin" min="0" name="tin" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div id="tbs_certificateDiv" style="display: none;" class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                                                            <span id="tbs_certificate_msg"></span>
+                                                            <input type="file" id="tbs_certificate"  accept=".pdf"  name="tbs_certificate" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div id="gpsa_certificateDiv" style="display: none;"  class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                                                            <span id="gpsa_certificate_msg"></span>
+                                                            <input type="file" id="gpsa_certificate" accept=".pdf" name="gpsa_certificate" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div id="food_business_licenseDiv" style="display: none;" class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                                                            <span id="food_business_license_msg"></span>
+                                                            <input type="file" id="food_business_license" accept=".pdf" name="food_business_license" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div style="display: none;" id="business_licenseDiv" class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                                                            <span id="business_license_msg"></span>
+                                                            <input type="file" id="business_license" accept=".pdf" name="business_license" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div style="display: none;" id="osha_certificateDiv" class="form-group col-12 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                                                            <span id="osha_certificate_msg"></span>
+                                                            <input type="file" id="osha_certificate" accept=".pdf" name="osha_certificate" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div style="display: none;" id="tcra_registrationDiv"  class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                                                            <span id="tcra_registration_msg"></span>
+                                                            <input type="file" accept=".pdf" id="tcra_registration" min="0" name="tcra_registration" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div style="display: none;" id="brela_registrationDiv" class="form-group col-12">
+                                                        <div class="form-wrapper">
+                                                            <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                                                            <span id="brela_registration_msg"></span>
+                                                            <input type="file" id="brela_registration" accept=".pdf" name="brela_registration" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div class="form-wrapper col-12 pt-4">
+                                                        <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                                         <span id="start_date_msg"></span>
-                                                        <input type="date" id="start_date" name="start_date" class="form-control" min="{{$today}}">
+                                                        <input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="duration">Duration <span style="color: red;"> *</span></label>
                                                         <span id="duration_msg"></span>
-                                                        <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control"  >
+                                                        <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control" required="" >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="currency">Period <span style="color: red;"> *</span></label>
                                                         <span id="duration_period_msg"></span>
-                                                        <select id="duration_period" class="form-control" name="duration_period" >
+                                                        <select id="duration_period" class="form-control" name="duration_period" required>
                                                             <option value="" ></option>
                                                             <option value="Months" >Months</option>
                                                             <option value="Years" >Years</option>
                                                         </select>
                                                     </div>
+
+
+
+
+
+
                                                 </div>
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-12">
+                                                    <div id="academic_dependenceDiv" class="form-wrapper col-12">
                                                         <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
                                                         <span id="academic_dependence_msg"></span>
-                                                        <select id="academic_dependence" class="form-control" name="academic_dependence" >
+                                                        <select id="academic_dependence" class="form-control" name="academic_dependence" required>
                                                             <option value="" ></option>
                                                             <option value="No" >No</option>
                                                             <option value="Yes" >Yes</option>
@@ -515,15 +679,65 @@
 
                                                     <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
                                                         <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
-                                                        <span id="rent_sqm_msg"></span>
                                                         <input type="number" min="1" id="rent_sqm" name="rent_sqm"  class="form-control">
                                                     </div>
 
+                                                    <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style="display: none; text-align: left;">
 
-                                                    <div class="form-wrapper col-12">
+                                                        <label for="has_additional_businesses" style="display: inline-block;">Has additional businesses in the area</label>
+                                                        <input type="checkbox"  style="display: inline-block;" value="1" id="has_additional_businesses" onchange="showAdditionalBusinesses()"  name="has_additional_businesses" autocomplete="off">
+
+                                                    </div>
+
+
+
+                                                    <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" style="display: none;">
+                                                        <label for="">List of the businesses (Comma separated):</label>
+                                                        <span id="additional_businesses_list_msg"></span>
+                                                        <textarea style="width: 100%;" id="additional_businesses_list" name="additional_businesses_list"></textarea>
+
+                                                    </div>
+
+
+                                                    <div id="additional_businesses_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
+                                                        <label for="additional_businesses_amount">Amount expected from the businesses<span style="color: red;"> *</span></label>
+                                                        <span id="additional_businesses_amount_msg"></span>
+                                                        <input type="number" min="20" id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
+                                                    </div>
+
+                                                    <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
+                                                        <label for="total_amount">Total amount<span style="color: red;"> *</span></label>
+                                                        <span id="total_amount_msg"></span>
+                                                        <input type="text" min="20" id="total_amount" readonly name="total_amount" class="form-control">
+                                                    </div>
+
+
+                                                    <div id="academic_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                                        <label for="academic_season_total">Total amount(Academic season) <span style="color: red;"> *</span></label>
+                                                        <span id="academic_season_total_msg"></span>
+                                                        <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
+                                                    </div>
+
+
+                                                    <div id="vacation_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                                        <label for="vacation_season_total">Total amount(Vacation season) <span style="color: red;"> *</span></label>
+                                                        <span id="vacation_season_total_msg"></span>
+                                                        <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
+                                                    </div>
+
+
+                                                    <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
+                                                        <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
+                                                        <span id="security_deposit_msg"></span>
+                                                        <input type="number" min="20" id="security_deposit" name="security_deposit" class="form-control" >
+                                                    </div>
+
+
+
+                                                    <div id="currencydiv" class="form-wrapper col-12">
                                                         <label for="currency">Currency <span style="color: red;"> *</span></label>
                                                         <span id="currency_msg"></span>
-                                                        <select id="currency" class="form-control"  name="currency" >
+                                                        <select id="currency" class="form-control"  name="currency">
                                                             <option value="" ></option>
                                                             <option value="TZS" >TZS</option>
                                                             <option value="USD" >USD</option>
@@ -537,20 +751,10 @@
                                                 <div class="form-group row">
 
                                                     <div class="form-wrapper col-6">
-                                                        <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
+                                                        <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
                                                         <span id="payment_cycle_msg"></span>
-                                                        <select id="payment_cycle"  class="form-control" name="payment_cycle" >
-                                                            <?php
-                                                            $payment_cycles=DB::table('payment_cycle_settings')->get();
-                                                            ?>
-                                                            <option value=""></option>
+                                                        <input type="number" min="1" id="payment_cycle" name="payment_cycle" class="form-control">
 
-                                                            @foreach($payment_cycles as $payment_cycle)
-
-                                                                <option value="{{$payment_cycle->cycle}}">{{$payment_cycle->cycle}}</option>
-
-                                                            @endforeach
-                                                        </select>
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
@@ -744,19 +948,51 @@
 @endsection
 
 @section('pagescript')
+
+
+
+
+
     <script type="text/javascript">
+
+        $('#client_type_contract').on('change',function(e){
+            e.preventDefault();
+            var client_type_contract = $(this).val();
+
+            if (client_type_contract=='Indirect'){
+                $('#parent_clientDiv').show();
+
+
+            }else{
+
+                $('#parent_clientDiv').hide();
+
+            }
+
+
+
+        });
+
+
+
+
         $(document).ready(function(){
 
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
-            var p1, p2;
+            var p1, p2,p3,p5;
             $("#next1").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
                 var clientType=$("#client_type").val(),
-                    firstName=$("#first_name").val(),
-                    lastName=$("#last_name").val(),
-                    companyName=$("#company_name").val();
+                 firstName=$("#first_name").val(),
+                  lastName=$("#last_name").val(),
+                   companyName=$("#company_name").val();
+                var email=$("#email").val();
+                var address=$("#address").val();
+                var tin=$("#tin").val();
+                var official_client_id=$("#official_client_id").val();
+
 
                 if(clientType=="1"){
                     $('#ctypemsg').hide();
@@ -793,6 +1029,22 @@
                     }
 
 
+                    if(email==""){
+                        p1=0;
+                        $('#email_msg').show();
+                        var message=document.getElementById('email_msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#email').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+                        p1=1;
+                        $('#email_msg').hide();
+                        $('#email').attr('style','border-bottom: 1px solid #ccc');
+
+                    }
+
+
                 }
 
                 else if(clientType=="2"){
@@ -812,6 +1064,25 @@
                         $('#company_name').attr('style','border-bottom: 1px solid #ccc');
 
                     }
+
+
+                    if(email==""){
+                        p1=0;
+                        $('#email_msg').show();
+                        var message=document.getElementById('email_msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#email').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+                        p1=1;
+                        $('#email_msg').hide();
+                        $('#email').attr('style','border-bottom: 1px solid #ccc');
+
+                    }
+
+
+
                 }
 
                 else{
@@ -820,7 +1091,6 @@
                     message.style.color='red';
                     message.innerHTML="Required";
                     $('#client_type').attr('style','border:1px solid #f00');
-
 
                 }
                 var phone_digits=$('#phone_number').val().length;
@@ -839,7 +1109,49 @@
                 }
 
 
-                if(p1=='1' & p2=='1'){
+
+
+                if(address==""){
+                    p3=0;
+                    $('#address_msg').show();
+                    var message=document.getElementById('address_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#address').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p3=1;
+                    $('#address_msg').hide();
+                    $('#address').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+
+
+
+
+                if(official_client_id==""){
+                    p5=0;
+                    $('#official_client_id_msg').show();
+                    var message=document.getElementById('official_client_id_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#official_client_id').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p5=1;
+                    $('#official_client_id_msg').hide();
+                    $('#official_client_id').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+                if(p1=='1' & p2=='1' & p3=='1' & p5=='1'){
                     gonext();
                 }
 
@@ -850,6 +1162,64 @@
             $("#next2").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
+                var sub_location = $('#space_sub_location').val();
+                var location = $('#space_location').val();
+                var minor = $('#minor_list').val();
+                var major = $('#getMajor').val();
+                var space_id = $('#space_id_contract').val();
+
+
+                if(minor=="Canteen"){
+
+                    $('#tbs_certificateDiv').show();
+                    $('#gpsa_certificateDiv').show();
+                    $('#food_business_licenseDiv').show();
+
+                    $('#business_licenseDiv').hide();
+                    $('#osha_certificateDiv').hide();
+                    $('#tcra_registrationDiv').hide();
+                    $('#brela_registrationDiv').hide();
+
+
+                }else if(major=='Banking'){
+                    $('#osha_certificateDiv').show();
+
+                    $('#tbs_certificateDiv').hide();
+                    $('#gpsa_certificateDiv').hide();
+                    $('#food_business_licenseDiv').hide();
+                    $('#business_licenseDiv').show();
+                    $('#tcra_registrationDiv').hide();
+                    $('#brela_registrationDiv').hide();
+
+
+
+                }else if (minor=="Postal services"){
+                    $('#tcra_registrationDiv').show();
+                    $('#brela_registrationDiv').show();
+                    $('#gpsa_certificateDiv').show();
+
+
+                    $('#tbs_certificateDiv').hide();
+                    $('#food_business_licenseDiv').hide();
+                    $('#business_licenseDiv').show();
+                    $('#osha_certificateDiv').hide();
+
+
+                }else{
+                    $('#business_licenseDiv').show();
+
+
+                    $('#tbs_certificateDiv').hide();
+                    $('#gpsa_certificateDiv').hide();
+                    $('#food_business_licenseDiv').hide();
+                    $('#osha_certificateDiv').hide();
+                    $('#tcra_registrationDiv').hide();
+                    $('#brela_registrationDiv').hide();
+
+
+                }
+
+
                 gonext();
 
             });

@@ -492,7 +492,7 @@
                                                     <div class="form-wrapper col-12">
                                                         <label for="start_date">Commission Date <span style="color: red;"> *</span></label>
                                                         <span id="commission_date_msg"></span>
-                                                        <input type="date" id="commission_date" value="{{$var->commission_date}}" name="commission_date" class="form-control" required="" >
+                                                        <input type="date" id="commission_date" value="{{$var->commission_date}}" name="commission_date" class="form-control" readonly>
                                                     </div>
 
                                                     <input type="hidden"  min="1" max="50" id="duration" name="duration" class="form-control" value="1" >
@@ -506,39 +506,497 @@
                                                     <div class="form-wrapper col-12">
                                                         <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
                                                         <span id="sum_insured_msg"></span>
-                                                        <input type="number" min="20" id="sum_insured" name="sum_insured"  value="{{$var->sum_insured}}" class="form-control" required="">
+                                                        <input type="number" min="20" id="sum_insured" name="sum_insured" readonly  value="{{$var->sum_insured}}" class="form-control" >
                                                     </div>
 
 
                                                     <div id="premiumDiv" class="form-wrapper col-12">
                                                         <label for="amount">Premium </label>
                                                         <span id="premium_msg"></span>
-                                                        <input type="number" min="20" id="premium" value="{{$var->premium}}" name="premium" class="form-control" >
+                                                        <input type="text"  id="premium" readonly value="{{$var->premium}}" name="premium" class="form-control" >
                                                     </div>
 
-                                                    <div id="mode_of_paymentDiv" class="form-wrapper col-12" style="display: none;">
-                                                        <label for="mode_of_payment">Mode of payment <span style="color: red;"> *</span></label>
+
+
+
+                                                    <div  class="form-wrapper col-12" >
+                                                        <label for="mode_of_payment">Mode of payment</label>
                                                         <span id="mode_of_payment_msg"></span>
-                                                        <select id="mode_of_payment" class="form-control" name="mode_of_payment" >
-                                                            <option value="" ></option>
-                                                            <option value="By installment" >By installment</option>
-                                                            <option value="Full payment" >Full payment</option>
-                                                        </select>
+                                                        <input type="text"  id="mode_of_payment" readonly value="{{$var->mode_of_payment}}" name="mode_of_payment" class="form-control" >
+                                                    </div>
+
+                                                    @if($var->mode_of_payment=='By installment')
+                                                    <div id="number_of_installmentsDiv" class="form-wrapper col-12 pt-4" >
+                                                        <label for="amount">Number of installments </label>
+                                                        <input type="number" min="2" id="number_of_installments" readonly name="number_of_installments" value="{{$var->number_of_installments}}" class="form-control">
+                                                    </div>
+                                                    @else
+                                                    @endif
+
+                                                    @if($var->number_of_installments=='2')
+                                                    <div id="first_installmentDiv" class="form-wrapper col-6  pt-4" >
+                                                        <label for="amount">First installment </label>
+                                                        <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                        <label for="amount">Second installment </label>
+                                                        <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    @elseif($var->number_of_installments=='3')
+
+
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-12  pt-4" >
+                                                        <label for="amount">Third installment </label>
+                                                        <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    @elseif($var->number_of_installments=='4')
+
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6  pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                    <div id="fourth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                        <label for="amount">Fourth installment </label>
+                                                        <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    @elseif($var->number_of_installments=='5')
+
+
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                    <div id="fifth_installmentDiv" class="form-wrapper col-12 pt-4" >
+                                                        <label for="amount">Fifth installment </label>
+                                                        <input type="number" id="fifth_installment"  name="fifth_installment" value="{{$var->fifth_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    @elseif($var->number_of_installments=='6')
+
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6  pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="fifth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fifth installment </label>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" value="{{$var->fifth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                    <div id="sixth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                        <label for="amount">Sixth installment </label>
+                                                        <input type="number" id="sixth_installment"  name="sixth_installment" value="{{$var->sixth_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    @elseif($var->number_of_installments=='7')
+
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6  pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="fifth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fifth installment </label>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" value="{{$var->fifth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="sixth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Sixth installment </label>
+                                                            <input type="number" id="sixth_installment"  name="sixth_installment" value="{{$var->sixth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                    <div id="seventh_installmentDiv" class="form-wrapper col-12 pt-4" >
+                                                        <label for="amount">Seventh installment </label>
+                                                        <input type="number" id="seventh_installment"  name="seventh_installment" value="{{$var->seventh_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    @elseif($var->number_of_installments=='8')
+
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="fifth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fifth installment </label>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" value="{{$var->fifth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="sixth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Sixth installment </label>
+                                                            <input type="number" id="sixth_installment"  name="sixth_installment" value="{{$var->sixth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="seventh_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Seventh installment </label>
+                                                            <input type="number" id="seventh_installment"  name="seventh_installment" value="{{$var->seventh_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                    <div id="eighth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                        <label for="amount">Eighth installment</label>
+                                                        <input type="number" id="eighth_installment"  name="eighth_installment" value="{{$var->eighth_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    @elseif($var->number_of_installments=='9')
+
+
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="fifth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fifth installment </label>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" value="{{$var->fifth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="sixth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Sixth installment </label>
+                                                            <input type="number" id="sixth_installment"  name="sixth_installment" value="{{$var->sixth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="seventh_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Seventh installment </label>
+                                                            <input type="number" id="seventh_installment"  name="seventh_installment" value="{{$var->seventh_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="eighth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Eighth installment</label>
+                                                            <input type="number" id="eighth_installment"  name="eighth_installment" value="{{$var->eighth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                    <div id="ninth_installmentDiv" class="form-wrapper col-12 pt-4" >
+                                                        <label for="amount">Ninth installment</label>
+                                                        <input type="number" id="ninth_installment"  name="ninth_installment" value="{{$var->ninth_installment}}" readonly class="form-control">
                                                     </div>
 
 
+                                                    @elseif($var->number_of_installments=='10')
 
 
-                                                    <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" style="display: none;">
-                                                        <label for="amount">First installment(60%) </label>
-                                                        <input type="text" id="first_installment" readonly name="first_installment" class="form-control">
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="fifth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fifth installment </label>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" value="{{$var->fifth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="sixth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Sixth installment </label>
+                                                            <input type="number" id="sixth_installment"  name="sixth_installment" value="{{$var->sixth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="seventh_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Seventh installment </label>
+                                                            <input type="number" id="seventh_installment"  name="seventh_installment" value="{{$var->seventh_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="eighth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Eighth installment</label>
+                                                            <input type="number" id="eighth_installment"  name="eighth_installment" value="{{$var->eighth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="ninth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Ninth installment</label>
+                                                            <input type="number" id="ninth_installment"  name="ninth_installment" value="{{$var->ninth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                    <div id="tenth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                        <label for="amount">Tenth installment</label>
+                                                        <input type="number" id="tenth_installment"  name="tenth_installment" value="{{$var->tenth_installment}}" readonly class="form-control">
                                                     </div>
 
 
-                                                    <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" style="display: none;">
-                                                        <label for="amount">Second installment(40%) </label>
-                                                        <input type="text" id="second_installment" readonly name="second_installment" class="form-control">
+                                                    @elseif($var->number_of_installments=='11')
+
+
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="fifth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fifth installment </label>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" value="{{$var->fifth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="sixth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Sixth installment </label>
+                                                            <input type="number" id="sixth_installment"  name="sixth_installment" value="{{$var->sixth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="seventh_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Seventh installment </label>
+                                                            <input type="number" id="seventh_installment"  name="seventh_installment" value="{{$var->seventh_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="eighth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Eighth installment</label>
+                                                            <input type="number" id="eighth_installment"  name="eighth_installment" value="{{$var->eighth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="ninth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Ninth installment</label>
+                                                            <input type="number" id="ninth_installment"  name="ninth_installment" value="{{$var->ninth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="tenth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Tenth installment</label>
+                                                            <input type="number" id="tenth_installment"  name="tenth_installment" value="{{$var->tenth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                    <div id="eleventh_installmentDiv" class="form-wrapper col-12 pt-4" >
+                                                        <label for="amount">Eleventh installment</label>
+                                                        <input type="number" id="eleventh_installment"  name="eleventh_installment" value="{{$var->eleventh_installment}}" readonly class="form-control">
                                                     </div>
+
+
+                                                    @elseif($var->number_of_installments=='12')
+                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" value="{{$var->first_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="second_installmentDiv" class="form-wrapper col-6  pt-4" >
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" value="{{$var->second_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" value="{{$var->third_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper col-6  pt-4" >
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" value="{{$var->fourth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="fifth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Fifth installment </label>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" value="{{$var->fifth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+                                                        <div id="sixth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Sixth installment </label>
+                                                            <input type="number" id="sixth_installment"  name="sixth_installment" value="{{$var->sixth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="seventh_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Seventh installment </label>
+                                                            <input type="number" id="seventh_installment"  name="seventh_installment" value="{{$var->seventh_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="eighth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Eighth installment</label>
+                                                            <input type="number" id="eighth_installment"  name="eighth_installment" value="{{$var->eighth_installment}}" readonly class="form-control">
+                                                        </div>
+
+                                                        <div id="ninth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Ninth installment</label>
+                                                            <input type="number" id="ninth_installment"  name="ninth_installment" value="{{$var->ninth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="tenth_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Tenth installment</label>
+                                                            <input type="number" id="tenth_installment"  name="tenth_installment" value="{{$var->tenth_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="eleventh_installmentDiv" class="form-wrapper col-6 pt-4" >
+                                                            <label for="amount">Eleventh installment</label>
+                                                            <input type="number" id="eleventh_installment"  name="eleventh_installment" value="{{$var->eleventh_installment}}" readonly class="form-control">
+                                                        </div>
+
+
+
+
+
+                                                    <div id="twelfth_installmentDiv" class="form-wrapper col-6 pt-4">
+                                                        <label for="amount">Twelfth installment</label>
+                                                        <input type="number" id="twelfth_installment"  name="twelfth_installment" value="{{$var->twelfth_installment}}" readonly class="form-control">
+                                                    </div>
+
+                                                    @else
+                                                    @endif
 
 
 
@@ -584,22 +1042,13 @@
                                                     </div>
 
 
-
-
                                                     <div class="form-wrapper col-12">
                                                         <label for="currency">Currency <span style="color: red;"> *</span></label>
-
                                                         <span id="currency_msg"></span>
-                                                        <select id="currency" class="form-control" name="currency">
-                                                            @if($var->currency=='TZS')
-                                                                <option value="USD" >USD</option>
-                                                            @elseif($var->currency=='USD')
-                                                                <option value="TZS" >TZS</option>
-                                                            @else
-                                                            @endif
-                                                        </select>
-
+                                                        <input type="text"  id="currency" readonly value="{{$var->currency}}" name="currency" class="form-control">
                                                     </div>
+
+
 
                                                     <div id="cover_noteDiv" style="display: none;" class="form-wrapper col-6 pt-4">
                                                         <label for="amount">Cover note<span style="color: red;"> *</span></label>
@@ -2480,8 +2929,18 @@
 
     <script>
 
-        $('#premium').on('input',function(e){
+        $('#sum_insured').on('input',function(e){
             e.preventDefault();
+
+            var sum_insured=$(this).val();
+
+            var percentage=10;
+
+            var premium= Math.round(((percentage/100*sum_insured) + Number.EPSILON) * 100) / 100;
+
+            $('#premium').val(premium);
+
+            //Filling also commission field
 
             var premium=$('#premium').val();
 

@@ -161,7 +161,7 @@ select.list-dt:focus {
     position: relative
 }
 
-#progressbar #account:before {
+#progressbar #renting_space:before {
     font-family: FontAwesome;
     content: "\f04d"
 }
@@ -303,11 +303,14 @@ $today=date('Y-m-d');
                 <p>Fill all form fields with (*) to go to the next step</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
-                        <form id="msform" METHOD="GET" action="{{ route('create_space_contract')}}">
+                        <form id="msform" METHOD="POST" enctype="multipart/form-data"  action="{{ route('create_space_contract')}}">
+
+                        {{csrf_field()}}
+
                             <!-- progressbar -->
                             <ul id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>
-                                <li  id="account"><strong>Renting Space</strong></li>
+                                <li  id="renting_space"><strong>Renting Space</strong></li>
                                 <li id="payment"><strong>Payment</strong></li>
                                 <li id="confirm"><strong>Confirm</strong></li>
                             </ul>
@@ -316,10 +319,10 @@ $today=date('Y-m-d');
                                 <div class="form-card">
                                    <h2 class="fs-title">Client Information</h2> <div class="form-group">
 					<div class="form-wrapper" id="clientdiv">
-          <label for="client_type">Client Type <span style="color: red;"> *</span></label>
+          <label for="client_type">Client Category <span style="color: red;"> *</span></label>
           <span id="ctypemsg"></span>
-            <select class="form-control" required id="client_type" name="client_type">
-              <option value="0" disabled selected hidden>select client type</option>
+            <select class="form-control"  id="client_type" name="client_type">
+              <option value="0" disabled selected hidden>select client category</option>
               <option value="1">Individual</option>
               <option value="2">Company/Organization</option>
             </select>
@@ -328,15 +331,22 @@ $today=date('Y-m-d');
     </div>
 
         <div class="form-group row" id="namediv" style="display: none;">
+
+
+
+
+
+
+
 						<div class="form-wrapper col-6">
 							<label for="first_name">First Name <span style="color: red;"> *</span></label>
                             <span id="name1msg"></span>
-							<input type="text" id="first_name" name="first_name" class="form-control" required onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="first_name" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="last_name">Last Name <span style="color: red;"> *</span></label>
                             <span id="name2msg"></span>
-							<input type="text" id="last_name" required name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="last_name"  name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
@@ -344,23 +354,42 @@ $today=date('Y-m-d');
 					<div class="form-wrapper">
 						<label for="company_name">Company Name <span style="color: red;"> *</span></label>
                         <span id="cnamemsg"></span>
-						<input type="text" id="company_name" required name="company_name" class="form-control">
+						<input type="text" id="company_name"  name="company_name" class="form-control">
 					</div>
 				</div>
 
-    <div class="form-group">
-					<div class="form-wrapper">
+    <div class="form-group row">
+
+
+        <div class="form-wrapper col-12">
+            <label for="official_client_id">Client ID<span style="color: red;"> *</span></label>
+            <span id="official_client_id_msg"></span>
+            <input type="number" id="official_client_id" min="0" name="official_client_id" class="form-control">
+        </div>
+
+
+					<div class="form-wrapper col-6 pt-1">
 						<label for="email">Email <span style="color: red;"> *</span></label>
                         <span id="email_msg"></span>
-						<input type="text" name="email" required id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+						<input type="text" name="email"  id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
 					</div>
+
+
+                    <div class="form-wrapper col-6 pt-1">
+                        <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
+                        <span id="phone_msg"></span>
+                        <input type="text" id="phone_number"  name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                    </div>
+
+
 				</div>
 
-				<div class="form-group">
+
+                                    <div class="form-group">
 					<div class="form-wrapper">
-						<label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
-                        <span id="phone_msg"></span>
-						<input type="text" id="phone_number" required name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+						<label for="address">Address <span style="color: red;"> *</span></label>
+                        <span id="address_msg"></span>
+						<input type="text" id="address"  name="address" class="form-control">
 					</div>
 				</div>
 
@@ -368,12 +397,57 @@ $today=date('Y-m-d');
 
 
                                     <div class="form-group">
-					<div class="form-wrapper">
-						<label for="address">Address <span style="color: red;"> *</span></label>
-                        <span id="address_msg"></span>
-						<input type="text" id="address" required name="address" class="form-control">
-					</div>
-				</div>
+                                    <div class="form-wrapper" >
+                                        <label for="client_type_contract">Client Type<span style="color: red;"> *</span></label>
+                                        <span id="ctype_contract_msg"></span>
+                                        <select class="form-control"  id="client_type_contract" name="client_type_contract">
+                                            <option value=""></option>
+                                            <option value="Direct">Direct</option>
+                                            <option value="Direct and has clients">Direct and has clients</option>
+                                            <option value="Indirect">Indirect</option>
+                                        </select>
+
+                                    </div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                    <div id="parent_clientDiv" style="display: none;" class="form-wrapper  pt-1">
+                                        <label for="parent_client"  ><strong>Parent client <span style="color: red;"> *</span></strong></label>
+                                        <span id="parent_client_msg"></span>
+                                        <select id="parent_client"  class="form-control" name="parent_client" >
+                                            <option value="" selected></option>
+
+                                            <?php
+                                            $parent_clients=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.has_clients',1)->get();
+
+
+                                            $tempOut = array();
+                                            foreach($parent_clients as $values){
+                                                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                $val = (iterator_to_array($iterator,true));
+                                                $tempoIn=$val['full_name'];
+
+                                                if(!in_array($tempoIn, $tempOut))
+                                                {
+                                                    print('<option value="'.$val['client_id'].'">'.$val['full_name'].'</option>');
+                                                    array_push($tempOut,$tempoIn);
+                                                }
+
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    </div>
+
+
+
+
+
+
+
+
                                 </div>
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
  <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
@@ -394,7 +468,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-12 pt-1">
                                             <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
                                             <span id="major_msg"></span>
-                                            <select id="getMajor"  class="form-control" name="major_industry" required>
+                                            <select id="getMajor"  class="form-control" name="major_industry" >
                                                 <option value="" selected></option>
 
                                                 <?php
@@ -421,7 +495,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-12 pt-2">
                                             <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
                                             <span id="minor_msg"></span>
-                                            <select id="minor_list" required class="form-control" name="minor_industry" >
+                                            <select id="minor_list"  class="form-control" name="minor_industry" >
 
 
                                             </select>
@@ -431,7 +505,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-12 pt-2">
                                             <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
                                             <span id="location_msg"></span>
-                                            <select class="form-control" id="space_location" required name="space_location" >
+                                            <select class="form-control" id="space_location"  name="space_location" >
 
                                             </select>
                                         </div>
@@ -441,7 +515,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-12 pt-2">
                                             <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
                                             <span id="sub_location_msg"></span>
-                                            <select class="form-control" id="space_sub_location" required name="space_sub_location" >
+                                            <select class="form-control" id="space_sub_location"  name="space_sub_location" >
 
                                             </select>
 
@@ -454,7 +528,7 @@ $today=date('Y-m-d');
                                             <label for="" ><strong>Space Number <span style="color: red;"> *</span></strong></label>
                                             <span id="space_id_msg"></span>
 
-                                            <select class="form-control" id="space_id_contract" required name="space_id_contract" >
+                                            <select class="form-control" id="space_id_contract"  name="space_id_contract" >
 
                                             </select>
                                         </div>
@@ -496,35 +570,135 @@ $today=date('Y-m-d');
                                 <div class="form-card">
                                     <h2 class="fs-title">Payment Information</h2>
 				<div class="form-group row">
-						<div class="form-wrapper col-12">
-							<label for="start_date">Start Date <span style="color: red;"> *</span></label>
+
+
+                    <div id="contract_categoryDiv" class="form-wrapper col-12" style="display: none">
+                        <label for="contract_category">Category of contract <span style="color: red;"> *</span></label>
+                        <span id="contract_category_msg"></span>
+                        <select id="contract_category" class="form-control" name="contract_category" >
+                            <option value="" ></option>
+                            <option value="Solicited" >Solicited</option>
+                            <option value="Unsolicited" >Unsolicited</option>
+                        </select>
+                    </div>
+
+
+
+                    <div id="tinDiv" class="form-group col-6 pt-4">
+                        <div class="form-wrapper">
+                            <label for="tin">TIN <span style="color: red;"> *</span></label>
+                            <span id="tin_msg"></span>
+                            <input type="number" id="tin" min="0" name="tin" class="form-control">
+                        </div>
+                    </div>
+
+
+
+                    <div id="tbs_certificateDiv" style="display: none;" class="form-group col-6 pt-4">
+                        <div class="form-wrapper">
+                            <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                            <span id="tbs_certificate_msg"></span>
+                            <input type="file" id="tbs_certificate"  accept=".pdf"  name="tbs_certificate" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div id="gpsa_certificateDiv" style="display: none;"  class="form-group col-6 pt-4">
+                        <div class="form-wrapper">
+                            <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                            <span id="gpsa_certificate_msg"></span>
+                            <input type="file" id="gpsa_certificate" accept=".pdf" name="gpsa_certificate" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div id="food_business_licenseDiv" style="display: none;" class="form-group col-6 pt-4">
+                        <div class="form-wrapper">
+                            <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                            <span id="food_business_license_msg"></span>
+                            <input type="file" id="food_business_license" accept=".pdf" name="food_business_license" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div style="display: none;" id="business_licenseDiv" class="form-group col-6 pt-4">
+                        <div class="form-wrapper">
+                            <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                            <span id="business_license_msg"></span>
+                            <input type="file" id="business_license" accept=".pdf" name="business_license" class="form-control">
+                        </div>
+                    </div>
+
+
+
+                    <div style="display: none;" id="osha_certificateDiv" class="form-group col-12 pt-4">
+                        <div class="form-wrapper">
+                            <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                            <span id="osha_certificate_msg"></span>
+                            <input type="file" id="osha_certificate" accept=".pdf" name="osha_certificate" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div style="display: none;" id="tcra_registrationDiv"  class="form-group col-6 pt-4">
+                        <div class="form-wrapper">
+                            <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                            <span id="tcra_registration_msg"></span>
+                            <input type="file" accept=".pdf" id="tcra_registration" min="0" name="tcra_registration" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div style="display: none;" id="brela_registrationDiv" class="form-group col-12">
+                        <div class="form-wrapper">
+                            <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                            <span id="brela_registration_msg"></span>
+                            <input type="file" id="brela_registration" accept=".pdf" name="brela_registration" class="form-control">
+                        </div>
+                    </div>
+
+
+
+
+						<div class="form-wrapper col-12 pt-4">
+							<label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                             <span id="start_date_msg"></span>
-							<input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
+							<input type="date" id="start_date" name="start_date" class="form-control"  min="{{$today}}">
 						</div>
 
                     <div class="form-wrapper col-6">
                         <label for="duration">Duration <span style="color: red;"> *</span></label>
                         <span id="duration_msg"></span>
-                        <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control" required="" >
+                        <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control"  >
                     </div>
 
                     <div class="form-wrapper col-6">
                         <label for="currency">Period <span style="color: red;"> *</span></label>
                         <span id="duration_period_msg"></span>
-                        <select id="duration_period" class="form-control" name="duration_period" required>
+                        <select id="duration_period" class="form-control" name="duration_period" >
                             <option value="" ></option>
                             <option value="Months" >Months</option>
                             <option value="Years" >Years</option>
                         </select>
                     </div>
+
+
+
+                    <div id="percentage_to_payDiv"  class="form-wrapper pt-4 col-12">
+                        <label for="percentage_to_pay">Percentage to be paid(Of total collection) <span style="color: red;"> *</span></label>
+                        <span id="percentage_to_pay_msg"></span>
+                        <input type="number"  step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
+                    </div>
+
+
 					</div>
 
 					<div class="form-group row">
 
-                        <div class="form-wrapper col-12">
+                        <div id="academic_dependenceDiv" class="form-wrapper col-12">
                             <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
                             <span id="academic_dependence_msg"></span>
-                            <select id="academic_dependence" class="form-control" name="academic_dependence" required>
+                            <select id="academic_dependence" class="form-control" name="academic_dependence" >
                                 <option value="" ></option>
                                 <option value="No" >No</option>
                                 <option value="Yes" >Yes</option>
@@ -556,8 +730,59 @@ $today=date('Y-m-d');
                             <input type="number" min="1" id="rent_sqm" name="rent_sqm"  class="form-control">
                         </div>
 
+                        <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style="display: none; text-align: left;">
 
-                        <div class="form-wrapper col-12">
+                                <label for="has_additional_businesses" style="display: inline-block;">Has additional businesses in the area</label>
+                                <input type="checkbox"  style="display: inline-block;" value="1" id="has_additional_businesses" onchange="showAdditionalBusinesses()"  name="has_additional_businesses" autocomplete="off">
+
+                        </div>
+
+
+
+                        <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" style="display: none;">
+                            <label for="">List of the businesses (Comma separated):</label>
+                            <span id="additional_businesses_list_msg"></span>
+                            <textarea style="width: 100%;" id="additional_businesses_list" name="additional_businesses_list"></textarea>
+
+                        </div>
+
+
+                        <div id="additional_businesses_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
+                            <label for="additional_businesses_amount">Amount expected from the businesses<span style="color: red;"> *</span></label>
+                            <span id="additional_businesses_amount_msg"></span>
+                            <input type="number" min="20" id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
+                        </div>
+
+                        <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
+                            <label for="total_amount">Total amount<span style="color: red;"> *</span></label>
+                            <span id="total_amount_msg"></span>
+                            <input type="text" min="20" id="total_amount" readonly name="total_amount" class="form-control">
+                        </div>
+
+
+                        <div id="academic_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                            <label for="academic_season_total">Total amount(Academic season) <span style="color: red;"> *</span></label>
+                            <span id="academic_season_total_msg"></span>
+                            <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
+                        </div>
+
+
+                        <div id="vacation_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                            <label for="vacation_season_total">Total amount(Vacation season) <span style="color: red;"> *</span></label>
+                            <span id="vacation_season_total_msg"></span>
+                            <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
+                        </div>
+
+
+                        <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
+                            <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
+                            <span id="security_deposit_msg"></span>
+                            <input type="number" min="20" id="security_deposit" name="security_deposit" class="form-control" >
+                        </div>
+
+
+
+                        <div id="currencydiv" class="form-wrapper col-12">
                             <label for="currency">Currency <span style="color: red;"> *</span></label>
                             <span id="currency_msg"></span>
                             <select id="currency" class="form-control"  name="currency">
@@ -574,26 +799,16 @@ $today=date('Y-m-d');
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
-                                            <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
+                                            <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
                                             <span id="payment_cycle_msg"></span>
-                                            <select id="payment_cycle" required class="form-control" name="payment_cycle" >
-                                                <?php
-                                                $payment_cycles=DB::table('payment_cycle_settings')->get();
-                                                ?>
-                                                    <option value=""></option>
+                                            <input type="number" min="1" id="payment_cycle" name="payment_cycle" class="form-control">
 
-                                                @foreach($payment_cycles as $payment_cycle)
-
-                                                    <option value="{{$payment_cycle->cycle}}">{{$payment_cycle->cycle}}</option>
-
-                                                @endforeach
-                                            </select>
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                             <span id="escalation_rate_msg"></span>
-                                            <input type="number" min="0" id="escalation_rate" name="escalation_rate" class="form-control" required>
+                                            <input type="number" min="0" id="escalation_rate" name="escalation_rate" class="form-control" >
                                         </div>
 
 
@@ -783,21 +998,189 @@ $today=date('Y-m-d');
 @endsection
 
 @section('pagescript')
+
+
+    <script>
+
+       function showAdditionalBusinesses() {
+
+
+           if( $('#has_additional_businesses').prop('checked') ) {
+
+
+               var academic_dependence=$('#academic_dependence').val();
+
+               if(academic_dependence=='Yes'){
+
+                   $('#total_amountDiv').hide();
+                   $('#academic_season_totalDiv').show();
+                   $('#vacation_season_totalDiv').show();
+
+                   $('#academic_season_total').val("");
+                   $('#vacation_season_total').val("");
+                   $('#total_amount').val("");
+               }else{
+                   $('#total_amountDiv').show();
+                   $('#academic_season_totalDiv').hide();
+                   $('#vacation_season_totalDiv').hide();
+
+                   $('#academic_season_total').val("");
+                   $('#vacation_season_total').val("");
+                   $('#total_amount').val("");
+
+               }
+
+
+               $('#additional_businesses_listDiv').show();
+               $('#additional_businesses_amountDiv').show();
+
+
+               $('#additional_businesses_list').val("");
+               $('#additional_businesses_amount').val("");
+
+
+           }else{
+
+
+               $('#additional_businesses_listDiv').hide();
+               $('#additional_businesses_amountDiv').hide();
+               $('#total_amountDiv').hide();
+               $('#academic_season_totalDiv').hide();
+               $('#vacation_season_totalDiv').hide();
+
+               $('#additional_businesses_list').val("");
+               $('#additional_businesses_amount').val("");
+               $('#total_amount').val("");
+
+
+           }
+
+       }
+
+
+
+
+
+        $('#client_type_contract').on('change',function(e){
+            e.preventDefault();
+            var client_type_contract = $(this).val();
+
+            if (client_type_contract=='Indirect'){
+            $('#parent_clientDiv').show();
+
+
+            }else{
+
+                $('#parent_clientDiv').hide();
+
+            }
+
+
+
+        });
+
+
+
+
+
+
+
+    </script>
+
+
+
+
 <script type="text/javascript">
 $(document).ready(function(){
 
 var current_fs, next_fs, previous_fs; //fieldsets
 var opacity;
-var p1, p2,p3;
+var p1, p2,p3,p4,p5,p6,p7;
+
+
+    var temp;
+
+    $('#client_type_contract').on('change',function(e){
+        e.preventDefault();
+        var query=$(this).val();
+        if(query=='Direct and has clients'){
+
+            $('#renting_space').hide();
+            properNext();
+
+        }else{
+
+            $('#renting_space').show();
+            properNextZero();
+
+        }
+
+
+    });
+
+
+    $('#additional_businesses_amount').on('input',function(e){
+        e.preventDefault();
+        var additional_businesses_amount=$(this).val();
+        var amount=$('#amount').val();
+
+        var academic_season=$('#academic_season').val();
+        var vacation_season=$('#vacation_season').val();
+
+        var academic_dependence=$('#academic_dependence').val();
+
+        if(academic_dependence=='Yes'){
+            $('#academic_season_total').val(+academic_season  +  +additional_businesses_amount);
+            $('#vacation_season_total').val(+vacation_season  +  +additional_businesses_amount);
+
+        }else{
+
+            $('#total_amount').val(+amount  +  +additional_businesses_amount);
+
+        }
+
+
+
+
+
+
+    });
+
+
+
+
+    function properNext(){
+        temp=1;
+    }
+
+    function properNextZero(){
+        temp=0;
+    }
+
+
+
 $("#next1").click(function(){
+
+    if(temp==1) {
+        next_fs = $(this).parent().next().next();
+    }else{
+        next_fs = $(this).parent().next();
+    }
+
 current_fs = $(this).parent();
-next_fs = $(this).parent().next();
+
+
     var clientType=$("#client_type").val(),
         firstName=$("#first_name").val(),
         lastName=$("#last_name").val(),
         companyName=$("#company_name").val();
         var email=$("#email").val();
         var address=$("#address").val();
+
+        var official_client_id=$("#official_client_id").val();
+        var client_type_contract=$("#client_type_contract").val();
+        var parent_client=$("#parent_client").val();
+
 
         if(clientType=="1"){
             $('#ctypemsg').hide();
@@ -931,8 +1314,128 @@ p2=0;
 
 
 
-    if(p1=='1' & p2=='1' & p3=='1'){
-        gonext();
+
+
+
+
+
+    if(official_client_id==""){
+        p5=0;
+        $('#official_client_id_msg').show();
+        var message=document.getElementById('official_client_id_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#official_client_id').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p5=1;
+        $('#official_client_id_msg').hide();
+        $('#official_client_id').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+
+    if(client_type_contract==""){
+        p6=0;
+        $('#ctype_contract_msg').show();
+        var message=document.getElementById('ctype_contract_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#client_type_contract').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p6=1;
+        $('#ctype_contract_msg').hide();
+        $('#client_type_contract').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+
+    if(parent_client==""){
+        p7=0;
+        $('#parent_client_msg').show();
+        var message=document.getElementById('parent_client_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#parent_client').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+        p7=1;
+        $('#parent_client_msg').hide();
+        $('#parent_client').attr('style','border-bottom: 1px solid #ccc');
+
+    }
+
+    if (client_type_contract=='Indirect'){
+
+        $('#business_licenseDiv').hide();
+        $('#contract_categoryDiv').hide();
+        $('#has_additional_businessesDiv').hide();
+
+        $('#security_depositDiv').hide();
+
+
+        $('#percentage_to_payDiv').hide();
+        $('#academic_dependenceDiv').show();
+        // $('#academicDiv').show();
+        // $('#vacationDiv').show();
+        // $('#amountDiv').show();
+        $('#rent_sqmDiv').show();
+        $('#currencydiv').show();
+
+
+        if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' & p7=='1' ){
+            gonext();
+        }
+
+
+    }else if(client_type_contract=='Direct and has clients'){
+
+
+
+
+
+
+
+        $('#percentage_to_payDiv').show();
+        $('#business_licenseDiv').show();
+
+        $('#academic_dependenceDiv').hide();
+        $('#academicDiv').hide();
+        $('#vacationDiv').hide();
+        $('#amountDiv').hide();
+        $('#rent_sqmDiv').hide();
+        $('#currencydiv').hide();
+
+        $('#contract_categoryDiv').hide();
+        $('#has_additional_businessesDiv').hide();
+
+        $('#security_depositDiv').hide();
+
+
+        if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' ){
+            gonext();
+        }
+
+    }
+
+    else{
+        $('#business_licenseDiv').hide();
+        $('#percentage_to_payDiv').hide();
+        $('#academic_dependenceDiv').show();
+        $('#contract_categoryDiv').show();
+        $('#has_additional_businessesDiv').show();
+        $('#security_depositDiv').show();
+
+        $('#rent_sqmDiv').show();
+        $('#currencydiv').show();
+
+
+        if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' ){
+            gonext();
+        }
+
     }
 
 
@@ -1031,6 +1534,59 @@ $("#next2").click(function(){
 
 
 
+    if(minor=="Canteen"){
+
+    $('#tbs_certificateDiv').show();
+    $('#gpsa_certificateDiv').show();
+    $('#food_business_licenseDiv').show();
+
+    $('#business_licenseDiv').hide();
+    $('#osha_certificateDiv').hide();
+    $('#tcra_registrationDiv').hide();
+    $('#brela_registrationDiv').hide();
+
+
+    }else if(major=='Banking'){
+        $('#osha_certificateDiv').show();
+
+        $('#tbs_certificateDiv').hide();
+        $('#gpsa_certificateDiv').hide();
+        $('#food_business_licenseDiv').hide();
+        $('#business_licenseDiv').show();
+        $('#tcra_registrationDiv').hide();
+        $('#brela_registrationDiv').hide();
+
+
+
+    }else if (minor=="Postal services"){
+        $('#tcra_registrationDiv').show();
+        $('#brela_registrationDiv').show();
+        $('#gpsa_certificateDiv').show();
+
+
+        $('#tbs_certificateDiv').hide();
+        $('#food_business_licenseDiv').hide();
+        $('#business_licenseDiv').show();
+        $('#osha_certificateDiv').hide();
+
+
+    }else{
+        $('#business_licenseDiv').show();
+
+
+        $('#tbs_certificateDiv').hide();
+        $('#gpsa_certificateDiv').hide();
+        $('#food_business_licenseDiv').hide();
+        $('#osha_certificateDiv').hide();
+        $('#tcra_registrationDiv').hide();
+        $('#brela_registrationDiv').hide();
+
+
+    }
+
+
+
+
     if(p1=='1' & p2=='1' & p3=='1'  & p4=='1'  & p5=='1'){
 
         var selected_space_id=$('#space_id_contract').val();
@@ -1074,12 +1630,14 @@ $("#next2").click(function(){
     $("#next3").click(function(){
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
-        var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10;
+        var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p26;
         var first_name=document.getElementById('first_name').value;
         var last_name=document.getElementById('last_name').value;
         var company_name=document.getElementById('company_name').value;
         var client_type=document.getElementById('client_type').value;
         var email=$("#email").val();
+
+        var percentage_to_pay=$("#percentage_to_pay").val();
         var phone_number=document.getElementById('phone_number').value;
         var address=document.getElementById('address').value;
         var sub_location = $('#space_sub_location').val();
@@ -1103,6 +1661,24 @@ $("#next2").click(function(){
         var space_size=document.getElementById('space_size').value;
         var has_water_bill=document.getElementById('has_water_bill').value;
         var has_electricity_bill=document.getElementById('has_electricity_bill').value;
+
+
+        var tin=$("#tin").val();
+        var contract_category=$("#contract_category").val();
+        var tbs_certificate=$("#tbs_certificate").val();
+        var gpsa_certificate=$("#gpsa_certificate").val();
+        var food_business_license=$("#food_business_license").val();
+        var business_license=$("#business_license").val();
+        var osha_certificate=$("#osha_certificate").val();
+        var tcra_registration=$("#tcra_registration").val();
+        var brela_registration=$("#brela_registration").val();
+        var additional_businesses_list=$("#additional_businesses_list").val();
+        var additional_businesses_amount=$("#additional_businesses_amount").val();
+        var total_amount=$("#total_amount").val();
+        var academic_season_total=$("#academic_season_total").val();
+        var vacation_season_total=$("#vacation_season_total").val();
+        var security_deposit=$("#security_deposit").val();
+
 
 
         if(start_date==""){
@@ -1270,9 +1846,238 @@ $("#next2").click(function(){
         }
 
 
+        if(percentage_to_pay==""){
+            p11=0;
+            $('#percentage_to_pay_msg').show();
+            var message=document.getElementById('percentage_to_pay_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#percentage_to_pay').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p11=1;
+            $('#percentage_to_pay_msg').hide();
+            $('#percentage_to_pay').attr('style','border-bottom: 1px solid #ccc');
+
+        }
 
 
 
+
+        if(tin==""){
+            p12=0;
+            $('#tin_msg').show();
+            var message=document.getElementById('tin_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#tin').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p12=1;
+            $('#tin_msg').hide();
+            $('#tin').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(contract_category==""){
+            p13=0;
+            $('#contract_category_msg').show();
+            var message=document.getElementById('contract_category_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#contract_category').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p13=1;
+            $('#contract_category_msg').hide();
+            $('#contract_category').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(tbs_certificate==""){
+            p14=0;
+            $('#tbs_certificate_msg').show();
+            var message=document.getElementById('tbs_certificate_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p14=1;
+            $('#tbs_certificate_msg').hide();
+            $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(gpsa_certificate==""){
+            p15=0;
+            $('#gpsa_certificate_msg').show();
+            var message=document.getElementById('gpsa_certificate_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p15=1;
+            $('#gpsa_certificate_msg').hide();
+            $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+        if(food_business_license==""){
+            p16=0;
+            $('#food_business_license_msg').show();
+            var message=document.getElementById('food_business_license_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#food_business_license').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p16=1;
+            $('#food_business_license_msg').hide();
+            $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+        if(business_license==""){
+            p17=0;
+            $('#business_license_msg').show();
+            var message=document.getElementById('business_license_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#business_license').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p17=1;
+            $('#business_license_msg').hide();
+            $('#business_license').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+        if(osha_certificate==""){
+            p18=0;
+            $('#osha_certificate_msg').show();
+            var message=document.getElementById('osha_certificate_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p18=1;
+            $('#osha_certificate_msg').hide();
+            $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(tcra_registration==""){
+            p19=0;
+            $('#tcra_registration_msg').show();
+            var message=document.getElementById('tcra_registration_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p19=1;
+            $('#tcra_registration_msg').hide();
+            $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+
+        if(brela_registration==""){
+            p20=0;
+            $('#brela_registration_msg').show();
+            var message=document.getElementById('brela_registration_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#brela_registration').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p20=1;
+            $('#brela_registration_msg').hide();
+            $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+        if(additional_businesses_list==""){
+            p21=0;
+            $('#additional_businesses_list_msg').show();
+            var message=document.getElementById('additional_businesses_list_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#additional_businesses_list').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p21=1;
+            $('#additional_businesses_list_msg').hide();
+            $('#additional_businesses_list').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+        if(additional_businesses_amount==""){
+            p22=0;
+            $('#additional_businesses_amount_msg').show();
+            var message=document.getElementById('additional_businesses_amount_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#additional_businesses_amount').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p22=1;
+            $('#additional_businesses_amount_msg').hide();
+            $('#additional_businesses_amount').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+        if(total_amount==""){
+            p23=0;
+            $('#total_amount_msg').show();
+            var message=document.getElementById('total_amount_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#total_amount').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p23=1;
+            $('#total_amount_msg').hide();
+            $('#total_amount').attr('style','border-bottom: 1px solid #ccc');
+
+        }
+
+
+
+
+        if(security_deposit==""){
+            p26=0;
+            $('#security_deposit_msg').show();
+            var message=document.getElementById('security_deposit_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#security_deposit').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p26=1;
+            $('#security_deposit_msg').hide();
+            $('#security_deposit').attr('style','border-bottom: 1px solid #ccc');
+
+        }
 
 
         const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -1446,27 +2251,425 @@ if(rent_sqm==''){
             $("#amount_row_confirm").hide();
         }
 
+        gonext();
 
-
-        if(academic_dependence=='Yes'){
-
-            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1'){
-                gonext();
-            }
-
-
-
-        }else if(academic_dependence=='No'){
-
-            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1'){
-                gonext();
-            }
-
-        }else{
-
-
-
-        }
+//         if(academic_dependence=='Yes'){
+//
+//             if(client_type_contract=='Direct and has clients'){
+//
+//
+//                 //Additional businesses start
+//
+//                 if( $('#has_additional_businesses').prop('checked') ) {
+//
+//
+//                     var academic_dependence=$('#academic_dependence').val();
+//
+//                     if(academic_dependence=='Yes'){
+//
+//                         if(minor=="Canteen"){
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'  & p14=='1' & p15=='1' & p16=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//
+//
+//                         }else if(major=='Banking'){
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'    & p17=='1' & p18=='1'  & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//                         }else if (minor=="Postal services"){
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'   & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }else{
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'   & p17=='1'  & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//                         }
+//
+//
+//
+//                     }else{
+//
+//
+//
+//
+//                         if(minor=="Canteen"){
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'  & p14=='1' & p15=='1' & p16=='1'  & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//
+//
+//                         }else if(major=='Banking'){
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'    & p17=='1' & p18=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//                         }else if (minor=="Postal services"){
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'   & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }else{
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'     & p17=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//                         }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//                     }
+//
+//
+//
+//
+//
+//                 }else{
+//
+//
+//
+//
+//                 }
+//
+//                 //Additional businesses end
+//
+//
+//
+//
+//
+//
+//
+//
+//             }
+//
+//             else{
+//
+//
+//                 //Additional businesses start
+//
+//                 if( $('#has_additional_businesses').prop('checked') ) {
+//
+//
+//                     var academic_dependence=$('#academic_dependence').val();
+//
+//                     if(academic_dependence=='Yes'){
+//
+//                         if(minor=="Canteen"){
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//
+//
+//                         }else if(major=='Banking'){
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p18=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }else if (minor=="Postal services"){
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1'  & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }else{
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1'  & p17=='1'  & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//                         }
+//
+//
+//
+//                     }else{
+//
+//
+//
+//
+//                         if(minor=="Canteen"){
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1'  & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//
+//
+//                         }else if(major=='Banking'){
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1'   & p17=='1' & p18=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//                         }else if (minor=="Postal services"){
+//
+//
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//
+//                         }else{
+//
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//                     }
+//
+//
+//
+//
+//
+//                 }else{
+//
+//
+//
+//
+//                 }
+//
+//                 //Additional businesses end
+//
+//
+//
+//
+//
+//             }
+//
+//
+//
+//         }else if(academic_dependence=='No'){
+//
+//
+//             if(client_type_contract=='Direct and has clients'){
+//
+//
+//                 if(p1=='1' & p2=='1' & p3=='1'  & p9=='1' & p10=='1' & p11=='1' & p12=='1'  & p26=='1'){
+//                     gonext();
+//                 }
+//
+//
+//             }
+//
+//             else{
+//
+//                 //Additional businesses start
+//
+//                 if( $('#has_additional_businesses').prop('checked') ) {
+//
+//
+//                     var academic_dependence=$('#academic_dependence').val();
+//
+//                     if(academic_dependence=='Yes'){
+//
+//                         if(minor=="Canteen"){
+//
+//
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//
+//
+//                         }else if(major=='Banking'){
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p18=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }else if (minor=="Postal services"){
+//
+//
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }else{
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//                         }
+//
+//
+//
+//                     }else{
+//
+//
+//
+//
+//                         if(minor=="Canteen"){
+//
+//
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1'  & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//
+//
+//                         }else if(major=='Banking'){
+//
+//
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p18=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }else if (minor=="Postal services"){
+//
+//
+//
+//
+//
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//
+//                         }else{
+//
+//
+//
+//
+//
+//
+//                             if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p23=='1' & p26=='1'){
+//                                 gonext();
+//                             }
+//
+//
+//                         }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//                     }
+//
+//
+//
+//
+//
+//                 }else{
+//
+//
+//
+//
+//                 }
+//
+//                 //Additional businesses end
+//
+//
+//
+//
+//
+//
+//
+//
+//             }
+//
+//
+//
+//
+//         }else{
+// //logically cannot be excecuted
+//             if(p1=='1' & p2=='1' & p3=='1'  & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p26=='1'){
+//                 gonext();
+//             }
+//
+//         }
 
 
 
