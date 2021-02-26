@@ -1,10 +1,6 @@
 @extends('layouts.app')
 @section('style')
 <style type="text/css">
-	* {
-    margin: 0;
-    padding: 0
-}
 
 html {
     height: 100%
@@ -92,39 +88,6 @@ html {
     outline-width: 0
 }
 
-#msform .action-button {
-    width: 100px;
-    background: skyblue;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0px;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px
-}
-
-#msform .action-button:hover,
-#msform .action-button:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue
-}
-
-#msform .action-button-previous {
-    width: 100px;
-    background: #616161;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0px;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px
-}
-
-#msform .action-button-previous:hover,
-#msform .action-button-previous:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161
-}
 
 select.list-dt {
     border: none;
@@ -151,74 +114,6 @@ select.list-dt:focus {
     margin-bottom: 10px;
     font-weight: bold;
     text-align: left
-}
-
-#progressbar {
-    margin-bottom: 30px;
-    overflow: hidden;
-    color: lightgrey;
-    margin-left: 20%;
-}
-
-#progressbar .active {
-    color: #000000
-}
-
-#progressbar li {
-    list-style-type: none;
-    font-size: 12px;
-    width: 25%;
-    float: left;
-    position: relative
-}
-
-#progressbar #account:before {
-    font-family: FontAwesome;
-    content: "\f1b9"
-}
-
-#progressbar #personal:before {
-    font-family: FontAwesome;
-    content: "\f007"
-}
-
-#progressbar #payment:before {
-    font-family: FontAwesome;
-    content: "\f09d"
-}
-
-#progressbar #confirm:before {
-    font-family: FontAwesome;
-    content: "\f00c"
-}
-
-#progressbar li:before {
-    width: 50px;
-    height: 50px;
-    line-height: 45px;
-    display: block;
-    font-size: 18px;
-    color: #ffffff;
-    background: lightgray;
-    border-radius: 50%;
-    margin: 0 auto 10px auto;
-    padding: 2px
-}
-
-#progressbar li:after {
-    content: '';
-    width: 100%;
-    height: 2px;
-    background: lightgray;
-    position: absolute;
-    left: 0;
-    top: 25px;
-    z-index: -1
-}
-
-#progressbar li.active:before,
-#progressbar li.active:after {
-    background: skyblue
 }
 
 .radio-group {
@@ -440,8 +335,44 @@ $today=date('Y-m-d');
 
                         </form>
                     </div>
-                    <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse2">B. AVAILABILITY OF FUNDS</a></h2>
-                    <div id="collapse2" class="collapse">
+
+                                       <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">B. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
+                    <div id="collapse3" class="collapse">
+                        <div class="form-card" style="padding: 4px;">
+                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
+                        <form id="msform" method="post" action="#" style="font-size: 17px;">
+                            {{csrf_field()}}
+                            <fieldset>
+                                <div class="form-card">
+                                   <div class="form-group">
+                                    <div class="form-wrapper">
+                            <label for="head_approval_status">This Application is therefore</label>
+                             <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_approval_status}}" readonly="">
+                        </div>
+                    </div>
+                                   <div class="form-group row" id="approvedbydiv">
+                        <div class="form-wrapper col-6">
+                            <label for="approve_name">Approved by</label>
+                            <span id="approve_namemsg"></span>
+                            <input type="text" id="head_name" name="head_name" class="form-control" value="{{$contract->head_name }}" readonly="">
+                        </div>
+                        <div class="form-wrapper col-6">
+                            <label for="approve_date">Date</label>
+                            <span id="approve_datemsg"></span>
+                            <input type="date" id="head_date" name="head_date" class="form-control" value="{{$contract->head_date}}" readonly="">
+                        </div>
+                    </div>
+                        </div>
+                            </fieldset>
+                        </form>
+
+
+                    </div>
+
+                    </div>
+
+                    <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse2">C. AVAILABILITY OF FUNDS</a></h2>
+                    <div id="collapse2" class="collapse show">
                         <form id="msform" method="post" action="#">
                             {{csrf_field()}}
                             <fieldset>
@@ -501,40 +432,7 @@ $today=date('Y-m-d');
                         </form>
                     </div>
 
-                    <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">C. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
-                    <div id="collapse3" class="collapse show">
-                        <div class="form-card" style="padding: 4px;">
-                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
-                        <form id="msform" method="post" action="#" style="font-size: 17px;">
-                            {{csrf_field()}}
-                            <fieldset>
-                                <div class="form-card">
-                                   <div class="form-group">
-                                    <div class="form-wrapper">
-                            <label for="head_approval_status">This Application is therefore</label>
-                             <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_approval_status}}" readonly="">
-                        </div>
-                    </div>
-                                   <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
-                            <label for="approve_name">Approved by</label>
-                            <span id="approve_namemsg"></span>
-                            <input type="text" id="head_name" name="head_name" class="form-control" value="{{$contract->head_name }}" readonly="">
-                        </div>
-                        <div class="form-wrapper col-6">
-                            <label for="approve_date">Date</label>
-                            <span id="approve_datemsg"></span>
-                            <input type="date" id="head_date" name="head_date" class="form-control" value="{{$contract->head_date}}" readonly="">
-                        </div>
-                    </div>
-                        </div>
-                            </fieldset>
-                        </form>
-
-
-                    </div>
-
-                    </div>
+ 
                     <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse4">D. DVC: (Administration)</a></h2>
                     <div id="collapse4" class="collapse show">
                        <form id="msform" method="post" action="{{ route('newCarcontractD1') }}" style="font-size: 17px;">
@@ -574,7 +472,7 @@ $today=date('Y-m-d');
                             <button class="btn btn-primary" type="submit">Forward</button>
                     @else
                         <div class="form-card">
-                            <p>This Client has not yet paid the initial amount for the trip of TZS {{$contract->initial_payment}}</p>
+                            <p>This Client has not yet paid the initial amount for the trip of TZS {{number_format($contract->initial_payment)}}</p>
                         </div>
                     @endif
                     @else

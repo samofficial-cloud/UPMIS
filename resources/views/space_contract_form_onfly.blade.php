@@ -248,52 +248,52 @@
     ?>
     <!-- MultiStep Form -->
     <div class="wrapper">
-<div class="sidebar">
-        <ul style="list-style-type:none;">
+        <div class="sidebar">
+            <ul style="list-style-type:none;">
 
-            <?php
-            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
-            ?>
+                <?php
+                $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+                ?>
 
-            @if($category=='All')
-           <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
-          @elseif($category=='Insurance only')
-          <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
-          @elseif($category=='Real Estate only')
-          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
-           @endif
-          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
-          @endif
-          @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-          <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
-          @endif
-          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
-            <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
-          @endif
+                @if($category=='All')
+                    <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+                @elseif($category=='Insurance only')
+                    <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
+                @elseif($category=='Real Estate only')
+                    <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+                @endif
+                @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+                    <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+                @endif
+                @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+                    <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+                @endif
+                @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
+                    <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+                @endif
 
-            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                    <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
                 @else
                 @endif
-    @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-    @endif
-            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
-            <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
+                    <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
+                @endif
+                <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+                <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
- @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-            <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
-  @endif
-@admin
-            <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
-<li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-          @endadmin
-        </ul>
-    </div>
+                <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+                    <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+                @endif
+                @admin
+                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
+                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+                @endadmin
+            </ul>
+        </div>
         <div class="main_content">
             <div class="container-fluid" id="grad1">
                 <div class="row justify-content-center mt-0">
@@ -444,80 +444,80 @@
                                         {{-- Second Form --}}
                                         <fieldset>
                                             @foreach($space_info as $var)
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Renting Space Information</h2>
+                                                <div class="form-card">
+                                                    <h2 class="fs-title">Renting Space Information</h2>
 
 
 
 
-                                                <div class="form-group row">
+                                                    <div class="form-group row">
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="major_industry"  ><strong>Major industry</strong></label>
-                                                        <input type="text" class="form-control" id="getMajor" name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
+                                                        <div class="form-wrapper col-6">
+                                                            <label for="major_industry"  ><strong>Major industry</strong></label>
+                                                            <input type="text" class="form-control" id="getMajor" name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
+                                                        </div>
+
+                                                        <div class="form-wrapper col-6">
+                                                            <label for=""  ><strong>Minor industry</strong></label>
+                                                            <input type="text" class="form-control" id="minor_list" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+                                                        </div>
                                                     </div>
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for=""  ><strong>Minor industry</strong></label>
-                                                        <input type="text" class="form-control" id="minor_list" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+
+                                                    <div class="form-group row">
+
+                                                        <div class="form-wrapper col-6">
+                                                            <label for="space_location"  ><strong>Location</strong></label>
+                                                            <input type="text" class="form-control" id="space_location" name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
+                                                        </div>
+
+                                                        <div class="form-wrapper col-6">
+                                                            <label for="space_location"  ><strong>Sub location</strong></label>
+                                                            <input type="text" readonly class="form-control" id="space_sub_location" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
+                                                        </div>
                                                     </div>
+
+
+                                                    <div class="form-group row">
+
+                                                        <div class="form-wrapper col-6">
+                                                            <label for="" ><strong>Space Number</strong></label>
+                                                            <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" readonly Required autocomplete="off">
+                                                        </div>
+
+                                                        <div class="form-wrapper col-6">
+                                                            <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                                                            <input type="number" min="1" step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+
+                                                        <div class="form-wrapper col-6">
+                                                            <label for="has_water_bill"  ><strong>Required to also pay Water bill</strong></label>
+                                                            <input type="text" readonly class="form-control" id="has_water_bill" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
+                                                        </div>
+
+                                                        <div class="form-wrapper col-6">
+                                                            <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill</strong></label>
+                                                            <input type="text" readonly class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
                                                 </div>
-
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="space_location"  ><strong>Location</strong></label>
-                                                        <input type="text" class="form-control" id="space_location" name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="space_location"  ><strong>Sub location</strong></label>
-                                                        <input type="text" readonly class="form-control" id="space_sub_location" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="" ><strong>Space Number</strong></label>
-                                                        <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" readonly Required autocomplete="off">
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                                        <input type="number" min="1" step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="has_water_bill"  ><strong>Required to also pay Water bill</strong></label>
-                                                        <input type="text" readonly class="form-control" id="has_water_bill" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill</strong></label>
-                                                        <input type="text" readonly class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
-                                                    </div>
-                                                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-                                            </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
+                                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                                <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
                                                 <a href="/businesses" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                             @endforeach
                                         </fieldset>
@@ -985,9 +985,9 @@
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
                 var clientType=$("#client_type").val(),
-                 firstName=$("#first_name").val(),
-                  lastName=$("#last_name").val(),
-                   companyName=$("#company_name").val();
+                    firstName=$("#first_name").val(),
+                    lastName=$("#last_name").val(),
+                    companyName=$("#company_name").val();
                 var email=$("#email").val();
                 var address=$("#address").val();
                 var tin=$("#tin").val();

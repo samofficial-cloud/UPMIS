@@ -1,11 +1,6 @@
 @extends('layouts.app')
 @section('style')
 <style type="text/css">
-	* {
-    margin: 0;
-    padding: 0
-}
-
 html {
     height: 100%
 }
@@ -98,39 +93,6 @@ html {
   margin-bottom: 0px;
 }
 
-#msform .action-button {
-    width: 100px;
-    background: skyblue;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0px;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px
-}
-
-#msform .action-button:hover,
-#msform .action-button:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue
-}
-
-#msform .action-button-previous {
-    width: 100px;
-    background: #616161;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0px;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px
-}
-
-#msform .action-button-previous:hover,
-#msform .action-button-previous:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161
-}
 
 select.list-dt {
     border: none;
@@ -159,73 +121,6 @@ select.list-dt:focus {
     text-align: left
 }
 
-#progressbar {
-    margin-bottom: 30px;
-    overflow: hidden;
-    color: lightgrey;
-    margin-left: 20%;
-}
-
-#progressbar .active {
-    color: #000000
-}
-
-#progressbar li {
-    list-style-type: none;
-    font-size: 12px;
-    width: 25%;
-    float: left;
-    position: relative
-}
-
-#progressbar #account:before {
-    font-family: FontAwesome;
-    content: "\f1b9"
-}
-
-#progressbar #personal:before {
-    font-family: FontAwesome;
-    content: "\f007"
-}
-
-#progressbar #payment:before {
-    font-family: FontAwesome;
-    content: "\f09d"
-}
-
-#progressbar #confirm:before {
-    font-family: FontAwesome;
-    content: "\f00c"
-}
-
-#progressbar li:before {
-    width: 50px;
-    height: 50px;
-    line-height: 45px;
-    display: block;
-    font-size: 18px;
-    color: #ffffff;
-    background: lightgray;
-    border-radius: 50%;
-    margin: 0 auto 10px auto;
-    padding: 2px
-}
-
-#progressbar li:after {
-    content: '';
-    width: 100%;
-    height: 2px;
-    background: lightgray;
-    position: absolute;
-    left: 0;
-    top: 25px;
-    z-index: -1
-}
-
-#progressbar li.active:before,
-#progressbar li.active:after {
-    background: skyblue
-}
 
 .radio-group {
     position: relative;
@@ -447,142 +342,134 @@ $today=date('Y-m-d');
 
                         </form>
                     </div>
-                    <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse2">B. AVAILABILITY OF FUNDS</a></h2>
-                    <div id="collapse2" class="collapse">
-                        <form id="msform" method="post" action="#">
+
+
+                 <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">B. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
+                    <div id="collapse3" class="collapse show">
+                        <div class="form-card" style="padding: 4px;">
+                            <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
+
+                        <form id="msform" method="post" action="#" style="font-size: 17px;">
                             {{csrf_field()}}
                             <fieldset>
                                 <div class="form-card">
+                                   <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="head_approval_status">This Application is therefore</label>
+                                            <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_approval_status}}" readonly="">
+                                        </div>
+                                    </div>
 
-                    <div class="form-group">
-                    <div class="form-wrapper">
-                        <label for="code_no">Travel/Transport Activity Code No.</label>
-                        <input type="text" id="code_no" name="code_no" class="form-control" value="{{$contract->transport_code}}" readonly="">
-                    </div>
-                </div>
+                                    <div class="form-group row" id="approvedbydiv">
+                                        <div class="form-wrapper col-6">
+                                            <label for="approve_name">Approved by</label>
+                                            <span id="approve_namemsg"></span>
+                                            <input type="text" id="head_name" name="head_name" class="form-control" value="{{$contract->head_name }}" readonly="">
+                                        </div>
 
-                <div class="form-group">
-                    <div class="form-wrapper">
-                        <label for="fund_available">Funds Available for Further use in Tshs.</label>
-                        <input type="text" id="fund_available" name="fund_available" class="form-control" value="{{number_format($contract->funds_available)}}" readonly="">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-wrapper" id="balance_statusdiv">
-          <label for="balance_status">Balance Status</label>
-          <span id="balance_statusmsg"></span>
-            <input type="text" class="form-control" required="" id="balance_status" name="balance_status" value="{{$contract->balance_status}}" readonly="">
-        </div>
-    </div>
-
-                <div class="form-group">
-                    <div class="form-wrapper">
-                        <label for="vote_holder">Vote Holder Title</label>
-                        <input type="text" id="vote_holder" name="vote_holder" class="form-control" value="{{$contract->vote_title}}" readonly="">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-wrapper">
-                        <label for="commited_fund">Fund to commit</label>
-                         <input type="text" id="commited_fund" name="commited_fund" class="form-control" value="{{number_format($contract->fund_committed)}}" readonly="">
-                    </div>
-                </div>
-
-    <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
-                            <label for="approve_name">Name</label>
-                            <span id="approve_namemsg"></span>
-                            <input type="text" id="approve_name" name="approve_name" class="form-control" value="{{$contract->acc_name}}" readonly="">
-                        </div>
-                        <div class="form-wrapper col-6">
-                            <label for="approve_date">Date</label>
-                            <span id="approve_datemsg"></span>
-                            <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$contract->acc_date}}" readonly="">
-                        </div>
-                    </div>
+                                        <div class="form-wrapper col-6">
+                                            <label for="approve_date">Date</label>
+                                            <span id="approve_datemsg"></span>
+                                            <input type="date" id="head_date" name="head_date" class="form-control" value="{{$contract->head_date}}" readonly="">
+                                        </div>
+                                    </div>
                                 </div>
                             </fieldset>
-
                         </form>
+
+
                     </div>
 
-                    <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">C. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
-                    <div id="collapse3" class="collapse show">
-                        <form id="msform" method="post" action="{{ route('newCarcontractC') }}" style="font-size: 17px;" onsubmit="return getdata()" name="myForm">
+                    </div>
+
+
+                <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse2">C. AVAILABILITY OF FUNDS</a></h2>
+                    <div id="collapse2" class="collapse show">
+                        @if($contract->head_approval_status == 'Rejected')
+
+                        @else
+                        <form id="msform" method="post" action="{{ route('newCarcontractB') }}">
                             {{csrf_field()}}
-                            <div >
-                                @if($contract->vote_remarks!=null)
-                        <p style="text-align: left;">This Application has the following remark(s) from the Vote Holder, <b>{{$contract->acc_name}}</b>.</p>
-                        <div class="form-group">
-                    <div class="form-wrapper">
-                        <textarea type="text" id="acc_remark" name="acc_remark" class="form-control" value="" readonly="" style="border: inset !important;">{{$contract->vote_remarks}}</textarea>
-                    </div>
-                </div>
-                @endif
-                        <div class="form-card" style="padding: 4px;">
-                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No.<span style="color: red;">*</span> <input type="text" id="centre_name" name="centre_name" required value="{{$contract->cost_centre}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();"> has a balance of Tshs.<span style="color: red;">*</span> <input type="text" id="fund_available" name="fund_available" required value="{{$contract->funds_available}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;"> for transport code No<span style="color: red;">*</span> <input type="text" id="code_no" name="code_no" required="" value="{{$contract->transport_code}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();">. This amount is<span style="color: red;">*</span> <select required="" id="balance_status" name="balance_status" style="padding: 0px; border: inset; margin: 10px;width: 15%;font-size: 16px;">
-                            @if($contract->balance_status=='Sufficient')
-              <option value="Sufficient">Sufficient</option>
-              <option value="Not Sufficient">Not Sufficient</option>
-              @elseif($contract->balance_status=='Not Sufficient')
-              <option value="Not Sufficient">Not Sufficient</option>
-              <option value="Sufficient">Sufficient</option>
-              @else
-              <option value="Sufficient">Sufficient</option>
-              <option value="Not Sufficient">Not Sufficient</option>
-              @endif
-            </select> to meet the requirement as stated in <b>B</b> above.</p>
-
                             <fieldset>
                                 <div class="form-card">
                                     <div class="form-group">
-                        <div class="form-wrapper">
-                  <label for="approval_status">This Application is therefore<span style="color: red;">*</span></label>
-                  <div class="row">
-                     
-                  <div class="form-check-inline col-3">
-                    <input class="form-check-input" type="radio" name="head_approval_status" id="Accepted" value="Accepted" checked="">
-                  <label for="Accepted" class="form-check-label">Accepted</label>
-                 </div>
+                                        <div class="form-wrapper">
+                                            <label for="code_no">Travel/Transport Activity Code No.<span style="color: red;">*</span></label>
+                                            <input type="text" id="code_no" name="code_no" value="{{$contract->transport_code}}" class="form-control" required onkeypress="if((this.value.length<=5)){return true} else{return false}" onblur="javascript:this.value=this.value.toUpperCase();">
+                                        </div>
+                                    </div>
 
-                 <div class="form-check-inline col-3">
-                    <input class="form-check-input" type="radio" name="head_approval_status" id="Rejected" value="Rejected">
-                  <label for="Rejected" class="form-check-label">Rejected</label>
-                </div>
-               </div>
+                                    <div class="form-group">
+                                         <div class="form-wrapper">
+                                            <label for="fund_available">Funds Available for Further use in Tshs.<span style="color: red;">*</span></label>
+                                            <input type="text" id="fund_available" name="fund_available" class="form-control" required autocomplete="off" value="{{$contract->funds_available}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;" onblur="
+                                                var query=document.getElementById('fund_available').value;
+                                                query2={{$contract->estimated_cost}};
+                                                if(query<query2){
+                                                    let element = document.getElementById('balance_status');
+                                                    element.value = 'Not Sufficient';
+                                                }
+                                                else{
+                                                  let element = document.getElementById('balance_status');
+                                                    element.value = 'Sufficient';
+                                                }
+                                             ">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper" id="balance_statusdiv">
+                                          <label for="balance_status">Balance Status<span style="color: red;">*</span></label>
+                                          <span id="balance_statusmsg"></span>
+                                          <input type="text" name="balance_status" class="form-control" required="" id="balance_status" readonly="" value="{{$contract->balance_status}}">
+                                        {{-- <select class="form-control" required="" id="balance_status" name="balance_status">
+                                          <option value="" disabled selected hidden>Select balance status</option>
+                                          <option value="Sufficient">Sufficient</option>
+                                          <option value="Not Sufficient">Not Sufficient</option>
+                                        </select> --}}
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="vote_holder">Vote Holder Title<span style="color: red;">*</span></label>
+                                            <input type="text" id="vote_holder" name="vote_holder" required="" class="form-control" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="commited_fund">Fund to commit<span style="color: red;">*</span></label>
+                                            <input type="text" id="commited_fund" name="commited_fund" required class="form-control" value="{{$contract->estimated_cost}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" id="approvedbydiv">
+                                        <div class="form-wrapper col-6">
+                                            <label for="approve_name">Name<span style="color: red;">*</span></label>
+                                            <span id="approve_namemsg"></span>
+                                            <input type="text" id="approve_name" name="approve_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
+                                        </div>
+                                        <div class="form-wrapper col-6">
+                                            <label for="approve_date">Date<span style="color: red;">*</span></label>
+                                            <span id="approve_datemsg"></span>
+                                            <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$today}}" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
+
                                 </div>
-                            </div>
-                            <div class="form-group" id="acc_reasondiv" style="display: none;">
-                    <div class="form-wrapper">
-                        <label for="acc_reason">Reason<span style="color: red;">*</span></label>
-                        <span id="message"></span>
-                         <textarea type="text" id="acc_remark" name="acc_remark" class="form-control" value="" style="border: inset !important;"></textarea>
-                    </div>
-                </div>
-                                   <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
-                            <label for="approve_name">Name<span style="color: red;">*</span></label>
-                            <span id="approve_namemsg"></span>
-                            <input type="text" id="head_name" name="head_name" class="form-control" value="{{ Auth::user()->name }}" readonly="">
-                        </div>
-                        <div class="form-wrapper col-6">
-                            <label for="approve_date">Date<span style="color: red;">*</span></label>
-                            <span id="approve_datemsg"></span>
-                            <input type="date" id="head_date" name="head_date" class="form-control" value="{{$today}}" readonly="">
-                        </div>
-                    </div>
-                     <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
-                        </div>
-                                <button class="btn btn-primary" type="submit">Forward</button>
+
+                                
+                                   <button class="btn btn-primary" type="submit">Forward</button>
                             </fieldset>
-                        </div>
-                    </div>
+
                         </form>
-
-
+                        @endif
                     </div>
+
 
 
                     </div>

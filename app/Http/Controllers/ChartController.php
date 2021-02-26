@@ -13,6 +13,7 @@ use App\cost_centre;
 use Response;
 use \RecursiveIteratorIterator;
 use \RecursiveArrayIterator;
+use View;
 
 class ChartController extends Controller
 {
@@ -73,6 +74,9 @@ class ChartController extends Controller
         ]);
 
         $UDIA_income = collect([]);
+        $UDIA_income_britam = collect([]);
+        $UDIA_income_icea = collect([]);
+        $UDIA_income_nic = collect([]);
         $UDIA_income_motor = collect([]);
         $UDIA_income_fire = collect([]);
         $UDIA_income_fidelity = collect([]);
@@ -86,6 +90,39 @@ class ChartController extends Controller
         ->whereMonth('invoicing_period_start_date',$days_backwards)
          ->where('payment_status','Paid')
           ->whereYear('invoicing_period_start_date',date('Y'))
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_britam->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','BRITAM')
+        ->whereYear('invoicing_period_start_date',date('Y'))
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+    for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_icea->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','ICEA LION')
+        ->whereYear('invoicing_period_start_date',date('Y'))
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_nic->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','NIC')
+        ->whereYear('invoicing_period_start_date',date('Y'))
         ->groupBy('month')
         ->pluck('total'));
     }
@@ -154,11 +191,23 @@ class ChartController extends Controller
         $chart1->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart1->title("Income Generated from Principals $year");
         $chart1->options(['scales' => self::chartSetAxes('Month','Income (TZS)')]);
-        $chart1->dataset('Income Generated', 'bar', $UDIA_income)->options([
+        $chart1->dataset('BRITAM', 'bar', $UDIA_income_britam)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
             "borderWidth"=>2,
             "backgroundColor"=>'#6cb2eb'
+        ]);
+       $chart1->dataset('NIC', 'bar', $UDIA_income_nic)->options([
+            'fill' => 'true',
+            'borderColor' => '#51C1C0',
+            "borderWidth"=>2,
+            "backgroundColor"=>'#51C1C0'
+        ]);
+        $chart1->dataset('ICEA LION', 'bar', $UDIA_income_icea)->options([
+            'fill' => 'true',
+            'borderColor' => '#6574cd',
+            "borderWidth"=>2,
+            "backgroundColor"=>'#6574cd'
         ]);
 
         $chart2 = new SampleChart;
@@ -206,7 +255,9 @@ class ChartController extends Controller
 
         $contracts=DB::table('insurance_contracts')->whereRaw('DATEDIFF(end_date,CURDATE()) <= 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
 
-      return view('dashboard_udia',compact('chart','chart1','chart2','contracts'));
+        $insurance_invoices= DB::table('insurance_invoices')->join('insurance_payments','insurance_payments.invoice_number','=','insurance_invoices.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+
+      return view('dashboard_udia',compact('chart','chart1','chart2','contracts','insurance_invoices'));
     }
 
     public function udia_activity_filter(){
@@ -235,6 +286,10 @@ class ChartController extends Controller
     }
 
     $UDIA_income = collect([]);
+    $UDIA_income_britam = collect([]);
+    $UDIA_income_icea = collect([]);
+    $UDIA_income_nic = collect([]);
+
      for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $UDIA_income->push(DB::table('insurance_invoices')
         ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
@@ -245,8 +300,53 @@ class ChartController extends Controller
         ->pluck('total'));
     }
 
+        for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_britam->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','BRITAM')
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+    for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_icea->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','ICEA LION')
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_nic->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','NIC')
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
      if ($UDIA_income instanceof Collection) {
            $UDIA_income = $UDIA_income->toArray();
+    }
+
+     if ($UDIA_income_britam instanceof Collection) {
+           $UDIA_income_britam = $UDIA_income_britam->toArray();
+    }
+
+     if ($UDIA_income_nic instanceof Collection) {
+           $UDIA_income_nic = $UDIA_income_nic->toArray();
+    }
+
+     if ($UDIA_income_icea instanceof Collection) {
+           $UDIA_income_icea = $UDIA_income_icea->toArray();
     }
 
     $flat2 = array();
@@ -263,7 +363,50 @@ class ChartController extends Controller
             
         }
 
-    return response()->json(['activity'=>$data1, 'udia'=>$flat2, 'fire'=>$fire, 'fidelity'=>$fidelity, 'marine'=>$marine, 'motor'=>$motor, 'prof'=>$prof, 'public'=>$public, 'total'=>$total]);
+
+         $flat3 = array();
+        foreach($UDIA_income_icea as $i) {
+            if (count($i)==0){
+                $flat3[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flat3[]= $value;   
+            } 
+        }
+            
+            
+        }
+
+         $flat4 = array();
+        foreach($UDIA_income_britam as $i) {
+            if (count($i)==0){
+                $flat4[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flat4[]= $value;   
+            } 
+        }
+            
+            
+        }
+
+         $flat5 = array();
+        foreach($UDIA_income_nic as $i) {
+            if (count($i)==0){
+                $flat5[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flat5[]= $value;   
+            } 
+        }
+            
+            
+        }
+
+    return response()->json(['activity'=>$data1, 'udia'=>$flat2, 'fire'=>$fire, 'fidelity'=>$fidelity, 'marine'=>$marine, 'motor'=>$motor, 'prof'=>$prof, 'public'=>$public, 'total'=>$total, 'icea'=>$flat3, 'britam'=>$flat4, 'nic'=>$flat5]);
 
     }
 
@@ -490,7 +633,8 @@ class ChartController extends Controller
             ->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')
             ->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
             ->where('payment_status','!=','Paid')
-            ->whereRaw('DATEDIFF(invoice_date,CURDATE()) < 30')
+            ->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')
+            //->whereRaw('DATEDIFF(invoice_date,CURDATE()) < 30')
             ->orderBy('invoice_date','asc')->get();
 
         return view('dashboard_cptu',compact('chart','chart2','invoices'));
@@ -619,12 +763,14 @@ class ChartController extends Controller
         // $contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->whereRaw('DATEDIFF(end_date,CURDATE()) < 15')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
         $contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->whereRaw('DATEDIFF(end_date,CURDATE()) < 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
 
+        $solicited = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('contract_category','Solicited')->whereRaw('DATEDIFF(end_date,CURDATE()) < 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
+
         $invoices = DB::table('invoices')
             ->join('clients','clients.full_name','=','invoices.debtor_name')
             ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
             ->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')
             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
-            ->where('payment_status','Not Paid')
+            ->where('payment_status','!=','Paid')
             ->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')
             ->orderBy('invoice_date','asc')
             ->get();
@@ -634,7 +780,7 @@ class ChartController extends Controller
             ->join('space_contracts','space_contracts.contract_id','=','electricity_bill_invoices.contract_id')
             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
             ->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')
-            ->where('payment_status','Not Paid')
+            ->where('payment_status','!=','Paid')
             ->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')
             ->orderBy('invoice_date','asc')
             ->get();
@@ -644,13 +790,13 @@ class ChartController extends Controller
             ->join('space_contracts','space_contracts.contract_id','=','water_bill_invoices.contract_id')
             ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
             ->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')
-            ->where('payment_status','Not Paid')
+            ->where('payment_status','!=','Paid')
             ->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')
             ->orderBy('invoice_date','asc')
             ->get();
 
 
-        return view('dashboard_space',compact('chart','chart1','contracts','invoices','electric_invoices','water_invoices'));
+        return view('dashboard_space',compact('chart','chart1','contracts','invoices','electric_invoices','water_invoices','solicited'));
     }
 
     public function space_activity_filter(){
@@ -737,6 +883,11 @@ class ChartController extends Controller
 
   return response()->json(['activity'=>$data2, 'income'=>$flat2, 'income2'=>$flat3, 'main'=>$main,'knyama'=>$knyama,'kunduchi'=>$kunduchi,'mabibo'=>$mabibo,'mikocheni'=>$mikocheni, 'mlimani'=>$mlimani, 'ubungo'=>$ubungo, 'total'=>$total]);
 
+    }
+
+
+     public function space_contract_filter(){
+        return View::make('space_contract_filtered');
     }
 
     public function voteholderindex(){
@@ -955,12 +1106,48 @@ class ChartController extends Controller
     }
 
      $UDIA_income = collect([]);
+     $UDIA_income_britam = collect([]);
+     $UDIA_income_icea = collect([]);
+     $UDIA_income_nic = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $UDIA_income->push(DB::table('insurance_invoices')
         ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
         ->whereMonth('invoicing_period_start_date',$days_backwards)
          ->where('payment_status','Paid')
+        ->whereYear('invoicing_period_start_date',date('Y'))
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+         for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_britam->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','BRITAM')
+        ->whereYear('invoicing_period_start_date',date('Y'))
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+    for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_icea->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','ICEA LION')
+        ->whereYear('invoicing_period_start_date',date('Y'))
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_nic->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','NIC')
         ->whereYear('invoicing_period_start_date',date('Y'))
         ->groupBy('month')
         ->pluck('total'));
@@ -997,13 +1184,24 @@ class ChartController extends Controller
         $chart4->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart4->title("UDIA Income Generation $year");
         $chart4->options(['scales' => self::chartSetAxes('Month','Income (TZS)')]);
-        $chart4->dataset('UDIA Income', 'bar', $UDIA_income)
-                ->options([
-                    'fill' => 'true',
-                    'borderColor' => '#6cb2eb',
-                    "borderWidth"=>1,
-                    "backgroundColor"=>'#6cb2eb'
-                ]);
+         $chart4->dataset('BRITAM', 'bar', $UDIA_income_britam)->options([
+            'fill' => 'true',
+            'borderColor' => '#6cb2eb',
+            "borderWidth"=>2,
+            "backgroundColor"=>'#6cb2eb'
+        ]);
+       $chart4->dataset('NIC', 'bar', $UDIA_income_nic)->options([
+            'fill' => 'true',
+            'borderColor' => '#51C1C0',
+            "borderWidth"=>2,
+            "backgroundColor"=>'#51C1C0'
+        ]);
+        $chart4->dataset('ICEA LION', 'bar', $UDIA_income_icea)->options([
+            'fill' => 'true',
+            'borderColor' => '#6574cd',
+            "borderWidth"=>2,
+            "backgroundColor"=>'#6574cd'
+        ]);
 
         $chart5 = new SampleChart;
         $chart5->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
@@ -1039,11 +1237,13 @@ class ChartController extends Controller
 
         $invoices = DB::table('invoices')->join('clients','clients.full_name','=','invoices.debtor_name')->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')->join('space_payments','invoices.invoice_number','=','space_payments.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
 
-        $cptu_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(invoice_date,CURDATE()) < 30')->orderBy('invoice_date','asc')->get();
+        $cptu_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+
+        $insurance_invoices= DB::table('insurance_invoices')->join('insurance_payments','insurance_payments.invoice_number','=','insurance_invoices.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
         
 
 
-        return view('dashboard', compact('chart','chart2','chart3','chart4','chart5','chart6','space_contract','invoices','cptu_invoices'));
+        return view('dashboard', compact('chart','chart2','chart3','chart4','chart5','chart6','space_contract','invoices','cptu_invoices','insurance_invoices'));
     }
 
     public function income_filter(){
@@ -1059,7 +1259,111 @@ class ChartController extends Controller
             ->pluck('total'));
     }
 
-     $UDIA_income = collect([]);
+    $UDIA_income = collect([]);
+    $UDIA_income_britam = collect([]);
+    $UDIA_income_icea = collect([]);
+    $UDIA_income_nic = collect([]);
+
+     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+         ->where('payment_status','Paid')
+          ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+        for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_britam->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','BRITAM')
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+    for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_icea->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','ICEA LION')
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $UDIA_income_nic->push(DB::table('insurance_invoices')
+        ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_to_be_paid) as total')))
+        ->whereMonth('invoicing_period_start_date',$days_backwards)
+        ->where('payment_status','Paid')
+        ->where('debtor_name','NIC')
+        ->whereYear('invoicing_period_start_date',$_GET['year'])
+        ->groupBy('month')
+        ->pluck('total'));
+    }
+
+
+     if ($UDIA_income_britam instanceof Collection) {
+           $UDIA_income_britam = $UDIA_income_britam->toArray();
+    }
+
+     if ($UDIA_income_nic instanceof Collection) {
+           $UDIA_income_nic = $UDIA_income_nic->toArray();
+    }
+
+     if ($UDIA_income_icea instanceof Collection) {
+           $UDIA_income_icea = $UDIA_income_icea->toArray();
+    }
+
+   
+
+
+         $flata = array();
+        foreach($UDIA_income_icea as $i) {
+            if (count($i)==0){
+                $flata[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flata[]= $value;   
+            } 
+        }
+            
+            
+        }
+
+         $flatb = array();
+        foreach($UDIA_income_britam as $i) {
+            if (count($i)==0){
+                $flatb[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flatb[]= $value;   
+            } 
+        }
+            
+            
+        }
+
+         $flatc = array();
+        foreach($UDIA_income_nic as $i) {
+            if (count($i)==0){
+                $flatc[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flatc[]= $value;   
+            } 
+        }
+            
+            
+        }
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $UDIA_income->push(DB::table('insurance_invoices')
@@ -1139,7 +1443,7 @@ class ChartController extends Controller
             
         }
 
-        return response()->json(['cptu'=>$flat, 'udia'=>$flat2, 'space'=>$flat3]);
+        return response()->json(['cptu'=>$flat, 'udia'=>$flat2, 'space'=>$flat3, 'icea'=>$flata, 'britam'=>$flatb, 'nic'=>$flatc]);
     
     }
 

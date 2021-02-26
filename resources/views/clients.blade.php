@@ -865,7 +865,7 @@ hr {
         <a title="Edit Client Details" data-toggle="modal" data-target="#Caredit{{$i}}" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
          <div class="modal fade" id="Caredit{{$i}}" role="dialog">
 
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
@@ -1144,7 +1144,7 @@ hr {
         <a title="Edit Client Details" data-toggle="modal" data-target="#Caredit{{$i}}" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
          <div class="modal fade" id="Caredit{{$i}}" role="dialog">
 
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                 <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
@@ -3027,6 +3027,14 @@ $('#myTable5').on('click', '[name="cost_centre"]', function(e){
         }
          //console.log(result);
     });
+
+
+
+      $('.myselect').select2({
+        placeholder: "Select Cost Centre",
+        theme: "bootstrap",
+        allowClear: true,
+      });
 
 
 

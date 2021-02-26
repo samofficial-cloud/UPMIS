@@ -47,34 +47,13 @@
   .form-inline label {
     justify-content: left;
   }
-
-/*  .card:hover {
-    cursor: not-allowed;
-    animation-duration: 20ms;
-    animation-timing-function: linear;
-    animation-iteration-count: 10;
-    animation-name: wiggle;
-  }*/
-
-  @keyframes wiggle {
-  0% { transform: translate(0px, 0); }
- /* 10% { transform: translate(-1px, 0); }
-  20% { transform: translate(1px, 0); }
-  30% { transform: translate(-1px, 0); }
-  40% { transform: translate(1px, 0); }
-  50% { transform: translate(-2px, 0); }
-  60% { transform: translate(2px, 0); }
-  70% { transform: translate(-2px, 0); }*/
-  80% { transform: translate(2px, 0); }
-  90% { transform: translate(-2px, 0); }
-  100% { transform: translate(0, 0); }
 }
 </style>
 
 @endsection
 @section('content')
 <div class="wrapper">
-  <?php $a=1; $b=1; $c=1; ?>
+  <?php $a=1; $b=1; $c=1; $d=1;?>
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
@@ -133,7 +112,7 @@
   use App\insurance;
   use App\cost_centre;
   $total_spaces=space::where('status','1')->count();
-  $occupied_spaces=space_contract::select('space_id_contract')->where('contract_status','1')->wheredate('end_date','>',date('Y-m-d'))->distinct()->count();
+  $occupied_spaces=space_contract::select('space_id_contract')->where('contract_status','1')->wheredate('end_date','>=',date('Y-m-d'))->orderBy('space_id_contract','asc')->distinct()->get();
   $available_spaces=space::select('space_id')
         ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>',date('Y-m-d'))->where('contract_status','1')->distinct()->pluck('space_id_contract')->toArray())
         ->where('status','1')
@@ -187,7 +166,7 @@
     <div class="card-body">
      <h5 class="card-title">Spaces <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
       <p>Total Spaces: {{$total_spaces}}
-      <br>Occupied: {{$occupied_spaces}}
+      <br>Occupied: {{count($occupied_spaces)}}
       <br>Available: {{$available_spaces}}
     </div>
   </div>
@@ -293,7 +272,7 @@
         <div class="form-group row">
             <label for="inia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
-              <input type="file" id="inia_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <input type="file" id="inia_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
               <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
@@ -511,7 +490,7 @@
         <div class="form-group row">
             <label for="attachment{{$space->contract_id}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
-              <input type="file" id="attachment{{$space->contract_id}}" name="filenames[]" class="myfrm form-control" multiple="">
+              <input type="file" id="attachment{{$space->contract_id}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
               <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
@@ -523,6 +502,8 @@
           </div>
         </div>
         <br>
+
+        <input type="text" name="type" value="space" hidden="">
 
         <div align="right">
   <button class="btn btn-primary" type="submit">Send</button>
@@ -652,7 +633,7 @@
         <div class="form-group row">
             <label for="debt_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
-              <input type="file" id="debt_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <input type="file" id="debt_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
               <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
@@ -688,6 +669,7 @@
                                 <th scope="col" >Amount</th>
                                 {{-- <th scope="col" >GEPG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
+                                <th scope="col" >Debt Age</th>
                                 @if(Auth::user()->role=='System Administrator')
                                 <th scope="col" >Action</th>
                                 @endif
@@ -864,6 +846,7 @@
                                     </td>
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
                                     @if(Auth::user()->role=='System Administrator')
                                     <td>
                                       @if($var->email!='')
@@ -913,7 +896,7 @@
         <div class="form-group row">
             <label for="spaceattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
-              <input type="file" id="spaceattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="">
+              <input type="file" id="spaceattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
               <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
@@ -1008,7 +991,7 @@
         <div class="form-group row">
             <label for="aia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
-              <input type="file" id="aia_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <input type="file" id="aia_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
               <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
@@ -1043,6 +1026,7 @@
                                 <th scope="col" >Amount</th>
                                 {{-- <th scope="col" >GEPG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
+                                <th scope="col" >Debt Age</th>
                                 @if(Auth::user()->role=='System Administrator')
                                 <th scope="col" >Action</th>
                                 @endif
@@ -1159,6 +1143,7 @@
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
                                     @if(Auth::user()->role=='System Administrator')
                                     <td>
                                       @if($var->email!='')
@@ -1208,7 +1193,7 @@
         <div class="form-group row">
             <label for="carattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
-              <input type="file" id="carattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="">
+              <input type="file" id="carattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
               <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
@@ -1244,6 +1229,246 @@
 </table>
 </div>
 </div>
+<br>
+<div class="card">
+    <div class="card-body">
+     <h3 class="card-title" style="font-family: sans-serif;">Outstanding Insurance Debt(s)</h3>
+     <hr>
+         <a title="Send email to selected clients" href="#" id="notify_all_udia" class="btn btn-info btn-sm" data-toggle="modal" data-target="#mail_all_udia" role="button" style="
+    padding: 10px;
+    color: #fff;font-size: 16px;
+    margin-bottom: 5px;
+    display: none;
+    margin-top: 4px;
+    float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
+        <div class="modal fade" id="mail_all_udia" role="dialog">
+              <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content" style="width: 115%;">
+              <div class="modal-header">
+                <b><h5 class="modal-title">New Message</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('SendMessage2') }}" enctype="multipart/form-data">
+        {{csrf_field()}}
+          <div class="form-group row">
+            <label for="aia_client_names" class="col-sm-2">To</label>
+            <div class="col-sm-9">
+            <input type="text" id="udia_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
+            <p id="udia_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
+          </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="udia_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+            <input type="text" id="udia_subject" name="subject" class="form-control" value="" required="">
+          </div>
+        </div>
+         <br>
+
+         <div class="form-group row">
+            <label for="udia_greetings" class="col-sm-2">Salutation</label>
+            <div class="col-sm-9">
+            <input type="text" id="udia_greetings" name="greetings" class="form-control" value="Dear " readonly="">
+          </div>
+        </div>
+         <br>
+
+        <div class="form-group row">
+            <label for="udia_message" class="col-sm-2">Message<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+              <textarea type="text" id="udia_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="udia_attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="udia_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="udia_closing" class="col-sm-2">Closing</label>
+            <div class="col-sm-9">
+            <input type="text" id="aia_closing" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
+          </div>
+        </div>
+        <br>
+ <input type="text" name="type" value="principals" hidden="">
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Send</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+<table class="hover table table-striped table-bordered" id="myTable3">
+  <thead class="thead-dark">
+                            <tr>
+                                <th scope="col"><center>S/N</center></th>
+                                <th scope="col" >Debtor Name</th>
+                                <th scope="col">Invoice Number</th>
+                                <th scope="col" >Start Date</th>
+                                <th scope="col" >End date</th>
+                                <th scope="col" >Amount</th>
+                                <th scope="col" >Invoice Date</th>
+                                <th scope="col" >Debt Age</th>
+                                @if(Auth::user()->role=='System Administrator')
+                                <th scope="col" >Action</th>
+                                @endif
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($insurance_invoices as $var)
+                                <tr>
+                                    <th scope="row">{{$d}}.</th>
+                                    <td>
+                                      <a title="View Client Details" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#clienta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->debtor_name}}</a>
+                                            <div class="modal fade" id="clienta{{$var->invoice_number}}" role="dialog">
+
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table style="width: 100%;">
+
+                                                                <tr>
+                                                                    <td style="width:30%;">Client Name:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+                                                                <?php $email = DB::table('insurance_parameters')->select('company_email')->where('company',$var->debtor_name)->value('company_email')?>
+                                                                <tr>
+                                                                    <td> Email:</td>
+                                                                    <td>{{$email}}</td>
+                                                                </tr>
+                                                                <?php $address = DB::table('insurance_parameters')->select('company_address')->where('company',$var->debtor_name)->value('company_address')?>
+                                                                <tr>
+                                                                  <td>Address:</td>
+                                                                  <td>{{$address}}</td>
+                                                                </tr>
+                                                                <?php $tin = DB::table('insurance_parameters')->select('company_tin')->where('company',$var->debtor_name)->value('company_tin')?>
+                                                                <tr>
+                                                                  <td>TIN No:</td>
+                                                                  <td>{{$tin}}</td>
+                                                                </tr>
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </td>
+                                    <td><center>{{$var->invoice_number}}</center></td>
+
+                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
+                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
+                                    {{-- <td>{{$var->period}}</td> --}}
+                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
+                                  {{--  <td>{{$var->gepg_control_no}}</td> --}}
+                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
+                                                                       @if(Auth::user()->role=='System Administrator')
+                                    <td>
+                                      @if($email!='')
+                                       <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
+      <div class="modal fade" id="carmail{{$var->invoice_number}}" role="dialog">
+              <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">New Message</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
+        {{csrf_field()}}
+          <div class="form-group row">
+            <label for="udiaclient_names{{$var->invoice_number}}" class="col-sm-2">To</label>
+            <div class="col-sm-9">
+            <input type="text" id="udiaclient_names{{$var->invoice_number}}" name="client_name" class="form-control" value="{{$var->debtor_name}}" readonly="">
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="udiasubject{{$var->invoice_number}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+            <input type="text" id="udiasubject{{$var->invoice_number}}" name="subject" class="form-control" value="" required="">
+          </div>
+        </div>
+         <br>
+         <div class="form-group row">
+            <label for="udiagreetings{{$var->invoice_number}}" class="col-sm-2">Salutation</label>
+            <div class="col-sm-9">
+            <input type="text" id="udiagreetings{{$var->invoice_number}}" name="greetings" class="form-control" value="Dear {{$var->debtor_name}}," readonly="">
+          </div>
+        </div>
+         <br>
+
+        <div class="form-group row">
+            <label for="udiamessage{{$var->invoice_number}}" class="col-sm-2">Message<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+              <textarea type="text" id="udiamessage{{$var->invoice_number}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="udiaattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="udiaattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg" >
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="udiaclosing{{$var->invoice_number}}" class="col-sm-2">Closing</label>
+            <div class="col-sm-9">
+            <input type="text" id="udiaclosing{{$var->invoice_number}}" name="closing" class="form-control" value="Regards, University of Dar es Salaam Insurance Agency." readonly="">
+          </div>
+        </div>
+        <br>
+        <input type="text" name="type" value="principals" hidden="">
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Send</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+     @else
+    <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
+     @endif
+                                    </td>
+                                    @endif
+                                  </tr>
+                                    <?php $d = $d + 1; ?>
+                                  @endforeach
+                                </tbody>
+</table>
+     </div>
+   </div>
+
+
     </div>
 </div>
 </div>
@@ -1269,6 +1494,10 @@ function myFunction() {
     dom: '<"top"l>rt<"bottom"pi>'
   } );
 
+  var table30 = $('#myTable3').DataTable( {
+    dom: '<"top"l>rt<"bottom"pi>'
+  } );
+
   var table2 = $('#myTable').DataTable();
 
     $('#myTable tbody').on( 'click', 'tr', function () {
@@ -1288,7 +1517,7 @@ function myFunction() {
         $(this).toggleClass('selected');
          var count2=table2.rows('.selected').data().length +' row(s) selected';
 
-      if(count2>'2'){
+      if(count2>='2'){
         <?php $role=Auth::user()->role;?>
         var role={!! json_encode($role) !!};
         if(role=='System Administrator'){
@@ -1360,7 +1589,7 @@ function myFunction() {
         $(this).toggleClass('selected');
          var count3=table3.rows('.selected').data().length +' row(s) selected';
 
-      if(count3>'2'){
+      if(count3>='2'){
         <?php $role=Auth::user()->role;?>
         var role={!! json_encode($role) !!};
       if(role=='System Administrator'){
@@ -1424,7 +1653,7 @@ function myFunction() {
       else{
         $(this).toggleClass('selected');
          var count4=table4.rows('.selected').data().length +' row(s) selected';
-         if(count4>'2'){
+         if(count4>='2'){
       <?php $role=Auth::user()->role;?>
        var role={!! json_encode($role) !!};
         if(role=='System Administrator'){
@@ -1478,6 +1707,70 @@ function myFunction() {
         }
 
     });
+
+
+    $('#myTable3 tbody').on( 'click', 'tr', function () {
+      document.getElementById("udia_par_names").innerHTML="";
+      document.getElementById("udia_greetings").value="Dear ";
+       var email30 = $(this).find('td:eq(4)').text();
+      if(email30==" "){
+        //alert("This client has no email");
+      }
+      else{
+        $(this).toggleClass('selected');
+         var count30=table30.rows('.selected').data().length;
+         if(count30>='2'){
+      <?php $role=Auth::user()->role;?>
+       var role={!! json_encode($role) !!};
+        if(role=='System Administrator'){
+          $('#notify_all_udia').show();
+        }
+        else{
+          $('#notify_all_udia').hide();
+        }
+      }
+      else{
+        $('#notify_all_udia').hide();
+      }
+    }
+
+    });
+
+     $('#notify_all_udia').click( function () {
+      document.getElementById("udia_par_names").innerHTML="";
+      document.getElementById("udia_greetings").value="Dear ";
+        var datas30 = table30.rows('.selected').data();
+        var result30 = [];
+        for (var i = 0; i < datas30.length; i++)
+        {
+                result30.push(datas30[i][1].split('"true">').pop().split('</a>')[0]);
+        }
+
+        $('#udia_client_names').val(result30).toString();
+
+        var content30 = document.getElementById("udia_par_names");
+        for(var i=0; i< result30.length;i++){
+          if(i==(result30.length-1)){
+            content30.innerHTML += result30[i]+ '.';
+          }
+          else{
+            content30.innerHTML += result30[i] + ', ';
+          }
+
+        }
+
+        var salutation30 = document.getElementById("udia_greetings");
+        for(var i=0; i< result30.length;i++){
+          if(i==(result30.length-1)){
+            salutation30.value += result30[i]+ '.';
+          }
+          else{
+            salutation30.value += result30[i] + ', ';
+          }
+
+        }
+
+    });
 });
 </script>
 
@@ -1513,7 +1806,9 @@ $("#income_filter").click(function(e){
       })
     .done(function(data) {
       {{$chart4->id}}.options.title.text = 'UDIA Income Generation '+query;
-      {{ $chart4->id }}.data.datasets[0].data =data.udia;
+      {{ $chart4->id }}.data.datasets[0].data =data.britam;
+      {{ $chart4->id }}.data.datasets[1].data =data.nic;
+      {{ $chart4->id }}.data.datasets[2].data =data.icea;
       {{ $chart4->id }}.update(); 
 
       {{$chart5->id}}.options.title.text = 'CPTU Income Generation '+query;

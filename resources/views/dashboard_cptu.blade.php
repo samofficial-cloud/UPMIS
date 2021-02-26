@@ -89,7 +89,7 @@
           <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
            @endif
           @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+          <li class="active_nav_item"><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
           @endif
           @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
           <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
@@ -304,6 +304,7 @@
                                 <th scope="col" >Amount</th>
                                 {{-- <th scope="col" >GEPG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
+                                <th scope="col" >Debt Age</th>
                                 <th scope="col" >Action</th>
                             </tr>
                             </thead>
@@ -418,6 +419,7 @@
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
                                     <td>
                                       @if($var->email!="")
                                        <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>

@@ -431,13 +431,13 @@ class InvoicesController extends Controller
 
         $insurance_invoices=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->get();
         $insurance_invoices_clients=DB::table('insurance_invoices_clients')->orderBy('invoice_number','desc')->get();
-         if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
+        if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
             $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->orderBy('car_rental_invoices.invoice_number','desc')->get();
-         }
+        }
 
-         else{
-           $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get();
-         }
+        else{
+            $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get();
+        }
 
 //        $water_bill_invoices=DB::table('water_bill_invoices')->join('space_contracts','water_bill_invoices.contract_id','=','space_contracts.contract_id')->orderBy('water_bill_invoices.invoice_number','desc')->get();
 
@@ -582,7 +582,7 @@ class InvoicesController extends Controller
     }
 
     public function space_filter(){
-       return View::make('invoice_filtered');
+        return View::make('invoice_filtered');
     }
 
 
@@ -594,7 +594,7 @@ class InvoicesController extends Controller
 
 
         if($request->get('amount_paid')<$amount_to_be_paid){
-        $payment_status='Partially Paid';
+            $payment_status='Partially Paid';
 
 
         }elseif($request->get('amount_paid')==$amount_to_be_paid) {
@@ -759,42 +759,42 @@ class InvoicesController extends Controller
         $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
         $today=date('Y-m-d');
 
-    foreach($invoice_data as $var){
+        foreach($invoice_data as $var){
 
-    $amount_in_words='';
+            $amount_in_words='';
 
-    if($var->currency_invoice=='TZS'){
-        $amount_in_words=Terbilang::make($var->amount_to_be_paid,' TZS',' ');
+            if($var->currency_invoice=='TZS'){
+                $amount_in_words=Terbilang::make($var->amount_to_be_paid,' TZS',' ');
 
-    }if ($var->currency_invoice=='USD'){
+            }if ($var->currency_invoice=='USD'){
 
-        $amount_in_words=Terbilang::make($var->amount_to_be_paid,' USD',' ');
-    }
+                $amount_in_words=Terbilang::make($var->amount_to_be_paid,' USD',' ');
+            }
 
-    else{
-
-
-    }
+            else{
 
 
-    $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+            }
 
 
-    Notification::route('mail','upmistesting@gmail.com')
-        ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'1234',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
-
-    DB::table('car_rental_invoices')
-        ->where('invoice_number', $id)
-        ->update(['email_sent_status' => 'SENT']);
-
-    DB::table('car_rental_invoices')
-        ->where('invoice_number', $id)
-        ->update(['invoice_date' => $today]);
+            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
 
-    DB::table('car_rental_invoices')
-        ->where('invoice_number', $id)
-        ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
+            Notification::route('mail','upmistesting@gmail.com')
+                ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'1234',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+
+            DB::table('car_rental_invoices')
+                ->where('invoice_number', $id)
+                ->update(['email_sent_status' => 'SENT']);
+
+            DB::table('car_rental_invoices')
+                ->where('invoice_number', $id)
+                ->update(['invoice_date' => $today]);
+
+
+            DB::table('car_rental_invoices')
+                ->where('invoice_number', $id)
+                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
 
 //        DB::table('car_rental_payments')->insert(
@@ -805,7 +805,7 @@ class InvoicesController extends Controller
 
 
 
-}
+        }
 
         DB::table('invoice_notifications')->where('invoice_category',  'car_rental')->where('invoice_id',$id)->delete();
 
@@ -815,103 +815,103 @@ class InvoicesController extends Controller
     }
 
 
-public function sendAllInvoicesSpace(Request $request){
+    public function sendAllInvoicesSpace(Request $request){
 
-    DB::table('invoice_notifications')
-        ->where('invoice_category','space')
-        ->update(['to_be_sent' => 1]);
+        DB::table('invoice_notifications')
+            ->where('invoice_category','space')
+            ->update(['to_be_sent' => 1]);
 
-    $invoices_sent=DB::table('invoice_notifications')->where('invoice_category','space')->where('to_be_sent',1)->get();
+        $invoices_sent=DB::table('invoice_notifications')->where('invoice_category','space')->where('to_be_sent',1)->get();
 
 //    SendEmailsSpaceJob::dispatch()->delay(now()->addSeconds(5));
 
 //    SendEmailsSpaceJob::dispatch();
 
-    //
-    //
+        //
+        //
 
-    $email_address='';
-    $invoice_to_send='';
-    $to_be_sent_space_invoices=DB::table('invoice_notifications')->where('invoice_category','space')->where('to_be_sent',1)->get();
-
-
-
-    $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
-
-
-    foreach($to_be_sent_space_invoices as $var) {
-
-        $debtor_name = DB::table('invoices')->where('invoice_number', $var->invoice_id)->value('debtor_name');
-
-        $invoice_to_send = DB::table('invoices')->where('invoice_number', $var->invoice_id)->where('gepg_control_no', '!=', '')->get();
+        $email_address='';
+        $invoice_to_send='';
+        $to_be_sent_space_invoices=DB::table('invoice_notifications')->where('invoice_category','space')->where('to_be_sent',1)->get();
 
 
 
-        foreach ($invoice_to_send as $invoice) {
+        $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
 
-            $amount_in_words = '';
 
-            if ($invoice->currency_invoice == 'TZS') {
-                $amount_in_words = Terbilang::make($invoice->amount_to_be_paid, ' TZS', ' ');
+        foreach($to_be_sent_space_invoices as $var) {
+
+            $debtor_name = DB::table('invoices')->where('invoice_number', $var->invoice_id)->value('debtor_name');
+
+            $invoice_to_send = DB::table('invoices')->where('invoice_number', $var->invoice_id)->where('gepg_control_no', '!=', '')->get();
+
+
+
+            foreach ($invoice_to_send as $invoice) {
+
+                $amount_in_words = '';
+
+                if ($invoice->currency_invoice == 'TZS') {
+                    $amount_in_words = Terbilang::make($invoice->amount_to_be_paid, ' TZS', ' ');
+
+                }
+                if ($invoice->currency_invoice == 'USD') {
+
+                    $amount_in_words = Terbilang::make($invoice->amount_to_be_paid, ' USD', ' ');
+                } else {
+
+
+                }
+
+                $financial_year = DB::table('system_settings')->where('id', 1)->value('financial_year');
+                $today = date('Y-m-d');
+                $email_address = DB::table('clients')->where('full_name', $debtor_name)->value('email');
+
+                if($email_address!='') {
+                    Notification::route('mail', $email_address)
+                        ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, '4353', $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, $invoice->approved_by, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
+
+                    DB::table('invoices')
+                        ->where('invoice_number', $invoice->invoice_number)
+                        ->update(['invoice_date' => $today]);
+
+
+                    DB::table('invoices')
+                        ->where('invoice_number', $invoice->invoice_number)
+                        ->update(['email_sent_status' => 'SENT']);
+
+
+                    DB::table('invoice_notifications')->where('invoice_category', 'space')->where('invoice_id', $invoice->invoice_number)->delete();
+                }else{
+
+
+
+                }
 
             }
-            if ($invoice->currency_invoice == 'USD') {
-
-                $amount_in_words = Terbilang::make($invoice->amount_to_be_paid, ' USD', ' ');
-            } else {
 
 
-            }
+        }
 
-            $financial_year = DB::table('system_settings')->where('id', 1)->value('financial_year');
-            $today = date('Y-m-d');
-            $email_address = DB::table('clients')->where('full_name', $debtor_name)->value('email');
+        //All invoices already sent
 
-            if($email_address!='') {
-                Notification::route('mail', $email_address)
-                    ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, '4353', $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, $invoice->approved_by, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
+        foreach($invoices_sent as $var){
 
-                DB::table('invoices')
-                    ->where('invoice_number', $invoice->invoice_number)
-                    ->update(['invoice_date' => $today]);
-
-
-                DB::table('invoices')
-                    ->where('invoice_number', $invoice->invoice_number)
-                    ->update(['email_sent_status' => 'SENT']);
-
-
-                DB::table('invoice_notifications')->where('invoice_category', 'space')->where('invoice_id', $invoice->invoice_number)->delete();
-            }else{
+            DB::table('invoices')
+                ->where('invoice_number', $var->invoice_id)
+                ->update(['stage' => 2]);
 
 
 
-            }
+
 
         }
 
 
+
+        return redirect('/invoice_management')
+            ->with('success', 'Emails Sent Successfully');
     }
-
-    //All invoices already sent
-
-    foreach($invoices_sent as $var){
-
-        DB::table('invoices')
-            ->where('invoice_number', $var->invoice_id)
-            ->update(['stage' => 2]);
-
-
-
-
-
-    }
-
-
-
-    return redirect('/invoice_management')
-        ->with('success', 'Emails Sent Successfully');
-}
 
 
     public function sendAllInvoicesWater(Request $request){
@@ -2663,6 +2663,76 @@ public function sendAllInvoicesSpace(Request $request){
 
 
 
+    public function sendInvoiceCarRental2(){
+        $invoice_data=DB::table('car_rental_invoices')->where('invoice_number', $id)->get();
+        $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+        $today=date('Y-m-d');
+
+        foreach($invoice_data as $var){
+
+            $amount_in_words='';
+
+            if($var->currency_invoice=='TZS'){
+                $amount_in_words=Terbilang::make($var->amount_to_be_paid,' TZS',' ');
+
+            }if ($var->currency_invoice=='USD'){
+
+                $amount_in_words=Terbilang::make($var->amount_to_be_paid,' USD',' ');
+            }
+
+            else{
+
+
+            }
+
+
+            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+
+
+            Notification::route('mail','upmistesting@gmail.com')
+                ->notify(new SendInvoice($var->debtor_name,$var->invoice_number,$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('account_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,'1234',$today,$financial_year,$var->period,$var->description,Auth::user()->name,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
+
+            DB::table('car_rental_invoices')
+                ->where('invoice_number', $id)
+                ->update(['email_sent_status' => 'SENT']);
+
+            DB::table('car_rental_invoices')
+                ->where('invoice_number', $id)
+                ->update(['invoice_date' => $today]);
+
+
+            DB::table('car_rental_invoices')
+                ->where('invoice_number', $id)
+                ->update(['account_no' => $request->get('account_no')]);
+
+
+
+        }
+
+        DB::table('invoice_notifications')->where('invoice_category',  'car_rental')->where('invoice_id',$id)->delete();
+
+        return redirect('/invoice_management')
+            ->with('success', 'Email Sent Successfully');
+    }
+
+
+
+    public function addAccountNumberCar(Request $request,$id){
+
+        DB::table('car_rental_invoices')
+            ->where('invoice_number',$id)
+            ->update(['account_no' =>$request->get('account_no')]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Account number saved successfully');
+    }
+
+
+
+
+
+
 //water bills
     public function WaterBillsInvoiceManagement()
     {
@@ -2708,8 +2778,8 @@ public function sendAllInvoicesSpace(Request $request){
                             'vrn'=>$var->vrn,
                             'address'=>$var->address,
 
-                    ];
-}
+                        ];
+                    }
 
                 }else{
                     foreach($contract_data as $var) {
@@ -2769,18 +2839,18 @@ public function sendAllInvoicesSpace(Request $request){
 
                     foreach($contract_data as $var ){
 
-                    $data = [
-                        'full_name'=> $var->full_name,
-                        'client_id'=>$var->client_id,
-                        'tin'=>$var->tin,
-                        'vrn'=>$var->vrn,
-                        'address'=>$var->address,
+                        $data = [
+                            'full_name'=> $var->full_name,
+                            'client_id'=>$var->client_id,
+                            'tin'=>$var->tin,
+                            'vrn'=>$var->vrn,
+                            'address'=>$var->address,
 
-                        'amount_not_paid' => 0,
-                        'currency_payments' => 'default'
+                            'amount_not_paid' => 0,
+                            'currency_payments' => 'default'
 
-                    ];
-}
+                        ];
+                    }
 
                 }else{
                     foreach($contract_data as $var ) {

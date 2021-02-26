@@ -16,6 +16,7 @@
         $cars= DB::table('car_rentals')
         ->whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')->where('vehicle_reg_no','!=',null)->whereDate('end_date', '>=',$_GET['start_date'])->distinct()->pluck('vehicle_reg_no')->toArray())
         ->where('vehicle_status','!=','Grounded')
+        ->where('flag','1')
         ->get();
     	?>
     
