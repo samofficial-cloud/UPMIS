@@ -470,7 +470,7 @@
                                                         <div id="premiumDiv" class="form-wrapper col-12">
                                                             <label for="amount">Premium</label>
                                                             <span id="premium_msg"></span>
-                                                            <input type="number" min="20" id="premium" name="premium" class="form-control" autocomplete="off">
+                                                            <input type="text" id="premium" readonly name="premium" class="form-control" autocomplete="off">
                                                         </div>
 
 
@@ -487,15 +487,79 @@
 
 
 
-                                                        <div id="first_installmentDiv" class="form-wrapper col-6 pt-4" style="display: none;">
-                                                            <label for="amount">First installment(60%) </label>
-                                                            <input type="text" id="first_installment" readonly name="first_installment" class="form-control">
+                                                        <div id="number_of_installmentsDiv" class="form-wrapper col-12 pt-4" style="display: none;">
+                                                            <label for="amount">Number of installments </label>
+                                                            <input type="number" min="2" id="number_of_installments" name="number_of_installments" class="form-control">
                                                         </div>
 
 
-                                                        <div id="second_installmentDiv" class="form-wrapper col-6 pt-4" style="display: none;">
-                                                            <label for="amount">Second installment(40%) </label>
-                                                            <input type="text" id="second_installment" readonly name="second_installment" class="form-control">
+                                                        <div id="first_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">First installment </label>
+                                                            <input type="number" id="first_installment"  name="first_installment" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="second_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Second installment </label>
+                                                            <input type="number" id="second_installment"  name="second_installment" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="third_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Third installment </label>
+                                                            <input type="number" id="third_installment"  name="third_installment" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="fourth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Fourth installment </label>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="fifth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Fifth installment </label>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="sixth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Sixth installment </label>
+                                                            <input type="number" id="sixth_installment"  name="sixth_installment" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="seventh_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Seventh installment </label>
+                                                            <input type="number" id="seventh_installment"  name="seventh_installment" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="eighth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Eighth installment</label>
+                                                            <input type="number" id="eighth_installment"  name="eighth_installment" class="form-control">
+                                                        </div>
+
+                                                        <div id="ninth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Ninth installment</label>
+                                                            <input type="number" id="ninth_installment"  name="ninth_installment" class="form-control">
+                                                        </div>
+
+                                                        <div id="tenth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Tenth installment</label>
+                                                            <input type="number" id="tenth_installment"  name="tenth_installment" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="eleventh_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Eleventh installment</label>
+                                                            <input type="number" id="eleventh_installment"  name="eleventh_installment" class="form-control">
+                                                        </div>
+
+                                                        <div id="twelfth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
+                                                            <label for="amount">Twelfth installment</label>
+                                                            <input type="number" id="twelfth_installment"  name="twelfth_installment" class="form-control">
                                                         </div>
 
 
@@ -1947,8 +2011,18 @@
 
     <script>
 
-        $('#premium').on('input',function(e){
+        $('#sum_insured').on('input',function(e){
             e.preventDefault();
+
+            var sum_insured=$(this).val();
+
+            var percentage=10;
+
+            var premium= Math.round(((percentage/100*sum_insured) + Number.EPSILON) * 100) / 100;
+
+            $('#premium').val(premium);
+
+            //Filling also commission field
 
             var premium=$('#premium').val();
 
@@ -2004,8 +2078,7 @@
         if(mode_of_payment == 'By installment')
         {
 
-            $('#first_installmentDiv').show();
-            $('#second_installmentDiv').show();
+            $('#number_of_installmentsDiv').show();
 
             function thousands_separators(num)
             {
@@ -2015,30 +2088,369 @@
             }
 
 
-            var first_installment= Math.round(((0.60*premium) + Number.EPSILON) * 100) / 100;
-            var second_installment=Math.round(((0.40*premium) + Number.EPSILON) * 100) / 100;
-
-
-            $('#first_installment').val(first_installment);
-            $('#second_installment').val(second_installment);
+            // var first_installment= Math.round(((0.60*premium) + Number.EPSILON) * 100) / 100;
+            // var second_installment=Math.round(((0.40*premium) + Number.EPSILON) * 100) / 100;
+            //
+            //
+            // $('#first_installment').val(first_installment);
+            // $('#second_installment').val(second_installment);
 
 
         }
         else if(mode_of_payment=='Full payment'){
 
+            $('#number_of_installmentsDiv').hide();
             $('#first_installmentDiv').hide();
             $('#second_installmentDiv').hide();
-
-            $('#first_installment').val("");
-            $('#second_installment').val("");
+            $('#third_installmentDiv').hide();
+            $('#fourth_installmentDiv').hide();
+            $('#fifth_installmentDiv').hide();
+            $('#sixth_installmentDiv').hide();
+            $('#seventh_installmentDiv').hide();
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
 
         }
 
         else{
+            $('#number_of_installmentsDiv').hide();
             $('#first_installmentDiv').hide();
             $('#second_installmentDiv').hide();
+            $('#third_installmentDiv').hide();
+            $('#fourth_installmentDiv').hide();
+            $('#fifth_installmentDiv').hide();
+            $('#sixth_installmentDiv').hide();
+            $('#seventh_installmentDiv').hide();
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
         }
     });
+
+
+
+    $('#number_of_installments').on('input',function(e){
+        e.preventDefault();
+
+        var number_of_installments=$(this).val();
+
+        if(number_of_installments=='2'){
+
+
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+
+
+
+            $('#third_installmentDiv').hide();
+            $('#fourth_installmentDiv').hide();
+            $('#fifth_installmentDiv').hide();
+            $('#sixth_installmentDiv').hide();
+            $('#seventh_installmentDiv').hide();
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+
+        }else if(number_of_installments=='3'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+            $('#third_installmentDiv').show();
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-12');
+
+            $('#fourth_installmentDiv').hide();
+            $('#fifth_installmentDiv').hide();
+            $('#sixth_installmentDiv').hide();
+            $('#seventh_installmentDiv').hide();
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+        }else if(number_of_installments=='4'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').removeClass('col-12');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+
+
+            $('#fifth_installmentDiv').hide();
+            $('#sixth_installmentDiv').hide();
+            $('#seventh_installmentDiv').hide();
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+        }else if(number_of_installments=='5'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+            $('#fifth_installmentDiv').show();
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+            $('#fifth_installmentDiv').addClass('col-12');
+
+
+            $('#sixth_installmentDiv').hide();
+            $('#seventh_installmentDiv').hide();
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+        }else if(number_of_installments=='6'){
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+            $('#fifth_installmentDiv').show();
+            $('#sixth_installmentDiv').show();
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+            $('#fifth_installmentDiv').removeClass('col-12');
+            $('#fifth_installmentDiv').addClass('col-6');
+            $('#sixth_installmentDiv').addClass('col-6');
+
+            $('#seventh_installmentDiv').hide();
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+
+        }else if(number_of_installments=='7'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+            $('#fifth_installmentDiv').show();
+            $('#sixth_installmentDiv').show();
+            $('#seventh_installmentDiv').show();
+
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+            $('#fifth_installmentDiv').addClass('col-6');
+            $('#sixth_installmentDiv').addClass('col-6');
+            $('#seventh_installmentDiv').addClass('col-12');
+
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+
+        }else if(number_of_installments=='8'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+            $('#fifth_installmentDiv').show();
+            $('#sixth_installmentDiv').show();
+            $('#seventh_installmentDiv').show();
+            $('#eighth_installmentDiv').show();
+
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+            $('#fifth_installmentDiv').addClass('col-6');
+            $('#sixth_installmentDiv').addClass('col-6');
+            $('#seventh_installmentDiv').removeClass('col-12');
+            $('#seventh_installmentDiv').addClass('col-6');
+            $('#eighth_installmentDiv').addClass('col-6');
+
+
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+
+
+        }else if (number_of_installments=='9'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+            $('#fifth_installmentDiv').show();
+            $('#sixth_installmentDiv').show();
+            $('#seventh_installmentDiv').show();
+            $('#eighth_installmentDiv').show();
+            $('#ninth_installmentDiv').show();
+
+
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+            $('#fifth_installmentDiv').addClass('col-6');
+            $('#sixth_installmentDiv').addClass('col-6');
+            $('#seventh_installmentDiv').addClass('col-6');
+            $('#eighth_installmentDiv').addClass('col-6');
+            $('#ninth_installmentDiv').addClass('col-12');
+
+
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+        }else if (number_of_installments=='10'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+            $('#fifth_installmentDiv').show();
+            $('#sixth_installmentDiv').show();
+            $('#seventh_installmentDiv').show();
+            $('#eighth_installmentDiv').show();
+            $('#ninth_installmentDiv').show();
+            $('#tenth_installmentDiv').show();
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+            $('#fifth_installmentDiv').addClass('col-6');
+            $('#sixth_installmentDiv').addClass('col-6');
+            $('#seventh_installmentDiv').addClass('col-6');
+            $('#eighth_installmentDiv').addClass('col-6');
+            $('#ninth_installmentDiv').removeClass('col-12');
+            $('#ninth_installmentDiv').addClass('col-6');
+            $('#tenth_installmentDiv').addClass('col-6');
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+
+        }else if (number_of_installments=='11'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+            $('#fifth_installmentDiv').show();
+            $('#sixth_installmentDiv').show();
+            $('#seventh_installmentDiv').show();
+            $('#eighth_installmentDiv').show();
+            $('#ninth_installmentDiv').show();
+            $('#tenth_installmentDiv').show();
+            $('#eleventh_installmentDiv').show();
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+            $('#fifth_installmentDiv').addClass('col-6');
+            $('#sixth_installmentDiv').addClass('col-6');
+            $('#seventh_installmentDiv').addClass('col-6');
+            $('#eighth_installmentDiv').addClass('col-6');
+            $('#ninth_installmentDiv').removeClass('col-12');
+            $('#ninth_installmentDiv').addClass('col-6');
+            $('#tenth_installmentDiv').addClass('col-6');
+            $('#eleventh_installmentDiv').addClass('col-12');
+            $('#twelfth_installmentDiv').hide();
+
+        } else if (number_of_installments=='12'){
+
+            $('#first_installmentDiv').show();
+            $('#second_installmentDiv').show();
+            $('#third_installmentDiv').show();
+            $('#fourth_installmentDiv').show();
+            $('#fifth_installmentDiv').show();
+            $('#sixth_installmentDiv').show();
+            $('#seventh_installmentDiv').show();
+            $('#eighth_installmentDiv').show();
+            $('#ninth_installmentDiv').show();
+            $('#tenth_installmentDiv').show();
+            $('#eleventh_installmentDiv').show();
+            $('#twelfth_installmentDiv').show();
+
+            $('#first_installmentDiv').addClass('col-6');
+            $('#second_installmentDiv').addClass('col-6');
+            $('#third_installmentDiv').addClass('col-6');
+            $('#fourth_installmentDiv').addClass('col-6');
+            $('#fifth_installmentDiv').addClass('col-6');
+            $('#sixth_installmentDiv').addClass('col-6');
+            $('#seventh_installmentDiv').addClass('col-6');
+            $('#eighth_installmentDiv').addClass('col-6');
+            $('#ninth_installmentDiv').removeClass('col-12');
+            $('#ninth_installmentDiv').addClass('col-6');
+            $('#tenth_installmentDiv').addClass('col-6');
+            $('#eleventh_installmentDiv').removeClass('col-12');
+            $('#eleventh_installmentDiv').addClass('col-6');
+            $('#twelfth_installmentDiv').addClass('col-6');
+
+
+
+        } else{
+
+            $('#first_installmentDiv').hide();
+            $('#second_installmentDiv').hide();
+            $('#third_installmentDiv').hide();
+            $('#fourth_installmentDiv').hide();
+            $('#fifth_installmentDiv').hide();
+            $('#sixth_installmentDiv').hide();
+            $('#seventh_installmentDiv').hide();
+            $('#eighth_installmentDiv').hide();
+            $('#ninth_installmentDiv').hide();
+            $('#tenth_installmentDiv').hide();
+            $('#eleventh_installmentDiv').hide();
+            $('#twelfth_installmentDiv').hide();
+
+
+        }
+
+
+    });
+
+
 
 </script>
 

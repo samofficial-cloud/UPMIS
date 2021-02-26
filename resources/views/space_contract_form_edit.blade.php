@@ -325,12 +325,14 @@ $today=date('Y-m-d');
           <span id="ctypemsg"></span>
             <select class="form-control"  id="client_type" name="client_type">
 
-              <option value="1">Individual</option>
-              <option value="2">Company/Organization</option>
+
+
                 @if($var->type=="Individual")
                     <option value="1" selected>{{$var->type}}</option>
+                    <option value="2">Company/Organization</option>
                 @else
                     <option value="2" selected>{{$var->type}}</option>
+                    <option value="1">Individual</option>
                 @endif
 
             </select>
@@ -359,27 +361,51 @@ $today=date('Y-m-d');
 					</div>
 				</div>
 
-    <div class="form-group">
-					<div class="form-wrapper">
+    <div class="form-group row">
+
+        <div class="form-wrapper col-12">
+            <label for="official_client_id">Client ID</label>
+            <span id="official_client_id_msg"></span>
+            <input type="number" id="official_client_id"  value="{{$var->official_client_id}}" name="official_client_id" class="form-control">
+        </div>
+
+
+					<div class="form-wrapper col-6">
 						<label for="email">Email <span style="color: red;"> *</span></label>
+                        <span id="email_msg"></span>
 						<input type="text" required name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
 					</div>
+
+
+        <div class="form-wrapper col-6">
+            <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
+            <span id="phone_msg"></span>
+            <input type="text" id="phone_number" required name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+        </div>
+
+
 				</div>
 
-				<div class="form-group">
-					<div class="form-wrapper">
-						<label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
-                        <span id="phone_msg"></span>
-                        <input type="text" id="phone_number" required name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-					</div>
-				</div>
+
 
 				<div class="form-group">
 					<div class="form-wrapper">
 						<label for="address">Address <span style="color: red;"> *</span></label>
+                        <span id="address_msg"></span>
 						<input type="text" required id="address" name="address" value="{{$var->address}}" class="form-control">
 					</div>
 				</div>
+
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="tin">TIN </label>
+                                            <span id="tin_msg"></span>
+                                            <input type="number" id="tin"  name="tin"  value="{{$var->tin}}" class="form-control">
+                                        </div>
+                                    </div>
+
+
                                 </div>
  <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
   <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
@@ -907,7 +933,7 @@ $today=date('Y-m-d');
 
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
-            var p1, p2;
+            var p1, p2,p3,p4,p5;
             $("#next1").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
@@ -915,6 +941,11 @@ $today=date('Y-m-d');
                     firstName=$("#first_name").val(),
                     lastName=$("#last_name").val(),
                     companyName=$("#company_name").val();
+                var email=$("#email").val();
+                var address=$("#address").val();
+                var tin=$("#tin").val();
+                var official_client_id=$("#official_client_id").val();
+
 
                 if(clientType=="1"){
                     $('#ctypemsg').hide();
@@ -951,6 +982,24 @@ $today=date('Y-m-d');
                     }
 
 
+                    if(email==""){
+                        p1=0;
+                        $('#email_msg').show();
+                        var message=document.getElementById('email_msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#email').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+                        p1=1;
+                        $('#email_msg').hide();
+                        $('#email').attr('style','border-bottom: 1px solid #ccc');
+
+                    }
+
+
+
+
                 }
 
                 else if(clientType=="2"){
@@ -970,6 +1019,26 @@ $today=date('Y-m-d');
                         $('#company_name').attr('style','border-bottom: 1px solid #ccc');
 
                     }
+
+
+
+                    if(email==""){
+                        p1=0;
+                        $('#email_msg').show();
+                        var message=document.getElementById('email_msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#email').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+                        p1=1;
+                        $('#email_msg').hide();
+                        $('#email').attr('style','border-bottom: 1px solid #ccc');
+
+                    }
+
+
+
                 }
 
                 else{
@@ -997,7 +1066,64 @@ $today=date('Y-m-d');
                 }
 
 
-                if(p1=='1' & p2=='1'){
+
+
+
+                if(address==""){
+                    p3=0;
+                    $('#address_msg').show();
+                    var message=document.getElementById('address_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#address').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p3=1;
+                    $('#address_msg').hide();
+                    $('#address').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(tin==""){
+                    p4=0;
+                    $('#tin_msg').show();
+                    var message=document.getElementById('tin_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#tin').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p4=1;
+                    $('#tin_msg').hide();
+                    $('#tin').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+                if(official_client_id==""){
+                    p5=0;
+                    $('#official_client_id_msg').show();
+                    var message=document.getElementById('official_client_id_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#official_client_id').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p5=1;
+                    $('#official_client_id_msg').hide();
+                    $('#official_client_id').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+
+                if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1'){
                     gonext();
                 }
 

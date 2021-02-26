@@ -367,12 +367,16 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 Route::group(['middleware' => ['auth', 'space']], function() {
     //space contracts
     Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
+    Route::get('/space_contracts_subclients/{client_id}', 'ContractsController@SpaceContractsSubClientsManagement')->name('space_contracts_subclients');
     Route::get('/renew_space_contract_form/{id}','ContractsController@renewSpaceContractForm')->name('renew_space_contract_form');
     Route::get('/edit_space_contract/{id}/', 'ContractsController@EditSpaceContractForm')->name('edit_contract');
     Route::get('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
     Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
+    Route::post('/approve_space', 'SpaceController@approveSpace')->name('approve_space');
     Route::post('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
+    Route::post('/resubmit_space/{id}', 'SpaceController@ResubmitSpace')->name('resubmit_space');
     Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
+    Route::get('/cancel_space_addition/{id}', 'SpaceController@CancelSpaceAddition')->name('cancel_space_addition');
     Route::post('/generate_minor_list', 'SpaceController@generateMinorList')->name('generate_minor_list');
     Route::post('/generate_location_list', 'SpaceController@generateLocationList')->name('generate_location_list');
     Route::post('/generate_sub_location_list', 'SpaceController@generateSubLocationList')->name('generate_sub_location_list');
@@ -384,7 +388,8 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/autocomplete.space_fields', 'SpaceController@autoCompleteSpaceFields')->name('autocomplete.space_fields');
     Route::get('/space_contract_form', 'ContractsController@SpaceContractForm');
     Route::get('/contract_details/{contract_id}', 'ContractsController@ContractDetails')->name('contract_details');
-    Route::get('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
+    Route::get('/space_details/{space_id}', 'ContractsController@SpaceDetails')->name('space_details');
+    Route::post('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
     Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
     Route::get('/contract_availability_space', 'InvoicesController@contractAvailabilitySpace')->name('contract_availability_space');
@@ -410,6 +415,11 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/send_all_invoices_electricity', 'InvoicesController@sendAllInvoicesElectricity')->name('send_all_invoices_electricity');
     Route::post('/add_control_no_electricity/{id}', 'InvoicesController@addControlNumberElectricity')->name('add_control_no_electricity');
 
+
+    //foward space invoice
+    Route::post('/foward_space_invoice/{invoice_id}', 'InvoicesController@fowardSpaceInvoice')->name('foward_space_invoice');
+    Route::post('/foward_water_invoice/{invoice_id}', 'InvoicesController@fowardWaterInvoice')->name('foward_water_invoice');
+    Route::post('/foward_electricity_invoice/{invoice_id}', 'InvoicesController@fowardElectricityInvoice')->name('foward_electricity_invoice');
 
 
 //payments
@@ -446,7 +456,9 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::get('/autofill_insurance_parameters/', 'ContractsController@autofillParameters')->name('autofill_insurance_parameters');
     Route::get('/contract_details_insurance/{contract_id}', 'ContractsController@ContractDetailsInsurance')->name('contract_details_insurance');
     Route::get('/send_all_invoices_insurance', 'InvoicesController@sendAllInvoicesInsurance')->name('send_all_invoices_insurance');
+    Route::get('/send_all_invoices_principals_insurance', 'InvoicesController@sendAllInvoicesPrincipalsInsurance')->name('send_all_invoices_principals_insurance');
     Route::post('/add_control_no_insurance/{id}', 'InvoicesController@addControlNumberInsurance')->name('add_control_no_insurance');
+    Route::post('/add_control_no_insurance_principals/{id}', 'InvoicesController@addControlNumberInsurancePrincipals')->name('add_control_no_insurance_principals');
 
 
 //Insurance
@@ -464,7 +476,9 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     //Insurance invoices
     Route::get('/insurance_invoice_management', 'InvoicesController@insuranceInvoiceManagement');
     Route::post('/send_invoice_insurance/{id}', 'InvoicesController@sendInvoiceInsurance')->name('send_invoice_insurance');
+    Route::post('/send_invoice_insurance_principals/{id}', 'InvoicesController@sendInvoiceInsurancePrincipals')->name('send_invoice_insurance_principals');
     Route::post('/change_payment_status_insurance/{id}', 'InvoicesController@changePayementStatusInsurance')->name('change_payment_status_insurance');
+    Route::post('/change_payment_status_insurance_principals/{id}', 'InvoicesController@changePayementStatusInsurancePrincipals')->name('change_payment_status_insurance_principals');
     Route::get('/create_insurance_invoice', 'InvoicesController@CreateInsuranceInvoice');
     Route::post('/create_insurance_invoice_manually', 'InvoicesController@CreateInsuranceInvoiceManually')->name('create_insurance_invoice_manually');
     Route::post('/create_insurance_invoice_clients_manually', 'InvoicesController@CreateInsuranceInvoiceClientsManually')->name('create_insurance_invoice_clients_manually');

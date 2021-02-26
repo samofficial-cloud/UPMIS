@@ -207,7 +207,7 @@ input[type=radio]{
                           <button class="tablinks_inner  research_flats_identity" onclick="openInnerInvoices(event, 'research_flats_inner')" ><strong>Research Flats</strong></button>
 
                         @else
-                        @endif                        
+                        @endif
 
 
                         @if ($category=='CPTU only' OR $category=='All')
@@ -224,647 +224,1846 @@ input[type=radio]{
 
                     </div>
 
-                    <div id="space_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
-<br>
+                     @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='DVC Administrator'))
 
-                        @if($privileges=='Read only')
-                        @else
-                            <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
+
+
+                         <div id="space_inner" style=" padding-top: 1%;" class="tabcontent_inner">
+
+                             <div class="tab">
+                                 <button class="spaces_tablinks" onclick="openSpaces(event, 'space_inbox')" id="defaultSelection"><strong>Inbox</strong></button>
+                                 <button class="spaces_tablinks" onclick="openSpaces(event, 'space_outbox')"><strong>Outbox</strong></button>
+                                 <button class="spaces_tablinks" onclick="openSpaces(event, 'approved_spaces')"><strong>Spaces</strong></button>
+
+
+                             </div>
+
+
+                             <div id="space_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_spaces">
+                                 <br>
+                                 <?php
+                                 $i=1;
+                                 ?>
+                                 @if($space_inbox!='')
+                                     <table class="table" >
+                                         <thead >
+                                         <tr >
+                                             <th scope="col" ><center>S/N</center></th>
+                                             <th scope="col">Major Industry</th>
+                                             <th scope="col">Minor Industry</th>
+                                             <th scope="col">Space Number</th>
+                                             <th scope="col" >Location</th>
+                                             <th scope="col" >Sub Location</th>
+                                             <th scope="col" ><center>Size (SQM)</center></th>
+
+
+
+                                             <th scope="col" ><center>Action</center></th>
+                                         </tr>
+                                         </thead>
+                                         <tbody>
+
+                                         @foreach($space_inbox as $var)
+                                             <tr>
+
+                                                 <td class=""><center>{{$i}}</center></td>
+                                                 <td>{{$var->major_industry}}</td>
+                                                 <td>{{$var->minor_industry}}</td>
+                                                 <td>{{$var->space_id}}</td>
+                                                 <td>{{$var->location}}</td>
+                                                 <td>{{$var->sub_location}}</td>
+
+                                                 <td><center>  @if($var->size==null)
+                                                             N/A
+                                                         @else
+                                                             {{$var->size}}
+                                                         @endif
+
+                                                     </center></td>
+
+
+
+
+
+
+
+                                                 <td><center>
+
+
+                                                         @if(Auth::user()->role=='DVC Administrator')
+
+                                                         <a title="Approve this Space" data-toggle="modal" data-target="#approve{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><center><i class="fa fa-eye" style="font-size:20px; color: blue; cursor: pointer;"></i></center></a>
+                                                         <div class="modal fade" id="approve{{$var->id}}" role="dialog">
+
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">CONFIRMATION</h5></b>
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <form method='post' action="{{ route('approve_space') }}">
+                                                                             {{csrf_field()}}
+                                                                             <div class="form-group">
+                                                                                 <div class="row">
+                                                                                     <div class="form-wrapper col-12">
+                                                                                         <label for="approval_status">Do you approve the addition of this space?</label>
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <div class="row">
+                                                                                     <div class="form-wrapper col-6">
+                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$var->id}}" value="Accepted" checked="">
+                                                                                         <label for="Approve{{$var->id}}" class="form-check-label">Approve</label>
+                                                                                     </div>
+
+                                                                                     <div class="form-wrapper col-6">
+                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$var->id}}" value="Rejected">
+                                                                                         <label for="Reject{{$var->id}}" class="form-check-label">Decline</label>
+                                                                                     </div>
+
+                                                                                 </div>
+                                                                             </div>
+
+                                                                             <div class="form-group" id="remarksDiv{{$var->id}}" style="display: none;">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="remarks">Remark(s)<span style="color: red;">*</span></label>
+                                                                                     <span id="remarksmsg{{$var->id}}"></span>
+                                                                                     <textarea type="text" id="remarks{{$var->id}}" name="reason" class="form-control"></textarea>
+                                                                                 </div>
+                                                                             </div>
+
+                                                                             <input type="text" name="id" value="{{$var->id}}" hidden="">
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit" id="{{$var->id}}" onclick=" return validate(this.id)">Proceed</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+
+                                                                         </form>
+
+
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+
+                                                         @else
+                                                             <a data-toggle="modal" title="View more" data-target="#see_feedback_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-eye" style="font-size:20px; color: blue;"></i></a>
+
+
+
+
+
+                                                             <a data-toggle="modal" title="Delete space" data-target="#delete{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                         @endif
+
+                                                         <div class="modal fade" id="see_feedback_space{{$var->id}}" role="dialog">
+
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+
+
+                                                                     <div class="modal-body">
+                                                                         <form method="post" action="{{ route('resubmit_space',$var->id)}}"  id="form1" >
+                                                                             {{csrf_field()}}
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="remarks" style="color: red;">This space has been declined due to the following reason(s):</label>
+                                                                                     <textarea type="text" id="remarks{{$var->id}}" name="reason" class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
+                                                                                 </div>
+                                                                             </div>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                                                     <select id="getMajor_rejected"  class="form-control" name="major_industry" required>
+                                                                                         <option value="{{$var->major_industry}}" selected>{{$var->major_industry}}</option>
+
+                                                                                         <?php
+                                                                                         $major_industries=DB::table('space_classification')->get();
+
+
+                                                                                         $tempOut = array();
+                                                                                         foreach($major_industries as $values){
+                                                                                             $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                                                             $val = (iterator_to_array($iterator,true));
+                                                                                             $tempoIn=$val['major_industry'];
+
+                                                                                             if(!in_array($tempoIn, $tempOut))
+                                                                                             {
+                                                                                                 print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
+                                                                                                 array_push($tempOut,$tempoIn);
+                                                                                             }
+
+                                                                                         }
+                                                                                         ?>
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div id="descriptionDiv"  class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                                                     <select id="minor_list_rejected" required class="form-control" name="minor_industry" >
+                                                                                         <option value="{{$var->minor_industry}}" selected>{{$var->minor_industry}}</option>
+
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+
+
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                                                     <select class="form-control" id="space_location" required name="space_location" >
+                                                                                         <?php
+                                                                                         $locations=DB::table('space_locations')->get();
+                                                                                         ?>
+                                                                                         <option value="{{$var->location}}">{{$var->location}}</option>
+                                                                                         @foreach($locations as $location)
+                                                                                             <option value="{{$location->location}}">{{$location->location}}</option>
+                                                                                         @endforeach
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="space_location"><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text"  class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}" required autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Size (SQM)</strong></label>
+                                                                                     <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                     <select class="form-control" id="has_water_bill" required name="has_water_bill" >
+
+                                                                                         @if($var->has_water_bill_space=='Yes')
+                                                                                             <option value="{{$var->has_water_bill_space}}" selected>{{$var->has_water_bill_space}}</option>
+                                                                                             <option value="No" id="Option" >No</option>
+                                                                                         @elseif($var->has_water_bill_space=='No')
+                                                                                             <option value="{{$var->has_water_bill_space}}" selected>{{$var->has_water_bill_space}}</option>
+                                                                                             <option value="Yes" id="Option">Yes</option>
+                                                                                         @else
+                                                                                         @endif
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                     <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
+
+                                                                                         @if($var->has_electricity_bill_space=='Yes')
+                                                                                             <option value="{{$var->has_electricity_bill_space}}" selected>{{$var->has_electricity_bill_space}}</option>
+                                                                                             <option value="No" id="Option" >No</option>
+                                                                                         @elseif($var->has_electricity_bill_space=='No')
+                                                                                             <option value="{{$var->has_electricity_bill_space}}" selected>{{$var->has_electricity_bill_space}}</option>
+                                                                                             <option value="Yes" id="Option">Yes</option>
+                                                                                         @else
+                                                                                         @endif
+
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                                                     @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                         <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+
+                                                                                         <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+
+                                                                                             <div class="col-4 inline_block form-wrapper">
+                                                                                                 <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                 <div class="">
+                                                                                                     <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="col-4 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                 <div  class="">
+                                                                                                     <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
+
+
+                                                                                             <div class="col-3 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                 <div  class="">
+                                                                                                     <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                         <option value="" ></option>
+
+                                                                                                         @if($var->rent_price_guide_currency=='TZS')
+                                                                                                             <option value="USD" >USD</option>
+                                                                                                             <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                                                                                         @elseif($var->rent_price_guide_currency=='USD')
+                                                                                                             <option value="TZS">TZS</option>
+                                                                                                             <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+
+                                                                                                         @else
+
+                                                                                                         @endif
+
+                                                                                                     </select>
+                                                                                                 </div>
+
+                                                                                             </div>
+
+                                                                                         </div>
+
+                                                                                     @else
+                                                                                         <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                                                                                         <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
+
+                                                                                             <div class="col-4 inline_block form-wrapper">
+                                                                                                 <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                 <div class="">
+                                                                                                     <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="col-4 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                 <div  class="">
+                                                                                                     <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
+
+
+                                                                                             <div class="col-3 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                 <div  class="">
+                                                                                                     <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                         <option value=""></option>
+                                                                                                         <option value="USD" >USD</option>
+                                                                                                         <option value="TZS">TZS</option>
+                                                                                                     </select>
+                                                                                                 </div>
+
+                                                                                             </div>
+
+                                                                                         </div>
+                                                                                     @endif
+
+
+
+
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Comments</strong></label>
+                                                                                     <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+
+
+
+
+
+
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit">Foward</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+                                                                         </form>
+
+
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+                                                         </div>
+
+
+
+                                                         <div class="modal fade" id="delete{{$var->id}}" role="dialog">
+
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Are you sure you want to delete the space with space number {{$var->space_id}}?</h5></b>
+
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <form method="get" action="{{ route('cancel_space_addition',$var->id)}}" >
+                                                                             {{csrf_field()}}
+
+
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                             </div>
+
+
+                                                                         </form>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+                                                         </div>
+
+
+                                                     </center>
+                                                 </td>
+                                             </tr>
+
+                                             <?php
+                                             $i=$i+1;
+                                             ?>
+                                         @endforeach
+
+
+
+
+
+                                         </tbody>
+                                     </table>
+                                 @else
+                                     <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                 @endif
+                             </div>
+
+
+                             <div id="space_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_spaces">
+                                 <br>
+                                 <?php
+                                 $i=1;
+                                 ?>
+                                 @if($space_outbox!='')
+                                     <table class="table">
+                                         <thead >
+                                         <tr>
+                                             <th scope="col"><center>S/N</center></th>
+                                             <th scope="col">Major Industry</th>
+                                             <th scope="col">Minor Industry</th>
+                                             <th scope="col">Space Number</th>
+                                             <th scope="col" >Location</th>
+                                             <th scope="col" >Sub Location</th>
+                                             <th scope="col" ><center>Size (SQM)</center></th>
+                                             <th scope="col" ><center>Form status</center></th>
+                                         </tr>
+                                         </thead>
+                                         <tbody>
+
+                                         @foreach($space_outbox as $var)
+                                             <tr>
+                                                 <td class=""><center>{{$i}}</center></td>
+                                                 <td>{{$var->major_industry}}</td>
+                                                 <td>{{$var->minor_industry}}</td>
+                                                 <td>{{$var->space_id}}</td>
+                                                 <td>{{$var->location}}</td>
+                                                 <td>{{$var->sub_location}}</td>
+                                                 <td><center>  @if($var->size==null)
+                                                             N/A
+                                                         @else
+                                                             {{$var->size}}
+                                                         @endif
+
+                                                     </center></td>
+
+
+
+                                                 {{--            <td><center>--}}
+
+                                                 {{--                @if($var->rent_price_guide_from==null)--}}
+                                                 {{--                  N/A--}}
+                                                 {{--                @else--}}
+                                                 {{--                  {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}--}}
+                                                 {{--                @endif--}}
+
+                                                 {{--                </center></td>--}}
+
+                                                 <td><center>
+                                                         @if($var->flag==0)
+                                                             DVC Adminstrator
+                                                         @elseif($var->flag==1)
+                                                             DPDI Planner
+                                                         @else
+                                                         @endif
+
+
+                                                     </center></td>
+
+
+                                             </tr>
+
+                                             <?php
+                                             $i=$i+1;
+                                             ?>
+                                         @endforeach
+
+
+
+
+
+                                         </tbody>
+                                     </table>
+                                 @else
+                                     <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                 @endif
+                             </div>
+
+
+
+                             <div id="approved_spaces" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_spaces">
+
+
+
+
+                                 <div class="">
+                                     <br>
+                                     <center><h3><strong>Renting spaces</strong></h3></center>
+                                     <hr>
+
+
+
+                                     @if(Auth::user()->role=='DPDI Planner')
+                                         <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
     margin-left: -2px;
     margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true">Add New Space</a>
-                        @endif
+                                     @else
+                                     @endif
 
 
 
-                        <div class="">
+                                     <div class="modal fade" id="space" role="dialog">
 
-                            <center><h3><strong>Renting spaces</strong></h3></center>
-                            <hr>
+                                         <div class="modal-dialog" role="document">
+                                             <div class="modal-content">
+                                                 <div class="modal-header">
+                                                     <b><h5 class="modal-title">Add New Renting Space</h5></b>
 
-                            <div class="modal fade" id="space" role="dialog">
+                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                 </div>
 
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <b><h5 class="modal-title">Add New Renting Space</h5></b>
+                                                 <div class="modal-body">
 
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        </div>
+                                                     <form method="post" action="{{ route('add_space')}}"  id="form1" >
+                                                         {{csrf_field()}}
 
-                                        <div class="modal-body">
 
-                                            <form method="post" action="{{ route('add_space')}}"  id="form1" >
-                                                {{csrf_field()}}
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                                 <select id="getMajor"  class="form-control" name="major_industry" required>
+                                                                     <option value="" selected></option>
 
+                                                                     <?php
+                                                                     $major_industries=DB::table('space_classification')->get();
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
-                                                        <select id="getMajor"  class="form-control" name="major_industry" required>
-                                                            <option value="" selected></option>
 
-                                                            <?php
-                                                            $major_industries=DB::table('space_classification')->get();
+                                                                     $tempOut = array();
+                                                                     foreach($major_industries as $values){
+                                                                         $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                                         $val = (iterator_to_array($iterator,true));
+                                                                         $tempoIn=$val['major_industry'];
 
+                                                                         if(!in_array($tempoIn, $tempOut))
+                                                                         {
+                                                                             print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
+                                                                             array_push($tempOut,$tempoIn);
+                                                                         }
 
-                                                            $tempOut = array();
-                                                            foreach($major_industries as $values){
-                                                                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
-                                                                $val = (iterator_to_array($iterator,true));
-                                                                $tempoIn=$val['major_industry'];
+                                                                     }
+                                                                     ?>
+                                                                 </select>
+                                                             </div>
+                                                         </div>
+                                                         <br>
 
-                                                                if(!in_array($tempoIn, $tempOut))
-                                                                {
-                                                                    print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
-                                                                    array_push($tempOut,$tempoIn);
-                                                                }
 
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <br>
+                                                         <div id="descriptionDiv"  class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                                 <select id="minor_list" required class="form-control" name="minor_industry" >
 
 
-                                                <div id="descriptionDiv"  class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
-                                                        <select id="minor_list" required class="form-control" name="minor_industry" >
+                                                                 </select>
+                                                             </div>
+                                                         </div>
+                                                         <br>
+
 
 
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <br>
 
 
 
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                                 <select class="form-control" id="space_location" required name="space_location" >
+                                                                     <?php
+                                                                     $locations=DB::table('space_locations')->get();
+                                                                     ?>
+                                                                     <option value=""></option>
+                                                                     @foreach($locations as $location)
+                                                                         <option value="{{$location->location}}">{{$location->location}}</option>
+                                                                     @endforeach
+                                                                 </select>
+                                                             </div>
+                                                         </div>
+                                                         <br>
 
 
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
-                                                        <select class="form-control" id="space_location" required name="space_location" >
-                                                            <?php
-                                                            $locations=DB::table('space_locations')->get();
-                                                            ?>
-                                                            <option value=""></option>
-                                                            @foreach($locations as $location)
-                                                                <option value="{{$location->location}}">{{$location->location}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <br>
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="space_location"><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                 <input type="text"  class="form-control" id="" name="space_sub_location" value="" required autocomplete="off">
+                                                             </div>
+                                                         </div>
+                                                         <br>
 
 
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for=""  ><strong>Size (SQM)</strong></label>
+                                                                 <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value=""  autocomplete="off">
+                                                             </div>
+                                                         </div>
+                                                         <br>
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
-                                                        <input type="text"  class="form-control" id="" name="space_sub_location" value="" required autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                 <select class="form-control" id="has_water_bill" required name="has_water_bill" >
+                                                                     <option value="" selected></option>
+                                                                     <option value="No" id="Option" >No</option>
+                                                                     <option value="Yes" id="Option">Yes</option>
+                                                                 </select>
+                                                             </div>
+                                                         </div>
+                                                         <br>
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  ><strong>Size (SQM)</strong></label>
-                                                        <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                 <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
+                                                                     <option value="" selected></option>
+                                                                     <option value="No" id="Option" >No</option>
+                                                                     <option value="Yes" id="Option">Yes</option>
+                                                                 </select>
+                                                             </div>
+                                                         </div>
+                                                         <br>
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
-                                                        <select class="form-control" id="has_water_bill" required name="has_water_bill" >
-                                                            <option value="" selected></option>
-                                                            <option value="No" id="Option" >No</option>
-                                                            <option value="Yes" id="Option">Yes</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <br>
 
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                                 <input type="checkbox"  style="display: inline-block;" value="rent_price_guide_selected" id="rent_price_guide_checkbox" name="rent_price_guide_checkbox" autocomplete="off">
+                                                                 <div  id="rent_price_guide_div" style="display: none;" class="form-group row">
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
-                                                        <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
-                                                            <option value="" selected></option>
-                                                            <option value="No" id="Option" >No</option>
-                                                            <option value="Yes" id="Option">Yes</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <br>
+                                                                     <div class="col-4 inline_block form-wrapper">
+                                                                         <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                         <div class="">
+                                                                             <input type="number" min="5" class="form-control" id="rent_price_guide_from" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                         </div>
+                                                                     </div>
 
+                                                                     <div class="col-4 inline_block form-wrapper">
+                                                                         <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                         <div  class="">
+                                                                             <input type="number" min="10" class="form-control" id="rent_price_guide_to" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                         </div>
+                                                                     </div>
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
-                                                        <input type="checkbox"  style="display: inline-block;" value="rent_price_guide_selected" id="rent_price_guide_checkbox" name="rent_price_guide_checkbox" autocomplete="off">
-                                                        <div  id="rent_price_guide_div" style="display: none;" class="form-group row">
 
-                                                            <div class="col-4 inline_block form-wrapper">
-                                                                <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                <div class="">
-                                                                    <input type="number" min="5" class="form-control" id="rent_price_guide_from" name="rent_price_guide_from" value=""  autocomplete="off">
-                                                                </div>
-                                                            </div>
+                                                                     <div class="col-3 inline_block form-wrapper">
+                                                                         <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                         <div  class="">
+                                                                             <select id="rent_price_guide_currency" class="form-control" name="rent_price_guide_currency" >
+                                                                                 <option value=""></option>
+                                                                                 <option value="TZS" >TZS</option>
+                                                                                 <option value="USD" >USD</option>
+                                                                             </select>
+                                                                         </div>
 
-                                                            <div class="col-4 inline_block form-wrapper">
-                                                                <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                <div  class="">
-                                                                    <input type="number" min="10" class="form-control" id="rent_price_guide_to" name="rent_price_guide_to" value=""  autocomplete="off">
-                                                                </div>
-                                                            </div>
+                                                                     </div>
 
+                                                                 </div>
 
-                                                            <div class="col-3 inline_block form-wrapper">
-                                                                <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                <div  class="">
-                                                                    <select id="rent_price_guide_currency" class="form-control" name="rent_price_guide_currency" >
-                                                                        <option value=""></option>
-                                                                        <option value="TZS" >TZS</option>
-                                                                        <option value="USD" >USD</option>
-                                                                    </select>
-                                                                </div>
 
-                                                            </div>
 
-                                                        </div>
 
+                                                             </div>
+                                                         </div>
 
 
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for=""  ><strong>Comments  </strong></label>
+                                                                 <input type="text" class="form-control" id="" name="comments" value=""  autocomplete="off">
+                                                             </div>
+                                                         </div>
+                                                         <br>
 
-                                                    </div>
-                                                </div>
 
+                                                         <div align="right">
+                                                             <button class="btn btn-primary" type="submit">Foward</button>
+                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                         </div>
+                                                     </form>
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for=""  ><strong>Comments  </strong></label>
-                                                        <input type="text" class="form-control" id="" name="comments" value=""  autocomplete="off">
-                                                    </div>
-                                                </div>
-                                                <br>
 
 
-                                                <div align="right">
-                                                    <button class="btn btn-primary" type="submit">Save</button>
-                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                </div>
-                                            </form>
 
 
 
 
 
 
+                                                 </div>
+                                             </div>
+                                         </div>
 
 
+                                     </div>
 
-                                        </div>
-                                    </div>
-                                </div>
+                                     <?php
+                                     $i=1;
+                                     ?>
 
+                                     @if(count($spaces)>0)
 
-                            </div>
+                                     <table class="hover table table-striped table-bordered" id="myTable">
+                                         <thead class="thead-dark">
+                                         <tr>
+                                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                             <th scope="col" style="color:#fff;">Major Industry</th>
+                                             <th scope="col" style="color:#fff;">Minor Industry</th>
+                                             <th scope="col" style="color:#fff;">Space Number</th>
+                                             <th scope="col"  style="color:#fff;">Location</th>
+                                             <th scope="col"  style="color:#fff;">Sub Location</th>
+                                             <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
 
-                            <?php
-                            $i=1;
-                            ?>
+                                             {{--          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>--}}
+                                             <th scope="col"  style="color:#fff;"><center>Status</center></th>
 
+                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
+                                         </tr>
+                                         </thead>
+                                         <tbody>
 
+                                         @foreach($spaces as $var)
+                                             <tr>
 
-                            <table class="hover table table-striped table-bordered" id="myTable">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#fff;">Major Industry</th>
-                                    <th scope="col" style="color:#fff;">Minor Industry</th>
-                                    <th scope="col" style="color:#fff;">Space Number</th>
-                                    <th scope="col"  style="color:#fff;">Location</th>
-                                    <th scope="col"  style="color:#fff;">Sub Location</th>
-                                    <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
+                                                 <td class=""><center>{{$i}}</center></td>
+                                                 <td>{{$var->major_industry}}</td>
+                                                 <td>{{$var->minor_industry}}</td>
+                                                 <td>{{$var->space_id}}</td>
+                                                 <td>{{$var->location}}</td>
+                                                 <td>{{$var->sub_location}}</td>
 
-                                    {{--          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>--}}
-                                    <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                                 <td><center>  @if($var->size==null)
+                                                             N/A
+                                                         @else
+                                                             {{$var->size}}
+                                                         @endif
 
-                                    <th scope="col"  style="color:#fff;"><center>Action</center></th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                                                     </center></td>
 
-                                @foreach($spaces as $var)
-                                    <tr>
 
-                                        <td class=""><center>{{$i}}</center></td>
-                                        <td>{{$var->major_industry}}</td>
-                                        <td>{{$var->minor_industry}}</td>
-                                        <td>{{$var->space_id}}</td>
-                                        <td>{{$var->location}}</td>
-                                        <td>{{$var->sub_location}}</td>
 
-                                        <td><center>  @if($var->size==null)
-                                                    N/A
-                                                @else
-                                                    {{$var->size}}
-                                                @endif
+                                                 {{--            <td><center>--}}
 
-                                            </center></td>
+                                                 {{--                @if($var->rent_price_guide_from==null)--}}
+                                                 {{--                  N/A--}}
+                                                 {{--                @else--}}
+                                                 {{--                  {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}--}}
+                                                 {{--                @endif--}}
 
+                                                 {{--                </center></td>--}}
 
+                                                 <td><center>
+                                                         @if($var->occupation_status==1)
+                                                             Occupied
+                                                         @else
+                                                             Vacant
+                                                         @endif
 
-                                        {{--            <td><center>--}}
 
-                                        {{--                @if($var->rent_price_guide_from==null)--}}
-                                        {{--                  N/A--}}
-                                        {{--                @else--}}
-                                        {{--                  {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}--}}
-                                        {{--                @endif--}}
+                                                     </center></td>
 
-                                        {{--                </center></td>--}}
+                                                 <td><center>
+                                                         <a title="View more information" class="link_style" data-toggle="modal" data-target="#space_id{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer; display: inline-block" aria-pressed="true"><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+                                                         <div class="modal fade" id="space_id{{$var->id}}" role="dialog">
 
-                                        <td><center>
-                                                @if($var->occupation_status==1)
-                                                    Occupied
-                                                @else
-                                                    Vacant
-                                                @endif
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Full Space Details</h5></b>
 
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
 
-                                            </center></td>
+                                                                     <div class="modal-body">
+                                                                         <table style="width: 100%">
+                                                                             <tr>
+                                                                                 <td>Space number:</td>
+                                                                                 <td>{{$var->space_id}}</td>
+                                                                             </tr>
 
-                                        <td><center>
-                                                <a title="View more information" class="link_style" data-toggle="modal" data-target="#space_id{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer; display: inline-block" aria-pressed="true"><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
-                                                <div class="modal fade" id="space_id{{$var->id}}" role="dialog">
+                                                                             <tr>
+                                                                                 <td>Major industry :</td>
+                                                                                 <td>{{$var->major_industry}}</td>
+                                                                             </tr>
 
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <b><h5 class="modal-title">Full Space Details</h5></b>
+                                                                             <tr>
+                                                                                 <td>Minor industry :</td>
+                                                                                 <td>{{$var->minor_industry}}</td>
+                                                                             </tr>
 
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            </div>
+                                                                             <tr>
+                                                                                 <td>Location:</td>
+                                                                                 <td>{{$var->location}}</td>
+                                                                             </tr>
 
-                                                            <div class="modal-body">
-                                                                <table style="width: 100%">
-                                                                    <tr>
-                                                                        <td>Space number:</td>
-                                                                        <td>{{$var->space_id}}</td>
-                                                                    </tr>
+                                                                             <tr>
+                                                                                 <td>Sub location:</td>
+                                                                                 <td>{{$var->sub_location}}</td>
+                                                                             </tr>
 
-                                                                    <tr>
-                                                                        <td>Major industry :</td>
-                                                                        <td>{{$var->major_industry}}</td>
-                                                                    </tr>
+                                                                             <tr>
+                                                                                 <td>Size (SQM):</td>
+                                                                                 <td>{{$var->size}}</td>
+                                                                             </tr>
 
-                                                                    <tr>
-                                                                        <td>Minor industry :</td>
-                                                                        <td>{{$var->minor_industry}}</td>
-                                                                    </tr>
+                                                                             <tr>
+                                                                                 <td>Rent price guide:</td>
+                                                                                 <td>
 
-                                                                    <tr>
-                                                                        <td>Location:</td>
-                                                                        <td>{{$var->location}}</td>
-                                                                    </tr>
+                                                                                     @if($var->rent_price_guide_from==null)
+                                                                                         N/A
+                                                                                     @else
+                                                                                         {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}} {{$var->rent_price_guide_currency}}
+                                                                                     @endif
 
-                                                                    <tr>
-                                                                        <td>Sub location:</td>
-                                                                        <td>{{$var->sub_location}}</td>
-                                                                    </tr>
+                                                                                 </td>
+                                                                             </tr>
 
-                                                                    <tr>
-                                                                        <td>Size (SQM):</td>
-                                                                        <td>{{$var->size}}</td>
-                                                                    </tr>
+                                                                             <tr>
+                                                                                 <td>Status:</td>
+                                                                                 <td>
 
-                                                                    <tr>
-                                                                        <td>Rent price guide:</td>
-                                                                        <td>
+                                                                                     @if($var->occupation_status==1)
+                                                                                         Occupied
+                                                                                     @else
+                                                                                         Vacant
+                                                                                     @endif
 
-                                                                            @if($var->rent_price_guide_from==null)
-                                                                                N/A
-                                                                            @else
-                                                                                {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}} {{$var->rent_price_guide_currency}}
-                                                                            @endif
+                                                                                 </td>
+                                                                             </tr>
 
-                                                                        </td>
-                                                                    </tr>
 
-                                                                    <tr>
-                                                                        <td>Status:</td>
-                                                                        <td>
+                                                                             <tr>
+                                                                                 <td>Required to also pay electricity bill:</td>
+                                                                                 <td>{{$var->has_electricity_bill_space}}</td>
+                                                                             </tr>
 
-                                                                            @if($var->occupation_status==1)
-                                                                                Occupied
-                                                                            @else
-                                                                                Vacant
-                                                                            @endif
+                                                                             <tr>
+                                                                                 <td>Required to also pay water bill:</td>
+                                                                                 <td>{{$var->has_water_bill_space}}</td>
+                                                                             </tr>
 
-                                                                        </td>
-                                                                    </tr>
+                                                                             <tr>
+                                                                                 <td>Comments:</td>
+                                                                                 <td>{{$var->comments}}</td>
+                                                                             </tr>
 
 
-                                                                    <tr>
-                                                                        <td>Required to also pay electricity bill:</td>
-                                                                        <td>{{$var->has_electricity_bill_space}}</td>
-                                                                    </tr>
 
-                                                                    <tr>
-                                                                        <td>Required to also pay water bill:</td>
-                                                                        <td>{{$var->has_water_bill_space}}</td>
-                                                                    </tr>
 
-                                                                    <tr>
-                                                                        <td>Comments:</td>
-                                                                        <td>{{$var->comments}}</td>
-                                                                    </tr>
+                                                                         </table>
+                                                                         <br>
+                                                                         <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
 
+                                                         @if($privileges=='Read only')
+                                                         @else
+                                                             <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
+                                                             @if($var->occupation_status==1)
 
+                                                             @else
+                                                                 <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+                                                             @endif
 
-                                                                </table>
-                                                                <br>
-                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                @if($privileges=='Read only')
-                                                @else
-                                                    <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
-                                                    @if($var->occupation_status==1)
+                                                             <a data-toggle="modal" title="Delete space" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                         @endif
 
-                                                    @else
-                                                        <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
-                                                    @endif
+                                                         <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
 
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Edit Renting Space Information</h5></b>
 
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
 
-                                                    <a data-toggle="modal" title="Delete space" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-                                                @endif
+                                                                     <div class="modal-body">
+                                                                         <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
+                                                                             {{csrf_field()}}
 
-                                                <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
 
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <b><h5 class="modal-title">Edit Renting Space Information</h5></b>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
 
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            </div>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
-                                                            <div class="modal-body">
-                                                                <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
-                                                                    {{csrf_field()}}
 
+                                                                             <div id="descriptionDivEdit"  class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
-                                                                            <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
 
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
 
 
-                                                                    <div id="descriptionDivEdit"  class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
-                                                                            <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
 
 
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
 
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
 
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
-                                                                            <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
 
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
-                                                                            <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
 
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
-                                                                            <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
 
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                                                                                     <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
-                                                                            <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
 
 
 
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                                                            <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                                                     @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                         <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
 
+                                                                                         <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
 
+                                                                                             <div class="col-4 inline_block form-wrapper">
+                                                                                                 <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                 <div class="">
+                                                                                                     <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
 
+                                                                                             <div class="col-4 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                 <div  class="">
+                                                                                                     <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
 
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
-                                                                            @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
-                                                                                <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
 
-                                                                                <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+                                                                                             <div class="col-3 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                 <div  class="">
+                                                                                                     <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                         <option value="" ></option>
 
-                                                                                    <div class="col-4 inline_block form-wrapper">
-                                                                                        <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                                        <div class="">
-                                                                                            <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
-                                                                                        </div>
-                                                                                    </div>
+                                                                                                         @if($var->rent_price_guide_currency=='TZS')
+                                                                                                             <option value="USD" >USD</option>
+                                                                                                             <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                                                                                         @elseif($var->rent_price_guide_currency=='USD')
+                                                                                                             <option value="TZS">TZS</option>
+                                                                                                             <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
 
-                                                                                    <div class="col-4 inline_block  form-wrapper">
-                                                                                        <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                                        <div  class="">
-                                                                                            <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
-                                                                                        </div>
-                                                                                    </div>
+                                                                                                         @else
 
+                                                                                                         @endif
 
-                                                                                    <div class="col-3 inline_block  form-wrapper">
-                                                                                        <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                                        <div  class="">
-                                                                                            <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
-                                                                                                <option value="" ></option>
+                                                                                                     </select>
+                                                                                                 </div>
 
-                                                                                                @if($var->rent_price_guide_currency=='TZS')
-                                                                                                    <option value="USD" >USD</option>
-                                                                                                    <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
-                                                                                                @elseif($var->rent_price_guide_currency=='USD')
-                                                                                                    <option value="TZS">TZS</option>
-                                                                                                    <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                                                                             </div>
 
-                                                                                                @else
+                                                                                         </div>
 
-                                                                                                @endif
+                                                                                     @else
+                                                                                         <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                                                                                         <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
 
-                                                                                            </select>
-                                                                                        </div>
+                                                                                             <div class="col-4 inline_block form-wrapper">
+                                                                                                 <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                 <div class="">
+                                                                                                     <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
 
-                                                                                    </div>
+                                                                                             <div class="col-4 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                 <div  class="">
+                                                                                                     <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
 
-                                                                                </div>
 
-                                                                            @else
-                                                                                <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
-                                                                                <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
+                                                                                             <div class="col-3 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                 <div  class="">
+                                                                                                     <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                         <option value=""></option>
+                                                                                                         <option value="USD" >USD</option>
+                                                                                                         <option value="TZS">TZS</option>
+                                                                                                     </select>
+                                                                                                 </div>
 
-                                                                                    <div class="col-4 inline_block form-wrapper">
-                                                                                        <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                                        <div class="">
-                                                                                            <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
-                                                                                        </div>
-                                                                                    </div>
+                                                                                             </div>
 
-                                                                                    <div class="col-4 inline_block  form-wrapper">
-                                                                                        <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                                        <div  class="">
-                                                                                            <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
-                                                                                        </div>
-                                                                                    </div>
+                                                                                         </div>
+                                                                                     @endif
 
 
-                                                                                    <div class="col-3 inline_block  form-wrapper">
-                                                                                        <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                                        <div  class="">
-                                                                                            <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
-                                                                                                <option value=""></option>
-                                                                                                <option value="USD" >USD</option>
-                                                                                                <option value="TZS">TZS</option>
-                                                                                            </select>
-                                                                                        </div>
 
-                                                                                    </div>
 
-                                                                                </div>
-                                                                            @endif
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
 
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Comments</strong></label>
+                                                                                     <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
 
 
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit">Save</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+                                                                         </form>
 
 
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for=""  ><strong>Comments</strong></label>
-                                                                            <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
 
 
-                                                                    <div align="right">
-                                                                        <button class="btn btn-primary" type="submit">Save</button>
-                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                    </div>
-                                                                </form>
+                                                         </div>
 
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
+                                                         <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
 
-                                                </div>
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Are you sure you want to deactivate the space with space number {{$var->space_id}}?</h5></b>
 
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
 
+                                                                     <div class="modal-body">
+                                                                         <form method="get" action="{{ route('delete_space',$var->id)}}" >
+                                                                             {{csrf_field()}}
 
-                                                <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
 
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <b><h5 class="modal-title">Are you sure you want to deactivate the space with space number {{$var->space_id}}?</h5></b>
 
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            </div>
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                             </div>
 
-                                                            <div class="modal-body">
-                                                                <form method="get" action="{{ route('delete_space',$var->id)}}" >
-                                                                    {{csrf_field()}}
 
+                                                                         </form>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
 
 
-                                                                    <div align="right">
-                                                                        <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
-                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
-                                                                    </div>
+                                                         </div>
 
 
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                     </center>
+                                                 </td>
+                                             </tr>
 
+                                             <?php
+                                             $i=$i+1;
+                                             ?>
+                                         @endforeach
 
-                                                </div>
 
 
-                                            </center>
-                                        </td>
-                                    </tr>
 
-                                    <?php
-                                    $i=$i+1;
-                                    ?>
-                                @endforeach
 
+                                         </tbody>
+                                     </table>
+                                     @else
+                                         <p class="mt-4" style="text-align:center;">No records found</p>
+                                     @endif
+                                 </div>
 
+                             </div>
 
 
 
-                                </tbody>
-                            </table>
 
-                        </div>
+                         </div>
 
-                    </div>
+
+
+
+
+                     @else
+
+                         <div id="space_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
+
+
+
+
+                             <div class="">
+                                 <br>
+                                 <center><h3><strong>Renting spaces</strong></h3></center>
+                                 <hr>
+
+
+
+                                 @if(Auth::user()->role=='DPDI Planner')
+                                     <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
+    margin-left: -2px;
+    margin-bottom: 15px;
+    margin-top: 4px;" role="button" aria-pressed="true">Add New Space</a>
+                                 @else
+                                 @endif
+
+
+
+                                 <div class="modal fade" id="space" role="dialog">
+
+                                     <div class="modal-dialog" role="document">
+                                         <div class="modal-content">
+                                             <div class="modal-header">
+                                                 <b><h5 class="modal-title">Add New Renting Space</h5></b>
+
+                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             </div>
+
+                                             <div class="modal-body">
+
+                                                 <form method="post" action="{{ route('add_space')}}"  id="form1" >
+                                                     {{csrf_field()}}
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                             <select id="getMajor"  class="form-control" name="major_industry" required>
+                                                                 <option value="" selected></option>
+
+                                                                 <?php
+                                                                 $major_industries=DB::table('space_classification')->get();
+
+
+                                                                 $tempOut = array();
+                                                                 foreach($major_industries as $values){
+                                                                     $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                                     $val = (iterator_to_array($iterator,true));
+                                                                     $tempoIn=$val['major_industry'];
+
+                                                                     if(!in_array($tempoIn, $tempOut))
+                                                                     {
+                                                                         print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
+                                                                         array_push($tempOut,$tempoIn);
+                                                                     }
+
+                                                                 }
+                                                                 ?>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <br>
+
+
+                                                     <div id="descriptionDiv"  class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                             <select id="minor_list" required class="form-control" name="minor_industry" >
+
+
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <br>
+
+
+
+
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                             <select class="form-control" id="space_location" required name="space_location" >
+                                                                 <?php
+                                                                 $locations=DB::table('space_locations')->get();
+                                                                 ?>
+                                                                 <option value=""></option>
+                                                                 @foreach($locations as $location)
+                                                                     <option value="{{$location->location}}">{{$location->location}}</option>
+                                                                 @endforeach
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <br>
+
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="space_location"><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                             <input type="text"  class="form-control" id="" name="space_sub_location" value="" required autocomplete="off">
+                                                         </div>
+                                                     </div>
+                                                     <br>
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for=""  ><strong>Size (SQM)</strong></label>
+                                                             <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value=""  autocomplete="off">
+                                                         </div>
+                                                     </div>
+                                                     <br>
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                             <select class="form-control" id="has_water_bill" required name="has_water_bill" >
+                                                                 <option value="" selected></option>
+                                                                 <option value="No" id="Option" >No</option>
+                                                                 <option value="Yes" id="Option">Yes</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <br>
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                             <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
+                                                                 <option value="" selected></option>
+                                                                 <option value="No" id="Option" >No</option>
+                                                                 <option value="Yes" id="Option">Yes</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <br>
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                             <input type="checkbox"  style="display: inline-block;" value="rent_price_guide_selected" id="rent_price_guide_checkbox" name="rent_price_guide_checkbox" autocomplete="off">
+                                                             <div  id="rent_price_guide_div" style="display: none;" class="form-group row">
+
+                                                                 <div class="col-4 inline_block form-wrapper">
+                                                                     <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                     <div class="">
+                                                                         <input type="number" min="5" class="form-control" id="rent_price_guide_from" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                     </div>
+                                                                 </div>
+
+                                                                 <div class="col-4 inline_block form-wrapper">
+                                                                     <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                     <div  class="">
+                                                                         <input type="number" min="10" class="form-control" id="rent_price_guide_to" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                     </div>
+                                                                 </div>
+
+
+                                                                 <div class="col-3 inline_block form-wrapper">
+                                                                     <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                     <div  class="">
+                                                                         <select id="rent_price_guide_currency" class="form-control" name="rent_price_guide_currency" >
+                                                                             <option value=""></option>
+                                                                             <option value="TZS" >TZS</option>
+                                                                             <option value="USD" >USD</option>
+                                                                         </select>
+                                                                     </div>
+
+                                                                 </div>
+
+                                                             </div>
+
+
+
+
+                                                         </div>
+                                                     </div>
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for=""  ><strong>Comments  </strong></label>
+                                                             <input type="text" class="form-control" id="" name="comments" value=""  autocomplete="off">
+                                                         </div>
+                                                     </div>
+                                                     <br>
+
+
+                                                     <div align="right">
+                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                     </div>
+                                                 </form>
+
+
+
+
+
+
+
+
+
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                 </div>
+
+                                 <?php
+                                 $i=1;
+                                 ?>
+
+                                 @if(count($spaces)>0)
+
+                                 <table class="hover table table-striped table-bordered" id="myTable">
+                                     <thead class="thead-dark">
+                                     <tr>
+                                         <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                         <th scope="col" style="color:#fff;">Major Industry</th>
+                                         <th scope="col" style="color:#fff;">Minor Industry</th>
+                                         <th scope="col" style="color:#fff;">Space Number</th>
+                                         <th scope="col"  style="color:#fff;">Location</th>
+                                         <th scope="col"  style="color:#fff;">Sub Location</th>
+                                         <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
+
+                                         {{--          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>--}}
+                                         <th scope="col"  style="color:#fff;"><center>Status</center></th>
+
+                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
+                                     </tr>
+                                     </thead>
+                                     <tbody>
+
+                                     @foreach($spaces as $var)
+                                         <tr>
+
+                                             <td class=""><center>{{$i}}</center></td>
+                                             <td>{{$var->major_industry}}</td>
+                                             <td>{{$var->minor_industry}}</td>
+                                             <td>{{$var->space_id}}</td>
+                                             <td>{{$var->location}}</td>
+                                             <td>{{$var->sub_location}}</td>
+
+                                             <td><center>  @if($var->size==null)
+                                                         N/A
+                                                     @else
+                                                         {{$var->size}}
+                                                     @endif
+
+                                                 </center></td>
+
+
+
+                                             {{--            <td><center>--}}
+
+                                             {{--                @if($var->rent_price_guide_from==null)--}}
+                                             {{--                  N/A--}}
+                                             {{--                @else--}}
+                                             {{--                  {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}--}}
+                                             {{--                @endif--}}
+
+                                             {{--                </center></td>--}}
+
+                                             <td><center>
+                                                     @if($var->occupation_status==1)
+                                                         Occupied
+                                                     @else
+                                                         Vacant
+                                                     @endif
+
+
+                                                 </center></td>
+
+                                             <td><center>
+                                                     <a title="View more information" class="link_style" data-toggle="modal" data-target="#space_id{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer; display: inline-block" aria-pressed="true"><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+                                                     <div class="modal fade" id="space_id{{$var->id}}" role="dialog">
+
+                                                         <div class="modal-dialog" role="document">
+                                                             <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                     <b><h5 class="modal-title">Full Space Details</h5></b>
+
+                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                 </div>
+
+                                                                 <div class="modal-body">
+                                                                     <table style="width: 100%">
+                                                                         <tr>
+                                                                             <td>Space number:</td>
+                                                                             <td>{{$var->space_id}}</td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Major industry :</td>
+                                                                             <td>{{$var->major_industry}}</td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Minor industry :</td>
+                                                                             <td>{{$var->minor_industry}}</td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Location:</td>
+                                                                             <td>{{$var->location}}</td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Sub location:</td>
+                                                                             <td>{{$var->sub_location}}</td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Size (SQM):</td>
+                                                                             <td>{{$var->size}}</td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Rent price guide:</td>
+                                                                             <td>
+
+                                                                                 @if($var->rent_price_guide_from==null)
+                                                                                     N/A
+                                                                                 @else
+                                                                                     {{number_format($var->rent_price_guide_from)}} - {{number_format($var->rent_price_guide_to)}} {{$var->rent_price_guide_currency}}
+                                                                                 @endif
+
+                                                                             </td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Status:</td>
+                                                                             <td>
+
+                                                                                 @if($var->occupation_status==1)
+                                                                                     Occupied
+                                                                                 @else
+                                                                                     Vacant
+                                                                                 @endif
+
+                                                                             </td>
+                                                                         </tr>
+
+
+                                                                         <tr>
+                                                                             <td>Required to also pay electricity bill:</td>
+                                                                             <td>{{$var->has_electricity_bill_space}}</td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Required to also pay water bill:</td>
+                                                                             <td>{{$var->has_water_bill_space}}</td>
+                                                                         </tr>
+
+                                                                         <tr>
+                                                                             <td>Comments:</td>
+                                                                             <td>{{$var->comments}}</td>
+                                                                         </tr>
+
+
+
+
+                                                                     </table>
+                                                                     <br>
+                                                                     <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+                                                     </div>
+
+                                                     @if($privileges=='Read only')
+                                                     @else
+                                                         <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+                                                         @if($var->occupation_status==1)
+
+                                                         @else
+                                                             <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+                                                         @endif
+
+
+
+                                                         <a data-toggle="modal" title="Delete space" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                     @endif
+
+                                                     <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
+
+                                                         <div class="modal-dialog" role="document">
+                                                             <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                     <b><h5 class="modal-title">Edit Renting Space Information</h5></b>
+
+                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                 </div>
+
+                                                                 <div class="modal-body">
+                                                                     <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
+                                                                         {{csrf_field()}}
+
+
+                                                                         <div class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                                                 <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
+
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+                                                                         <div id="descriptionDivEdit"  class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                                                 <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+
+
+
+
+                                                                         <div class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                                                 <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+                                                                         <div class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                 <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+                                                                         <div class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                 <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+                                                                         <div class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                 <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+
+                                                                         <div class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                                                                                 <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+
+
+                                                                         <div class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                                                 @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                     <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+
+                                                                                     <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+
+                                                                                         <div class="col-4 inline_block form-wrapper">
+                                                                                             <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                             <div class="">
+                                                                                                 <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="col-4 inline_block  form-wrapper">
+                                                                                             <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                             <div  class="">
+                                                                                                 <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+
+
+                                                                                         <div class="col-3 inline_block  form-wrapper">
+                                                                                             <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                             <div  class="">
+                                                                                                 <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                     <option value="" ></option>
+
+                                                                                                     @if($var->rent_price_guide_currency=='TZS')
+                                                                                                         <option value="USD" >USD</option>
+                                                                                                         <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                                                                                     @elseif($var->rent_price_guide_currency=='USD')
+                                                                                                         <option value="TZS">TZS</option>
+                                                                                                         <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+
+                                                                                                     @else
+
+                                                                                                     @endif
+
+                                                                                                 </select>
+                                                                                             </div>
+
+                                                                                         </div>
+
+                                                                                     </div>
+
+                                                                                 @else
+                                                                                     <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                                                                                     <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
+
+                                                                                         <div class="col-4 inline_block form-wrapper">
+                                                                                             <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                             <div class="">
+                                                                                                 <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="col-4 inline_block  form-wrapper">
+                                                                                             <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                             <div  class="">
+                                                                                                 <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+
+
+                                                                                         <div class="col-3 inline_block  form-wrapper">
+                                                                                             <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                             <div  class="">
+                                                                                                 <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                     <option value=""></option>
+                                                                                                     <option value="USD" >USD</option>
+                                                                                                     <option value="TZS">TZS</option>
+                                                                                                 </select>
+                                                                                             </div>
+
+                                                                                         </div>
+
+                                                                                     </div>
+                                                                                 @endif
+
+
+
+
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+                                                                         <div class="form-group">
+                                                                             <div class="form-wrapper">
+                                                                                 <label for=""  ><strong>Comments</strong></label>
+                                                                                 <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                             </div>
+                                                                         </div>
+                                                                         <br>
+
+
+                                                                         <div align="right">
+                                                                             <button class="btn btn-primary" type="submit">Save</button>
+                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                         </div>
+                                                                     </form>
+
+
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+
+                                                     </div>
+
+
+
+                                                     <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
+
+                                                         <div class="modal-dialog" role="document">
+                                                             <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                     <b><h5 class="modal-title">Are you sure you want to deactivate the space with space number {{$var->space_id}}?</h5></b>
+
+                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                 </div>
+
+                                                                 <div class="modal-body">
+                                                                     <form method="get" action="{{ route('delete_space',$var->id)}}" >
+                                                                         {{csrf_field()}}
+
+
+
+                                                                         <div align="right">
+                                                                             <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                         </div>
+
+
+                                                                     </form>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+
+                                                     </div>
+
+
+                                                 </center>
+                                             </td>
+                                         </tr>
+
+                                         <?php
+                                         $i=$i+1;
+                                         ?>
+                                     @endforeach
+
+
+
+
+
+                                     </tbody>
+                                 </table>
+                                 @else
+                                     <p class="mt-4" style="text-align:center;">No records found</p>
+                                 @endif
+                             </div>
+
+                         </div>
+
+                     @endif
+
+
+
+
 
                     <div id="insurance_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_inner">
 <br>
@@ -1572,7 +2771,7 @@ input[type=radio]{
                                             <label for="remarks" style="color: red;">This Vehicle has been declined due to the following reason(s):</label>
                                             <textarea type="text" id="remarks{{$car->id}}" name="reason" class="form-control" readonly="">{{$car->comments}}</textarea>
                                         </div>
-                                    </div> 
+                                    </div>
 
                                     <div class="form-group">
                     <div class="form-wrapper">
@@ -1710,8 +2909,8 @@ input[type=radio]{
                                                                 </div>
 
                                                                 <div class="modal-body">
-                                                 <form method='post' action="{{ route('addCar_step2') }}"> 
-                                                    {{csrf_field()}}                   
+                                                 <form method='post' action="{{ route('addCar_step2') }}">
+                                                    {{csrf_field()}}
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="form-wrapper col-12">
@@ -1728,7 +2927,7 @@ input[type=radio]{
                                                         <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$car->id}}" value="Rejected">
                                                         <label for="Reject{{$car->id}}" class="form-check-label">Decline</label>
                                                     </div>
-                                                
+
                                             </div>
                                         </div>
 
@@ -1749,7 +2948,7 @@ input[type=radio]{
 
                                 </form>
 
-                         
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1801,7 +3000,7 @@ input[type=radio]{
                         @endif
 
                           <div id="car_fleet" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
-                          
+
 
 
                             <br>
@@ -1809,7 +3008,7 @@ input[type=radio]{
                             <hr>
                             <br>
                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
-                           
+
 
                             <?php $i = 1; ?>
                             <table class="hover table table-striped table-bordered" id="myTable3">
@@ -1949,8 +3148,8 @@ input[type=radio]{
                             </table>
                         </div>
                         @else
-                           
-                          
+
+
 
 
                             <br>
@@ -1958,7 +3157,7 @@ input[type=radio]{
                             <hr>
                             <br>
                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
-                           
+
 
                             <?php $i = 1; ?>
                             <table class="hover table table-striped table-bordered" id="myTable3">
@@ -2096,7 +3295,7 @@ input[type=radio]{
 
                                 </tbody>
                             </table>
-                        
+
                         @endif
                     </div>
 
@@ -2450,6 +3649,12 @@ input[type=radio]{
         window.onload=function(){
             $("#getMajor").trigger('change');
         };
+
+
+        window.onload=function(){
+            $("#getMajor_rejected").trigger('change');
+        };
+
     </script>
 
 
@@ -2483,6 +3688,38 @@ input[type=radio]{
 
             }
         });
+
+
+
+        $('#getMajor_rejected').on('change',function(e){
+            e.preventDefault();
+            var major = $(this).val();
+
+
+            if(major != '')
+            {
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url:"{{ route('generate_minor_list') }}",
+                    method:"POST",
+                    data:{major:major, _token:_token},
+                    success:function(data){
+                        if(data=='0'){
+
+                        }
+                        else{
+
+
+                            $('#minor_list_rejected').html(data);
+                        }
+                    }
+                });
+            }
+            else if(major==''){
+
+            }
+        });
+
 
     </script>
 
@@ -2634,6 +3871,24 @@ input[type=radio]{
 
     <script type="text/javascript">
         $(document).ready(function(){
+
+
+            $('input[name="approval_status"]').click(function(e){
+                var id = e.target.id.replace(/\D/g,'');
+                var query = $(this).val();
+
+                if(query =='Rejected'){
+                    $('#remarksDiv'+id).show();
+                }
+                else{
+                    $('#remarksDiv'+id).hide();
+                }
+
+            })
+
+
+
+
             pdfMake.fonts = {
         Times: {
                 normal: 'times new roman.ttf',
@@ -2773,7 +4028,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2806,7 +4061,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2824,7 +4079,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2884,7 +4139,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       doc.content[2].table.body[i][2].alignment = 'left';
                       doc.content[2].table.body[i][3].alignment = 'left';
                       doc.content[2].table.body[i][4].alignment = 'right';
-                     
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -3310,27 +4565,55 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         document.getElementById("defaultOpen").click();
 
 
-        function openfleet(evt, evtName) {
-            // Declare all variables
-            var i, tabcontent, tablinks;
 
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName("tabcontent_fleet");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+
+            function openSpaces(evt, evtName) {
+                // Declare all variables
+                var i, tabcontent, tablinks;
+
+                // Get all elements with class="tabcontent" and hide them
+                tabcontent = document.getElementsByClassName("tabcontent_spaces");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+
+                // Get all elements with class="tablinks" and remove the class "active"
+                tablinks = document.getElementsByClassName("spaces_tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+
+                // Show the current tab, and add an "active" class to the button that opened the tab
+                document.getElementById(evtName).style.display = "block";
+                evt.currentTarget.className += " active";
             }
+            document.getElementById("defaultSelection").click();
 
-            // Get all elements with class="tablinks" and remove the class "active"
-            tablinks = document.getElementsByClassName("tablinks_fleet");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            function openfleet(evt, evtName) {
+                // Declare all variables
+                var i, tabcontent, tablinks;
+
+                // Get all elements with class="tabcontent" and hide them
+                tabcontent = document.getElementsByClassName("tabcontent_fleet");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+
+                // Get all elements with class="tablinks" and remove the class "active"
+                tablinks = document.getElementsByClassName("tablinks_fleet");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+
+                // Show the current tab, and add an "active" class to the button that opened the tab
+                document.getElementById(evtName).style.display = "block";
+                evt.currentTarget.className += " active";
             }
+            document.getElementById("defaultOpen2").click();
 
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(evtName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-        document.getElementById("defaultOpen2").click();
+
+
+
     </script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -3554,6 +4837,29 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         };
     </script>
 
+    <script type="text/javascript">
+        function validate(ids){
+            var query = document.querySelector('input[name="approval_status"]:checked').value;
+            if(query=='Rejected'){
+                var query2 = $('#remarks'+ids).val();
+                if(query2==''){
+                    $('#remarksmsg'+ids).show();
+                    var message=document.getElementById('remarksmsg'+ids);
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#remarks'+ids).attr('style','border:1px solid #f00');
+                    return false;
+                }
+                else{
+                    $('#remarksmsg'+ids).hide();
+                    $('#remarks'+ids).attr('style','border:1px solid #ccc');
+                    return true;
+                }
+            }
+
+
+        }
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -3655,7 +4961,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 else{
                     $('#remarksDiv'+id).hide();
                 }
-                
+
             })
 
         });
@@ -3682,8 +4988,8 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                     return true;
                 }
             }
-            
-            
+
+
         }
     </script>
 

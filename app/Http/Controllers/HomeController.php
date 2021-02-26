@@ -46,7 +46,67 @@ class HomeController extends Controller
 
     public function businesses()
     {
-        $spaces=DB::table('spaces')->where('status',1)->get();
+        $space_approval_stage=DB::table('spaces')->where('flag',0)->get();
+        $space_rejected_stage=DB::table('spaces')->where('flag',1)->get();
+        $spaces=DB::table('spaces')->where('status',1)->where('flag',2)->get();
+
+        $space_inbox=null;
+        $space_outbox=null;
+
+        if(Auth::user()->role=='DVC Administrator'){
+            if(count($space_approval_stage)==0){
+
+
+            }else{
+
+                $space_inbox=DB::table('spaces')->where('flag',0)->get();
+            }
+
+
+
+            if(count($space_rejected_stage)==0){
+
+
+
+            }else{
+
+                $space_outbox=DB::table('spaces')->where('flag',1)->get();
+
+            }
+
+
+
+        }else if (Auth::user()->role=='DPDI Planner'){
+
+            if(count($space_approval_stage)==0){
+
+
+            }else{
+
+                $space_outbox=DB::table('spaces')->where('flag',0)->get();
+            }
+
+            if(count($space_rejected_stage)==0){
+
+
+            }else{
+
+                $space_inbox=DB::table('spaces')->where('flag',1)->get();
+            }
+
+
+
+
+        }else{
+
+
+
+        }
+
+
+
+
+
         $insurance=DB::table('insurance')->where('status',1)->get();
         $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
         $operational=operational_expenditure::where('flag','1')->get();
@@ -103,7 +163,7 @@ class HomeController extends Controller
 
       if($currency=='TZS'){
         $amount_in_words=Terbilang::make(($total_tzs),' TZS',' ');
-        $amount_to_be_paid = $total_tzs; 
+        $amount_to_be_paid = $total_tzs;
       }
       elseif ($currency=='USD') {
         $amount_in_words=Terbilang::make(($total_usd),' USD',' ');
@@ -119,7 +179,7 @@ class HomeController extends Controller
         $debtor_name = $request->get('college');
       }
 
-      
+
 
       $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
 
@@ -241,6 +301,7 @@ class HomeController extends Controller
                 ->where('id', $id)
                 ->update(['final_payment' => $request->get('final_payment')]);
 
+
         DB::table('research_flats_contracts')
                 ->where('id', $id)
                 ->update(['nationality' => $request->get('nationality')]);
@@ -309,7 +370,8 @@ class HomeController extends Controller
                 ->update(['total_tzs' => $total_tzs]);
 
     return redirect()->route('contracts_management')->with('success', 'Contract Edited Successfully');
-    
+
+
     }
 
 
@@ -324,7 +386,7 @@ class HomeController extends Controller
             ['room_no' => $request->get('room_no'), 'category'=>$request->get('category'), 'currency'=>$request->get('currency'),'charge_workers'=>$request->get('charge_workers'),'charge_students'=>$request->get('charge_students')]);
        return redirect()->back()->with('success', 'Room Added Successfully');
       }
-      
+
      }
 
      public function contractresearchflats(){
@@ -429,7 +491,7 @@ class HomeController extends Controller
     $contract_id=[];
 
   if(($_GET['b_fil']=='true') && ($_GET['l_fil']=='true')){
-    
+
      $details=DB::table('invoices')
         ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
         ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
@@ -515,7 +577,7 @@ class HomeController extends Controller
 
         return View('tenancyschedule_new',compact('details'));
         // $pdf = PDF::loadView('tenancyschedule',['details'=>$details])->setPaper('a4', 'landscape');
-  
+
         // return $pdf->stream('Tenancy Schedule.pdf');
 
       }
@@ -1123,10 +1185,10 @@ class HomeController extends Controller
       else{
 
          return View('debtsummaryreport_new',compact('contract_id'));
-       // $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id])->setPaper('a4', 'landscape'); 
+       // $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id])->setPaper('a4', 'landscape');
       }
-      
-  
+
+
 
     }
 
@@ -1335,7 +1397,7 @@ class HomeController extends Controller
 
         return View('spacereport1_new', compact('spaces'));
         // $pdf = PDF::loadView('spacereport1pdf',['spaces'=>$spaces])->setPaper('a4', 'landscape');
-  
+
         // return $pdf->stream('List of Spaces.pdf');
 
       }
@@ -1377,7 +1439,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
 
      // $pdf = PDF::loadView('spacereport2pdf',['details'=>$details, 'space'=>$space,'invoices'=>$invoices])->setPaper('a4', 'landscape');
-  
+
      //    return $pdf->stream('Spaces History.pdf');
 
     return View('spacereport2_new', compact('details','space','invoices'));
@@ -1408,7 +1470,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
           return View('userreport_new',compact('users'));
            // $pdf = PDF::loadView('userreportpdf',['users'=>$users])->setPaper('a4', 'landscape');
-  
+
            //  return $pdf->stream('System User Report.pdf');
 
         }
@@ -1421,9 +1483,9 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
                $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
           else{
-            
+
             $insurance=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
-          
+
           }
         }
 
@@ -1437,7 +1499,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
         }
 
-        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){ 
+        elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
            $insurance=insurance_contract::where('principal',$_GET['principaltype'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
         }
 
@@ -1449,7 +1511,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
           if($_GET['insurance_typefilter']=='true'){
               $insurance=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
-          else{ 
+          else{
             $insurance=insurance_contract::where('insurance_class',$_GET['package'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
         }
@@ -1466,7 +1528,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         }
 
          elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
-          
+
              $insurance=insurance_contract::whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
 
          }
@@ -1499,12 +1561,12 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
      else if($_GET['report_type']=='clients'){
         if(($_GET['principal_filter']=='true') && ($_GET['package_filter']=='true')&&($_GET['yr_fil']=='true')){
           if($_GET['insurance_typefilter']=='true'){
-           
+
                $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
-            
+
           }
           else{
-            
+
             $clients=insurance_contract::where('principal',$_GET['principaltype'])->where('insurance_class',$_GET['package'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
         }
@@ -1520,7 +1582,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
         }
 
         elseif(($_GET['principal_filter']=='true') && ($_GET['package_filter']!='true') && ($_GET['yr_fil']=='true')){
-            
+
                $clients=insurance_contract::where('principal',$_GET['principaltype'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
 
         }
@@ -1531,11 +1593,11 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
 
         elseif(($_GET['principal_filter']!='true') && ($_GET['package_filter']=='true') && ($_GET['yr_fil']=='true')){
           if($_GET['insurance_typefilter']=='true'){
-            
+
           $clients=insurance_contract::where('insurance_class',$_GET['package'])->where('insurance_type',$_GET['insurance_type'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
           else{
-            
+
             $clients=insurance_contract::where('insurance_class',$_GET['package'])->whereBetween('commission_date',[ $_GET['start'], $_GET['end'] ])->get();
           }
         }
@@ -1570,7 +1632,7 @@ $to=date('Y-m-d',strtotime($_GET['end_date']));
       }
     }
 
-  
+
         //return $pdf->stream('Insurance Report.pdf');
 
       }
@@ -2341,7 +2403,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
         else{
 
 
-         //  $pdf=PDF::loadView('operationalreportpdf',['operational'=>$operational])->setPaper('a4', 'landscape');    
+         //  $pdf=PDF::loadView('operationalreportpdf',['operational'=>$operational])->setPaper('a4', 'landscape');
          // return $pdf->stream('Car Rental Operational Report.pdf');
           return View('operationalreport_new',compact('operational'));
 
@@ -2360,14 +2422,14 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
           $bookings=carContract::where('vehicle_reg_no',$_GET['reg'])->orderby('start_date','asc')->get();
           $operations=operational_expenditure::where('vehicle_reg_no',$_GET['reg'])->orderby('date_received','asc')->get();
          }
-         
+
         if((count($bookings)==0) &&(count($operations)==0)){
             return redirect()->back()->with('errors', "No data found to generate the requested report");
         }
        else{
 
 
-        // $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations])->setPaper('a4', 'landscape');    
+        // $pdf=PDF::loadView('carhistoryreportpdf',['details'=>$details,'bookings'=>$bookings,'operations'=>$operations])->setPaper('a4', 'landscape');
         //  return $pdf->stream('Car History Report.pdf');
          return view('carhistoryreport',compact('details','bookings','operations'));
 
@@ -2867,7 +2929,7 @@ else{
             else if($_GET['status']=='Expired'){
               $contracts=DB::table('research_flats_contracts')->join('research_flats_invoices','research_flats_invoices.contract_id','=', 'research_flats_contracts.id')->join('research_flats_payments','research_flats_payments.invoice_number','=', 'research_flats_invoices.invoice_number')->where('payment_status',$_GET['pay'])->where('departure_date','<',$today)->orderBy('research_flats_contracts.id','dsc')->get();
             }
-            
+
           }
           else if($_GET['pay_fil']=='true' && $_GET['stat_fil']!='true'){
             $contracts=DB::table('research_flats_contracts')->join('research_flats_invoices','research_flats_invoices.contract_id','=', 'research_flats_contracts.id')->join('research_flats_payments','research_flats_payments.invoice_number','=', 'research_flats_invoices.invoice_number')->where('payment_status',$_GET['pay'])->orderBy('research_flats_contracts.id','dsc')->get();
@@ -2878,7 +2940,7 @@ else{
             }
             else if($_GET['status']=='Expired'){
               $contracts=DB::table('research_flats_contracts')->where('departure_date','<',$today)->orderBy('id','dsc')->get();
-            }      
+            }
           }
           else if($_GET['pay_fil']!='true' && $_GET['stat_fil']!='true'){
              $contracts=DB::table('research_flats_contracts')->orderBy('id','dsc')->get();
