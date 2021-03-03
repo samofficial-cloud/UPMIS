@@ -20671,7 +20671,7 @@
                                                                 @else
                                                                 @endif
 
-                                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_car2{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i>cc</a>
+                                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_car2{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
                                                             @else
                                                                 @if($var->gepg_control_no=='')
                                                                     <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>

@@ -34,9 +34,10 @@ class carRentalController extends Controller
             $vehicle_status = $request->input('vehicle_status');
             $hire_rate = $request->input('hire_rate');
             $data=array('vehicle_reg_no'=>$vehicle_reg_no,"vehicle_model"=>$vehicle_model,'vehicle_status'=>$vehicle_status, 'hire_rate'=>$hire_rate, 'flag'=>'0', 'form_status'=>'DVC Administrator','cptu_msg_status'=>'outbox','dvc_msg_status'=>'inbox');
-            DB::table('car_rentals')->insert($data);
+            $id = DB::table('car_rentals')->insertGetId($data);
           }
           else{
+            $id = $deactivated->id;
             $deactivated->vehicle_model = $request->input('model');
             $deactivated->hire_rate=$request->input('hire_rate');
             $deactivated->form_status = 'DVC Administrator';
@@ -45,6 +46,9 @@ class carRentalController extends Controller
 
             $deactivated->save();
           }
+
+           DB::table('car_notifications')->insert(['role'=>'DVC Administrator', 'message'=>'You have a new pending car to approve', 'flag'=>'1','car_id'=>$id]);
+
             return redirect()->back()->with('success', 'Car Details Forwarded Successfully');
        }
        else{
@@ -55,16 +59,26 @@ class carRentalController extends Controller
     }
 
     public function newcar_step2(Request $request){
+      $id = $request->get('vehicle_id');
       $vehicle=carRental::find($request->get('vehicle_id'));
       $status = $request->get('approval_status');
         if($status=='Accepted'){
           $vehicle->remarks=$status;
           $vehicle->flag = '1';
+          DB::table('car_notifications')
+                ->where('car_id', $id)
+                ->update(['flag' => '0']);
         }
         elseif($status=='Rejected'){
           $vehicle->remarks=$status;
           $vehicle->comments=$request->get('reason');
           $vehicle->cptu_msg_status = 'inbox';
+          DB::table('car_notifications')
+                ->where('car_id', $id)
+                ->where('role', 'DVC Administrator')
+                ->update(['flag' => '0']);
+
+          DB::table('car_notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car to review', 'flag'=>'1','car_id'=>$id]);
         }
       $vehicle->form_status='Transport Officer-CPTU';
       $vehicle->dvc_msg_status = 'outbox';
@@ -87,6 +101,10 @@ class carRentalController extends Controller
     }
 
     public function newcar_step4($id){
+      DB::table('car_notifications')
+                ->where('car_id', $id)
+                ->update(['flag' => '0']);
+                
       $vehicle=carRental::find($id);
       $vehicle->delete();
       return redirect()->back()->with('success', 'Car Details Deleted Successfully');

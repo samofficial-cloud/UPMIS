@@ -141,11 +141,20 @@
                             
                             $notifications=notification::where('flag','1')->where('role',Auth::user()->role)->get();
 
+                            $car_notifications = DB::table('car_notifications')->where('flag','1')->where('role',Auth::user()->role)->get();
+
                             if(count($notifications)>0){
                                $total = 1; 
                             }
                             else{
                                 $total = 0;
+                            }
+
+                            if(count($car_notifications)>0){
+                               $total2 = 1; 
+                            }
+                            else{
+                                $total2 = 0;
                             }
                             
 
@@ -174,14 +183,14 @@
                         
 
                         if($category=='All'){
-                            $all_notifications_count=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
+                            $all_notifications_count=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total+$total2;
                         }
                         elseif($category=='CPTU only'){
                             if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
                                 $all_notifications_count=$total;
                             }
                             else{
-                               $all_notifications_count=$car_invoice_notifications_count_total+$total; 
+                               $all_notifications_count=$car_invoice_notifications_count_total+$total+$total2; 
                             }
                             
                         }
@@ -281,7 +290,15 @@
 
                                 @elseif($total>0)
 
-                                    <a class="dropdown-item" href="/contracts_management">{{$i}}. You have {{count($notifications)}} pending car rental application(s)</a>
+                                    <a class="dropdown-item" href="/contracts_management">{{$i}}. You have {{count($notifications)}} pending car rental requistion application(s) to review</a>
+                                    <?php $i=$i+1; ?>
+                                @endif
+
+                                @if($total2==0)
+
+                                @elseif($total2>0)
+
+                                    <a class="dropdown-item" href="/businesses">{{$i}}. You have {{count($car_notifications)}} pending car application(s) to review</a>
                                     <?php $i=$i+1; ?>
                                 @endif
                             @endif

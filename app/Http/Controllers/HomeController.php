@@ -127,7 +127,9 @@ class HomeController extends Controller
           $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
         }
 
-        return view('businesses')->with('spaces',$spaces)->with('space_inbox',$space_inbox)->with('space_outbox',$space_outbox)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox)->with('rooms',$rooms);
+
+        return view('businesses')->with('spaces',$spaces)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox)->with('rooms',$rooms)->with('space_inbox',$space_inbox)->with('space_outbox',$space_outbox);
+
     }
 
     public function researchflats(){
@@ -1076,6 +1078,28 @@ class HomeController extends Controller
         }
 
       }
+      elseif($_GET['b_type']=='Flats'){
+        if($_GET['yr2_fil']=='true'){
+           $contract_id[]= DB::table('research_flats_invoices')
+                            ->select('contract_id','debtor_name', 'currency_invoice', 'arrival_date','departure_date')
+                            ->join('research_flats_contracts','research_flats_invoices.contract_id','=','research_flats_contracts.id')
+                             ->join('research_flats_payments','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+        }
+        else{
+            $contract_id[]= DB::table('research_flats_invoices')
+                            ->select('contract_id','debtor_name', 'currency_invoice', 'arrival_date','departure_date')
+                            ->join('research_flats_contracts','research_flats_invoices.contract_id','=','research_flats_contracts.id')
+                            ->join('research_flats_payments','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+        }
+
+      }
       elseif($_GET['b_type']=='All'){
         if($_GET['yr2_fil']=='true'){
         $contract_id[]= DB::table('invoices')
@@ -1128,6 +1152,14 @@ class HomeController extends Controller
                             ->distinct()
                             ->get();
 
+        $contract_id6[]= DB::table('research_flats_invoices')
+                            ->join('research_flats_payments','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+                            ->select('debtor_name','currency_invoice')
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
           }
           else{
             $contract_id[]= DB::table('invoices')
@@ -1170,6 +1202,13 @@ class HomeController extends Controller
                             ->distinct()
                             ->get();
 
+        $contract_id6[]= DB::table('research_flats_invoices')
+                            ->join('research_flats_payments','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+                            ->select('debtor_name','currency_invoice')
+                            ->orderBy('debtor_name','asc')
+                            ->distinct()
+                            ->get();
+
           }
       }
 
@@ -1178,7 +1217,7 @@ class HomeController extends Controller
         return View('debtsummaryreport_new',compact('contract_id'));
       }
       elseif($_GET['b_type']=='All'){
-        $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id, 'contract_id2'=>$contract_id2, 'contract_id3'=>$contract_id3, 'contract_id4'=>$contract_id4, 'contract_id5'=>$contract_id5])->setPaper('a4', 'landscape');
+        $pdf = PDF::loadView('debtsummaryreportpdf',['contract_id'=>$contract_id, 'contract_id2'=>$contract_id2, 'contract_id3'=>$contract_id3, 'contract_id4'=>$contract_id4, 'contract_id5'=>$contract_id5, 'contract_id6'=>$contract_id6])->setPaper('a4', 'landscape');
         return $pdf->stream('Debt Summary.pdf');
          // return View('debtsummaryreport_new',compact('contract_id','contract_id2', 'contract_id3','contract_id4','contract_id5'));
       }

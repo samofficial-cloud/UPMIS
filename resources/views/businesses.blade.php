@@ -2679,7 +2679,7 @@ input[type=radio]{
                                                     <div class="form-group" id="hirediv">
                                                         <div class="form-wrapper">
                                                             <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
-                                                            <input type="text" id="hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                            <input type="text" id="hire_rate" name="hire_rate" class="form-control" readonly="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                                         </div>
                                                     </div>
 
@@ -2699,7 +2699,7 @@ input[type=radio]{
 
                      @if((Auth::user()->role=='Transport Officer-CPTU') || (Auth::user()->role=='DVC Administrator'))
                         <div class="tab">
-                            <button class="tablinks_fleet" onclick="openfleet(event, 'car_inbox')" id="defaultOpen2"><strong>Inbox</strong></button>
+                            <button class="tablinks_fleet" onclick="openfleet(event, 'car_inbox')" id="defaultOpenfleet"><strong>Inbox</strong></button>
                             <button class="tablinks_fleet" onclick="openfleet(event, 'car_outbox')"><strong>Outbox</strong></button>
                             <button class="tablinks_fleet" onclick="openfleet(event, 'car_fleet')"><strong>Fleet</strong></button>
                         </div>
@@ -4564,6 +4564,10 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         }
         document.getElementById("defaultOpen").click();
 
+        <?php $role = Auth::user()->role; ?>
+
+        var role = {!! json_encode($role) !!};
+
 
 
 
@@ -4587,7 +4591,10 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 document.getElementById(evtName).style.display = "block";
                 evt.currentTarget.className += " active";
             }
-            document.getElementById("defaultSelection").click();
+            if(role!='Transport Officer-CPTU'){
+                document.getElementById("defaultSelection").click();
+            }
+            
 
             function openfleet(evt, evtName) {
                 // Declare all variables
@@ -4609,7 +4616,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 document.getElementById(evtName).style.display = "block";
                 evt.currentTarget.className += " active";
             }
-            document.getElementById("defaultOpen2").click();
+            document.getElementById("defaultOpenfleet").click();
 
 
 

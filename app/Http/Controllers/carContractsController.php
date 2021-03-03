@@ -360,20 +360,30 @@ class carContractsController extends Controller
                             ->update(['flag' => '0']);
 
                         if($request->get('head_approval_status')=='Rejected'){
-                            DB::table('car_contracts')
-                            ->where('id', $id)
-                            ->update(['form_status' => 'Vote Holder']);
+                            // DB::table('car_contracts')
+                            // ->where('id', $id)
+                            // ->update(['form_status' => 'Vote Holder']);
 
-                             DB::table('car_contracts')
-                            ->where('id', $id)
-                            ->update(['head_msg_status' => 'inbox']);
+                            //  DB::table('car_contracts')
+                            // ->where('id', $id)
+                            // ->update(['head_msg_status' => 'inbox']);
 
                             DB::table('car_contracts')
                             ->where('id', $id)
                             ->update(['acc_remark' => $request->get('acc_remark')]);
 
 
-                             DB::table('notifications')->insert(['role'=>'Vote Holder', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+                             // DB::table('notifications')->insert(['role'=>'Vote Holder', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
+
+                            DB::table('car_contracts')
+                                ->where('id', $id)
+                                ->update(['form_status' => 'Transport Officer-CPTU']);
+
+                            DB::table('car_contracts')
+                                ->where('id', $id)
+                                ->update(['cptu_msg_status' => 'inbox']);
+
+                            DB::table('notifications')->insert(['role'=>'Transport Officer-CPTU', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
 
                             }
 
@@ -786,9 +796,14 @@ public function terminateContract($id, Request $request){
 }
 
 public function deletecontract($id){
+    DB::table('notifications')
+        ->where('contract_id', $id)
+        //->where('role','Transport Officer-CPTU')
+        ->update(['flag' => '0']);
+
     $form=carContract::find($id);
     $form->delete();
-     return redirect()->back()->with('success', 'Form Deleted Successfully');
+     return redirect()->route('contracts_management')->with('success', 'Application Deleted Successfully');
 }
 
 public function fetchclient_details(Request $request){
