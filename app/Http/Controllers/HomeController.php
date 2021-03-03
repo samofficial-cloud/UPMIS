@@ -127,7 +127,7 @@ class HomeController extends Controller
           $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
         }
 
-        return view('businesses')->with('spaces',$spaces)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox)->with('rooms',$rooms);
+        return view('businesses')->with('spaces',$spaces)->with('space_inbox',$space_inbox)->with('space_outbox',$space_outbox)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox)->with('rooms',$rooms);
     }
 
     public function researchflats(){

@@ -399,7 +399,7 @@ class ContractsController extends Controller
                 $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
                 );
 
 
@@ -430,7 +430,7 @@ class ContractsController extends Controller
 
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
                     );
 
                 } else {
@@ -455,7 +455,7 @@ class ContractsController extends Controller
                     $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
                     );
 
 
@@ -501,6 +501,58 @@ class ContractsController extends Controller
 
             $pdf = PDF::loadView('space_contract_pdf',$data);
 
+
+            //invoice creation starts
+
+            $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+            $today=date('Y-m-d');
+
+            $amount_in_words='';
+
+            if($request->get('currency_invoice')=='TZS'){
+                $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' TZS',' ');
+
+            }if ($request->get('currency_invoice')=='USD'){
+
+                $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' USD',' ');
+            }
+
+            else{
+
+
+            }
+
+
+            $created_contract_id=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
+
+
+            $invoice_to_be_created=DB::select('call invoice_exists_space (?,?,?)',[$created_contract_id,$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date')]);
+
+
+            if(count($invoice_to_be_created)==0){
+
+                DB::table('invoices')->insert(
+                    ['invoice_number_votebook'=>'','contract_id' => $created_contract_id, 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $request->get('period','N/A'),'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency_invoice'),'gepg_control_no'=>'','tin'=>$request->get('tin_invoice','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
+                );
+
+                $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+                DB::table('invoice_notifications')->insert(
+                    ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
+                );
+
+                DB::table('space_payments')->insert(
+                    ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency_invoice'),'receipt_number' => '']
+                );
+
+
+            }else{
+                return redirect()->back()->with("error","Invoice already exists. Please try again");
+
+            }
+
+            //invoice creation ends
             return $pdf->stream();
 
 
@@ -669,7 +721,7 @@ class ContractsController extends Controller
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
                 );
 
             }else {
@@ -698,7 +750,7 @@ class ContractsController extends Controller
 
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
                     );
 
                 } else {
@@ -724,12 +776,68 @@ class ContractsController extends Controller
                     $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
                     );
 
 
                 }
             }
+
+
+
+
+            //Invoice creation starts
+
+            $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
+            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
+            $today=date('Y-m-d');
+
+            $amount_in_words='';
+
+            if($request->get('currency_invoice')=='TZS'){
+                $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' TZS',' ');
+
+            }if ($request->get('currency_invoice')=='USD'){
+
+                $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' USD',' ');
+            }
+
+            else{
+
+
+            }
+
+
+            $created_contract_id=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
+
+
+            $invoice_to_be_created=DB::select('call invoice_exists_space (?,?,?)',[$created_contract_id,$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date')]);
+
+
+            if(count($invoice_to_be_created)==0){
+
+                DB::table('invoices')->insert(
+                    ['invoice_number_votebook'=>'','contract_id' => $created_contract_id, 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $request->get('period','N/A'),'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency_invoice'),'gepg_control_no'=>'','tin'=>$request->get('tin_invoice','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
+                );
+
+                $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
+
+                DB::table('invoice_notifications')->insert(
+                    ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
+                );
+
+                DB::table('space_payments')->insert(
+                    ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency_invoice'),'receipt_number' => '']
+                );
+
+
+            }else{
+                return redirect()->back()->with("error","Invoice already exists. Please try again");
+
+            }
+
+            //Invoice creation ends
+
 
 
 
@@ -825,7 +933,7 @@ class ContractsController extends Controller
 
 
             DB::table('space_contracts')->insert(
-                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
+                ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
             );
 
         }else {
@@ -853,7 +961,7 @@ class ContractsController extends Controller
                 $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
                 );
 
             } else {
@@ -878,7 +986,7 @@ class ContractsController extends Controller
                 $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date'=>$programming_end_date,'programming_start_date' => $request->get('start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
                 );
 
 
@@ -1194,14 +1302,14 @@ class ContractsController extends Controller
 
             $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
 
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['programming_end_date' => $programming_end_date]);
+//            DB::table('space_contracts')
+//                ->where('contract_id', $contract_id)
+//                ->update(['programming_end_date' => $programming_end_date]);
 
 
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['programming_start_date' => $request->get('start_date')]);
+//            DB::table('space_contracts')
+//                ->where('contract_id', $contract_id)
+//                ->update(['programming_start_date' => $request->get('start_date')]);
 
 
             DB::table('space_contracts')
@@ -1451,14 +1559,14 @@ class ContractsController extends Controller
 
             $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
 
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['programming_end_date' => $programming_end_date]);
+//            DB::table('space_contracts')
+//                ->where('contract_id', $contract_id)
+//                ->update(['programming_end_date' => $programming_end_date]);
 
 
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['programming_start_date' => $request->get('start_date')]);
+//            DB::table('space_contracts')
+//                ->where('contract_id', $contract_id)
+//                ->update(['programming_start_date' => $request->get('start_date')]);
 
 
             DB::table('space_contracts')
@@ -1624,7 +1732,7 @@ class ContractsController extends Controller
         if($request->get('submit')=='Save and print'){
 
 
-
+            $remarks='Client will be assisted in case of anything only after paying the full amount';
 
 
 
@@ -1854,9 +1962,21 @@ class ContractsController extends Controller
 
 if($request->get('mode_of_payment')=='By installment'){
 
+    $mode_of_payment='';
+
+    if($request->get('mode_payment')==""){
+        $mode_of_payment='N/A';
+
+    }else{
+
+        $mode_of_payment=$request->get('mode_of_payment');
+
+    }
+
+//ended here today
 
     DB::table('insurance_contracts')->insert(
-        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
+        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments'),'remarks'=>$remarks]
     );
 
 
@@ -3426,6 +3546,19 @@ if($request->get('mode_of_payment')=='By installment'){
 
 }else{
 
+
+    $mode_of_payment='';
+
+    if($request->get('mode_payment')==""){
+        $mode_of_payment='N/A';
+
+    }else{
+
+        $mode_of_payment=$request->get('mode_of_payment');
+
+    }
+
+
     DB::table('insurance_contracts')->insert(
         ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
     );
@@ -3501,8 +3634,21 @@ if($request->get('mode_of_payment')=='By installment'){
                 'sum_insured'   => $request->get('sum_insured'),
                 'premium'   => $request->get('premium'),
                 'mode_of_payment'   => $request->get('mode_of_payment'),
+                'number_of_installments'   => $request->get('number_of_installments'),
                 'first_installment'   => $request->get('first_installment'),
                 'second_installment'   => $request->get('second_installment'),
+
+                'third_installment'   => $request->get('third_installment'),
+                'fourth_installment'   => $request->get('fourth_installment'),
+                'fifth_installment'   => $request->get('fifth_installment'),
+                'sixth_installment'   => $request->get('sixth_installment'),
+                'seventh_installment'   => $request->get('seventh_installment'),
+                'eighth_installment'   => $request->get('eighth_installment'),
+                'ninth_installment'   => $request->get('ninth_installment'),
+                'tenth_installment'   => $request->get('tenth_installment'),
+                'eleventh_installment'   => $request->get('eleventh_installment'),
+                'twelfth_installment'   => $request->get('twelfth_installment'),
+
                 'actual_ex_vat'   => $request->get('actual_ex_vat'),
                 'value'   => $request->get('value'),
                 'commission_percentage'   => $request->get('commission_percentage'),
@@ -3510,6 +3656,7 @@ if($request->get('mode_of_payment')=='By installment'){
                 'cover_note'   => $request->get('cover_note'),
                 'sticker_no'   => $request->get('sticker_no'),
                 'receipt_no'   => $request->get('receipt_no'),
+                'remarks'   => $remarks,
                 'currency'   => $request->get('currency'),
 
             ];
@@ -3523,6 +3670,7 @@ if($request->get('mode_of_payment')=='By installment'){
 
         }else{
 
+            $remarks='Client will be assisted in case of anything only after paying the full amount';
 
             $end_date="";
             if($request->get('duration_period')=="Months"){
@@ -3746,8 +3894,20 @@ if($request->get('mode_of_payment')=='By installment'){
             if($request->get('mode_of_payment')=='By installment'){
 
 
+                $mode_of_payment='';
+
+                if($request->get('mode_payment')==""){
+                    $mode_of_payment='N/A';
+
+                }else{
+
+                    $mode_of_payment=$request->get('mode_of_payment');
+
+                }
+
+
                 DB::table('insurance_contracts')->insert(
-                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
+                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments'),'remarks'=>$remarks]
                 );
 
 
@@ -5320,6 +5480,20 @@ if($request->get('mode_of_payment')=='By installment'){
 
             }else{
 
+
+
+                $mode_of_payment='';
+
+                if($request->get('mode_payment')==""){
+                    $mode_of_payment='N/A';
+
+                }else{
+
+                    $mode_of_payment=$request->get('mode_of_payment');
+
+                }
+
+
                 DB::table('insurance_contracts')->insert(
                     ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
                 );
@@ -5612,8 +5786,19 @@ if($request->get('mode_of_payment')=='By installment'){
                 'sum_insured'   => $request->get('sum_insured'),
                 'premium'   => $request->get('premium'),
                 'mode_of_payment'   => $request->get('mode_of_payment'),
+                'number_of_installments'   => $request->get('number_of_installments'),
                 'first_installment'   => $request->get('first_installment'),
                 'second_installment'   => $request->get('second_installment'),
+                'third_installment'   => $request->get('third_installment'),
+                'fourth_installment'   => $request->get('fourth_installment'),
+                'fifth_installment'   => $request->get('fifth_installment'),
+                'sixth_installment'   => $request->get('sixth_installment'),
+                'seventh_installment'   => $request->get('seventh_installment'),
+                'eighth_installment'   => $request->get('eighth_installment'),
+                'ninth_installment'   => $request->get('ninth_installment'),
+                'tenth_installment'   => $request->get('tenth_installment'),
+                'eleventh_installment'   => $request->get('eleventh_installment'),
+                'twelfth_installment'   => $request->get('twelfth_installment'),
                 'actual_ex_vat'   => $request->get('actual_ex_vat'),
                 'value'   => $request->get('value'),
                 'commission_percentage'   => $request->get('commission_percentage'),

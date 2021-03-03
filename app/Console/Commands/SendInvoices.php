@@ -191,9 +191,9 @@ class SendInvoices extends Command
                     ->update(['programming_start_date' => date('Y-m-d', strtotime($programming_start_date_new))]);
 
 
-                $daysToAdd2 = DB::table('payment_cycle_settings')->where('cycle',$var->payment_cycle)->value('days');
+                $monthsToAdd2 =$var->payment_cycle;
 
-                $programming_end_date_new=$programming_start_date_new->addDays($daysToAdd2);
+                $programming_end_date_new=$programming_start_date_new->addMonths($monthsToAdd2);
 
                 $programming_end_date_new=date('Y-m-d', strtotime($programming_end_date_new));
 
