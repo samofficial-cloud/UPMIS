@@ -304,8 +304,8 @@ $today=date('Y-m-d');
                 <div class="row">
                     <div class="col-md-12 mx-0">
 
-                        <form id="msform" METHOD="GET" action="{{ route('edit_space_contract_final',['contract_id'=>$contract_id,'client_id'=>$client_id])}}">
-
+                        <form id="msform" METHOD="POST" enctype="multipart/form-data" action="{{ route('edit_space_contract_final',['contract_id'=>$contract_id,'client_id'=>$client_id])}}">
+                        {{csrf_field()}}
                             <!-- progressbar -->
                             <ul id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>
@@ -591,23 +591,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-6">
                                             <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
                                             <span id="payment_cycle_msg"></span>
-                                            <select id="payment_cycle" class="form-control" name="payment_cycle" required>
-                                                <?php
-                                                $payment_cycles=DB::table('payment_cycle_settings')->get();
-                                                ?>
-
-                                                <option value="{{$var->payment_cycle}}" selected>{{$var->payment_cycle}}</option>
-
-                                                    @foreach($payment_cycles as $payment_cycle)
-                                                        @if($payment_cycle->cycle!=$var->payment_cycle)
-                                                    <option value="{{$payment_cycle->cycle}}" >{{$payment_cycle->cycle}}</option>
-                                                        @else
-                                                        @endif
-                                                    @endforeach
-
-
-
-                                            </select>
+                                            <input type="text"  id="payment_cycle" name="payment_cycle" value="{{$var->payment_cycle}}" class="form-control" readonly>
                                         </div>
 
                                         <div class="form-wrapper col-6">

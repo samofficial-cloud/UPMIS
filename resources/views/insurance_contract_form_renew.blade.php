@@ -305,7 +305,7 @@
                                                             <br>
                                                             <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
                                                             <span id="class_msg"></span>
-                                                            <select id="insurance_class" class="form-control" readonly Required name="insurance_class">
+                                                            <select id="insurance_class" class="form-control" readonly  name="insurance_class">
 
                                                                 <option value="{{$var->insurance_class}}" selected>{{$var->insurance_class}}</option>
 
@@ -364,7 +364,7 @@
                                                             <br>
                                                             <label for="space_location"  ><strong>Client Name</strong> <span style="color: red;"> *</span></label>
                                                             <span id="client_msg"></span>
-                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" readonly class="form-control" required>
+                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" readonly class="form-control" >
                                                             <div id="nameListClientName"></div>
                                                         </div>
 
@@ -442,7 +442,7 @@
                                                         <div class="form-wrapper col-12">
                                                             <label for="start_date">Commission Date <span style="color: red;"> *</span></label>
                                                             <span id="commission_date_msg"></span>
-                                                            <input type="date" id="commission_date" name="commission_date" class="form-control" required="" min="{{$today}}">
+                                                            <input type="date" id="commission_date" name="commission_date" class="form-control"  min="{{$today}}">
                                                         </div>
                                                         {{--                    <div class="form-wrapper col-6">--}}
                                                         {{--                        <label for="duration">Duration <span style="color: red;"> *</span></label>--}}
@@ -461,7 +461,7 @@
                                                         <div class="form-wrapper col-12">
                                                             <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
                                                             <span id="sum_insured_msg"></span>
-                                                            <input type="number" min="20" id="sum_insured" name="sum_insured" class="form-control" required="">
+                                                            <input type="number"  id="sum_insured" name="sum_insured" class="money_validate form-control" >
                                                         </div>
 
                                                         {{--                        <div class="form-wrapper col-6">--}}
@@ -489,77 +489,90 @@
 
                                                         <div id="number_of_installmentsDiv" class="form-wrapper col-12 pt-4" style="display: none;">
                                                             <label for="amount">Number of installments </label>
+                                                            <span id="number_of_installments_msg"></span>
                                                             <input type="number" min="2" id="number_of_installments" name="number_of_installments" class="form-control">
                                                         </div>
 
 
                                                         <div id="first_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">First installment </label>
-                                                            <input type="number" id="first_installment"  name="first_installment" class="form-control">
+                                                            <span id="first_installment_msg"></span>
+                                                            <input type="number" id="first_installment"  name="first_installment" class="form-control money_validate">
                                                         </div>
 
 
                                                         <div id="second_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Second installment </label>
-                                                            <input type="number" id="second_installment"  name="second_installment" class="form-control">
+                                                            <span id="second_installment_msg"></span>
+                                                            <input type="number" id="second_installment"  name="second_installment" class="form-control money_validate">
                                                         </div>
 
 
                                                         <div id="third_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Third installment </label>
-                                                            <input type="number" id="third_installment"  name="third_installment" class="form-control">
+                                                            <span id="third_installment_msg"></span>
+                                                            <input type="number" id="third_installment"  name="third_installment" class="form-control money_validate">
                                                         </div>
 
 
                                                         <div id="fourth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Fourth installment </label>
-                                                            <input type="number" id="fourth_installment"  name="fourth_installment" class="form-control">
+                                                            <span id="fourth_installment_msg"></span>
+                                                            <input type="number" id="fourth_installment"  name="fourth_installment" class="form-control money_validate">
                                                         </div>
 
 
 
                                                         <div id="fifth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Fifth installment </label>
-                                                            <input type="number" id="fifth_installment"  name="fifth_installment" class="form-control">
+                                                            <span id="fifth_installment_msg"></span>
+                                                            <input type="number" id="fifth_installment"  name="fifth_installment" class="form-control money_validate">
                                                         </div>
 
 
                                                         <div id="sixth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Sixth installment </label>
-                                                            <input type="number" id="sixth_installment"  name="sixth_installment" class="form-control">
+                                                            <span id="sixth_installment_msg"></span>
+                                                            <input type="number" id="sixth_installment"  name="sixth_installment" class="form-control money_validate">
                                                         </div>
 
 
                                                         <div id="seventh_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Seventh installment </label>
-                                                            <input type="number" id="seventh_installment"  name="seventh_installment" class="form-control">
+                                                            <span id="seventh_installment_msg"></span>
+                                                            <input type="number" id="seventh_installment"  name="seventh_installment" class="form-control money_validate">
                                                         </div>
 
 
                                                         <div id="eighth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Eighth installment</label>
-                                                            <input type="number" id="eighth_installment"  name="eighth_installment" class="form-control">
+                                                            <span id="eighth_installment_msg"></span>
+                                                            <input type="number" id="eighth_installment"  name="eighth_installment" class="form-control money_validate">
                                                         </div>
 
                                                         <div id="ninth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Ninth installment</label>
-                                                            <input type="number" id="ninth_installment"  name="ninth_installment" class="form-control">
+                                                            <span id="ninth_installment_msg"></span>
+                                                            <input type="number" id="ninth_installment"  name="ninth_installment" class="form-control money_validate">
                                                         </div>
 
                                                         <div id="tenth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Tenth installment</label>
-                                                            <input type="number" id="tenth_installment"  name="tenth_installment" class="form-control">
+                                                            <span id="tenth_installment_msg"></span>
+                                                            <input type="number" id="tenth_installment"  name="tenth_installment" class="form-control money_validate">
                                                         </div>
 
 
                                                         <div id="eleventh_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Eleventh installment</label>
-                                                            <input type="number" id="eleventh_installment"  name="eleventh_installment" class="form-control">
+                                                            <span id="eleventh_installment_msg"></span>
+                                                            <input type="number" id="eleventh_installment"  name="eleventh_installment" class="form-control money_validate">
                                                         </div>
 
                                                         <div id="twelfth_installmentDiv" class="form-wrapper  pt-4" style="display: none;">
                                                             <label for="amount">Twelfth installment</label>
-                                                            <input type="number" id="twelfth_installment"  name="twelfth_installment" class="form-control">
+                                                            <span id="twelfth_installment_msg"></span>
+                                                            <input type="number" id="twelfth_installment"  name="twelfth_installment" class="form-control money_validate">
                                                         </div>
 
 
@@ -572,14 +585,14 @@
                                                         <div class="form-wrapper col-12">
                                                             <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
                                                             <span id="actual_ex_vat_msg"></span>
-                                                            <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" class="form-control" required="">
+                                                            <input type="number"  id="actual_ex_vat" name="actual_ex_vat" class="form-control money_validate" >
                                                         </div>
 
                                                         @if($var->vehicle_registration_no=='N/A')
                                                             <div id="valueDiv"  class="form-wrapper col-12">
                                                                 <label for="amount">Value <span style="color: red;"> *</span></label>
                                                                 <span id="value_msg"></span>
-                                                                <input type="number" min="20" id="value" name="value" class="form-control" >
+                                                                <input type="number"  id="value" name="value" class="form-control money_validate" >
                                                             </div>
                                                         @else
                                                         @endif
@@ -632,12 +645,15 @@
                                                         <div class="form-wrapper col-12">
                                                             <label for="amount">Receipt Number <span style="color: red;"> *</span></label>
                                                             <span id="receipt_no_msg"></span>
-                                                            <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="">
+                                                            <input type="text" id="receipt_no" name="receipt_no" class="form-control" >
                                                         </div>
 
 
                                                     </div>
 
+                                                    <p id="validate_money_msg"></p>
+                                                    <br>
+                                                    <br>
 
                                                 </div>
                                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -730,6 +746,12 @@
                                                         </tr>
 
 
+                                                        <tr id="number_of_installments_row_confirm" style="display: none;">
+                                                            <td>Number of installments:</td>
+                                                            <td id="number_of_installments_confirm"></td>
+                                                        </tr>
+
+
                                                         <tr id="first_installment_row_confirm" style="display: none;">
                                                             <td>First installment:</td>
                                                             <td id="first_installment_confirm"></td>
@@ -739,6 +761,63 @@
                                                         <tr id="second_installment_row_confirm" style="display: none;">
                                                             <td>Second installment:</td>
                                                             <td id="second_installment_confirm"></td>
+                                                        </tr>
+
+                                                        <tr id="third_installment_row_confirm" style="display: none;">
+                                                            <td>Third installment:</td>
+                                                            <td id="third_installment_confirm"></td>
+                                                        </tr>
+
+                                                        <tr id="fourth_installment_row_confirm" style="display: none;">
+                                                            <td>Fourth installment:</td>
+                                                            <td id="fourth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="fifth_installment_row_confirm" style="display: none;">
+                                                            <td>Fifth installment:</td>
+                                                            <td id="fifth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="sixth_installment_row_confirm" style="display: none;">
+                                                            <td>Sixth installment:</td>
+                                                            <td id="sixth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="seventh_installment_row_confirm" style="display: none;">
+                                                            <td>Seventh installment:</td>
+                                                            <td id="seventh_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="eighth_installment_row_confirm" style="display: none;">
+                                                            <td>Eighth installment:</td>
+                                                            <td id="eighth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="ninth_installment_row_confirm" style="display: none;">
+                                                            <td>Ninth installment:</td>
+                                                            <td id="ninth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="tenth_installment_row_confirm" style="display: none;">
+                                                            <td>Tenth installment:</td>
+                                                            <td id="tenth_installment_confirm"></td>
+                                                        </tr>
+
+                                                        <tr id="eleventh_installment_row_confirm" style="display: none;">
+                                                            <td>Eleventh installment:</td>
+                                                            <td id="eleventh_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="twelfth_installment_row_confirm" style="display: none;">
+                                                            <td>Twelfth installment:</td>
+                                                            <td id="twelfth_installment_confirm"></td>
                                                         </tr>
 
 
@@ -1202,17 +1281,25 @@
 
                 if(insurance_type=='COMPREHENSIVE'){
                     $('#mode_of_paymentDiv').show();
-                    $('#premiumDiv').show();
+
 
                 }else{
-                    $('#premiumDiv').hide();
-                    $('#mode_of_paymentDiv').hide();
 
+                    $('#mode_of_paymentDiv').hide();
+                    $('#number_of_installmentsDiv').hide();
                     $('#first_installmentDiv').hide();
                     $('#second_installmentDiv').hide();
+                    $('#third_installmentDiv').hide();
+                    $('#fourth_installmentDiv').hide();
+                    $('#fifth_installmentDiv').hide();
+                    $('#sixth_installmentDiv').hide();
+                    $('#seventh_installmentDiv').hide();
+                    $('#eighth_installmentDiv').hide();
+                    $('#ninth_installmentDiv').hide();
+                    $('#tenth_installmentDiv').hide();
+                    $('#eleventh_installmentDiv').hide();
+                    $('#twelfth_installmentDiv').hide();
 
-                    $('#first_installment').val("");
-                    $('#second_installment').val("");
 
                 }
 
@@ -1510,9 +1597,11 @@
             });
 
 
+
             $("#next2").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
+                var p1, p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23;
 
                 var client_name=document.getElementById('full_name').value;
                 var insurance_class=document.getElementById('insurance_class').value;
@@ -1535,8 +1624,20 @@
                 var currency=document.getElementById('currency').value;
                 var email=$("#email").val();
                 var mode_of_payment=$("#mode_of_payment").val();
+                var number_of_installments=$("#number_of_installments").val();
                 var first_installment=$("#first_installment").val();
                 var second_installment=$("#second_installment").val();
+
+                var third_installment=$("#third_installment").val();
+                var fourth_installment=$("#fourth_installment").val();
+                var fifth_installment=$("#fifth_installment").val();
+                var sixth_installment=$("#sixth_installment").val();
+                var seventh_installment=$("#seventh_installment").val();
+                var eighth_installment=$("#eighth_installment").val();
+                var ninth_installment=$("#ninth_installment").val();
+                var tenth_installment=$("#tenth_installment").val();
+                var eleventh_installment=$("#eleventh_installment").val();
+                var twelfth_installment=$("#twelfth_installment").val();
 
 
                 if(commission_date==""){
@@ -1708,6 +1809,221 @@
 
 
 
+                if(number_of_installments==""){
+                    p11=0;
+                    $('#number_of_installments_msg').show();
+                    var message=document.getElementById('number_of_installments_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#number_of_installments').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p11=1;
+                    $('#number_of_installments_msg').hide();
+                    $('#number_of_installments').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(first_installment==""){
+                    p12=0;
+                    $('#first_installment_msg').show();
+                    var message=document.getElementById('first_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#first_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p12=1;
+                    $('#first_installment_msg').hide();
+                    $('#first_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(second_installment==""){
+                    p13=0;
+                    $('#second_installment_msg').show();
+                    var message=document.getElementById('second_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#second_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p13=1;
+                    $('#second_installment_msg').hide();
+                    $('#second_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(third_installment==""){
+                    p14=0;
+                    $('#third_installment_msg').show();
+                    var message=document.getElementById('third_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#third_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p14=1;
+                    $('#third_installment_msg').hide();
+                    $('#third_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(fourth_installment==""){
+                    p15=0;
+                    $('#fourth_installment_msg').show();
+                    var message=document.getElementById('fourth_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#fourth_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p15=1;
+                    $('#fourth_installment_msg').hide();
+                    $('#fourth_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(fifth_installment==""){
+                    p16=0;
+                    $('#fifth_installment_msg').show();
+                    var message=document.getElementById('fifth_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#fifth_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p16=1;
+                    $('#fifth_installment_msg').hide();
+                    $('#fifth_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(sixth_installment==""){
+                    p17=0;
+                    $('#sixth_installment_msg').show();
+                    var message=document.getElementById('sixth_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#sixth_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p17=1;
+                    $('#sixth_installment_msg').hide();
+                    $('#sixth_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(seventh_installment==""){
+                    p18=0;
+                    $('#seventh_installment_msg').show();
+                    var message=document.getElementById('seventh_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#seventh_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p18=1;
+                    $('#seventh_installment_msg').hide();
+                    $('#seventh_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(eighth_installment==""){
+                    p19=0;
+                    $('#eighth_installment_msg').show();
+                    var message=document.getElementById('eighth_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#eighth_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p19=1;
+                    $('#eighth_installment_msg').hide();
+                    $('#eighth_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(ninth_installment==""){
+                    p20=0;
+                    $('#ninth_installment_msg').show();
+                    var message=document.getElementById('ninth_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#ninth_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p20=1;
+                    $('#ninth_installment_msg').hide();
+                    $('#ninth_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(tenth_installment==""){
+                    p21=0;
+                    $('#tenth_installment_msg').show();
+                    var message=document.getElementById('tenth_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#tenth_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p21=1;
+                    $('#tenth_installment_msg').hide();
+                    $('#tenth_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(eleventh_installment==""){
+                    p22=0;
+                    $('#eleventh_installment_msg').show();
+                    var message=document.getElementById('eleventh_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#eleventh_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p22=1;
+                    $('#eleventh_installment_msg').hide();
+                    $('#eleventh_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(twelfth_installment==""){
+                    p23=0;
+                    $('#twelfth_installment_msg').show();
+                    var message=document.getElementById('twelfth_installment_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#twelfth_installment').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p23=1;
+                    $('#twelfth_installment_msg').hide();
+                    $('#twelfth_installment').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
 
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
@@ -1759,14 +2075,213 @@
 
                 if(mode_of_payment=='By installment'){
                     $('#mode_of_payment_row_confirm').show();
-                    $('#first_installment_row_confirm').show();
-                    $('#second_installment_row_confirm').show();
+                    $('#number_of_installments_row_confirm').show();
+
+
+                    if(number_of_installments=='2') {
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').hide();
+                        $('#fourth_installment_row_confirm').hide();
+                        $('#fifth_installment_row_confirm').hide();
+                        $('#sixth_installment_row_confirm').hide();
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+                    }
+                    else if(number_of_installments=='3'){
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').hide();
+                        $('#fifth_installment_row_confirm').hide();
+                        $('#sixth_installment_row_confirm').hide();
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }else if(number_of_installments=='4'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').hide();
+                        $('#sixth_installment_row_confirm').hide();
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }else if(number_of_installments=='5'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').hide();
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }else if(number_of_installments=='6'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+                    else if(number_of_installments=='7'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+
+                    else if(number_of_installments=='8'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+
+
+                    else if(number_of_installments=='9'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+                        $('#ninth_installment_row_confirm').show();
+
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+                    else if(number_of_installments=='10'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+                        $('#ninth_installment_row_confirm').show();
+                        $('#tenth_installment_row_confirm').show();
+
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+
+                    else if(number_of_installments=='11'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+                        $('#ninth_installment_row_confirm').show();
+                        $('#tenth_installment_row_confirm').show();
+                        $('#eleventh_installment_row_confirm').show();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+
+
+                    else if(number_of_installments=='12'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+                        $('#ninth_installment_row_confirm').show();
+                        $('#tenth_installment_row_confirm').show();
+                        $('#eleventh_installment_row_confirm').show();
+                        $('#twelfth_installment_row_confirm').show();
+
+                    }else{
+
+
+
+                    }
+
+
 
                 }else{
 
                     $('#mode_of_payment_row_confirm').hide();
+                    $('#number_of_installments_row_confirm').hide();
                     $('#first_installment_row_confirm').hide();
                     $('#second_installment_row_confirm').hide();
+                    $('#third_installment_row_confirm').hide();
+                    $('#fourth_installment_row_confirm').hide();
+                    $('#fifth_installment_row_confirm').hide();
+                    $('#sixth_installment_row_confirm').hide();
+                    $('#seventh_installment_row_confirm').hide();
+                    $('#eighth_installment_row_confirm').hide();
+                    $('#ninth_installment_row_confirm').hide();
+                    $('#tenth_installment_row_confirm').hide();
+                    $('#eleventh_installment_row_confirm').hide();
+                    $('#twelfth_installment_row_confirm').hide();
                 }
 
 
@@ -1828,17 +2343,296 @@
 
 
 
-                if(insurance_type=='COMPREHENSIVE'){
+                if(insurance_type=='COMPREHENSIVE') {
 
                     $("#mode_of_payment_confirm").html(mode_of_payment);
                     $("#mode_of_payment_confirm").css('font-weight', 'bold');
 
 
-                    $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
-                    $("#first_installment_confirm").css('font-weight', 'bold');
+                    $("#number_of_installments_confirm").html(number_of_installments);
+                    $("#number_of_installments_confirm").css('font-weight', 'bold');
 
-                    $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
-                    $("#second_installment_confirm").css('font-weight', 'bold');
+
+                    if (number_of_installments == '2') {
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                    } else if (number_of_installments == '3') {
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                    } else if (number_of_installments == '4') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+                    } else if (number_of_installments == '5') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment) + " " + currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+                    } else if (number_of_installments == '6') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment) + " " + currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment) + " " + currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+                    } else if (number_of_installments == '7') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment) + " " + currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment) + " " + currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment) + " " + currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+                    } else if (number_of_installments == '8') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment) + " " + currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment) + " " + currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment) + " " + currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment) + " " + currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+                    } else if (number_of_installments == '9') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment) + " " + currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment) + " " + currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment) + " " + currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment) + " " + currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#ninth_installment_confirm").html(thousands_separators(ninth_installment) + " " + currency);
+                        $("#ninth_installment_confirm").css('font-weight', 'bold');
+                    } else if (number_of_installments == '10') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment) + " " + currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment) + " " + currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment) + " " + currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment) + " " + currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#ninth_installment_confirm").html(thousands_separators(ninth_installment) + " " + currency);
+                        $("#ninth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#tenth_installment_confirm").html(thousands_separators(tenth_installment) + " " + currency);
+                        $("#tenth_installment_confirm").css('font-weight', 'bold');
+                    } else if (number_of_installments == '11') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment) + " " + currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment) + " " + currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment) + " " + currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment) + " " + currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#ninth_installment_confirm").html(thousands_separators(ninth_installment) + " " + currency);
+                        $("#ninth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#tenth_installment_confirm").html(thousands_separators(tenth_installment) + " " + currency);
+                        $("#tenth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#eleventh_installment_confirm").html(thousands_separators(eleventh_installment) + " " + currency);
+                        $("#eleventh_installment_confirm").css('font-weight', 'bold');
+                    } else if (number_of_installments == '12') {
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment) + " " + currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment) + " " + currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment) + " " + currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment) + " " + currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment) + " " + currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment) + " " + currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment) + " " + currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment) + " " + currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#ninth_installment_confirm").html(thousands_separators(ninth_installment) + " " + currency);
+                        $("#ninth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#tenth_installment_confirm").html(thousands_separators(tenth_installment) + " " + currency);
+                        $("#tenth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#eleventh_installment_confirm").html(thousands_separators(eleventh_installment) + " " + currency);
+                        $("#eleventh_installment_confirm").css('font-weight', 'bold');
+
+                        $("#twelfth_installment_confirm").html(thousands_separators(twelfth_installment) + " " + currency);
+                        $("#twelfth_installment_confirm").css('font-weight', 'bold');
+                    } else {
+
+
+                    }
 
 
                 }else{
@@ -1865,11 +2659,290 @@
 
                     if(insurance_type=='COMPREHENSIVE'){
 
-                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1') {
+                        //check for different mode of payments
 
-                            gonext();
+                        if(mode_of_payment=="By installment"){
+
+//check if number of installments field is not empty
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1') {
+
+                                //Then check for each number of installments specified
+                                if(number_of_installments=='2'){
+
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1') {
+
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+
+
+                                    }else{
+
+
+
+                                    }
+
+
+                                }else if(number_of_installments=='3'){
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+                                }else if(number_of_installments=='4'){
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+                                }else if(number_of_installments=='5'){
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20 && fifth_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+                                }else if(number_of_installments=='6'){
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p17=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20 && fifth_installment>=20 && sixth_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+                                }else if(number_of_installments=='7'){
+
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p17=='1' & p18=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20 && fifth_installment>=20 && sixth_installment>=20 && seventh_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+                                }else if(number_of_installments=='8'){
+
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p17=='1' & p18=='1' & p19=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20 && fifth_installment>=20 && sixth_installment>=20 && seventh_installment>=20 && eighth_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+
+                                }else if (number_of_installments=='9'){
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p17=='1' & p18=='1' & p19=='1' & p20=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20 && fifth_installment>=20 && sixth_installment>=20 && seventh_installment>=20 && eighth_installment>=20 && ninth_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+                                }else if (number_of_installments=='10'){
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p17=='1' & p18=='1' & p19=='1' & p20=='1' & p21=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20 && fifth_installment>=20 && sixth_installment>=20 && seventh_installment>=20 && eighth_installment>=20 && ninth_installment>=20 && tenth_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+
+                                }else if (number_of_installments=='11'){
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p17=='1' & p18=='1' & p19=='1' & p20=='1' & p21=='1' & p22=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20 && fifth_installment>=20 && sixth_installment>=20 && seventh_installment>=20 && eighth_installment>=20 && ninth_installment>=20 && tenth_installment>=20 && eleventh_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+                                } else if (number_of_installments=='12'){
+
+
+                                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p17=='1' & p18=='1' & p19=='1' & p20=='1' & p21=='1' & p22=='1' & p23=='1') {
+
+                                        //check amounts if valid
+                                        if (sum_insured>=20 && actual_ex_vat>=20 && first_installment>=20 && second_installment>=20 && third_installment>=20 && fourth_installment>=20 && fifth_installment>=20 && sixth_installment>=20 && seventh_installment>=20 && eighth_installment>=20 && ninth_installment>=20 && tenth_installment>=20 && eleventh_installment>=20 && twelfth_installment>=20){
+                                            document.getElementById("validate_money_msg").innerHTML ='';
+                                            gonext();
+                                        }else{
+                                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                            document.getElementById("validate_money_msg").style.color='Red';
+
+                                        }
+
+                                    }else{
+
+
+
+                                    }
+
+
+                                } else{
+
+
+
+                                }
+
+
+
+
+
+
+
+                            }else{
+
+
+
+                            }
+
+
+
+
+
+
+                        }else if(mode_of_payment=="Full payment"){
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1' ) {
+
+                                //check amounts if valid
+                                if (sum_insured>=20 && actual_ex_vat>=20 ){
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+                                    gonext();
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                    document.getElementById("validate_money_msg").style.color='Red';
+
+                                }
+
+                            }else{
+
+
+
+                            }
 
                         }else{
+
 
 
 
@@ -1877,13 +2950,27 @@
 
 
 
+
+
+
+
+
+
+
                     }
 
                     else{
 
-                        if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1'  & p9=='1'  & p10=='1') {
+                        if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1') {
 
-                            gonext();
+                            if (sum_insured>=20 && actual_ex_vat>=20 ){
+                                document.getElementById("validate_money_msg").innerHTML ='';
+                                gonext();
+                            }else{
+                                document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                document.getElementById("validate_money_msg").style.color='Red';
+
+                            }
 
                         }else{
 
@@ -1901,7 +2988,14 @@
 
                     if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' & p9=='1'  & p10=='1') {
 
-                        gonext();
+                        if (sum_insured>=20 && actual_ex_vat>=20 && value>=20 ){
+                            document.getElementById("validate_money_msg").innerHTML ='';
+                            gonext();
+                        }else{
+                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                            document.getElementById("validate_money_msg").style.color='Red';
+
+                        }
 
                     }else{
 
@@ -2037,6 +3131,38 @@
 
     </script>
 
+
+
+
+{{--    <script>--}}
+
+{{--        $('.money_validate').on('input',function(e){--}}
+{{--            e.preventDefault();--}}
+
+{{--            var money_entered=$(this).val();--}}
+
+
+{{--            if (money_entered<20) {--}}
+
+{{--                document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';--}}
+{{--                document.getElementById("validate_money_msg").style.color='Red';--}}
+{{--                document.getElementById("next2").disabled = true;--}}
+{{--                document.getElementById("next2").style.backgroundColor='#dee2e6';--}}
+{{--            }else{--}}
+{{--                document.getElementById("next2").style.backgroundColor='#87ceeb';--}}
+
+{{--                document.getElementById("next2").disabled = false;--}}
+{{--                document.getElementById("validate_money_msg").innerHTML ='';--}}
+{{--            }--}}
+
+
+{{--            document.getElementById("validate_money_msg").style.color='Red';--}}
+
+
+
+{{--        });--}}
+
+{{--    </script>--}}
 
 
 

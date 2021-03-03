@@ -211,7 +211,7 @@ Route::post('/contracts/car_rental/add_A/submit','carContractsController@newcont
 
 Route::post('/contracts/car_rental/add_B/submit','carContractsController@newcontractB')->name('newCarcontractB');
 
-Route::post('/contracts/car_rental/add_C/submit','carContractsController@newcontractC')->name('newCarcontractC'); 
+Route::post('/contracts/car_rental/add_C/submit','carContractsController@newcontractC')->name('newCarcontractC');
 
 Route::post('/contracts/car_rental/add_D/submit','carContractsController@newcontractD')->name('newCarcontractD');
 
@@ -370,7 +370,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/space_contracts_subclients/{client_id}', 'ContractsController@SpaceContractsSubClientsManagement')->name('space_contracts_subclients');
     Route::get('/renew_space_contract_form/{id}','ContractsController@renewSpaceContractForm')->name('renew_space_contract_form');
     Route::get('/edit_space_contract/{id}/', 'ContractsController@EditSpaceContractForm')->name('edit_contract');
-    Route::get('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
+    Route::post('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
     Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
     Route::post('/approve_space', 'SpaceController@approveSpace')->name('approve_space');
     Route::post('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
@@ -429,6 +429,12 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/check_availability_water', 'PaymentController@checkAvailabilityWater')->name('check_availability_water');
     Route::get('/check_availability_electricity', 'PaymentController@checkAvailabilityElectricity')->name('check_availability_electricity');
     Route::get('/check_availability_space', 'PaymentController@checkAvailabilitySpace')->name('check_availability_space');
+    Route::post('/add_discount_space/{id}', 'PaymentController@addDiscountSpace')->name('add_discount_space');
+    Route::post('/edit_discount_space/{id}', 'PaymentController@editDiscountSpace')->name('edit_discount_space');
+
+
+
+
 
 //Invoices Space
     Route::get('/invoice_pdf', 'InvoicesController@index');

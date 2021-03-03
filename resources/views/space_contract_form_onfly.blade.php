@@ -303,7 +303,10 @@
                             <p>Fill all form fields with (*) to go to the next step</p>
                             <div class="row">
                                 <div class="col-md-12 mx-0">
-                                    <form id="msform" METHOD="GET" action="{{ route('create_space_contract')}}">
+                                    <form id="msform" METHOD="POST" enctype="multipart/form-data" action="{{ route('create_space_contract')}}">
+                                    {{csrf_field()}}
+
+
                                         <!-- progressbar -->
                                         <ul  id="progressbar">
                                             <li class="active" id="personal"><strong>Client</strong></li>
@@ -929,10 +932,140 @@
 
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="submit" name="submit" class="submit action-button" value="Save"/>
-                                            <input type="submit" name="submit" class="submit action-button" value="Save and print"/>
+                                            <input type="button" id="next4" name="next" class="next action-button" value="Next"/>
                                             <a href="/businesses" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
+
+
+                                        <fieldset>
+                                            <div class="form-card">
+                                                <h2 class="fs-title">Invoice Information</h2>
+                                                <div class="form-group row">
+
+
+                                                    <div class="form-group col-12 pt-4"  >
+                                                        <div class="form-wrapper">
+                                                            <label for="debtor_name">Client Full Name </label>
+
+                                                            <input type="text" id="debtor_name" readonly name="debtor_name" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div  class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Client Account Code</label>
+                                                            <input type="text" class="form-control" id="debtor_account_code_space" readonly name="debtor_account_code" value=""  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div  class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                            <input type="text" readonly id="tin_invoice"  name="tin_invoice" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="form-group col-12 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Client Address </label>
+                                                            <input type="text" class="form-control" id="debtor_address_space" name="debtor_address" value="" readonly autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Invoice Start Date</label>
+                                                            <input type="date" class="form-control" id="invoicing_period_start_date" name="invoicing_period_start_date" value="" required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div  class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="">Invoice End Date</label>
+                                                            <input type="date" class="form-control" id="invoicing_period_end_date" name="invoicing_period_end_date" value="" required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="">Period </label>
+                                                            <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div   class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Project ID </label>
+                                                            <input type="text" class="form-control" id="" name="project_id" value="" required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div  class="form-group col-6 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for="">Amount </label>
+                                                            <input type="number" min="20" class="form-control" id="amount_to_be_paid" name="amount_to_be_paid" value="" required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div  class="form-group col-6 pt-4">
+                                                        <div  class="form-wrapper">
+                                                            <label>Currency </label>
+                                                            <input type="text" class="form-control" id="currency_invoice" name="currency_invoice" value="" readonly  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div  class="form-group col-md-12 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for="" >Status </label>
+                                                            <input type="text" class="form-control" id="status" name="status" value="" required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div  class="form-group col-md-12 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for="" >Description</label>
+                                                            <input type="text" class="form-control" id="description" name="description" value="" required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+
+
+
+
+
+
+
+                                            </div>
+                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                                            <input type="submit" name="submit" class="submit action-button" value="Save"/>
+                                            <input type="submit" name="submit" class="submit action-button" value="Save and print"/>
+                                            <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+
+
+                                        </fieldset>
+
+
+
 
 
 
@@ -1242,7 +1375,7 @@
                 var minor = $('#minor_list').val();
                 var major = $('#getMajor').val();
                 var space_id = $('#space_id_contract').val();
-
+                var client_type_contract=$("#client_type_contract").val();
 
 
 
@@ -1606,29 +1739,222 @@
 
 
 
-                if(academic_dependence=='Yes'){
+                if(client_type_contract=='Direct and has clients'){
 
-                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1'){
-                        gonext();
+
+                    if(p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p11=='1' & p9=='1' & p10=='1' ){
+
+                        //check validity
+                        if (duration>=1 & percentage_to_pay>=1 & payment_cycle>=1 ){
+
+                            document.getElementById("validate_money_msg").innerHTML ='';
+                            gonext();
+
+                        }else{
+
+                            document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries';
+                            document.getElementById("validate_money_msg").style.color='Red';
+                        }
+
+                    }else{
+
+
+
                     }
 
 
 
-                }else if(academic_dependence=='No'){
+                }else if(client_type_contract=='Direct'){
 
-                    if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1'){
-                        gonext();
+
+
+                    if(p12=='1'  & p1=='1' & p2=='1' & p3=='1' & p9=='1' & p10=='1' ){
+
+                        //check validity
+                        if (duration>=1  & payment_cycle>=1 ){
+
+                            document.getElementById("validate_money_msg").innerHTML ='';
+                            gonext();
+
+                        }else{
+
+                            document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries';
+                            document.getElementById("validate_money_msg").style.color='Red';
+                        }
+
+                    }else{
+
+
+
                     }
 
                 }else{
 
 
+                    if(p12=='1'  & p1=='1' & p2=='1' & p3=='1' & p9=='1' & p10=='1' ){
+
+                        //check validity
+                        if (duration>=1  & payment_cycle>=1 ){
+
+                            document.getElementById("validate_money_msg").innerHTML ='';
+                            gonext();
+
+                        }else{
+
+                            document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries';
+                            document.getElementById("validate_money_msg").style.color='Red';
+                        }
+
+                    }else{
+
+
+
+                    }
 
                 }
 
 
 
             });
+
+
+
+
+            $("#next4").click(function(){
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
+                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p26;
+                var first_name=document.getElementById('first_name').value;
+                var last_name=document.getElementById('last_name').value;
+                var company_name=document.getElementById('company_name').value;
+                var client_type=document.getElementById('client_type').value;
+                var email=$("#email").val();
+                var official_client_id=$("#official_client_id").val();
+
+                var percentage_to_pay=$("#percentage_to_pay").val();
+                var phone_number=document.getElementById('phone_number').value;
+                var address=document.getElementById('address').value;
+                var sub_location = $('#space_sub_location').val();
+                var location = $('#space_location').val();
+                var minor = $('#minor_list').val();
+                var major = $('#getMajor').val();
+                var space_id = $('#space_id_contract').val();
+
+                var start_date=document.getElementById('start_date').value;
+                var duration=document.getElementById('duration').value;
+                var duration_period=document.getElementById('duration_period').value;
+
+                var academic_dependence=document.getElementById('academic_dependence').value;
+                var vacation_season=document.getElementById('vacation_season').value;
+                var academic_season=document.getElementById('academic_season').value;
+                var amount=document.getElementById('amount').value;
+                var rent_sqm=document.getElementById('rent_sqm').value;
+                var currency=document.getElementById('currency').value;
+                var payment_cycle=document.getElementById('payment_cycle').value;
+                var escalation_rate=document.getElementById('escalation_rate').value;
+                var space_size=document.getElementById('space_size').value;
+                var has_water_bill=document.getElementById('has_water_bill').value;
+                var has_electricity_bill=document.getElementById('has_electricity_bill').value;
+
+
+                var tin=$("#tin").val();
+                var contract_category=$("#contract_category").val();
+                var tbs_certificate=$("#tbs_certificate").val();
+                var gpsa_certificate=$("#gpsa_certificate").val();
+                var food_business_license=$("#food_business_license").val();
+                var business_license=$("#business_license").val();
+                var osha_certificate=$("#osha_certificate").val();
+                var tcra_registration=$("#tcra_registration").val();
+                var brela_registration=$("#brela_registration").val();
+                var additional_businesses_list=$("#additional_businesses_list").val();
+                var additional_businesses_amount=$("#additional_businesses_amount").val();
+                var total_amount=$("#total_amount").val();
+                var academic_season_total=$("#academic_season_total").val();
+                var vacation_season_total=$("#vacation_season_total").val();
+                var security_deposit=$("#security_deposit").val();
+                var clientType=$("#client_type").val();
+
+
+
+
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+                const dateObj = new Date(start_date);
+                const month = dateObj.getMonth()+1;
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                const year = dateObj.getFullYear();
+                const output = day  + '/'+ month  + '/' + year;
+
+
+                function thousands_separators(num)
+                {
+                    var num_parts = num.toString().split(".");
+                    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    return num_parts.join(".");
+                }
+
+
+
+                // document.getElementById("client").innerHTML ='';
+
+
+
+
+                if(client_type=='1'){
+
+                    $("#debtor_name").val(first_name+" "+last_name);
+
+                }else if(client_type=='2'){
+
+                    $("#debtor_name").val(company_name);
+
+                }else{
+
+
+                }
+
+
+
+
+                $("#debtor_account_code_space").val(official_client_id);
+                $("#tin_invoice").val(tin);
+                $("#debtor_address_space").val(address);
+
+                $("#invoicing_period_start_date").val(start_date);
+
+                var start_date2=new Date(start_date);
+
+                var calculated_end_date = new Date(start_date2.setMonth(start_date2.getMonth()+ +payment_cycle));
+
+                var MyDateString = (calculated_end_date.getFullYear() + '-'
+                    + ('0' + (calculated_end_date.getMonth()+1)).slice(-2) + '-'+('0' + calculated_end_date.getDate()).slice(-2));
+
+
+
+
+
+
+
+
+                $("#invoicing_period_end_date").val(MyDateString);
+
+                $("#currency_invoice").val(currency);
+
+
+                gonext();
+
+
+
+
+
+
+
+
+
+
+
+            });
+
 
 
 

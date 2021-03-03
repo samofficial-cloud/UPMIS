@@ -158,26 +158,550 @@
 
     </div>
 
-    @if($mode_of_payment=='By installment')
-
     <div style="width: 100%; clear: both; padding-top: 1.3%;">
         <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Mode of payment:</div>
         <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b> {{$mode_of_payment}}</b></div>
 
     </div>
 
+    @if($mode_of_payment=='By installment')
 
-    <div style="width: 100%; clear: both; padding-top: 1.3%;">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
-        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
-
+    <div style="width: 100%; clear: both; padding-top: 1.3%; ">
+        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Number of installments:</div>
+        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b> {{$number_of_installments}}</b></div>
     </div>
 
-    <div style="width: 100%; clear: both; padding-top: 1.3%;">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
-        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
 
-    </div>
+
+    @if($number_of_installments=='2')
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+        @elseif($number_of_installments=='3')
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+        @elseif($number_of_installments=='4')
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+        @elseif($number_of_installments=='5')
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fifth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fifth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+        @elseif($number_of_installments=='6')
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fifth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fifth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Sixth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($sixth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+        @elseif($number_of_installments=='7')
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fifth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fifth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Sixth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($sixth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Seventh installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($seventh_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+        @elseif($number_of_installments=='8')
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fifth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fifth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Sixth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($sixth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Seventh installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($seventh_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Eighth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($eighth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+        @elseif($number_of_installments=='9')
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fifth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fifth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Sixth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($sixth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Seventh installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($seventh_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Eighth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($eighth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Ninth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($ninth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+        @elseif($number_of_installments=='10')
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fifth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fifth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Sixth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($sixth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Seventh installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($seventh_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Eighth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($eighth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Ninth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($ninth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Tenth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($tenth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+        @elseif($number_of_installments=='11')
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fifth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fifth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Sixth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($sixth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Seventh installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($seventh_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Eighth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($eighth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Ninth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($ninth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Tenth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($tenth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Eleventh installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($eleventh_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+        @elseif($number_of_installments=='12')
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($first_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Second installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($second_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Third installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($third_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fourth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fourth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Fifth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($fifth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Sixth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($sixth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Seventh installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($seventh_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Eighth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($eighth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Ninth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($ninth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Tenth installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($tenth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Eleventh installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($eleventh_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+            <div style="width: 100%; clear: both; padding-top: 1.3%;">
+                <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Twelfth_installment:</div>
+                <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{number_format($twelfth_installment)}} {{$currency}} </b></div>
+
+            </div>
+
+
+        @else
+        @endif
+
+
+
+
+
+
+
+
+
 
     @else
     @endif
@@ -237,7 +761,11 @@
     <div style="width: 100%; clear: both; padding-top: 1.3%;">
         <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Receipt number:</div>
         <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$receipt_no}}</b></div>
-
+        @if($mode_of_payment=='By installment')
+            <br>
+            <p class="t-4" style="padding-left: 4%; padding-top: 1%; "><b>N.B: </b> Client will be assisted in case of anything only after paying the full amount</p>
+        @else
+        @endif
     </div>
 
 

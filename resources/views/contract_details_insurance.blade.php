@@ -179,6 +179,489 @@
                         </tr>
 
 
+
+
+
+
+                            <tr>
+                                <td>Mode of payment:</td>
+                                <td>{{$var->mode_of_payment}} </td>
+                            </tr>
+
+                        @if($var->mode_of_payment=='By installment')
+
+                            <tr>
+                                <td>Number of installments:</td>
+                                <td>{{$var->number_of_installments}} </td>
+                            </tr>
+
+                            @if($var->number_of_installments=='2')
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                @elseif($var->number_of_installments=='3')
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                @elseif($var->number_of_installments=='4')
+
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                @elseif($var->number_of_installments=='5')
+
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fifth installment:</td>
+                                    <td>{{number_format($var->fifth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                @elseif($var->number_of_installments=='6')
+
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fifth installment:</td>
+                                    <td>{{number_format($var->fifth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Sixth installment:</td>
+                                    <td>{{number_format($var->sixth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                @elseif($var->number_of_installments=='7')
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fifth installment:</td>
+                                    <td>{{number_format($var->fifth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Sixth installment:</td>
+                                    <td>{{number_format($var->sixth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Seventh installment:</td>
+                                    <td>{{number_format($var->seventh_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                @elseif($var->number_of_installments=='8')
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fifth installment:</td>
+                                    <td>{{number_format($var->fifth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Sixth installment:</td>
+                                    <td>{{number_format($var->sixth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Seventh installment:</td>
+                                    <td>{{number_format($var->seventh_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Eighth installment:</td>
+                                    <td>{{number_format($var->eighth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                @elseif($var->number_of_installments=='9')
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fifth installment:</td>
+                                    <td>{{number_format($var->fifth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Sixth installment:</td>
+                                    <td>{{number_format($var->sixth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Seventh installment:</td>
+                                    <td>{{number_format($var->seventh_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Eighth installment:</td>
+                                    <td>{{number_format($var->eighth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Ninth installment:</td>
+                                    <td>{{number_format($var->ninth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                @elseif($var->number_of_installments=='10')
+
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fifth installment:</td>
+                                    <td>{{number_format($var->fifth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Sixth installment:</td>
+                                    <td>{{number_format($var->sixth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Seventh installment:</td>
+                                    <td>{{number_format($var->seventh_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Eighth installment:</td>
+                                    <td>{{number_format($var->eighth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Ninth installment:</td>
+                                    <td>{{number_format($var->ninth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Tenth installment:</td>
+                                    <td>{{number_format($var->tenth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                @elseif($var->number_of_installments=='11')
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fifth installment:</td>
+                                    <td>{{number_format($var->fifth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Sixth installment:</td>
+                                    <td>{{number_format($var->sixth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Seventh installment:</td>
+                                    <td>{{number_format($var->seventh_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Eighth installment:</td>
+                                    <td>{{number_format($var->eighth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Ninth installment:</td>
+                                    <td>{{number_format($var->ninth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Tenth installment:</td>
+                                    <td>{{number_format($var->tenth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Eleventh installment:</td>
+                                    <td>{{number_format($var->eleventh_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                @elseif($var->number_of_installments=='12')
+
+
+                                <tr>
+                                    <td>First installment:</td>
+                                    <td>{{number_format($var->first_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Second installment:</td>
+                                    <td>{{number_format($var->second_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Third installment:</td>
+                                    <td>{{number_format($var->third_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fourth installment:</td>
+                                    <td>{{number_format($var->fourth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Fifth installment:</td>
+                                    <td>{{number_format($var->fifth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Sixth installment:</td>
+                                    <td>{{number_format($var->sixth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Seventh installment:</td>
+                                    <td>{{number_format($var->seventh_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Eighth installment:</td>
+                                    <td>{{number_format($var->eighth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Ninth installment:</td>
+                                    <td>{{number_format($var->ninth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Tenth installment:</td>
+                                    <td>{{number_format($var->tenth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Eleventh installment:</td>
+                                    <td>{{number_format($var->eleventh_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Twelfth_installment:</td>
+                                    <td>{{number_format($var->twelfth_installment)}}  {{$var->currency}}</td>
+                                </tr>
+
+                            @else
+                            @endif
+
+                        @else
+                        @endif
+
+
+
                         <tr>
                             <td> Premium:</td>
                             <td> {{number_format($var->premium)}} {{$var->currency}}</td>
