@@ -589,6 +589,46 @@ class PaymentController extends Controller
     }
 
 
+
+    public function addDiscountSpace(Request $request,$id)
+    {
+
+        DB::table('space_payments')
+            ->where('id', $id)
+            ->update(['over_payment' => $request->get('over_payment')]);
+
+        DB::table('space_payments')
+            ->where('id', $id)
+            ->update(['stage' => $request->get('1')]);
+
+
+    }
+
+
+
+
+
+
+    public function editDiscountSpace(Request $request,$id)
+    {
+
+        DB::table('space_payments')
+            ->where('id', $id)
+            ->update(['over_payment' => $request->get('over_payment')]);
+
+        DB::table('space_payments')
+            ->where('id', $id)
+            ->update(['stage' => $request->get('1')]);
+
+
+    }
+
+
+
+
+
+
+
     public function payment_filtered(){
         return View::make('payments_filtered');
     }

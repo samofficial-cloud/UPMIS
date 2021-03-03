@@ -825,7 +825,7 @@
 
                                 <div>
 
-                                    <table class=" table " >
+                                    <table class="table">
                                         <thead >
                                         <tr>
                                             <th scope="col">S/N</th>

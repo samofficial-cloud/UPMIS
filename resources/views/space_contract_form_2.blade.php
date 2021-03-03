@@ -697,7 +697,7 @@
                                                     <div id="percentage_to_payDiv"  class="form-wrapper pt-4 col-12">
                                                         <label for="percentage_to_pay">Percentage to be paid(Of total collection) <span style="color: red;"> *</span></label>
                                                         <span id="percentage_to_pay_msg"></span>
-                                                        <input type="number"  min="1" step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
+                                                        <input type="number"  step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
                                                     </div>
 
 
@@ -825,9 +825,7 @@
                                                 </div>
 
 
-                                                <p id="validate_money_msg"></p>
-                                                <br>
-                                                <br>
+
 
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -1790,8 +1788,8 @@
                 var space_id = $('#space_id_contract').val();
 
                 var start_date=document.getElementById('start_date').value;
-                var duration= $('#duration').val();
-                var duration_period=$('#duration_period').val();
+                var duration=document.getElementById('duration').value;
+                var duration_period=document.getElementById('duration_period').value;
 
                 var academic_dependence=document.getElementById('academic_dependence').value;
                 var vacation_season=document.getElementById('vacation_season').value;
@@ -2396,24 +2394,99 @@
 
 
 
-                if(client_type_contract=='Direct and has clients'){
+        if(academic_dependence=='Yes'){
+
+            if(client_type_contract=='Direct and has clients'){
 
 
-                    if(p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p11=='1' & p9=='1' & p10=='1' ){
+                //Additional businesses start
 
-                    //check validity
-                        if (duration>=1 & percentage_to_pay>=1 & payment_cycle>=1 ){
+                if( $('#has_additional_businesses').prop('checked') ) {
 
-                            document.getElementById("validate_money_msg").innerHTML ='';
-                            gonext();
+
+                    var academic_dependence=$('#academic_dependence').val();
+
+                    if(academic_dependence=='Yes'){
+
+                        if(minor=="Canteen"){
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'  & p14=='1' & p15=='1' & p16=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+
+
+                        }else if(major=='Banking'){
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'    & p17=='1' & p18=='1'  & p26=='1'){
+                                gonext();
+                            }
+
+                        }else if (minor=="Postal services"){
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'   & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p26=='1'){
+                                gonext();
+                            }
+
 
                         }else{
 
-                            document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries';
-                            document.getElementById("validate_money_msg").style.color='Red';
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'   & p17=='1'  & p26=='1'){
+                                gonext();
+                            }
+
                         }
 
+
+
                     }else{
+
+
+
+
+                        if(minor=="Canteen"){
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'  & p14=='1' & p15=='1' & p16=='1'  & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+
+
+                        }else if(major=='Banking'){
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'    & p17=='1' & p18=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+                        }else if (minor=="Postal services"){
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'   & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+                        }else{
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1'     & p17=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+                        }
+
+
+
+
+
+
 
 
 
@@ -2421,57 +2494,323 @@
 
 
 
-                }else if(client_type_contract=='Direct'){
 
-
-
-                    if(p12=='1'  & p1=='1' & p2=='1' & p3=='1' & p9=='1' & p10=='1' ){
-
-                        //check validity
-                        if (duration>=1  & payment_cycle>=1 ){
-
-                            document.getElementById("validate_money_msg").innerHTML ='';
-                            gonext();
-
-                        }else{
-
-                            document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries';
-                            document.getElementById("validate_money_msg").style.color='Red';
-                        }
-
-                    }else{
-
-
-
-                    }
 
                 }else{
 
 
-                    if(p12=='1'  & p1=='1' & p2=='1' & p3=='1' & p9=='1' & p10=='1' ){
 
-                        //check validity
-                        if (duration>=1  & payment_cycle>=1 ){
 
-                            document.getElementById("validate_money_msg").innerHTML ='';
-                            gonext();
+                }
+
+                //Additional businesses end
+
+
+
+
+
+
+
+
+            }
+
+            else{
+
+
+                //Additional businesses start
+
+                if( $('#has_additional_businesses').prop('checked') ) {
+
+
+                    var academic_dependence=$('#academic_dependence').val();
+
+                    if(academic_dependence=='Yes'){
+
+                        if(minor=="Canteen"){
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+
+
+                        }else if(major=='Banking'){
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p18=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+                        }else if (minor=="Postal services"){
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1'  & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p26=='1'){
+                                gonext();
+                            }
+
 
                         }else{
 
-                            document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries';
-                            document.getElementById("validate_money_msg").style.color='Red';
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1'  & p17=='1'  & p26=='1'){
+                                gonext();
+                            }
+
                         }
+
+
 
                     }else{
 
 
 
+
+                        if(minor=="Canteen"){
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1'  & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+
+
+                        }else if(major=='Banking'){
+
+
+                            if(p1=='1' & p2=='1' & p3=='1'    & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1'   & p17=='1' & p18=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+                        }else if (minor=="Postal services"){
+
+
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+
+                        }else{
+
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+                        }
+
+
+
+
+
+
+
+
+
                     }
+
+
+
+
+
+                }else{
+
+
+
 
                 }
 
+                //Additional businesses end
 
 
+
+
+
+            }
+
+
+
+        }else if(academic_dependence=='No'){
+
+
+            if(client_type_contract=='Direct and has clients'){
+
+
+                if(p1=='1' & p2=='1' & p3=='1'  & p9=='1' & p10=='1' & p11=='1' & p12=='1'  & p26=='1'){
+                    gonext();
+                }
+
+
+            }
+
+            else{
+
+                //Additional businesses start
+
+                if( $('#has_additional_businesses').prop('checked') ) {
+
+
+                    var academic_dependence=$('#academic_dependence').val();
+
+                    if(academic_dependence=='Yes'){
+
+                        if(minor=="Canteen"){
+
+
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+
+
+                        }else if(major=='Banking'){
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p18=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+                        }else if (minor=="Postal services"){
+
+
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+                        }else{
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p26=='1'){
+                                gonext();
+                            }
+
+                        }
+
+
+
+                    }else{
+
+
+
+
+                        if(minor=="Canteen"){
+
+
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p14=='1' & p15=='1' & p16=='1'  & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+
+
+                        }else if(major=='Banking'){
+
+
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p18=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+                        }else if (minor=="Postal services"){
+
+
+
+
+
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p15=='1'  & p17=='1' & p19=='1' & p20=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+
+                        }else{
+
+
+
+
+
+
+                            if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1' & p12=='1' & p13=='1' & p17=='1' & p23=='1' & p26=='1'){
+                                gonext();
+                            }
+
+
+                        }
+
+
+
+
+
+
+
+
+
+                    }
+
+
+
+
+
+                }else{
+
+
+
+
+                }
+
+                //Additional businesses end
+
+
+
+
+
+
+
+
+            }
+
+
+
+
+        }else{
+//logically cannot be excecuted
+            if(p1=='1' & p2=='1' & p3=='1'  & p9=='1' & p10=='1' & p11=='1' & p12=='1' & p13=='1' & p26=='1'){
+                gonext();
+            }
+
+        }
 
 
 
