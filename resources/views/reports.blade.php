@@ -1317,6 +1317,9 @@ $year=$current-3;
               @if ($category=='Real Estate only' OR $category=='All')
                 <option value="Space">Real Estate</option>
               @endif
+              @if ($category=='Research Flats Officer' OR $category=='All')
+                <option value="Flats">Research Flats</option>
+              @endif
                @if ($category=='All')
                 <option value="All">All Businesses</option>
               @endif

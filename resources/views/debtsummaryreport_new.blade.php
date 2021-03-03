@@ -153,6 +153,10 @@ $electric_tzsdebt =0;
 $electric_usddebt = 0;
 $electric_tzsincome =0;
 $electric_usdincome = 0;
+$flats_usddebt = 0;
+$flats_usdincome = 0;
+$flats_tzsdebt =0;
+$flats_tzsincome = 0;
 ?>
 <center><h4>
     @if($_GET['b_type']=='Space')
@@ -231,6 +235,12 @@ $electric_usdincome = 0;
           <br><br>Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start2']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end2']))}}</strong>
         @else
           <br><br>Revenue Collection and Debts Summary
+        @endif
+      @elseif($_GET['b_type']=='Flats')
+        @if($_GET['yr2_fil']=='true')
+          <br><br>Research Flats Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start2']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end2']))}}</strong>
+        @else
+          <br><br>Research Flats Revenue Collection and Debts Summary
         @endif
       @endif
     </h4></center>
@@ -639,6 +649,118 @@ $electric_usdincome = 0;
             <td style="width: 18%; text-align: right;">{{number_format($udia_usddebt)}}</td>
         </tr>
 </table> --}}
+
+@elseif($_GET['b_type']=='Flats')
+<table class="hover table table-striped table-bordered" id="FlatsTable">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col" style="width: 7%;">SN</th>
+          <th scope="col">Client Name</th>
+          <th scope="col">Arrival Date</th>
+          <th scope="col">Departure Date</th>
+          <th scope="col" style="width: 12%;">Currency</th>
+          <th scope="col" style="width: 18%;">Revenue</th>
+          <th scope="col" style="width: 18%;">Debt</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for($z = 0; $z < count($contract_id); $z++)
+          @foreach($contract_id[$z] as $contract)
+            <?php $a = $a+1;?>
+            <tr>
+              <td style="text-align: center">{{$a}}.</td>
+              <td>{{$contract->debtor_name}}</td>
+              <td><center>{{date('d/m/Y',strtotime($contract->arrival_date))}}</center></td>
+              <td><center>{{date('d/m/Y',strtotime($contract->departure_date))}}</center></td>
+              <td style="text-align: center;">{{$contract->currency_invoice}}</td>
+              <?php
+              $income=array();
+                if($_GET['yr2_fil']=='true'){
+                  $income=DB::table('research_flats_payments')
+                            ->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+                            ->select(array(DB::raw('sum(amount_paid) as total')))
+                            ->where('research_flats_invoices.debtor_name',$contract->debtor_name)
+                            ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                            ->value('total');
+
+                    $debt=DB::table('research_flats_payments')
+                        ->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+                        ->select('amount_not_paid')
+                        ->where('research_flats_invoices.debtor_name',$contract->debtor_name)
+                        ->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+                        ->orderBy('amount_not_paid','dsc')
+                        ->first();
+                }
+                else{
+                  $income=DB::table('research_flats_payments')
+                            ->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+                            ->select(array(DB::raw('sum(amount_paid) as total')))
+                            ->where('research_flats_invoices.debtor_name',$contract->debtor_name)
+                            ->value('total');
+
+                    $debt=DB::table('research_flats_payments')
+                        ->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+                        ->select('amount_not_paid')
+                        ->where('research_flats_invoices.debtor_name',$contract->debtor_name)
+                        ->orderBy('amount_not_paid','dsc')
+                        ->first();
+
+                }
+
+
+            ?>
+            <td style="text-align: right;">{{number_format($income)}}</td>
+
+            <?php
+              if($contract->currency_invoice=='USD'){
+                $flats_usdincome= $flats_usdincome + $income;
+              }
+              elseif($contract->currency_invoice=='TZS'){
+                $flats_tzsincome= $flats_tzsincome + $income;
+              }
+            ?>
+            @if(!isset($debt))
+              <td style="text-align: right;">0</td>
+              <?php
+              if($contract->currency_invoice=='USD'){
+                $flats_usddebt= $flats_usddebt +0;
+              }
+              elseif($contract->currency_invoice=='TZS'){
+                $flats_tzsdebt= $flats_tzsdebt +0;
+              }
+              ?>
+            @else
+              <td style="text-align: right;">{{number_format($debt->amount_not_paid)}}</td>
+              <?php
+              if($contract->currency_invoice=='USD'){
+                $flats_usddebt= $flats_usddebt +$debt->amount_not_paid;
+              }
+              elseif($contract->currency_invoice=='TZS'){
+                $flats_tzsdebt= $flats_tzsdebt +$debt->amount_not_paid;
+              }
+               ?>
+             @endif
+            </tr>
+          @endforeach
+        @endfor
+      </tbody>
+
+      <tfoot class="table-striped table-bordered">
+            <tr>
+                <th colspan="4" rowspan="2" style="text-align:left">TOTAL</th>
+                <th style="text-align: center;"></th>
+                <th style="text-align: right;"></th>
+                <th style="text-align: right;"></th>
+            </tr>
+            <tr>
+
+                <th style="text-align: center;"></th>
+                <th style="text-align: right;"></th>
+                <th style="text-align: right;"></th>
+            </tr>
+      </tfoot>
+</table>
+
 @elseif($_GET['b_type']=='All')
 <h4>1. Real Estate - Rent</h4>
     <table class="hover table table-striped table-bordered">
@@ -1362,6 +1484,14 @@ function settitle(){
           echo 'UDIA Revenue Collection and Debts Summary';
         }
       }
+      else if($_GET['b_type']=='Flats'){
+        if($_GET['yr2_fil']=='true'){
+          echo 'Research Flats Revenue Collection and Debts Summary of the Duration '.date("d/m/Y",strtotime($_GET["start2"])).' to '.date("d/m/Y",strtotime($_GET["end2"]));
+        }
+        else{
+          echo 'Research Flats Revenue Collection and Debts Summary';
+        }
+      }
       else if($_GET['b_type']=='All'){
         if($_GET['yr2_fil']=='true'){
           echo 'Revenue Collection and Debts Summary of the Duration {{date("d/m/Y",strtotime($_GET["start2"]))}} to {{date("d/m/Y",strtotime($_GET["end2"]))}}';
@@ -1824,7 +1954,7 @@ function revenuetzs(row, data, start, end, display){
           ]
         });
 
-   var tablecar = $('#insuranceTable').DataTable({
+   var table_insurance = $('#insuranceTable').DataTable({
 
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -2021,6 +2151,208 @@ function revenuetzs(row, data, start, end, display){
                 title: settitle(),
                 exportOptions: {
                 columns: [1, 2, 3, 4]
+                },
+            },
+          ]
+        });
+
+    var table_flats = $('#FlatsTable').DataTable({
+
+      "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+             //var CurrencyTypeSymbol = api.cell(0, 5).data();
+
+            //console.log($('#spaceTable').DataTable().rows().count());
+
+            //console.log(table.rows({ page: 'current' }).nodes())
+
+
+            var NumRows = $('#FlatsTable').DataTable().rows().count();
+            var i, pageTotal = 0,pageTotalUsd = 0, pageTotal2 = 0, pageTotalUsd2 = 0;
+
+            for (i = 0; i < NumRows; i++){
+              var currency = api.cell(i, 4).data();
+               if(currency == 'TZS'){
+                 var pageTotals = intVal(api.cell(i, 5).data());
+                  pageTotal = pageTotal + pageTotals;
+               }
+               else if(currency == 'USD'){
+                  var pageTotals = intVal(api.cell(i, 5).data());
+                  pageTotalUsd = pageTotalUsd + pageTotals;
+               }
+            }
+            revenuetzss = pageTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            revenueusd = pageTotalUsd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+
+            for (i = 0; i < NumRows; i++){
+              var currency = api.cell(i, 4).data();
+               if(currency == 'TZS'){
+                 var pageTotals2 = intVal(api.cell(i, 6).data());
+                  pageTotal2 = pageTotal2 + pageTotals2;
+               }
+               else if(currency == 'USD'){
+                  var pageTotals2 = intVal(api.cell(i, 6).data());
+                  pageTotalUsd2 = pageTotalUsd2 + pageTotals2;
+               }
+            }
+
+            debttzs = pageTotal2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            debtusd = pageTotalUsd2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            // Total over all pages
+            total = api
+                .column( 5 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+                var abc =api
+                .column( 5, { page: 'current'} )
+                .data().reduce(function (a){
+                  return a;
+                });
+
+            pageTotaldebt = api
+                .column( 6, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                'TZS'
+            );
+            $( api.column( 5 ).footer() ).html(
+              $.fn.dataTable.render.number(',').display(pageTotal)
+
+            );
+
+            $( api.column( 6 ).footer() ).html(
+              $.fn.dataTable.render.number(',').display(pageTotal2)
+            );
+
+            $('tr:eq(1) th:eq(0)', api.table().footer()).html('USD');
+            $('tr:eq(1) th:eq(1)', api.table().footer()).html($.fn.dataTable.render.number(',').display(pageTotalUsd));
+            $('tr:eq(1) th:eq(2)', api.table().footer()).html($.fn.dataTable.render.number(',').display(pageTotalUsd2));
+        },
+
+        dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+        buttons: [
+            {   extend: 'pdfHtml5',
+                //footer: 'true',
+
+                download: 'open',
+                text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                className: 'excelButton',
+                orientation: 'Potrait',
+                title: 'UNIVERSITY OF DAR ES SALAAM',
+                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
+                pageSize: 'A4',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                },
+
+                customize: function ( doc ) {
+
+                  doc.defaultStyle.font = 'Times';
+
+                  doc['footer'] = (function (page, pages) {
+                                    return {
+                                        alignment: 'center',
+                                        text: [{ text: page.toString() }]
+
+                                    }
+                  });
+
+
+
+                  doc.content[2].table.widths = [22, '*', 60, 60, 50, 80, 80];
+                  var rowCount = doc.content[2].table.body.length;
+                      for (i = 1; i < rowCount; i++) {
+                         doc.content[2].table.body[i][0]=i+'.';
+                      doc.content[2].table.body[i][1].alignment = 'left';
+                      doc.content[2].table.body[i][5].alignment = 'right';
+                      doc.content[2].table.body[i][6].alignment = 'right';
+                     //doc.content[2].table.body[i][3].alignment = 'left';
+                      //doc.content[2].table.body[i][4].alignment = 'left';
+                    };
+
+                  doc.defaultStyle.alignment = 'center';
+
+                  doc.content[2].table.body[0].forEach(function (h) {
+                    h.fillColor = 'white';
+                    alignment: 'center';
+                  });
+
+                  doc.styles.title = {
+                    bold: 'true',
+                      fontSize: '12',
+                      alignment: 'center'
+                    };
+
+        doc.styles.tableHeader.color = 'black';
+        doc.styles.tableHeader.bold = 'false';
+        doc.styles.tableBodyOdd.fillColor='';
+        doc.styles.tableHeader.fontSize = 10;
+        doc.content[2].layout ={
+          hLineWidth: function (i, node) {
+          return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
+        },
+        vLineWidth: function (i, node) {
+          return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
+        },
+        hLineColor: function (i, node) {
+          return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+        },
+        vLineColor: function (i, node) {
+          return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+        },
+        fillColor: function (rowIndex, node, columnIndex) {
+          return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
+        }
+        };
+
+
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: 'data:image/png;base64,'+base64,
+                         fit: [40, 40]
+                    } );
+                    //console.log(test);
+
+                    // doc.content.splice( 4, 0, {
+                    //     margin: [ 0, 0, 0, 0],
+                    //     table: {
+                    //             widths: ['*',50, 49, 80, 79],
+                    //             body: [
+                    //             [{text: 'TOTAL',  colSpan: 2, rowSpan: 2, alignment: 'left'}, {}, {text: 'TZS', alignment: 'center'},{text: revenuetzss, alignment: 'right'}, {text: debttzs, alignment: 'right'}],
+                    //             [{}, {}, {text: 'USD', alignment: 'center'},{text: revenueusd, alignment: 'right'}, {text: debtusd, alignment: 'right'}]
+                    //           ]
+                    //     }
+                    // });
+                }
+            },
+
+                {   extend: 'excelHtml5',
+                  //footer: 'true',
+                text: '<i class="fa fa-file-excel-o"></i> EXCEL',
+                className: 'excelButton',
+                title: settitle(),
+                exportOptions: {
+                columns: [1, 2, 3, 4, 5, 6]
                 },
             },
           ]

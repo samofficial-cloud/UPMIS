@@ -60,6 +60,7 @@ tbody{
 	$d=0;
 	$e=0;
 	$f=0;
+	$g=0;
 
 $cptu_debt=0;
 $cptu_income=0;
@@ -79,6 +80,10 @@ $electric_tzsdebt =0;
 $electric_usddebt = 0;
 $electric_tzsincome =0;
 $electric_usdincome = 0;
+$flats_usdincome = 0;
+$flats_tzsincome = 0;
+$flats_usddebt = 0;
+$flats_tzsdebt =0;
 ?>
 <body>
 	<div id="footer">
@@ -889,7 +894,7 @@ $electric_usdincome = 0;
 				</tr>
 </table>
 
-<h4>3. Insurance</h4>
+<h4>4. Insurance</h4>
 <table class="hover table table-striped table-bordered">
 			<thead class="thead-dark">
 				<tr>
@@ -994,7 +999,7 @@ $electric_usdincome = 0;
   					<td style="width: 18%; text-align: right;">{{number_format($udia_usddebt)}}</td>
 				</tr>
 </table>
-<h4>3. Car Rental</h4>
+<h4>5. Car Rental</h4>
 	<table class="hover table table-striped table-bordered">
 			<thead class="thead-dark">
 				<tr>
@@ -1079,6 +1084,112 @@ $electric_usdincome = 0;
 				</tr>
 			</table>
 
+			<h4>6. Research Flats</h4>
+<table class="hover table table-striped table-bordered">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col" style="width: 7%;">SN</th>
+					<th scope="col">Client Name</th>
+					<th scope="col" style="width: 12%;">Currency</th>
+					<th scope="col" style="width: 18%;">Revenue</th>
+					<th scope="col" style="width: 18%;">Debt</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for($z = 0; $z < count($contract_id6); $z++)
+					@foreach($contract_id6[$z] as $contract)
+						<?php $g = $g+1;?>
+						<tr>
+							<td style="text-align: center">{{$d}}.</td>
+							<td>{{$contract->debtor_name}}</td>
+							<td style="text-align: center;">{{$contract->currency_invoice}}</td>
+							<?php
+							$income=array();
+								if($_GET['yr2_fil']=='true'){
+									$income=DB::table('research_flats_payments')
+							        			->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+							        			->select(array(DB::raw('sum(amount_paid) as total')))
+							        			->where('research_flats_invoices.debtor_name',$contract->debtor_name)
+							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+							        			->value('total'); 
+
+										$debt=DB::table('research_flats_payments')
+												->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+												->select('amount_not_paid')
+												->where('research_flats_invoices.debtor_name',$contract->debtor_name)
+												->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
+												->orderBy('amount_not_paid','dsc')
+												->first();
+								}
+								else{
+									$income=DB::table('research_flats_payments')
+							        			->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+							        			->select(array(DB::raw('sum(amount_paid) as total')))
+							        			->where('research_flats_invoices.debtor_name',$contract->debtor_name)
+							        			->value('total'); 
+
+										$debt=DB::table('research_flats_payments')
+												->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
+												->select('amount_not_paid')
+												->where('research_flats_invoices.debtor_name',$contract->debtor_name)
+												->orderBy('amount_not_paid','dsc')
+												->first();
+
+								}
+										
+								
+						?>
+						<td style="text-align: right;">{{number_format($income)}}</td>
+
+						<?php 
+							if($contract->currency_invoice=='USD'){
+								$flats_usdincome= $flats_usdincome + $income;
+							}
+							elseif($contract->currency_invoice=='TZS'){
+								$flats_tzsincome= $flats_tzsincome + $income; 
+							}
+					 	?>
+					 	@if(!isset($debt))
+						 	<td style="text-align: right;">0</td>
+						 	<?php 
+						 	if($contract->currency_invoice=='USD'){
+								$flats_usddebt= $flats_usddebt +0;
+							}
+							elseif($contract->currency_invoice=='TZS'){
+								$flats_tzsdebt= $flats_tzsdebt +0; 
+							}
+							?>
+						@else
+						 	<td style="text-align: right;">{{number_format($debt->amount_not_paid)}}</td>
+						 	<?php
+						 	if($contract->currency_invoice=='USD'){
+								$flats_usddebt= $flats_usddebt +$debt->amount_not_paid;
+							}
+							elseif($contract->currency_invoice=='TZS'){
+								$flats_tzsdebt= $flats_tzsdebt +$debt->amount_not_paid; 
+							}
+							 ?>
+						 @endif
+						</tr>
+					@endforeach
+				@endfor
+			</tbody>
+</table>
+<table>
+  				<tr style="width: 100%">
+					<td rowspan="2"><b>TOTAL</b></td>
+					<td style="width: 12%; text-align: right;"><center>TZS</center></td>
+					<td style="width: 18%; text-align: right;">{{number_format($flats_tzsincome)}}</td>
+  					<td style="width: 18%; text-align: right;">{{number_format($flats_tzsdebt)}}</td>
+				</tr>
+				<tr style="width: 100%">
+					{{-- <td><b>TOTAL</b></td> --}}
+					<td style="width: 12%; text-align: right;"><center>USD</center></td>
+					<td style="width: 18%; text-align: right;">{{number_format($flats_usdincome)}}</td>
+  					<td style="width: 18%; text-align: right;">{{number_format($flats_usddebt)}}</td>
+				</tr>
+</table>
+
 	<h4>Summary</h4>
 	<table>
 		<thead>
@@ -1132,11 +1243,19 @@ $electric_usdincome = 0;
 				<td style="text-align: right;">{{number_format($cptu_debt)}}</td>
 				<td style="text-align: right;">0</td>
 			</tr>
+			<tr>
+				<td style="text-align: center;">{{$f + 4}}.</td>
+				<td>Research Flats</td>
+				<td style="text-align: right;">{{number_format($flats_tzsincome)}}</td>
+				<td style="text-align: right;">{{number_format($flats_usdincome)}}</td>
+				<td style="text-align: right;">{{number_format($flats_tzsdebt)}}</td>
+				<td style="text-align: right;">{{number_format($flats_usddebt)}}</td>
+			</tr>
 			<?php
-			 $total_incometzs = $space_tzsincome +$electric_tzsincome+$water_tzsincome+$cptu_income+$udia_tzsdebt;
-			 $total_incomeusd =$space_usdincome + $electric_usdincome +$water_usdincome + $udia_usdincome;
-			 $total_debttzs = $space_tzsdebt +$electric_tzsdebt + $water_tzsdebt +$cptu_debt +$udia_tzsdebt;
-			 $total_debtusd = $space_usddebt + $electric_usddebt + $water_usddebt+$udia_usddebt;
+			 $total_incometzs = $space_tzsincome +$electric_tzsincome+$water_tzsincome+$cptu_income+$udia_tzsincome+$flats_tzsincome;
+			 $total_incomeusd =$space_usdincome + $electric_usdincome +$water_usdincome + $udia_usdincome+$flats_usdincome;
+			 $total_debttzs = $space_tzsdebt +$electric_tzsdebt + $water_tzsdebt +$cptu_debt +$udia_tzsdebt+$flats_tzsdebt;
+			 $total_debtusd = $space_usddebt + $electric_usddebt + $water_usddebt+$udia_usddebt+$flats_usddebt;
 			 ?>
 			<tr>
 				<td colspan="2"><b>TOTAL</b></td>

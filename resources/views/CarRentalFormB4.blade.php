@@ -198,6 +198,190 @@ $today=date('Y-m-d');
           @endadmin
         </ul>
     </div>
+    <?php
+        $status = DB::table('car_contracts')->select('head_approval_status')->where('id',$contract->id)->value('head_approval_status');
+    ?>
+
+    @if($status=='Rejected')
+        <div class="main_content">
+<div class="container-fluid" id="grad1">
+    <div class="row justify-content-center mt-0">
+        <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                <h4><strong>UNIVERSITY OF DAR ES SALAAM - MAIN ADMINISTRATION</strong></h4>
+                <h4><strong>CENTRAL POOL TRANSPORTATION UNIT<br>VEHICLE REQUISTION FORM</strong></h4>
+                <br>
+                <div class="row">
+                    <div class="col-md-12 mx-0">
+                        <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse1">A. APPLICATION DETAILS</a></h2>
+                        <div id="collapse1" class="collapse">
+                        <form id="msform" method="post" action="#">
+                            {{csrf_field()}}
+                            <fieldset>
+                                <div class="form-card">
+
+                                   <div class="form-group">
+                    <div class="form-wrapper" id="areadiv">
+          <label for="area">Area of Travel</label>
+            <input type="text" class="form-control" required="" id="area" name="area" value="{{$contract->area_of_travel}} Dar es Salaam/Kibaha" readonly="">
+        </div>
+    </div>
+
+    <div class="form-group row" id="namediv">
+                        <div class="form-wrapper col-2">
+                            <label for="first_name">Designation</label>
+                            <input type="text" id="designation" name="designation" class="form-control" value="{{$contract->designation}}" readonly>
+                        </div>
+
+                        <div class="form-wrapper col-5">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control" value="{{$contract->first_name}}" readonly>
+                        </div>
+                        <div class="form-wrapper col-5">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control" value="{{$contract->last_name}}" readonly="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="email">Client Email</label>
+                        <input type="text" name="email" id="email" class="form-control" readonly="" value="{{$contract->email}}">
+                    </div>
+                </div>
+
+                    <div class="form-group row" id="facultydiv">
+                        <div class="form-wrapper col-6">
+                            <label for="faculty_name">Faculty/Department/Unit</label>
+                            <input type="text" id="faculty_name" name="faculty_name" class="form-control"  value="{{$contract->faculty}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                        </div>
+
+                        <div class="form-wrapper col-6">
+                            <label for="centre_name">Cost Centre No.</label>
+                            <input type="text" id="centre_name" name="centre_name" class="form-control" value="{{$contract->cost_centre}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-wrapper col-6">
+                            <label for="start_date">Start Date</label>
+                            <input type="date" id="start_date" name="start_date" class="form-control" value="{{$contract->start_date}}" readonly="">
+                        </div>
+                        <div class="form-wrapper col-6">
+                            <label for="end_date">End Date</label>
+                            <input type="date" id="end_date" name="end_date" class="form-control" value="{{$contract->end_date}}" readonly="">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-wrapper col-6">
+                            <label for="start_time">Start Time</label>
+                            <input type="time" id="start_time" name="start_time" class="form-control" readonly="" value="{{$contract->start_time}}">
+                        </div>
+                        <div class="form-wrapper col-6">
+                            <label for="end_time">End Time</label>
+                            <input type="time" id="end_time" name="end_time" class="form-control" readonly="" value="{{$contract->end_time}}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="overtime">Estimate Overtime</label>
+                    <input type="text" id="overtime" name="overtime" class="form-control" value="{{$contract->overtime}}" readonly="">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="destination">Destination</label>
+                        <input type="text" id="destination" name="destination" class="form-control" value="{{$contract->destination}}" readonly="">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-wrapper">
+                        <label for="purpose">Purpose/reason of the trip</label>
+                        <input type="text" id="purpose" name="purpose" class="form-control" value="{{$contract->purpose}}" readonly="">
+                    </div>
+                </div>
+
+               <div class="form-group">
+                    <div class="form-wrapper" id="naturediv">
+          <label for="trip_nature">Nature of the trip</label>
+          <span id="trip_naturemsg"></span>
+            <input type="text" class="form-control" required="" id="trip_nature" name="trip_nature" value="{{$contract->trip_nature}}" readonly="">
+        </div>
+    </div>
+
+    <div class="form-group row" id="estimationdiv">
+                        <div class="form-wrapper col-6">
+                            <label for="estimated_distance">Estimated Distance in Kms</label>
+                            <input type="text" id="estimated_distance" name="estimated_distance" class="form-control" value="{{number_format($contract->estimated_distance)}}" readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                        </div>
+                        <div class="form-wrapper col-6">
+                            <label for="estimated_cost">Estimated Cost in Tshs.</label>
+                            <span id="estimated_costmsg"></span>
+                            <input type="text" id="estimated_cost" name="estimated_cost" class="form-control" value="{{number_format($contract->estimated_cost)}}"  readonly onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                        </div>
+                    </div>
+
+                    @if($nature =='Private')
+        <div class="form-group" id="initial_amountdiv">
+            <div class="form-wrapper" >
+                <label for="initial_pay">Initial Amount<span style="color: red;">*</span></label>
+                <span id="initialmsg"></span>
+                <input type="text" id="initial_amount" name="initial_amount" class="form-control" autocomplete="off" value="{{number_format($contract->initial_payment)}}" readonly="">
+            </div>
+        </div>
+    @endif
+
+                                </div>
+                            </fieldset>
+
+                        </form>
+                    </div>
+
+                                         <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">B. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
+                    <div id="collapse3" class="collapse show">
+                        <div class="form-card" style="padding: 4px;">
+                        <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
+                        <form id="msform" method="post" action="#" style="font-size: 17px;">
+                            {{csrf_field()}}
+                            <fieldset>
+                                <div class="form-card">
+                                   <div class="form-group">
+                                    <div class="form-wrapper">
+                            <label for="head_approval_status">This Application is therefore</label>
+                             <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_approval_status}}" readonly="">
+                        </div>
+                    </div>
+                                   <div class="form-group row" id="approvedbydiv">
+                        <div class="form-wrapper col-6">
+                            <label for="approve_name">Approved by</label>
+                            <span id="approve_namemsg"></span>
+                            <input type="text" id="head_name" name="head_name" class="form-control" value="{{$contract->head_name }}" readonly="">
+                        </div>
+                        <div class="form-wrapper col-6">
+                            <label for="approve_date">Date</label>
+                            <span id="approve_datemsg"></span>
+                            <input type="date" id="head_date" name="head_date" class="form-control" value="{{$contract->head_date}}" readonly="">
+                        </div>
+                    </div>
+                        </div>
+                        <button class="btn btn-info" type="button" onclick="history.back()" style="color: white;">Back</button>
+                        <a title="Delete this Application" class="btn btn-danger" href="{{route('deletecontract',$contract->id)}}">Delete</a>
+                            </fieldset>
+                        </form>
+
+
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @else
 <div class="main_content">
 <div class="container-fluid" id="grad1">
     <div class="row justify-content-center mt-0">
@@ -665,6 +849,7 @@ $today=date('Y-m-d');
     </div>
 </div>
 </div>
+@endif
 </div>
 @endsection
 
