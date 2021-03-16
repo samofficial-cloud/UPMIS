@@ -365,15 +365,22 @@ $today=date('Y-m-d');
                                     </div>
 
                                    <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_name">Approved by</label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="head_name" name="head_name" class="form-control" value="{{$contract->head_name }}" readonly="">
                         </div>
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_date">Date</label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_date" name="head_date" class="form-control" value="{{$contract->head_date}}" readonly="">
+                        </div>
+                         <div class="form-wrapper col-4">
+                            <label for="approve_name">Signature</label>
+                            <span id="signaturemsg"></span>
+                            <div style="border-bottom: 1px solid #ccc;" >
+                               <img src="{{$contract->accountant_signature}}" height="40px" width="180px" alt="signature" > 
+                            </div>       
                         </div>
                     </div>
                         </div>
@@ -544,15 +551,22 @@ $today=date('Y-m-d');
                         </div>
                     </div>
                                    <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_name">Approved by</label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="head_name" name="head_name" class="form-control" value="{{$contract->head_name }}" readonly="">
                         </div>
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_date">Date</label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_date" name="head_date" class="form-control" value="{{$contract->head_date}}" readonly="">
+                        </div>
+                        <div class="form-wrapper col-4">
+                            <label for="approve_name">Signature</label>
+                            <span id="signaturemsg"></span>
+                            <div style="border-bottom: 1px solid #ccc;" >
+                               <img src="{{$contract->accountant_signature}}" height="40px" width="180px" alt="signature" > 
+                            </div>       
                         </div>
                     </div>
                         </div>
@@ -607,15 +621,22 @@ $today=date('Y-m-d');
                 </div>
 
     <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_name">Name</label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="approve_name" name="approve_name" class="form-control" value="{{$contract->acc_name}}" readonly="">
                         </div>
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_date">Date</label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="approve_date" name="approve_date" class="form-control" value="{{$contract->acc_date}}" readonly="">
+                        </div>
+                        <div class="form-wrapper col-4">
+                            <label for="approve_name">Signature</label>
+                            <span id="signaturemsg"></span>
+                            <div style="border-bottom: 1px solid #ccc;" >
+                               <img src="{{$contract->vote_holder_signature}}" height="40px" width="180px" alt="signature" > 
+                            </div>       
                         </div>
                     </div>
                                 </div>
@@ -648,15 +669,22 @@ $today=date('Y-m-d');
                     </div>
                 </div>
                 <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_name">Name</label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="head_cptu_name" name="head_cptu_name" class="form-control" value="{{$contract->head_cptu_name }}" readonly="">
                         </div>
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_date">Date</label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$contract->head_cptu_date}}" readonly="">
+                        </div>
+                        <div class="form-wrapper col-4">
+                            <label for="approve_name">Signature</label>
+                            <span id="signaturemsg"></span>
+                            <div style="border-bottom: 1px solid #ccc;" >
+                               <img src="{{$contract->head_cptu_signature}}" height="40px" width="180px" alt="signature" > 
+                            </div>       
                         </div>
                     </div>
                             </div>
@@ -687,15 +715,23 @@ $today=date('Y-m-d');
                     </div>
                 </div>
                 <div class="form-group row" id="approvedbydiv">
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_name">Name</label>
                             <span id="approve_namemsg"></span>
                             <input type="text" id="head_cptu_name" name="head_cptu_name" class="form-control" value="{{$contract->dvc_name }}" readonly="">
                         </div>
-                        <div class="form-wrapper col-6">
+                        <div class="form-wrapper col-4">
                             <label for="approve_date">Date</label>
                             <span id="approve_datemsg"></span>
                             <input type="date" id="head_cptu_date" name="head_cptu_date" class="form-control" value="{{$contract->dvc_date}}" readonly="">
+                        </div>
+
+                        <div class="form-wrapper col-4">
+                            <label for="approve_name">Signature</label>
+                            <span id="signaturemsg"></span>
+                            <div style="border-bottom: 1px solid #ccc;" >
+                               <img src="{{$contract->dvc_signature}}" height="40px" width="180px" alt="signature" > 
+                            </div>       
                         </div>
                     </div>
                             </div>

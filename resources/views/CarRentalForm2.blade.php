@@ -482,10 +482,9 @@ function getvalidation(){
         });
 
     
-    $('#centre_name').click(function(e){
-        $('#faculty_name').val("");
-            var query = $('#centre_name').val();
-        //console.log(query);
+    $('#centre_name').on('select2:select', function (e){
+        $('#faculty_name').val(" ");
+            var query = e.params.data.id;
         if(query!=''){
             var _token = $('input[name="_token"]').val();
             $.ajax({

@@ -28,6 +28,13 @@
   content: counter(page);
 }
 
+.custom-img {
+  
+  padding-top: 5px;
+  margin-bottom: 0px;
+  width: 150px;
+}
+
 @page {
             margin: 77px 75px  !important;
             padding: 0px 0px 0px 0px !important;
@@ -71,41 +78,43 @@
 </p>
 <hr>
 </div>
+
 <div>
-	<strong>B. AVAILABITY OF FUNDS</strong>
+	<strong>B. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</strong>
+	<p style="font-size: 17px;line-height: 1.5;">
+		We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>A</b> above.<br>
+        This APPLICATION is therefore <b>{{$contract->head_approval_status}}</b><br><br>
+        Name: <b>{{$contract->head_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->head_date))}}</b></span> <span style="padding-left: 30px;">Signature: <img src="{{$contract->accountant_signature}}" height="28px" width="100px" alt="signature" style="margin-top: 10px;"></span>
+	</p>
+	<hr>
+</div>
+<div>
+	<strong>C. AVAILABITY OF FUNDS</strong>
 	<p style="font-size: 17px;line-height: 1.5;">
 		1. I confirm that under Travel/Transport Activity Code No.<b>{{$contract->transport_code}}</b> the funds available for further use is Tshs. <b>{{number_format($contract->funds_available)}}</b>. This Balance is <b>{{$contract->balance_status}}</b> for this application
 		<br>
 		2. Vote Holder (Trip Authorizing Officer) Tittle: <b>{{$contract->vote_title}}</b>.<br> I commit the fund to the tune of Tshs.<b>{{number_format($contract->fund_committed)}}</b> for this Application/Trip
 		<br><br>
-		Name: <b>{{$contract->acc_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->acc_date))}}</b></span>
+		Name: <b>{{$contract->acc_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->acc_date))}}</b></span> <span style="padding-left: 30px;">Signature: <img src="{{$contract->vote_holder_signature}}" height="28px" width="100px" alt="signature" style="margin-top: 10px;"></span>
 	</p>
 	<hr>
 </div>
-<div>
-	<strong>C. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</strong>
-	<p style="font-size: 17px;line-height: 1.5;">
-		We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.<br>
-        This APPLICATION is therefore <b>{{$contract->head_approval_status}}</b><br><br>
-        Name: <b>{{$contract->head_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->head_date))}}</b></span>
-	</p>
-	<hr>
-</div>
-<br>
+
+
 <div>
 	{{-- <hr> --}}
 	@if($contract->area_of_travel=='Within')
 	<strong>D. HEAD OF CPTU</strong>
 	<p style="font-size: 17px;line-height: 1.5;">
 		{{-- <b>{{$contract->head_cptu_approval_status}}</b>  - --}} Vehicle Reg No: <b>{{$contract->vehicle_reg_no}}</b><br>
-		Name: <b>{{$contract->head_cptu_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->head_cptu_date))}}</b></span>
+		Name: <b>{{$contract->head_cptu_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->head_cptu_date))}}</b></span> <span style="padding-left: 30px;">Signature: <img src="{{$contract->head_cptu_signature}}" height="28px" width="100px" alt="signature" style="margin-top: 10px;"></span>
 
 	</p>
 	@elseif($contract->area_of_travel=='Outside')
 	<strong>D. DVC: (Administration)</strong>
 	<p style="font-size: 17px; line-height: 1.5;">
 		{{-- <b>{{$contract->dvc_approval_status}}</b>  - --}} Vehicle Reg No: <b>{{$contract->vehicle_reg_no}}</b><br>
-		Name: <b>{{$contract->dvc_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->dvc_date))}}</b></span>
+		Name: <b>{{$contract->dvc_name}}</b> <span style="padding-left: 30px;">Date: <b>{{date("d/m/Y",strtotime($contract->dvc_date))}}</b></span> <span style="padding-left: 30px;">Signature: <img src="{{$contract->dvc_signature}}" height="28px" width="100px" alt="signature" style="margin-top: 10px;"></span>
 
 	</p>
 	@endif
@@ -128,7 +137,7 @@
 		1. Charge per mile/km: <b>{{number_format($contract->charge_km)}} </b><span style="padding-left: 10px;"> Mileage covered km: <b>{{number_format($contract->mileage_km)}}</b> </span><span style="padding-left: 10px;">Mileages charges Tshs. <b>{{number_format($contract->mileage_tshs)}}</b></span><br>
 		2. Penalty hours: <b>{{$contract->penalty_hrs}} hrs</b><span style="padding-left: 10px"> Amount: Tshs. <b>{{number_format($contract->penalty_amount)}}</b> </span><br>
 		3. Overtime charges: Tshs. <b>{{number_format($contract->overtime_charges)}}</b><span style="padding-left: 10px;">Total charges: Tshs. <b>{{number_format($contract->total_charges)}}</b></span><br>
-		4. Head of CPTU: Signature  <span style= "padding-left: 130px;">Date: <b>{{date("d/m/Y",strtotime($contract->driver_date))}}</b></span><br>
+		4. Head of CPTU: <span>Signature: <img src="{{$contract->head_cptu_signature}}" height="28px" width="100px" alt="signature" style="margin-top: 10px;"></span>  <span>Date: <b>{{date("d/m/Y",strtotime($contract->driver_date))}}</b></span><br>
 		5. Vehicle Standing Charge: Tshs. <b>{{number_format($contract->standing_charges)}}</b><br>
 		6. GRAND TOTAL: Tshs. <b>{{number_format($contract->grand_total)}}</b>
 	</p>
