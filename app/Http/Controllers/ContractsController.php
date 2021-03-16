@@ -142,10 +142,12 @@ class ContractsController extends Controller
 
     public function ContractDetails($contract_id)
     {
-        $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id',$contract_id)->get();
-        $associated_invoices=DB::table('invoices')->where('contract_id',$contract_id)->get();
+        $decrypted_contract_id=base64_decode(base64_decode(base64_decode($contract_id)));
 
-        return view('contract_details')->with('space_contract',$space_contract)->with('associated_invoices',$associated_invoices)->with('contract_id',$contract_id);
+        $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id',$decrypted_contract_id)->get();
+        $associated_invoices=DB::table('invoices')->where('contract_id',$decrypted_contract_id)->get();
+
+        return view('contract_details')->with('space_contract',$space_contract)->with('associated_invoices',$associated_invoices);
 
     }
 
@@ -235,12 +237,24 @@ class ContractsController extends Controller
         if($request->get('submit')=='Save and print') {
 
             $end_date="";
+            //for viewing pdf
             $brela_registration_path=null;
             $tbs_certificates_path=null;
             $gpsa_certificates_path=null;
             $business_licenses_path=null;
+            $food_business_licenses_path=null;
             $osha_certificates_path=null;
             $tcra_registration_path=null;
+
+
+            //for saving only
+            $brela_registration_path2=null;
+            $tbs_certificates_path2=null;
+            $gpsa_certificates_path2=null;
+            $business_licenses_path2=null;
+            $food_business_licenses_path2=null;
+            $osha_certificates_path2=null;
+            $tcra_registration_path2=null;
 
 
 
@@ -330,21 +344,36 @@ class ContractsController extends Controller
 
 
 
-                //file management
+
+                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
+                DB::table('space_contracts')->insert(
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
+                );
+
+
+
+                //file management starts
+
+                $contract_id_created=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
 
                 if($request->hasfile('tbs_certificate')){
                     $file=$request->file('tbs_certificate');
                     $filename=$request->file('tbs_certificate')->getClientOriginalName();
-                    $tbs_certificates_path=public_path().'/'.'uploads'.'/'.'tbs_certificates'.'/'.$filename;
-                    $file->move($tbs_certificates_path,$filename);
+                    $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
+                    $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($tbs_certificates_path2,'tbs_certificate.pdf');
 
                 }
 
                 if($request->hasfile('gpsa_certificate')){
                     $file=$request->file('gpsa_certificate');
                     $filename=$request->file('gpsa_certificate')->getClientOriginalName();
-                    $gpsa_certificates_path=public_path().'/'.'uploads'.'/'.'gpsa_certificates'.'/'.$filename;
-                    $file->move($gpsa_certificates_path,$filename);
+                    $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
+                    $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($gpsa_certificates_path2,'gpsa_certificate.pdf');
 
                 }
 
@@ -353,26 +382,31 @@ class ContractsController extends Controller
                 if($request->hasfile('food_business_license')){
                     $file=$request->file('food_business_license');
                     $filename=$request->file('food_business_license')->getClientOriginalName();
-                    $business_licenses_path=public_path().'/'.'uploads'.'/'.'business_licenses'.'/'.$filename;
-                    $file->move($business_licenses_path,$filename);
+                    $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
+                    $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($food_business_licenses_path2,'food_business_license.pdf');
 
                 }
 
                 if($request->hasfile('business_license')){
+
                     $file=$request->file('business_license');
                     $filename=$request->file('business_license')->getClientOriginalName();
-                    $business_licenses_path=public_path().'/'.'uploads'.'/'.'business_licenses'.'/'.$filename;
-                    $file->move($business_licenses_path,$filename);
+                    $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
+                    $business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+
+                    $file->move($business_licenses_path2,'business_license.pdf');
 
                 }
 
 
 
-                if($request->hasfile('osha_certificates')){
+                if($request->hasfile('osha_certificate')){
                     $file=$request->file('osha_certificate');
                     $filename=$request->file('osha_certificate')->getClientOriginalName();
-                    $osha_certificates_path=public_path().'/'.'uploads'.'/'.'osha_certificates'.'/'.$filename;
-                    $file->move($osha_certificates_path,$filename);
+                    $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
+                    $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($osha_certificates_path2,'osha_certificate.pdf');
 
                 }
 
@@ -381,26 +415,62 @@ class ContractsController extends Controller
                 if($request->hasfile('tcra_registration')){
                     $file=$request->file('tcra_registration');
                     $filename=$request->file('tcra_registration')->getClientOriginalName();
-                    $tcra_registration_path=public_path().'/'.'uploads'.'/'.'tcra_registration'.'/'.$filename;
-                    $file->move($tcra_registration_path,$filename);
+                    $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
+                    $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($tcra_registration_path2,'tcra_registration.pdf');
 
                 }
 
                 if($request->hasfile('brela_registration')){
                     $file=$request->file('brela_registration');
                     $filename=$request->file('brela_registration')->getClientOriginalName();
-                    $brela_registration_path=public_path().'/'.'uploads'.'/'.'brela_registration'.'/'.$filename;
-                    $file->move($brela_registration_path,$filename);
+                    $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
+                    $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($brela_registration_path2,'brela_registration.pdf');
 
                 }
 
-                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
-                DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
-                );
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['tbs_certificate' => $tbs_certificates_path]);
+
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['gpsa_certificate' => $gpsa_certificates_path]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['food_business_license' => $food_business_licenses_path]);
+
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['business_license' => $business_licenses_path]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['osha_certificate' => $osha_certificates_path]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['tcra_registration' => $tcra_registration_path]);
+
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['brela_registration' => $brela_registration_path]);
+
+
+
+                //File management ends
 
 
 
@@ -425,8 +495,8 @@ class ContractsController extends Controller
                     }
 
                     $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                    $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                    $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
 
                     DB::table('space_contracts')->insert(
@@ -451,8 +521,8 @@ class ContractsController extends Controller
                     }
 
                     $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                    $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                    $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                     DB::table('space_contracts')->insert(
                         ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
@@ -558,78 +628,25 @@ class ContractsController extends Controller
 
         }else{
 
-
+            //for viewing pdf
             $brela_registration_path=null;
             $tbs_certificates_path=null;
             $gpsa_certificates_path=null;
             $business_licenses_path=null;
+            $food_business_licenses_path=null;
             $osha_certificates_path=null;
             $tcra_registration_path=null;
 
 
-            //file management
+            //for saving only
+            $brela_registration_path2=null;
+            $tbs_certificates_path2=null;
+            $gpsa_certificates_path2=null;
+            $business_licenses_path2=null;
+            $food_business_licenses_path2=null;
+            $osha_certificates_path2=null;
+            $tcra_registration_path2=null;
 
-            if($request->hasfile('tbs_certificate')){
-                $file=$request->file('tbs_certificate');
-                $filename=$request->file('tbs_certificate')->getClientOriginalName();
-                $tbs_certificates_path=public_path().'/'.'uploads'.'/'.'tbs_certificates'.'/'.$filename;
-                $file->move($tbs_certificates_path,$filename);
-
-            }
-
-            if($request->hasfile('gpsa_certificate')){
-                $file=$request->file('gpsa_certificate');
-                $filename=$request->file('gpsa_certificate')->getClientOriginalName();
-                $gpsa_certificates_path=public_path().'/'.'uploads'.'/'.'gpsa_certificates'.'/'.$filename;
-                $file->move($gpsa_certificates_path,$filename);
-
-            }
-
-
-
-            if($request->hasfile('food_business_license')){
-                $file=$request->file('food_business_license');
-                $filename=$request->file('food_business_license')->getClientOriginalName();
-                $business_licenses_path=public_path().'/'.'uploads'.'/'.'business_licenses'.'/'.$filename;
-                $file->move($business_licenses_path,$filename);
-
-            }
-
-            if($request->hasfile('business_license')){
-                $file=$request->file('business_license');
-                $filename=$request->file('business_license')->getClientOriginalName();
-                $business_licenses_path=public_path().'/'.'uploads'.'/'.'business_licenses'.'/'.$filename;
-                $file->move($business_licenses_path,$filename);
-
-            }
-
-
-
-            if($request->hasfile('osha_certificates')){
-                $file=$request->file('osha_certificate');
-                $filename=$request->file('osha_certificate')->getClientOriginalName();
-                $osha_certificates_path=public_path().'/'.'uploads'.'/'.'osha_certificates'.'/'.$filename;
-                $file->move($osha_certificates_path,$filename);
-
-            }
-
-
-
-            if($request->hasfile('tcra_registration')){
-                $file=$request->file('tcra_registration');
-                $filename=$request->file('tcra_registration')->getClientOriginalName();
-                $tcra_registration_path=public_path().'/'.'uploads'.'/'.'tcra_registration'.'/'.$filename;
-                $file->move($tcra_registration_path,$filename);
-
-            }
-
-            if($request->hasfile('brela_registration')){
-                $file=$request->file('brela_registration');
-                $filename=$request->file('brela_registration')->getClientOriginalName();
-                $brela_registration_path=public_path().'/'.'uploads'.'/'.'brela_registration'.'/'.$filename;
-                $file->move($brela_registration_path,$filename);
-
-            }
 
 
 
@@ -716,13 +733,136 @@ class ContractsController extends Controller
                 }
 
                 $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
 
                 DB::table('space_contracts')->insert(
                     ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
                 );
+
+
+//file management starts
+
+                $contract_id_created=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
+
+                if($request->hasfile('tbs_certificate')){
+                    $file=$request->file('tbs_certificate');
+                    $filename=$request->file('tbs_certificate')->getClientOriginalName();
+                    $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
+                    $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($tbs_certificates_path2,'tbs_certificate.pdf');
+
+                }
+
+                if($request->hasfile('gpsa_certificate')){
+                    $file=$request->file('gpsa_certificate');
+                    $filename=$request->file('gpsa_certificate')->getClientOriginalName();
+                    $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
+                    $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($gpsa_certificates_path2,'gpsa_certificate.pdf');
+
+                }
+
+
+
+                if($request->hasfile('food_business_license')){
+                    $file=$request->file('food_business_license');
+                    $filename=$request->file('food_business_license')->getClientOriginalName();
+                    $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
+                    $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($food_business_licenses_path2,'food_business_license.pdf');
+
+                }
+
+                if($request->hasfile('business_license')){
+
+
+                    $file=$request->file('business_license');
+                    $filename=$request->file('business_license')->getClientOriginalName();
+                    $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
+                    $business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+
+                    $file->move($business_licenses_path2,'business_license.pdf');
+
+                }
+
+
+
+                if($request->hasfile('osha_certificate')){
+                    $file=$request->file('osha_certificate');
+                    $filename=$request->file('osha_certificate')->getClientOriginalName();
+                    $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
+                    $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($osha_certificates_path2,'osha_certificate.pdf');
+
+                }
+
+
+
+                if($request->hasfile('tcra_registration')){
+                    $file=$request->file('tcra_registration');
+                    $filename=$request->file('tcra_registration')->getClientOriginalName();
+                    $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
+                    $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($tcra_registration_path2,'tcra_registration.pdf');
+
+                }
+
+                if($request->hasfile('brela_registration')){
+                    $file=$request->file('brela_registration');
+                    $filename=$request->file('brela_registration')->getClientOriginalName();
+                    $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
+                    $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                    $file->move($brela_registration_path2,'brela_registration.pdf');
+
+                }
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['tbs_certificate' => $tbs_certificates_path]);
+
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['gpsa_certificate' => $gpsa_certificates_path]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['food_business_license' => $food_business_licenses_path]);
+
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['business_license' => $business_licenses_path]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['osha_certificate' => $osha_certificates_path]);
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['tcra_registration' => $tcra_registration_path]);
+
+
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id_created)
+                    ->update(['brela_registration' => $brela_registration_path]);
+
+
+
+                //File management ends
+
+
+
+
 
             }else {
 
@@ -745,8 +885,8 @@ class ContractsController extends Controller
                     }
 
                     $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                    $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                    $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
 
                     DB::table('space_contracts')->insert(
@@ -772,8 +912,8 @@ class ContractsController extends Controller
 
 
                     $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                    $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                    $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                     DB::table('space_contracts')->insert(
                         ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
@@ -850,7 +990,15 @@ class ContractsController extends Controller
     }
 
 
+    public function ViewPdf($contract_id,$type)
+    {
+        $decrypted_contract_id=base64_decode(base64_decode(base64_decode($contract_id)));
 
+        $path=DB::table('space_contracts')->where('contract_id',$decrypted_contract_id)->value($type);
+
+        return response()->file(public_path().'/'.$path);
+
+    }
 
 
 
@@ -928,8 +1076,8 @@ class ContractsController extends Controller
             }
 
             $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-            $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-            $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+            $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+            $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
 
             DB::table('space_contracts')->insert(
@@ -957,8 +1105,8 @@ class ContractsController extends Controller
                 }
 
                 $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                 DB::table('space_contracts')->insert(
                     ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]
@@ -982,8 +1130,8 @@ class ContractsController extends Controller
                 }
 
                 $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                $academic_season_total=$amount_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                $vacation_season_total=$amount_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                 DB::table('space_contracts')->insert(
                     ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total]

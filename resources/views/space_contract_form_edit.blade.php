@@ -243,9 +243,16 @@ select.list-dt:focus {
 @endsection
 
 @section('content')
-<?php
-$today=date('Y-m-d');
-?>
+    <?php
+
+    $today=date('Y-m-d');
+
+    $date=date_create($today);
+
+    date_sub($date,date_interval_create_from_date_string("7 days"));
+
+    ?>
+
 <!-- MultiStep Form -->
 <div class="wrapper">
 <div class="sidebar">
@@ -304,7 +311,7 @@ $today=date('Y-m-d');
                 <div class="row">
                     <div class="col-md-12 mx-0">
 
-                        <form id="msform" METHOD="POST" enctype="multipart/form-data" action="{{ route('edit_space_contract_final',['contract_id'=>$contract_id,'client_id'=>$client_id])}}">
+                        <form onsubmit="return submitFunction()" id="msform" METHOD="POST" enctype="multipart/form-data" action="{{ route('edit_space_contract_final',['contract_id'=>$contract_id,'client_id'=>$client_id])}}">
                         {{csrf_field()}}
                             <!-- progressbar -->
                             <ul id="progressbar">
@@ -344,12 +351,12 @@ $today=date('Y-m-d');
 						<div class="form-wrapper col-6">
 							<label for="first_name">First Name <span style="color: red;"> *</span></label>
                             <span id="name1msg"></span>
-							<input type="text" required id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text"  id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="last_name">Last Name <span style="color: red;"> *</span></label>
                             <span id="name2msg"></span>
-							<input type="text" id="last_name" required value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+							<input type="text" id="last_name"  value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
 						</div>
 					</div>
 
@@ -357,30 +364,30 @@ $today=date('Y-m-d');
 					<div class="form-wrapper">
 						<label for="company_name">Company Name <span style="color: red;"> *</span></label>
                         <span id="cnamemsg"></span>
-						<input type="text" id="company_name" required name="company_name" value="{{$var->first_name}}" class="form-control">
+						<input type="text" id="company_name"  name="company_name" value="{{$var->first_name}}" class="form-control">
 					</div>
 				</div>
 
     <div class="form-group row">
 
         <div class="form-wrapper col-12">
-            <label for="official_client_id">Client ID</label>
+            <label for="official_client_id">Client ID<span style="color: red;"> *</span></label>
             <span id="official_client_id_msg"></span>
-            <input type="number" id="official_client_id"  value="{{$var->official_client_id}}" name="official_client_id" class="form-control">
+            <input type="text" id="official_client_id"  value="{{$var->official_client_id}}" name="official_client_id" class="form-control">
         </div>
 
 
 					<div class="form-wrapper col-6">
 						<label for="email">Email <span style="color: red;"> *</span></label>
                         <span id="email_msg"></span>
-						<input type="text" required name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+						<input type="text"  name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" >
 					</div>
 
 
         <div class="form-wrapper col-6">
             <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
             <span id="phone_msg"></span>
-            <input type="text" id="phone_number" required name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+            <input type="text" id="phone_number"  name="phone_number" value="{{$var->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
         </div>
 
 
@@ -392,7 +399,7 @@ $today=date('Y-m-d');
 					<div class="form-wrapper">
 						<label for="address">Address <span style="color: red;"> *</span></label>
                         <span id="address_msg"></span>
-						<input type="text" required id="address" name="address" value="{{$var->address}}" class="form-control">
+						<input type="text"  id="address" name="address" value="{{$var->address}}" class="form-control">
 					</div>
 				</div>
 
@@ -449,12 +456,12 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-6">
                                             <label for="" ><strong>Space Number</strong></label>
-                                            <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" readonly Required autocomplete="off">
+                                            <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" readonly  autocomplete="off">
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                            <input type="number" min="1" step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
+                                            <input type="number"  step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
                                         </div>
                                     </div>
 
@@ -492,19 +499,19 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-12">
                                             <label for="start_date">Start Date <span style="color: red;"> *</span></label>
                                             <span id="start_date_msg"></span>
-                                            <input type="date" id="start_date"  name="start_date" value="{{$var->start_date}}" class="form-control" required="" min="{{$var->start_date}}">
+                                            <input type="date" id="start_date"  name="start_date" value="{{$var->start_date}}" class="form-control"  min="{{$var->start_date}}">
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="duration">Duration <span style="color: red;"> *</span></label>
                                             <span id="duration_msg"></span>
-                                            <input type="number"  min="1" max="50"  id="duration" name="duration" value="{{$var->duration}}" class="form-control" required="" >
+                                            <input type="number"     id="duration" name="duration" value="{{$var->duration}}" class="form-control"  >
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="currency">Period <span style="color: red;"> *</span></label>
                                             <span id="duration_period_msg"></span>
-                                            <select id="duration_period" class="form-control" name="duration_period"  required>
+                                            <select id="duration_period" class="form-control" name="duration_period"  >
                                                @if($var->duration_period=="Months")
                                                     <option value="Years" >Years</option>
                                                     <option value="{{$var->duration_period}}" selected>{{$var->duration_period}}</option>
@@ -521,7 +528,7 @@ $today=date('Y-m-d');
                         <div class="form-wrapper col-12">
                             <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
                             <span id="academic_dependence_msg"></span>
-                            <select id="academic_dependence" class="form-control" name="academic_dependence" required>
+                            <select id="academic_dependence" class="form-control" name="academic_dependence" >
                                 @if($var->academic_dependence=='Yes')
                                 <option value="No" >No</option>
                                 <option value="{{$var->academic_dependence}}" selected>{{$var->academic_dependence}}</option>
@@ -541,34 +548,34 @@ $today=date('Y-m-d');
                         <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
                             <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
                             <span id="academic_season_msg"></span>
-                            <input type="number" min="20" id="academic_season" value="{{$var->academic_season}}" name="academic_season" class="form-control" >
+                            <input type="number"  id="academic_season" value="{{$var->academic_season}}" name="academic_season" class="form-control" >
                         </div>
 
 
                         <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
                             <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
                             <span id="vacation_season_msg"></span>
-                            <input type="number" min="20" id="vacation_season" value="{{$var->vacation_season}}" name="vacation_season" class="form-control" >
+                            <input type="number"  id="vacation_season" value="{{$var->vacation_season}}" name="vacation_season" class="form-control" >
                         </div>
 
                         <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
                             <label for="amount">Amount <span style="color: red;"> *</span></label>
                             <span id="amount_msg"></span>
-                            <input type="number" min="20" id="amount" name="amount" value="{{$var->amount}}" class="form-control" >
+                            <input type="number"  id="amount" name="amount" value="{{$var->amount}}" class="form-control" >
                         </div>
 
 
                         <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
                             <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
                             <span id="rent_sqm_msg"></span>
-                            <input type="number" min="1" id="rent_sqm" name="rent_sqm" value="{{$var->rent_sqm}}"  class="form-control">
+                            <input type="number"  id="rent_sqm" name="rent_sqm" value="{{$var->rent_sqm}}"  class="form-control">
                         </div>
 
 
                         <div class="form-wrapper col-12">
                             <label for="currency">Currency <span style="color: red;"> *</span></label>
                             <span id="currency_msg"></span>
-                            <select id="currency" class="form-control" name="currency" required>
+                            <select id="currency" class="form-control" name="currency" >
 
                                 @if($var->currency=="TZS")
                                     <option value="USD" >USD</option>
@@ -597,7 +604,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-6">
                                             <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                             <span id="escalation_rate_msg"></span>
-                                            <input type="number" min="0" id="escalation_rate" name="escalation_rate" value="{{$var->escalation_rate}}" class="form-control" required>
+                                            <input type="number"  id="escalation_rate" name="escalation_rate" value="{{$var->escalation_rate}}" class="form-control" >
                                         </div>
 
 
@@ -767,10 +774,10 @@ $today=date('Y-m-d');
 
 
                                 </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                <input type="submit" name="submit" class="submit action-button" value="Save"/>
-                                <input type="submit" name="submit" class="submit action-button" value="Save and print"/>
-                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous" />
+                                <input type="submit" id="submit5" name="submit" class="submit action-button" value="Save"/>
+                                <input type="submit" id="save_and_print_btn" onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
+                                <input type="button" id="cancel5" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
                             </fieldset>
 
 
@@ -797,6 +804,36 @@ $today=date('Y-m-d');
 
     ?>
     <script type="text/javascript">
+
+        var button_clicked=null;
+
+        function openNewTab() {
+
+            button_clicked='Save and print';
+        }
+
+        function submitFunction(){
+            $("#cancel5").css("background-color", "#87ceeb");
+            $("#cancel5").val('Finish');
+            $("#previous5").hide();
+            $("#submit5").hide();
+            $("#save_and_print_btn").hide();
+
+            if(button_clicked=='Save and print'){
+
+                $("#msform").attr("target","_blank");
+
+            }else{
+
+
+            }
+
+
+            return true;
+
+        }
+
+
         window.onload=function(){
             document.getElementById("client_type").click();
 

@@ -132,10 +132,10 @@
                                 <hr>
                     <table class="table table-striped table-bordered" style="width: 100%">
 
-                        <tr>
-                            <td>Contract ID:</td>
-                            <td>{{$var->contract_id}}</td>
-                        </tr>
+{{--                        <tr>--}}
+{{--                            <td>Contract ID:</td>--}}
+{{--                            <td>{{$var->contract_id}}</td>--}}
+{{--                        </tr>--}}
 
 
                         <tr>
@@ -148,6 +148,71 @@
                             <td>Client's TIN:</td>
                             <td>{{$var->tin}}</td>
                         </tr>
+
+
+
+                        @if($var->tbs_certificate!='')
+                            <tr>
+                                <td>TBS Certificate:</td>
+                                <td><a href="/view_pdf/{{base64_encode(base64_encode(base64_encode($var->contract_id)))}}/tbs_certificate">TBS Certificate <i style="color: red;" class="fas fa-file-pdf"></i></a></td>
+                            </tr>
+                        @else
+                        @endif
+
+
+                        @if($var->gpsa_certificate!='')
+                            <tr>
+                                <td>GPSA Certificate:</td>
+                                <td><a href="/view_pdf/{{base64_encode(base64_encode(base64_encode($var->contract_id)))}}/gpsa_certificate">GPSA Certificate <i style="color: red;" class="fas fa-file-pdf"></i></a></td>
+                            </tr>
+                        @else
+                        @endif
+
+
+                        @if($var->food_business_license!='')
+                            <tr>
+                                <td>Food business licence:</td>
+                                <td><a href="/view_pdf/{{base64_encode(base64_encode(base64_encode($var->contract_id)))}}/food_business_license">Food business licence <i style="color: red;" class="fas fa-file-pdf"></i></a></td>
+                            </tr>
+                        @else
+                        @endif
+
+
+                        @if($var->business_license!='')
+                            <tr>
+                                <td>Business licence:</td>
+                                <td><a href="/view_pdf/{{base64_encode(base64_encode(base64_encode($var->contract_id)))}}/business_license">Business licence <i style="color: red;" class="fas fa-file-pdf"></i></a></td>
+                            </tr>
+                        @else
+                        @endif
+
+
+                        @if($var->osha_certificate!='')
+                            <tr>
+                                <td>OSHA Certificate:</td>
+                                <td><a href="/view_pdf/{{base64_encode(base64_encode(base64_encode($var->contract_id)))}}/osha_certificate">OSHA Certificate <i style="color: red;" class="fas fa-file-pdf"></i></a></td>
+                            </tr>
+                        @else
+                        @endif
+
+
+                        @if($var->tcra_registration!='')
+                            <tr>
+                                <td>TCRA Registration:</td>
+                                <td><a href="/view_pdf/{{base64_encode(base64_encode(base64_encode($var->contract_id)))}}/tcra_registration">TCRA Registration <i style="color: red;" class="fas fa-file-pdf"></i></a></td>
+                            </tr>
+                        @else
+                        @endif
+
+
+                        @if($var->brela_registration!='')
+                            <tr>
+                                <td>BRELA Registration:</td>
+                                <td><a href="/view_pdf/{{base64_encode(base64_encode(base64_encode($var->contract_id)))}}/brela_registration">BRELA Registration <i style="color: red;" class="fas fa-file-pdf"></i></a></td>
+                            </tr>
+                        @else
+                        @endif
+
 
 
 
@@ -292,184 +357,187 @@
 
                             @if($privileges=='Read only')
                             @else
-
+                                @if(Auth::user()->role=='DPDI Planner')
                                 <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice" title="Add new Space Invoice" role="button" aria-pressed="true">Add New Invoice</a>
+                                    <div class="modal fade" id="new_invoice" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Create New Space Invoice</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" action="{{ route('create_space_invoice_manually')}}"  id="form1" >
+                                                        {{csrf_field()}}
+                                                        @foreach($space_contract as $var)
+
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                        <input type="text" class="form-control" id="" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+
+
+                                                                <div class="form-group col-md-6">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Client Account Code</label>
+                                                                        <input type="text" class="form-control" id="" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+
+                                                                <div class="form-group col-md-12">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Client TIN</label>
+                                                                        <input type="text" class="form-control" id="" name="tin" value="{{$var->tin}}" readonly autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+
+
+
+                                                                <div class="form-group col-md-12">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                        <input type="text" class="form-control" id="" name="debtor_address" value="{{$var->address}}" readonly Required autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-6">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+                                                                <div class="form-group col-md-6">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="form-group col-md-12">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Period <span style="color: red;">*</span></label>
+                                                                        <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="form-group col-md-6">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                        <input type="number" min="1" class="form-control" id="" name="contract_id" value="{{$var->contract_id}}" readonly required autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+                                                                <div class="form-group col-md-6">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                        <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+                                                                <div class="form-group col-md-6">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Amount <span style="color: red;">*</span></label>
+                                                                        <input type="number" min="0" class="form-control" id="" name="amount_to_be_paid" value="" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Currency <span style="color: red;">*</span></label>
+                                                                    <div  class="form-wrapper">
+                                                                        <select id="" class="form-control" required name="currency">
+                                                                            <option value="" ></option>
+                                                                            <option value="TZS" >TZS</option>
+                                                                            <option value="USD" >USD</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+                                                                <div class="form-group col-md-12">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                        <input type="text" class="form-control" id="" name="status" value="" required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+                                                                <div class="form-group col-md-12">
+                                                                    <div class="form-wrapper">
+                                                                        <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                        <input type="text" class="form-control" id="" name="description" value="" required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+
+
+
+
+                                                            </div>
+                                                        @endforeach
+
+
+                                                        <div align="right">
+                                                            <button class="btn btn-primary" type="submit">Save</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    @else
+                                    @endif
 @endif
-                    <div class="modal fade" id="new_invoice" role="dialog">
 
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <b><h5 class="modal-title">Create New Space Invoice</h5></b>
-
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-
-                                <div class="modal-body">
-
-                                    <form method="post" action="{{ route('create_space_invoice_manually')}}"  id="form1" >
-                                        {{csrf_field()}}
-                                        @foreach($space_contract as $var)
-
-                                        <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <div class="form-wrapper">
-                                                <label for=""  >Client Full Name <span style="color: red;">*</span></label>
-                                                <input type="text" class="form-control" id="" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <br>
-
-
-
-
-                                        <div class="form-group col-md-6">
-                                            <div class="form-wrapper">
-                                                <label for=""  >Client Account Code</label>
-                                                <input type="text" class="form-control" id="" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <br>
-
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client TIN</label>
-                                                    <input type="text" class="form-control" id="" name="tin" value="{{$var->tin}}" readonly autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client VRN</label>
-                                                    <input type="text" class="form-control" id="" name="vrn" value="{{$var->vrn}}" readonly autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                        <div class="form-group col-md-12">
-                                            <div class="form-wrapper">
-                                                <label for=""  >Client Address <span style="color: red;">*</span></label>
-                                                <input type="text" class="form-control" id="" name="debtor_address" value="{{$var->address}}" readonly Required autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                    <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                    <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for="">Period <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for="">Contract ID <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="" name="contract_id" value="{{$var->contract_id}}" readonly required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="" name="project_id" value="" Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <div class="form-wrapper">
-                                                    <label for="">Amount <span style="color: red;">*</span></label>
-                                                    <input type="number" min="0" class="form-control" id="" name="amount_to_be_paid" value="" Required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6">
-                                                <label>Currency <span style="color: red;">*</span></label>
-                                                <div  class="form-wrapper">
-                                                    <select id="" class="form-control" required name="currency">
-                                                        <option value="" ></option>
-                                                        <option value="TZS" >TZS</option>
-                                                        <option value="USD" >USD</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Status <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="" name="status" value="" required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Description <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="" name="description" value="" required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-
-                                        </div>
-                                        @endforeach
-
-
-                                        <div align="right">
-                                            <button class="btn btn-primary" type="submit">Submit</button>
-                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </form>
-
-
-
-
-
-
-
-
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
 
 
                     <?php
@@ -483,15 +551,15 @@
                         <table class="hover table table-striped  table-bordered" id="myTable">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col" style="color:#3490dc;"><center>S/N</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Client</center></th>
-                                <th scope="col" style="color:#3490dc;"><center>Invoice Number</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Start Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>End Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Amount</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Payment Status</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Invoice Date</center></th>
-                                <th scope="col"  style="color:#3490dc;"><center>Action</center></th>
+                                <th scope="col"><center>S/N</center></th>
+                                <th scope="col" ><center>Client</center></th>
+                                <th scope="col"><center>Invoice Number</center></th>
+                                <th scope="col" ><center>Start Date</center></th>
+                                <th scope="col" ><center>End Date</center></th>
+                                <th scope="col" ><center>Amount</center></th>
+                                <th scope="col" ><center>Payment Status</center></th>
+                                <th scope="col" ><center>Invoice Date</center></th>
+                                <th scope="col" ><center>Action</center></th>
                             </tr>
                             </thead>
                             <tbody>

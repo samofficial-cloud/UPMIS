@@ -355,6 +355,15 @@ $today=date('Y-m-d');
                              <input class="form-control" type="text" name="head_approval_status" id="head_approval_status" value="{{$contract->head_approval_status}}" readonly="">
                         </div>
                     </div>
+
+                                    <div class="form-group" id="acc_reasondiv">
+                                        <div class="form-wrapper">
+                                            <label for="acc_reason">Reason</label>
+                                            <span id="message"></span>
+                                            <textarea type="text" id="acc_remark" name="acc_remark" class="form-control" value="" readonly style="border: inset !important;">{{$contract->acc_remark}}</textarea>
+                                        </div>
+                                    </div>
+
                                    <div class="form-group row" id="approvedbydiv">
                         <div class="form-wrapper col-6">
                             <label for="approve_name">Approved by</label>
@@ -615,7 +624,7 @@ $today=date('Y-m-d');
                         </form>
                     </div>
 
-                   
+
                     @if($contract->area_of_travel=='Within')
                     <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse4">D. HEAD OF CPTU</a></h2>
                     <div id="collapse4" class="collapse">

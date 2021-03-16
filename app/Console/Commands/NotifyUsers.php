@@ -10,6 +10,8 @@ use App\Notifications\InsuranceEnd;
 use App\Notifications\InsuranceEnd2;
 use Notification;
 use App\insurance_contract;
+use App\User;
+use App\Notifications\SendMessage2;
 
 class NotifyUsers extends Command
 {
@@ -44,12 +46,32 @@ class NotifyUsers extends Command
      */
     public function handle()
     {
-        
+
         $space_contracts = space_contract::select('space_contracts.full_name','email','start_date', 'end_date', 'contract_id')
                                     ->join('clients','clients.full_name','=','space_contracts.full_name')
                                     ->whereRaw('DATEDIFF(end_date,CURDATE()) = 30')
                                     ->where('contract_category','Unsolicited')
                                     ->get();
+
+        $space_contracts_pmu = space_contract::select('space_contracts.full_name','email','start_date', 'end_date', 'contract_id')
+            ->join('clients','clients.full_name','=','space_contracts.full_name')
+            ->whereRaw('DATEDIFF(end_date,CURDATE()) = 30')
+            ->where('contract_category','Solicited')
+            ->get();
+
+        $pmu_emails =User::where('role', 'Procument Manager')->where('status','1')->get();
+        $pmu_subject = 'Contracts About To Expire';
+        $pmu_message = 'There are contract(s) that are about to expire, please visit UPMIS system to review them.';
+        $pmu_salutation = 'UPMIS';
+
+        if(count($space_contracts_pmu)>0){
+            foreach ($pmu_emails as $pmu_email) {
+                Notification::route('mail', $pmu_email->email)->notify(new SendMessage2($pmu_email->name, $pmu_subject, $pmu_message, $pmu_salutation));
+            }
+        }
+
+
+
         $salutation = "Real Estate Department UDSM.";
 
         foreach ($space_contracts as $contract) {
@@ -69,12 +91,12 @@ class NotifyUsers extends Command
                 Notification::route('mail', $contract->email)->notify(new InsuranceEnd($contract->full_name, $contract->commission_date, $contract->end_date, $contract->vehicle_registration_no, $saluatation2));
             }
             else{
-               Notification::route('mail', $contract->email)->notify(new InsuranceEnd2($contract->full_name, $contract->commission_date, $contract->end_date, $saluatation2));  
+               Notification::route('mail', $contract->email)->notify(new InsuranceEnd2($contract->full_name, $contract->commission_date, $contract->end_date, $saluatation2));
             }
-            
+
         }
 
-        
-        
+
+
     }
 }

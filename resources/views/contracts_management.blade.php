@@ -358,14 +358,199 @@ $i=1;
                         @endif
                     </center></td>
             <td><center>
-                    <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',$var->contract_id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+                    <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',base64_encode(base64_encode(base64_encode($var->contract_id))))}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
 
 
                     @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
                         @if($privileges=='Read only')
                         @else
                         <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
-                        <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+
+
+                            <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                            <div class="modal fade" id="terminate{{$var->contract_id}}" role="dialog">
+
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b><h5 class="modal-title">Terminating {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}</h5></b>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <form method="get" action="{{ route('terminate_space_contract',$var->contract_id)}}" >
+                                                {{csrf_field()}}
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper">
+                                                        <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                        <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper" style="text-align: left;">
+                                                        <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>
+                                                        <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox{{$var->contract_id}}" onchange="generateInvoice({{$var->contract_id}})"  name="generate_invoice_checkbox" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div id="invoiceDiv{{$var->contract_id}}" style="display: none;">
+
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6" id="debtor_nameDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Account Code</label>
+                                                                <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="tinDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client TIN</label>
+                                                                <input type="text" class="form-control" id="tin" name="tin" value="{{$var->tin}}" readonly autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="debtor_addressDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="{{$var->address}}" readonly Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                <input type="date" class="form-control" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                <input type="date" class="form-control" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12 pt-2" id="periodDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Period <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="period{{$var->contract_id}}" name="period" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-6 pt-2" id="contract_idDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="{{$var->contract_id}}" readonly required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="project_idDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="project_id{{$var->contract_id}}" name="project_id" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Amount <span style="color: red;">*</span></label>
+                                                                <input type="number" min="0" class="form-control" id="amount_to_be_paid{{$var->contract_id}}" name="amount_to_be_paid" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="currencyDiv">
+                                                            <label>Currency <span style="color: red;">*</span></label>
+                                                            <div  class="form-wrapper">
+                                                                <select id="currency_invoice{{$var->contract_id}}" class="form-control"  name="currency">
+                                                                    <option value="" ></option>
+                                                                    <option value="TZS" >TZS</option>
+                                                                    <option value="USD" >USD</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="statusDiv">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="status{{$var->contract_id}}" name="status" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12 pt-2" id="descriptionDiv">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="description{{$var->contract_id}}" name="description" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <br>
+                                                <div align="right">
+                                                    <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
                         @endif
 
                     @else
@@ -373,193 +558,7 @@ $i=1;
 
 
 
-                    <div class="modal fade" id="terminate{{$var->contract_id}}" role="dialog">
 
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                        <b><h5 class="modal-title">Terminating {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}</h5></b>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-
-                                <div class="modal-body">
-                                    <form method="get" action="{{ route('terminate_space_contract',$var->contract_id)}}" >
-                                        {{csrf_field()}}
-
-                                        <div class="form-group">
-                                            <div class="form-wrapper">
-                                                <label for=""><strong>Reason:</strong></label>
-                                                <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
-
-                                            </div>
-                                        </div>
-                                        <br>
-
-
-                                        <div class="form-group">
-                                            <div class="form-wrapper" style="text-align: left;">
-                                                <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>
-                                                <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox{{$var->contract_id}}" onchange="generateInvoice({{$var->contract_id}})"  name="generate_invoice_checkbox" autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <br>
-
-<div id="invoiceDiv{{$var->contract_id}}" style="display: none;">
-
-
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6" id="debtor_nameDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client Full Name <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-                                            <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client Account Code</label>
-                                                    <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-                                            <div class="form-group col-md-6 pt-2" id="tinDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client TIN</label>
-                                                    <input type="text" class="form-control" id="tin" name="tin" value="{{$var->tin}}" readonly autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6 pt-2" id="vrnDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client VRN</label>
-                                                    <input type="text" class="form-control" id="vrn" name="vrn" value="{{$var->vrn}}" readonly autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-12 pt-2" id="debtor_addressDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Client Address <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="{{$var->address}}" readonly Required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                    <input type="date" class="form-control" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                    <input type="date" class="form-control" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12 pt-2" id="periodDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for="">Period <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="period{{$var->contract_id}}" name="period" value=""   autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-6 pt-2" id="contract_idDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for="">Contract ID <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="{{$var->contract_id}}" readonly required autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6 pt-2" id="project_idDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="project_id{{$var->contract_id}}" name="project_id" value=""  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >
-                                                <div class="form-wrapper">
-                                                    <label for="">Amount <span style="color: red;">*</span></label>
-                                                    <input type="number" min="0" class="form-control" id="amount_to_be_paid{{$var->contract_id}}" name="amount_to_be_paid" value=""   autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-6 pt-2" id="currencyDiv">
-                                                <label>Currency <span style="color: red;">*</span></label>
-                                                <div  class="form-wrapper">
-                                                    <select id="currency_invoice{{$var->contract_id}}" class="form-control"  name="currency">
-                                                        <option value="" ></option>
-                                                        <option value="TZS" >TZS</option>
-                                                        <option value="USD" >USD</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-12 pt-2" id="statusDiv">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Status <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="status{{$var->contract_id}}" name="status" value=""   autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12 pt-2" id="descriptionDiv">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Description <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="description{{$var->contract_id}}" name="description" value=""   autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-
-                                        </div>
-
-</div>
-
-
-<br>
-                                        <div align="right">
-                                            <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
-                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
 
                     @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
 {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
@@ -867,188 +866,191 @@ $i=1;
 
                                             @else
                                                 <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
                                                 <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                <div class="modal fade" id="terminate{{$var->id}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Terminating {{$var->full_name}}'s insurance contract</h5></b>
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <form method="get" action="{{ route('terminate_insurance_contract',$var->id)}}" >
+                                                                    {{csrf_field()}}
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                                            <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                                        </div>
+                                                                    </div>
+
+
+
+
+                                                                    {{--                                                            <div class="form-group">--}}
+                                                                    {{--                                                                <div class="form-wrapper" style="text-align: left;">--}}
+                                                                    {{--                                                                    <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>--}}
+                                                                    {{--                                                                    <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_insurance_checkbox{{$var->id}}" onchange="generateInsuranceInvoice({{$var->id}})"  name="generate_invoice_checkbox" autocomplete="off">--}}
+                                                                    {{--                                                                </div>--}}
+                                                                    {{--                                                            </div>--}}
+                                                                    {{--                                                            <br>--}}
+
+                                                                    {{--                                                            <div id="invoice_insuranceDiv{{$var->id}}" style="display: none;">--}}
+
+
+                                                                    {{--                                                                <div class="form-row">--}}
+                                                                    {{--                                                                    <div class="form-group col-md-12" id="debtor_nameDiv" >--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for=""  >Client Full Name <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+
+
+
+
+                                                                    {{--                                                                            <input type="hidden" class="form-control" id="debtor_account_code" name="debtor_account_code" value=""  readonly autocomplete="off">--}}
+
+
+
+
+
+                                                                    {{--                                                                            <input type="hidden" class="form-control" id="tin" name="tin" value="" readonly autocomplete="off">--}}
+
+
+
+
+                                                                    {{--                                                                            <input type="hidden" class="form-control" id="vrn" name="vrn" value="" readonly autocomplete="off">--}}
+
+
+
+
+                                                                    {{--                                                                            <input type="hidden" class="form-control" id="debtor_address" name="debtor_address" value="" readonly Required autocomplete="off">--}}
+
+
+
+                                                                    {{--                                                                    <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="date" class="form-control" id="invoicing_period_start_date_insurance{{$var->id}}" name="invoicing_period_start_date" value=""  autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+
+                                                                    {{--                                                                    <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for=""  >Invoice End Date <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="date" class="form-control" id="invoicing_period_end_date_insurance{{$var->id}}" name="invoicing_period_end_date" value=""  autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+                                                                    {{--                                                                    <div class="form-group col-md-12 pt-2" id="periodDiv" >--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for="">Period <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="text" class="form-control" id="period_insurance{{$var->id}}" name="period" value=""   autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+                                                                    {{--                                                                    <div class="form-group col-md-6 pt-2" id="contract_idDiv" >--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for="">Contract ID <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="{{$var->id}}" readonly required autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+
+                                                                    {{--                                                                    <div class="form-group col-md-6 pt-2" id="project_idDiv" >--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for=""  >Project ID <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="text" class="form-control" id="project_id_insurance{{$var->id}}" name="project_id" value=""  autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+
+                                                                    {{--                                                                    <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for="">Amount <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="number" min="0" class="form-control" id="amount_to_be_paid_insurance{{$var->id}}" name="amount_to_be_paid" value=""   autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+
+                                                                    {{--                                                                    <div class="form-group col-md-6 pt-2" id="currencyDiv">--}}
+                                                                    {{--                                                                        <label>Currency <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                        <div  class="form-wrapper">--}}
+                                                                    {{--                                                                            <select id="currency_invoice_insurance{{$var->id}}" class="form-control"  name="currency">--}}
+                                                                    {{--                                                                                <option value="" ></option>--}}
+                                                                    {{--                                                                                <option value="TZS" >TZS</option>--}}
+                                                                    {{--                                                                                <option value="USD" >USD</option>--}}
+                                                                    {{--                                                                            </select>--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+
+                                                                    {{--                                                                    <div class="form-group col-md-12 pt-2" id="statusDiv">--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for=""  >Status <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="text" class="form-control" id="status_insurance{{$var->id}}" name="status" value=""   autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+                                                                    {{--                                                                    <div class="form-group col-md-12 pt-2" id="descriptionDiv">--}}
+                                                                    {{--                                                                        <div class="form-wrapper">--}}
+                                                                    {{--                                                                            <label for=""  >Description <span style="color: red;">*</span></label>--}}
+                                                                    {{--                                                                            <input type="text" class="form-control" id="description_insurance{{$var->id}}" name="description" value=""   autocomplete="off">--}}
+                                                                    {{--                                                                        </div>--}}
+                                                                    {{--                                                                    </div>--}}
+                                                                    {{--                                                                    <br>--}}
+
+
+
+
+
+
+                                                                    {{--                                                                </div>--}}
+
+                                                                    {{--                                                            </div>--}}
+
+
+                                                                    <br>
+
+
+
+
+
+                                                                    <div align="right">
+                                                                        <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
                                             @endif
 
                                         @endif
 
-                                        <div class="modal fade" id="terminate{{$var->id}}" role="dialog">
 
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <b><h5 class="modal-title">Terminating {{$var->full_name}}'s insurance contract</h5></b>
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-                                                        <form method="get" action="{{ route('terminate_insurance_contract',$var->id)}}" >
-                                                            {{csrf_field()}}
-
-                                                            <div class="form-group">
-                                                                <div class="form-wrapper">
-                                                                    <label for=""><strong>Reason:</strong></label>
-                                                                    <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
-
-                                                                </div>
-                                                            </div>
-
-
-
-
-{{--                                                            <div class="form-group">--}}
-{{--                                                                <div class="form-wrapper" style="text-align: left;">--}}
-{{--                                                                    <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>--}}
-{{--                                                                    <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_insurance_checkbox{{$var->id}}" onchange="generateInsuranceInvoice({{$var->id}})"  name="generate_invoice_checkbox" autocomplete="off">--}}
-{{--                                                                </div>--}}
-{{--                                                            </div>--}}
-{{--                                                            <br>--}}
-
-{{--                                                            <div id="invoice_insuranceDiv{{$var->id}}" style="display: none;">--}}
-
-
-{{--                                                                <div class="form-row">--}}
-{{--                                                                    <div class="form-group col-md-12" id="debtor_nameDiv" >--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for=""  >Client Full Name <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-
-
-
-
-{{--                                                                            <input type="hidden" class="form-control" id="debtor_account_code" name="debtor_account_code" value=""  readonly autocomplete="off">--}}
-
-
-
-
-
-{{--                                                                            <input type="hidden" class="form-control" id="tin" name="tin" value="" readonly autocomplete="off">--}}
-
-
-
-
-{{--                                                                            <input type="hidden" class="form-control" id="vrn" name="vrn" value="" readonly autocomplete="off">--}}
-
-
-
-
-{{--                                                                            <input type="hidden" class="form-control" id="debtor_address" name="debtor_address" value="" readonly Required autocomplete="off">--}}
-
-
-
-{{--                                                                    <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="date" class="form-control" id="invoicing_period_start_date_insurance{{$var->id}}" name="invoicing_period_start_date" value=""  autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-
-{{--                                                                    <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for=""  >Invoice End Date <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="date" class="form-control" id="invoicing_period_end_date_insurance{{$var->id}}" name="invoicing_period_end_date" value=""  autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-{{--                                                                    <div class="form-group col-md-12 pt-2" id="periodDiv" >--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for="">Period <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="text" class="form-control" id="period_insurance{{$var->id}}" name="period" value=""   autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-{{--                                                                    <div class="form-group col-md-6 pt-2" id="contract_idDiv" >--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for="">Contract ID <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="{{$var->id}}" readonly required autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-
-{{--                                                                    <div class="form-group col-md-6 pt-2" id="project_idDiv" >--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for=""  >Project ID <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="text" class="form-control" id="project_id_insurance{{$var->id}}" name="project_id" value=""  autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-
-{{--                                                                    <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for="">Amount <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="number" min="0" class="form-control" id="amount_to_be_paid_insurance{{$var->id}}" name="amount_to_be_paid" value=""   autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-
-{{--                                                                    <div class="form-group col-md-6 pt-2" id="currencyDiv">--}}
-{{--                                                                        <label>Currency <span style="color: red;">*</span></label>--}}
-{{--                                                                        <div  class="form-wrapper">--}}
-{{--                                                                            <select id="currency_invoice_insurance{{$var->id}}" class="form-control"  name="currency">--}}
-{{--                                                                                <option value="" ></option>--}}
-{{--                                                                                <option value="TZS" >TZS</option>--}}
-{{--                                                                                <option value="USD" >USD</option>--}}
-{{--                                                                            </select>--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-
-{{--                                                                    <div class="form-group col-md-12 pt-2" id="statusDiv">--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for=""  >Status <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="text" class="form-control" id="status_insurance{{$var->id}}" name="status" value=""   autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-{{--                                                                    <div class="form-group col-md-12 pt-2" id="descriptionDiv">--}}
-{{--                                                                        <div class="form-wrapper">--}}
-{{--                                                                            <label for=""  >Description <span style="color: red;">*</span></label>--}}
-{{--                                                                            <input type="text" class="form-control" id="description_insurance{{$var->id}}" name="description" value=""   autocomplete="off">--}}
-{{--                                                                        </div>--}}
-{{--                                                                    </div>--}}
-{{--                                                                    <br>--}}
-
-
-
-
-
-
-{{--                                                                </div>--}}
-
-{{--                                                            </div>--}}
-
-
-                                                            <br>
-
-
-
-
-
-                                                            <div align="right">
-                                                                <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
-                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                            </div>
-
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
 
 
 
@@ -2521,6 +2523,7 @@ $i=1;
             $space_status=0;
             $insurance_status=0;
             $car_status=0;
+            $research_status=0;
 
             if ($category=='Real Estate only' OR $category=='All') {
                 $space_status=1;
@@ -2543,30 +2546,55 @@ $i=1;
 
             }
 
+
+            if ($category=='Research Flats only' OR $category=='All') {
+                $research_status=1;
+            }
+            else{
+
+            }
+
+
             ?>
 
         var space_x={!! json_encode($space_status) !!};
         var insurance_x={!! json_encode($insurance_status) !!};
         var car_x={!! json_encode($car_status) !!};
+        var research_x={!! json_encode($research_status) !!};
 
         if(space_x==1){
 
             $(".insurance_identity").removeClass("defaultContract");
             $(".car_identity").removeClass("defaultContract");
+            $('.research_flats_identity').removeClass('defaultContract');
             $('.space_identity').addClass('defaultContract');
 
 
         }else if(insurance_x==1){
             $(".space_identity").removeClass("defaultContract");
             $(".car_identity").removeClass("defaultContract");
+            $('.research_flats_identity').removeClass('defaultContract');
             $('.insurance_identity').addClass('defaultContract');
 
         }else if(car_x==1){
             $(".space_identity").removeClass("defaultContract");
             $(".insurance_identity").removeClass("defaultContract");
+            $('.research_flats_identity').removeClass('defaultContract');
             $('.car_identity').addClass('defaultContract');
 
-        }else{
+        }else if(research_x==1){
+            $(".space_identity").removeClass("defaultContract");
+            $(".insurance_identity").removeClass("defaultContract");
+            $('.car_identity').removeClass('defaultContract');
+            $('.research_flats_identity').addClass('defaultContract');
+
+
+        }
+
+
+
+
+        else{
 
         }
 

@@ -337,7 +337,7 @@ $today=date('Y-m-d');
                             {{csrf_field()}}
                             <div>
                                 <div class="form-card" style="padding: 4px;">
-                                    <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No.<span style="color: red;">*</span> <input type="text" id="centre_name" name="centre_name" required value="{{$contract->cost_centre}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();"> has a balance of Tshs.<span style="color: red;">*</span> 
+                                    <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No.<span style="color: red;">*</span> <input type="text" id="centre_name" name="centre_name" required value="{{$contract->cost_centre}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();"> has a balance of Tshs.<span style="color: red;">*</span>
                                         <input type="text" id="fund_available" name="fund_available" required value="{{$contract->funds_available}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;" onblur="
                                                 var query=document.getElementById('fund_available').value;
                                                 query2={{$contract->estimated_cost}};
@@ -349,7 +349,7 @@ $today=date('Y-m-d');
                                                   let element = document.getElementById('balance_status');
                                                     element.value = 'Sufficient';
                                                 }
-                                             "> 
+                                             ">
                                         for transport code No<span style="color: red;">*</span> <input type="text" id="code_no" name="code_no" required="" value="{{$contract->transport_code}}" style="padding: 0px; border: inset; margin: 10px;width: 15%;" onblur="javascript:this.value=this.value.toUpperCase();">. This amount is{{-- <span style="color: red;">*</span>  --}}
                                         <input type="text" id="balance_status" name="balance_status" style="padding: 0px; border: inset; margin: 10px;width: 15%;font-size: 16px;" readonly="">
                                         {{-- <select required="" id="balance_status" name="balance_status" style="padding: 0px; border: inset; margin: 10px;width: 15%;font-size: 16px;">
@@ -363,7 +363,7 @@ $today=date('Y-m-d');
                                               <option value="Sufficient">Sufficient</option>
                                               <option value="Not Sufficient">Not Sufficient</option>
                                             @endif
-                                        </select> --}} to meet the requirement as stated in <b>B</b> above.
+                                        </select> --}} to meet the requirement as stated in <b>A</b> above.
                                     </p>
 
                             <fieldset>
@@ -371,16 +371,25 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="approval_status">This Application is therefore<span style="color: red;">*</span></label>
-                                            <div class="row">   
+                                            <div class="row">
                                                 <div class="form-check-inline col-3">
                                                     <input class="form-check-input" type="radio" name="head_approval_status" id="Accepted" value="Accepted" checked="">
                                                     <label for="Accepted" class="form-check-label">Accepted</label>
                                                 </div>
+                                                @if ($nature=='Private')
+                                                    <div class="form-check-inline col-3">
+                                                        <input class="form-check-input" disabled="" type="radio" name="head_approval_status" id="Rejected" value="Rejected">
+                                                        <label for="Rejected" class="form-check-label" >Rejected</label>
+                                                    </div>
 
-                                                <div class="form-check-inline col-3">
-                                                    <input class="form-check-input" type="radio" name="head_approval_status" id="Rejected" value="Rejected">
-                                                    <label for="Rejected" class="form-check-label">Rejected</label>
-                                                </div>
+                                                @else
+                                                    <div class="form-check-inline col-3">
+                                                        <input class="form-check-input" type="radio" name="head_approval_status" id="Rejected" value="Rejected">
+                                                        <label for="Rejected" class="form-check-label">Rejected</label>
+                                                    </div>
+                                                @endif
+
+
                                             </div>
                                         </div>
                                     </div>

@@ -308,7 +308,9 @@ $today=date('Y-m-d');
 
                 <div class="row">
                     <div class="col-md-12 mx-0">
-                        <form id="msform" METHOD="GET" action="{{ route('create_insurance_contract')}}">
+                        <form id="msform" onsubmit="return submitFunction()"  METHOD="POST" action="{{ route('create_insurance_contract')}}">
+
+                        {{csrf_field()}}
                             <!-- progressbar -->
                             <ul id="progressbar">
 
@@ -1006,10 +1008,11 @@ $today=date('Y-m-d');
 
 
                                 </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                <input type="submit" name="submit" class="submit action-button" value="Save"/>
-                                <input type="submit" name="submit" class="submit action-button" value="Save and print"/>
-                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous"/>
+                                <input type="submit" id="submit5" name="submit" class="submit action-button" value="Save"/>
+                                <input type="submit" id="save_and_print_btn"  onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
+                                <input type="button" id="cancel5" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+
                             </fieldset>
 
 
@@ -1382,6 +1385,38 @@ $today=date('Y-m-d');
 
 
 <script type="text/javascript">
+
+    var button_clicked=null;
+
+    function openNewTab() {
+
+        button_clicked='Save and print';
+    }
+
+    function submitFunction(){
+        $("#cancel5").css("background-color", "#87ceeb");
+        $("#cancel5").val('Finish');
+        $("#previous5").hide();
+        $("#submit5").hide();
+        $("#save_and_print_btn").hide();
+
+        if(button_clicked=='Save and print'){
+
+            $("#msform").attr("target","_blank");
+
+        }else{
+
+
+        }
+
+
+        return true;
+
+    }
+
+
+
+
 
     var current_fs, next_fs, previous_fs; //fieldsets
     var opacity;

@@ -52,7 +52,7 @@
   }
 
   .form-wrapper{
-    width: 100%
+    width: 100%;
   }
 
   .form-inline label {
@@ -292,7 +292,7 @@ input[type=radio]{
 
                                                          @if(Auth::user()->role=='DVC Administrator')
 
-                                                         <a title="Approve this Space" data-toggle="modal" data-target="#approve{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><center><i class="fa fa-eye" style="font-size:20px; color: blue; cursor: pointer;"></i></center></a>
+                                                         <a title="Approve this Space" data-toggle="modal" data-target="#approve{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><center><i class="fas fa-reply" style=" color: #3490dc; cursor: pointer;"></i></center></a>
                                                          <div class="modal fade" id="approve{{$var->id}}" role="dialog">
 
                                                              <div class="modal-dialog" role="document">
@@ -722,7 +722,7 @@ input[type=radio]{
 
                                                  <td><center>
                                                          @if($var->flag==0)
-                                                             DVC Adminstrator
+                                                             DVC Administration
                                                          @elseif($var->flag==1)
                                                              DPDI Planner
                                                          @else
@@ -2348,7 +2348,7 @@ input[type=radio]{
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <b><h5 class="modal-title">Are you sure you want to delete {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
+                                                                    <b><h5 class="modal-title">Are you sure you want to deactivate {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
 
                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                 </div>
@@ -4594,7 +4594,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             if(role!='Transport Officer-CPTU'){
                 document.getElementById("defaultSelection").click();
             }
-            
+
 
             function openfleet(evt, evtName) {
                 // Declare all variables
@@ -4788,6 +4788,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 $space_status=0;
                 $insurance_status=0;
                 $car_status=0;
+                $research_status=0;
 
                 if ($category=='Real Estate only' OR $category=='All') {
                     $space_status=1;
@@ -4810,30 +4811,50 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
                 }
 
+
+                if ($category=='Research Flats only' OR $category=='All') {
+                    $research_status=1;
+                }
+                else{
+
+                }
+
+
                 ?>
 
             var space_x={!! json_encode($space_status) !!};
             var insurance_x={!! json_encode($insurance_status) !!};
             var car_x={!! json_encode($car_status) !!};
+            var research_x={!! json_encode($research_status) !!};
 
             if(space_x==1){
 
                 $(".insurance_identity").removeClass("defaultBusiness");
                 $(".car_identity").removeClass("defaultBusiness");
+                $('.research_flats_identity').removeClass('defaultBusiness');
                 $('.space_identity').addClass('defaultBusiness');
 
 
             }else if(insurance_x==1){
                 $(".space_identity").removeClass("defaultBusiness");
                 $(".car_identity").removeClass("defaultBusiness");
+                $('.research_flats_identity').removeClass('defaultBusiness');
                 $('.insurance_identity').addClass('defaultBusiness');
 
             }else if(car_x==1){
                 $(".space_identity").removeClass("defaultBusiness");
                 $(".insurance_identity").removeClass("defaultBusiness");
+                $('.research_flats_identity').removeClass('defaultBusiness');
                 $('.car_identity').addClass('defaultBusiness');
 
-            }else{
+            }else if(research_x==1){
+                $(".space_identity").removeClass("defaultBusiness");
+                $(".insurance_identity").removeClass("defaultBusiness");
+                $('.car_identity').removeClass('defaultBusiness');
+                $('.research_flats_identity').addClass('defaultBusiness');
+
+            }
+            else{
 
             }
 

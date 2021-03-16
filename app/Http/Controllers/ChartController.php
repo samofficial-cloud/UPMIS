@@ -356,11 +356,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat2[]= $value;   
-            } 
+                $flat2[]= $value;
+            }
         }
-            
-            
+
+
         }
 
 
@@ -371,11 +371,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat3[]= $value;   
-            } 
+                $flat3[]= $value;
+            }
         }
-            
-            
+
+
         }
 
          $flat4 = array();
@@ -385,11 +385,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat4[]= $value;   
-            } 
+                $flat4[]= $value;
+            }
         }
-            
-            
+
+
         }
 
          $flat5 = array();
@@ -399,11 +399,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat5[]= $value;   
-            } 
+                $flat5[]= $value;
+            }
         }
-            
-            
+
+
         }
 
     return response()->json(['activity'=>$data1, 'udia'=>$flat2, 'fire'=>$fire, 'fidelity'=>$fidelity, 'marine'=>$marine, 'motor'=>$motor, 'prof'=>$prof, 'public'=>$public, 'total'=>$total, 'icea'=>$flat3, 'britam'=>$flat4, 'nic'=>$flat5]);
@@ -441,9 +441,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $fire[]= $value;   
-                } 
-            }  
+                $fire[]= $value;
+                }
+            }
         }
 
 
@@ -469,9 +469,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $fidelity[]= $value;   
-                } 
-            }  
+                $fidelity[]= $value;
+                }
+            }
         }
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
@@ -495,9 +495,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $motor[]= $value;   
-                } 
-            }  
+                $motor[]= $value;
+                }
+            }
         }
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
@@ -521,9 +521,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $marine[]= $value;   
-                } 
-            }  
+                $marine[]= $value;
+                }
+            }
         }
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
@@ -547,9 +547,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $prof[]= $value;   
-                } 
-            }  
+                $prof[]= $value;
+                }
+            }
         }
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
@@ -573,9 +573,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $public[]= $value;   
-                } 
-            }  
+                $public[]= $value;
+                }
+            }
         }
 
      return response()->json(['fire'=>$fire, 'fidelity'=>$fidelity,'motor'=>$motor, 'marine'=>$marine, 'prof'=>$prof, 'public'=>$public]);
@@ -584,7 +584,7 @@ class ChartController extends Controller
 
     public function cptuindex(){
         $year=date('Y');
-        $data = collect([]); 
+        $data = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $data->push(carContract::select('id')
@@ -642,7 +642,7 @@ class ChartController extends Controller
 
 
     public function cptu_activity_filter(){
-        $data = collect([]); 
+        $data = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $data->push(carContract::select('id')
@@ -680,11 +680,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat2[]= $value;   
-            } 
+                $flat2[]= $value;
+            }
         }
-            
-            
+
+
         }
 
     $within=carContract::where('area_of_travel','Within')->whereYear('start_date',$_GET['year'])->where('form_completion','1')->count();
@@ -718,7 +718,7 @@ class ChartController extends Controller
             "backgroundColor"=>'#3490dc'
         ]);
 
-         $space_income = collect([]); 
+         $space_income = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $space_income->push(DB::table('invoices')
@@ -814,7 +814,7 @@ class ChartController extends Controller
            $data2 = $data2->toArray();
     }
 
-    $space_income = collect([]); 
+    $space_income = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $space_income->push(DB::table('invoices')
@@ -850,9 +850,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat2[]= $value;   
-                } 
-            }      
+                $flat2[]= $value;
+                }
+            }
         }
 
     if ($space_income2 instanceof Collection) {
@@ -866,9 +866,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat3[]= $value;   
-                } 
-            }      
+                $flat3[]= $value;
+                }
+            }
         }
 
     $main=space_contract::join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('location','J.K Nyerere')->whereYear('end_date','>=',$_GET['year'])->whereYear('start_date','<=',$_GET['year'])->count();
@@ -894,7 +894,7 @@ class ChartController extends Controller
         $year=date('Y');
         $centre=Auth::user()->cost_centre;
         $centre_name=cost_centre::select('costcentre')->where('costcentre_id',$centre)->value('costcentre');
-        $data = collect([]); 
+        $data = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $data->push(carContract::select('id')
@@ -956,7 +956,7 @@ class ChartController extends Controller
 
     public function voteholder_activity_filter(){
         $centre=Auth::user()->cost_centre;
-        $data = collect([]); 
+        $data = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $data->push(carContract::select('id')
@@ -998,9 +998,9 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat2[]= $value;   
-                } 
-            }      
+                $flat2[]= $value;
+                }
+            }
         }
 
         return response()->json(['activity'=>$data, 'income'=>$flat2]);
@@ -1042,7 +1042,7 @@ class ChartController extends Controller
                     ->groupBy(\DB::raw("MonthName(start_date)"))
                     ->pluck('count');
 
-    $data = collect([]); 
+    $data = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $data->push(carContract::select('id')
@@ -1154,7 +1154,7 @@ class ChartController extends Controller
     }
 
 
-    $space_income = collect([]); 
+    $space_income = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $space_income->push(DB::table('invoices')
@@ -1240,7 +1240,7 @@ class ChartController extends Controller
         $cptu_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
 
         $insurance_invoices= DB::table('insurance_invoices')->join('insurance_payments','insurance_payments.invoice_number','=','insurance_invoices.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
-        
+
 
 
         return view('dashboard', compact('chart','chart2','chart3','chart4','chart5','chart6','space_contract','invoices','cptu_invoices','insurance_invoices'));
@@ -1320,7 +1320,7 @@ class ChartController extends Controller
            $UDIA_income_icea = $UDIA_income_icea->toArray();
     }
 
-   
+
 
 
          $flata = array();
@@ -1330,11 +1330,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flata[]= $value;   
-            } 
+                $flata[]= $value;
+            }
         }
-            
-            
+
+
         }
 
          $flatb = array();
@@ -1344,11 +1344,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flatb[]= $value;   
-            } 
+                $flatb[]= $value;
+            }
         }
-            
-            
+
+
         }
 
          $flatc = array();
@@ -1358,11 +1358,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flatc[]= $value;   
-            } 
+                $flatc[]= $value;
+            }
         }
-            
-            
+
+
         }
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
@@ -1376,7 +1376,7 @@ class ChartController extends Controller
     }
 
 
-    $space_income = collect([]); 
+    $space_income = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $space_income->push(DB::table('invoices')
@@ -1408,11 +1408,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat[]= $value;   
-            } 
+                $flat[]= $value;
+            }
         }
-            
-            
+
+
         }
 
         $flat2 = array();
@@ -1422,11 +1422,11 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat2[]= $value;   
-            } 
+                $flat2[]= $value;
+            }
         }
-            
-            
+
+
         }
 
         $flat3 = array();
@@ -1436,20 +1436,20 @@ class ChartController extends Controller
             }
             else{
                foreach ($i as $value) {
-                $flat3[]= $value;   
-            } 
+                $flat3[]= $value;
+            }
         }
-            
-            
+
+
         }
 
         return response()->json(['cptu'=>$flat, 'udia'=>$flat2, 'space'=>$flat3, 'icea'=>$flata, 'britam'=>$flatb, 'nic'=>$flatc]);
-    
+
     }
 
     public function activity_filter(){
-   
-    $data = collect([]); 
+
+    $data = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
         $data->push(carContract::select('id')
@@ -1491,7 +1491,7 @@ class ChartController extends Controller
            $data2 = $data2->toArray();
     }
 
-   
+
 
     return response()->json(['cptu'=>$data, 'udia'=>$data1, 'space'=>$data2]);
 

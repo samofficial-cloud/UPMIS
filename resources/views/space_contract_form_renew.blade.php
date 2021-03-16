@@ -243,9 +243,16 @@ select.list-dt:focus {
 @endsection
 
 @section('content')
-<?php
-$today=date('Y-m-d');
-?>
+    <?php
+
+
+    $today=date('Y-m-d');
+
+    $date=date_create($today);
+
+    date_sub($date,date_interval_create_from_date_string("7 days"));
+
+    ?>
 <!-- MultiStep Form -->
 <div class="wrapper">
 <div class="sidebar">
@@ -303,7 +310,7 @@ $today=date('Y-m-d');
                 <div class="row">
                     <div class="col-md-12 mx-0">
 
-                        <form id="msform" METHOD="POST" enctype="multipart/form-data" action="{{ route('create_space_contract')}}">
+                        <form id="msform" onsubmit="return submitFunction()" METHOD="POST" enctype="multipart/form-data" action="{{ route('create_space_contract')}}">
                         {{csrf_field()}}
                             <!-- progressbar -->
                             <ul style="text-align: center;" id="progressbar">
@@ -369,7 +376,7 @@ $today=date('Y-m-d');
 
 					<div class="form-wrapper col-6">
 						<label for="email">Email</label>
-						<input type="text" name="email" readonly value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+						<input type="text" name="email" readonly value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" >
 					</div>
 
 
@@ -463,7 +470,7 @@ $today=date('Y-m-d');
 
                                         <div class="form-wrapper col-6">
                                             <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                            <input type="number" min="1" step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
+                                            <input type="number"  step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
                                         </div>
                                     </div>
 
@@ -499,7 +506,7 @@ $today=date('Y-m-d');
                                         <div id="contract_categoryDiv" class="form-wrapper col-12" style="display: none">
                                             <label for="contract_category">Category of contract <span style="color: red;"> *</span></label>
                                             <span id="contract_category_msg"></span>
-                                            <select id="contract_category" class="form-control" name="contract_category" required>
+                                            <select id="contract_category" class="form-control" name="contract_category" >
                                                 <option value="" ></option>
                                                 <option value="Solicited" >Solicited</option>
                                                 <option value="Unsolicited" >Unsolicited</option>
@@ -508,11 +515,11 @@ $today=date('Y-m-d');
 
 
 
-                                        <div class="form-group col-6 pt-4">
+                                        <div id="tinDiv" class="form-group col-6 pt-4">
                                             <div class="form-wrapper">
                                                 <label for="tin">TIN <span style="color: red;"> *</span></label>
                                                 <span id="tin_msg"></span>
-                                                <input type="number" id="tin" min="0" name="tin" class="form-control">
+                                                <input type="number" id="tin" name="tin" class="form-control">
                                             </div>
                                         </div>
 
@@ -522,7 +529,7 @@ $today=date('Y-m-d');
                                             <div class="form-wrapper">
                                                 <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                 <span id="tbs_certificate_msg"></span>
-                                                <input type="file" id="tbs_certificate"  accept=".pdf"  name="tbs_certificate" class="form-control">
+                                                <input type="file" id="tbs_certificate"    name="tbs_certificate" class="form-control">
                                             </div>
                                         </div>
 
@@ -531,7 +538,7 @@ $today=date('Y-m-d');
                                             <div class="form-wrapper">
                                                 <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                 <span id="gpsa_certificate_msg"></span>
-                                                <input type="file" id="gpsa_certificate" accept=".pdf" name="gpsa_certificate" class="form-control">
+                                                <input type="file" id="gpsa_certificate"  name="gpsa_certificate" class="form-control">
                                             </div>
                                         </div>
 
@@ -540,7 +547,7 @@ $today=date('Y-m-d');
                                             <div class="form-wrapper">
                                                 <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                 <span id="food_business_license_msg"></span>
-                                                <input type="file" id="food_business_license" accept=".pdf" name="food_business_license" class="form-control">
+                                                <input type="file" id="food_business_license"  name="food_business_license" class="form-control">
                                             </div>
                                         </div>
 
@@ -549,7 +556,7 @@ $today=date('Y-m-d');
                                             <div class="form-wrapper">
                                                 <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                 <span id="business_license_msg"></span>
-                                                <input type="file" id="business_license" accept=".pdf" name="business_license" class="form-control">
+                                                <input type="file" id="business_license"  name="business_license" class="form-control">
                                             </div>
                                         </div>
 
@@ -559,7 +566,7 @@ $today=date('Y-m-d');
                                             <div class="form-wrapper">
                                                 <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                 <span id="osha_certificate_msg"></span>
-                                                <input type="file" id="osha_certificate" accept=".pdf" name="osha_certificate" class="form-control">
+                                                <input type="file" id="osha_certificate"  name="osha_certificate" class="form-control">
                                             </div>
                                         </div>
 
@@ -568,7 +575,7 @@ $today=date('Y-m-d');
                                             <div class="form-wrapper">
                                                 <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                 <span id="tcra_registration_msg"></span>
-                                                <input type="file" accept=".pdf" id="tcra_registration" min="0" name="tcra_registration" class="form-control">
+                                                <input type="file"  id="tcra_registration"  name="tcra_registration" class="form-control">
                                             </div>
                                         </div>
 
@@ -577,7 +584,7 @@ $today=date('Y-m-d');
                                             <div class="form-wrapper">
                                                 <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                 <span id="brela_registration_msg"></span>
-                                                <input type="file" id="brela_registration" accept=".pdf" name="brela_registration" class="form-control">
+                                                <input type="file" id="brela_registration"  name="brela_registration" class="form-control">
                                             </div>
                                         </div>
 
@@ -587,19 +594,19 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-12 pt-4">
                                             <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                             <span id="start_date_msg"></span>
-                                            <input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
+                                            <input type="date" id="start_date" name="start_date" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="duration">Duration <span style="color: red;"> *</span></label>
                                             <span id="duration_msg"></span>
-                                            <input type="number"  min="1" max="50" id="duration" name="duration" class="form-control" required="" >
+                                            <input type="number" id="duration" name="duration" class="form-control">
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="currency">Period <span style="color: red;"> *</span></label>
                                             <span id="duration_period_msg"></span>
-                                            <select id="duration_period" class="form-control" name="duration_period" required>
+                                            <select id="duration_period" class="form-control" name="duration_period">
                                                 <option value="" ></option>
                                                 <option value="Months" >Months</option>
                                                 <option value="Years" >Years</option>
@@ -611,7 +618,7 @@ $today=date('Y-m-d');
                                         <div id="percentage_to_payDiv"  class="form-wrapper pt-4 col-12">
                                             <label for="percentage_to_pay">Percentage to be paid(Of total collection) <span style="color: red;"> *</span></label>
                                             <span id="percentage_to_pay_msg"></span>
-                                            <input type="number" min="1"  step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
+                                            <input type="number"  step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
                                         </div>
 
 
@@ -622,7 +629,7 @@ $today=date('Y-m-d');
                                         <div id="academic_dependenceDiv" class="form-wrapper col-12">
                                             <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
                                             <span id="academic_dependence_msg"></span>
-                                            <select id="academic_dependence" class="form-control" name="academic_dependence" required>
+                                            <select id="academic_dependence" class="form-control" name="academic_dependence" >
                                                 <option value="" ></option>
                                                 <option value="No" >No</option>
                                                 <option value="Yes" >Yes</option>
@@ -633,25 +640,25 @@ $today=date('Y-m-d');
                                         <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
                                             <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
                                             <span id="academic_season_msg"></span>
-                                            <input type="number" min="20" id="academic_season" name="academic_season" class="form-control" >
+                                            <input type="number"  id="academic_season" name="academic_season" class="form-control" >
                                         </div>
 
 
                                         <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
                                             <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
                                             <span id="vacation_season_msg"></span>
-                                            <input type="number" min="20" id="vacation_season" name="vacation_season" class="form-control" >
+                                            <input type="number"  id="vacation_season" name="vacation_season" class="form-control" >
                                         </div>
 
                                         <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
                                             <label for="amount">Amount <span style="color: red;"> *</span></label>
                                             <span id="amount_msg"></span>
-                                            <input type="number" min="20" id="amount" name="amount" class="form-control" >
+                                            <input type="number"  id="amount" name="amount" class="form-control" >
                                         </div>
 
                                         <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
                                             <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
-                                            <input type="number" min="1" id="rent_sqm" name="rent_sqm"  class="form-control">
+                                            <input type="number"  id="rent_sqm" name="rent_sqm"  class="form-control">
                                         </div>
 
                                         <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style="display: none; text-align: left;">
@@ -674,13 +681,13 @@ $today=date('Y-m-d');
                                         <div id="additional_businesses_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
                                             <label for="additional_businesses_amount">Amount expected from the businesses<span style="color: red;"> *</span></label>
                                             <span id="additional_businesses_amount_msg"></span>
-                                            <input type="number" min="20" id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
+                                            <input type="number"  id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
                                         </div>
 
                                         <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
                                             <label for="total_amount">Total amount<span style="color: red;"> *</span></label>
                                             <span id="total_amount_msg"></span>
-                                            <input type="text" min="20" id="total_amount" readonly name="total_amount" class="form-control">
+                                            <input type="text"  id="total_amount" readonly name="total_amount" class="form-control">
                                         </div>
 
 
@@ -701,7 +708,7 @@ $today=date('Y-m-d');
                                         <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
                                             <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
                                             <span id="security_deposit_msg"></span>
-                                            <input type="number" min="20" id="security_deposit" name="security_deposit" class="form-control" >
+                                            <input type="number"  id="security_deposit" name="security_deposit" class="form-control">
                                         </div>
 
 
@@ -725,21 +732,23 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-6">
                                             <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
                                             <span id="payment_cycle_msg"></span>
-                                            <input type="number" min="1" id="payment_cycle" name="payment_cycle" class="form-control">
+                                            <input type="number"  id="payment_cycle" name="payment_cycle" class="form-control">
 
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                             <span id="escalation_rate_msg"></span>
-                                            <input type="number" min="0" id="escalation_rate" name="escalation_rate" class="form-control" >
+                                            <input type="number"  id="escalation_rate" name="escalation_rate" class="form-control" >
                                         </div>
 
 
                                     </div>
 
 
-
+                                    <p id="validate_money_msg"></p>
+                                    <br>
+                                    <br>
 
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -1027,10 +1036,10 @@ $today=date('Y-m-d');
 
 
                                 </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
-                                <input type="submit" name="submit" class="submit action-button" value="Save"/>
-                                <input type="submit" name="submit" class="submit action-button" value="Save and print"/>
-                                <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                                <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous"/>
+                                <input type="submit" id="submit5" name="submit" class="submit action-button" value="Save"/>
+                                <input type="submit" id="save_and_print_btn" onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
+                                <input type="button" id="cancel5" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
 
 
                             </fieldset>
@@ -1050,6 +1059,122 @@ $today=date('Y-m-d');
 @section('pagescript')
 
     <script type="text/javascript">
+
+        function showAdditionalBusinesses() {
+
+
+            if( $('#has_additional_businesses').prop('checked') ) {
+
+
+                var academic_dependence=$('#academic_dependence').val();
+
+                if(academic_dependence=='Yes'){
+
+                    $('#total_amountDiv').hide();
+                    $('#academic_season_totalDiv').show();
+                    $('#vacation_season_totalDiv').show();
+
+                    $('#academic_season_total').val("");
+                    $('#vacation_season_total').val("");
+                    $('#total_amount').val("");
+                }else{
+                    $('#total_amountDiv').show();
+                    $('#academic_season_totalDiv').hide();
+                    $('#vacation_season_totalDiv').hide();
+
+                    $('#academic_season_total').val("");
+                    $('#vacation_season_total').val("");
+                    $('#total_amount').val("");
+
+                }
+
+
+                $('#additional_businesses_listDiv').show();
+                $('#additional_businesses_amountDiv').show();
+
+
+                $('#additional_businesses_list').val("");
+                $('#additional_businesses_amount').val("");
+
+
+            }else{
+
+
+                $('#additional_businesses_listDiv').hide();
+                $('#additional_businesses_amountDiv').hide();
+                $('#total_amountDiv').hide();
+                $('#academic_season_totalDiv').hide();
+                $('#vacation_season_totalDiv').hide();
+
+                $('#additional_businesses_list').val("");
+                $('#additional_businesses_amount').val("");
+                $('#total_amount').val("");
+
+
+            }
+
+        }
+
+
+        $('#additional_businesses_amount').on('input',function(e){
+            e.preventDefault();
+            var additional_businesses_amount=$(this).val();
+            var amount=$('#amount').val();
+
+            var academic_season=$('#academic_season').val();
+            var vacation_season=$('#vacation_season').val();
+
+            var academic_dependence=$('#academic_dependence').val();
+
+            if(academic_dependence=='Yes'){
+                $('#academic_season_total').val(+academic_season  +  +additional_businesses_amount);
+                $('#vacation_season_total').val(+vacation_season  +  +additional_businesses_amount);
+
+            }else{
+
+                $('#total_amount').val(+amount  +  +additional_businesses_amount);
+
+            }
+
+
+
+
+
+
+        });
+
+
+
+        var button_clicked=null;
+
+        function openNewTab() {
+
+            button_clicked='Save and print';
+        }
+
+        function submitFunction(){
+            $("#cancel5").css("background-color", "#87ceeb");
+            $("#cancel5").val('Finish');
+            $("#previous5").hide();
+            $("#submit5").hide();
+            $("#save_and_print_btn").hide();
+
+            if(button_clicked=='Save and print'){
+
+                $("#msform").attr("target","_blank");
+
+            }else{
+
+
+            }
+
+
+            return true;
+
+        }
+
+
+
         window.onload=function(){
             document.getElementById("client_type").click();
         };
@@ -1155,9 +1280,10 @@ $today=date('Y-m-d');
 
                 if (client_type_contract=='Indirect'){
 
-
+                    //old indirect code starts
+                    $('#business_licenseDiv').hide();
                     $('#contract_categoryDiv').hide();
-                    $('#has_additional_businessesDiv').hide();
+                    $('#has_additional_businessesDiv').show();
 
                     $('#security_depositDiv').hide();
 
@@ -1170,9 +1296,7 @@ $today=date('Y-m-d');
                     $('#rent_sqmDiv').show();
                     $('#currencydiv').show();
 
-
-
-                    gonext();
+                    //old indirect code ends
 
 
                 }else if(client_type_contract=='Direct and has clients'){
@@ -1184,6 +1308,8 @@ $today=date('Y-m-d');
 
 
                     $('#percentage_to_payDiv').show();
+                    $('#business_licenseDiv').show();
+
                     $('#academic_dependenceDiv').hide();
                     $('#academicDiv').hide();
                     $('#vacationDiv').hide();
@@ -1198,12 +1324,11 @@ $today=date('Y-m-d');
 
 
 
-                    gonext();
 
                 }
 
                 else{
-
+                    $('#business_licenseDiv').hide();
                     $('#percentage_to_payDiv').hide();
                     $('#academic_dependenceDiv').show();
                     $('#contract_categoryDiv').show();
@@ -1215,7 +1340,6 @@ $today=date('Y-m-d');
 
 
 
-                    gonext();
 
                 }
 
@@ -1233,12 +1357,93 @@ $today=date('Y-m-d');
             $("#next2").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
-
+                var p1, p2,p3,p4,p5;
                 var sub_location = $('#space_sub_location').val();
                 var location = $('#space_location').val();
                 var minor = $('#minor_list').val();
                 var major = $('#getMajor').val();
                 var space_id = $('#space_id_contract').val();
+
+                if(major==""){
+                    p1=0;
+                    $('#major_msg').show();
+                    var message=document.getElementById('major_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#getMajor').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p1=1;
+                    $('#major_msg').hide();
+                    $('#getMajor').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(minor==""){
+                    p2=0;
+                    $('#minor_msg').show();
+                    var message=document.getElementById('minor_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#minor_list').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p2=1;
+                    $('#minor_msg').hide();
+                    $('#minor_list').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(location==""){
+                    p3=0;
+                    $('#location_msg').show();
+                    var message=document.getElementById('location_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#space_location').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p3=1;
+                    $('#location_msg').hide();
+                    $('#space_location').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(sub_location==""){
+                    p4=0;
+                    $('#sub_location_msg').show();
+                    var message=document.getElementById('sub_location_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#space_sub_location').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p4=1;
+                    $('#sub_location_msg').hide();
+                    $('#space_sub_location').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(space_id==""){
+                    p5=0;
+                    $('#space_id_msg').show();
+                    var message=document.getElementById('space_id_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#space_id_contract').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p5=1;
+                    $('#space_id_msg').hide();
+                    $('#space_id_contract').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
 
 
                 if(minor=="Canteen"){
@@ -1292,7 +1497,42 @@ $today=date('Y-m-d');
                 }
 
 
-                gonext();
+
+
+                if(p1=='1' & p2=='1' & p3=='1'  & p4=='1'  & p5=='1'){
+
+                    var selected_space_id=$('#space_id_contract').val();
+
+                    $.ajax({
+                        url:"{{ route('autocomplete.space_fields') }}",
+                        method:"get",
+                        data:{selected_space_id:selected_space_id},
+                        success:function(data){
+                            if(data=='0'){
+                                $('#space_size').attr('style','border:1px solid #f00');
+
+
+                            }
+                            else{
+
+
+
+                                var final_data=JSON.parse(data);
+
+
+                                $('#space_size').val(final_data.size);
+                                $('#has_water_bill').val(final_data.has_water_bill);
+                                $('#has_electricity_bill').val(final_data.has_electricity_bill);
+
+
+
+                            }
+                        }
+                    });
+
+
+                    gonext();
+                }
 
             });
 
@@ -1300,12 +1540,15 @@ $today=date('Y-m-d');
             $("#next3").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
-
+                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p26;
                 var first_name=document.getElementById('first_name').value;
                 var last_name=document.getElementById('last_name').value;
                 var company_name=document.getElementById('company_name').value;
                 var client_type=document.getElementById('client_type').value;
                 var email=$("#email").val();
+                var client_type_contract=$("#client_type_contract").val();
+
+                var percentage_to_pay=$("#percentage_to_pay").val();
                 var phone_number=document.getElementById('phone_number').value;
                 var address=document.getElementById('address').value;
                 var sub_location = $('#space_sub_location').val();
@@ -1313,15 +1556,10 @@ $today=date('Y-m-d');
                 var minor = $('#minor_list').val();
                 var major = $('#getMajor').val();
                 var space_id = $('#space_id_contract').val();
-                var client_type_contract=$("#client_type_contract").val();
-
-
-
-
 
                 var start_date=document.getElementById('start_date').value;
-                var duration=document.getElementById('duration').value;
-                var duration_period=document.getElementById('duration_period').value;
+                var duration= $('#duration').val();
+                var duration_period=$('#duration_period').val();
 
                 var academic_dependence=document.getElementById('academic_dependence').value;
                 var vacation_season=document.getElementById('vacation_season').value;
@@ -1334,6 +1572,23 @@ $today=date('Y-m-d');
                 var space_size=document.getElementById('space_size').value;
                 var has_water_bill=document.getElementById('has_water_bill').value;
                 var has_electricity_bill=document.getElementById('has_electricity_bill').value;
+
+
+                var tin=$("#tin").val();
+                var contract_category=$("#contract_category").val();
+                var tbs_certificate=$("#tbs_certificate").val();
+                var gpsa_certificate=$("#gpsa_certificate").val();
+                var food_business_license=$("#food_business_license").val();
+                var business_license=$("#business_license").val();
+                var osha_certificate=$("#osha_certificate").val();
+                var tcra_registration=$("#tcra_registration").val();
+                var brela_registration=$("#brela_registration").val();
+                var additional_businesses_list=$("#additional_businesses_list").val();
+                var additional_businesses_amount=$("#additional_businesses_amount").val();
+                var total_amount=$("#total_amount").val();
+                var academic_season_total=$("#academic_season_total").val();
+                var vacation_season_total=$("#vacation_season_total").val();
+                var security_deposit=$("#security_deposit").val();
 
 
 
@@ -1502,8 +1757,238 @@ $today=date('Y-m-d');
                 }
 
 
+                if(percentage_to_pay==""){
+                    p11=0;
+                    $('#percentage_to_pay_msg').show();
+                    var message=document.getElementById('percentage_to_pay_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#percentage_to_pay').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p11=1;
+                    $('#percentage_to_pay_msg').hide();
+                    $('#percentage_to_pay').attr('style','border-bottom: 1px solid #ccc');
+
+                }
 
 
+
+
+                if(tin==""){
+                    p12=0;
+                    $('#tin_msg').show();
+                    var message=document.getElementById('tin_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#tin').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p12=1;
+                    $('#tin_msg').hide();
+                    $('#tin').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(contract_category==""){
+                    p13=0;
+                    $('#contract_category_msg').show();
+                    var message=document.getElementById('contract_category_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#contract_category').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p13=1;
+                    $('#contract_category_msg').hide();
+                    $('#contract_category').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(tbs_certificate==""){
+                    p14=0;
+                    $('#tbs_certificate_msg').show();
+                    var message=document.getElementById('tbs_certificate_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p14=1;
+                    $('#tbs_certificate_msg').hide();
+                    $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(gpsa_certificate==""){
+                    p15=0;
+                    $('#gpsa_certificate_msg').show();
+                    var message=document.getElementById('gpsa_certificate_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p15=1;
+                    $('#gpsa_certificate_msg').hide();
+                    $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(food_business_license==""){
+                    p16=0;
+                    $('#food_business_license_msg').show();
+                    var message=document.getElementById('food_business_license_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#food_business_license').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p16=1;
+                    $('#food_business_license_msg').hide();
+                    $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(business_license==""){
+                    p17=0;
+                    $('#business_license_msg').show();
+                    var message=document.getElementById('business_license_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#business_license').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p17=1;
+                    $('#business_license_msg').hide();
+                    $('#business_license').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(osha_certificate==""){
+                    p18=0;
+                    $('#osha_certificate_msg').show();
+                    var message=document.getElementById('osha_certificate_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p18=1;
+                    $('#osha_certificate_msg').hide();
+                    $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(tcra_registration==""){
+                    p19=0;
+                    $('#tcra_registration_msg').show();
+                    var message=document.getElementById('tcra_registration_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p19=1;
+                    $('#tcra_registration_msg').hide();
+                    $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+                if(brela_registration==""){
+                    p20=0;
+                    $('#brela_registration_msg').show();
+                    var message=document.getElementById('brela_registration_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#brela_registration').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p20=1;
+                    $('#brela_registration_msg').hide();
+                    $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(additional_businesses_list==""){
+                    p21=0;
+                    $('#additional_businesses_list_msg').show();
+                    var message=document.getElementById('additional_businesses_list_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#additional_businesses_list').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p21=1;
+                    $('#additional_businesses_list_msg').hide();
+                    $('#additional_businesses_list').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+                if(additional_businesses_amount==""){
+                    p22=0;
+                    $('#additional_businesses_amount_msg').show();
+                    var message=document.getElementById('additional_businesses_amount_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#additional_businesses_amount').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p22=1;
+                    $('#additional_businesses_amount_msg').hide();
+                    $('#additional_businesses_amount').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+                if(total_amount==""){
+                    p23=0;
+                    $('#total_amount_msg').show();
+                    var message=document.getElementById('total_amount_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#total_amount').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p23=1;
+                    $('#total_amount_msg').hide();
+                    $('#total_amount').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+
+
+                if(security_deposit==""){
+                    p26=0;
+                    $('#security_deposit_msg').show();
+                    var message=document.getElementById('security_deposit_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#security_deposit').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p26=1;
+                    $('#security_deposit_msg').hide();
+                    $('#security_deposit').attr('style','border-bottom: 1px solid #ccc');
+
+                }
 
 
                 const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -1685,7 +2170,7 @@ $today=date('Y-m-d');
                     if(p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p11=='1' & p9=='1' & p10=='1' ){
 
                         //check validity
-                        if (duration>=1 & percentage_to_pay>=1 & payment_cycle>=1 ){
+                        if (duration>=1 & percentage_to_pay>=1 & payment_cycle>=1 & escalation_rate>=0){
 
                             document.getElementById("validate_money_msg").innerHTML ='';
                             gonext();
@@ -1706,52 +2191,1059 @@ $today=date('Y-m-d');
 
                 }else if(client_type_contract=='Direct'){
 
+                    //direct code starts
 
 
-                    if(p12=='1'  & p1=='1' & p2=='1' & p3=='1' & p9=='1' & p10=='1' ){
+                    if(minor=="Canteen"){
 
-                        //check validity
-                        if (duration>=1  & payment_cycle>=1 ){
+                        //canteen code starts
 
-                            document.getElementById("validate_money_msg").innerHTML ='';
-                            gonext();
+                        if(academic_dependence=='Yes'){
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if(p13=='1' & p12=='1' & p14=='1' & p15=='1' & p16=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1' & p21=='1' & p22=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+                            }else{
+
+
+                                if(p13=='1' & p12=='1' & p14=='1' & p15=='1' & p16=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1'  & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20  & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+
+                            }
+
+
+                        }else if(academic_dependence=='No'){
+
+
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if(p13=='1' & p12=='1' & p14=='1' & p15=='1' & p16=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p21=='1' & p22=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+
+                                }
+
+                            }else{
+
+
+                                if(p13=='1' & p12=='1' & p14=='1' & p15=='1' & p16=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+                                }
+
+
+                            }
+
+
 
                         }else{
 
-                            document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries';
-                            document.getElementById("validate_money_msg").style.color='Red';
+
                         }
 
-                    }else{
+                        //canteen code ends
 
+
+
+
+
+
+                    }else if(major=='Banking'){
+//bank code starts
+
+                        if(academic_dependence=='Yes'){
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if(p13=='1' & p12=='1' & p17=='1' & p18=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1' & p21=='1' & p22=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+                            }else{
+
+
+                                if(p13=='1' & p12=='1' & p17=='1' & p18=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1'  & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20  & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+
+                            }
+
+
+                        }else if(academic_dependence=='No'){
+
+
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if(p13=='1' & p12=='1' & p17=='1' & p18=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p21=='1' & p22=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+
+                                }
+
+                            }else{
+
+
+                                if(p13=='1' & p12=='1' & p17=='1' & p18=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+                                }
+
+
+                            }
+
+
+
+                        }else{
+
+
+                        }
+
+//bank code ends
+                    }else if (minor=="Postal services"){
+
+//postal services code starts
+                        if(academic_dependence=='Yes'){
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if(p13=='1' & p12=='1' & p15=='1' & p17=='1'  & p19=='1' & p20=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1' & p21=='1' & p22=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+                            }else{
+
+
+                                if(p13=='1' & p12=='1' & p15=='1' & p17=='1'  & p19=='1' & p20=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1'  & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20  & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+
+                            }
+
+
+                        }else if(academic_dependence=='No'){
+
+
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if(p13=='1' & p12=='1' & p15=='1' & p17=='1'  & p19=='1' & p20=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p21=='1' & p22=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+
+                                }
+
+                            }else{
+
+
+                                if(p13=='1' & p12=='1' & p15=='1' & p17=='1'  & p19=='1' & p20=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+                                }
+
+
+                            }
+
+
+
+                        }else{
+
+
+                        }
+                        //postal services code ends
+
+
+
+                    }else{
+//rest of the businesses start
+                        if(academic_dependence=='Yes'){
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if(p13=='1' & p12=='1' & p17=='1'  & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1' & p21=='1' & p22=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+                            }else{
+
+
+                                if(p13=='1' & p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1'  & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20  & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+
+                            }
+
+
+                        }else if(academic_dependence=='No'){
+
+
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if(p13=='1' & p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p21=='1' & p22=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+
+                                }
+
+                            }else{
+
+
+                                if(p13=='1' & p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1' & p26=='1' & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+                                }
+
+
+                            }
+
+
+
+                        }else{
+
+
+                        }
+                        //rest of the businesses ends
 
 
                     }
+
+
+
+
+
+//direct code ends
 
                 }else{
+//indirect code starts
 
 
-                    if(p12=='1'  & p1=='1' & p2=='1' & p3=='1' & p9=='1' & p10=='1' ){
+                    if(minor=="Canteen"){
 
-                        //check validity
-                        if (duration>=1  & payment_cycle>=1 ){
+                        //canteen code starts
 
-                            document.getElementById("validate_money_msg").innerHTML ='';
-                            gonext();
+                        if(academic_dependence=='Yes'){
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if( p12=='1' & p14=='1' & p15=='1' & p16=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1' & p21=='1' & p22=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+                            }else{
+
+
+                                if( p12=='1' & p14=='1' & p15=='1' & p16=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1'   & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20   & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+
+                            }
+
+
+                        }else if(academic_dependence=='No'){
+
+
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if( p12=='1' & p14=='1' & p15=='1' & p16=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p21=='1' & p22=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+
+                                }
+
+                            }else{
+
+
+                                if( p12=='1' & p14=='1' & p15=='1' & p16=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+                                }
+
+
+                            }
+
+
 
                         }else{
 
-                            document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries';
-                            document.getElementById("validate_money_msg").style.color='Red';
+
                         }
 
-                    }else{
+                        //canteen code ends
 
+
+
+
+
+
+                    }else if(major=='Banking'){
+//bank code starts
+
+                        if(academic_dependence=='Yes'){
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if( p12=='1' & p17=='1' & p18=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1' & p21=='1' & p22=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+                            }else{
+
+
+                                if( p12=='1' & p17=='1' & p18=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1'   & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20   & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+
+                            }
+
+
+                        }else if(academic_dependence=='No'){
+
+
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if( p12=='1' & p17=='1' & p18=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p21=='1' & p22=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+
+                                }
+
+                            }else{
+
+
+                                if( p12=='1' & p17=='1' & p18=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+                                }
+
+
+                            }
+
+
+
+                        }else{
+
+
+                        }
+
+//bank code ends
+                    }else if (minor=="Postal services"){
+
+//postal services code starts
+                        if(academic_dependence=='Yes'){
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if( p12=='1' & p15=='1' & p17=='1'  & p19=='1' & p20=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1' & p21=='1' & p22=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+                            }else{
+
+
+                                if( p12=='1' & p15=='1' & p17=='1'  & p19=='1' & p20=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1'   & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20   & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+
+                            }
+
+
+                        }else if(academic_dependence=='No'){
+
+
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if( p12=='1' & p15=='1' & p17=='1'  & p19=='1' & p20=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p21=='1' & p22=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+
+                                }
+
+                            }else{
+
+
+                                if( p12=='1' & p15=='1' & p17=='1'  & p19=='1' & p20=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+                                }
+
+
+                            }
+
+
+
+                        }else{
+
+
+                        }
+                        //postal services code ends
+
+
+
+                    }else{
+//rest of the businesses start
+                        if(academic_dependence=='Yes'){
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if( p12=='1' & p17=='1'  & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1' & p21=='1' & p22=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+                            }else{
+
+
+                                if( p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p5=='1' & p6=='1'   & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20   & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+
+
+                                }
+
+
+                            }
+
+
+                        }else if(academic_dependence=='No'){
+
+
+
+                            if( $('#has_additional_businesses').prop('checked') ) {
+
+                                if( p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p21=='1' & p22=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+
+                                }
+
+                            }else{
+
+
+                                if( p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p7=='1'  & p8=='1' & p9=='1' & p10=='1'){
+
+                                    //check for validity
+
+                                    if (duration>=1 & amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
+
+                                        document.getElementById("validate_money_msg").innerHTML ='';
+                                        gonext();
+
+                                    }else{
+
+                                        document.getElementById("validate_money_msg").innerHTML ='Invalid entry, please make sure all the fields are filled with valid entries. For amounts the minumum is 20';
+                                        document.getElementById("validate_money_msg").style.color='Red';
+                                    }
+
+
+
+                                }else{
+
+                                    document.getElementById("validate_money_msg").innerHTML ='';
+
+                                }
+
+
+                            }
+
+
+
+                        }else{
+
+
+                        }
+                        //rest of the businesses ends
 
 
                     }
 
+
+//indirect code ends
                 }
+
+
+
+
+
+
+
 
 
             });

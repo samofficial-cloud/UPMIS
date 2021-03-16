@@ -237,7 +237,11 @@
                 <tr>
 
                   <td class="text-center">{{$i}}</td>
-                  <td>{{$var->user_roles}}</td>
+                  <td>@if($var->user_roles=='DVC Administrator')
+                          DVC Administration
+                      @else
+                          {{$var->user_roles}}
+                      @endif</td>
                   <td>{{$var->category}}</td>
                   <td>{{$var->privileges}}</td>
                   <td><center>
@@ -255,7 +259,11 @@
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <b><h5 class="modal-title">Editing "{{$var->user_roles}}" role</h5></b>
+                            <b><h5 class="modal-title">Editing "@if($var->user_roles=='DVC Administrator')
+                                        DVC Administration
+                                    @else
+                                        {{$var->user_roles}}
+                                    @endif" role</h5></b>
 
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                           </div>
@@ -268,11 +276,18 @@
                               <div class="form-group">
                                 <div class="form-wrapper">
                                   <label for="first_name"  ><strong>Role </strong></label>
-                                  <input type="text" class="form-control" readonly  name="user_roles" value="{{$var->user_roles}}"  autocomplete="off">
+                                  <input type="text" class="form-control" readonly  name="UI" value="@if($var->user_roles=='DVC Administrator')
+                                      DVC Administration
+@else
+                                  {{$var->user_roles}}
+                                  @endif"  autocomplete="off">
 
                                 </div>
                               </div>
                               <br>
+
+
+                                <input type="hidden" class="form-control" readonly  name="user_roles" value="{{$var->user_roles}}"  autocomplete="off">
 
 
                               <div  class="form-group">
@@ -353,7 +368,11 @@
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <b><h5 class="modal-title">Are you sure you want to delete "{{$var->user_roles}}" role?</h5></b>
+                            <b><h5 class="modal-title">Are you sure you want to delete "@if($var->user_roles=='DVC Administrator')
+                                        DVC Administration
+                                    @else
+                                        {{$var->user_roles}}
+                                    @endif" role?</h5></b>
 
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                           </div>

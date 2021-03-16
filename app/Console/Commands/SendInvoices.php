@@ -43,7 +43,9 @@ class SendInvoices extends Command
 
 
 
-
+//        DB::table('testing_table')->insert(
+//            ['data' => 'it works']
+//        );
 
 
 
@@ -246,9 +248,7 @@ class SendInvoices extends Command
 
         //create space invoice automatically end
 
-//        DB::table('testing_table')->insert(
-//            ['data' => 'john@space']
-//        );
+
 
 
 

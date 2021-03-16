@@ -174,6 +174,7 @@
         <div  class="dottedUnderline horizontal_align"><b>{{$today}}</b></div>
     </div>
 <br><br>
+    <div style="clear: both;"></div>
     <div style="width: 100%;">
         <div class="horizontal_align"><b>Approved By</b></div>
         <div  class="dottedUnderline horizontal_align"><b>{{$approved_by}} </b></div>

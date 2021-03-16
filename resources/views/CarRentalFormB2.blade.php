@@ -347,7 +347,7 @@ $today=date('Y-m-d');
                  <h2 class="fs-title" style="margin-left: 10px;">  <a data-toggle="collapse" href="#collapse3">B. CONFIRMATION OF FUNDS FOR FUTURE PAYMENT</a></h2>
                     <div id="collapse3" class="collapse show">
                         <div class="form-card" style="padding: 4px;">
-                            <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>B</b> above.</p>
+                            <p style="text-align: left !important; font-size: 20px; padding-left: 16px;">We confirm that the cost centre No. <b>{{$contract->cost_centre}}</b> has a balance of Tshs. <b>{{number_format($contract->funds_available)}}</b> for transport code No.<b> {{$contract->transport_code}}</b>. This amount is <b>{{$contract->balance_status}}</b> to meet the requirement as stated in <b>A</b> above.</p>
 
                         <form id="msform" method="post" action="#" style="font-size: 17px;">
                             {{csrf_field()}}
@@ -462,7 +462,7 @@ $today=date('Y-m-d');
 
                                 </div>
 
-                                
+
                                    <button class="btn btn-primary" type="submit">Forward</button>
                             </fieldset>
 

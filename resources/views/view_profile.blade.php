@@ -116,7 +116,8 @@ class="form-control" id="phone" aria-describedby="emailHelp" placeholder="Enter 
   <br>
   <a href="/edit_profile">Edit Details</a>
   <center><div class="form-group">
-            <input type="button" class="btn btn-primary" value="Close" onclick="history.back()">
+
+           <a href="/" style="background-color: red !important; color: white;" class="btn  action-button" >Close</a>
           </div></center>
   </div>
 </div>

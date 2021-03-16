@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
 
             //$schedule->command('command:ContractEnd')->everyFiveMinutes();
 
-      $schedule->command('command:ContractEnd')->dailyAt('19:13')->timezone('Africa/Dar_es_Salaam');
+      $schedule->command('command:ContractEnd')->dailyAt('19:00')->timezone('Africa/Dar_es_Salaam');
 
 
     }
