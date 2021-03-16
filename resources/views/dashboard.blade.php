@@ -112,7 +112,7 @@
   use App\insurance;
   use App\cost_centre;
   $total_spaces=space::where('status','1')->count();
-  $occupied_spaces=space_contract::select('space_id_contract')->where('contract_status','1')->wheredate('end_date','>=',date('Y-m-d'))->orderBy('space_id_contract','asc')->distinct()->get();
+  $occupied_spaces=space_contract::select('space_id_contract')->where('contract_status','1')->where('space_id_contract','!=',null)->wheredate('end_date','>=',date('Y-m-d'))->orderBy('space_id_contract','asc')->distinct()->get();
   $available_spaces=space::select('space_id')
         ->whereNotIn('space_id',DB::table('space_contracts')->select('space_id_contract')->where('space_id_contract','!=',null)->whereDate('end_date', '>',date('Y-m-d'))->where('contract_status','1')->distinct()->pluck('space_id_contract')->toArray())
         ->where('status','1')

@@ -257,6 +257,10 @@ class carContractsController extends Controller
                 ->where('id', $id)
                 ->update(['vote_remarks' =>  $request->get('vote_remarks')]);
 
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['vote_holder_signature' => Auth::user()->signature]);
+
         if($nature=='Private'){
             DB::table('car_contracts')
             ->where('id', $id)
@@ -335,6 +339,10 @@ class carContractsController extends Controller
                 DB::table('car_contracts')
                 ->where('id', $id)
                 ->update(['head_approval_status' => $request->get('head_approval_status')]);
+
+                DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['accountant_signature' => Auth::user()->signature]);
 
                 if($nature=='Private'){
 
@@ -434,6 +442,10 @@ class carContractsController extends Controller
                 ->where('id', $id)
                 ->update(['form_status' => 'Transport Officer-CPTU']);
 
+                 DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_cptu_signature' => Auth::user()->signature]);
+
                 $hire_rate=carRental::
                  where('vehicle_reg_no',$request->get('vehicle_reg'))
                  ->value('hire_rate');
@@ -525,6 +537,18 @@ class carContractsController extends Controller
 
         public function newContractE(Request $request){
         $id=$request->get('contract_id');
+
+        $head_sign = DB::table('car_contracts')->select('head_cptu_signature')->where('id', $id)->value('head_cptu_signature');
+        if(is_null($head_sign)){
+
+            $head_cptu_signature = DB::table('users')->select('signature')->where('role','Head of CPTU')->value('signature');
+
+
+            DB::table('car_contracts')
+                ->where('id', $id)
+                ->update(['head_cptu_signature' =>$head_cptu_signature ]);
+                
+        }
         DB::table('car_contracts')
                 ->where('id', $id)
                 ->update(['initial_speedmeter' => $request->get('speedmeter_km')]);
