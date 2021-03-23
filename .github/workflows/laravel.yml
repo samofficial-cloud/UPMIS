@@ -3,15 +3,15 @@ name: Laravel
 on:
   push:
     branches: [ master ]
-  
+
 
 jobs:
   laravel-tests:
 
-    runs-on: ubuntu-20.04.2
+    runs-on: self-hosted
 
     steps:
-    
+
     - uses: actions/checkout@v2
     - name: Install Dependencies
       run: composer install
