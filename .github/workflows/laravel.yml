@@ -1,0 +1,22 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ master ]
+  
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-20.04.2
+
+    steps:
+    
+    - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: composer install
+    - name: Configure application
+      run: |
+        php artisan cache:clear
+        php artisan view:clear
+        php artisan config:cache
