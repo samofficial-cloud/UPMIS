@@ -375,7 +375,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -538,13 +538,13 @@
                                                                         @else
 
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                                 <div class="modal fade" id="add_control_number{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -578,7 +578,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_all{{$var->invoice_number}}"></p>
@@ -644,7 +644,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -652,7 +652,7 @@
                                                                                                     @else
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
 
                                                                                                             </div>
@@ -1395,7 +1395,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -1554,14 +1554,14 @@
                                                                         @else
 
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_outbox{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_outbox{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                                 <div class="modal fade" id="add_control_number_outbox{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -1595,7 +1595,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_all{{$var->invoice_number}}"></p>
@@ -1660,7 +1660,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -1668,7 +1668,7 @@
                                                                                                     @else
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
 
                                                                                                             </div>
@@ -2241,7 +2241,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -2400,13 +2400,13 @@
                                                                     @else
 
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                             <div class="modal fade" id="add_control_number{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -2440,7 +2440,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                         <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_all{{$var->invoice_number}}"></p>
@@ -2505,7 +2505,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -2513,7 +2513,7 @@
                                                                                                 @else
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
 
                                                                                                         </div>
@@ -3077,7 +3077,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -3236,13 +3236,13 @@
                                                                     @else
 
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                             <div class="modal fade" id="add_control_number{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -3276,7 +3276,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                         <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_all{{$var->invoice_number}}"></p>
@@ -3342,7 +3342,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -3350,7 +3350,7 @@
                                                                                                 @else
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
 
                                                                                                         </div>
@@ -4109,7 +4109,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -4268,13 +4268,13 @@
                                                                         @else
 
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                                 <div class="modal fade" id="add_control_number{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -4308,7 +4308,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_all{{$var->invoice_number}}"></p>
@@ -4374,7 +4374,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -4382,7 +4382,7 @@
                                                                                                     @else
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
 
                                                                                                             </div>
@@ -4956,7 +4956,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -5115,7 +5115,7 @@
                                                                     @else
 
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
 
                                                                             <div class="modal fade" id="add_control_number{{$var->invoice_number}}" role="dialog">
@@ -5123,7 +5123,7 @@
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -5157,7 +5157,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                         <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_all{{$var->invoice_number}}"></p>
@@ -5223,7 +5223,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -5231,7 +5231,7 @@
                                                                                                 @else
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
 
                                                                                                         </div>
@@ -5792,7 +5792,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -5951,14 +5951,14 @@
                                                                     @else
 
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                             <div class="modal fade" id="add_control_number{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -5992,7 +5992,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                         <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_all{{$var->invoice_number}}"></p>
@@ -6057,7 +6057,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -6065,7 +6065,7 @@
                                                                                                 @else
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
 
                                                                                                         </div>
@@ -6465,7 +6465,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -6611,14 +6611,14 @@
                                                                         @else
 
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                                 <div class="modal fade" id="add_control_number_water{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -6672,7 +6672,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_water_all{{$var->invoice_number}}"></p>
@@ -6759,7 +6759,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg_water{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -6767,7 +6767,7 @@
                                                                                                     @else
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                             </div>
@@ -7502,7 +7502,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -7661,14 +7661,14 @@
                                                                         @else
 
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_outbox_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_outbox_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                                 <div class="modal fade" id="add_control_number_outbox_water{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -7722,7 +7722,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_water_all{{$var->invoice_number}}"></p>
@@ -7810,7 +7810,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg_water{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -7818,7 +7818,7 @@
                                                                                                     @else
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                             </div>
@@ -8420,7 +8420,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -8566,13 +8566,13 @@
                                                                     @else
 
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                             <div class="modal fade" id="add_control_number_water{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -8626,7 +8626,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                         <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_water_all{{$var->invoice_number}}"></p>
@@ -8714,7 +8714,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_water{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -8722,7 +8722,7 @@
                                                                                                 @else
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                         </div>
@@ -9311,7 +9311,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -9457,13 +9457,13 @@
                                                                     @else
 
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                             <div class="modal fade" id="add_control_number_water{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -9517,7 +9517,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                         <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_water_all{{$var->invoice_number}}"></p>
@@ -9605,7 +9605,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_water{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -9613,7 +9613,7 @@
                                                                                                 @else
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                         </div>
@@ -10382,7 +10382,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -10528,13 +10528,13 @@
                                                                         @else
 
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                                 <div class="modal fade" id="add_control_number_water{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -10588,7 +10588,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_water_all{{$var->invoice_number}}"></p>
@@ -10676,7 +10676,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg_water{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -10684,7 +10684,7 @@
                                                                                                     @else
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                             </div>
@@ -11278,7 +11278,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -11424,14 +11424,14 @@
                                                                     @else
 
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                             <div class="modal fade" id="add_control_number_water{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -11485,7 +11485,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                         <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_water_all{{$var->invoice_number}}"></p>
@@ -11573,7 +11573,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_water{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -11581,7 +11581,7 @@
                                                                                                 @else
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                         </div>
@@ -12170,7 +12170,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -12316,14 +12316,14 @@
                                                                     @else
 
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                             <div class="modal fade" id="add_control_number_water{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -12377,7 +12377,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                         <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_water_all{{$var->invoice_number}}"></p>
@@ -12465,7 +12465,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_water{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -12473,7 +12473,7 @@
                                                                                                 @else
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                         </div>
@@ -12879,7 +12879,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -13025,14 +13025,14 @@
                                                                         @if($privileges=='Read only')
                                                                         @else
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                                 <div class="modal fade" id="add_control_number_electricity{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -13082,7 +13082,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -13170,7 +13170,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -13179,7 +13179,7 @@
 
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                             </div>
@@ -13931,7 +13931,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -14077,13 +14077,13 @@
                                                                         @if($privileges=='Read only')
                                                                         @else
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_outbox_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_outbox_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                                 <div class="modal fade" id="add_control_number_outbox_electricity{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -14133,7 +14133,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -14218,7 +14218,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -14227,7 +14227,7 @@
 
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                             </div>
@@ -14822,7 +14822,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -14968,13 +14968,13 @@
                                                                     @if($privileges=='Read only')
                                                                     @else
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                             <div class="modal fade" id="add_control_number_electricity{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -15024,7 +15024,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                         <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                                                                     </div>
@@ -15109,7 +15109,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -15118,7 +15118,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                         </div>
@@ -15710,7 +15710,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -15856,13 +15856,13 @@
                                                                     @if($privileges=='Read only')
                                                                     @else
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                             <div class="modal fade" id="add_control_number_electricity{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -15912,7 +15912,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                         <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                                                                     </div>
@@ -15997,7 +15997,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -16006,7 +16006,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                         </div>
@@ -16777,7 +16777,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>GEPG Control Number:</td>
+                                                                                            <td>GePG Control Number:</td>
                                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                                         </tr>
 
@@ -16923,13 +16923,13 @@
                                                                         @if($privileges=='Read only')
                                                                         @else
                                                                             @if($var->gepg_control_no=='')
-                                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_outbox_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_outbox_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                                 <div class="modal fade" id="add_control_number_outbox_electricity{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -16979,7 +16979,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -17065,7 +17065,7 @@
                                                                                                     @if($var->gepg_control_no=='')
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                                 <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                                                             </div>
@@ -17074,7 +17074,7 @@
 
                                                                                                         <div class="form-group">
                                                                                                             <div class="form-wrapper">
-                                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                                 <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                             </div>
@@ -17673,7 +17673,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -17819,13 +17819,13 @@
                                                                     @if($privileges=='Read only')
                                                                     @else
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                             <div class="modal fade" id="add_control_number_electricity{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -17875,7 +17875,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                         <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                                                                     </div>
@@ -17961,7 +17961,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -17970,7 +17970,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                         </div>
@@ -18559,7 +18559,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>GEPG Control Number:</td>
+                                                                                        <td>GePG Control Number:</td>
                                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                                     </tr>
 
@@ -18705,14 +18705,14 @@
                                                                     @if($privileges=='Read only')
                                                                     @else
                                                                         @if($var->gepg_control_no=='')
-                                                                            <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                            <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                             <div class="modal fade" id="add_control_number_electricity{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                            <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -18762,7 +18762,7 @@
 
                                                                                                 <div class="form-group">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                        <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                         <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                         <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                                                                     </div>
@@ -18848,7 +18848,7 @@
                                                                                                 @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                             <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                                                         </div>
@@ -18857,7 +18857,7 @@
 
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
-                                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                             <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                                                         </div>
@@ -19472,7 +19472,7 @@
 
 
                                                                         <tr>
-                                                                            <td>GEPG Control Number:</td>
+                                                                            <td>GePG Control Number:</td>
                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                         </tr>
 
@@ -19524,13 +19524,13 @@
 
 
                                                             @if($var->gepg_control_no=='')
-                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_insurance{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                 <div class="modal fade" id="add_control_number_insurance{{$var->invoice_number}}" role="dialog">
 
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                             </div>
@@ -19561,7 +19561,7 @@
 
                                                                                     <div class="form-group">
                                                                                         <div class="form-wrapper">
-                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                             <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlInsuranceAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                             <p id="error_gepg_insurance_all{{$var->invoice_number}}"></p>
@@ -19632,7 +19632,7 @@
                                                                                     @if($var->gepg_control_no=='')
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                 <input id="gepg{{$var->invoice_number}}"  type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlInsurance(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                 <p id="error_gepg_insurance{{$var->invoice_number}}"></p>
                                                                                             </div>
@@ -19640,7 +19640,7 @@
                                                                                     @else
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                 <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlInsurance(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" autocomplete="off">
 
                                                                                             </div>
@@ -20228,7 +20228,7 @@
 
 
                                                                         <tr>
-                                                                            <td>GEPG Control Number:</td>
+                                                                            <td>GePG Control Number:</td>
                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                         </tr>
 
@@ -20280,13 +20280,13 @@
 
 
                                                             @if($var->gepg_control_no=='')
-                                                                <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_insurance_principals{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_insurance_principals{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                 <div class="modal fade" id="add_control_number_insurance_principals{{$var->invoice_number}}" role="dialog">
 
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                             </div>
@@ -20317,7 +20317,7 @@
 
                                                                                     <div class="form-group">
                                                                                         <div class="form-wrapper">
-                                                                                            <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                             <input id="gepg_principals{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlInsuranceAllPrincipals(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                             <p id="error_gepg_insurance_all_principals{{$var->invoice_number}}"></p>
@@ -20388,7 +20388,7 @@
                                                                                     @if($var->gepg_control_no=='')
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                 <input id="gepg_principals{{$var->invoice_number}}"  type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlInsurancePrincipals(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                 <p id="error_gepg_insurance_principals{{$var->invoice_number}}"></p>
                                                                                             </div>
@@ -20396,7 +20396,7 @@
                                                                                     @else
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                 <input id="gepg_principals{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlInsurancePrincipals(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" autocomplete="off">
 
                                                                                             </div>
@@ -20953,7 +20953,7 @@
 
                                                                         @if($var->gepg_control_no!='')
                                                                         <tr>
-                                                                            <td>GEPG Control Number:</td>
+                                                                            <td>GePG Control Number:</td>
                                                                             <td>{{$var->gepg_control_no}}</td>
                                                                         </tr>
                                                                         @else
@@ -21260,13 +21260,13 @@
 
                                                             @else
                                                                 @if($var->gepg_control_no=='')
-                                                                    <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                    <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_car{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                     <div class="modal fade" id="add_control_number_car{{$var->invoice_number}}" role="dialog">
 
                                                                         <div class="modal-dialog" role="document">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
-                                                                                    <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                    <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                 </div>
@@ -21299,7 +21299,7 @@
 
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlCarAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                 <p id="error_gepg_car_all{{$var->invoice_number}}"></p>
@@ -21364,7 +21364,7 @@
                                                                                         @if($var->gepg_control_no=='')
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlCar(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                 <p id="error_gepg_car{{$var->invoice_number}}"></p>
                                                                                             </div>
@@ -21372,7 +21372,7 @@
                                                                                         @else
                                                                                             <div class="form-group">
                                                                                                 <div class="form-wrapper">
-                                                                                                    <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                    <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                     <input readonly type="text" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlCar(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" Required autocomplete="off">
 
                                                                                                 </div>
@@ -21937,7 +21937,7 @@
 
 
                                                                             <tr>
-                                                                                <td>GEPG Control Number:</td>
+                                                                                <td>GePG Control Number:</td>
                                                                                 <td>{{$var->gepg_control_no}}</td>
                                                                             </tr>
 
@@ -22064,13 +22064,13 @@
                                                         @else
 
                                                                 @if($var->gepg_control_no=='')
-                                                                    <a title="Add control number" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_research{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
+                                                                    <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_research{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                     <div class="modal fade" id="add_control_number_research{{$var->invoice_number}}" role="dialog">
 
                                                                         <div class="modal-dialog" role="document">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
-                                                                                    <b><h5 class="modal-title">Adding invoice and GEPG control numbers</h5></b>
+                                                                                    <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
 
                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                 </div>
@@ -22103,7 +22103,7 @@
 
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlResearchAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                 <p id="error_gepg_research_all{{$var->invoice_number}}"></p>
@@ -22171,7 +22171,7 @@
                                                                                     @if($var->gepg_control_no=='')
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                 <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlResearch(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
                                                                                                 <p id="error_gepg_research{{$var->invoice_number}}"></p>
                                                                                             </div>
@@ -22179,7 +22179,7 @@
                                                                                     @else
                                                                                         <div class="form-group">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for="course_name">GEPG Control Number <span style="color: red;">*</span></label>
+                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
                                                                                                 <input readonly type="text" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlResearch(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" Required autocomplete="off">
 
                                                                                             </div>
@@ -22407,7 +22407,7 @@
                 document.getElementById("error_gepg"+id).style.color = 'red';
                 document.getElementById("error_gepg"+id).style.float = 'left';
                 document.getElementById("error_gepg"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg"+id).innerHTML ='';
@@ -22427,7 +22427,7 @@
                 document.getElementById("error_gepg_insurance"+id).style.color = 'red';
                 document.getElementById("error_gepg_insurance"+id).style.float = 'left';
                 document.getElementById("error_gepg_insurance"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_insurance"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_insurance"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_insurance"+id).innerHTML ='';
@@ -22448,7 +22448,7 @@
                 document.getElementById("error_gepg_insurance_principals"+id).style.color = 'red';
                 document.getElementById("error_gepg_insurance_principals"+id).style.float = 'left';
                 document.getElementById("error_gepg_insurance_principals"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_insurance_principals"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_insurance_principals"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_insurance_principals"+id).innerHTML ='';
@@ -22471,7 +22471,7 @@
                 document.getElementById("error_gepg_water"+id).style.color = 'red';
                 document.getElementById("error_gepg_water"+id).style.float = 'left';
                 document.getElementById("error_gepg_water"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_water"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_water"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_water"+id).innerHTML ='';
@@ -22490,7 +22490,7 @@
                 document.getElementById("error_gepg_electricity"+id).style.color = 'red';
                 document.getElementById("error_gepg_electricity"+id).style.float = 'left';
                 document.getElementById("error_gepg_electricity"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_electricity"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_electricity"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_electricity"+id).innerHTML ='';
@@ -22510,7 +22510,7 @@
                 document.getElementById("error_gepg_car"+id).style.color = 'red';
                 document.getElementById("error_gepg_car"+id).style.float = 'left';
                 document.getElementById("error_gepg_car"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_car"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_car"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_car"+id).innerHTML ='';
@@ -22531,7 +22531,7 @@
                 document.getElementById("error_gepg_research"+id).style.color = 'red';
                 document.getElementById("error_gepg_research"+id).style.float = 'left';
                 document.getElementById("error_gepg_research"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_research"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_research"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_research"+id).innerHTML ='';
@@ -22554,7 +22554,7 @@
                 document.getElementById("error_gepg_all"+id).style.color = 'red';
                 document.getElementById("error_gepg_all"+id).style.float = 'left';
                 document.getElementById("error_gepg_all"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_all"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_all"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_all"+id).innerHTML ='';
@@ -22574,7 +22574,7 @@
                 document.getElementById("error_gepg_insurance_all"+id).style.color = 'red';
                 document.getElementById("error_gepg_insurance_all"+id).style.float = 'left';
                 document.getElementById("error_gepg_insurance_all"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_insurance_all"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_insurance_all"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_insurance_all"+id).innerHTML ='';
@@ -22595,7 +22595,7 @@
                 document.getElementById("error_gepg_water_all"+id).style.color = 'red';
                 document.getElementById("error_gepg_water_all"+id).style.float = 'left';
                 document.getElementById("error_gepg_water_all"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_water_all"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_water_all"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_water_all"+id).innerHTML ='';
@@ -22614,7 +22614,7 @@
                 document.getElementById("error_gepg_electricity_all"+id).style.color = 'red';
                 document.getElementById("error_gepg_electricity_all"+id).style.float = 'left';
                 document.getElementById("error_gepg_electricity_all"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_electricity_all"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_electricity_all"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_electricity_all"+id).innerHTML ='';
@@ -22634,7 +22634,7 @@
                 document.getElementById("error_gepg_car_all"+id).style.color = 'red';
                 document.getElementById("error_gepg_car_all"+id).style.float = 'left';
                 document.getElementById("error_gepg_car_all"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_car_all"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_car_all"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_car_all"+id).innerHTML ='';
@@ -22655,7 +22655,7 @@
                 document.getElementById("error_gepg_research_all"+id).style.color = 'red';
                 document.getElementById("error_gepg_research_all"+id).style.float = 'left';
                 document.getElementById("error_gepg_research_all"+id).style.paddingTop = '1%';
-                document.getElementById("error_gepg_research_all"+id).innerHTML ='GEPG Control number cannot be less than 12 digits';
+                document.getElementById("error_gepg_research_all"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
 
             }else{
                 document.getElementById("error_gepg_research_all"+id).innerHTML ='';
