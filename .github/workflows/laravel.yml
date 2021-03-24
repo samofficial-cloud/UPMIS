@@ -12,22 +12,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Push to server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        password: ${{ secrets.SERVER_PASSWORD }}
-        port: ${{ secrets.SERVER_PORT }}
-        script: |
-          ~/deploy.sh
-          cd ../../var/www/html
-          git pull origin master
-        key_path: ${{ secrets.DEPLOY_KEY }}
-    - name: Install Dependencies
-      run: composer install
     - name: Configure application
       run: |
+        git pull origin master
+        composer install
         php artisan cache:clear
         php artisan view:clear
         php artisan config:cache
