@@ -12,14 +12,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name:Testing the server ssh connection
-      uses:appleboy/ssh-action@master
+    - name: Push to server
+      uses: appleboy/ssh-action@master
       with:
-        - host: 34.220.121.18
-        - username: cde
-        - password: 2021@Cde?
-        - port: 22206
-        - script: |
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        port: ${{ secrets.SERVER_PORT }}
+        script: |
           cd ../../var/www/html
           git pull origin master
     - name: Install Dependencies
