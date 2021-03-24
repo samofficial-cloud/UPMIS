@@ -18,3 +18,4 @@ jobs:
         php artisan cache:clear
         php artisan view:clear
         php artisan config:cache
+        working-directory: /var/www/html
