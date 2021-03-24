@@ -17,7 +17,6 @@ Route::post('/login/custom', [
     'as' => 'login.custom'
 ]);
 
-
     Auth::routes();
 
     Route::group(['middleware' => 'auth'], function(){
