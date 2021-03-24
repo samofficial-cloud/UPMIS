@@ -1,0 +1,130 @@
+[2021-03-24 12:11:49Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:11:49Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 12:11:49Z INFO Listener] Runner is built for Linux (X64) - linux-x64.
+[2021-03-24 12:11:49Z INFO Listener] RuntimeInformation: Linux 5.4.0-1032-aws #33-Ubuntu SMP Wed Dec 9 17:13:04 UTC 2020.
+[2021-03-24 12:11:49Z INFO Listener] Version: 2.277.1
+[2021-03-24 12:11:49Z INFO Listener] Commit: 183a3dd9a0d4d51feddc5fe9fa6c3b5f8b08343d
+[2021-03-24 12:11:49Z INFO Listener] Culture: 
+[2021-03-24 12:11:49Z INFO Listener] UI Culture: 
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:11:49Z INFO Listener] Validating directory permissions for: '/var/www/html'
+[2021-03-24 12:11:49Z INFO CommandLineParser] Parse
+[2021-03-24 12:11:49Z INFO CommandLineParser] Parsing 1 args
+[2021-03-24 12:11:49Z INFO CommandLineParser] parsing argument
+[2021-03-24 12:11:49Z INFO CommandLineParser] HasArgs: False
+[2021-03-24 12:11:49Z INFO CommandLineParser] Adding Command: run
+[2021-03-24 12:11:49Z INFO Listener] Arguments parsed
+[2021-03-24 12:11:49Z INFO Runner] ExecuteCommand
+[2021-03-24 12:11:49Z INFO ConfigurationStore] currentAssemblyLocation: /var/www/html/bin/Runner.Listener.dll
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:49Z INFO ConfigurationStore] binPath: /var/www/html/bin
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:11:49Z INFO ConfigurationStore] RootFolder: /var/www/html
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:11:49Z INFO HostContext] Well known config file 'Runner': '/var/www/html/.runner'
+[2021-03-24 12:11:49Z INFO ConfigurationStore] ConfigFilePath: /var/www/html/.runner
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:11:49Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 12:11:49Z INFO ConfigurationStore] CredFilePath: /var/www/html/.credentials
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:11:49Z INFO HostContext] Well known config file 'MigratedCredentials': '/var/www/html/.credentials_migrated'
+[2021-03-24 12:11:49Z INFO ConfigurationStore] MigratedCredFilePath: /var/www/html/.credentials_migrated
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:49Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:11:49Z INFO HostContext] Well known config file 'Service': '/var/www/html/.service'
+[2021-03-24 12:11:49Z INFO ConfigurationStore] ServiceConfigFilePath: /var/www/html/.service
+[2021-03-24 12:11:49Z INFO CommandSettings] Flag 'help': 'False'
+[2021-03-24 12:11:49Z INFO CommandSettings] Flag 'version': 'False'
+[2021-03-24 12:11:49Z INFO CommandSettings] Flag 'commit': 'False'
+[2021-03-24 12:11:49Z INFO CommandSettings] Flag 'check': 'False'
+[2021-03-24 12:11:49Z INFO CommandSettings] Command 'configure': 'False'
+[2021-03-24 12:11:49Z INFO CommandSettings] Command 'remove': 'False'
+[2021-03-24 12:11:49Z INFO CommandSettings] Command 'warmup': 'False'
+[2021-03-24 12:11:49Z INFO ConfigurationManager] LoadSettings
+[2021-03-24 12:11:49Z INFO ConfigurationStore] IsConfigured()
+[2021-03-24 12:11:49Z INFO ConfigurationStore] IsConfigured: True
+[2021-03-24 12:11:49Z INFO ConfigurationManager] Is configured: True
+[2021-03-24 12:11:49Z INFO ConfigurationStore] Read setting file: 296 chars
+[2021-03-24 12:11:49Z INFO ConfigurationManager] Settings Loaded
+[2021-03-24 12:11:49Z INFO ConfigurationStore] IsServiceConfigured()
+[2021-03-24 12:11:49Z INFO ConfigurationStore] IsServiceConfigured: False
+[2021-03-24 12:11:49Z INFO CommandSettings] Command 'run': 'True'
+[2021-03-24 12:11:49Z INFO ConfigurationStore] IsConfigured()
+[2021-03-24 12:11:49Z INFO ConfigurationStore] IsConfigured: True
+[2021-03-24 12:11:49Z INFO ConfigurationManager] Is configured: True
+[2021-03-24 12:11:49Z INFO Runner] Could not parse the argument value '' for StartupType. Defaulting to Manual
+[2021-03-24 12:11:49Z INFO Runner] Set runner startup type - Manual
+[2021-03-24 12:11:49Z INFO CommandSettings] Flag 'once': 'False'
+[2021-03-24 12:11:49Z INFO Runner] RunAsync
+[2021-03-24 12:11:49Z INFO ConfigurationManager] LoadSettings
+[2021-03-24 12:11:49Z INFO ConfigurationStore] IsConfigured()
+[2021-03-24 12:11:49Z INFO ConfigurationStore] IsConfigured: True
+[2021-03-24 12:11:49Z INFO ConfigurationManager] Is configured: True
+[2021-03-24 12:11:49Z INFO ConfigurationManager] Settings Loaded
+[2021-03-24 12:11:50Z INFO MessageListener] {
+  "AgentId": 22,
+  "AgentName": "Final Deployment",
+  "PoolId": 1,
+  "PoolName": "Default",
+  "ServerUrl": "https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq",
+  "GitHubUrl": "https://github.com/samofficial-cloud/UPMIS",
+  "WorkFolder": "html"
+}
+[2021-03-24 12:11:50Z INFO MessageListener] Loading Credentials
+[2021-03-24 12:11:50Z INFO ConfigurationStore] HasCredentials()
+[2021-03-24 12:11:50Z INFO ConfigurationStore] stored True
+[2021-03-24 12:11:50Z INFO CredentialManager] GetCredentialProvider
+[2021-03-24 12:11:50Z INFO CredentialManager] Creating type OAuth
+[2021-03-24 12:11:50Z INFO CredentialManager] Creating credential type: OAuth
+[2021-03-24 12:11:50Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:11:50Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:11:50Z INFO HostContext] Well known config file 'RSACredentials': '/var/www/html/.credentials_rsaparams'
+[2021-03-24 12:11:50Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:11:50Z INFO MessageListener] Attempt to create session.
+[2021-03-24 12:11:50Z INFO MessageListener] Connecting to the Runner Server...
+[2021-03-24 12:11:50Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2021-03-24 12:11:50Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 12:11:50Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2021-03-24 12:11:50Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 12:11:50Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2021-03-24 12:11:50Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 12:11:50Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 12:11:50Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 12:11:50Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 12:11:50Z INFO MessageListener] VssConnection created
+[2021-03-24 12:11:50Z INFO Terminal] WRITE LINE: 
+[2021-03-24 12:11:50Z INFO Terminal] WRITE LINE: 
+[2021-03-24 12:11:51Z WARN GitHubActionsService] Authentication failed with status code 401.
+WWW-Authenticate: Bearer
+Strict-Transport-Security: max-age=2592000
+X-TFS-ProcessId: b00bc694-6154-4682-a5c8-27879d9ff3a3
+ActivityId: f1c3b6ac-a2a7-43b7-bcf3-190549f017da
+X-TFS-Session: ecb5ca23-6229-475c-a271-d6e6182ac6ac
+X-VSS-E2EID: 4342dda3-be13-4fee-8c85-a9bf908fb272
+X-VSS-SenderDeploymentId: ac98198d-4d34-0364-420d-bafa6e51dce2
+X-TFS-ServiceError: The+user+%27System%3aPublicAccess%3baaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa%27+is+not+authorized+to+access+this+resource.
+X-VSS-S2STargetService: 0000005A-0000-8888-8000-000000000000/visualstudio.com
+X-MSEdge-Ref: Ref A: 4BF40A86F3BE4AE585F4ED218FB80677 Ref B: PDX31EDGE0121 Ref C: 2021-03-24T12:11:51Z
+Date: Wed, 24 Mar 2021 12:11:50 GMT
+
+[2021-03-24 12:11:51Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:11:51Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:11:51Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2021-03-24 12:11:51Z INFO MessageListener] Session created.
+[2021-03-24 12:11:51Z INFO Terminal] WRITE LINE: 2021-03-24 12:11:51Z: Listening for Jobs
+[2021-03-24 12:11:51Z INFO JobDispatcher] Set runner/worker IPC timeout to 30 seconds.
+[2021-03-24 12:13:34Z INFO Terminal] WRITE LINE: Exiting...
+[2021-03-24 12:13:34Z INFO ConfigurationStore] IsServiceConfigured()
+[2021-03-24 12:13:34Z INFO ConfigurationStore] IsServiceConfigured: False
+[2021-03-24 12:13:34Z INFO HostContext] Runner will be shutdown for UserCancelled
+[2021-03-24 12:13:34Z WARN GitHubActionsService] GET request to https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq/_apis/distributedtask/pools/1/messages?sessionId=cd697665-7239-496e-aebb-de1b3f22d6c6 has been cancelled.
+[2021-03-24 12:13:34Z INFO MessageListener] Get next message has been cancelled.
+[2021-03-24 12:13:34Z INFO JobDispatcher] Shutting down JobDispatcher. Make sure all WorkerDispatcher has finished.
+[2021-03-24 12:13:34Z INFO Listener] Runner execution been cancelled.
