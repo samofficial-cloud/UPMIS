@@ -1,0 +1,2413 @@
+[2021-03-24 12:45:32Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2021-03-24 12:45:32Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:32Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:32Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 12:45:32Z INFO Worker] Version: 2.277.1
+[2021-03-24 12:45:32Z INFO Worker] Commit: 183a3dd9a0d4d51feddc5fe9fa6c3b5f8b08343d
+[2021-03-24 12:45:32Z INFO Worker] Culture: 
+[2021-03-24 12:45:32Z INFO Worker] UI Culture: 
+[2021-03-24 12:45:32Z INFO Worker] Waiting to receive the job message from the channel.
+[2021-03-24 12:45:32Z INFO Worker] Message received.
+[2021-03-24 12:45:33Z INFO Worker] Job message:
+ {
+  "fileTable": [
+    ".github/workflows/laravel.yml"
+  ],
+  "mask": [
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    }
+  ],
+  "steps": [
+    {
+      "type": "action",
+      "reference": {
+        "type": "repository",
+        "name": "actions/checkout",
+        "ref": "v2",
+        "repositoryType": "GitHub",
+        "path": ""
+      },
+      "condition": "success()",
+      "id": "ec45f485-8c55-5e99-f8a0-a82563f40d5b",
+      "name": "actionscheckout"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 15,
+        "col": 13,
+        "lit": "Configure application"
+      },
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 16,
+              "col": 12,
+              "lit": "git pull origin master\nphp artisan cache:clear\nphp artisan view:clear\nphp artisan config:cache\n"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "17477f87-fab6-50d5-7dcf-f49cbea510d3",
+      "name": "run"
+    }
+  ],
+  "variables": {
+    "system.isScheduled": {
+      "value": "False"
+    },
+    "system": {
+      "value": "actions"
+    },
+    "system.hosttype": {
+      "value": "actions"
+    },
+    "system.servertype": {
+      "value": "Hosted"
+    },
+    "system.culture": {
+      "value": "en-US"
+    },
+    "system.collectionId": {
+      "value": "a5e7ad8a-9259-4ec9-bb94-650a36c82fb9"
+    },
+    "system.collectionUri": {
+      "value": "https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq/"
+    },
+    "system.taskDefinitionsUri": {
+      "value": "https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq/"
+    },
+    "system.pipelineStartTime": {
+      "value": "2021-03-24 12:45:29+00:00"
+    },
+    "system.definitionId": {
+      "value": "3"
+    },
+    "system.runner.lowdiskspacethreshold": {
+      "value": "100"
+    },
+    "DistributedTask.NewActionMetadata": {
+      "value": "true"
+    },
+    "DistributedTask.UseContextNameForGITHUBACTION": {
+      "value": "true"
+    },
+    "system.teamProjectId": {
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    "build.buildId": {
+      "value": "10"
+    },
+    "build.containerId": {
+      "value": "312395"
+    },
+    "system.workflowFilePath": {
+      "value": ".github/workflows/laravel.yml"
+    },
+    "system.definitionName": {
+      "value": "UPMIS"
+    },
+    "system.planId": {
+      "value": "bf37c24d-f42a-4265-afea-f59499d89e30"
+    },
+    "system.timelineId": {
+      "value": "bf37c24d-f42a-4265-afea-f59499d89e30"
+    },
+    "system.stageDisplayName": {
+      "value": "__default"
+    },
+    "system.stageId": {
+      "value": "96ac2280-8cb4-5df5-99de-dd2da759617d"
+    },
+    "system.stageName": {
+      "value": "__default"
+    },
+    "system.stageAttempt": {
+      "value": "1"
+    },
+    "system.phaseDisplayName": {
+      "value": "laravel-tests"
+    },
+    "system.phaseId": {
+      "value": "62044ced-e34f-55a5-50c3-53b6a847578f"
+    },
+    "system.phaseName": {
+      "value": "laravel-tests"
+    },
+    "system.phaseAttempt": {
+      "value": "1"
+    },
+    "system.jobIdentifier": {
+      "value": "laravel-tests.__default"
+    },
+    "system.jobAttempt": {
+      "value": "1"
+    },
+    "System.JobPositionInPhase": {
+      "value": "1"
+    },
+    "System.TotalJobsInPhase": {
+      "value": "1"
+    },
+    "system.github.job": {
+      "value": "laravel-tests"
+    },
+    "system.jobDisplayName": {
+      "value": "laravel-tests"
+    },
+    "system.jobId": {
+      "value": "58db5990-a15b-5a14-b197-cb3269b353df"
+    },
+    "system.jobName": {
+      "value": "__default"
+    },
+    "system.github.token.permissions": {
+      "value": "{\"Actions\":\"write\",\"Checks\":\"write\",\"Contents\":\"write\",\"Deployments\":\"write\",\"Issues\":\"write\",\"Metadata\":\"read\",\"OrganizationPackages\":\"write\",\"Packages\":\"write\",\"PullRequests\":\"write\",\"RepositoryProjects\":\"write\",\"SecurityEvents\":\"write\",\"Statuses\":\"write\"}"
+    },
+    "system.github.token": {
+      "value": "***",
+      "isSecret": true
+    },
+    "system.runnerGroupName": {
+      "value": "Default"
+    }
+  },
+  "messageType": "PipelineAgentJobRequest",
+  "plan": {
+    "scopeIdentifier": "00000000-0000-0000-0000-000000000000",
+    "planType": "Actions",
+    "version": 12,
+    "planId": "bf37c24d-f42a-4265-afea-f59499d89e30",
+    "planGroup": "Actions:00000000-0000-0000-0000-000000000000:1",
+    "artifactUri": "vstfs:///Build/Build/10",
+    "artifactLocation": null,
+    "definition": {
+      "_links": {},
+      "id": 3,
+      "name": "UPMIS"
+    },
+    "owner": {
+      "_links": {},
+      "id": 3,
+      "name": "samofficial-cloud"
+    }
+  },
+  "timeline": {
+    "id": "bf37c24d-f42a-4265-afea-f59499d89e30",
+    "changeId": 6,
+    "location": null
+  },
+  "jobId": "58db5990-a15b-5a14-b197-cb3269b353df",
+  "jobDisplayName": "laravel-tests",
+  "jobName": "__default",
+  "requestId": 9,
+  "lockedUntil": "0001-01-01T00:00:00",
+  "resources": {
+    "endpoints": [
+      {
+        "data": {
+          "ServerId": "a5e7ad8a-9259-4ec9-bb94-650a36c82fb9",
+          "ServerName": "9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq",
+          "CacheServerUrl": "https://artifactcache.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq/"
+        },
+        "name": "SystemVssConnection",
+        "url": "https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq/",
+        "authorization": {
+          "parameters": {
+            "AccessToken": ***
+          },
+          "scheme": "OAuth"
+        },
+        "isShared": false,
+        "isReady": true
+      }
+    ]
+  },
+  "contextData": {
+    "github": {
+      "t": 2,
+      "d": [
+        {
+          "k": "ref",
+          "v": "refs/heads/master"
+        },
+        {
+          "k": "sha",
+          "v": "898e3504d97767af88ba334d455bcbe79655a74e"
+        },
+        {
+          "k": "repository",
+          "v": "samofficial-cloud/UPMIS"
+        },
+        {
+          "k": "repository_owner",
+          "v": "samofficial-cloud"
+        },
+        {
+          "k": "repositoryUrl",
+          "v": "git://github.com/samofficial-cloud/UPMIS.git"
+        },
+        {
+          "k": "run_id",
+          "v": "683063027"
+        },
+        {
+          "k": "run_number",
+          "v": "11"
+        },
+        {
+          "k": "retention_days",
+          "v": "90"
+        },
+        {
+          "k": "actor",
+          "v": "samofficial-cloud"
+        },
+        {
+          "k": "workflow",
+          "v": "Laravel"
+        },
+        {
+          "k": "head_ref",
+          "v": ""
+        },
+        {
+          "k": "base_ref",
+          "v": ""
+        },
+        {
+          "k": "event_name",
+          "v": "push"
+        },
+        {
+          "k": "event",
+          "v": {
+            "t": 2,
+            "d": [
+              {
+                "k": "after",
+                "v": "898e3504d97767af88ba334d455bcbe79655a74e"
+              },
+              {
+                "k": "base_ref",
+                "v": null
+              },
+              {
+                "k": "before",
+                "v": "c8d7b064f500790e074f528697f245f32dbafc5c"
+              },
+              {
+                "k": "commits",
+                "v": {
+                  "t": 1,
+                  "a": [
+                    {
+                      "t": 2,
+                      "d": [
+                        {
+                          "k": "author",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "samforbuilding11@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "samofficial-cloud"
+                              },
+                              {
+                                "k": "username",
+                                "v": "samofficial-cloud"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "committer",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "samforbuilding11@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "samofficial-cloud"
+                              },
+                              {
+                                "k": "username",
+                                "v": "samofficial-cloud"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "distinct",
+                          "v": true
+                        },
+                        {
+                          "k": "id",
+                          "v": "2b063cfa6df1954e1cd0702ef02791f9fe77dcb7"
+                        },
+                        {
+                          "k": "message",
+                          "v": "removed space in web.php file"
+                        },
+                        {
+                          "k": "timestamp",
+                          "v": "2021-03-24T15:39:46+03:00"
+                        },
+                        {
+                          "k": "tree_id",
+                          "v": "a7ce438961db3b3594a73b18669f2e361e0594a0"
+                        },
+                        {
+                          "k": "url",
+                          "v": "https://github.com/samofficial-cloud/UPMIS/commit/2b063cfa6df1954e1cd0702ef02791f9fe77dcb7"
+                        }
+                      ]
+                    },
+                    {
+                      "t": 2,
+                      "d": [
+                        {
+                          "k": "author",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "samforbuilding11@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "samofficial-cloud"
+                              },
+                              {
+                                "k": "username",
+                                "v": "samofficial-cloud"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "committer",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "samforbuilding11@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "samofficial-cloud"
+                              },
+                              {
+                                "k": "username",
+                                "v": "samofficial-cloud"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "distinct",
+                          "v": true
+                        },
+                        {
+                          "k": "id",
+                          "v": "1f975090828ea2f3d7ff7fbbc10cf678f12d3f26"
+                        },
+                        {
+                          "k": "message",
+                          "v": "Merge branch 'master' of https://github.com/samofficial-cloud/UPMIS into master"
+                        },
+                        {
+                          "k": "timestamp",
+                          "v": "2021-03-24T15:42:50+03:00"
+                        },
+                        {
+                          "k": "tree_id",
+                          "v": "ad20bb5322ec07ba0ae57288145403b18db4a253"
+                        },
+                        {
+                          "k": "url",
+                          "v": "https://github.com/samofficial-cloud/UPMIS/commit/1f975090828ea2f3d7ff7fbbc10cf678f12d3f26"
+                        }
+                      ]
+                    },
+                    {
+                      "t": 2,
+                      "d": [
+                        {
+                          "k": "author",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "samforbuilding11@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "samofficial-cloud"
+                              },
+                              {
+                                "k": "username",
+                                "v": "samofficial-cloud"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "committer",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "samforbuilding11@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "samofficial-cloud"
+                              },
+                              {
+                                "k": "username",
+                                "v": "samofficial-cloud"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "distinct",
+                          "v": true
+                        },
+                        {
+                          "k": "id",
+                          "v": "898e3504d97767af88ba334d455bcbe79655a74e"
+                        },
+                        {
+                          "k": "message",
+                          "v": "deleted html folder"
+                        },
+                        {
+                          "k": "timestamp",
+                          "v": "2021-03-24T15:44:48+03:00"
+                        },
+                        {
+                          "k": "tree_id",
+                          "v": "79e2dd3eab9c1159b038cfb9d97a67e7d712cf37"
+                        },
+                        {
+                          "k": "url",
+                          "v": "https://github.com/samofficial-cloud/UPMIS/commit/898e3504d97767af88ba334d455bcbe79655a74e"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "compare",
+                "v": "https://github.com/samofficial-cloud/UPMIS/compare/c8d7b064f500...898e3504d977"
+              },
+              {
+                "k": "created",
+                "v": false
+              },
+              {
+                "k": "deleted",
+                "v": false
+              },
+              {
+                "k": "forced",
+                "v": false
+              },
+              {
+                "k": "head_commit",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "author",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "email",
+                            "v": "samforbuilding11@gmail.com"
+                          },
+                          {
+                            "k": "name",
+                            "v": "samofficial-cloud"
+                          },
+                          {
+                            "k": "username",
+                            "v": "samofficial-cloud"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "committer",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "email",
+                            "v": "samforbuilding11@gmail.com"
+                          },
+                          {
+                            "k": "name",
+                            "v": "samofficial-cloud"
+                          },
+                          {
+                            "k": "username",
+                            "v": "samofficial-cloud"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "distinct",
+                      "v": true
+                    },
+                    {
+                      "k": "id",
+                      "v": "898e3504d97767af88ba334d455bcbe79655a74e"
+                    },
+                    {
+                      "k": "message",
+                      "v": "deleted html folder"
+                    },
+                    {
+                      "k": "timestamp",
+                      "v": "2021-03-24T15:44:48+03:00"
+                    },
+                    {
+                      "k": "tree_id",
+                      "v": "79e2dd3eab9c1159b038cfb9d97a67e7d712cf37"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://github.com/samofficial-cloud/UPMIS/commit/898e3504d97767af88ba334d455bcbe79655a74e"
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "pusher",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "email",
+                      "v": "57223482+samofficial-cloud@users.noreply.github.com"
+                    },
+                    {
+                      "k": "name",
+                      "v": "samofficial-cloud"
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "ref",
+                "v": "refs/heads/master"
+              },
+              {
+                "k": "repository",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "archive_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/{archive_format}{/ref}"
+                    },
+                    {
+                      "k": "archived",
+                      "v": false
+                    },
+                    {
+                      "k": "assignees_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/assignees{/user}"
+                    },
+                    {
+                      "k": "blobs_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/git/blobs{/sha}"
+                    },
+                    {
+                      "k": "branches_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/branches{/branch}"
+                    },
+                    {
+                      "k": "clone_url",
+                      "v": "https://github.com/samofficial-cloud/UPMIS.git"
+                    },
+                    {
+                      "k": "collaborators_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/collaborators{/collaborator}"
+                    },
+                    {
+                      "k": "comments_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/comments{/number}"
+                    },
+                    {
+                      "k": "commits_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/commits{/sha}"
+                    },
+                    {
+                      "k": "compare_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/compare/{base}...{head}"
+                    },
+                    {
+                      "k": "contents_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/contents/{+path}"
+                    },
+                    {
+                      "k": "contributors_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/contributors"
+                    },
+                    {
+                      "k": "created_at",
+                      "v": 1591253270.0
+                    },
+                    {
+                      "k": "default_branch",
+                      "v": "master"
+                    },
+                    {
+                      "k": "deployments_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/deployments"
+                    },
+                    {
+                      "k": "description",
+                      "v": null
+                    },
+                    {
+                      "k": "disabled",
+                      "v": false
+                    },
+                    {
+                      "k": "downloads_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/downloads"
+                    },
+                    {
+                      "k": "events_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/events"
+                    },
+                    {
+                      "k": "fork",
+                      "v": false
+                    },
+                    {
+                      "k": "forks",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "forks_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "forks_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/forks"
+                    },
+                    {
+                      "k": "full_name",
+                      "v": "samofficial-cloud/UPMIS"
+                    },
+                    {
+                      "k": "git_commits_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/git/commits{/sha}"
+                    },
+                    {
+                      "k": "git_refs_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/git/refs{/sha}"
+                    },
+                    {
+                      "k": "git_tags_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/git/tags{/sha}"
+                    },
+                    {
+                      "k": "git_url",
+                      "v": "git://github.com/samofficial-cloud/UPMIS.git"
+                    },
+                    {
+                      "k": "has_downloads",
+                      "v": true
+                    },
+                    {
+                      "k": "has_issues",
+                      "v": true
+                    },
+                    {
+                      "k": "has_pages",
+                      "v": false
+                    },
+                    {
+                      "k": "has_projects",
+                      "v": true
+                    },
+                    {
+                      "k": "has_wiki",
+                      "v": true
+                    },
+                    {
+                      "k": "homepage",
+                      "v": null
+                    },
+                    {
+                      "k": "hooks_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/hooks"
+                    },
+                    {
+                      "k": "html_url",
+                      "v": "https://github.com/samofficial-cloud/UPMIS"
+                    },
+                    {
+                      "k": "id",
+                      "v": 269282047.0
+                    },
+                    {
+                      "k": "issue_comment_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/issues/comments{/number}"
+                    },
+                    {
+                      "k": "issue_events_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/issues/events{/number}"
+                    },
+                    {
+                      "k": "issues_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/issues{/number}"
+                    },
+                    {
+                      "k": "keys_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/keys{/key_id}"
+                    },
+                    {
+                      "k": "labels_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/labels{/name}"
+                    },
+                    {
+                      "k": "language",
+                      "v": "Blade"
+                    },
+                    {
+                      "k": "languages_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/languages"
+                    },
+                    {
+                      "k": "license",
+                      "v": null
+                    },
+                    {
+                      "k": "master_branch",
+                      "v": "master"
+                    },
+                    {
+                      "k": "merges_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/merges"
+                    },
+                    {
+                      "k": "milestones_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/milestones{/number}"
+                    },
+                    {
+                      "k": "mirror_url",
+                      "v": null
+                    },
+                    {
+                      "k": "name",
+                      "v": "UPMIS"
+                    },
+                    {
+                      "k": "node_id",
+                      "v": "MDEwOlJlcG9zaXRvcnkyNjkyODIwNDc="
+                    },
+                    {
+                      "k": "notifications_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/notifications{?since,all,participating}"
+                    },
+                    {
+                      "k": "open_issues",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "open_issues_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "owner",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "avatar_url",
+                            "v": "https://avatars.githubusercontent.com/u/57223482?v=4"
+                          },
+                          {
+                            "k": "email",
+                            "v": "57223482+samofficial-cloud@users.noreply.github.com"
+                          },
+                          {
+                            "k": "events_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/events{/privacy}"
+                          },
+                          {
+                            "k": "followers_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/followers"
+                          },
+                          {
+                            "k": "following_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/following{/other_user}"
+                          },
+                          {
+                            "k": "gists_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/gists{/gist_id}"
+                          },
+                          {
+                            "k": "gravatar_id",
+                            "v": ""
+                          },
+                          {
+                            "k": "html_url",
+                            "v": "https://github.com/samofficial-cloud"
+                          },
+                          {
+                            "k": "id",
+                            "v": 57223482.0
+                          },
+                          {
+                            "k": "login",
+                            "v": "samofficial-cloud"
+                          },
+                          {
+                            "k": "name",
+                            "v": "samofficial-cloud"
+                          },
+                          {
+                            "k": "node_id",
+                            "v": "MDQ6VXNlcjU3MjIzNDgy"
+                          },
+                          {
+                            "k": "organizations_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/orgs"
+                          },
+                          {
+                            "k": "received_events_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/received_events"
+                          },
+                          {
+                            "k": "repos_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/repos"
+                          },
+                          {
+                            "k": "site_admin",
+                            "v": false
+                          },
+                          {
+                            "k": "starred_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/starred{/owner}{/repo}"
+                          },
+                          {
+                            "k": "subscriptions_url",
+                            "v": "https://api.github.com/users/samofficial-cloud/subscriptions"
+                          },
+                          {
+                            "k": "type",
+                            "v": "User"
+                          },
+                          {
+                            "k": "url",
+                            "v": "https://api.github.com/users/samofficial-cloud"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "private",
+                      "v": false
+                    },
+                    {
+                      "k": "pulls_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/pulls{/number}"
+                    },
+                    {
+                      "k": "pushed_at",
+                      "v": 1616589925.0
+                    },
+                    {
+                      "k": "releases_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/releases{/id}"
+                    },
+                    {
+                      "k": "size",
+                      "v": 60332.0
+                    },
+                    {
+                      "k": "ssh_url",
+                      "v": "git@github.com:samofficial-cloud/UPMIS.git"
+                    },
+                    {
+                      "k": "stargazers",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "stargazers_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "stargazers_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/stargazers"
+                    },
+                    {
+                      "k": "statuses_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/statuses/{sha}"
+                    },
+                    {
+                      "k": "subscribers_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/subscribers"
+                    },
+                    {
+                      "k": "subscription_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/subscription"
+                    },
+                    {
+                      "k": "svn_url",
+                      "v": "https://github.com/samofficial-cloud/UPMIS"
+                    },
+                    {
+                      "k": "tags_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/tags"
+                    },
+                    {
+                      "k": "teams_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/teams"
+                    },
+                    {
+                      "k": "trees_url",
+                      "v": "https://api.github.com/repos/samofficial-cloud/UPMIS/git/trees{/sha}"
+                    },
+                    {
+                      "k": "updated_at",
+                      "v": "2021-03-24T12:35:52Z"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://github.com/samofficial-cloud/UPMIS"
+                    },
+                    {
+                      "k": "watchers",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "watchers_count",
+                      "v": 0.0
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "sender",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "avatar_url",
+                      "v": "https://avatars.githubusercontent.com/u/57223482?v=4"
+                    },
+                    {
+                      "k": "events_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/events{/privacy}"
+                    },
+                    {
+                      "k": "followers_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/followers"
+                    },
+                    {
+                      "k": "following_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/following{/other_user}"
+                    },
+                    {
+                      "k": "gists_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/gists{/gist_id}"
+                    },
+                    {
+                      "k": "gravatar_id",
+                      "v": ""
+                    },
+                    {
+                      "k": "html_url",
+                      "v": "https://github.com/samofficial-cloud"
+                    },
+                    {
+                      "k": "id",
+                      "v": 57223482.0
+                    },
+                    {
+                      "k": "login",
+                      "v": "samofficial-cloud"
+                    },
+                    {
+                      "k": "node_id",
+                      "v": "MDQ6VXNlcjU3MjIzNDgy"
+                    },
+                    {
+                      "k": "organizations_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/orgs"
+                    },
+                    {
+                      "k": "received_events_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/received_events"
+                    },
+                    {
+                      "k": "repos_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/repos"
+                    },
+                    {
+                      "k": "site_admin",
+                      "v": false
+                    },
+                    {
+                      "k": "starred_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/starred{/owner}{/repo}"
+                    },
+                    {
+                      "k": "subscriptions_url",
+                      "v": "https://api.github.com/users/samofficial-cloud/subscriptions"
+                    },
+                    {
+                      "k": "type",
+                      "v": "User"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://api.github.com/users/samofficial-cloud"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "k": "server_url",
+          "v": "https://github.com"
+        },
+        {
+          "k": "api_url",
+          "v": "https://api.github.com"
+        },
+        {
+          "k": "graphql_url",
+          "v": "https://api.github.com/graphql"
+        }
+      ]
+    },
+    "needs": {
+      "t": 2
+    },
+    "matrix": null,
+    "strategy": {
+      "t": 2,
+      "d": [
+        {
+          "k": "fail-fast",
+          "v": true
+        },
+        {
+          "k": "job-index",
+          "v": 0.0
+        },
+        {
+          "k": "job-total",
+          "v": 1.0
+        },
+        {
+          "k": "max-parallel",
+          "v": 1.0
+        }
+      ]
+    }
+  }
+}
+[2021-03-24 12:45:33Z INFO JobRunner] Job ID 58db5990-a15b-5a14-b197-cb3269b353df
+[2021-03-24 12:45:33Z INFO JobRunner] Creating job server with URL: https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq/
+[2021-03-24 12:45:33Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 12:45:33Z INFO Worker] Listening for cancel message from the channel.
+[2021-03-24 12:45:33Z INFO Worker] Waiting for the job to complete or for a cancel message from the channel.
+[2021-03-24 12:45:33Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 12:45:34Z INFO JobServerQueue] Start process web console line queue.
+[2021-03-24 12:45:34Z INFO JobServerQueue] Start process file upload queue.
+[2021-03-24 12:45:34Z INFO JobServerQueue] Start process timeline update queue.
+[2021-03-24 12:45:34Z INFO ExecutionContext] Initialize GitHub context
+[2021-03-24 12:45:34Z INFO ExecutionContext] Initialize Env context
+[2021-03-24 12:45:34Z INFO ConfigurationStore] currentAssemblyLocation: /var/www/html/bin/Runner.Worker.dll
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO ConfigurationStore] binPath: /var/www/html/bin
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO ConfigurationStore] RootFolder: /var/www/html
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known config file 'Runner': '/var/www/html/.runner'
+[2021-03-24 12:45:34Z INFO ConfigurationStore] ConfigFilePath: /var/www/html/.runner
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 12:45:34Z INFO ConfigurationStore] CredFilePath: /var/www/html/.credentials
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known config file 'MigratedCredentials': '/var/www/html/.credentials_migrated'
+[2021-03-24 12:45:34Z INFO ConfigurationStore] MigratedCredFilePath: /var/www/html/.credentials_migrated
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known config file 'Service': '/var/www/html/.service'
+[2021-03-24 12:45:34Z INFO ConfigurationStore] ServiceConfigFilePath: /var/www/html/.service
+[2021-03-24 12:45:34Z INFO ConfigurationStore] Read setting file: 296 chars
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Diag': '/var/www/html/_diag'
+[2021-03-24 12:45:34Z INFO JobRunner] Starting the job execution context.
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO JobRunner] Validating directory permissions for: '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Tools': '/var/www/html/html/_tool'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Temp': '/var/www/html/html/_temp'
+[2021-03-24 12:45:34Z INFO JobRunner] Getting job extension.
+[2021-03-24 12:45:34Z INFO JobRunner] Initialize job. Getting all job steps.
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Diag': '/var/www/html/_diag'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known config file 'SetupInfo': '/var/www/html/.setup_info'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO PipelineDirectoryManager] Loading tracking config if exists: /var/www/html/html/_PipelineMapping/samofficial-cloud/UPMIS/PipelineFolder.json
+[2021-03-24 12:45:34Z INFO PipelineDirectoryManager] Updating job run properties.
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO JobExtension] Downloading actions
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:34Z INFO JobServerQueue] Try to append 1 batches web console lines for record '38cdd0a1-3344-4064-9ddd-055d6a459789', success rate: 1/1.
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:34Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:34Z INFO ActionManager] Save archive 'https://api.github.com/repos/actions/checkout/tarball/5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f' into /var/www/html/html/_actions/_temp_ba03ab3d-3efa-4ef7-a056-b9192532d6d7/d0e6bc48-bb8d-4faf-a8dd-b7e795811941.tar.gz.
+[2021-03-24 12:45:34Z INFO JobServerQueue] Try to append 1 batches web console lines for record '38cdd0a1-3344-4064-9ddd-055d6a459789', success rate: 1/1.
+[2021-03-24 12:45:35Z INFO ActionManager] Which: 'tar'
+[2021-03-24 12:45:35Z INFO ActionManager] Location: '/usr/bin/tar'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] Starting process:
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   File name: '/usr/bin/tar'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Arguments: '-xzf "/var/www/html/html/_actions/_temp_ba03ab3d-3efa-4ef7-a056-b9192532d6d7/d0e6bc48-bb8d-4faf-a8dd-b7e795811941.tar.gz"'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Working directory: '/var/www/html/html/_actions/_temp_ba03ab3d-3efa-4ef7-a056-b9192532d6d7/_staging'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] Updated oom_score_adj to 500 for PID: 552931.
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] Process started with process id 552931, waiting for process exit.
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] Finished process 552931 with exit code 0, and elapsed time 00:00:00.0881262.
+[2021-03-24 12:45:35Z INFO ActionManager] Finished getting action repository.
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Load schema file with definitions: [
+  "null",
+  "boolean",
+  "number",
+  "string",
+  "sequence",
+  "mapping",
+  "any",
+  "action-root",
+  "inputs",
+  "input",
+  "outputs",
+  "outputs-attributes",
+  "runs",
+  "container-runs",
+  "container-runs-args",
+  "container-runs-env",
+  "node12-runs",
+  "plugin-runs",
+  "composite-runs",
+  "composite-steps",
+  "composite-step",
+  "container-runs-context",
+  "output-value",
+  "input-default-context",
+  "non-empty-string",
+  "string-steps-context",
+  "step-env"
+]
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 50,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 53,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 56,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 58,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 61,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 62,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 14,
+          "lit": "false"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2021-03-24 12:45:35Z INFO ActionManager] Action node.js file: dist/index.js, no more preparation.
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:35Z INFO ActionManager] Load action that reference repository from '/var/www/html/html/_actions/actions/checkout/v2'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 50,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 53,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 56,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 58,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 61,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 62,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 14,
+          "lit": "false"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2021-03-24 12:45:35Z INFO ActionManager] Action pre node.js file: N/A.
+[2021-03-24 12:45:35Z INFO ActionManager] Action node.js file: dist/index.js.
+[2021-03-24 12:45:35Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2021-03-24 12:45:35Z INFO JobExtension] Adding .
+[2021-03-24 12:45:35Z INFO JobExtension] Adding .
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Diag': '/var/www/html/_diag'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Diag': '/var/www/html/_diag'
+[2021-03-24 12:45:35Z INFO JobExtension] Total accessible running process: 40.
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO JobRunner] Total job steps: 2.
+[2021-03-24 12:45:35Z INFO JobRunner] Run all job steps.
+[2021-03-24 12:45:35Z INFO StepsRunner] Processing step: DisplayName='Run actions/checkout@v2'
+[2021-03-24 12:45:35Z INFO StepsRunner] Initialize Env context for step
+[2021-03-24 12:45:35Z INFO StepsRunner] Evaluating: success()
+[2021-03-24 12:45:35Z INFO StepsRunner] Result: true
+[2021-03-24 12:45:35Z INFO StepsRunner] Starting the step.
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:35Z INFO ActionManager] Load action that reference repository from '/var/www/html/html/_actions/actions/checkout/v2'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 50,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 53,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 56,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 58,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 61,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 62,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 14,
+          "lit": "false"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2021-03-24 12:45:35Z INFO ActionManager] Action pre node.js file: N/A.
+[2021-03-24 12:45:35Z INFO ActionManager] Action node.js file: dist/index.js.
+[2021-03-24 12:45:35Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2021-03-24 12:45:35Z INFO ExecutionContext] Reserve record order 4 to 6 for post job actions.
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Diag': '/var/www/html/_diag'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Temp': '/var/www/html/html/_temp'
+[2021-03-24 12:45:35Z INFO ActionRunner] Write event payload to /var/www/html/html/_temp/_github_workflow/event.json
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Temp': '/var/www/html/html/_temp'
+[2021-03-24 12:45:35Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddPathFileCommand, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetEnvFileCommand, Runner.Worker
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'repository': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 6,
+  "col": 14,
+  "lit": "samofficial-cloud/UPMIS"
+}
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'ref': default value evaluate result: ""
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'token': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 24,
+  "col": 14,
+  "lit": "***"
+}
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'ssh-key': default value evaluate result: ""
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'ssh-known-hosts': default value evaluate result: ""
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'ssh-strict': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 47,
+  "col": 14,
+  "lit": "true"
+}
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'persist-credentials': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 50,
+  "col": 14,
+  "lit": "true"
+}
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'path': default value evaluate result: ""
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'clean': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 55,
+  "col": 14,
+  "lit": "true"
+}
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'fetch-depth': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 58,
+  "col": 14,
+  "lit": "1"
+}
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'lfs': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 61,
+  "col": 14,
+  "lit": "false"
+}
+[2021-03-24 12:45:35Z INFO ActionManifestManager] Input 'submodules': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 70,
+  "col": 14,
+  "lit": "false"
+}
+[2021-03-24 12:45:35Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.InternalPluginSetRepoPathCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetEnvCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetOutputCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SaveStateCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddPathCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddMaskCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddMatcherCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.RemoveMatcherCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.WarningCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.ErrorCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.DebugCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.GroupCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.EndGroupCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.EchoCommandExtension, Runner.Worker
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command set-env
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command set-output
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command save-state
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command add-path
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command warning
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command error
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command debug
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command group
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2021-03-24 12:45:35Z INFO ActionCommandManager] Register action command extension for command echo
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:35Z INFO HostContext] Well known directory 'Externals': '/var/www/html/externals'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] Starting process:
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   File name: '/var/www/html/externals/node12/bin/node'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Arguments: '"/var/www/html/html/_actions/actions/checkout/v2/dist/index.js"'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Working directory: '/var/www/html/html/UPMIS/UPMIS'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] Updated oom_score_adj to 500 for PID: 552935.
+[2021-03-24 12:45:35Z INFO ProcessInvokerWrapper] Process started with process id 552935, waiting for process exit.
+[2021-03-24 12:45:35Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'ec45f485-8c55-5e99-f8a0-a82563f40d5b', success rate: 1/1.
+[2021-03-24 12:45:35Z INFO AddMaskCommandExtension] Add new secret mask with length of 80
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] Finished process 552935 with exit code 1, and elapsed time 00:00:00.6477341.
+[2021-03-24 12:45:36Z INFO StepsRunner] Step result: Failed
+[2021-03-24 12:45:36Z INFO StepsRunner] Update job result with current step result 'Failed'.
+[2021-03-24 12:45:36Z INFO StepsRunner] Current state: job state = 'Failed'
+[2021-03-24 12:45:36Z INFO StepsRunner] Processing step: DisplayName='Configure application'
+[2021-03-24 12:45:36Z INFO StepsRunner] Initialize Env context for step
+[2021-03-24 12:45:36Z INFO StepsRunner] Evaluating: success()
+[2021-03-24 12:45:36Z INFO StepsRunner] Result: false
+[2021-03-24 12:45:36Z INFO StepsRunner] Skipping step due to condition evaluation.
+[2021-03-24 12:45:36Z INFO StepsRunner] No need for updating job result with current step result 'Skipped'.
+[2021-03-24 12:45:36Z INFO StepsRunner] Current state: job state = 'Failed'
+[2021-03-24 12:45:36Z INFO StepsRunner] Processing step: DisplayName='Post Run actions/checkout@v2'
+[2021-03-24 12:45:36Z INFO StepsRunner] Initialize Env context for step
+[2021-03-24 12:45:36Z INFO StepsRunner] Evaluating: always()
+[2021-03-24 12:45:36Z INFO StepsRunner] Result: true
+[2021-03-24 12:45:36Z INFO StepsRunner] Starting the step.
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:36Z INFO ActionManager] Load action that reference repository from '/var/www/html/html/_actions/actions/checkout/v2'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Actions': '/var/www/html/html/_actions'
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 50,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 53,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 56,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 58,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 61,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 62,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 14,
+          "lit": "false"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2021-03-24 12:45:36Z INFO ActionManager] Action pre node.js file: N/A.
+[2021-03-24 12:45:36Z INFO ActionManager] Action node.js file: dist/index.js.
+[2021-03-24 12:45:36Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Temp': '/var/www/html/html/_temp'
+[2021-03-24 12:45:36Z INFO ActionRunner] Write event payload to /var/www/html/html/_temp/_github_workflow/event.json
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Work': '/var/www/html/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Temp': '/var/www/html/html/_temp'
+[2021-03-24 12:45:36Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'repository': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 6,
+  "col": 14,
+  "lit": "samofficial-cloud/UPMIS"
+}
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'ref': default value evaluate result: ""
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'token': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 24,
+  "col": 14,
+  "lit": "***"
+}
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'ssh-key': default value evaluate result: ""
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'ssh-known-hosts': default value evaluate result: ""
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'ssh-strict': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 47,
+  "col": 14,
+  "lit": "true"
+}
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'persist-credentials': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 50,
+  "col": 14,
+  "lit": "true"
+}
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'path': default value evaluate result: ""
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'clean': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 55,
+  "col": 14,
+  "lit": "true"
+}
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'fetch-depth': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 58,
+  "col": 14,
+  "lit": "1"
+}
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'lfs': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 61,
+  "col": 14,
+  "lit": "false"
+}
+[2021-03-24 12:45:36Z INFO ActionManifestManager] Input 'submodules': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 70,
+  "col": 14,
+  "lit": "false"
+}
+[2021-03-24 12:45:36Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command set-env
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command set-output
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command save-state
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command add-path
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command warning
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command error
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command debug
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command group
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2021-03-24 12:45:36Z INFO ActionCommandManager] Register action command extension for command echo
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Externals': '/var/www/html/externals'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] Starting process:
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   File name: '/var/www/html/externals/node12/bin/node'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   Arguments: '"/var/www/html/html/_actions/actions/checkout/v2/dist/index.js"'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   Working directory: '/var/www/html/html/UPMIS/UPMIS'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2021-03-24 12:45:36Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'ec45f485-8c55-5e99-f8a0-a82563f40d5b', success rate: 1/1.
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] Updated oom_score_adj to 500 for PID: 552982.
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] Process started with process id 552982, waiting for process exit.
+[2021-03-24 12:45:36Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2021-03-24 12:45:36Z INFO AddMaskCommandExtension] Add new secret mask with length of 32
+[2021-03-24 12:45:36Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'ec45f485-8c55-5e99-f8a0-a82563f40d5b', success rate: 1/1.
+[2021-03-24 12:45:36Z INFO JobServerQueue] Try to append 1 batches web console lines for record '4f988e3b-81ef-4d44-ab1d-d62bc8676275', success rate: 1/1.
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:45:36Z INFO ProcessInvokerWrapper] Finished process 552982 with exit code 0, and elapsed time 00:00:00.5087676.
+[2021-03-24 12:45:36Z INFO StepsRunner] Step result: 
+[2021-03-24 12:45:36Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2021-03-24 12:45:36Z INFO StepsRunner] Current state: job state = 'Failed'
+[2021-03-24 12:45:36Z INFO JobRunner] Finalize job.
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:45:36Z INFO HostContext] Well known directory 'Diag': '/var/www/html/_diag'
+[2021-03-24 12:45:36Z INFO JobExtension] Initialize Env context
+[2021-03-24 12:45:36Z INFO JobExtension] Initialize steps context
+[2021-03-24 12:45:36Z INFO JobExtension] Total accessible running process: 40.
+[2021-03-24 12:45:36Z INFO JobRunner] Job result after all job steps finish: Failed
+[2021-03-24 12:45:36Z INFO JobRunner] Completing the job execution context.
+[2021-03-24 12:45:36Z INFO JobRunner] Shutting down the job server queue.
+[2021-03-24 12:45:36Z INFO JobServerQueue] Fire signal to shutdown all queues.
+[2021-03-24 12:45:37Z INFO JobServerQueue] All queue process task stopped.
+[2021-03-24 12:45:37Z INFO JobServerQueue] Try to append 1 batches web console lines for record '4f988e3b-81ef-4d44-ab1d-d62bc8676275', success rate: 1/1.
+[2021-03-24 12:45:37Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'ebcdb3e0-4f1c-489d-ada0-5746b58522ed', success rate: 1/1.
+[2021-03-24 12:45:37Z INFO JobServerQueue] Web console line queue drained.
+[2021-03-24 12:45:37Z INFO JobServerQueue] Uploading 4 files in one shot.
+[2021-03-24 12:45:38Z INFO JobServerQueue] Try to upload 4 log files or attachments, success rate: 4/4.
+[2021-03-24 12:45:38Z INFO JobServerQueue] File upload queue drained.
+[2021-03-24 12:45:38Z INFO JobServerQueue] Timeline update queue drained.
+[2021-03-24 12:45:38Z INFO JobServerQueue] All queue process tasks have been stopped, and all queues are drained.
+[2021-03-24 12:45:38Z INFO TempDirectoryManager] Cleaning runner temp folder: /var/www/html/html/_temp
+[2021-03-24 12:45:38Z INFO JobRunner] Raising job completed event.
+[2021-03-24 12:45:38Z INFO Worker] Job completed.

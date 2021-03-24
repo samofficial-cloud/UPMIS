@@ -1,0 +1,81 @@
+[2021-03-24 13:14:18Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 13:14:18Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 13:14:18Z INFO Listener] Runner is built for Linux (X64) - linux-x64.
+[2021-03-24 13:14:18Z INFO Listener] RuntimeInformation: Linux 5.4.0-1032-aws #33-Ubuntu SMP Wed Dec 9 17:13:04 UTC 2020.
+[2021-03-24 13:14:18Z INFO Listener] Version: 2.277.1
+[2021-03-24 13:14:18Z INFO Listener] Commit: 183a3dd9a0d4d51feddc5fe9fa6c3b5f8b08343d
+[2021-03-24 13:14:18Z INFO Listener] Culture: 
+[2021-03-24 13:14:18Z INFO Listener] UI Culture: 
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 13:14:18Z INFO Listener] Validating directory permissions for: '/var/www/html'
+[2021-03-24 13:14:18Z INFO CommandLineParser] Parse
+[2021-03-24 13:14:18Z INFO CommandLineParser] Parsing 3 args
+[2021-03-24 13:14:18Z INFO CommandLineParser] parsing argument
+[2021-03-24 13:14:18Z INFO CommandLineParser] HasArgs: False
+[2021-03-24 13:14:18Z INFO CommandLineParser] Adding Command: remove
+[2021-03-24 13:14:18Z INFO CommandLineParser] parsing argument
+[2021-03-24 13:14:18Z INFO CommandLineParser] HasArgs: True
+[2021-03-24 13:14:18Z INFO CommandLineParser] arg: token
+[2021-03-24 13:14:18Z INFO CommandLineParser] parsing argument
+[2021-03-24 13:14:18Z INFO CommandLineParser] HasArgs: True
+[2021-03-24 13:14:18Z INFO CommandLineParser] Adding option 'token': '***'
+[2021-03-24 13:14:18Z INFO Listener] Arguments parsed
+[2021-03-24 13:14:18Z INFO Runner] ExecuteCommand
+[2021-03-24 13:14:18Z INFO ConfigurationStore] currentAssemblyLocation: /var/www/html/bin/Runner.Listener.dll
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:18Z INFO ConfigurationStore] binPath: /var/www/html/bin
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 13:14:18Z INFO ConfigurationStore] RootFolder: /var/www/html
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 13:14:18Z INFO HostContext] Well known config file 'Runner': '/var/www/html/.runner'
+[2021-03-24 13:14:18Z INFO ConfigurationStore] ConfigFilePath: /var/www/html/.runner
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 13:14:18Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 13:14:18Z INFO ConfigurationStore] CredFilePath: /var/www/html/.credentials
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 13:14:18Z INFO HostContext] Well known config file 'MigratedCredentials': '/var/www/html/.credentials_migrated'
+[2021-03-24 13:14:18Z INFO ConfigurationStore] MigratedCredFilePath: /var/www/html/.credentials_migrated
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:18Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 13:14:18Z INFO HostContext] Well known config file 'Service': '/var/www/html/.service'
+[2021-03-24 13:14:18Z INFO ConfigurationStore] ServiceConfigFilePath: /var/www/html/.service
+[2021-03-24 13:14:18Z INFO CommandSettings] Flag 'help': 'False'
+[2021-03-24 13:14:18Z INFO CommandSettings] Flag 'version': 'False'
+[2021-03-24 13:14:18Z INFO CommandSettings] Flag 'commit': 'False'
+[2021-03-24 13:14:18Z INFO CommandSettings] Flag 'check': 'False'
+[2021-03-24 13:14:18Z INFO CommandSettings] Command 'configure': 'False'
+[2021-03-24 13:14:18Z INFO CommandSettings] Command 'remove': 'True'
+[2021-03-24 13:14:18Z INFO ConfigurationStore] IsServiceConfigured()
+[2021-03-24 13:14:18Z INFO ConfigurationStore] IsServiceConfigured: False
+[2021-03-24 13:14:18Z INFO ConfigurationStore] IsConfigured()
+[2021-03-24 13:14:18Z INFO ConfigurationStore] IsConfigured: True
+[2021-03-24 13:14:18Z INFO ConfigurationStore] HasCredentials()
+[2021-03-24 13:14:18Z INFO ConfigurationStore] stored True
+[2021-03-24 13:14:18Z INFO ConfigurationStore] Read setting file: 296 chars
+[2021-03-24 13:14:18Z INFO CommandSettings] Arg 'token': '***'
+[2021-03-24 13:14:18Z INFO CommandSettings] Remove token from Arg dictionary.
+[2021-03-24 13:14:19Z INFO ConfigurationManager] Http response code: OK from 'POST https://api.github.com/actions/runner-registration'
+[2021-03-24 13:14:19Z INFO ConfigurationManager] cred retrieved via GitHub auth
+[2021-03-24 13:14:19Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2021-03-24 13:14:19Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 13:14:19Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2021-03-24 13:14:19Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 13:14:19Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2021-03-24 13:14:19Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 13:14:19Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 13:14:19Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 13:14:19Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 13:14:20Z INFO Terminal] WRITE LINE: 
+[2021-03-24 13:14:20Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 13:14:20Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 13:14:20Z INFO HostContext] Well known config file 'RSACredentials': '/var/www/html/.credentials_rsaparams'
+[2021-03-24 13:14:20Z INFO RSAFileKeyManager] Deleting RSA key parameters file /var/www/html/.credentials_rsaparams
+[2021-03-24 13:14:20Z INFO Terminal] WRITE LINE: 
+[2021-03-24 13:14:20Z INFO Listener] Runner execution has finished with return code 0

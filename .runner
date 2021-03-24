@@ -1,9 +1,0 @@
-﻿{
-  "agentId": 22,
-  "agentName": "Final Deployment",
-  "poolId": 1,
-  "poolName": "Default",
-  "serverUrl": "https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq",
-  "gitHubUrl": "https://github.com/samofficial-cloud/UPMIS",
-  "workFolder": "html"
-}
