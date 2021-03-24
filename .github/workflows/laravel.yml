@@ -15,7 +15,6 @@ jobs:
     - name: Configure application
       run: |
         git pull origin master
-        composer install
         php artisan cache:clear
         php artisan view:clear
         php artisan config:cache
