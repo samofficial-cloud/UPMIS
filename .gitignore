@@ -4,6 +4,8 @@
 /storage/*.key
 /vendor
 /ssl
+/UPMIS
+/html
 .env
 .phpunit.result.cache
 Homestead.json
