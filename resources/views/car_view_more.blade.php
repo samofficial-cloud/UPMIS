@@ -74,7 +74,7 @@ hr {
             <?php
             $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
             $year = date('Y');
-            $i=1;  
+            $i=1;
             $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
             ?>
 
@@ -150,7 +150,7 @@ hr {
 				<td>{{$details->vehicle_status}}</td>
 			</tr>
 			<tr>
-				<td>Hire rate</td>
+				<td>Hire rate/KM</td>
 				<td>TZS {{number_format($details->hire_rate)}}</td>
 			</tr>
 			@endforeach
@@ -257,7 +257,7 @@ hr {
 
         <div class="form-group row" style="margin-right: 5px;">
           <div style="padding: 0px 7px;">
-              From 
+              From
             </div>
             <div >
               <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
@@ -265,7 +265,7 @@ hr {
             </div>
 
            <div style="padding: 0px 7px;">
-              To 
+              To
             </div>
 
             <div >
@@ -273,13 +273,13 @@ hr {
             <span id="end_msg"></span>
             </div>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
       </div>
 
      <input type="text" name="reg_no" id="reg_no" hidden="" value="{{$_GET['vehicle_reg_no']}}">
-    </form>   
+    </form>
   </div>
 </div>
            <br><br>
@@ -448,12 +448,16 @@ hr {
 {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
 @if($privileges=='Read only')
 @else
-<a title="Book Vehicle" class="btn btn-success btn-sm" style="
+
+    @if($details->vehicle_status!='Grounded')
+    <a title="Book Vehicle" class="btn btn-success btn-sm" style="
     padding: 10px;
     color: #fff;font-size: 16px;
     margin-bottom: 5px;
     margin-top: 4px;" href="{{ route('carRentalForm') }}">New Booking</a>
-    @endif
+    @else
+        @endif
+        @endif
     <br><br>
     <div class="tab">
             <button class="tablinks" onclick="openbookings(event, 'upcoming')" id="defaultOpen"><strong>Upcoming</strong></button>
@@ -468,7 +472,7 @@ hr {
 
         <div class="form-group row" style="margin-right: 5px;">
           <div style="padding: 0px 7px;">
-              From 
+              From
             </div>
             <div >
               <input type="date" id="start2_date" name="start_date" class="form-control" min="<?php echo(date('Y-m-d'))?>">
@@ -476,7 +480,7 @@ hr {
             </div>
 
            <div style="padding: 0px 7px;">
-              To 
+              To
             </div>
 
             <div >
@@ -484,13 +488,13 @@ hr {
             <span id="end2_msg"></span>
             </div>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="activity_filter2" class="btn btn-primary">
       </div>
 
      <input type="text" name="reg_no" id="reg_no2" hidden="" value="{{$_GET['vehicle_reg_no']}}">
-    </form>   
+    </form>
   </div>
 </div>
      <br>
@@ -537,7 +541,7 @@ hr {
 
         <div class="form-group row" style="margin-right: 5px;">
           <div style="padding: 0px 7px;">
-              From 
+              From
             </div>
             <div >
               <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
@@ -545,7 +549,7 @@ hr {
             </div>
 
            <div style="padding: 0px 7px;">
-              To 
+              To
             </div>
 
             <div >
@@ -553,13 +557,13 @@ hr {
             <span id="end_msg3"></span>
             </div>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="activity_filter3" class="btn btn-primary">
       </div>
 
      <input type="text" name="reg_no" id="reg_no3" hidden="" value="{{$_GET['vehicle_reg_no']}}">
-    </form>   
+    </form>
   </div>
 </div>
 	<br><br>
@@ -668,7 +672,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -695,15 +699,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -721,7 +725,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -772,7 +776,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -799,15 +803,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -825,7 +829,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -876,7 +880,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -903,15 +907,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -929,7 +933,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1020,7 +1024,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1047,15 +1051,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1073,7 +1077,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1099,8 +1103,8 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     });
     });
     }
-      
-    
+
+
 
   });
 
@@ -1170,7 +1174,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1197,15 +1201,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1223,7 +1227,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1317,7 +1321,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1346,7 +1350,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1364,7 +1368,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1390,8 +1394,8 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     });
     });
     }
-      
-    
+
+
 
   });
 

@@ -450,10 +450,11 @@ else{
               <tr>
                 <th scope="col" style="width: 5%"><center>S/N</center></th>
                 <th scope="col"><center>Client Name</center></th>
-                <th scope="col" style="width: 18%"><center>Vehicle Reg No.</center></th>
-                <th scope="col" style="width: 16%"><center>Invoicing Start Date</center></th>
-                <th scope="col" style="width: 16%"><center>Invoicing End Date</center></th>
-                <th scope="col" style="width: 16%"><center>Amount Paid(TZS)</center></th>
+                <th scope="col" style="width: 10%"><center>Invoice No.</center></th>
+                <th scope="col" style="width: 13%"><center>Invoice Date</center></th>
+                <th scope="col" style="width: 16%"><center>Total Out Standing</center></th>
+                <th scope="col" style="width: 16%"><center>Amount Paid (TZS)</center></th>
+                <th scope="col" style="width: 16%"><center>Balance</center></th>
               </tr>
             </thead>
             <tbody>
@@ -461,10 +462,11 @@ else{
               <tr>
               <td scope="row" style="text-align: center;">{{$a3}}.</td>
               <td>{{$client->fullName}}</td>
-              <td><center>{{$client->vehicle_reg_no}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($client->invoicing_period_start_date))}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($client->invoicing_period_end_date))}}</center></td>
+              <td><center>{{$client->invoice_number}}</center></td>
+              <td><center>{{date("d/m/Y",strtotime($client->invoice_date))}}</center></td>
+              <td style="text-align: right;">{{number_format($client->amount_to_be_paid)}}</td>
               <td style="text-align: right;">{{number_format($client->amount_paid)}}</td>
+              <td style="text-align: right;">{{number_format($client->amount_not_paid)}}</td>
           </tr>
           <?php $a3= $a3+1; ?>
           <?php
@@ -474,7 +476,9 @@ else{
           </tbody>
           <tfoot class="table-striped table-bordered">
             <tr>
-                <th colspan="5" style="text-align:left">TOTAL</th>
+                <th colspan="4" style="text-align:left">TOTAL</th>
+                <th style="padding-left: 12px;"></th>
+                <th style="padding-left: 12px;"></th>
                 <th style="padding-left: 12px;"></th>
             </tr>
           </tfoot>
@@ -1400,11 +1404,55 @@ if(urlParams.get('report_type')=='clients'){
 
             pagetotalpdf = pagetotal;
 
- 
+
+             total4 = api
+                .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
+
+            // Total over this page
+            pagetotal4 = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
+
+                total6 = api
+                .column( 6 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
+
+            // Total over this page
+            pagetotal6 = api
+                .column( 6, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
             // Update footer
+            $( api.column( 4 ).footer() ).html(
+              $.fn.dataTable.render.number(',').display(pagetotal4)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(total4)   
+            );
+
             $( api.column( 5 ).footer() ).html(
-              $.fn.dataTable.render.number(',').display(pagetotal)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(total)
-               
+              $.fn.dataTable.render.number(',').display(pagetotal)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(total)   
+            );
+
+            $( api.column( 6 ).footer() ).html(
+              $.fn.dataTable.render.number(',').display(pagetotal6)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(total6)   
             );
 
         },
@@ -1414,12 +1462,12 @@ if(urlParams.get('report_type')=='clients'){
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
-                orientation: 'Potrait',
+                orientation: 'Landscape',
                 title: 'UNIVERSITY OF DAR ES SALAAM',
                 messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6]
                 },
 
                 customize: function ( doc ) {
@@ -1436,12 +1484,14 @@ if(urlParams.get('report_type')=='clients'){
 
 
 
-                  doc.content[2].table.widths = [22, '*', 80, 80, 80, 80];
+                  doc.content[2].table.widths = [22, '*', 80, 80, 100, 100, 100];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
                       doc.content[2].table.body[i][1].alignment = 'left';
+                      doc.content[2].table.body[i][4].alignment = 'right';
                       doc.content[2].table.body[i][5].alignment = 'right';
+                      doc.content[2].table.body[i][6].alignment = 'right';
                       // doc.content[2].table.body[i][3].alignment = 'left';
                       // doc.content[2].table.body[i][5].alignment = 'left';
                       // doc.content[2].table.body[i][6].alignment = 'left';
@@ -1497,7 +1547,7 @@ if(urlParams.get('report_type')=='clients'){
                 className: 'excelButton',
                 title: settitle(),
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6 ,7]
+                columns: [1, 2, 3, 4, 5, 6]
                 },
             },
           ]

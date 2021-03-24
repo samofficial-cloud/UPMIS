@@ -94,7 +94,7 @@
             <p><b>Debtor Address: {{$debtor_address}}</b></p>
             <p><b>Amount: {{number_format($amount_to_be_paid)}}</b></p>
             <p><b>Currency: {{$currency}}</b></p>
-            <p><b>GEPG Control No.: {{$gepg_control_no}}</b></p>
+            <p><b>GePG Control No.: {{$gepg_control_no}}</b></p>
             <p><b>TIN: {{$tin}}</b></p>
         </div>
     </div>
@@ -157,7 +157,7 @@
     <div>
         <div style="float: left; "><p><b>Amount in Words   </b> </p><p class="dottedUnderline">{{$amount_in_words}} </p>
 
-            <p><b>Please make payment through GEPG Control Number: {{$gepg_control_no}}</b></p>
+            <p><b>Please make payment through GePG Control Number: {{$gepg_control_no}}</b></p>
 
 
         </div>

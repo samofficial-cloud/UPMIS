@@ -259,6 +259,7 @@
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col"><center>S/N</center></th>
+                            <th scope="col"><center>Class</center></th>
                             <th scope="col"><center>Principal</center></th>
                             <th scope="col" ><center>Insurance Type</center></th>
                             {{-- <th scope="col" ><center>Currency</center></th> --}}
@@ -269,10 +270,11 @@
                         @foreach($principal as $var)
                             <tr>
                                 <td scope="row" class="counterCell" style="text-align: center;">.</td>
-                                <td>{{$var->insurance_company}}</td>
-                                <td>{{$var->insurance_type}}</td>
+                                <td style="text-align: center;">{{$var->class}}</td>
+                                <td style="text-align: center;">{{$var->insurance_company}}</td>
+                                <td style="text-align: center;">{{$var->insurance_type}}</td>
                                 {{--  <td><center>{{$var->insurance_currency}}</center></td> --}}
-                                <td style="text-align: right;">{{$var->commission_percentage}}</td>
+                                <td style="text-align: center;">{{$var->commission_percentage}}%</td>
 
                             </tr>
                         @endforeach
@@ -660,7 +662,7 @@
                         messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
                         pageSize: 'A4',
                         exportOptions: {
-                            columns: [ 0, 1, 2, 3]
+                            columns: [ 0, 1, 2, 3,4]
                         },
 
                         customize: function ( doc ) {
@@ -677,7 +679,7 @@
 
 
 
-                            doc.content[2].table.widths = [22, '*', 180, 120];
+                            doc.content[2].table.widths = [22, '*', 180, 120,100];
                             var rowCount = doc.content[2].table.body.length;
                             for (i = 1; i < rowCount; i++) {
                                 doc.content[2].table.body[i][0]=i+'.';
@@ -747,7 +749,7 @@
                         className: 'excelButton',
                         title: settitle(),
                         exportOptions: {
-                            columns: [1, 2, 3]
+                            columns: [1, 2, 3,4]
                         },
                     },
                 ]

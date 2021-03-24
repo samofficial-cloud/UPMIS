@@ -329,7 +329,7 @@
 
 
                                                         <tr>
-                                                            <td>GEPG Control Number:</td>
+                                                            <td>GePG Control Number:</td>
                                                             <td>{{$var->gepg_control_no}}</td>
                                                         </tr>
 
@@ -1141,7 +1141,7 @@
 
 
                                                     <tr>
-                                                        <td>GEPG Control Number:</td>
+                                                        <td>GePG Control Number:</td>
                                                         <td>{{$var->gepg_control_no}}</td>
                                                     </tr>
 
@@ -1619,7 +1619,7 @@
 
 
                                                                             <tr>
-                                                                                <td>GEPG Control Number:</td>
+                                                                                <td>GePG Control Number:</td>
                                                                                 <td>{{$var->gepg_control_no}}</td>
                                                                             </tr>
 
@@ -1951,7 +1951,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 
@@ -2279,7 +2279,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 
@@ -2589,7 +2589,7 @@
 
                                                                 @if($var->gepg_control_no!='')
                                                                     <tr>
-                                                                        <td>GEPG Control Number:</td>
+                                                                        <td>GePG Control Number:</td>
                                                                         <td>{{$var->gepg_control_no}}</td>
                                                                     </tr>
                                                                 @else
@@ -2911,7 +2911,7 @@
 
 
                                                                             <tr>
-                                                                                <td>GEPG Control Number:</td>
+                                                                                <td>GePG Control Number:</td>
                                                                                 <td>{{$var->gepg_control_no}}</td>
                                                                             </tr>
 
@@ -3224,7 +3224,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 

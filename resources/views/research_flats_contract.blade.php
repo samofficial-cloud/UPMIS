@@ -445,7 +445,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-4">
                                             <label for="host_address">Address<span style="color: red;">*</span></label>
                                             <span id="host_addressmsg"></span>
-                                            <input type="text" id="host_address" name="host_address" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="host_address" name="host_address" class="form-control" required="" >
                                         </div>
 
                                         <div class="form-wrapper col-5">
@@ -621,6 +621,16 @@ $today=date('Y-m-d');
                                             </select>
                                         </div>
                                     </div>
+
+
+                                    <div class="form-group ">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control"  name="inc_code" value="" required  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
 
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -881,7 +891,7 @@ $("#next1").click(function(){
         }
 
         if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p9==1 && p10==1 &&p11==1){
-           gonext(); 
+           gonext();
         }
 });
 
@@ -901,7 +911,7 @@ $("#next1").click(function(){
                  var message=document.getElementById('host_namemsg');
                  message.style.color='red';
                  message.innerHTML="Required";
-                 $('#host_name').attr('style','border-bottom:1px solid #f00'); 
+                 $('#host_name').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p1=1;
@@ -915,7 +925,7 @@ $("#next1").click(function(){
                  var message=document.getElementById('collegemsg');
                  message.style.color='red';
                  message.innerHTML="Required";
-                 $('#college').attr('style','border-bottom:1px solid #f00'); 
+                 $('#college').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p2=1;
@@ -929,7 +939,7 @@ $("#next1").click(function(){
                  var message=document.getElementById('departmentmsg');
                  message.style.color='red';
                  message.innerHTML="Required";
-                 $('#department').attr('style','border-bottom:1px solid #f00'); 
+                 $('#department').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p3=1;
@@ -943,7 +953,7 @@ $("#next1").click(function(){
                  var message=document.getElementById('addressmsg');
                  message.style.color='red';
                  message.innerHTML="Required";
-                 $('#host_address').attr('style','border-bottom:1px solid #f00'); 
+                 $('#host_address').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p4=1;
@@ -957,7 +967,7 @@ $("#next1").click(function(){
                  var message=document.getElementById('host_emailmsg');
                  message.style.color='red';
                  message.innerHTML="Required";
-                 $('#host_email').attr('style','border-bottom:1px solid #f00'); 
+                 $('#host_email').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p5=1;
@@ -971,7 +981,7 @@ $("#next1").click(function(){
                  var message=document.getElementById('host_phonemsg');
                  message.style.color='red';
                  message.innerHTML="Required";
-                 $('#host_phone').attr('style','border-bottom:1px solid #f00'); 
+                 $('#host_phone').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p6=1;
@@ -980,7 +990,7 @@ $("#next1").click(function(){
             }
 
             if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1){
-              gonext();  
+              gonext();
             }
     });
 
@@ -999,7 +1009,7 @@ $("#next2").click(function(){
              var message=document.getElementById('roommsg');
              message.style.color='red';
              message.innerHTML="Required";
-             $('#room_no').attr('style','border:1px solid #f00'); 
+             $('#room_no').attr('style','border:1px solid #f00');
         }
         else{
             p1=1;
@@ -1013,7 +1023,7 @@ $("#next2").click(function(){
              var message=document.getElementById('arrival_datemsg');
              message.style.color='red';
              message.innerHTML="Required";
-             $('#arrival_date').attr('style','border-bottom:1px solid #f00'); 
+             $('#arrival_date').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p2=1;
@@ -1027,7 +1037,7 @@ $("#next2").click(function(){
              var message=document.getElementById('arrival_timemsg');
              message.style.color='red';
              message.innerHTML="Required";
-             $('#arrival_time').attr('style','border-bottom:1px solid #f00'); 
+             $('#arrival_time').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p3=1;
@@ -1041,7 +1051,7 @@ $("#next2").click(function(){
              var message=document.getElementById('departure_datemsg');
              message.style.color='red';
              message.innerHTML="Required";
-             $('#departure_date').attr('style','border-bottom:1px solid #f00'); 
+             $('#departure_date').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p4=1;
@@ -1109,38 +1119,38 @@ $("#next3").click(function(){
 
         if(usd==""){
             p1=0;
-            $('#shared_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#shared_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p1=1;
-            $('#shared_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#shared_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(tzs==""){
             p2=0;
-            $('#shared_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#shared_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p2=1;
-            $('#shared_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#shared_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(total_usd==""){
             p3=0;
-            $('#total_shared_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_shared_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p3=1;
-            $('#total_shared_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_shared_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(total_tzs==""){
             p4=0;
-            $('#total_shared_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_shared_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p4=1;
-            $('#total_shared_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_shared_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
      }
@@ -1153,38 +1163,38 @@ $("#next3").click(function(){
 
         if(usd==""){
             p1=0;
-            $('#single_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#single_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p1=1;
-            $('#single_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#single_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(tzs==""){
             p2=0;
-            $('#single_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#single_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p2=1;
-            $('#single_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#single_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(total_usd==""){
             p3=0;
-            $('#total_single_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_single_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p3=1;
-            $('#total_single_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_single_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(total_tzs==""){
             p4=0;
-            $('#total_single_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_single_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p4=1;
-            $('#total_single_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_single_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
      }
 
@@ -1197,38 +1207,38 @@ $("#next3").click(function(){
 
         if(usd==""){
             p1=0;
-            $('#suit_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#suit_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p1=1;
-            $('#suit_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#suit_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(tzs==""){
             p2=0;
-            $('#suit_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#suit_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p2=1;
-            $('#suit_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#suit_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(total_usd==""){
             p3=0;
-            $('#total_suit_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_suit_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p3=1;
-            $('#total_suit_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_suit_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
 
         if(total_tzs==""){
             p4=0;
-            $('#total_suit_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_suit_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
         }
         else{
             p4=1;
-            $('#total_suit_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;'); 
+            $('#total_suit_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
         }
      }
 
@@ -1240,7 +1250,7 @@ $("#next3").click(function(){
             var message=document.getElementById('receipt_no_msg');
             message.style.color='red';
             message.innerHTML="Required";
-            $('#receipt_no').attr('style','border-bottom:1px solid #f00');  
+            $('#receipt_no').attr('style','border-bottom:1px solid #f00');
         }
         else{
             p5=1;
@@ -1261,7 +1271,7 @@ $("#next3").click(function(){
         else{
             p6=1;
             $('#receipt_date_msg').hide();
-            $('#receipt_date').attr('style','border-bottom: 1px solid #ccc');  
+            $('#receipt_date').attr('style','border-bottom: 1px solid #ccc');
         }
 
 
@@ -1277,11 +1287,11 @@ $("#next3").click(function(){
         else{
             p7=1;
             $('#total_days_msg').hide();
-            $('#total_days').attr('style','border-bottom: 1px solid #ccc'); 
+            $('#total_days').attr('style','border-bottom: 1px solid #ccc');
         }
 
         if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1){
-           gonext(); 
+           gonext();
         }
 
 });
@@ -1290,14 +1300,14 @@ $("#next3").click(function(){
 <script type="text/javascript">
      $(document).ready(function(){
 
-      
+
 
         $('#room_no').blur(function(){
             var query = $(this).val(),
                 query2 = $('#professional').val();
 
 
-                
+
 
             if(query!=null){
                 var _token = $('input[name="_token"]').val();
@@ -1313,14 +1323,14 @@ $("#next3").click(function(){
                         $('#shared_roomDiv').show();
                         $('#single_roomDiv').hide();
                         $('#suit_roomDiv').hide();
-                        $('#shared_room_usd').val(data.currency+' '+data.price); 
+                        $('#shared_room_usd').val(data.currency+' '+data.price);
                     }
 
                     else if(data.category=='Single Room'){
                         $('#shared_roomDiv').hide();
                         $('#single_roomDiv').show();
                         $('#suit_roomDiv').hide();
-                        $('#single_room_usd').val(data.currency+' '+data.price); 
+                        $('#single_room_usd').val(data.currency+' '+data.price);
                     }
 
                     else if(data.category=='Suit Room'){
@@ -1331,9 +1341,9 @@ $("#next3").click(function(){
                     }
                     //$('#receipt_no').val(data.category);
                 });
-                  
+
             }
-             
+
         });
 
             $('#first_name').keyup(function(){
@@ -1355,13 +1365,13 @@ $("#next3").click(function(){
                         $('#nameList').html(data);
                     }
                     else{
-                           
+
                   }
                     }
-                 });           
+                 });
                 }
                     else if(query==''){
-                        
+
                 }
             });
 
@@ -1379,7 +1389,7 @@ $("#next3").click(function(){
                         $.ajax({
                             url:"{{ route('autocomplete.allflat_details') }}",
                             method:"POST",
-                            data:{first:first, last:last, _token:_token} 
+                            data:{first:first, last:last, _token:_token}
                         })
 
                       .done(function(data){
@@ -1396,7 +1406,7 @@ $("#next3").click(function(){
                         $('#issue_date').val(data.issue);
                         $('#issue_place').val(data.place);
                         $('#nationality').val(data.nationality);
-                      });      
+                      });
                        // $('#first_name').val($(this).text());
                         //$('#nameList').fadeOut();
 

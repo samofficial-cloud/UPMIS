@@ -10,7 +10,7 @@
    <!--  <title>{{ config('app.name', 'Laravel') }}</title> -->
    <title> @yield('title')</title>
 
-   <link rel="icon" type="image.jpg" href="{{ asset('images/logo_udsm.jpg') }}"></link>
+   <link rel="icon" type="image.jpg" href="{{ asset('images/logo_udsm.jpg')}}"></link>
 
     <!-- Scripts -->
  <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
@@ -121,9 +121,9 @@
                            $insurance_invoice_notifications_count=DB::table('invoice_notifications')->where('invoice_category','insurance')->count('id');
                             if($insurance_invoice_notifications_count!=0){
                                 $insurance_invoice_notifications_count_total=1;
-                            }else{} 
+                            }else{}
                         }
-                        
+
 
                         if($category=='CPTU only' OR $category=='All'){
                             if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
@@ -134,31 +134,31 @@
                                 if($car_invoice_notifications_count!=0){
                                     $car_invoice_notifications_count_total=1;
                                 }
-                                else{}  
+                                else{}
                             }
-                            
 
-                            
+
+
                             $notifications=notification::where('flag','1')->where('role',Auth::user()->role)->get();
 
                             $car_notifications = DB::table('car_notifications')->where('flag','1')->where('role',Auth::user()->role)->get();
 
                             if(count($notifications)>0){
-                               $total = 1; 
+                               $total = 1;
                             }
                             else{
                                 $total = 0;
                             }
 
                             if(count($car_notifications)>0){
-                               $total2 = 1; 
+                               $total2 = 1;
                             }
                             else{
                                 $total2 = 0;
                             }
-                            
 
-                            
+
+
                         }
 
                          if($category=='Real Estate only' OR $category=='All'){
@@ -178,9 +178,9 @@
                             }else{}
                          }
 
-                        
 
-                        
+
+
 
                         if($category=='All'){
                             $all_notifications_count=$car_invoice_notifications_count_total+$insurance_invoice_notifications_count_total+$space_invoice_notifications_count_total+$total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total+$total2;
@@ -190,15 +190,15 @@
                                 $all_notifications_count=$total;
                             }
                             else{
-                               $all_notifications_count=$car_invoice_notifications_count_total+$total+$total2; 
+                               $all_notifications_count=$car_invoice_notifications_count_total+$total+$total2;
                             }
-                            
+
                         }
                         elseif($category=='Real Estate only') {
-                          $all_notifications_count = $space_invoice_notifications_count_total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;  
+                          $all_notifications_count = $space_invoice_notifications_count_total+$water_invoice_notifications_count_total+$electricity_invoice_notifications_count_total;
                         }
                         elseif($category=='Insurance only') {
-                          $all_notifications_count = $insurance_invoice_notifications_count_total;  
+                          $all_notifications_count = $insurance_invoice_notifications_count_total;
                         }
                         else{
                             $all_notifications_count = 0;
@@ -306,12 +306,12 @@
                             @if($category=='Insurance only' OR $category=='All')
                                 @if($insurance_invoice_notifications_count==1)
                                     <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoice to review</a>
-                                        
+
                                 @elseif($insurance_invoice_notifications_count!=0)
 
                                     <a class="dropdown-item" href="/invoice_management">{{$i}}. You have {{$insurance_invoice_notifications_count}} insurance invoices to review</a>
 
-                                    
+
 
                                 @else
                                 @endif

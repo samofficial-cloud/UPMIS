@@ -730,20 +730,20 @@
 
 
                                                     <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
+                                                        <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
                                                         <span id="academic_season_msg"></span>
                                                         <input type="number"  id="academic_season" name="academic_season" class="form-control" >
                                                     </div>
 
 
                                                     <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
+                                                        <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
                                                         <span id="vacation_season_msg"></span>
                                                         <input type="number"  id="vacation_season" name="vacation_season" class="form-control" >
                                                     </div>
 
                                                     <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                                                        <label for="amount">Amount <span style="color: red;"> *</span></label>
+                                                        <label for="amount">Amount per payment cycle <span style="color: red;"> *</span></label>
                                                         <span id="amount_msg"></span>
                                                         <input type="number"  id="amount" name="amount" class="form-control" >
                                                     </div>
@@ -771,27 +771,27 @@
 
 
                                                     <div id="additional_businesses_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
-                                                        <label for="additional_businesses_amount">Amount expected from the businesses<span style="color: red;"> *</span></label>
+                                                        <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
                                                         <span id="additional_businesses_amount_msg"></span>
                                                         <input type="number"  id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
                                                     </div>
 
                                                     <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
-                                                        <label for="total_amount">Total amount<span style="color: red;"> *</span></label>
+                                                        <label for="total_amount">Total amount per payment cycle<span style="color: red;"> *</span></label>
                                                         <span id="total_amount_msg"></span>
                                                         <input type="text"  id="total_amount" readonly name="total_amount" class="form-control">
                                                     </div>
 
 
                                                     <div id="academic_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="academic_season_total">Total amount(Academic season) <span style="color: red;"> *</span></label>
+                                                        <label for="academic_season_total">Total amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
                                                         <span id="academic_season_total_msg"></span>
                                                         <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
                                                     </div>
 
 
                                                     <div id="vacation_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="vacation_season_total">Total amount(Vacation season) <span style="color: red;"> *</span></label>
+                                                        <label for="vacation_season_total">Total amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
                                                         <span id="vacation_season_total_msg"></span>
                                                         <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
                                                     </div>
@@ -1052,9 +1052,18 @@
 
 
 
+                                                    <div class="form-group col-12 pt-4">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
                                                     <div class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Invoice Start Date</label>
+                                                            <label for=""  >Invoice Start Date <span style="color: red;"> *</span></label>
                                                             <input type="date" class="form-control" id="invoicing_period_start_date" name="invoicing_period_start_date" value="" required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -1062,7 +1071,7 @@
 
                                                     <div  class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
-                                                            <label for="">Invoice End Date</label>
+                                                            <label for="">Invoice End Date <span style="color: red;"> *</span></label>
                                                             <input type="date" class="form-control" id="invoicing_period_end_date" name="invoicing_period_end_date" value="" required  autocomplete="off">
                                                         </div>
                                                     </div>
@@ -1070,7 +1079,7 @@
 
                                                     <div class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
-                                                            <label for="">Period </label>
+                                                            <label for="">Period <span style="color: red;"> *</span></label>
                                                             <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
                                                         </div>
                                                     </div>
@@ -1078,7 +1087,7 @@
 
                                                     <div   class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
-                                                            <label for="" >Project ID </label>
+                                                            <label for="" >Project ID <span style="color: red;"> *</span></label>
                                                             <input type="text" class="form-control" id="" name="project_id" value="" required  autocomplete="off">
                                                         </div>
                                                     </div>
@@ -1088,7 +1097,7 @@
 
                                                     <div  class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
-                                                            <label for="">Amount </label>
+                                                            <label for="">Amount <span style="color: red;"> *</span></label>
                                                             <input type="number" min="20" class="form-control" id="amount_to_be_paid" name="amount_to_be_paid" value="" required  autocomplete="off">
                                                         </div>
                                                     </div>
@@ -1097,7 +1106,7 @@
 
                                                     <div  class="form-group col-6 pt-4">
                                                         <div  class="form-wrapper">
-                                                            <label>Currency </label>
+                                                            <label>Currency  </label>
                                                             <input type="text" class="form-control" id="currency_invoice" name="currency_invoice" value="" readonly  autocomplete="off">
                                                         </div>
                                                     </div>
@@ -1106,7 +1115,7 @@
 
                                                     <div  class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for="" >Status </label>
+                                                            <label for="" >Status <span style="color: red;"> *</span></label>
                                                             <input type="text" class="form-control" id="status" name="status" value="" required  autocomplete="off">
                                                         </div>
                                                     </div>
@@ -1114,7 +1123,7 @@
 
                                                     <div  class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for="" >Description</label>
+                                                            <label for="" >Description <span style="color: red;"> *</span></label>
                                                             <input type="text" class="form-control" id="description" name="description" value="" required autocomplete="off">
                                                         </div>
                                                     </div>

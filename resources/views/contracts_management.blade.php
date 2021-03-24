@@ -445,6 +445,14 @@ $i=1;
                                                         </div>
                                                         <br>
 
+                                                        <div  class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
 
                                                         <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
                                                             <div class="form-wrapper">

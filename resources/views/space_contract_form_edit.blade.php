@@ -546,20 +546,20 @@ select.list-dt:focus {
 
 
                         <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                            <label for="amount">Amount(Academic season) <span style="color: red;"> *</span></label>
+                            <label for="amount">Amount per payment cyle(Academic season) <span style="color: red;"> *</span></label>
                             <span id="academic_season_msg"></span>
                             <input type="number"  id="academic_season" value="{{$var->academic_season}}" name="academic_season" class="form-control" >
                         </div>
 
 
                         <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                            <label for="amount">Amount(Vacation season) <span style="color: red;"> *</span></label>
+                            <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
                             <span id="vacation_season_msg"></span>
                             <input type="number"  id="vacation_season" value="{{$var->vacation_season}}" name="vacation_season" class="form-control" >
                         </div>
 
                         <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                            <label for="amount">Amount <span style="color: red;"> *</span></label>
+                            <label for="amount">Amount per payment cycle <span style="color: red;"> *</span></label>
                             <span id="amount_msg"></span>
                             <input type="number"  id="amount" name="amount" value="{{$var->amount}}" class="form-control" >
                         </div>
@@ -596,7 +596,7 @@ select.list-dt:focus {
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
-                                            <label for="payment_cycle">Payment cycle <span style="color: red;"> *</span></label>
+                                            <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
                                             <span id="payment_cycle_msg"></span>
                                             <input type="text"  id="payment_cycle" name="payment_cycle" value="{{$var->payment_cycle}}" class="form-control" readonly>
                                         </div>

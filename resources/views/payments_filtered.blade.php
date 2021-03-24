@@ -141,7 +141,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 
@@ -286,7 +286,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 
@@ -431,7 +431,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 
@@ -596,7 +596,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 
@@ -763,7 +763,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 

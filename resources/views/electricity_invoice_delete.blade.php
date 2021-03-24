@@ -403,7 +403,7 @@
 
 
                                                     <tr>
-                                                        <td>GEPG Control Number:</td>
+                                                        <td>GePG Control Number:</td>
                                                         <td>{{$var->gepg_control_no}}</td>
                                                     </tr>
 
@@ -597,7 +597,7 @@
 
                                                         <div class="form-group">
                                                             <div class="form-wrapper">
-                                                                <label for="course_name">GEPG Control Number</label>
+                                                                <label for="course_name">GePG Control Number</label>
                                                                 <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                 <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                             </div>
@@ -681,7 +681,7 @@
                                                         @if($var->gepg_control_no=='')
                                                             <div class="form-group">
                                                                 <div class="form-wrapper">
-                                                                    <label for="course_name">GEPG Control Number</label>
+                                                                    <label for="course_name">GePG Control Number</label>
                                                                     <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
                                                                     <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
                                                                 </div>
@@ -690,7 +690,7 @@
 
                                                             <div class="form-group">
                                                                 <div class="form-wrapper">
-                                                                    <label for="course_name">GEPG Control Number</label>
+                                                                    <label for="course_name">GePG Control Number</label>
                                                                     <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
 
                                                                 </div>

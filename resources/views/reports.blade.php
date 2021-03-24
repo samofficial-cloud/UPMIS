@@ -278,7 +278,7 @@ $year=$current-3;
      {{-- <input type="text" class="form-control" id="space_id" name="space_id" value="" autocomplete="off"> --}}
        {{-- <select class="form-control" id="space_id" name="space_id">
         <option value="" disabled selected hidden>Select Space</option>
-         
+
        </select> --}}
         <span id="nameListSpaceId"></span>
       </div>
@@ -791,7 +791,7 @@ $year=$current-3;
             <select class="form-control" id="car_type" name="car_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
               {{-- <option value="car history">List of Car Rental History</option> --}}
-              
+
               <option value="clients">List of Clients</option>
               <option value="cars">List of Rental Cars</option>
               <option value="history">Car Rental History</option>
@@ -823,7 +823,7 @@ $year=$current-3;
                 <option value="{{$vehicle->vehicle_reg_no}}">{{$vehicle->vehicle_reg_no}} - {{$vehicle->vehicle_model}}</option>
               @endforeach
             </select>
-            
+
           </div>
         </div>
 
@@ -1698,7 +1698,7 @@ $year=$current-3;
               <option value="Expired">Expired</option>
             </select>
         </div>
-    </div>  
+    </div>
 
 
   </div>
@@ -3574,7 +3574,7 @@ function myFunction() {
 var a;
    // $('#space_id').click(function(e){
    //  e.preventDefault();
-        
+
 
 
    //  });
@@ -4252,7 +4252,7 @@ var a100=0;
           $('#flatscontracts_filterBydiv').show();
           $('#room_categoryDiv').hide();
           $('#flatsrooms_filterBydiv').hide();
-        } 
+        }
     });
 
 
@@ -4433,7 +4433,7 @@ var a100=0;
        else if (query2=='history'){
         p1=1;
         var query6=$('#space_id').val();
-        
+
         if(query6==null){
           p5=0;
           $('#spaceidmsg').show();
@@ -4869,7 +4869,7 @@ var a100=0;
           var query483 = $('#summary_start_date').val(),
             query4831 = $('#summary_end_date').val();
 
-       
+
         if(query483==""){
           p483=0;
           $('#summary_startdatemsg').show();
@@ -4909,7 +4909,7 @@ var a100=0;
       else{
         p483=1;
 
-        p4831 =1; 
+        p4831 =1;
 
       }
 
@@ -4917,7 +4917,7 @@ var a100=0;
         var query484 = $('#summary2_start_date').val(),
             query485 = $('#summary2_end_date').val();
 
-       
+
         if(query484==""){
           p484=0;
           $('#summary2_startdatemsg').show();
@@ -4957,7 +4957,7 @@ var a100=0;
       else{
         p484=1;
 
-        p485=1; 
+        p485=1;
 
       }
       if(p480==1 && p481==1 && p482==1&&p483==1 &&p4831==1 &&p484==1&&p485==1){
@@ -5065,7 +5065,7 @@ var a100=0;
 
         }
         else if(query50=='contracts'){
-          p51 = 1; p52=1; 
+          p51 = 1; p52=1;
           $('#flatsreporttypemsg').hide();
           $('#flats_reporttype').attr('style','border: 1px solid #ccc');
 
@@ -5674,7 +5674,7 @@ var a100=0;
               var message=document.getElementById('carhistory_startdatemsg');
               message.style.color='red';
               message.innerHTML="Required";
-              $('#carhistory_start_date').attr('style','border-bottom:1px solid #f00'); 
+              $('#carhistory_start_date').attr('style','border-bottom:1px solid #f00');
               }
               else{
                 p490=1;
@@ -5687,12 +5687,12 @@ var a100=0;
                 var message=document.getElementById('carhistory_enddatemsg');
                 message.style.color='red';
                 message.innerHTML="Required";
-                $('#carhistory_end_date').attr('style','border-bottom:1px solid #f00'); 
+                $('#carhistory_end_date').attr('style','border-bottom:1px solid #f00');
               }
               else{
                 p491=1;
                 $('#carhistory_enddatemsg').hide();
-                 $('#carhistory_end_date').attr('style','border-bottom:1px solid #ccc'); 
+                 $('#carhistory_end_date').attr('style','border-bottom:1px solid #ccc');
               }
               if(query490!='' && query491!=''){
                 if(query490>query491){
@@ -5701,7 +5701,7 @@ var a100=0;
                     query491 = query492;
                 }
               }
-              
+
 
          }
          else{
@@ -6256,13 +6256,13 @@ var a100=0;
     allowClear: true,
   });
 
-  
-   
+
+
     $("#Con_clientname" ).select2({
       placeholder: "Select Client",
       theme: "bootstrap",
       allowClear: true,
-        ajax: { 
+        ajax: {
           url: "{{route('ajax.client_names')}}",
          method:"POST",
           dataType: 'json',
@@ -6291,7 +6291,7 @@ var a100=0;
       placeholder: "Select Client",
       theme: "bootstrap",
       allowClear: true,
-        ajax: { 
+        ajax: {
           url: "{{route('ajax.client_names')}}",
          method:"POST",
           dataType: 'json',
@@ -6315,7 +6315,7 @@ var a100=0;
 
       });
 
-    
+
 
     });
 </script>

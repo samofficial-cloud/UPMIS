@@ -139,7 +139,7 @@
     @elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']=='true'))
       <br><br>Tenancy Schedule {{DateTime::createFromFormat('!m', $x1)->format('F')}} {{$_GET['year']}} to {{DateTime::createFromFormat('!m', $x3)->format('F')}} {{$_GET['year']}} at {{$_GET['loc']}} Area
     @elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']!='true'))
-      <br><br>Tenancy Schedule {{DateTime::createFromFormat('!m', $x1)->format('F')}} {{$_GET['year']}} to {{DateTime::createFromFormat('!m', $x3)->format('F')}} {{$_GET['year']}}
+      <br><br>Tenancy Schedule  {{DateTime::createFromFormat('!m', $x1)->format('F')}} {{$_GET['year']}} to {{DateTime::createFromFormat('!m', $x3)->format('F')}} {{$_GET['year']}}
     @endif
    </h4></center>
    <hr>
@@ -184,7 +184,7 @@
                     ->pluck('amount_paid')
                     ->toArray();
               }
-    
+
           }
 
       ?>
@@ -201,13 +201,13 @@
                 <td style="text-align: right;">{{number_format($invoice[$i][0])}}</td>
               @else
                 <td style="text-align: center;">0</td>
-              @endif              
+              @endif
       @endfor
 
     </tr>
     @endforeach
 
-    
+
   </tbody>
 </table>
  </div>
@@ -233,7 +233,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
       if(($_GET['b_fil']=='true') && ($_GET['l_fil']=='true')){
         echo 'Tenancy Schedule '.DateTime::createFromFormat('!m', $x1)->format('F').' '.$_GET['year'].' to '.DateTime::createFromFormat('!m', $x3)->format('F').' '.$_GET['year'].' for '.$_GET['b_type'].' at '.$_GET['loc'].' Area';
       }
-      
+
     elseif(($_GET['b_fil']=='true') && ($_GET['l_fil']!='true')){
       echo 'Tenancy Schedule '.DateTime::createFromFormat('!m', $x1)->format('F').' '.$_GET['year'].' to '.DateTime::createFromFormat('!m', $x3)->format('F').' '.$_GET['year'].' for '.$_GET['b_type'];
     }
@@ -242,16 +242,16 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     }
     elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']!='true')){
       echo 'Tenancy Schedule '.DateTime::createFromFormat('!m', $x1)->format('F').' '.$_GET['year'].' to '.DateTime::createFromFormat('!m', $x3)->format('F').' '.$_GET['year'];
-    }   
+    }
     ?>';
   }
 
-  
+
 
     var limit = '<?php echo $x2;?>';
 
 if(limit==1){
-    var table = $('#myTable').DataTable({ 
+    var table = $('#myTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -274,14 +274,14 @@ if(limit==1){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
 
 
                   doc.content[2].table.widths = [22, 80, '*', 80, 80, 80, 80, 90];
-                  
+
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -290,7 +290,7 @@ if(limit==1){
                       doc.content[2].table.body[i][7].alignment = 'right';
                       //doc.content[2].table.body[i][5].alignment = 'left';
                       //doc.content[2].table.body[i][6].alignment = 'left';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -309,7 +309,7 @@ if(limit==1){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -327,7 +327,7 @@ if(limit==1){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -349,7 +349,7 @@ if(limit==1){
       });
 }
 else if(limit ==2){
-    var table = $('#myTable').DataTable({ 
+    var table = $('#myTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -372,14 +372,14 @@ else if(limit ==2){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
 
 
                   doc.content[2].table.widths = [22, 80, '*', 70, 70, 70, 70, 70, 70];
-                  
+
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -387,7 +387,7 @@ else if(limit ==2){
                       doc.content[2].table.body[i][2].alignment = 'left';
                       doc.content[2].table.body[i][7].alignment = 'right';
                       doc.content[2].table.body[i][8].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -406,7 +406,7 @@ else if(limit ==2){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -424,7 +424,7 @@ else if(limit ==2){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -446,7 +446,7 @@ else if(limit ==2){
       });
 }
 else if(limit ==3){
-  var table = $('#myTable').DataTable({ 
+  var table = $('#myTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -469,14 +469,14 @@ else if(limit ==3){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
 
 
                   doc.content[2].table.widths = [22, 70, '*', 60, 60, 60, 60, 60, 60, 60];
-                  
+
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -503,7 +503,7 @@ else if(limit ==3){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -521,7 +521,7 @@ else if(limit ==3){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -543,7 +543,7 @@ else if(limit ==3){
       });
 }
 else if(limit ==4){
-  var table = $('#myTable').DataTable({ 
+  var table = $('#myTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -566,14 +566,14 @@ else if(limit ==4){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
 
 
                   doc.content[2].table.widths = [22, 70, '*', 60, 60, 50, 50, 60, 60, 60, 60];
-                  
+
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -601,7 +601,7 @@ else if(limit ==4){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -619,7 +619,7 @@ else if(limit ==4){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -641,7 +641,7 @@ else if(limit ==4){
       });
 }
 else if(limit ==5){
-  var table = $('#myTable').DataTable({ 
+  var table = $('#myTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -664,14 +664,14 @@ else if(limit ==5){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
 
 
                   doc.content[2].table.widths = [22, 60, '*', 60, 60, 50, 50, 50, 50, 50, 50, 50];
-                  
+
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -700,7 +700,7 @@ else if(limit ==5){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -718,7 +718,7 @@ else if(limit ==5){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],

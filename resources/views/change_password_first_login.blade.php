@@ -7,7 +7,7 @@
     <br><br>
     <h4 style="color: tomato;"><center>You Must Change Password on First Log in to the System.</center></h4>
     <hr style="margin-top: 0rem;
-    border-bottom: 2px solid #505559; width: 60%;">   
+    border-bottom: 2px solid #505559; width: 60%;">
         @if (session('errorz'))
         <div class="alert alert-danger" >
           {{ session('errorz') }}
@@ -46,7 +46,7 @@
           </div>
 
           <div class="form-group{{ $errors->has('new-password') ? ' has-error' : '' }} row">
-            <label for="new-password" class="col-sm-4 control-label"><strong>New Password: <span style="color: red;">*</span></strong><br><p style="font-size: 11px; color: #69b88c;margin-bottom: 0rem;">(Password must be atleast 8 characters)</p></label>
+            <label for="new-password" class="col-sm-4 control-label"><strong>New Password: <span style="color: red;">*</span></strong><br><p style="font-size: 11px; color: red;margin-bottom: 0rem;">(Password must be at least 8 characters)</p></label>
 
             <div class="col-sm-7">
               <input id="new-password" type="password" class="form-control" name="new-password" required>

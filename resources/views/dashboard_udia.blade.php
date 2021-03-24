@@ -167,7 +167,7 @@
         <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
         <div class="form-group" style="margin-right: 5px;">
-           
+
           <select name="activity_year" id="activity_year" class="form-control" required="">
               <option value=" " disabled selected hidden>Select Year</option>
                 @for($x=-5;$x<=0; $x++)
@@ -176,16 +176,16 @@
           </select>
           <span id="activity_error"></span>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
       </div>
 
-     
-    </form>   
+
+    </form>
   </div>
 </div>
-  <div class="card-body"> 
+  <div class="card-body">
 
 <div class="card-columns" style="margin-top: 10px;">
   <div class="card border-primary">
@@ -201,7 +201,7 @@
     border: 0;
     border: 1px solid #505559;">
     <div id="cardData">
-    <h5 class="card-title">Client Statistics {{date('Y')}}</h5>
+    <h5 class="card-title">Clients Statistics {{date('Y')}}</h5>
       Fire Package Clients: {{$fire_client}}
       <br>Fidelity Clients: {{$fidelity_client}}
       <br>Marine Hull Clients: {{$marine_client}}
@@ -227,7 +227,7 @@
         <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
         <div class="form-group" style="margin-right: 5px;">
-           
+
           <select name="income_year" id="income_year" class="form-control" required="">
               <option value=" " disabled selected hidden>Select Year</option>
                 @for($x=-5;$x<=0; $x++)
@@ -236,13 +236,13 @@
           </select>
           <span id="error_msg"></span>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="income_filter" class="btn btn-primary">
       </div>
 
-     
-    </form>   
+
+    </form>
   </div>
 </div>
       <div class="card-body">
@@ -313,7 +313,7 @@
             <label for="attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -482,7 +482,7 @@
             <label for="udia_attachment{{$contract->id}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="udia_attachment{{$contract->id}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -577,7 +577,7 @@
             <label for="udia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="udia_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -610,7 +610,7 @@
                                 <th scope="col" >Invoice Date</th>
                                 <th scope="col" >Debt Age</th>
                                 <th scope="col" >Action</th>
-                                
+
                             </tr>
                             </thead>
                             <tbody>
@@ -718,7 +718,7 @@
             <label for="udiaattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="udiaattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg" >
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -852,7 +852,7 @@ function myFunction() {
 
     $("#activity_filter").click(function(e){
     e.preventDefault();
-    
+
     var query = $('#activity_year').val();
 
     if(query==null){
@@ -863,7 +863,7 @@ function myFunction() {
       $('#activity_year').attr('style','border:1px solid #f00');
     }
     else{
-      
+
       $('#activity_error').hide();
       $('#activity_year').attr('style','border:1px solid #ccc');
       $.ajax({
@@ -875,7 +875,7 @@ function myFunction() {
     .done(function(data) {
       {{$chart->id}}.options.title.text = 'Cover Note Sales Activities '+query;
       {{ $chart->id }}.data.datasets[0].data =data.activity;
-      {{ $chart->id }}.update(); 
+      {{ $chart->id }}.update();
 
       {{$chart1->id}}.options.title.text = 'Income Generated from Principals '+query;
       {{ $chart1->id }}.data.datasets[0].data =data.britam;
@@ -886,7 +886,7 @@ function myFunction() {
       var bodyData = '';
       console.log(query);
       bodyData= "<div>"
-      bodyData+="<h5 class='card-title'>Client Statistics "
+      bodyData+="<h5 class='card-title'>Clients Statistics "
       bodyData+=query+"</h5>"
       bodyData+="Fire Package Clients: "+data.fire
       bodyData+="<br>Fidelity Clients: "+data.fidelity
@@ -899,7 +899,7 @@ function myFunction() {
       $("#cardData").html(bodyData);
       //$("#clientdiv").load(location.href + " #clientdiv");
     });
-    }  
+    }
     return false;
 
 });
@@ -935,9 +935,9 @@ function myFunction() {
       {{ $chart2->id }}.data.datasets[3].data =data.fire;
       {{ $chart2->id }}.data.datasets[4].data =data.public;
       {{ $chart2->id }}.data.datasets[5].data =data.prof;
-      {{ $chart2->id }}.update(); 
+      {{ $chart2->id }}.update();
     });
-    }  
+    }
     return false;
 
 });
@@ -954,7 +954,7 @@ function myFunction() {
         $(this).toggleClass('selected');
          var count30=table30.rows('.selected').data().length;
          if(count30>='2'){
-      
+
           $('#notify_all_udia').show();
       }
       else{

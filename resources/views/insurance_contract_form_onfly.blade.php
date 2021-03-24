@@ -367,7 +367,7 @@
                                                         @if($var->class=="MOTOR")
                                                         <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="client_type"><strong>Vehicle Registration Number</strong></label>
+                                                            <label for="client_type"><strong>Vehicle Registration Number</strong> <span style="color: red;"> *</span></label>
                                                             <span id="vehicle_registration_no_msg"></span>
                                                             <input type="text" id="vehicle_registration_no" name="vehicle_registration_no" class="form-control" autocomplete="off">
                                                             <div id="nameListVehicleRegistrationNumber"></div>
@@ -375,7 +375,7 @@
 
                                                         <br>
                                                         <div class="form-wrapper col-12">
-                                                            <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
+                                                            <label for="vehicle_use"  ><strong>Vehicle Use</strong> <span style="color: red;"> *</span></label>
                                                             <span id="vehicle_use_msg"></span>
                                                             <select class="form-control" id="vehicle_use" name="vehicle_use">
                                                                 <option value="" id="Option"></option>
@@ -442,7 +442,8 @@
                                                     <div id="premiumDiv" class="form-wrapper col-12">
                                                         <label for="amount">Premium </label>
                                                         <span id="premium_msg"></span>
-                                                        <input type="text" id="premium" readonly name="premium" class="form-control" autocomplete="off">
+{{--                                                        <input type="text" id="premium" readonly name="premium" class="form-control" autocomplete="off">--}}
+                                                        <input type="number" id="premium"  name="premium" class="form-control" autocomplete="off">
                                                     </div>
 
                                                     <div id="mode_of_paymentDiv" class="form-wrapper col-12" style="display: none;">
@@ -3103,16 +3104,36 @@
 
     <script>
 
-        $('#sum_insured').on('input',function(e){
+        // $('#sum_insured').on('input',function(e){
+        //     e.preventDefault();
+        //
+        //     var sum_insured=$(this).val();
+        //
+        //     var percentage=10;
+        //
+        //     var premium= Math.round(((percentage/100*sum_insured) + Number.EPSILON) * 100) / 100;
+        //
+        //     $('#premium').val(premium);
+        //
+        //     //Filling also commission field
+        //
+        //     var premium=$('#premium').val();
+        //
+        //     var commission_percentage=$('#commission_percentage').val();
+        //
+        //     var commission= Math.round(((commission_percentage/100*premium) + Number.EPSILON) * 100) / 100;
+        //
+        //     $('#commission').val(commission);
+        //
+        //
+        // });
+
+
+
+
+        $('#premium').on('input',function(e){
             e.preventDefault();
 
-            var sum_insured=$(this).val();
-
-            var percentage=10;
-
-            var premium= Math.round(((percentage/100*sum_insured) + Number.EPSILON) * 100) / 100;
-
-            $('#premium').val(premium);
 
             //Filling also commission field
 
@@ -3126,6 +3147,8 @@
 
 
         });
+
+
 
     </script>
 
