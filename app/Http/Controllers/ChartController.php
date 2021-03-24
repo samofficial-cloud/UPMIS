@@ -1027,7 +1027,7 @@ class ChartController extends Controller
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart->title("UDIA Activities $year");
-        $chart->options(['scales' => self::chartSetAxes('Month','Total Activities')]);
+        $chart->options(['scales' => self::chartSetAxes('Months','Total Activities')]);
         $chart->dataset('Insurance Covers Sold', 'bar', $data1)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
@@ -1056,7 +1056,7 @@ class ChartController extends Controller
         $chart2->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         //$chart2->labels($rentedCars->pluck('month'));
         $chart2->title("CPTU Activities $year");
-        $chart2->options(['scales' => self::chartSetAxes('Month','Total Activities')]);
+        $chart2->options(['scales' => self::chartSetAxes('Months','Total Activities')]);
         $chart2->dataset('Rented Cars', 'bar', $data )->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
@@ -1084,7 +1084,7 @@ class ChartController extends Controller
         $chart3 = new SampleChart;
         $chart3->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart3->title("Space Activities $year");
-        $chart3->options(['scales' => self::chartSetAxes('Month','Total Activities')]);
+        $chart3->options(['scales' => self::chartSetAxes('Months','Total Activities')]);
         $chart3->dataset('Rented Spaces', 'bar', $data2)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
@@ -1183,7 +1183,7 @@ class ChartController extends Controller
         $chart4 = new SampleChart;
         $chart4->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart4->title("UDIA Income Generation $year");
-        $chart4->options(['scales' => self::chartSetAxes('Month','Income (TZS)')]);
+        $chart4->options(['scales' => self::chartSetAxes('Months','Income (TZS)')]);
          $chart4->dataset('BRITAM', 'bar', $UDIA_income_britam)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
@@ -1206,7 +1206,7 @@ class ChartController extends Controller
         $chart5 = new SampleChart;
         $chart5->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart5->title("CPTU Income Generation $year");
-        $chart5->options(['scales' => self::chartSetAxes('Month','Income (TZS)')]);
+        $chart5->options(['scales' => self::chartSetAxes('Months','Income (TZS)')]);
         $chart5->dataset('CPTU Income', 'bar', $CPTU_income)
         ->options([
             'fill' => 'true',
@@ -1218,7 +1218,7 @@ class ChartController extends Controller
         $chart6 = new SampleChart;
         $chart6->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart6->title("Space Income Generation $year");
-        $chart6->options(['scales' => self::chartSetAxes('Month','Income')]);
+        $chart6->options(['scales' => self::chartSetAxes('Months','Income')]);
         $chart6->dataset('TZS', 'bar', $space_income)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
