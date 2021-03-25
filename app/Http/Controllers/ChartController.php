@@ -64,8 +64,8 @@ class ChartController extends Controller
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("Cover Note Sales Activities $year");
-        $chart->options(['scales' => self::chartSetAxes('Months','Total Activities')]);
+        $chart->title("UDIA: Insurance covers sold in $year");
+        $chart->options(['scales' => self::chartSetAxes('Months','Number of Insurance Covers Sold')]);
         $chart->dataset('Insurance Covers Sold', 'bar', $data1)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
@@ -239,13 +239,13 @@ class ChartController extends Controller
             "borderWidth"=>2,
             "backgroundColor"=>'#e3342f'
         ]);
-        $chart2->dataset('Public Income', 'bar', $UDIA_income_public)->options([
+        $chart2->dataset('Public liability Income', 'bar', $UDIA_income_public)->options([
             'fill' => 'true',
             'borderColor' => '#f6993f',
             "borderWidth"=>2,
             "backgroundColor"=>'#f6993f'
         ]);
-        $chart2->dataset('Proffesional Income', 'bar', $UDIA_income_prof)->options([
+        $chart2->dataset('Professional indemnity Income', 'bar', $UDIA_income_prof)->options([
             'fill' => 'true',
             'borderColor' => '#6c757d',
             "borderWidth"=>2,
@@ -597,8 +597,8 @@ class ChartController extends Controller
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("Rental Activities $year");
-        $chart->options(['scales' => self::chartSetAxes('Months','Rented Car(s)')]);
+        $chart->title("CPTU: Rented cars in $year");
+        $chart->options(['scales' => self::chartSetAxes('Months','Number of rented cars')]);
         $chart->dataset('Rented Cars', 'bar', $data )->options([
             'fill' => 'true',
             'borderColor' => '#38c172',
@@ -709,8 +709,8 @@ class ChartController extends Controller
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("Lease Activities $year");
-        $chart->options(['scales' => self::chartSetAxes('Months','Lease Activities')]);
+        $chart->title("Rented spaces in $year");
+        $chart->options(['scales' => self::chartSetAxes('Months','Number of rented spaces')]);
         $chart->dataset('Rented Spaces', 'bar', $data2)->options([
             'fill' => 'true',
             'borderColor' => '#3490dc',
@@ -908,8 +908,8 @@ class ChartController extends Controller
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("Rental Activities $year");
-        $chart->options(['scales' => self::chartSetAxes('Month','Rental Activities')]);
+        $chart->title("CPTU: Rented cars in $year");
+        $chart->options(['scales' => self::chartSetAxes('Months','Number of rented cars')]);
         $chart->dataset('Rented Cars', 'bar', $data )->options([
             'fill' => 'true',
             'borderColor' => '#38c172',
@@ -935,7 +935,7 @@ class ChartController extends Controller
     $chart2 = new SampleChart;
         $chart2->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart2->title("Amount Paid to CPTU $year");
-        $chart2->options(['scales' => self::chartSetAxes('Month','Amount Paid')]);
+        $chart2->options(['scales' => self::chartSetAxes('Months','Amount paid (TZS)')]);
         $chart2->dataset("Expenditures on CPTU", 'bar', $CPTU_income)->options([
             'fill' => 'true',
             'borderColor' => '#38c172',
@@ -1026,8 +1026,8 @@ class ChartController extends Controller
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("UDIA Activities $year");
-        $chart->options(['scales' => self::chartSetAxes('Months','Total Activities')]);
+        $chart->title("UDIA: Insurance covers sold in $year");
+        $chart->options(['scales' => self::chartSetAxes('Months','Number of Insurance Covers Sold')]);
         $chart->dataset('Insurance Covers Sold', 'bar', $data1)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
@@ -1055,8 +1055,8 @@ class ChartController extends Controller
         $chart2 = new SampleChart;
         $chart2->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         //$chart2->labels($rentedCars->pluck('month'));
-        $chart2->title("CPTU Activities $year");
-        $chart2->options(['scales' => self::chartSetAxes('Months','Total Activities')]);
+        $chart2->title("CPTU: Rented cars in $year");
+        $chart2->options(['scales' => self::chartSetAxes('Months','Number of rented cars')]);
         $chart2->dataset('Rented Cars', 'bar', $data )->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
@@ -1083,8 +1083,8 @@ class ChartController extends Controller
 
         $chart3 = new SampleChart;
         $chart3->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart3->title("Space Activities $year");
-        $chart3->options(['scales' => self::chartSetAxes('Months','Total Activities')]);
+        $chart3->title("Rented spaces in $year");
+        $chart3->options(['scales' => self::chartSetAxes('Months','Number of rented spaces')]);
         $chart3->dataset('Rented Spaces', 'bar', $data2)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',

@@ -404,13 +404,7 @@ select.list-dt:focus {
 				</div>
 
 
-                                    <div class="form-group">
-                                        <div class="form-wrapper">
-                                            <label for="tin">TIN </label>
-                                            <span id="tin_msg"></span>
-                                            <input type="number" id="tin"  name="tin"  value="{{$var->tin}}" class="form-control">
-                                        </div>
-                                    </div>
+
 
 
                                 </div>
@@ -496,6 +490,18 @@ select.list-dt:focus {
 
 
                                     <div class="form-group row">
+
+
+
+                                            <div class="form-wrapper col-12">
+                                                <label for="tin">TIN </label>
+                                                <span id="tin_msg"></span>
+                                                <input type="number" id="tin"  name="tin"  value="{{$var->tin}}" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                                <p id="error_tin"></p>
+                                            </div>
+
+
+
                                         <div class="form-wrapper col-12">
                                             <label for="start_date">Start Date <span style="color: red;"> *</span></label>
                                             <span id="start_date_msg"></span>
@@ -803,6 +809,35 @@ select.list-dt:focus {
     }
 
     ?>
+
+
+
+    <script>
+
+        function minCharacters(value){
+
+
+
+            if(value.length<9){
+
+                document.getElementById("next3").disabled = true;
+                document.getElementById("error_tin").style.color = 'red';
+                document.getElementById("error_tin").style.float = 'left';
+                document.getElementById("error_tin").style.paddingTop = '1%';
+                document.getElementById("error_tin").innerHTML ='TIN number cannot be less than 9 digits';
+
+            }else{
+                document.getElementById("error_tin").innerHTML ='';
+                document.getElementById("next3").disabled = false;
+            }
+
+        }
+
+
+    </script>
+
+
+
     <script type="text/javascript">
 
         var button_clicked=null;

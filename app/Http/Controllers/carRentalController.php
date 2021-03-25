@@ -18,7 +18,7 @@ class carRentalController extends Controller
     	$cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
       $operational=operational_expenditure::where('flag','1')->get();
       $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
-      $costcentres=cost_centre::orderBy('costcentre_id','asc')->get();
+        $costcentres=cost_centre::orderBy('costcentre_id','asc')->where('status',1)->get();
     	return view('car')->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres);
     }
 
@@ -84,7 +84,7 @@ class carRentalController extends Controller
       $vehicle->dvc_msg_status = 'outbox';
       $vehicle->save();
       return redirect()->back()->with('success', 'Car Details Forwarded Successfully');
-      
+
     }
 
     public function newcar_step3(Request $request){
@@ -104,7 +104,7 @@ class carRentalController extends Controller
       DB::table('car_notifications')
                 ->where('car_id', $id)
                 ->update(['flag' => '0']);
-                
+
       $vehicle=carRental::find($id);
       $vehicle->delete();
       return redirect()->back()->with('success', 'Car Details Deleted Successfully');
@@ -114,7 +114,7 @@ class carRentalController extends Controller
     $vehicle_reg_no = strtoupper($request->input('vehicle_reg_no'));
 
     $validate=carRental::select('vehicle_reg_no')->where('vehicle_reg_no',$vehicle_reg_no)->where('flag','1')->value('vehicle_reg_no');
-    
+
 
     if(is_null($validate)){
       $deactivated = carRental::where('vehicle_reg_no',$vehicle_reg_no)->where('flag','0')->first();
@@ -131,8 +131,8 @@ class carRentalController extends Controller
 
         $deactivated->save();
       }
-      
-        return redirect()->back()->with('success', 'Car Details Added Successfully'); 
+
+        return redirect()->back()->with('success', 'Car Details Added Successfully');
     }
     else{
       return redirect()->back()->with('errors', "This vehicle '$vehicle_reg_no'  could not be added because it already exists in the system");
@@ -189,8 +189,12 @@ public function editcentre(Request $request){
 }
 
 public function deletecentre($id){
-  $centre=cost_centre::find($id);
-  $centre->delete();
+
+    DB::table('cost_centres')
+        ->where('id', $id)
+        ->update(['status' => 0]);
+
+
   return redirect()->back()->with('success', 'Cost Centre Deleted Successfully');
 }
 
@@ -281,11 +285,11 @@ public function deletecentre($id){
      {
       $query = $request->get('query');
       $data = carRental::select('vehicle_model')->where('vehicle_reg_no',$query)->value('vehicle_model');
-     
+
        $output = $data;
-     
+
       echo $output;
-     
+
    }
  }
 
@@ -295,11 +299,11 @@ public function deletecentre($id){
      {
       $query = $request->get('query');
       $data = hire_rate::select('hire_rate')->where('vehicle_model',$query)->value('hire_rate');
-     
+
        $output = $data;
-     
+
       echo $output;
-     
+
    }
  }
 
@@ -309,11 +313,11 @@ public function deletecentre($id){
      {
       $query = $request->get('query');
       $data = cost_centre::select('costcentre')->where('costcentre_id',$query)->value('costcentre');
-     
+
        $output = $data;
-     
+
       echo $output;
-     
+
    }
  }
 
@@ -351,17 +355,17 @@ public function deletecentre($id){
  }
 
  public function viewMore2(){
-  
+
   return View::make('car_expenditure_filtered');
  }
 
  public function viewMore3(){
-  
+
   return View::make('car_booking_filtered2');
  }
 
  public function viewMore4(){
-  
+
   return View::make('car_booking_filtered');
  }
 

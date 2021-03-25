@@ -201,7 +201,7 @@ $today=date('Y-m-d');
                             <fieldset>
                                 <div class="form-card">
                                    <h2 class="fs-title">A. APPLICATION DETAILS</h2>
-                                   <p>Fill all form field with (<span style="color: red;">*</span>)</p>
+                                   <p>Fill all form fields with (<span style="color: red;">*</span>)</p>
                                    <div class="form-group">
 					<div class="form-wrapper" id="areadiv">
           <label for="area">Area of Travel<span style="color: red;">*</span></label>
@@ -244,7 +244,7 @@ $today=date('Y-m-d');
             </select> --}}
                         </div>
 
-						
+
 					</div>
 
                     <div class="form-group">
@@ -372,7 +372,7 @@ $today=date('Y-m-d');
                 }
                 else{
                   document.getElementById('initial_amount').style='border-bottom: 1px solid #ccc;';
-                  document.getElementById('initialmsg').innerHTML=' ';  
+                  document.getElementById('initialmsg').innerHTML=' ';
                 }">
             </div>
         </div>
@@ -461,7 +461,7 @@ function getvalidation(){
                 $('#initial_amount').val('');
                 $('#initial_amountdiv').hide();
                 $('#initial_amount').attr('style','border-bottom:1px solid #ccc');
-                document.getElementById('initialmsg').innerHTML=' ' 
+                document.getElementById('initialmsg').innerHTML=' '
             }
         });
 
@@ -473,7 +473,7 @@ function getvalidation(){
                     $('#initial_amountdiv').show();
                 }
                 else{
-                    $('#initial_amountdiv').hide(); 
+                    $('#initial_amountdiv').hide();
                 }
             }
             else{
@@ -481,7 +481,7 @@ function getvalidation(){
             }
         });
 
-    
+
     $('#centre_name').on('select2:select', function (e){
         $('#faculty_name').val(" ");
             var query = e.params.data.id;
@@ -519,13 +519,13 @@ function getvalidation(){
                 $('#nameList').html(data);
             }
             else{
-                   
+
           }
             }
-         });           
+         });
         }
             else if(query==''){
-                
+
         }
     });
 
@@ -545,7 +545,7 @@ $(document).on('click', '#list', function(){
             method:"GET",
             data:{first:first, last:last, _token:_token}
             //success:function(data){
-            //console.log(data); 
+            //console.log(data);
         })
 
       .done(function(data){
@@ -556,7 +556,7 @@ $(document).on('click', '#list', function(){
         $('#faculty_name').val(data.dep);
         $('#email').val(data.email);
         $('#designation').val(data.designation);
-      });      
+      });
        // $('#first_name').val($(this).text());
         //$('#nameList').fadeOut();
 

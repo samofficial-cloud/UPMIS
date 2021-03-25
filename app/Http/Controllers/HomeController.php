@@ -111,7 +111,7 @@ class HomeController extends Controller
         $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
         $operational=operational_expenditure::where('flag','1')->get();
         $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
-        $costcentres=cost_centre::orderBy('costcentre_id','asc')->get();
+        $costcentres=cost_centre::orderBy('costcentre_id','asc')->where('status',1)->get();
         $rooms = DB::table('research_flats_rooms')->where('status','1')->orderby('room_no','asc')->get();
 
          if(Auth::user()->role=='Transport Officer-CPTU'){

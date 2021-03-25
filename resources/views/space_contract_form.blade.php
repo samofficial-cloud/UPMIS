@@ -611,7 +611,8 @@
                                                         <div class="form-wrapper">
                                                             <label for="tin">TIN <span style="color: red;"> *</span></label>
                                                             <span id="tin_msg"></span>
-                                                            <input type="number" id="tin" name="tin" class="form-control">
+                                                            <input type="number" id="tin" name="tin" class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                                            <p id="error_tin"></p>
                                                         </div>
                                                     </div>
 
@@ -763,7 +764,7 @@
 
 
                                                     <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" style="display: none;">
-                                                        <label for="">List of the businesses (Comma separated):</label>
+                                                        <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
                                                         <span id="additional_businesses_list_msg"></span>
                                                         <textarea style="width: 100%;" id="additional_businesses_list" name="additional_businesses_list"></textarea>
 
@@ -797,15 +798,26 @@
                                                     </div>
 
 
+                                                    <div id="has_security_depositDiv" class="form-wrapper col-12">
+                                                        <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
+                                                        <span id="has_security_deposit_msg"></span>
+                                                        <select id="has_security_deposit" class="form-control" name="has_security_deposit">
+                                                            <option value="" ></option>
+                                                            <option value="No" >No</option>
+                                                            <option value="Yes" >Yes</option>
+                                                        </select>
+                                                    </div>
+
+
                                                     <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
                                                         <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
                                                         <span id="security_deposit_msg"></span>
-                                                        <input type="number"  id="security_deposit" name="security_deposit" class="form-control">
+                                                        <input type="text"  id="security_deposit" readonly name="security_deposit" class="form-control">
                                                     </div>
 
 
 
-                                                    <div id="currencydiv" class="form-wrapper col-12">
+                                                    <div id="currencydiv" class="form-wrapper col-12 pt-4">
                                                         <label for="currency">Currency <span style="color: red;"> *</span></label>
                                                         <span id="currency_msg"></span>
                                                         <select id="currency" class="form-control"  name="currency">
@@ -1288,6 +1300,73 @@
 
 
 
+    <script>
+
+
+        $('#has_security_deposit').click(function() {
+            var query=$(this).val();
+            var academic_dependence=$('#academic_dependence').val();
+            var academic_season=$('#academic_season').val();
+            var amount=$('#amount').val();
+            var additional_businesses_amount=$('#additional_businesses_amount').val();
+            if(query=='Yes') {
+                $('#security_depositDiv').show();
+
+                if(academic_dependence=='Yes'){
+
+                    $('#security_deposit').val((+academic_season  +  +additional_businesses_amount)*6);
+
+                }else{
+
+                    $('#security_deposit').val((+amount  +  +additional_businesses_amount)*6);
+                }
+
+
+
+            }else if(query=='No'){
+                $('#security_depositDiv').hide();
+                $('#security_deposit').val("0");
+
+            }else{
+                $('#security_depositDiv').hide();
+                $('#security_deposit').val("0");
+
+            }
+
+
+
+        });
+
+
+    </script>
+
+
+    <script>
+
+        function minCharacters(value){
+
+
+
+            if(value.length<9){
+
+                document.getElementById("next3").disabled = true;
+                document.getElementById("error_tin").style.color = 'red';
+                document.getElementById("error_tin").style.float = 'left';
+                document.getElementById("error_tin").style.paddingTop = '1%';
+                document.getElementById("error_tin").innerHTML ='TIN number cannot be less than 9 digits';
+
+            }else{
+                document.getElementById("error_tin").innerHTML ='';
+                document.getElementById("next3").disabled = false;
+            }
+
+        }
+
+
+    </script>
+
+
+
 
     <script type="text/javascript">
         $(document).ready(function(){
@@ -1331,10 +1410,13 @@
                 if(academic_dependence=='Yes'){
                     $('#academic_season_total').val(+academic_season  +  +additional_businesses_amount);
                     $('#vacation_season_total').val(+vacation_season  +  +additional_businesses_amount);
+                    $('#security_deposit').val((+academic_season  +  +additional_businesses_amount)*6);
+
 
                 }else{
 
                     $('#total_amount').val(+amount  +  +additional_businesses_amount);
+                    $('#security_deposit').val((+amount  +  +additional_businesses_amount)*6);
 
                 }
 
@@ -1345,6 +1427,26 @@
 
             });
 
+
+
+            $('#academic_season').on('input',function(e){
+                e.preventDefault();
+                var academic_season=$(this).val();
+                var additional_businesses_amount=$('#additional_businesses_amount').val();
+
+                $('#security_deposit').val((+academic_season  +  +additional_businesses_amount)*6);
+
+            });
+
+
+            $('#amount').on('input',function(e){
+                e.preventDefault();
+                var amount=$(this).val();
+                var additional_businesses_amount=$('#additional_businesses_amount').val();
+
+                $('#security_deposit').val((+amount  +  +additional_businesses_amount)*6);
+
+            });
 
 
 
@@ -1573,7 +1675,7 @@
                     $('#contract_categoryDiv').hide();
                     $('#has_additional_businessesDiv').show();
 
-                    $('#security_depositDiv').hide();
+                    $('#has_security_depositDiv').hide();
 
 
                     $('#percentage_to_payDiv').hide();
@@ -1624,7 +1726,7 @@
                     $('#contract_categoryDiv').hide();
                     $('#has_additional_businessesDiv').hide();
 
-                    $('#security_depositDiv').hide();
+                    $('#has_security_depositDiv').hide();
 
 
                     if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' ){
@@ -1639,7 +1741,8 @@
                     $('#academic_dependenceDiv').show();
                     $('#contract_categoryDiv').show();
                     $('#has_additional_businessesDiv').show();
-                    $('#security_depositDiv').show();
+                    $('#has_security_depositDiv').show();
+
 
                     $('#rent_sqmDiv').show();
                     $('#currencydiv').show();
@@ -1892,6 +1995,7 @@
                 var academic_season_total=$("#academic_season_total").val();
                 var vacation_season_total=$("#vacation_season_total").val();
                 var security_deposit=$("#security_deposit").val();
+                var has_security_deposit=$("#has_security_deposit").val();
 
 
 
@@ -2278,18 +2382,18 @@
 
 
 
-                if(security_deposit==""){
+                if(has_security_deposit==""){
                     p26=0;
-                    $('#security_deposit_msg').show();
-                    var message=document.getElementById('security_deposit_msg');
+                    $('#has_security_deposit_msg').show();
+                    var message=document.getElementById('has_security_deposit_msg');
                     message.style.color='red';
                     message.innerHTML="Required";
-                    $('#security_deposit').attr('style','border-bottom:1px solid #f00');
+                    $('#has_security_deposit').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
                     p26=1;
-                    $('#security_deposit_msg').hide();
-                    $('#security_deposit').attr('style','border-bottom: 1px solid #ccc');
+                    $('#has_security_deposit_msg').hide();
+                    $('#has_security_deposit').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
@@ -2509,7 +2613,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2535,7 +2639,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & academic_season>=20 & vacation_season>=20  & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20   & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2568,7 +2672,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2594,7 +2698,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2641,7 +2745,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2667,7 +2771,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & academic_season>=20 & vacation_season>=20  & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20   & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2700,7 +2804,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2726,7 +2830,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2767,7 +2871,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2793,7 +2897,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & academic_season>=20 & vacation_season>=20  & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20   & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2826,7 +2930,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2852,7 +2956,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2894,7 +2998,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2920,7 +3024,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & academic_season>=20 & vacation_season>=20  & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & academic_season>=20 & vacation_season>=20   & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2953,7 +3057,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & amount>=20 & additional_businesses_amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -2979,7 +3083,7 @@
 
                                     //check for validity
 
-                                    if (duration>=1 & amount>=20 & security_deposit>=20 & escalation_rate>=0 & payment_cycle>=1 ){
+                                    if (duration>=1 & amount>=20  & escalation_rate>=0 & payment_cycle>=1 ){
 
                                         document.getElementById("validate_money_msg").innerHTML ='';
                                         gonext();
@@ -3785,6 +3889,12 @@
 
             $('#academic_dependence').click(function() {
                 var query=$(this).val();
+                var academic_season=$('#academic_season').val();
+                var amount=$('#amount').val();
+                var additional_businesses_amount=$('#additional_businesses_amount').val();
+                var has_security_deposit=$('#has_security_deposit').val();
+
+
                 if(query=='Yes') {
 
                     $('#academicDiv').show();
@@ -3804,8 +3914,12 @@
                     // var ele = document.getElementById("amount");
                     // ele.required = false;
 
-
-
+                    if(has_security_deposit=='Yes')
+                    {
+                        $('#security_deposit').val((+academic_season + +additional_businesses_amount) * 6);
+                    }else{
+                        //Do Nothing
+                    }
                 }else if(query=='No'){
 
                     $('#academicDiv').hide();
@@ -3823,6 +3937,12 @@
                     // var ele = document.getElementById("amount");
                     // ele.required = true;
 
+                    if(has_security_deposit=='Yes') {
+                        $('#security_deposit').val((+amount + +additional_businesses_amount) * 6);
+                    }else{
+                        //Do Nothing
+                    }
+
                 }else{
                     $('#vacationDiv').hide();
                     $('#academicDiv').hide();
@@ -3836,7 +3956,14 @@
 
 
 
+            if(academic_dependence=='Yes'){
 
+
+
+            }else{
+
+
+            }
 
 
 
