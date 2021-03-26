@@ -909,7 +909,7 @@
                         </table>
 </div>
                     @else
-                        <p>No records found</p>
+                                <p class="mt-4" style="text-align:center;">No records found</p>
                     @endif
 
                 </div>
