@@ -552,11 +552,13 @@ $today=date('Y-m-d');
                                     <div class="form-group row">
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_no">Receipt No<span style="color: red;">*</span></label>
-                                            <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="" value="{{$contract->receipt_no}}">
+                                          <span id="receipt_no_msg"></span>
+                                          <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="" value="{{$contract->receipt_no}}">
                                       </div>
 
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_date">Of Date<span style="color: red;">*</span></label>
+                                          <span id="receipt_date_msg"></span>
                                             <input type="date" id="receipt_date" name="receipt_date" class="form-control" required="" value="{{$contract->receipt_date}}">
                                       </div>
                                     </div>
@@ -564,6 +566,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="total_days">Total No. of days stayed at Research Flats <span style="color: red;">*</span></label>
+                                            <span id="total_days_msg"></span>
                                             <input type="text" id="total_days" name="total_days" class="form-control" required="" readonly="" value="{{$contract->total_days}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                         </div>
                                     </div>
@@ -697,213 +700,222 @@ $(".previous").click(function(){
     });
 });
 
-$("#next1").click(function(){
-    var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11;
-    current_fs = $(this).parent();
-    next_fs = $(this).parent().next();
-    var first = $('#first_name').val(),
-        last = $('#last_name').val(),
-        gender =$('#gender').val(),
-        prof = $('#professional').val(),
-        address = $('#address').val(),
-        email = $('#email').val(),
-        phone = $('#phone_number').val(),
-        purpose = $('#purpose').val(),
-        passport_no = $('#passport_no').val(),
-        issue_date = $('#issue_date').val(),
-        issue_place = $('#issue_place').val();
-        if(first==''){
-            p1=0;
-             $('#firstnamemsg').show();
-             var message=document.getElementById('firstnamemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#first_name').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p1=1;
-            $('#firstnamemsg').hide();
-            $('#first_name').attr('style','border-bottom: 1px solid #ccc');
-        }
+        $("#next1").click(function(){
+            var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,p11,p12;
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+            var first = $('#first_name').val(),
+                last = $('#last_name').val(),
+                gender =$('#gender').val(),
+                prof = $('#professional').val(),
+                address = $('#address').val(),
+                email = $('#email').val(),
+                phone = $('#phone_number').val(),
+                purpose = $('#purpose').val(),
+                passport_no = $('#passport_no').val(),
+                issue_date = $('#issue_date').val(),
+                issue_place = $('#issue_place').val();
+            nationality = $('#nationality').val();
 
-        if(last==''){
-            p2=0;
-             $('#lastnamemsg').show();
-             var message=document.getElementById('lastnamemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#last_name').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p2=1;
-            $('#lastnamemsg').hide();
-            $('#last_name').attr('style','border-bottom: 1px solid #ccc');
-        }
+            if(first==''){
+                p1=0;
+                $('#firstnamemsg').show();
+                var message=document.getElementById('firstnamemsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#first_name').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p1=1;
+                $('#firstnamemsg').hide();
+                $('#first_name').attr('style','border-bottom: 1px solid #ccc');
+            }
 
-        if(gender==null){
-            p2=0;
-             $('#gendermsg').show();
-             var message=document.getElementById('gendermsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#gender').attr('style','border:1px solid #f00');
-        }
-        else{
-            p2=1;
-            $('#gendermsg').hide();
-            $('#gender').attr('style','border: 1px solid #ccc');
-        }
+            if(last==''){
+                p2=0;
+                $('#lastnamemsg').show();
+                var message=document.getElementById('lastnamemsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#last_name').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p2=1;
+                $('#lastnamemsg').hide();
+                $('#last_name').attr('style','border-bottom: 1px solid #ccc');
+            }
 
-        if(prof==""){
-            p3=0;
-             $('#profmsg').show();
-             var message=document.getElementById('profmsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#professional').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p3=1;
-            $('#profmsg').hide();
-            $('#professional').attr('style','border-bottom: 1px solid #ccc');
-        }
+            if(gender==null){
+                p3=0;
+                $('#gendermsg').show();
+                var message=document.getElementById('gendermsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#gender').attr('style','border:1px solid #f00');
+            }
+            else{
+                p3=1;
+                $('#gendermsg').hide();
+                $('#gender').attr('style','border: 1px solid #ccc');
+            }
 
-
-        if(address==""){
-            p4=0;
-             $('#addressmsg').show();
-             var message=document.getElementById('addressmsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#address').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p4=1;
-            $('#addressmsg').hide();
-            $('#address').attr('style','border-bottom: 1px solid #ccc');
-        }
-
-        if(email==""){
-            p5=0;
-             $('#emailmsg').show();
-             var message=document.getElementById('emailmsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#email').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p5=1;
-            $('#emailmsg').hide();
-            $('#email').attr('style','border-bottom: 1px solid #ccc');
-        }
-
-        if(phone==""){
-            p6=0;
-             $('#phonemsg').show();
-             var message=document.getElementById('phonemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#phone_number').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p6=1;
-            $('#phonemsg').hide();
-            $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
-        }
-
-        if(purpose==""){
-            p7=0;
-             $('#purposemsg').show();
-             var message=document.getElementById('purposemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#purpose').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p7=1;
-            $('#purposemsg').hide();
-            $('#purpose').attr('style','border-bottom: 1px solid #ccc');
-        }
-
-         if(passport_no==""){
-            p8=0;
-             $('#pass_nomsg').show();
-             var message=document.getElementById('pass_nomsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#passport_no').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p8=1;
-            $('#pass_nomsg').hide();
-            $('#passport_no').attr('style','border-bottom: 1px solid #ccc');
-        }
-
-        if(issue_date==""){
-            p9=0;
-             $('#issue_datemsg').show();
-             var message=document.getElementById('issue_datemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#issue_date').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p9=1;
-            $('#issue_datemsg').hide();
-            $('#issue_date').attr('style','border-bottom: 1px solid #ccc');
-        }
-
-        if(issue_place==""){
-            p10=0;
-             $('#issue_placemsg').show();
-             var message=document.getElementById('issue_placemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#issue_place').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p10=1;
-            $('#issue_placemsg').hide();
-            $('#issue_place').attr('style','border-bottom: 1px solid #ccc');
-        }
-
-        if(nationality==""){
-            p11=0;
-             $('#nationality_msg').show();
-             var message=document.getElementById('nationality_msg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#nationality').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p11=1;
-            $('#nationality_msg').hide();
-            $('#nationality').attr('style','border-bottom: 1px solid #ccc');
-        }
-
-        if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p9==1 && p10==1 &&p11==1){
-           gonext();
-        }
-});
+            if(prof==""){
+                p4=0;
+                $('#profmsg').show();
+                var message=document.getElementById('profmsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#professional').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p4=1;
+                $('#profmsg').hide();
+                $('#professional').attr('style','border-bottom: 1px solid #ccc');
+            }
 
 
-    $("#next0").click(function(){
-        var p1, p2, p3, p4, p5, p6;
-        current_fs = $(this).parent();
-        next_fs = $(this).parent().next();
-        var host_name = $('#host_name').val(),
-            college = $('#college').val(),
-            department = $('#department').val(),
-            host_address = $('#host_address').val(),
-            host_email= $('#host_email').val(),
-            host_phone=$('#host_phone').val();
+            if(address==""){
+                p5=0;
+                $('#addressmsg').show();
+                var message=document.getElementById('addressmsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#address').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p5=1;
+                $('#addressmsg').hide();
+                $('#address').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            if(email==""){
+                p6=0;
+                $('#emailmsg').show();
+                var message=document.getElementById('emailmsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#email').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p6=1;
+                $('#emailmsg').hide();
+                $('#email').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+
+            var phone_digits=$('#phone_number').val().length;
+
+            if(phone_digits<10) {
+                p7=0;
+                $('#phonemsg').show();
+                var message = document.getElementById('phonemsg');
+                message.style.color = 'red';
+                message.innerHTML = "Digits cannot be less than 10";
+                $('#phone_number').attr('style', 'border-bottom:1px solid #f00');
+
+            }else{
+                p7=1;
+                $('#phonemsg').hide();
+                $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+
+
+
+            if(purpose==""){
+                p8=0;
+                $('#purposemsg').show();
+                var message=document.getElementById('purposemsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#purpose').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p8=1;
+                $('#purposemsg').hide();
+                $('#purpose').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            if(passport_no==""){
+                p9=0;
+                $('#pass_nomsg').show();
+                var message=document.getElementById('pass_nomsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#passport_no').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p9=1;
+                $('#pass_nomsg').hide();
+                $('#passport_no').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            if(issue_date==""){
+                p10=0;
+                $('#issue_datemsg').show();
+                var message=document.getElementById('issue_datemsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#issue_date').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p10=1;
+                $('#issue_datemsg').hide();
+                $('#issue_date').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            if(issue_place==""){
+                p11=0;
+                $('#issue_placemsg').show();
+                var message=document.getElementById('issue_placemsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#issue_place').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p11=1;
+                $('#issue_placemsg').hide();
+                $('#issue_place').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+
+            if(nationality==""){
+                p12=0;
+                $('#nationality_msg').show();
+                var message=document.getElementById('nationality_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#nationality').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p12=1;
+                $('#nationality_msg').hide();
+                $('#nationality').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+            if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p9==1 && p10==1 && p11==1 && p12==1){
+                gonext();
+            }
+        });
+
+
+        $("#next0").click(function(){
+            var p1, p2, p3, p4, p5, p6;
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+            var host_name = $('#host_name').val(),
+                college = $('#college').val(),
+                department = $('#department').val(),
+                host_address = $('#host_address').val(),
+                host_email= $('#host_email').val(),
+                host_phone=$('#host_phone').val();
             if(host_name==""){
                 p1=0;
-                 $('#host_namemsg').show();
-                 var message=document.getElementById('host_namemsg');
-                 message.style.color='red';
-                 message.innerHTML="Required";
-                 $('#host_name').attr('style','border-bottom:1px solid #f00');
+                $('#host_namemsg').show();
+                var message=document.getElementById('host_namemsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#host_name').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p1=1;
@@ -913,11 +925,11 @@ $("#next1").click(function(){
 
             if(college==""){
                 p2=0;
-                 $('#collegemsg').show();
-                 var message=document.getElementById('collegemsg');
-                 message.style.color='red';
-                 message.innerHTML="Required";
-                 $('#college').attr('style','border-bottom:1px solid #f00');
+                $('#collegemsg').show();
+                var message=document.getElementById('collegemsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#college').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p2=1;
@@ -927,11 +939,11 @@ $("#next1").click(function(){
 
             if(department==""){
                 p3=0;
-                 $('#departmentmsg').show();
-                 var message=document.getElementById('departmentmsg');
-                 message.style.color='red';
-                 message.innerHTML="Required";
-                 $('#department').attr('style','border-bottom:1px solid #f00');
+                $('#departmentmsg').show();
+                var message=document.getElementById('departmentmsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#department').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p3=1;
@@ -941,25 +953,25 @@ $("#next1").click(function(){
 
             if(host_address==""){
                 p4=0;
-                 $('#addressmsg').show();
-                 var message=document.getElementById('addressmsg');
-                 message.style.color='red';
-                 message.innerHTML="Required";
-                 $('#host_address').attr('style','border-bottom:1px solid #f00');
+                $('#host_addressmsg').show();
+                var message=document.getElementById('host_addressmsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#host_address').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p4=1;
-                $('#addressmsg').hide();
+                $('#host_addressmsg').hide();
                 $('#host_address').attr('style','border-bottom: 1px solid #ccc');
             }
 
             if(host_email==""){
                 p5=0;
-                 $('#host_emailmsg').show();
-                 var message=document.getElementById('host_emailmsg');
-                 message.style.color='red';
-                 message.innerHTML="Required";
-                 $('#host_email').attr('style','border-bottom:1px solid #f00');
+                $('#host_emailmsg').show();
+                var message=document.getElementById('host_emailmsg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#host_email').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p5=1;
@@ -967,24 +979,30 @@ $("#next1").click(function(){
                 $('#host_email').attr('style','border-bottom: 1px solid #ccc');
             }
 
-            if(host_phone==""){
+
+            var phone_digits=$('#host_phone').val().length;
+
+            if(phone_digits<10) {
                 p6=0;
-                 $('#host_phonemsg').show();
-                 var message=document.getElementById('host_phonemsg');
-                 message.style.color='red';
-                 message.innerHTML="Required";
-                 $('#host_phone').attr('style','border-bottom:1px solid #f00');
-            }
-            else{
+                $('#host_phonemsg').show();
+                var message = document.getElementById('host_phonemsg');
+                message.style.color = 'red';
+                message.innerHTML = "Digits cannot be less than 10";
+                $('#host_phone').attr('style', 'border-bottom:1px solid #f00');
+
+            }else{
                 p6=1;
                 $('#host_phonemsg').hide();
                 $('#host_phone').attr('style','border-bottom: 1px solid #ccc');
             }
 
+
+
+
             if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1){
-              gonext();
+                gonext();
             }
-    });
+        });
 
 $("#next2").click(function(){
     var p1, p2, p3, p4;
@@ -1094,199 +1112,196 @@ $("#next2").click(function(){
 
   });
 
-$("#next3").click(function(){
-    current_fs = $(this).parent();
-    next_fs = $(this).parent().next();
-     var category= $('#category').val();
-     var p1, p2, p3, p4, p5, p6, p7;
+        $("#next3").click(function(){
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+            var category= $('#category').val();
+            var p1, p2, p3, p4, p5, p6, p7;
 
-     console.log(category);
+            if(category=='Shared Room'){
+                var usd = $('#shared_room_usd').val(),
+                    tzs = $('#shared_room').val(),
+                    total_usd = $('#total_shared_usd').val(),
+                    total_tzs = $('#total_shared_tzs').val();
 
-     if(category=='Shared Room'){
-        var usd = $('#shared_room_usd').val(),
-            tzs = $('#shared_room').val(),
-            total_usd = $('#total_shared_usd').val(),
-            total_tzs = $('#total_shared_tzs').val();
+                if(usd==""){
+                    p1=0;
+                    $('#shared_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p1=1;
+                    $('#shared_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(usd==""){
-            p1=0;
-            $('#shared_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p1=1;
-            $('#shared_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(tzs==""){
+                    p2=0;
+                    $('#shared_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p2=1;
+                    $('#shared_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(tzs==""){
-            p2=0;
-            $('#shared_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p2=1;
-            $('#shared_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(total_usd==""){
+                    p3=0;
+                    $('#total_shared_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p3=1;
+                    $('#total_shared_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(total_usd==""){
-            p3=0;
-            $('#total_shared_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p3=1;
-            $('#total_shared_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(total_tzs==""){
+                    p4=0;
+                    $('#total_shared_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p4=1;
+                    $('#total_shared_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(total_tzs==""){
-            p4=0;
-            $('#total_shared_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p4=1;
-            $('#total_shared_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+            }
 
-     }
+            else if(category=='Single Room'){
+                var usd = $('#single_room_usd').val(),
+                    tzs = $('#single_room').val(),
+                    total_usd = $('#total_single_usd').val(),
+                    total_tzs = $('#total_single_tzs').val();
 
-     else if(category=='Single Room'){
-        var usd = $('#single_room_usd').val(),
-            tzs = $('#single_room').val(),
-            total_usd = $('#total_single_usd').val(),
-            total_tzs = $('#total_single_tzs').val();
+                if(usd==""){
+                    p1=0;
+                    $('#single_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p1=1;
+                    $('#single_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(usd==""){
-            p1=0;
-            $('#single_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p1=1;
-            $('#single_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(tzs==""){
+                    p2=0;
+                    $('#single_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p2=1;
+                    $('#single_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(tzs==""){
-            p2=0;
-            $('#single_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p2=1;
-            $('#single_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(total_usd==""){
+                    p3=0;
+                    $('#total_single_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p3=1;
+                    $('#total_single_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(total_usd==""){
-            p3=0;
-            $('#total_single_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p3=1;
-            $('#total_single_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(total_tzs==""){
+                    p4=0;
+                    $('#total_single_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p4=1;
+                    $('#total_single_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
+            }
 
-        if(total_tzs==""){
-            p4=0;
-            $('#total_single_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p4=1;
-            $('#total_single_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
-     }
-
-     else if(category=='Suit Room'){
-        var usd = $('#suit_room_usd').val(),
-            tzs = $('#suit_room').val(),
-            total_usd = $('#total_suit_usd').val(),
-            total_tzs = $('#total_suit_tzs').val();
+            else if(category=='Suit Room'){
+                var usd = $('#suit_room_usd').val(),
+                    tzs = $('#suit_room').val(),
+                    total_usd = $('#total_suit_usd').val(),
+                    total_tzs = $('#total_suit_tzs').val();
 
 
-        if(usd==""){
-            p1=0;
-            $('#suit_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p1=1;
-            $('#suit_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(usd==""){
+                    p1=0;
+                    $('#suit_room_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p1=1;
+                    $('#suit_room_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(tzs==""){
-            p2=0;
-            $('#suit_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p2=1;
-            $('#suit_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(tzs==""){
+                    p2=0;
+                    $('#suit_room').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p2=1;
+                    $('#suit_room').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(total_usd==""){
-            p3=0;
-            $('#total_suit_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p3=1;
-            $('#total_suit_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
+                if(total_usd==""){
+                    p3=0;
+                    $('#total_suit_usd').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p3=1;
+                    $('#total_suit_usd').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
 
-        if(total_tzs==""){
-            p4=0;
-            $('#total_suit_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
-        }
-        else{
-            p4=1;
-            $('#total_suit_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
-        }
-     }
-
-
-     var receipt_no = $('#receipt_no').val();
-        if(receipt_no==""){
-            p5=0;
-           $('#receipt_no_msg').show();
-            var message=document.getElementById('receipt_no_msg');
-            message.style.color='red';
-            message.innerHTML="Required";
-            $('#receipt_no').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p5=1;
-            $('#receipt_no_msg').hide();
-            $('#receipt_no').attr('style','border-bottom: 1px solid #ccc');
-        }
+                if(total_tzs==""){
+                    p4=0;
+                    $('#total_suit_tzs').attr('style','border:1px solid #f00; width: 15%; margin: 10px; padding: 3px;');
+                }
+                else{
+                    p4=1;
+                    $('#total_suit_tzs').attr('style','border:1px solid #ccc; width: 15%; margin: 10px; padding: 3px;');
+                }
+            }
 
 
-    var receipt_date = $('#receipt_date').val();
-        if(receipt_date==""){
-            p6=0;
-            $('#receipt_date_msg').show();
-            var message=document.getElementById('receipt_date_msg');
-            message.style.color='red';
-            message.innerHTML="Required";
-            $('#receipt_date').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p6=1;
-            $('#receipt_date_msg').hide();
-            $('#receipt_date').attr('style','border-bottom: 1px solid #ccc');
-        }
+            var receipt_no = $('#receipt_no').val();
+            if(receipt_no==""){
+                p5=0;
+                $('#receipt_no_msg').show();
+                var message=document.getElementById('receipt_no_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#receipt_no').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p5=1;
+                $('#receipt_no_msg').hide();
+                $('#receipt_no').attr('style','border-bottom: 1px solid #ccc');
+            }
 
 
-    var total_days = $('#total_days').val();
-        if(total_days==""){
-            p7=0;
-            $('#total_days_msg').show();
-            var message=document.getElementById('total_days_msg');
-            message.style.color='red';
-            message.innerHTML="Required";
-            $('#total_days').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p7=1;
-            $('#total_days_msg').hide();
-            $('#total_days').attr('style','border-bottom: 1px solid #ccc');
-        }
+            var receipt_date = $('#receipt_date').val();
+            if(receipt_date==""){
+                p6=0;
+                $('#receipt_date_msg').show();
+                var message=document.getElementById('receipt_date_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#receipt_date').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p6=1;
+                $('#receipt_date_msg').hide();
+                $('#receipt_date').attr('style','border-bottom: 1px solid #ccc');
+            }
 
 
-        if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1){
-           gonext();
-        }
+            var total_days = $('#total_days').val();
+            if(total_days==""){
+                p7=0;
+                $('#total_days_msg').show();
+                var message=document.getElementById('total_days_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#total_days').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p7=1;
+                $('#total_days_msg').hide();
+                $('#total_days').attr('style','border-bottom: 1px solid #ccc');
+            }
 
-});
+            if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1){
+                gonext();
+            }
+
+        });
 });
 </script>
 @endsection

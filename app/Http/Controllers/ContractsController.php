@@ -29,7 +29,7 @@ class ContractsController extends Controller
      */
     public function ContractsManagement()
     {
-        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.has_clients',1)->orWhere('space_contracts.under_client',0)->get();
+        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.under_client',0)->orderBy('space_contracts.contract_id','desc')->get();
 //        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
         $insurance_contracts=DB::table('insurance_contracts')->get();
 
@@ -145,9 +145,10 @@ class ContractsController extends Controller
         $decrypted_contract_id=base64_decode(base64_decode(base64_decode($contract_id)));
 
         $space_contract=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id',$decrypted_contract_id)->get();
-        $associated_invoices=DB::table('invoices')->where('contract_id',$decrypted_contract_id)->get();
+        $associated_invoices=DB::table('invoices')->where('contract_id',$decrypted_contract_id)->orderBy('invoice_number','desc')->where('stage',2)->get();
+        $associated_payments=DB::table('space_payments')->join('invoices','space_payments.invoice_number','=','invoices.invoice_number')->where('invoices.contract_id',$decrypted_contract_id)->where('space_payments.stage',0)->where('invoices.payment_status','Partially Paid')->orWhere('invoices.payment_status','Paid')->orderBy('space_payments.id','desc')->get();
 
-        return view('contract_details')->with('space_contract',$space_contract)->with('associated_invoices',$associated_invoices);
+        return view('contract_details')->with('space_contract',$space_contract)->with('associated_invoices',$associated_invoices)->with('associated_payments',$associated_payments);
 
     }
 

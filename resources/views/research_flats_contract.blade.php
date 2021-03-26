@@ -364,7 +364,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-5">
                                             <label for="email">Email<span style="color: red;">*</span></label>
                                             <span id="emailmsg"></span>
-                                            <input type="text" name="email" id="email" class="form-control" required placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                            <input type="text" name="email" id="email" class="form-control" required placeholder="someone@example.com" >
                                         </div>
 
                                         <div class="form-wrapper col-3">
@@ -451,7 +451,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-5">
                                             <label for="host_email">Email<span style="color: red;">*</span></label>
                                             <span id="host_emailmsg"></span>
-                                            <input type="text" id="host_email" name="host_email" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="host_email" name="host_email" class="form-control" required="" >
                                         </div>
 
                                         <div class="form-wrapper col-3">
@@ -705,7 +705,7 @@ $(".previous").click(function(){
 });
 
 $("#next1").click(function(){
-    var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10;
+    var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,p11,p12;
     current_fs = $(this).parent();
     next_fs = $(this).parent().next();
     var first = $('#first_name').val(),
@@ -720,6 +720,7 @@ $("#next1").click(function(){
         issue_date = $('#issue_date').val(),
         issue_place = $('#issue_place').val();
         nationality = $('#nationality').val();
+
         if(first==''){
             p1=0;
              $('#firstnamemsg').show();
@@ -749,7 +750,7 @@ $("#next1").click(function(){
         }
 
         if(gender==null){
-            p2=0;
+            p3=0;
              $('#gendermsg').show();
              var message=document.getElementById('gendermsg');
              message.style.color='red';
@@ -757,13 +758,13 @@ $("#next1").click(function(){
              $('#gender').attr('style','border:1px solid #f00');
         }
         else{
-            p2=1;
+            p3=1;
             $('#gendermsg').hide();
             $('#gender').attr('style','border: 1px solid #ccc');
         }
 
         if(prof==""){
-            p3=0;
+            p4=0;
              $('#profmsg').show();
              var message=document.getElementById('profmsg');
              message.style.color='red';
@@ -771,14 +772,14 @@ $("#next1").click(function(){
              $('#professional').attr('style','border-bottom:1px solid #f00');
         }
         else{
-            p3=1;
+            p4=1;
             $('#profmsg').hide();
             $('#professional').attr('style','border-bottom: 1px solid #ccc');
         }
 
 
         if(address==""){
-            p4=0;
+            p5=0;
              $('#addressmsg').show();
              var message=document.getElementById('addressmsg');
              message.style.color='red';
@@ -786,13 +787,13 @@ $("#next1").click(function(){
              $('#address').attr('style','border-bottom:1px solid #f00');
         }
         else{
-            p4=1;
+            p5=1;
             $('#addressmsg').hide();
             $('#address').attr('style','border-bottom: 1px solid #ccc');
         }
 
         if(email==""){
-            p5=0;
+            p6=0;
              $('#emailmsg').show();
              var message=document.getElementById('emailmsg');
              message.style.color='red';
@@ -800,27 +801,33 @@ $("#next1").click(function(){
              $('#email').attr('style','border-bottom:1px solid #f00');
         }
         else{
-            p5=1;
+            p6=1;
             $('#emailmsg').hide();
             $('#email').attr('style','border-bottom: 1px solid #ccc');
         }
 
-        if(phone==""){
-            p6=0;
-             $('#phonemsg').show();
-             var message=document.getElementById('phonemsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#phone_number').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p6=1;
-            $('#phonemsg').hide();
-            $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
-        }
+
+    var phone_digits=$('#phone_number').val().length;
+
+    if(phone_digits<10) {
+        p7=0;
+        $('#phonemsg').show();
+        var message = document.getElementById('phonemsg');
+        message.style.color = 'red';
+        message.innerHTML = "Digits cannot be less than 10";
+        $('#phone_number').attr('style', 'border-bottom:1px solid #f00');
+
+    }else{
+        p7=1;
+        $('#phonemsg').hide();
+        $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+
 
         if(purpose==""){
-            p7=0;
+            p8=0;
              $('#purposemsg').show();
              var message=document.getElementById('purposemsg');
              message.style.color='red';
@@ -828,13 +835,13 @@ $("#next1").click(function(){
              $('#purpose').attr('style','border-bottom:1px solid #f00');
         }
         else{
-            p7=1;
+            p8=1;
             $('#purposemsg').hide();
             $('#purpose').attr('style','border-bottom: 1px solid #ccc');
         }
 
          if(passport_no==""){
-            p8=0;
+            p9=0;
              $('#pass_nomsg').show();
              var message=document.getElementById('pass_nomsg');
              message.style.color='red';
@@ -842,13 +849,13 @@ $("#next1").click(function(){
              $('#passport_no').attr('style','border-bottom:1px solid #f00');
         }
         else{
-            p8=1;
+            p9=1;
             $('#pass_nomsg').hide();
             $('#passport_no').attr('style','border-bottom: 1px solid #ccc');
         }
 
         if(issue_date==""){
-            p9=0;
+            p10=0;
              $('#issue_datemsg').show();
              var message=document.getElementById('issue_datemsg');
              message.style.color='red';
@@ -856,13 +863,13 @@ $("#next1").click(function(){
              $('#issue_date').attr('style','border-bottom:1px solid #f00');
         }
         else{
-            p9=1;
+            p10=1;
             $('#issue_datemsg').hide();
             $('#issue_date').attr('style','border-bottom: 1px solid #ccc');
         }
 
         if(issue_place==""){
-            p10=0;
+            p11=0;
              $('#issue_placemsg').show();
              var message=document.getElementById('issue_placemsg');
              message.style.color='red';
@@ -870,14 +877,14 @@ $("#next1").click(function(){
              $('#issue_place').attr('style','border-bottom:1px solid #f00');
         }
         else{
-            p10=1;
+            p11=1;
             $('#issue_placemsg').hide();
             $('#issue_place').attr('style','border-bottom: 1px solid #ccc');
         }
 
 
         if(nationality==""){
-            p11=0;
+            p12=0;
              $('#nationality_msg').show();
              var message=document.getElementById('nationality_msg');
              message.style.color='red';
@@ -885,12 +892,12 @@ $("#next1").click(function(){
              $('#nationality').attr('style','border-bottom:1px solid #f00');
         }
         else{
-            p11=1;
+            p12=1;
             $('#nationality_msg').hide();
             $('#nationality').attr('style','border-bottom: 1px solid #ccc');
         }
 
-        if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p9==1 && p10==1 &&p11==1){
+        if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p9==1 && p10==1 && p11==1 && p12==1){
            gonext();
         }
 });
@@ -949,15 +956,15 @@ $("#next1").click(function(){
 
             if(host_address==""){
                 p4=0;
-                 $('#addressmsg').show();
-                 var message=document.getElementById('addressmsg');
+                 $('#host_addressmsg').show();
+                 var message=document.getElementById('host_addressmsg');
                  message.style.color='red';
                  message.innerHTML="Required";
                  $('#host_address').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p4=1;
-                $('#addressmsg').hide();
+                $('#host_addressmsg').hide();
                 $('#host_address').attr('style','border-bottom: 1px solid #ccc');
             }
 
@@ -975,19 +982,25 @@ $("#next1").click(function(){
                 $('#host_email').attr('style','border-bottom: 1px solid #ccc');
             }
 
-            if(host_phone==""){
-                p6=0;
-                 $('#host_phonemsg').show();
-                 var message=document.getElementById('host_phonemsg');
-                 message.style.color='red';
-                 message.innerHTML="Required";
-                 $('#host_phone').attr('style','border-bottom:1px solid #f00');
-            }
-            else{
-                p6=1;
-                $('#host_phonemsg').hide();
-                $('#host_phone').attr('style','border-bottom: 1px solid #ccc');
-            }
+
+        var phone_digits=$('#host_phone').val().length;
+
+        if(phone_digits<10) {
+            p6=0;
+            $('#host_phonemsg').show();
+            var message = document.getElementById('host_phonemsg');
+            message.style.color = 'red';
+            message.innerHTML = "Digits cannot be less than 10";
+            $('#host_phone').attr('style', 'border-bottom:1px solid #f00');
+
+        }else{
+            p6=1;
+            $('#host_phonemsg').hide();
+            $('#host_phone').attr('style','border-bottom: 1px solid #ccc');
+        }
+
+
+
 
             if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1){
               gonext();
