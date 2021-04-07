@@ -55,6 +55,10 @@ class LoginController extends Controller
           elseif($category=='Real Estate only'){
             return redirect()->route('home4');
           }
+
+          elseif($category=='Research Flats only'){
+            return redirect()->route('home6');
+          }
           
 
           if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre')){

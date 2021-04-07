@@ -67,6 +67,8 @@
           <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
           @elseif($category=='Real Estate only')
           <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Research Flats only')
+          <li><a href="{{ route('home6') }}"><i class="fas fa-home active"></i>Home</a></li>
            @endif
           @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
           <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
@@ -123,7 +125,11 @@
   $minor_cars=carRental::where('flag','1')->where('vehicle_status','Minor Repair')->count();
   $grounded_cars=carRental::where('flag','1')->where('vehicle_status','Grounded')->count();
   $total_insurance=insurance::select('insurance_company')->groupby('insurance_company')->distinct()->get();
-  $classes=insurance::select('class')->where('status',1)->distinct()->get();
+  $classes = insurance::select('class')->where('status',1)->distinct()->get();
+  $single_rooms = DB::table('research_flats_rooms')->where('category','Single Room')->where('status','1')->count();
+  $shared_rooms = DB::table('research_flats_rooms')->where('category','Shared Room')->where('status','1')->count();
+  $suite_rooms = DB::table('research_flats_rooms')->where('category','Suite Room')->where('status','1')->count();
+  $total_rooms= $single_rooms + $shared_rooms + $suite_rooms;
   $year = date('Y');
   ?>
     <br>
@@ -170,6 +176,15 @@
       <br>Available: {{$available_spaces}}
     </div>
   </div>
+  <div class="card text-white" style="background-color: #eb2553;">
+    <div class="card-body">
+     <h5 class="card-title">Research Flats <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
+        Total Rooms: {{$total_rooms}}
+        <br>Standard Rooms: {{$single_rooms}}
+        <br>Shared Rooms: {{$shared_rooms}}
+        <br>Suite Rooms: {{$suite_rooms}}
+    </div>
+  </div>
 </div>
         <br>
         <div class="card">
@@ -209,6 +224,9 @@
   </div>
   <div class="card border-info">
      {!! $chart3->container() !!}
+  </div>
+  <div class="card border-info">
+     {!! $chart41->container() !!}
   </div>
 </div>
  </div>
@@ -569,6 +587,9 @@
   </div>
   <div class="card border-info">
      {!! $chart6->container() !!}
+  </div>
+  <div class="card border-info">
+     {!! $chart7->container() !!}
   </div>
 </div>
 </div>
@@ -1467,6 +1488,202 @@
 </table>
      </div>
    </div>
+   <br>
+
+
+                     <div class="card">
+                    <div class="card-body">
+                     <h3 class="card-title" style="font-family: sans-serif;">Outstanding Research Flats Debt(s)</h3>
+                     <hr>
+                          <a title="Send email to selected clients" href="#" id="debt_notify_all" class="btn btn-info btn-sm" data-toggle="modal" data-target="#debt_mail" role="button" aria-pressed="true" style="
+    padding: 10px;
+    color: #fff;font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 4px;
+    display: none;
+    float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
+    <div class="modal fade" id="debt_mail" role="dialog">
+              <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <b><h5 class="modal-title">New Message</h5></b>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                 <div class="modal-body">
+                  <form method="post" action="{{ route('SendMessage2') }}" enctype="multipart/form-data">
+        {{csrf_field()}}
+          <div class="form-group row">
+            <label for="debt_client_names" class="col-sm-2">To</label>
+            <div class="col-sm-9">
+            <input type="text" id="debt_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
+            <p id="debt_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
+          </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="debt_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+            <input type="text" id="debt_subject" name="subject" class="form-control" value="" required="">
+          </div>
+        </div>
+         <br>
+
+         <div class="form-group row">
+            <label for="debt_greetings" class="col-sm-2">Salutation</label>
+            <div class="col-sm-9">
+            <input type="text" id="debt_greetings" name="greetings" class="form-control" value="Dear " readonly="">
+          </div>
+        </div>
+         <br>
+
+        <div class="form-group row">
+            <label for="debt_message" class="col-sm-2">Message<span style="color: red;">*</span></label>
+            <div class="col-sm-9">
+              <textarea type="text" id="debt_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="debt_attachment" class="col-sm-2">Attachments</label>
+            <div class="col-sm-9">
+              <input type="file" id="debt_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="debt_closing" class="col-sm-2">Closing</label>
+            <div class="col-sm-9">
+            <input type="text" id="debt_closing" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+          </div>
+        </div>
+        <br>
+         <input type="text" name="type" value="space" hidden="">
+
+        <div align="right">
+  <button class="btn btn-primary" type="submit">Send</button>
+  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+</div>
+  </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+                     <table class="hover table table-striped table-bordered" id="flats_Table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col"><center>S/N</center></th>
+                                <th scope="col" >Debtor Name</th>
+                                <th scope="col">Invoice Number</th>
+                                <th scope="col" >Arrival Date</th>
+                                <th scope="col" >Departure date</th>
+                                <th scope="col">Contract Id</th>
+                                <th scope="col" style="width: 12%;">Amount</th>
+                                <th scope="col" >Invoice Date</th>
+                                <th scope="col" >Debt Age</th>
+                                <th scope="col" >Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($flats_invoices as $var)
+                                <tr>
+                                    <th scope="row" class="counterCell">.</th>
+                                    <td>{{$var->debtor_name}}</td>
+                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>{{date("d/m/Y",strtotime($var->arrival_date))}}</center></td>
+                                    <td><center>{{date("d/m/Y",strtotime($var->departure_date))}}</center></td>
+                                    <td><center>{{$var->id}}</center></td>
+                                    <td style="text-align: right;">{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
+                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+                                    <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
+                                    <td>
+                                      @if(($var->invoice_debtor=='individual' && $var->email!='') || ($var->invoice_debtor=='host' && $var->host_email!=''))
+                                          <a title="Send Email to this Client" data-toggle="modal" data-target="#spacemail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
+
+                        <div class="modal fade" id="spacemail{{$var->invoice_number}}" role="dialog">
+                                <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                  <b><h5 class="modal-title">New Message</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  </div>
+
+                                   <div class="modal-body">
+                                    <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
+                          {{csrf_field()}}
+                            <div class="form-group row">
+                              <label for="flatsclient_names{{$var->invoice_number}}" class="col-sm-2">To</label>
+                              <div class="col-sm-9">
+                              <input type="text" id="flatsclient_names{{$var->invoice_number}}" name="client_name" class="form-control" value="{{$var->debtor_name}}" readonly="">
+                            </div>
+                          </div>
+                          <br>
+                          <div class="form-group row">
+                              <label for="flatssubject{{$var->invoice_number}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+                              <div class="col-sm-9">
+                              <input type="text" id="flatssubject{{$var->invoice_number}}" name="subject" class="form-control" value="" required="">
+                            </div>
+                          </div>
+                           <br>
+                           <div class="form-group row">
+                              <label for="flatsgreetings{{$var->invoice_number}}" class="col-sm-2">Salutation</label>
+                              <div class="col-sm-9">
+                              <input type="text" id="flatsgreetings{{$var->invoice_number}}" name="greetings" class="form-control" value="Dear {{$var->debtor_name}}," readonly="">
+                            </div>
+                          </div>
+                           <br>
+
+                          <div class="form-group row">
+                              <label for="flatsmessage{{$var->invoice_number}}" class="col-sm-2">Message<span style="color: red;">*</span></label>
+                              <div class="col-sm-9">
+                                <textarea type="text" id="flatsmessage{{$var->invoice_number}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
+                            </div>
+                          </div>
+                          <br>
+
+                          <div class="form-group row">
+                              <label for="flatsattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
+                               <div class="col-sm-9">
+                                <input type="file" id="flatsattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="">
+                                <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+                            </div>
+                          </div>
+                          <br>
+
+                          <div class="form-group row">
+                              <label for="flatsclosing{{$var->invoice_number}}" class="col-sm-2">Closing</label>
+                              <div class="col-sm-9">
+                              <input type="text" id="flatsclosing{{$var->invoice_number}}" name="closing" class="form-control" value="Regards, Directorate of Planning, Development and Investment, UDSM." readonly="">
+                            </div>
+                          </div>
+                          <br>
+                          <input type="text" name="type" value="flats" hidden="">
+                          <input type="text" name="debtor" value="{{$var->invoice_debtor}}" hidden="">
+                          <input type="text" name="contract_id" value="{{$var->id}}" hidden>
+
+
+                          <div align="right">
+                    <button class="btn btn-primary" type="submit">Send</button>
+                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                  </div>
+                    </form>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+     @else
+                                      @endif
+                                    </td>
+                                  </tr>
+                            @endforeach
+                            </tbody>
+                              </table>
+                   </div>
+                  </div>
 
 
     </div>
@@ -1495,6 +1712,10 @@ function myFunction() {
   } );
 
   var table30 = $('#myTable3').DataTable( {
+    dom: '<"top"l>rt<"bottom"pi>'
+  } );
+
+  var table32 = $('#flats_Table').DataTable( {
     dom: '<"top"l>rt<"bottom"pi>'
   } );
 
@@ -1818,7 +2039,14 @@ $("#income_filter").click(function(e){
 
       {{$chart6->id}}.options.title.text = 'Space Income Generation '+query;
       {{ $chart6->id }}.data.datasets[0].data =data.space;
-      {{ $chart6->id }}.update();
+
+      {{ $chart6->id }}.update(); 
+
+      {{$chart7->id}}.options.title.text = 'Research Flats Income Generation '+query;
+      {{ $chart7->id }}.data.datasets[0].data =data.flats1;
+      {{ $chart7->id }}.data.datasets[1].data =data.flats2;
+      {{ $chart7->id }}.update(); 
+
     });
     }
     return false;
@@ -1859,7 +2087,13 @@ $("#activity_filter").click(function(e){
 
       {{$chart3->id}}.options.title.text = 'Space Activities '+query;
       {{ $chart3->id }}.data.datasets[0].data =data.space;
-      {{ $chart3->id }}.update();
+
+      {{ $chart3->id }}.update(); 
+
+      {{$chart41->id}}.options.title.text = 'Research Flats Activities '+query;
+      {{ $chart41->id }}.data.datasets[0].data =data.flats;
+      {{ $chart41->id }}.update(); 
+
     });
     }
     return false;
@@ -1873,6 +2107,8 @@ $("#activity_filter").click(function(e){
          {!! $chart2->script() !!}
          {!! $chart3->script() !!}
          {!! $chart4->script() !!}
+         {!! $chart41->script() !!}
           {!! $chart5->script() !!}
            {!! $chart6->script() !!}
+           {!! $chart7->script() !!}
 @endsection

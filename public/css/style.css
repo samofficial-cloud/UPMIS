@@ -516,6 +516,14 @@ margin-left: 43.5%;
   border-bottom-left-radius: 50px 20px;
 }
 
+.flatscontent{
+  display: none;
+  padding: 5px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom-left-radius: 50px 20px;
+}
+
 .cptucontent{
   display: none;
   padding: 5px 12px;
