@@ -418,7 +418,7 @@
                                                             <div class="form-wrapper">
                                                                 <label for="remarks">Remark(s)<span style="color: red;">*</span></label>
                                                                 <span id="remarksmsg{{$var->id}}"></span>
-                                                                <textarea required type="text" id="remarks{{$var->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                <textarea  type="text" id="remarks{{$var->id}}" name="approval_remarks" class="form-control"></textarea>
                                                             </div>
                                                         </div>
 
@@ -5798,6 +5798,39 @@ $("#electricity_filter").click(function(e){
 
 
     </script>
+
+
+
+     <script type="text/javascript">
+         function validate(ids){
+             var query = document.querySelector('input[name="approval_status"]:checked').value;
+             if(query=='Rejected'){
+                 var query2 = $('#remarks'+ids).val();
+                 if(query2==''){
+                     $('#remarksmsg'+ids).show();
+                     var message=document.getElementById('remarksmsg'+ids);
+                     message.style.color='red';
+                     message.innerHTML="Required";
+                     $('#remarks'+ids).attr('style','border:1px solid #f00');
+                     return false;
+                 }
+                 else{
+                     $('#remarksmsg'+ids).hide();
+                     $('#remarks'+ids).attr('style','border:1px solid #ccc');
+                     return true;
+                 }
+
+
+                 document.getElementById('remarks'+ids).required=true;
+             }else{
+
+                 document.getElementById('remarks'+ids).required=false;
+
+             }
+
+
+         }
+     </script>
 
 @endsection
 
