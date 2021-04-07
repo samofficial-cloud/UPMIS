@@ -194,7 +194,7 @@
         <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
         <div class="form-group" style="margin-right: 5px;">
-           
+
           <select name="activity_year" id="activity_year" class="form-control" required="">
               <option value=" " disabled selected hidden>Select Year</option>
                 @for($x=-5;$x<=0; $x++)
@@ -203,13 +203,13 @@
           </select>
           <span id="activity_msg"></span>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
       </div>
 
-     
-    </form>   
+
+    </form>
   </div>
 </div>
           <div class="card-body">
@@ -291,7 +291,7 @@
             <label for="inia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="inia_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -509,7 +509,7 @@
             <label for="attachment{{$space->contract_id}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="attachment{{$space->contract_id}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -553,7 +553,7 @@
         <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
         <div class="form-group" style="margin-right: 5px;">
-           
+
           <select name="income_year" id="income_year" class="form-control" required="">
               <option value=" " disabled selected hidden>Select Year</option>
                 @for($x=-5;$x<=0; $x++)
@@ -562,13 +562,13 @@
           </select>
           <span id="error_msg"></span>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="income_filter" class="btn btn-primary">
       </div>
 
-     
-    </form>   
+
+    </form>
   </div>
 </div>
           <div class="card-body" >
@@ -655,7 +655,7 @@
             <label for="debt_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="debt_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -688,7 +688,7 @@
                                {{--  <th scope="col" >Period</th> --}}
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" >Amount</th>
-                                {{-- <th scope="col" >GEPG Control No</th> --}}
+                                {{-- <th scope="col" >GePG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
                                 <th scope="col" >Debt Age</th>
                                 @if(Auth::user()->role=='System Administrator')
@@ -918,7 +918,7 @@
             <label for="spaceattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="spaceattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1013,7 +1013,7 @@
             <label for="aia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="aia_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1045,7 +1045,7 @@
                                {{--  <th scope="col" >Period</th> --}}
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" >Amount</th>
-                                {{-- <th scope="col" >GEPG Control No</th> --}}
+                                {{-- <th scope="col" >GePG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
                                 <th scope="col" >Debt Age</th>
                                 @if(Auth::user()->role=='System Administrator')
@@ -1215,7 +1215,7 @@
             <label for="carattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="carattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1310,7 +1310,7 @@
             <label for="udia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="udia_attachment" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1453,7 +1453,7 @@
             <label for="udiaattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="udiaattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="" accept=".xls,.xlsx, .pdf, .doc, .docx, .png, .jpeg, .jpg" >
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -2030,7 +2030,7 @@ $("#income_filter").click(function(e){
       {{ $chart4->id }}.data.datasets[0].data =data.britam;
       {{ $chart4->id }}.data.datasets[1].data =data.nic;
       {{ $chart4->id }}.data.datasets[2].data =data.icea;
-      {{ $chart4->id }}.update(); 
+      {{ $chart4->id }}.update();
 
       {{$chart5->id}}.options.title.text = 'CPTU Income Generation '+query;
       {{ $chart5->id }}.data.datasets[0].data =data.cptu;
@@ -2039,17 +2039,19 @@ $("#income_filter").click(function(e){
 
       {{$chart6->id}}.options.title.text = 'Space Income Generation '+query;
       {{ $chart6->id }}.data.datasets[0].data =data.space;
+
       {{ $chart6->id }}.update(); 
 
       {{$chart7->id}}.options.title.text = 'Research Flats Income Generation '+query;
       {{ $chart7->id }}.data.datasets[0].data =data.flats1;
       {{ $chart7->id }}.data.datasets[1].data =data.flats2;
       {{ $chart7->id }}.update(); 
+
     });
-    }  
+    }
     return false;
 
-  
+
 
 });
 
@@ -2077,7 +2079,7 @@ $("#activity_filter").click(function(e){
     .done(function(data) {
       {{$chart->id}}.options.title.text = 'UDIA Activities '+query;
       {{ $chart->id }}.data.datasets[0].data =data.udia;
-      {{ $chart->id }}.update(); 
+      {{ $chart->id }}.update();
 
       {{$chart2->id}}.options.title.text = 'CPTU Activities '+query;
       {{ $chart2->id }}.data.datasets[0].data =data.cptu;
@@ -2085,13 +2087,15 @@ $("#activity_filter").click(function(e){
 
       {{$chart3->id}}.options.title.text = 'Space Activities '+query;
       {{ $chart3->id }}.data.datasets[0].data =data.space;
+
       {{ $chart3->id }}.update(); 
 
       {{$chart41->id}}.options.title.text = 'Research Flats Activities '+query;
       {{ $chart41->id }}.data.datasets[0].data =data.flats;
       {{ $chart41->id }}.update(); 
+
     });
-    }  
+    }
     return false;
 
 });

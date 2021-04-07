@@ -172,6 +172,13 @@
                     @endif
 
 
+
+                        @if ($category=='Research Flats only' OR $category=='All')
+                            <button class="tablinks research_identity" onclick="openInvoices(event, 'research_payments')"><strong>Research Flats</strong></button>
+                        @else
+                        @endif
+
+
                     @if($category=='Insurance only' OR $category=='All')
                         <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
                     @else
@@ -194,314 +201,1499 @@
                         <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
                     </div>
 
-                <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; " class="tabcontent_inner">
+
+                    @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='Director DPDI')
+
+                <div id="space_payments_inner" style=" " class="tabcontent_inner">
+
+
                     <br>
+                    <div class="tab" style="">
 
-                    <h3 style="text-align: center"><strong>Space payments</strong></h3>
+                        <button class="tablinks_deep_inner " onclick="openDeepInner(event, 'space_payment_inbox')" id="defaultOpenDeepInner"><strong>Inbox</strong></button>
+                        <button class="tablinks_deep_inner " onclick="openDeepInner(event, 'space_payment_outbox')"><strong>Outbox</strong></button>
+                        <button class="tablinks_deep_inner " onclick="openDeepInner(event, 'space_complete_payments')"><strong>Payments</strong></button>
+                    </div>
 
-                    <hr>
 
-                    @if($privileges=='Read only')
+@if(Auth::user()->role=='Director DPDI')
+<div id="space_payment_inbox" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_deep_inner">
+
+    <?php
+    $i=1;
+    ?>
+
+    @if($space_inbox!='')
+
+
+        <div  id="">
+
+            <table class="table">
+                <thead >
+                <tr>
+                    <th scope="col" style=""><center>S/N</center></th>
+
+
+                    <th scope="col" style=""><center>Invoice number</center></th>
+                    <th scope="col" style=""><center>Amount Paid</center></th>
+                    <th scope="col"  style=""><center>Amount Not Paid</center></th>
+                    <th scope="col"  style=""><center>Date of payment</center></th>
+
+                    <th scope="col"  style=""><center>Receipt Number</center></th>
+                    <th scope="col"  style=""><center>Proposed Discount</center></th>
+                    <th scope="col"  style=""><center>Action</center></th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($space_inbox as $var)
+                    <tr>
+
+                        <td><center>{{$i}}</center></td>
+
+                        <td><center>{{$var->invoice_number_votebook}} </center></td>
+                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
+                        <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                        <td><center>{{$var->receipt_number}}</center></td>
+                        <td><center>{{number_format($var->temporary_over_payment)}} {{$var->currency_payments}}</center></td>
+
+                        <td><center>
+
+
+
+
+
+
+
+
+
+
+
+                                    <a title="View invoice" style="cursor: pointer; color:#3490dc !important; display: inline-block;"  class="" data-toggle="modal" data-target="#invoice_space_inbox{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                    <div class="modal fade" id="invoice_space_inbox{{$var->id}}" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <table class="table table-bordered table-striped" style="width: 100%">
+
+                                                        <tr>
+                                                            <td>Client:</td>
+                                                            <td>{{$var->debtor_name}}</td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td>Invoice Number:</td>
+                                                            <td>{{$var->invoice_number_votebook}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Inc Code:</td>
+                                                            <td>{{$var->inc_code}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td> Start Date:</td>
+                                                            <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td> End Date:</td>
+                                                            <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td> Period:</td>
+                                                            <td> {{$var->period}}</td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td> Project ID:</td>
+                                                            <td> {{$var->project_id}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td> Amount:</td>
+                                                            <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td>GePG Control Number:</td>
+                                                            <td>{{$var->gepg_control_no}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Payment Status:</td>
+                                                            <td>{{$var->payment_status}}</td>
+                                                        </tr>
+
+
+                                                        <tr>
+                                                            <td>Invoice Date:</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                        </tr>
+
+
+
+                                                        <tr>
+                                                            <td>Comments:</td>
+                                                            <td>{{$var->user_comments}}</td>
+                                                        </tr>
+
+
+
+
+
+
+                                                    </table>
+                                                    <br>
+                                                    <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <a title="Approve request" style="cursor: pointer; color:#3490dc !important; display: inline-block;" data-toggle="modal" data-target="#approve{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><center><i class="fas fa-reply"></i>
+                                        </center></a>
+                                    <div class="modal fade" id="approve{{$var->id}}" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">CONFIRMATION</h5></b>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <form method='post' action="{{ route('approve_discount_request',$var->id) }}">
+                                                        {{csrf_field()}}
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="form-wrapper col-12">
+                                                                    <label for="approval_status">Do you approve the discount of {{number_format($var->temporary_over_payment)}} {{$var->currency_payments}}?</label>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group col-12">
+                                                                <div class="form-wrapper">
+                                                                    <label for=""><strong>Reason given</strong><span style="color: red;"> *</span></label>
+                                                                    <textarea style="width: 100%;" readonly value="" name="reason">{{$var->reason}}</textarea>
+
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+
+                                                            <div class="row">
+                                                                <div class="form-wrapper col-6">
+                                                                    <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$var->id}}" value="Accepted" checked="">
+                                                                    <label for="Approve{{$var->id}}" class="form-check-label">Approve</label>
+                                                                </div>
+
+                                                                <div class="form-wrapper col-6">
+                                                                    <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$var->id}}" value="Rejected">
+                                                                    <label for="Reject{{$var->id}}" class="form-check-label">Decline</label>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group" id="remarksDiv{{$var->id}}" style="display: none;">
+                                                            <div class="form-wrapper">
+                                                                <label for="remarks">Remark(s)<span style="color: red;">*</span></label>
+                                                                <span id="remarksmsg{{$var->id}}"></span>
+                                                                <textarea required type="text" id="remarks{{$var->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <input type="text" name="id" value="{{$var->id}}" hidden="">
+
+                                                        <div align="right">
+                                                            <button class="btn btn-primary" type="submit" id="{{$var->id}}" onclick=" return validate(this.id)">Proceed</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+
+                                                    </form>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                            </center></td>
+
+
+
+                    </tr>
+                    <?php
+                    $i=$i+1;
+                    ?>
+                @endforeach
+
+
+
+
+
+                </tbody>
+            </table>
+        </div>
+
+    @else
+        <p class="mt-4" style="text-align:center;">No records found</p>
+    @endif
+
+
+
+</div>
+                    @elseif(Auth::user()->role=='DPDI Planner')
+
+
+                        <div id="space_payment_inbox" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_deep_inner">
+
+                            <?php
+                            $i=1;
+                            ?>
+
+                            @if($space_inbox!='')
+
+
+                                <div  id="">
+
+                                    <table class="table">
+                                        <thead >
+                                        <tr>
+                                            <th scope="col" style=""><center>S/N</center></th>
+
+
+                                            <th scope="col" style=""><center>Invoice number</center></th>
+                                            <th scope="col" style=""><center>Amount Paid</center></th>
+                                            <th scope="col"  style=""><center>Amount Not Paid</center></th>
+                                            <th scope="col"  style=""><center>Date of payment</center></th>
+
+                                            <th scope="col"  style=""><center>Receipt Number</center></th>
+                                            <th scope="col"  style=""><center>Declined Discount</center></th>
+                                            <th scope="col"  style=""><center>Action</center></th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach($space_inbox as $var)
+                                            <tr>
+
+                                                <td><center>{{$i}}</center></td>
+
+                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
+                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
+                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                                <td><center>{{$var->receipt_number}}</center></td>
+                                                <td><center>{{number_format($var->temporary_over_payment)}} {{$var->currency_payments}}</center></td>
+
+                                                <td><center>
+
+
+
+
+
+
+                                                            <a data-toggle="modal"  style=" padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#resubmit_payment_space{{$var->id}}" title="Edit" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                                                            <div class="modal fade" id="resubmit_payment_space{{$var->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Editing discount request</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+
+                                                                            <form method="post" action="{{ route('edit_discount_space',$var->id)}}"  id="form1" >
+                                                                                {{csrf_field()}}
+
+                                                                                <div class="form-row">
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="form-wrapper">
+                                                                                            <label for="remarks" style="color: red;">Request to add a discount of {{number_format($var->temporary_over_payment)}} {{$var->currency_payments}} has been declined due to the following reason(s):</label>
+                                                                                            <textarea type="text" id="remarks{{$var->id}}" name="reason" class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <br>
+
+                                                                                    <div class="form-group col-6">
+                                                                                        <div class="form-wrapper">
+                                                                                            <label for="">Amount <span style="color: red;">*</span></label>
+                                                                                            <input type="number" min="20" class="form-control" id="temporary_over_payment" name="temporary_over_payment" value="{{$var->temporary_over_payment}}" Required autocomplete="off">
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <br>
+
+
+                                                                                    <div class="form-group col-6">
+
+                                                                                        <div  class="form-wrapper">
+                                                                                            <label>Currency <span style="color: red;">*</span></label>
+                                                                                            <input type="text"  class="form-control" id="currency_space_payments" name="currency_payments_discount" readonly value="{{$var->currency_payments}}"   autocomplete="off">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <br>
+
+
+                                                                                    <div class="form-group col-12">
+                                                                                        <div class="form-wrapper">
+                                                                                            <label for=""><strong>Reason</strong><span style="color: red;"> *</span></label>
+                                                                                            <textarea style="width: 100%;" required value="" name="reason_for_discount">{{$var->reason}}</textarea>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <br>
+
+
+
+
+                                                                                </div>
+
+
+                                                                                <div align="right">
+                                                                                    <button id="submit_space" class="btn btn-primary" type="submit">Forward</button>
+                                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                </div>
+                                                                            </form>
+
+
+
+
+
+
+
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <a data-toggle="modal" title="Cancel request" data-target="#delete{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                            <div class="modal fade" id="delete{{$var->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Are you sure you want to cancel this request?</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <form method="post" action="{{ route('cancel_discount_addition_request',$var->id)}}" >
+                                                                                {{csrf_field()}}
+
+
+
+                                                                                <div align="right">
+                                                                                    <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                                </div>
+
+
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+
+
+
+
+
+                                                    </center></td>
+
+
+
+                                            </tr>
+                                            <?php
+                                            $i=$i+1;
+                                            ?>
+                                        @endforeach
+
+
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            @else
+                                <p class="mt-4" style="text-align:center;">No records found</p>
+                            @endif
+
+
+
+                        </div>
+
                     @else
-                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
 
+   @if(Auth::user()->role=='DPDI Planner')
+<div id="space_payment_outbox" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_deep_inner">
+
+
+    <?php
+    $i=1;
+    ?>
+
+    @if($space_outbox!='')
+
+
+        <div  id="">
+
+            <table class="table">
+                <thead >
+                <tr>
+                    <th scope="col" style=""><center>S/N</center></th>
+
+
+                    <th scope="col" style=""><center>Invoice number</center></th>
+                    <th scope="col" style=""><center>Amount Paid</center></th>
+                    <th scope="col"  style=""><center>Amount Not Paid</center></th>
+                    <th scope="col"  style=""><center>Date of payment</center></th>
+
+                    <th scope="col"  style=""><center>Receipt Number</center></th>
+                    <th scope="col"  style=""><center>Proposed Discount</center></th>
+                    <th scope="col"  style=""><center>Stage</center></th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($space_outbox as $var)
+                    <tr>
+
+                        <td><center>{{$i}}</center></td>
+
+                        <td><center>{{$var->invoice_number_votebook}} </center></td>
+                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
+                        <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                        <td><center>{{$var->receipt_number}}</center></td>
+                        <td><center>{{number_format($var->temporary_over_payment)}} {{$var->currency_payments}} </center></td>
+
+                        <td><center>Director DPDI</center></td>
+
+
+
+                    </tr>
+                    <?php
+                    $i=$i+1;
+                    ?>
+                @endforeach
 
 
 
 
 
+                </tbody>
+            </table>
+        </div>
 
-                    <div class="modal fade" id="new_payment_space" role="dialog">
+    @else
+        <p class="mt-4" style="text-align:center;">No records found</p>
+    @endif
 
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <b><h5 class="modal-title">Adding New Real Estate Payment</h5></b>
 
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+</div>
+                    @elseif(Auth::user()->role=='Director DPDI')
+
+
+                        <div id="space_payment_outbox" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_deep_inner">
+
+
+                            <?php
+                            $i=1;
+                            ?>
+
+                            @if($space_outbox!='')
+
+
+                                <div  id="">
+
+                                    <table class="table">
+                                        <thead >
+                                        <tr>
+                                            <th scope="col" style=""><center>S/N</center></th>
+
+
+                                            <th scope="col" style=""><center>Invoice number</center></th>
+                                            <th scope="col" style=""><center>Amount Paid</center></th>
+                                            <th scope="col"  style=""><center>Amount Not Paid</center></th>
+                                            <th scope="col"  style=""><center>Date of payment</center></th>
+
+                                            <th scope="col"  style=""><center>Receipt Number</center></th>
+                                            <th scope="col"  style=""><center>Declined Discount</center></th>
+                                            <th scope="col"  style=""><center>Stage</center></th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach($space_outbox as $var)
+                                            <tr>
+
+                                                <td><center>{{$i}}</center></td>
+
+                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
+                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+
+                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                                <td><center>{{$var->receipt_number}}</center></td>
+                                                <td><center>{{number_format($var->temporary_over_payment)}} {{$var->currency_payments}}</center></td>
+
+                                                <td><center>DPDI Planner</center></td>
+
+
+
+                                            </tr>
+                                            <?php
+                                            $i=$i+1;
+                                            ?>
+                                        @endforeach
+
+
+
+
+
+                                        </tbody>
+                                    </table>
                                 </div>
 
-                                <div class="modal-body">
-
-                                    <form method="post" action="{{ route('create_space_payment_manually')}}"  id="form1" >
-                                        {{csrf_field()}}
-
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="invoice_number_space" name="invoice_number" value="" Required autocomplete="off">
-                                                    <p id="invoice_availability"></p>
-                                                </div>
-                                            </div>
-                                            <br>
+                            @else
+                                <p class="mt-4" style="text-align:center;">No records found</p>
+                            @endif
 
 
-
-
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""> Amount paid <span style="color: red;">*</span></label>
-                                                    <input type="number" min="0" class="form-control" id="amount_paid_space" name="amount_paid" value="" Required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-                                            <div class="form-group col-md-12">
-                                                <label>Currency <span style="color: red;">*</span></label>
-                                                <div  class="form-wrapper">
-{{--                                                    <select id="currency_space" class="form-control" required name="currency_payments">--}}
-{{--                                                        <option value="" ></option>--}}
-{{--                                                        <option value="TZS" >TZS</option>--}}
-{{--                                                        <option value="USD" >USD</option>--}}
-{{--                                                    </select>--}}
-                                                    <input type="text"  class="form-control" id="currency_space" name="currency_payments" readonly value="" Required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Receipt Number <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="receipt_space" name="receipt_number" value="" required  autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <br>
-
-
-
-
-
-
-
-
-                                        </div>
-
-
-                                        <div align="right">
-                                            <button id="submit_space" class="btn btn-primary" type="submit">Save</button>
-                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </form>
-
-
-
-
-
-
-
-
-
-                                </div>
-                            </div>
                         </div>
 
 
-                    </div>
+       @else
+       @endif
 
 
 
-                    <?php
-                    $i=1;
-                    ?>
+<div id="space_complete_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_deep_inner">
+    <br>
 
-                    @if(count($space_payments)>0)
-                        <br><br>
-                        <div class="col-sm-12">
-    <div class="pull-right">
-        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+    <h3 style="text-align: center"><strong>Space payments</strong></h3>
 
-        <div class="form-group row" style="margin-right: 5px;">
-          <div style="padding: 0px 7px;">
-              From
-            </div>
-            <div >
-              <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
-               <span id="start_msg"></span>
-            </div>
+    <hr>
 
-           <div style="padding: 0px 7px;">
-              To
-            </div>
+    @if(Auth::user()->role=='Accountant-DPDI')
+        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
+    @else
+    @endif
 
-            <div >
-           <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
-            <span id="end_msg"></span>
+
+
+
+
+
+
+    <div class="modal fade" id="new_payment_space" role="dialog">
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b><h5 class="modal-title">Adding New Real Estate Payment</h5></b>
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+
+                    <form method="post" action="{{ route('create_space_payment_manually')}}"  id="form1" >
+                        {{csrf_field()}}
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="form-wrapper">
+                                    <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                    <input type="number" min="1" class="form-control" id="invoice_number_space" name="invoice_number" value="" Required autocomplete="off">
+                                    <p id="invoice_availability"></p>
+                                </div>
+                            </div>
+                            <br>
+
+
+
+
+
+                            <div class="form-group col-md-12">
+                                <div class="form-wrapper">
+                                    <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                    <input type="number" min="0" class="form-control" id="amount_paid_space" name="amount_paid" value="" Required  autocomplete="off">
+                                </div>
+                            </div>
+                            <br>
+
+
+
+
+
+                            <div class="form-group col-md-12">
+                                <label>Currency <span style="color: red;">*</span></label>
+                                <div  class="form-wrapper">
+                                    {{--                                                    <select id="currency_space" class="form-control" required name="currency_payments">--}}
+                                    {{--                                                        <option value="" ></option>--}}
+                                    {{--                                                        <option value="TZS" >TZS</option>--}}
+                                    {{--                                                        <option value="USD" >USD</option>--}}
+                                    {{--                                                    </select>--}}
+                                    <input type="text"  class="form-control" id="currency_space" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="form-group col-md-12">
+                                <div class="form-wrapper">
+                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                </div>
+                            </div>
+                            <br>
+
+
+                            <div class="form-group col-md-12">
+                                <div class="form-wrapper">
+                                    <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="receipt_space" name="receipt_number" value="" required  autocomplete="off">
+                                </div>
+                            </div>
+                            <br>
+
+
+
+
+
+
+
+
+                        </div>
+
+
+                        <div align="right">
+                            <button id="submit_space" class="btn btn-primary" type="submit">Save</button>
+                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+
+
+
+
+
+
+
+
+
+                </div>
             </div>
         </div>
 
-      <div class="form-group"  style="margin-right: -13px;">
-          <input type="submit" name="filter" value="Filter" id="space_filter" class="btn btn-primary">
-      </div>
-    </form>
-  </div>
-</div>
-    <div id="space_content">
-                        <table class="hover table table-striped  table-bordered" id="myTable">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-
-                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-
-                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
-
-
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            @foreach($space_payments as $var)
-                                <tr>
-
-                                    <td><center>{{$i}}</center></td>
-
-                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-
-                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                    <td><center>{{$var->receipt_number}}</center></td>
-                                    <td><center>
+    </div>
 
 
 
-                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                            <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+    <?php
+    $i=1;
+    ?>
 
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title">Invoice Details</h5></b>
+    @if(count($space_payments)>0)
+        <br><br>
+        <div class="col-sm-12">
+            <div class="pull-right">
+                <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="form-group row" style="margin-right: 5px;">
+                        <div style="padding: 0px 7px;">
+                            From
+                        </div>
+                        <div >
+                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                            <span id="start_msg"></span>
+                        </div>
+
+                        <div style="padding: 0px 7px;">
+                            To
+                        </div>
+
+                        <div >
+                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                            <span id="end_msg"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group"  style="margin-right: -13px;">
+                        <input type="submit" name="filter" value="Filter" id="space_filter" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="space_content">
+            <table class="hover table table-striped  table-bordered" id="myTable">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
+
+
+                    <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
+                    <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                    <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                    <th scope="col"  style="color:#fff;"><center>Over payment</center></th>
+                    <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+
+                    <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                    <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($space_payments as $var)
+                    <tr>
+
+                        <td><center>{{$i}}</center></td>
+
+                        <td><center>{{$var->invoice_number_votebook}} </center></td>
+                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+                        <td><center>
+                                @if($var->over_payment!='')
+                                {{number_format($var->over_payment)}} {{$var->currency_payments}}
+                                @else
+                                    0 {{$var->currency_payments}}
+                                @endif
+
+                            </center></td>
+                        <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                        <td><center>{{$var->receipt_number}}</center></td>
+                        <td><center>
+
+
+
+
+
+                                <a title="View more" style="color:#3490dc !important; display: inline-block;"  class="" data-toggle="modal" data-target="#payment_details{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                <div class="modal fade" id="payment_details{{$var->id}}" role="dialog">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <b><h5 class="modal-title">Full Payment Details</h5></b>
+
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <table class="table table-striped table-bordered" style="width: 100%">
+
+
+                                                    <tr>
+                                                        <td>Invoice number:</td>
+                                                        <td>{{$var->invoice_number_votebook}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td> Amount paid:</td>
+                                                        <td> {{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td> Amount not paid:</td>
+                                                        <td> {{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                    </tr>
+
+
+
+                                                    <tr>
+                                                        <td> Date of payment:</td>
+                                                        <td> {{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td>Receipt number:</td>
+                                                        <td>{{$var->receipt_number}}</td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td> Overpayment/Discount:</td>
+                                                        <td> {{number_format($var->over_payment)}} {{$var->currency_payments}}</td>
+                                                    </tr>
+
+                                                    @if($var->over_payment!='')
+
+                                                        <tr>
+                                                            <td> Reason for discount:</td>
+                                                            <td> {{$var->permanent_reason}}</td>
+                                                        </tr>
+                                                    @else
+                                                    @endif
+
+
+                                                </table>
+                                                <br>
+                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <a title="View invoice" style="color:#3490dc !important; display: inline-block;"  class="" data-toggle="modal" data-target="#invoice{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                <div class="modal fade" id="invoice{{$var->id}}" role="dialog">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <table style="width: 100%">
+
+                                                    <tr>
+                                                        <td>Client:</td>
+                                                        <td>{{$var->debtor_name}}</td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td>Invoice Number:</td>
+                                                        <td>{{$var->invoice_number_votebook}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Inc Code:</td>
+                                                        <td>{{$var->inc_code}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td> Start Date:</td>
+                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td> End Date:</td>
+                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td> Period:</td>
+                                                        <td> {{$var->period}}</td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td> Project ID:</td>
+                                                        <td> {{$var->project_id}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td> Amount:</td>
+                                                        <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td>GePG Control Number:</td>
+                                                        <td>{{$var->gepg_control_no}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Payment Status:</td>
+                                                        <td>{{$var->payment_status}}</td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td>Invoice Date:</td>
+                                                        <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                    </tr>
+
+
+
+                                                    <tr>
+                                                        <td>Comments:</td>
+                                                        <td>{{$var->user_comments}}</td>
+                                                    </tr>
+
+
+
+
+
+
+                                                </table>
+                                                <br>
+                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                @if(Auth::user()->role=='DPDI Planner')
+                                    <a data-toggle="modal"  style="display: inline-block; color:#3490dc !important;" data-target="#add_discount_space{{$var->id}}" title="Adding discount" role="button" aria-pressed="true"><i class="fas fa-plus"></i> </a>
+                                    <div class="modal fade" id="add_discount_space{{$var->id}}" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Adding discount to the payment made for invoice number: {{$var->invoice_number_votebook}}</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" action="{{ route('add_discount_space',$var->id)}}"  id="form1" >
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+
+                                                            <div class="form-group col-6">
+                                                                <div class="form-wrapper">
+                                                                    <label for="">Amount <span style="color: red;">*</span></label>
+                                                                    <input type="number" min="20" class="form-control" id="over_payment" name="temporary_over_payment" value="" Required autocomplete="off">
+
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                            <div class="form-group col-6">
+
+                                                                <div  class="form-wrapper">
+                                                                    <label>Currency <span style="color: red;">*</span></label>
+                                                                    <input type="text"  class="form-control" id="currency_space_payments" name="currency_payments_discount" readonly value="{{$var->currency_payments}}"   autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                            <div class="form-group col-12">
+                                                                <div class="form-wrapper">
+                                                                    <label for=""><strong>Reason</strong><span style="color: red;">*</span></label>
+                                                                    <textarea style="width: 100%;" required name="reason_for_discount"></textarea>
+
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+
+
                                                         </div>
 
-                                                        <div class="modal-body">
-                                                            <table style="width: 100%">
 
-                                                                <tr>
-                                                                    <td>Client:</td>
-                                                                    <td>{{$var->debtor_name}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number_votebook}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Start Date:</td>
-                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td> End Date:</td>
-                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Period:</td>
-                                                                    <td> {{$var->period}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td> Project ID:</td>
-                                                                    <td> {{$var->project_id}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Amount:</td>
-                                                                    <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>GEPG Control Number:</td>
-                                                                    <td>{{$var->gepg_control_no}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Payment Status:</td>
-                                                                    <td>{{$var->payment_status}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Invoice Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
-                                                                </tr>
-
-
-
-                                                                <tr>
-                                                                    <td>Comments:</td>
-                                                                    <td>{{$var->user_comments}}</td>
-                                                                </tr>
+                                                        <div align="right">
+                                                            <button id="submit_space" class="btn btn-primary" type="submit">Forward</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
 
 
 
 
 
 
-                                                            </table>
-                                                            <br>
-                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                @else
+                                @endif
+
+
+                            </center></td>
+
+
+
+
+
+                    </tr>
+                    <?php
+                    $i=$i+1;
+                    ?>
+
+                @endforeach
+
+
+
+
+
+                </tbody>
+            </table>
+        </div>
+
+    @else
+        <p class="mt-4" style="text-align:center;">No records found</p>
+    @endif
+
+</div>
+
+
+                </div>
+
+                    @else
+
+                        <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; " class="tabcontent_inner">
+                            <br>
+
+                            <h3 style="text-align: center"><strong>Space payments</strong></h3>
+
+                            <hr>
+
+                            @if(Auth::user()->role=='Accountant-DPDI')
+                                <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
+                            @else
+                            @endif
+
+
+
+
+
+
+
+                            <div class="modal fade" id="new_payment_space" role="dialog">
+
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b><h5 class="modal-title">Adding New Real Estate Payment</h5></b>
+
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form method="post" action="{{ route('create_space_payment_manually')}}"  id="form1" >
+                                                {{csrf_field()}}
+
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-12">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                            <input type="number" min="1" class="form-control" id="invoice_number_space" name="invoice_number" value="" Required autocomplete="off">
+                                                            <p id="invoice_availability"></p>
                                                         </div>
                                                     </div>
+                                                    <br>
+
+
+
+
+
+                                                    <div class="form-group col-md-12">
+                                                        <div class="form-wrapper">
+                                                            <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                            <input type="number" min="0" class="form-control" id="amount_paid_space" name="amount_paid" value="" Required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <br>
+
+
+
+
+
+                                                    <div class="form-group col-md-12">
+                                                        <label>Currency <span style="color: red;">*</span></label>
+                                                        <div  class="form-wrapper">
+                                                            {{--                                                    <select id="currency_space" class="form-control" required name="currency_payments">--}}
+                                                            {{--                                                        <option value="" ></option>--}}
+                                                            {{--                                                        <option value="TZS" >TZS</option>--}}
+                                                            {{--                                                        <option value="USD" >USD</option>--}}
+                                                            {{--                                                    </select>--}}
+                                                            <input type="text"  class="form-control" id="currency_space" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <br>
+
+                                                    <div class="form-group col-md-12">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <br>
+
+
+                                                    <div class="form-group col-md-12">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" id="receipt_space" name="receipt_number" value="" required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <br>
+
+
+
+
+
+
+
+
+                                                </div>
+
+
+                                                <div align="right">
+                                                    <button id="submit_space" class="btn btn-primary" type="submit">Save</button>
+                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+
+
+
+
+
+
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+                            <?php
+                            $i=1;
+                            ?>
+
+                            @if(count($space_payments)>0)
+                                <br><br>
+                                <div class="col-sm-12">
+                                    <div class="pull-right">
+                                        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+                                            <div class="form-group row" style="margin-right: 5px;">
+                                                <div style="padding: 0px 7px;">
+                                                    From
+                                                </div>
+                                                <div >
+                                                    <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                    <span id="start_msg"></span>
+                                                </div>
+
+                                                <div style="padding: 0px 7px;">
+                                                    To
+                                                </div>
+
+                                                <div >
+                                                    <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                    <span id="end_msg"></span>
                                                 </div>
                                             </div>
 
+                                            <div class="form-group"  style="margin-right: -13px;">
+                                                <input type="submit" name="filter" value="Filter" id="space_filter" class="btn btn-primary">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="space_content">
+                                    <table class="hover table table-striped  table-bordered" id="myTable">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                        </center></td>
+                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Over payment</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach($space_payments as $var)
+                                            <tr>
+
+                                                <td><center>{{$i}}</center></td>
+
+                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
+                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+                                                <td><center>
+                                                        @if($var->over_payment!='')
+                                                            {{number_format($var->over_payment)}} {{$var->currency_payments}}
+                                                        @else
+                                                            0 {{$var->currency_payments}}
+                                                        @endif
+
+                                                    </center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                                <td><center>{{$var->receipt_number}}</center></td>
+                                                <td><center>
+
+
+
+
+                                                        <a title="View more" style="color:#3490dc !important; display: inline-block;"  class="" data-toggle="modal" data-target="#payment_details{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
+                                                        <div class="modal fade" id="payment_details{{$var->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Full Payment Details</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered" style="width: 100%">
+
+
+                                                                            <tr>
+                                                                                <td>Invoice number:</td>
+                                                                                <td>{{$var->invoice_number_votebook}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Amount paid:</td>
+                                                                                <td> {{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> Amount not paid:</td>
+                                                                                <td> {{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                                            </tr>
+
+
+
+                                                                            <tr>
+                                                                                <td> Date of payment:</td>
+                                                                                <td> {{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Receipt number:</td>
+                                                                                <td>{{$var->receipt_number}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> Overpayment/Discount:</td>
+                                                                                <td> {{number_format($var->over_payment)}} {{$var->currency_payments}}</td>
+                                                                            </tr>
+
+                                                                            @if($var->over_payment!='')
+
+                                                                                <tr>
+                                                                                    <td> Reason for discount:</td>
+                                                                                    <td>{{$var->permanent_reason}}</td>
+                                                                                </tr>
+                                                                            @else
+                                                                            @endif
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <a title="View invoice" style="color:#3490dc !important; display: inline-block;"  class="" data-toggle="modal" data-target="#invoice_space{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                                        <div class="modal fade" id="invoice_space{{$var->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$var->debtor_name}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Invoice Number:</td>
+                                                                                <td>{{$var->invoice_number_votebook}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Inc Code:</td>
+                                                                                <td>{{$var->inc_code}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> Start Date:</td>
+                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> End Date:</td>
+                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Period:</td>
+                                                                                <td> {{$var->period}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> Project ID:</td>
+                                                                                <td> {{$var->project_id}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Amount:</td>
+                                                                                <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>GePG Control Number:</td>
+                                                                                <td>{{$var->gepg_control_no}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Payment Status:</td>
+                                                                                <td>{{$var->payment_status}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Invoice Date:</td>
+                                                                                <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                            </tr>
+
+
+
+                                                                            <tr>
+                                                                                <td>Comments:</td>
+                                                                                <td>{{$var->user_comments}}</td>
+                                                                            </tr>
 
 
 
 
 
-                                </tr>
-                                <?php
-                                $i=$i+1;
-                                ?>
 
-                            @endforeach
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
 
 
 
 
-                            </tbody>
-                        </table>
-                    </div>
+                                                    </center></td>
 
-                    @else
-                        <p class="mt-4" style="text-align:center;">No records found</p>
+
+
+
+
+                                            </tr>
+                                            <?php
+                                            $i=$i+1;
+                                            ?>
+
+                                        @endforeach
+
+
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            @else
+                                <p class="mt-4" style="text-align:center;">No records found</p>
+                            @endif
+                        </div>
+
                     @endif
-                </div>
+
+
+
+
+
+
+
 
                 <div id="water_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; ">
                     <br>
@@ -509,9 +1701,9 @@
 
                     <hr>
 
-                    @if($privileges=='Read only')
-                    @else
+                    @if(Auth::user()->role=='Accountant-DPDI')
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @else
                     @endif
 
 
@@ -683,8 +1875,8 @@
 
 
 
-                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                            <div class="modal fade" id="invoice_water{{$var->invoice_number}}" role="dialog">
+                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_water{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                            <div class="modal fade" id="invoice_water{{$var->id}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -706,6 +1898,11 @@
                                                                 <tr>
                                                                     <td>Invoice Number:</td>
                                                                     <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Inc Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -756,7 +1953,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 
@@ -827,9 +2024,9 @@
 
                     <hr>
 
-                    @if($privileges=='Read only')
-                    @else
+                    @if(Auth::user()->role=='Accountant-DPDI')
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_electricity" title="Record new electricity bill payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @else
                     @endif
 
 
@@ -1005,8 +2202,8 @@
 
 
 
-                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                            <div class="modal fade" id="invoice_electricity{{$var->invoice_number}}" role="dialog">
+                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_electricity{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                            <div class="modal fade" id="invoice_electricity{{$var->id}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -1028,6 +2225,11 @@
                                                                 <tr>
                                                                     <td>Invoice Number:</td>
                                                                     <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Inc Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -1079,7 +2281,7 @@
 
 
                                                                 <tr>
-                                                                    <td>GEPG Control Number:</td>
+                                                                    <td>GePG Control Number:</td>
                                                                     <td>{{$var->gepg_control_no}}</td>
                                                                 </tr>
 
@@ -1154,9 +2356,9 @@
                     <h3 style="text-align: center"><strong>Car rental payments</strong></h3>
                     <hr>
 
-                    @if($privileges=='Read only')
-                    @else
+                    @if(Auth::user()->role=='Accountant-DPDI')
                         <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_car" title="Record new car rental payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @else
                     @endif
 
                     <div class="modal fade" id="new_payment_car" role="dialog">
@@ -1329,8 +2531,8 @@
 
 
 
-                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                            <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
+                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_car{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                            <div class="modal fade" id="invoice_car{{$var->id}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -1352,6 +2554,11 @@
                                                                 <tr>
                                                                     <td>Invoice Number:</td>
                                                                     <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Inc Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
                                                                 </tr>
 
                                                                 <tr>
@@ -1382,10 +2589,23 @@
                                                                 </tr>
 
 
-                                                                <tr>
-                                                                    <td>GEPG Control Number:</td>
-                                                                    <td>{{$var->gepg_control_no}}</td>
-                                                                </tr>
+                                                                @if($var->gepg_control_no!='')
+                                                                    <tr>
+                                                                        <td>GePG Control Number:</td>
+                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                    </tr>
+                                                                @else
+                                                                @endif
+
+
+
+                                                                @if($var->account_no!='')
+                                                                    <tr>
+                                                                        <td>Account Number:</td>
+                                                                        <td>{{$var->account_no}}</td>
+                                                                    </tr>
+                                                                @else
+                                                                @endif
 
                                                                 <tr>
                                                                     <td>Payment Status:</td>
@@ -1449,104 +2669,107 @@
                 </div>
 
 
-                <div id="insurance_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "   class="tabcontent">
-                    <br>
-
-                    <h3 style="text-align: center"><strong>Insurance payments</strong></h3>
-                    <hr>
 
 
-                    @if($privileges=='Read only')
-                    @else
-                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true">Add New Payment</a>
-                    @endif
+                    <div id="research_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "  class="tabcontent">
+                        <br>
 
 
-                    <div class="modal fade" id="new_payment_insurance" role="dialog">
+                        <h3 style="text-align: center"><strong>Research Flats payments</strong></h3>
+                        <hr>
 
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <b><h5 class="modal-title">Adding New Insurance Payment</h5></b>
+                        @if(Auth::user()->role=='Accountant-DPDI')
+                            <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_research" title="Record new Research Flats payment" role="button" aria-pressed="true">Add New Payment</a>
+                        @else
+                        @endif
 
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
+                        <div class="modal fade" id="new_payment_research" role="dialog">
 
-                                <div class="modal-body">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">Adding New Research Flats Payment</h5></b>
 
-                                    <form method="post" action="{{ route('create_insurance_payment_manually')}}"  id="form1" >
-                                        {{csrf_field()}}
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
 
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                    <input type="number" min="1" class="form-control" id="invoice_number_insurance" name="invoice_number" value="" Required autocomplete="off">
-                                                    <p id="invoice_availability_insurance" ></p>
+                                    <div class="modal-body">
+
+                                        <form method="post" action="{{ route('create_research_payment_manually')}}"  id="form1" >
+                                            {{csrf_field()}}
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Invoice Number <span style="color: red;">*</span></label>
+                                                        <input type="number" min="1" class="form-control" id="invoice_number_research" name="invoice_number" value="" Required autocomplete="off">
+                                                        <p id="invoice_availability_research" ></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br>
+                                                <br>
 
 
 
 
 
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""> Amount paid <span style="color: red;">*</span></label>
-                                                    <input type="number" min="0" class="form-control" id="amount_paid_insurance" name="amount_paid" value="" Required  autocomplete="off">
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                        <input type="number" min="0" class="form-control" id="amount_paid_research" name="amount_paid" value="" Required  autocomplete="off">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br>
+                                                <br>
 
 
 
 
 
-                                            <div class="form-group col-md-12">
-                                                <label>Currency <span style="color: red;">*</span></label>
-                                                <div  class="form-wrapper">
-{{--                                                    <select id="currency_insurance" class="form-control" required name="currency_payments">--}}
-{{--                                                        <option value="" ></option>--}}
-{{--                                                        <option value="TZS" >TZS</option>--}}
-{{--                                                        <option value="USD" >USD</option>--}}
-{{--                                                    </select>--}}
-                                                    <input type="text"  class="form-control" id="currency_insurance" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                                <div class="form-group col-md-12">
+                                                    <label>Currency <span style="color: red;">*</span></label>
+                                                    <div  class="form-wrapper">
+                                                        {{--                                                    <select id="currency_research" class="form-control" required name="currency_payments">--}}
+                                                        {{--                                                        <option value="" ></option>--}}
+                                                        {{--                                                        <option value="TZS" >TZS</option>--}}
+                                                        {{--                                                        <option value="USD" >USD</option>--}}
+                                                        {{--                                                    </select>--}}
+
+                                                        <input type="text"  class="form-control" id="currency_research" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br>
+                                                <br>
 
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                        <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br>
+                                                <br>
 
-                                            <div class="form-group col-md-12">
-                                                <div class="form-wrapper">
-                                                    <label for=""  >Receipt Number <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="receipt_insurance" name="receipt_number" value="" required  autocomplete="off">
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-wrapper">
+                                                        <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                        <input type="text" class="form-control" id="receipt_research" name="receipt_number" value="" required  autocomplete="off">
+                                                    </div>
                                                 </div>
+                                                <br>
+
+
+
+
+
+
+
+
                                             </div>
-                                            <br>
 
 
-
-
-
-
-
-
-                                        </div>
-
-
-                                        <div align="right">
-                                            <button id="submit_insurance" class="btn btn-primary" type="submit">Save</button>
-                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </form>
+                                            <div align="right">
+                                                <button id="submit_research" class="btn btn-primary" type="submit">Save</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
 
 
 
@@ -1556,197 +2779,841 @@
 
 
 
+                                    </div>
                                 </div>
                             </div>
+
+
                         </div>
 
 
-                    </div>
+                        <?php
+                        $i=1;
+                        ?>
 
-                    <?php
-                    $i=1;
-                    ?>
+                        @if(count($research_payments)>0)
+                            <br><br>
+                            <div class="col-sm-12">
+                                <div class="pull-right">
+                                    <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
-                    @if(count($insurance_payments)>0)
-    <br><br>
-    <div class="col-sm-12">
-        <div class="pull-right">
-        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+                                        <div class="form-group row" style="margin-right: 5px;">
+                                            <div style="padding: 0px 7px;">
+                                                From
+                                            </div>
+                                            <div >
+                                                <input type="date" id="start_date2" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                <span id="start_msg2"></span>
+                                            </div>
 
-        <div class="form-group row" style="margin-right: 5px;">
-          <div style="padding: 0px 7px;">
-              From
-            </div>
-            <div >
-              <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
-               <span id="start_msg3"></span>
-            </div>
+                                            <div style="padding: 0px 7px;">
+                                                To
+                                            </div>
 
-           <div style="padding: 0px 7px;">
-              To
-            </div>
+                                            <div>
+                                                <input type="date" id="end_date2" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                <span id="end_msg2"></span>
+                                            </div>
+                                        </div>
 
-            <div >
-           <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
-            <span id="end_msg3"></span>
-            </div>
-        </div>
-
-      <div class="form-group"  style="margin-right: -13px;">
-          <input type="submit" name="filter" value="Filter" id="insurance_filter" class="btn btn-primary">
-      </div>
-    </form>
-  </div>
-</div>
-
-    <div id="insurance_content">
-                        <table class="hover table table-striped  table-bordered" id="myTable3">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                        <div class="form-group"  style="margin-right: -13px;">
+                                            <input type="submit" name="filter" value="Filter" id="research_filter" class="btn btn-primary">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="research_content">
+                                <table class="hover table table-striped  table-bordered" id="myTableResearch">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                        <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                        <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+                                        <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                        <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
-                            </tr>
-                            </thead>
-                            <tbody>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
 
-                            @foreach($insurance_payments as $var)
-                                <tr>
+                                    @foreach($research_payments as $var)
+                                        <tr>
 
-                                    <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                    <td><center>{{$var->receipt_number}}</center></td>
-                                    <td><center>
+                                            <td><center>{{$i}}</center></td>
+                                            <td><center>{{$var->invoice_number_votebook}} </center></td>
+                                            <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                            <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+                                            <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                            <td><center>{{$var->receipt_number}}</center></td>
+                                            <td><center>
 
 
 
-                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-eye" aria-hidden="true"></i></center></a>
-                                            <div class="modal fade" id="invoice_insurance{{$var->invoice_number}}" role="dialog">
+                                                    <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_research{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                                    <div class="modal fade" id="invoice_research{{$var->id}}" role="dialog">
 
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title">Invoice Details</h5></b>
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <b><h5 class="modal-title">Invoice Details</h5></b>
 
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
 
-                                                        <div class="modal-body">
-                                                            <table style="width: 100%">
+                                                                <div class="modal-body">
+                                                                    <table style="width: 100%">
 
-                                                                <tr>
-                                                                    <td>Client:</td>
-                                                                    <td>{{$var->debtor_name}}</td>
-                                                                </tr>
-
-
-                                                                <tr>
-                                                                    <td>Invoice Number:</td>
-                                                                    <td>{{$var->invoice_number_votebook}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Start Date:</td>
-                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
-                                                                </tr>
+                                                                        <tr>
+                                                                            <td>Client:</td>
+                                                                            <td>{{$var->debtor_name}}</td>
+                                                                        </tr>
 
 
-                                                                <tr>
-                                                                    <td> End Date:</td>
-                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
-                                                                </tr>
+                                                                        <tr>
+                                                                            <td>Invoice Number:</td>
+                                                                            <td>{{$var->invoice_number_votebook}}</td>
+                                                                        </tr>
 
-                                                                <tr>
-                                                                    <td> Period:</td>
-                                                                    <td> {{$var->period}}</td>
-                                                                </tr>
+                                                                        <tr>
+                                                                            <td>Inc Code:</td>
+                                                                            <td>{{$var->inc_code}}</td>
+                                                                        </tr>
 
-
-                                                                <tr>
-                                                                    <td> Project ID:</td>
-                                                                    <td> {{$var->project_id}}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td> Amount:</td>
-                                                                    <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
-                                                                </tr>
+                                                                        <tr>
+                                                                            <td> Start Date:</td>
+                                                                            <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                        </tr>
 
 
-                                                                <tr>
-                                                                    <td>GEPG Control Number:</td>
-                                                                    <td>{{$var->gepg_control_no}}</td>
-                                                                </tr>
+                                                                        <tr>
+                                                                            <td> End Date:</td>
+                                                                            <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                        </tr>
 
-                                                                <tr>
-                                                                    <td>Payment Status:</td>
-                                                                    <td>{{$var->payment_status}}</td>
-                                                                </tr>
+                                                                        <tr>
+                                                                            <td> Period:</td>
+                                                                            <td> {{$var->period}}</td>
+                                                                        </tr>
 
 
-                                                                <tr>
-                                                                    <td>Invoice Date:</td>
-                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
-                                                                </tr>
+                                                                        <tr>
+                                                                            <td> Project ID:</td>
+                                                                            <td> {{$var->project_id}}</td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td> Amount:</td>
+                                                                            <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                        </tr>
 
 
 
-                                                                <tr>
-                                                                    <td>Comments:</td>
-                                                                    <td>{{$var->user_comments}}</td>
-                                                                </tr>
+                                                                            <tr>
+                                                                                <td>GePG Control Number:</td>
+                                                                                <td>{{$var->gepg_control_no}}</td>
+                                                                            </tr>
 
 
 
 
 
 
-                                                            </table>
-                                                            <br>
-                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        <tr>
+                                                                            <td>Payment Status:</td>
+                                                                            <td>{{$var->payment_status}}</td>
+                                                                        </tr>
+
+
+                                                                        <tr>
+                                                                            <td>Invoice Date:</td>
+                                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                        </tr>
+
+
+
+                                                                        <tr>
+                                                                            <td>Comments:</td>
+                                                                            <td>{{$var->user_comments}}</td>
+                                                                        </tr>
+
+
+
+
+
+
+                                                                    </table>
+                                                                    <br>
+                                                                    <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
+
+
+
+                                                </center></td>
+
+
+
+
+
+                                        </tr>
+                                        <?php
+                                        $i=$i+1;
+                                        ?>
+
+                                    @endforeach
+
+
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        @else
+                            <br><br>
+                            <p class="mt-4" style="text-align:center;">No records found</p>
+                        @endif
+
+                    </div>
+
+
+
+
+                    <div id="insurance_payments" class="tabcontent" >
+
+                        <br>
+                        <div class="tab" style="">
+
+                            <button class="tablinks_inner_insurance " onclick="openInnerPaymentsInsurance(event, 'insurance_category_clients')" id="defaultOpenInsuranceClientsCategory"><strong>Clients</strong></button>
+                            <button class="tablinks_inner_insurance " onclick="openInnerPaymentsInsurance(event, 'insurance_category_principals')"><strong>Principals</strong></button>
+
+                        </div>
+
+
+                        <div id="insurance_category_clients" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px;" class="tabcontent_inner_insurance">
+
+
+                            <br>
+                            <h3 style="text-align: center"><strong>Insurance payments(Clients)</strong></h3>
+
+                            <hr>
+
+                            @if(Auth::user()->role=='Accountant-DPDI')
+                                <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance_clients" title="Record new insurance payment" role="button" aria-pressed="true">Add New Payment</a>
+                                <div class="modal fade" id="new_payment_insurance_clients" role="dialog">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <b><h5 class="modal-title">Adding New Insurance Payment(For clients)</h5></b>
+
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                <form method="post" action="{{ route('create_insurance_clients_payment_manually')}}"  id="form1" >
+                                                    {{csrf_field()}}
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-12">
+                                                            <div class="form-wrapper">
+                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
+                                                                <input type="number" min="1" class="form-control" id="invoice_number_insurance_clients" name="invoice_number" value="" Required autocomplete="off">
+                                                                <p id="invoice_availability_insurance_clients" ></p>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-group col-md-12">
+                                                            <div class="form-wrapper">
+                                                                <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                                <input type="number" min="0" class="form-control" id="amount_paid_insurance_clients" name="amount_paid" value="" Required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-group col-md-12">
+                                                            <label>Currency <span style="color: red;">*</span></label>
+                                                            <div  class="form-wrapper">
+                                                                {{--                                                    <select id="currency_insurance" class="form-control" required name="currency_payments">--}}
+                                                                {{--                                                        <option value="" ></option>--}}
+                                                                {{--                                                        <option value="TZS" >TZS</option>--}}
+                                                                {{--                                                        <option value="USD" >USD</option>--}}
+                                                                {{--                                                    </select>--}}
+                                                                <input type="text"  class="form-control" id="currency_insurance_clients" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="receipt_insurance_clients" name="receipt_number" value="" required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+
+
+
+                                                    </div>
+
+
+                                                    <div align="right">
+                                                        <button id="submit_insurance_clients" class="btn btn-primary" type="submit">Save</button>
+                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </form>
+
+
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            @else
+                            @endif
+
+
+
+
+                            <?php
+                            $i=1;
+                            ?>
+
+                            @if(count($insurance_clients_payments)>0)
+                                <br><br>
+                                <div class="col-sm-12">
+                                    <div class="pull-right">
+                                        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+                                            <div class="form-group row" style="margin-right: 5px;">
+                                                <div style="padding: 0px 7px;">
+                                                    From
+                                                </div>
+                                                <div >
+                                                    <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                    <span id="start_msg3"></span>
+                                                </div>
+
+                                                <div style="padding: 0px 7px;">
+                                                    To
+                                                </div>
+
+                                                <div >
+                                                    <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                    <span id="end_msg3"></span>
                                                 </div>
                                             </div>
 
+                                            <div class="form-group"  style="margin-right: -13px;">
+                                                <input type="submit" name="filter" value="Filter" id="insurance_filter" class="btn btn-primary">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div id="insurance_content">
+                                    <table class="hover table table-striped  table-bordered" id="myTable3">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                        </center></td>
+                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach($insurance_clients_payments as $var)
+                                            <tr>
+
+                                                <td><center>{{$i}}</center></td>
+                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
+                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                                <td><center>{{$var->receipt_number}}</center></td>
+                                                <td><center>
+
+
+
+                                                        <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance_clients{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                                        <div class="modal fade" id="invoice_insurance_clients{{$var->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$var->debtor_name}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Invoice Number:</td>
+                                                                                <td>{{$var->invoice_number_votebook}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Inc Code:</td>
+                                                                                <td>{{$var->inc_code}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Start Date:</td>
+                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> End Date:</td>
+                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Period:</td>
+                                                                                <td> {{$var->period}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> Project ID:</td>
+                                                                                <td> {{$var->project_id}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Amount:</td>
+                                                                                <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>GePG Control Number:</td>
+                                                                                <td>{{$var->gepg_control_no}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Payment Status:</td>
+                                                                                <td>{{$var->payment_status}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Invoice Date:</td>
+                                                                                <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                            </tr>
+
+
+
+                                                                            <tr>
+                                                                                <td>Comments:</td>
+                                                                                <td>{{$var->user_comments}}</td>
+                                                                            </tr>
 
 
 
 
 
-                                </tr>
-                                <?php
-                                $i=$i+1;
-                                ?>
 
-                            @endforeach
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </center></td>
 
 
 
 
 
-                            </tbody>
-                        </table>
+                                            </tr>
+                                            <?php
+                                            $i=$i+1;
+                                            ?>
+
+                                        @endforeach
+
+
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            @else
+                                <p class="mt-4" style="text-align:center;">No records found</p>
+                            @endif
+
+
+                        </div>
+
+                        <div id="insurance_category_principals" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px;" class="tabcontent_inner_insurance">
+
+                            <br>
+                            <h3 style="text-align: center"><strong>Insurance payments(Principals)</strong></h3>
+
+                            <hr>
+
+                            @if(Auth::user()->role=='Accountant-DPDI')
+                                <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true">Add New Payment</a>
+                                <div class="modal fade" id="new_payment_insurance" role="dialog">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <b><h5 class="modal-title">Adding New Insurance Payment</h5></b>
+
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                <form method="post" action="{{ route('create_insurance_payment_manually')}}"  id="form1" >
+                                                    {{csrf_field()}}
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-12">
+                                                            <div class="form-wrapper">
+                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
+                                                                <input type="number" min="1" class="form-control" id="invoice_number_insurance" name="invoice_number" value="" Required autocomplete="off">
+                                                                <p id="invoice_availability_insurance" ></p>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-group col-md-12">
+                                                            <div class="form-wrapper">
+                                                                <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                                <input type="number" min="0" class="form-control" id="amount_paid_insurance" name="amount_paid" value="" Required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-group col-md-12">
+                                                            <label>Currency <span style="color: red;">*</span></label>
+                                                            <div  class="form-wrapper">
+                                                                {{--                                                    <select id="currency_insurance" class="form-control" required name="currency_payments">--}}
+                                                                {{--                                                        <option value="" ></option>--}}
+                                                                {{--                                                        <option value="TZS" >TZS</option>--}}
+                                                                {{--                                                        <option value="USD" >USD</option>--}}
+                                                                {{--                                                    </select>--}}
+                                                                <input type="text"  class="form-control" id="currency_insurance" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="receipt_insurance" name="receipt_number" value="" required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+
+
+
+                                                    </div>
+
+
+                                                    <div align="right">
+                                                        <button id="submit_insurance" class="btn btn-primary" type="submit">Save</button>
+                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </form>
+
+
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            @else
+                            @endif
+
+
+
+
+                            <?php
+                            $i=1;
+                            ?>
+
+                            @if(count($insurance_payments)>0)
+                                <br><br>
+                                <div class="col-sm-12">
+                                    <div class="pull-right">
+                                        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+                                            <div class="form-group row" style="margin-right: 5px;">
+                                                <div style="padding: 0px 7px;">
+                                                    From
+                                                </div>
+                                                <div >
+                                                    <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                    <span id="start_msg3"></span>
+                                                </div>
+
+                                                <div style="padding: 0px 7px;">
+                                                    To
+                                                </div>
+
+                                                <div >
+                                                    <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                    <span id="end_msg3"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group"  style="margin-right: -13px;">
+                                                <input type="submit" name="filter" value="Filter" id="insurance_filter" class="btn btn-primary">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div id="insurance_content">
+                                    <table class="hover table table-striped  table-bordered" id="myTable3">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
+
+
+                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach($insurance_payments as $var)
+                                            <tr>
+
+                                                <td><center>{{$i}}</center></td>
+                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
+                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                                <td><center>{{$var->receipt_number}}</center></td>
+                                                <td><center>
+
+
+
+                                                        <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                                        <div class="modal fade" id="invoice_insurance{{$var->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$var->debtor_name}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Invoice Number:</td>
+                                                                                <td>{{$var->invoice_number_votebook}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Inc Code:</td>
+                                                                                <td>{{$var->inc_code}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Start Date:</td>
+                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> End Date:</td>
+                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Period:</td>
+                                                                                <td> {{$var->period}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td> Project ID:</td>
+                                                                                <td> {{$var->project_id}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> Amount:</td>
+                                                                                <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>GePG Control Number:</td>
+                                                                                <td>{{$var->gepg_control_no}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Payment Status:</td>
+                                                                                <td>{{$var->payment_status}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Invoice Date:</td>
+                                                                                <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                            </tr>
+
+
+
+                                                                            <tr>
+                                                                                <td>Comments:</td>
+                                                                                <td>{{$var->user_comments}}</td>
+                                                                            </tr>
+
+
+
+
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </center></td>
+
+
+
+
+
+                                            </tr>
+                                            <?php
+                                            $i=$i+1;
+                                            ?>
+
+                                        @endforeach
+
+
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            @else
+                                <p class="mt-4" style="text-align:center;">No records found</p>
+                            @endif
+
+                        </div>
+
+
+
                     </div>
-
-                    @else
-                        <p class="mt-4" style="text-align:center;">No records found</p>
-                    @endif
-
-                </div>
 
 
 
@@ -1769,6 +3636,7 @@
                 $space_status=0;
                 $insurance_status=0;
                 $car_status=0;
+                $research_status=0;
 
                 if ($category=='Real Estate only' OR $category=='All') {
                     $space_status=1;
@@ -1784,6 +3652,16 @@
 
                 }
 
+
+                if ($category=='Research Flats only' OR $category=='All') {
+                    $research_status=1;
+                }
+                else{
+
+                }
+
+
+
                 if ($category=='Insurance only' OR $category=='All') {
                     $insurance_status=1;
                 }
@@ -1796,25 +3674,38 @@
             var space_x={!! json_encode($space_status) !!};
             var insurance_x={!! json_encode($insurance_status) !!};
             var car_x={!! json_encode($car_status) !!};
+            var research_x={!! json_encode($research_status) !!};
 
             if(space_x==1){
 
                 $(".insurance_identity").removeClass("defaultPayment");
                 $(".car_identity").removeClass("defaultPayment");
+                $('.research_identity').removeClass('defaultPayment');
                 $('.space_identity').addClass('defaultPayment');
 
 
             }else if(insurance_x==1){
                 $(".space_identity").removeClass("defaultPayment");
                 $(".car_identity").removeClass("defaultPayment");
+                $('.research_identity').removeClass('defaultPayment');
                 $('.insurance_identity').addClass('defaultPayment');
 
             }else if(car_x==1){
                 $(".space_identity").removeClass("defaultPayment");
                 $(".insurance_identity").removeClass("defaultPayment");
+                $('.research_identity').removeClass('defaultPayment');
                 $('.car_identity').addClass('defaultPayment');
 
-            }else{
+            }else if(research_x==1){
+                $(".space_identity").removeClass("defaultPayment");
+                $(".insurance_identity").removeClass("defaultPayment");
+                $('.car_identity').removeClass('defaultPayment');
+                $('.research_identity').addClass('defaultPayment');
+
+
+            }
+
+            else{
 
             }
 
@@ -1882,6 +3773,33 @@
         }
         document.getElementById("defaultOpen").click();
     </script>
+
+
+
+     <script type="text/javascript">
+         function openDeepInner(evt, evtName) {
+             // Declare all variables
+             var i, tabcontent, tablinks;
+
+             // Get all elements with class="tabcontent" and hide them
+             tabcontent = document.getElementsByClassName("tabcontent_deep_inner");
+             for (i = 0; i < tabcontent.length; i++) {
+                 tabcontent[i].style.display = "none";
+             }
+
+             // Get all elements with class="tablinks" and remove the class "active"
+             tablinks = document.getElementsByClassName("tablinks_deep_inner");
+
+             for (i = 0; i < tablinks.length; i++) {
+                 tablinks[i].className = tablinks[i].className.replace(" active", "");
+             }
+
+             // Show the current tab, and add an "active" class to the button that opened the tab
+             document.getElementById(evtName).style.display = "block";
+             evt.currentTarget.className += " active";
+         }
+         document.getElementById("defaultOpenDeepInner").click();
+     </script>
 
 
 
@@ -2188,6 +4106,108 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
 
 
+        var table = $('#myTableResearch').DataTable( {
+            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            buttons: [
+                {   extend: 'pdfHtml5',
+                    filename:'Research Flats Payments',
+                    download: 'open',
+                    text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                    className: 'excelButton',
+                    orientation: 'Potrait',
+                    title: 'UNIVERSITY OF DAR ES SALAAM',
+                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Research Flats Payments',
+                    pageSize: 'A4',
+                    //layout: 'lightHorizontalLines',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5]
+                    },
+
+
+
+                    customize: function ( doc ) {
+
+                        doc.defaultStyle.font = 'Times';
+
+                        doc['footer'] = (function (page, pages) {
+                            return {
+                                alignment: 'center',
+                                text: [{ text: page.toString() }]
+
+                            }
+                        });
+
+                        doc.content[2].table.widths=[22, 80, 100, 80, 100, 80];
+                        var rowCount = doc.content[2].table.body.length;
+                        for (i = 1; i < rowCount; i++) {
+                            doc.content[2].table.body[i][0]=i+'.';
+                            doc.content[2].table.body[i][1].alignment = 'left';
+                            doc.content[2].table.body[i][2].alignment = 'left';
+                            doc.content[2].table.body[i][3].alignment = 'left';
+                            doc.content[2].table.body[i][5].alignment = 'left';
+
+                        };
+
+                        doc.defaultStyle.alignment = 'center';
+
+                        doc.content[2].table.body[0].forEach(function (h) {
+                            h.fillColor = 'white';
+                            alignment: 'center';
+                        });
+
+                        doc.styles.title = {
+                            bold: 'true',
+                            fontSize: '12',
+                            alignment: 'center'
+                        };
+
+                        doc.styles.tableHeader.color = 'black';
+                        doc.styles.tableHeader.bold = 'false';
+                        doc.styles.tableBodyOdd.fillColor='';
+                        doc.styles.tableHeader.fontSize = 10;
+                        doc.content[2].layout ={
+                            hLineWidth: function (i, node) {
+                                return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
+                            },
+                            vLineWidth: function (i, node) {
+                                return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
+                            },
+                            hLineColor: function (i, node) {
+                                return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+                            },
+                            vLineColor: function (i, node) {
+                                return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+                            },
+                            fillColor: function (rowIndex, node, columnIndex) {
+                                return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
+                            }
+                        };
+
+
+                        doc.content.splice( 1, 0, {
+                            margin: [ 0, 0, 0, 12 ],
+                            alignment: 'center',
+                            image: 'data:image/png;base64,'+base64,
+                            fit: [40, 40]
+                        } );
+                    }
+                },
+
+                {   extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i> EXCEL',
+                    className: 'excelButton',
+                    title: 'Research Flats Payments',
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5]
+                    },
+                },
+            ]
+        } );
+
+
+
+
+
         var table = $('#myTable3').DataTable( {
             dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
             buttons: [
@@ -2487,7 +4507,54 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
 
 
+     <script type="text/javascript">
+         function openInnerPaymentsInsurance(evt, evtName) {
+             // Declare all variables
+             var i, tabcontent, tablinks;
+
+             // Get all elements with class="tabcontent" and hide them
+             tabcontent = document.getElementsByClassName("tabcontent_inner_insurance");
+             for (i = 0; i < tabcontent.length; i++) {
+                 tabcontent[i].style.display = "none";
+             }
+
+             // Get all elements with class="tablinks" and remove the class "active"
+             tablinks = document.getElementsByClassName("tablinks_inner_insurance");
+
+             for (i = 0; i < tablinks.length; i++) {
+                 tablinks[i].className = tablinks[i].className.replace(" active", "");
+             }
+
+             // Show the current tab, and add an "active" class to the button that opened the tab
+             document.getElementById(evtName).style.display = "block";
+             evt.currentTarget.className += " active";
+         }
+         document.getElementById("defaultOpenInsuranceClientsCategory").click();
+     </script>
+
+
     <script>
+
+
+
+        $(document).ready(function() {
+
+
+            $('input[name="approval_status"]').click(function (e) {
+                var id = e.target.id.replace(/\D/g, '');
+                var query = $(this).val();
+
+                if (query == 'Rejected') {
+                    $('#remarksDiv' + id).show();
+                } else {
+                    $('#remarksDiv' + id).hide();
+                }
+
+            })
+
+        });
+
+
 
         $('#invoice_number_space').on('input', function(e) {
 
@@ -2593,6 +4660,58 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
 
 
+        $('#invoice_number_insurance_clients').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('check_availability_insurance_clients') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+                            $('#invoice_number_insurance_clients').attr('style','border:1px solid #f00');
+                            $("#invoice_availability_insurance_clients").css("color","red");
+                            $("#invoice_availability_insurance_clients").html("Invoice number does not exist");
+
+
+                            $("#amount_paid_insurance_clients").prop('disabled', true);
+                            $("#not_paid_insurance_clients").prop('disabled', true);
+                            $("#currency_insurance_clients").prop('disabled', true);
+                            $("#receipt_insurance_clients").prop('disabled', true);
+                            $("#submit_insurance_clients").prop('disabled', true);
+                            $("#currency_insurance_clients").val("");
+
+                        }
+                        else{
+                            $("#invoice_availability_insurance_clients").html("");
+
+                            $('#invoice_number_insurance_clients').attr('style','border:1px solid #ced4da');
+
+
+                            $("#amount_paid_insurance_clients").prop('disabled', false);
+                            $("#not_paid_insurance_clients").prop('disabled', false);
+                            $("#currency_insurance_clients").prop('disabled', false);
+                            $("#currency_insurance_clients").val(data);
+                            $("#receipt_insurance_clients").prop('disabled', false);
+                            $("#submit_insurance_clients").prop('disabled', false);
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#invoice_number_insurance_clients').attr('style','border:1px solid #ced4da');
+            }
+        });
+
+
+
+
         $('#invoice_number_car').on('input', function(e) {
 
             e.preventDefault();
@@ -2639,6 +4758,57 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             else if(query==''){
 
                 $('#invoice_number_car').attr('style','border:1px solid #ced4da');
+            }
+        });
+
+
+
+        $('#invoice_number_research').on('input', function(e) {
+
+            e.preventDefault();
+            var query = $(this).val();
+            if(query != '')
+            {
+
+                $.ajax({
+                    url:"{{ route('check_availability_research') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+                        if(data=='0'){
+                            $('#invoice_number_research').attr('style','border:1px solid #f00');
+                            $("#invoice_availability_research").css("color","red");
+                            $("#invoice_availability_research").html("Invoice number does not exist");
+
+
+                            $("#amount_paid_research").prop('disabled', true);
+                            $("#not_paid_research").prop('disabled', true);
+                            $("#currency_research").prop('disabled', true);
+                            $("#receipt_research").prop('disabled', true);
+                            $("#submit_research").prop('disabled', true);
+                            $("#currency_research").val("");
+
+                        }
+                        else{
+                            $("#invoice_availability_research").html("");
+
+                            $('#invoice_number_research').attr('style','border:1px solid #ced4da');
+
+
+                            $("#amount_paid_research").prop('disabled', false);
+                            $("#not_paid_research").prop('disabled', false);
+                            $("#currency_research").prop('disabled', false);
+                            $("#currency_research").val(data);
+                            $("#receipt_research").prop('disabled', false);
+                            $("#submit_research").prop('disabled', false);
+
+                        }
+                    }
+                });
+            }
+            else if(query==''){
+
+                $('#invoice_number_research').attr('style','border:1px solid #ced4da');
             }
         });
 
@@ -3034,6 +5204,158 @@ $("#car_filter").click(function(e){
         });
     }
 });
+
+
+
+
+        $("#research_filter").click(function(e){
+            e.preventDefault();
+
+            var query = $('#start_date2').val();
+            var query2 =$('#end_date2').val();
+            var _token = $('input[name="_token"]').val();
+
+            if(query==''){
+                $('#start_msg2').show();
+                var message=document.getElementById('start_msg2');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#start_date2').attr('style','border:1px solid #f00');
+            }
+            else{
+                $('#start_msg2').hide();
+                $('#start_date2').attr('style','border:1px solid #ccc');
+            }
+
+            if(query2==''){
+                $('#end_msg2').show();
+                var message=document.getElementById('end_msg2');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#end_date2').attr('style','border:1px solid #f00');
+            }
+            else{
+                $('#end_msg2').hide();
+                $('#end_date2').attr('style','border:1px solid #ccc');
+            }
+
+            if(query!='' && query2!=''){
+                if(query>query2){
+                    var query3 = query;
+                    query = query2;
+                    query2 = query3;
+                }
+
+                $.ajax({
+                    url: "/payment_management/filtered?",
+                    context: document.body,
+                    data:{start:query, end:query2, _token:_token, criteria:'research'}
+                })
+                    .done(function(fragment) {
+                        $("#research_content").html(fragment);
+                        var table = $('#myTable2').DataTable( {
+                            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+                            buttons: [
+                                {   extend: 'pdfHtml5',
+                                    filename:'Research Flats Payments',
+                                    download: 'open',
+                                    text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                                    className: 'excelButton',
+                                    orientation: 'Potrait',
+                                    title: 'UNIVERSITY OF DAR ES SALAAM',
+                                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Research Flats Payments',
+                                    pageSize: 'A4',
+                                    //layout: 'lightHorizontalLines',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2, 3, 4, 5]
+                                    },
+
+
+
+                                    customize: function ( doc ) {
+
+                                        doc.defaultStyle.font = 'Times';
+
+                                        doc['footer'] = (function (page, pages) {
+                                            return {
+                                                alignment: 'center',
+                                                text: [{ text: page.toString() }]
+
+                                            }
+                                        });
+
+                                        doc.content[2].table.widths=[22, 80, 100, 80, 100, 80];
+                                        var rowCount = doc.content[2].table.body.length;
+                                        for (i = 1; i < rowCount; i++) {
+                                            doc.content[2].table.body[i][0]=i+'.';
+                                            doc.content[2].table.body[i][1].alignment = 'left';
+                                            doc.content[2].table.body[i][2].alignment = 'left';
+                                            doc.content[2].table.body[i][3].alignment = 'left';
+                                            doc.content[2].table.body[i][5].alignment = 'left';
+
+                                        };
+
+                                        doc.defaultStyle.alignment = 'center';
+
+                                        doc.content[2].table.body[0].forEach(function (h) {
+                                            h.fillColor = 'white';
+                                            alignment: 'center';
+                                        });
+
+                                        doc.styles.title = {
+                                            bold: 'true',
+                                            fontSize: '12',
+                                            alignment: 'center'
+                                        };
+
+                                        doc.styles.tableHeader.color = 'black';
+                                        doc.styles.tableHeader.bold = 'false';
+                                        doc.styles.tableBodyOdd.fillColor='';
+                                        doc.styles.tableHeader.fontSize = 10;
+                                        doc.content[2].layout ={
+                                            hLineWidth: function (i, node) {
+                                                return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
+                                            },
+                                            vLineWidth: function (i, node) {
+                                                return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
+                                            },
+                                            hLineColor: function (i, node) {
+                                                return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+                                            },
+                                            vLineColor: function (i, node) {
+                                                return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+                                            },
+                                            fillColor: function (rowIndex, node, columnIndex) {
+                                                return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
+                                            }
+                                        };
+
+
+                                        doc.content.splice( 1, 0, {
+                                            margin: [ 0, 0, 0, 12 ],
+                                            alignment: 'center',
+                                            image: 'data:image/png;base64,'+base64,
+                                            fit: [40, 40]
+                                        } );
+                                    }
+                                },
+
+                                {   extend: 'excelHtml5',
+                                    text: '<i class="fa fa-file-excel-o"></i> EXCEL',
+                                    className: 'excelButton',
+                                    title: 'Research Flats payments',
+                                    exportOptions: {
+                                        columns: [1, 2, 3, 4, 5]
+                                    },
+                                },
+                            ]
+                        } );
+                    });
+            }
+        });
+
+
+
 
 $("#insurance_filter").click(function(e){
     e.preventDefault();

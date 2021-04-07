@@ -1,0 +1,267 @@
+[2021-03-24 12:37:07Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:37:07Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 12:37:07Z INFO Listener] Runner is built for Linux (X64) - linux-x64.
+[2021-03-24 12:37:07Z INFO Listener] RuntimeInformation: Linux 5.4.0-1032-aws #33-Ubuntu SMP Wed Dec 9 17:13:04 UTC 2020.
+[2021-03-24 12:37:07Z INFO Listener] Version: 2.277.1
+[2021-03-24 12:37:07Z INFO Listener] Commit: 183a3dd9a0d4d51feddc5fe9fa6c3b5f8b08343d
+[2021-03-24 12:37:07Z INFO Listener] Culture: 
+[2021-03-24 12:37:07Z INFO Listener] UI Culture: 
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:37:07Z INFO Listener] Validating directory permissions for: '/var/www/html'
+[2021-03-24 12:37:07Z INFO CommandLineParser] Parse
+[2021-03-24 12:37:07Z INFO CommandLineParser] Parsing 1 args
+[2021-03-24 12:37:07Z INFO CommandLineParser] parsing argument
+[2021-03-24 12:37:07Z INFO CommandLineParser] HasArgs: False
+[2021-03-24 12:37:07Z INFO CommandLineParser] Adding Command: run
+[2021-03-24 12:37:07Z INFO Listener] Arguments parsed
+[2021-03-24 12:37:07Z INFO Runner] ExecuteCommand
+[2021-03-24 12:37:07Z INFO ConfigurationStore] currentAssemblyLocation: /var/www/html/bin/Runner.Listener.dll
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO ConfigurationStore] binPath: /var/www/html/bin
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:37:07Z INFO ConfigurationStore] RootFolder: /var/www/html
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:37:07Z INFO HostContext] Well known config file 'Runner': '/var/www/html/.runner'
+[2021-03-24 12:37:07Z INFO ConfigurationStore] ConfigFilePath: /var/www/html/.runner
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:37:07Z INFO HostContext] Well known config file 'Credentials': '/var/www/html/.credentials'
+[2021-03-24 12:37:07Z INFO ConfigurationStore] CredFilePath: /var/www/html/.credentials
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:37:07Z INFO HostContext] Well known config file 'MigratedCredentials': '/var/www/html/.credentials_migrated'
+[2021-03-24 12:37:07Z INFO ConfigurationStore] MigratedCredFilePath: /var/www/html/.credentials_migrated
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:37:07Z INFO HostContext] Well known config file 'Service': '/var/www/html/.service'
+[2021-03-24 12:37:07Z INFO ConfigurationStore] ServiceConfigFilePath: /var/www/html/.service
+[2021-03-24 12:37:07Z INFO CommandSettings] Flag 'help': 'False'
+[2021-03-24 12:37:07Z INFO CommandSettings] Flag 'version': 'False'
+[2021-03-24 12:37:07Z INFO CommandSettings] Flag 'commit': 'False'
+[2021-03-24 12:37:07Z INFO CommandSettings] Flag 'check': 'False'
+[2021-03-24 12:37:07Z INFO CommandSettings] Command 'configure': 'False'
+[2021-03-24 12:37:07Z INFO CommandSettings] Command 'remove': 'False'
+[2021-03-24 12:37:07Z INFO CommandSettings] Command 'warmup': 'False'
+[2021-03-24 12:37:07Z INFO ConfigurationManager] LoadSettings
+[2021-03-24 12:37:07Z INFO ConfigurationStore] IsConfigured()
+[2021-03-24 12:37:07Z INFO ConfigurationStore] IsConfigured: True
+[2021-03-24 12:37:07Z INFO ConfigurationManager] Is configured: True
+[2021-03-24 12:37:07Z INFO ConfigurationStore] Read setting file: 296 chars
+[2021-03-24 12:37:07Z INFO ConfigurationManager] Settings Loaded
+[2021-03-24 12:37:07Z INFO ConfigurationStore] IsServiceConfigured()
+[2021-03-24 12:37:07Z INFO ConfigurationStore] IsServiceConfigured: False
+[2021-03-24 12:37:07Z INFO CommandSettings] Command 'run': 'True'
+[2021-03-24 12:37:07Z INFO ConfigurationStore] IsConfigured()
+[2021-03-24 12:37:07Z INFO ConfigurationStore] IsConfigured: True
+[2021-03-24 12:37:07Z INFO ConfigurationManager] Is configured: True
+[2021-03-24 12:37:07Z INFO Runner] Could not parse the argument value '' for StartupType. Defaulting to Manual
+[2021-03-24 12:37:07Z INFO Runner] Set runner startup type - Manual
+[2021-03-24 12:37:07Z INFO CommandSettings] Flag 'once': 'False'
+[2021-03-24 12:37:07Z INFO Runner] RunAsync
+[2021-03-24 12:37:07Z INFO ConfigurationManager] LoadSettings
+[2021-03-24 12:37:07Z INFO ConfigurationStore] IsConfigured()
+[2021-03-24 12:37:07Z INFO ConfigurationStore] IsConfigured: True
+[2021-03-24 12:37:07Z INFO ConfigurationManager] Is configured: True
+[2021-03-24 12:37:07Z INFO ConfigurationManager] Settings Loaded
+[2021-03-24 12:37:07Z INFO MessageListener] {
+  "AgentId": 22,
+  "AgentName": "Final Deployment",
+  "PoolId": 1,
+  "PoolName": "Default",
+  "ServerUrl": "https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq",
+  "GitHubUrl": "https://github.com/samofficial-cloud/UPMIS",
+  "WorkFolder": "html"
+}
+[2021-03-24 12:37:07Z INFO MessageListener] Loading Credentials
+[2021-03-24 12:37:07Z INFO ConfigurationStore] HasCredentials()
+[2021-03-24 12:37:07Z INFO ConfigurationStore] stored True
+[2021-03-24 12:37:07Z INFO CredentialManager] GetCredentialProvider
+[2021-03-24 12:37:07Z INFO CredentialManager] Creating type OAuth
+[2021-03-24 12:37:07Z INFO CredentialManager] Creating credential type: OAuth
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:07Z INFO HostContext] Well known directory 'Root': '/var/www/html'
+[2021-03-24 12:37:07Z INFO HostContext] Well known config file 'RSACredentials': '/var/www/html/.credentials_rsaparams'
+[2021-03-24 12:37:07Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:37:07Z INFO MessageListener] Attempt to create session.
+[2021-03-24 12:37:07Z INFO MessageListener] Connecting to the Runner Server...
+[2021-03-24 12:37:07Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2021-03-24 12:37:07Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 12:37:07Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2021-03-24 12:37:07Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 12:37:07Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2021-03-24 12:37:07Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2021-03-24 12:37:08Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 12:37:08Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 12:37:08Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2021-03-24 12:37:08Z INFO MessageListener] VssConnection created
+[2021-03-24 12:37:08Z INFO Terminal] WRITE LINE: 
+[2021-03-24 12:37:08Z INFO Terminal] WRITE LINE: 
+[2021-03-24 12:37:08Z WARN GitHubActionsService] Authentication failed with status code 401.
+WWW-Authenticate: Bearer
+Strict-Transport-Security: max-age=2592000
+X-TFS-ProcessId: d875c717-77eb-4fac-b7e8-523d2f4f3cea
+ActivityId: b729f9c3-fda8-4d10-9f72-c79e78bff771
+X-TFS-Session: 427bb3d1-c34e-4ca9-bace-37928dbeed21
+X-VSS-E2EID: 17c281c7-5013-4345-95bb-ba70292270f4
+X-VSS-SenderDeploymentId: ac98198d-4d34-0364-420d-bafa6e51dce2
+X-TFS-ServiceError: The+user+%27System%3aPublicAccess%3baaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa%27+is+not+authorized+to+access+this+resource.
+X-VSS-S2STargetService: 0000005A-0000-8888-8000-000000000000/visualstudio.com
+X-MSEdge-Ref: Ref A: 0999BBAD97D546ABBC96D3BCD057E092 Ref B: PDX31EDGE0121 Ref C: 2021-03-24T12:37:08Z
+Date: Wed, 24 Mar 2021 12:37:07 GMT
+
+[2021-03-24 12:37:08Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:37:08Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:37:08Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2021-03-24 12:37:08Z INFO MessageListener] Session created.
+[2021-03-24 12:37:08Z INFO Terminal] WRITE LINE: 2021-03-24 12:37:08Z: Listening for Jobs
+[2021-03-24 12:37:08Z INFO JobDispatcher] Set runner/worker IPC timeout to 30 seconds.
+[2021-03-24 12:37:12Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:37:12Z INFO MessageListener] Message '1' received from session '35321e3d-2fdb-47b5-ae73-35b2464eef7f'.
+[2021-03-24 12:37:12Z INFO JobDispatcher] Job request 7 for plan 328ccbc0-f1c7-4429-a7fd-6943c86bc1d6 job 58db5990-a15b-5a14-b197-cb3269b353df received.
+[2021-03-24 12:37:12Z INFO JobDispatcher] Pull OrchestrationId 328ccbc0-f1c7-4429-a7fd-6943c86bc1d6.laravel-tests.__default from JWT claims
+[2021-03-24 12:37:12Z INFO Terminal] WRITE LINE: 2021-03-24 12:37:12Z: Running job: laravel-tests
+[2021-03-24 12:37:12Z INFO JobDispatcher] Start renew job request 7 for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:37:13Z INFO JobDispatcher] Successfully renew job request 7, job is valid till 03/24/2021 12:47:13
+[2021-03-24 12:37:13Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper] Starting process:
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   File name: '/var/www/html/bin/Runner.Worker'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   Arguments: 'spawnclient 100 103'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   Working directory: '/var/www/html/bin'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'True'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper]   High priority process: 'True'
+[2021-03-24 12:37:13Z INFO ProcessInvokerWrapper] Process started with process id 551840, waiting for process exit.
+[2021-03-24 12:37:13Z INFO JobDispatcher] Send job request message to worker for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:37:13Z INFO JobNotification] Entering JobStarted Notification
+[2021-03-24 12:37:13Z INFO JobNotification] Entering StartMonitor
+[2021-03-24 12:37:42Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:37:42Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:37:42Z INFO ProcessInvokerWrapper] Finished process 551840 with exit code 100, and elapsed time 00:00:28.8671741.
+[2021-03-24 12:37:42Z INFO JobDispatcher] Worker finished for job 58db5990-a15b-5a14-b197-cb3269b353df. Code: 100
+[2021-03-24 12:37:42Z INFO JobDispatcher] finish job request for job 58db5990-a15b-5a14-b197-cb3269b353df with result: Succeeded
+[2021-03-24 12:37:42Z INFO Terminal] WRITE LINE: 2021-03-24 12:37:42Z: Job laravel-tests completed with result: Succeeded
+[2021-03-24 12:37:42Z INFO JobDispatcher] Stop renew job request for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:37:42Z INFO JobDispatcher] job renew has been canceled, stop renew job request 7.
+[2021-03-24 12:37:42Z INFO JobNotification] Entering JobCompleted Notification
+[2021-03-24 12:37:42Z INFO JobNotification] Entering EndMonitor
+[2021-03-24 12:37:44Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:37:44Z INFO MessageListener] Message '2' received from session '35321e3d-2fdb-47b5-ae73-35b2464eef7f'.
+[2021-03-24 12:37:44Z INFO JobDispatcher] Job request 8 for plan 17737ae6-ad1f-46b4-8df6-d28c912376f3 job 58db5990-a15b-5a14-b197-cb3269b353df received.
+[2021-03-24 12:37:44Z INFO JobDispatcher] Pull OrchestrationId 17737ae6-ad1f-46b4-8df6-d28c912376f3.laravel-tests.__default from JWT claims
+[2021-03-24 12:37:44Z INFO JobDispatcher] Job request 58db5990-a15b-5a14-b197-cb3269b353df processed succeed.
+[2021-03-24 12:37:44Z INFO Terminal] WRITE LINE: 2021-03-24 12:37:44Z: Running job: laravel-tests
+[2021-03-24 12:37:44Z INFO JobDispatcher] Start renew job request 8 for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:37:44Z INFO JobDispatcher] Successfully renew job request 8, job is valid till 03/24/2021 12:47:44
+[2021-03-24 12:37:44Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper] Starting process:
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   File name: '/var/www/html/bin/Runner.Worker'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   Arguments: 'spawnclient 100 103'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   Working directory: '/var/www/html/bin'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'True'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper]   High priority process: 'True'
+[2021-03-24 12:37:44Z INFO ProcessInvokerWrapper] Process started with process id 552506, waiting for process exit.
+[2021-03-24 12:37:44Z INFO JobDispatcher] Send job request message to worker for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:37:44Z INFO JobNotification] Entering JobStarted Notification
+[2021-03-24 12:37:44Z INFO JobNotification] Entering StartMonitor
+[2021-03-24 12:37:52Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:37:52Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:37:52Z INFO ProcessInvokerWrapper] Finished process 552506 with exit code 102, and elapsed time 00:00:07.3464035.
+[2021-03-24 12:37:52Z INFO JobDispatcher] Worker finished for job 58db5990-a15b-5a14-b197-cb3269b353df. Code: 102
+[2021-03-24 12:37:52Z INFO JobDispatcher] finish job request for job 58db5990-a15b-5a14-b197-cb3269b353df with result: Failed
+[2021-03-24 12:37:52Z INFO Terminal] WRITE LINE: 2021-03-24 12:37:52Z: Job laravel-tests completed with result: Failed
+[2021-03-24 12:37:52Z INFO JobDispatcher] Stop renew job request for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:37:52Z INFO JobDispatcher] job renew has been canceled, stop renew job request 8.
+[2021-03-24 12:37:52Z INFO JobNotification] Entering JobCompleted Notification
+[2021-03-24 12:37:52Z INFO JobNotification] Entering EndMonitor
+[2021-03-24 12:45:31Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:45:31Z INFO MessageListener] Message '3' received from session '35321e3d-2fdb-47b5-ae73-35b2464eef7f'.
+[2021-03-24 12:45:31Z INFO JobDispatcher] Job request 9 for plan bf37c24d-f42a-4265-afea-f59499d89e30 job 58db5990-a15b-5a14-b197-cb3269b353df received.
+[2021-03-24 12:45:31Z INFO JobDispatcher] Pull OrchestrationId bf37c24d-f42a-4265-afea-f59499d89e30.laravel-tests.__default from JWT claims
+[2021-03-24 12:45:31Z INFO JobDispatcher] Job request 58db5990-a15b-5a14-b197-cb3269b353df processed succeed.
+[2021-03-24 12:45:31Z INFO Terminal] WRITE LINE: 2021-03-24 12:45:31Z: Running job: laravel-tests
+[2021-03-24 12:45:31Z INFO JobDispatcher] Start renew job request 9 for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:45:32Z INFO JobDispatcher] Successfully renew job request 9, job is valid till 03/24/2021 12:55:32
+[2021-03-24 12:45:32Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper] Starting process:
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   File name: '/var/www/html/bin/Runner.Worker'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   Arguments: 'spawnclient 96 102'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   Working directory: '/var/www/html/bin'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'True'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper]   High priority process: 'True'
+[2021-03-24 12:45:32Z INFO ProcessInvokerWrapper] Process started with process id 552907, waiting for process exit.
+[2021-03-24 12:45:32Z INFO JobDispatcher] Send job request message to worker for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:45:32Z INFO JobNotification] Entering JobStarted Notification
+[2021-03-24 12:45:32Z INFO JobNotification] Entering StartMonitor
+[2021-03-24 12:45:38Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:45:38Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:45:38Z INFO ProcessInvokerWrapper] Finished process 552907 with exit code 102, and elapsed time 00:00:06.7544172.
+[2021-03-24 12:45:38Z INFO JobDispatcher] Worker finished for job 58db5990-a15b-5a14-b197-cb3269b353df. Code: 102
+[2021-03-24 12:45:38Z INFO JobDispatcher] finish job request for job 58db5990-a15b-5a14-b197-cb3269b353df with result: Failed
+[2021-03-24 12:45:38Z INFO Terminal] WRITE LINE: 2021-03-24 12:45:38Z: Job laravel-tests completed with result: Failed
+[2021-03-24 12:45:38Z INFO JobDispatcher] Stop renew job request for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:45:38Z INFO JobDispatcher] job renew has been canceled, stop renew job request 9.
+[2021-03-24 12:45:38Z INFO JobNotification] Entering JobCompleted Notification
+[2021-03-24 12:45:38Z INFO JobNotification] Entering EndMonitor
+[2021-03-24 12:55:06Z INFO RSAFileKeyManager] Loading RSA key parameters from file /var/www/html/.credentials_rsaparams
+[2021-03-24 12:55:06Z INFO MessageListener] Message '4' received from session '35321e3d-2fdb-47b5-ae73-35b2464eef7f'.
+[2021-03-24 12:55:06Z INFO JobDispatcher] Job request 10 for plan 14d9a597-0687-46de-8753-33b6f793f652 job 58db5990-a15b-5a14-b197-cb3269b353df received.
+[2021-03-24 12:55:06Z INFO JobDispatcher] Pull OrchestrationId 14d9a597-0687-46de-8753-33b6f793f652.laravel-tests.__default from JWT claims
+[2021-03-24 12:55:06Z INFO JobDispatcher] Job request 58db5990-a15b-5a14-b197-cb3269b353df processed succeed.
+[2021-03-24 12:55:06Z INFO Terminal] WRITE LINE: 2021-03-24 12:55:06Z: Running job: laravel-tests
+[2021-03-24 12:55:06Z INFO JobDispatcher] Start renew job request 10 for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:55:06Z INFO JobDispatcher] Successfully renew job request 10, job is valid till 03/24/2021 13:05:06
+[2021-03-24 12:55:06Z INFO HostContext] Well known directory 'Bin': '/var/www/html/bin'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper] Starting process:
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   File name: '/var/www/html/bin/Runner.Worker'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   Arguments: 'spawnclient 96 102'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   Working directory: '/var/www/html/bin'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'True'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper]   High priority process: 'True'
+[2021-03-24 12:55:06Z INFO ProcessInvokerWrapper] Process started with process id 553351, waiting for process exit.
+[2021-03-24 12:55:06Z INFO JobDispatcher] Send job request message to worker for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:55:06Z INFO JobNotification] Entering JobStarted Notification
+[2021-03-24 12:55:06Z INFO JobNotification] Entering StartMonitor
+[2021-03-24 12:55:13Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:55:13Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2021-03-24 12:55:13Z INFO ProcessInvokerWrapper] Finished process 553351 with exit code 102, and elapsed time 00:00:06.7412079.
+[2021-03-24 12:55:13Z INFO JobDispatcher] Worker finished for job 58db5990-a15b-5a14-b197-cb3269b353df. Code: 102
+[2021-03-24 12:55:13Z INFO JobDispatcher] finish job request for job 58db5990-a15b-5a14-b197-cb3269b353df with result: Failed
+[2021-03-24 12:55:13Z INFO Terminal] WRITE LINE: 2021-03-24 12:55:13Z: Job laravel-tests completed with result: Failed
+[2021-03-24 12:55:13Z INFO JobDispatcher] Stop renew job request for job 58db5990-a15b-5a14-b197-cb3269b353df.
+[2021-03-24 12:55:13Z INFO JobDispatcher] job renew has been canceled, stop renew job request 10.
+[2021-03-24 12:55:13Z INFO JobNotification] Entering JobCompleted Notification
+[2021-03-24 12:55:13Z INFO JobNotification] Entering EndMonitor
+[2021-03-24 12:57:29Z INFO Terminal] WRITE LINE: Exiting...
+[2021-03-24 12:57:29Z INFO ConfigurationStore] IsServiceConfigured()
+[2021-03-24 12:57:29Z INFO ConfigurationStore] IsServiceConfigured: False
+[2021-03-24 12:57:29Z INFO HostContext] Runner will be shutdown for UserCancelled
+[2021-03-24 12:57:29Z WARN GitHubActionsService] GET request to https://pipelines.actions.githubusercontent.com/9e5Xl6s48QeVVooxkzz1T2rzQHypxNyQ5ArcjDqn2hqliH9nQq/_apis/distributedtask/pools/1/messages?sessionId=35321e3d-2fdb-47b5-ae73-35b2464eef7f&lastMessageId=4 has been cancelled.
+[2021-03-24 12:57:29Z INFO MessageListener] Get next message has been cancelled.
+[2021-03-24 12:57:29Z INFO JobDispatcher] Shutting down JobDispatcher. Make sure all WorkerDispatcher has finished.
+[2021-03-24 12:57:29Z INFO JobDispatcher] Ensure WorkerDispather for job 58db5990-a15b-5a14-b197-cb3269b353df run to finish, cancel any running job.
+[2021-03-24 12:57:29Z INFO JobDispatcher] Job request 58db5990-a15b-5a14-b197-cb3269b353df processed succeed.
+[2021-03-24 12:57:29Z INFO Listener] Runner execution been cancelled.

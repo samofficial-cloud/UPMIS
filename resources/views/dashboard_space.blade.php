@@ -192,7 +192,7 @@
         <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
         <div class="form-group" style="margin-right: 5px;">
-           
+
           <select name="activity_year" id="activity_year" class="form-control" required="">
               <option value=" " disabled selected hidden>Select Year</option>
                 @for($x=-5;$x<=0; $x++)
@@ -201,16 +201,16 @@
           </select>
           <span id="activity_error"></span>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
       </div>
 
-     
-    </form>   
+
+    </form>
   </div>
 </div>
-   <div class="card-body">  
+   <div class="card-body">
 
 <div class="card-columns" style="margin-top: 10px;">
   <div class="card border-primary">
@@ -227,7 +227,7 @@
     border: 0;
     border: 1px solid #505559;">
     <div id="cardData">
-    <h5 class="card-title">Client Statistics {{date('Y')}}</h5>
+    <h5 class="card-title">Clients Statistics {{date('Y')}}</h5>
       J.K. Nyerere Clients: {{$main}}
       <br>Kijitonyama Clients: {{$knyama}}
       <br>Kunduchi Clients: {{$kunduchi}}
@@ -256,7 +256,7 @@
         <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
         <div class="form-group" style="margin-right: 5px;">
-           
+
           <select name="contract_month" id="contract_month" class="form-control" required="">
               <option value=" " disabled selected hidden>Select Duration</option>
                   <option value="31">1 Month</option>
@@ -265,20 +265,20 @@
           </select>
           <span id="contract_error"></span>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="contract_filter" class="btn btn-primary">
       </div>
 
-     
-    </form>   
+
+    </form>
   </div>
 </div>
 <div id="content2">
     <div class="card-body">
      <h4 class="card-title" style="font-family: sans-serif;">Solicited Contract(s) that are about to expire (Within 30 days prior to date)</h4>
      <hr>
-     
+
       <table class="hover table table-striped table-bordered" id="myTablea">
   <thead class="thead-dark">
         <tr>
@@ -495,7 +495,7 @@
             <label for="inia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="inia_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -712,7 +712,7 @@
             <label for="attachment{{$space->contract_id}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="attachment{{$space->contract_id}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -807,7 +807,7 @@
             <label for="debt_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="debt_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1074,7 +1074,7 @@
             <label for="spaceattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
              <div class="col-sm-9">
               <input type="file" id="spaceattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1169,7 +1169,7 @@
             <label for="electric_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="electric_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1438,7 +1438,7 @@
             <label for="electric_attachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
              <div class="col-sm-9">
               <input type="file" id="electric_attachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1532,7 +1532,7 @@
             <label for="water_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="water_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1565,7 +1565,7 @@
                                {{--  <th scope="col" >Period</th> --}}
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" >Amount</th>
-                                {{-- <th scope="col" >GEPG Control No</th> --}}
+                                {{-- <th scope="col" >GePG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
                                 <th scope="col" >Debt Age</th>
                                 <th scope="col" >Action</th>
@@ -1803,7 +1803,7 @@
             <label for="waterattachment{{$var->invoice_number}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="waterattachment{{$var->invoice_number}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1911,7 +1911,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                         return {
                                             alignment: 'center',
                                             text: [{ text: page.toString() }]
-                                            
+
                                         }
                       });
 
@@ -1924,7 +1924,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                           doc.content[1].table.body[i][1].alignment = 'left';
                           doc.content[1].table.body[i][1] = form_data[i-1][1].split('"true">').pop().split('</a>')[0];
                           doc.content[1].table.body[i][2] = form_data[i-1][2].split('"true"><center>').pop().split('</center>')[0];
-                          
+
                           doc.content[1].table.body[i][2].alignment = 'center';
                         };
 
@@ -1944,7 +1944,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             doc.styles.tableHeader.color = 'black';
             doc.styles.tableHeader.bold = 'false';
             doc.styles.tableBodyOdd.fillColor='';
-            doc.styles.tableHeader.fontSize = 10;  
+            doc.styles.tableHeader.fontSize = 10;
             doc.content[1].layout ={
               hLineWidth: function (i, node) {
               return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1962,7 +1962,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
               return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
             }
             };
-                      
+
 
                         doc.content.splice( 1, 0, {
                             margin: [ 0, 0, 0, 12 ],
@@ -2245,7 +2245,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
     $("#activity_filter").click(function(e){
     e.preventDefault();
-    
+
     var query = $('#activity_year').val();
 
     if(query==null){
@@ -2256,7 +2256,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
       $('#activity_year').attr('style','border:1px solid #f00');
     }
     else{
-      
+
       $('#activity_error').hide();
       $('#activity_year').attr('style','border:1px solid #ccc');
       $.ajax({
@@ -2268,16 +2268,16 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     .done(function(data) {
       {{$chart->id}}.options.title.text = 'Lease Activities '+query;
       {{ $chart->id }}.data.datasets[0].data =data.activity;
-      {{ $chart->id }}.update(); 
+      {{ $chart->id }}.update();
 
       {{$chart1->id}}.options.title.text = 'Space Income Generation '+query;
       {{ $chart1->id }}.data.datasets[0].data =data.income;
       {{ $chart1->id }}.data.datasets[1].data =data.income2;
       {{ $chart1->id }}.update();
       var bodyData = '';
-      
+
       bodyData= "<div>"
-      bodyData+="<h5 class='card-title'>Client Statistics "
+      bodyData+="<h5 class='card-title'>Clients Statistics "
       bodyData+=query+"</h5>"
       bodyData+="J.K. Nyerere Clients: "+data.main
       bodyData+="<br>Kijitonyama Clients: "+data.knyama
@@ -2291,7 +2291,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
       $("#cardData").html(bodyData);
       //$("#clientdiv").load(location.href + " #clientdiv");
     });
-    }  
+    }
     return false;
 
 });
@@ -2332,7 +2332,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                         return {
                                             alignment: 'center',
                                             text: [{ text: page.toString() }]
-                                            
+
                                         }
                       });
 
@@ -2345,7 +2345,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                           doc.content[1].table.body[i][1].alignment = 'left';
                           doc.content[1].table.body[i][1] = form_data[i-1][1].split('"true">').pop().split('</a>')[0];
                           doc.content[1].table.body[i][2] = form_data[i-1][2].split('"true"><center>').pop().split('</center>')[0];
-                          
+
                           doc.content[1].table.body[i][2].alignment = 'center';
                         };
 
@@ -2365,7 +2365,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             doc.styles.tableHeader.color = 'black';
             doc.styles.tableHeader.bold = 'false';
             doc.styles.tableBodyOdd.fillColor='';
-            doc.styles.tableHeader.fontSize = 10;  
+            doc.styles.tableHeader.fontSize = 10;
             doc.content[1].layout ={
               hLineWidth: function (i, node) {
               return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2383,7 +2383,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
               return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
             }
             };
-                      
+
 
                         doc.content.splice( 1, 0, {
                             margin: [ 0, 0, 0, 12 ],

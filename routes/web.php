@@ -17,7 +17,6 @@ Route::post('/login/custom', [
     'as' => 'login.custom'
 ]);
 
-
     Auth::routes();
 
     Route::group(['middleware' => 'auth'], function(){
@@ -94,12 +93,20 @@ Route::post('/login/custom', [
         Route::post('/change_payment_status_car_rental/{id}', 'InvoicesController@changePayementStatusCarRental')->name('change_payment_status_car_rental');
         Route::post('/send_invoice_car_rental/{id}', 'InvoicesController@sendInvoiceCarRental')->name('send_invoice_car_rental');
 
-        Route::post('/send_invoice_car_rental/account/{id}', 'InvoicesController@sendInvoiceCarRental2')->name('send_invoice_car_rental2');
+        Route::post('/send_invoice_car_rental_account_no/{id}', 'InvoicesController@sendInvoiceCarRentalAccount')->name('send_invoice_car_rental_account_no');
 
         Route::post('/create_car_invoice_manually', 'InvoicesController@CreateCarInvoiceManually')->name('create_car_invoice_manually');
 
 
 
+//Invoices research rental
+
+        Route::post('/change_payment_status_research/{id}', 'InvoicesController@changePayementStatusResearch')->name('change_payment_status_research');
+        Route::post('/send_invoice_research/{id}', 'InvoicesController@sendInvoiceResearch')->name('send_invoice_research');
+
+
+
+        Route::post('/create_research_invoice_manually', 'InvoicesController@CreateResearchInvoiceManually')->name('create_research_invoice_manually');
 
 
 
@@ -114,6 +121,20 @@ Route::post('/login/custom', [
 
         //payments
         Route::post('/create_car_payment_manually', 'PaymentController@CreateCarPaymentManually')->name('create_car_payment_manually');
+
+
+
+
+
+
+
+        Route::get('/check_availability_research', 'PaymentController@checkAvailabilityResearch')->name('check_availability_research');
+
+
+        //payments
+        Route::post('/create_research_payment_manually', 'PaymentController@CreateResearchPaymentManually')->name('create_research_payment_manually');
+
+
 
 
         Route::get('/clients', 'clientsController@index')->name('clients');
@@ -213,7 +234,7 @@ Route::post('/contracts/car_rental/add_A/submit','carContractsController@newcont
 
 Route::post('/contracts/car_rental/add_B/submit','carContractsController@newcontractB')->name('newCarcontractB');
 
-Route::post('/contracts/car_rental/add_C/submit','carContractsController@newcontractC')->name('newCarcontractC'); 
+Route::post('/contracts/car_rental/add_C/submit','carContractsController@newcontractC')->name('newCarcontractC');
 
 Route::post('/contracts/car_rental/add_D/submit','carContractsController@newcontractD')->name('newCarcontractD');
 
@@ -372,7 +393,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/space_contracts_subclients/{client_id}', 'ContractsController@SpaceContractsSubClientsManagement')->name('space_contracts_subclients');
     Route::get('/renew_space_contract_form/{id}','ContractsController@renewSpaceContractForm')->name('renew_space_contract_form');
     Route::get('/edit_space_contract/{id}/', 'ContractsController@EditSpaceContractForm')->name('edit_contract');
-    Route::get('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
+    Route::post('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
     Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
     Route::post('/approve_space', 'SpaceController@approveSpace')->name('approve_space');
     Route::post('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
@@ -431,6 +452,15 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/check_availability_water', 'PaymentController@checkAvailabilityWater')->name('check_availability_water');
     Route::get('/check_availability_electricity', 'PaymentController@checkAvailabilityElectricity')->name('check_availability_electricity');
     Route::get('/check_availability_space', 'PaymentController@checkAvailabilitySpace')->name('check_availability_space');
+    Route::post('/add_discount_space/{id}', 'PaymentController@addDiscountSpace')->name('add_discount_space');
+    Route::post('/edit_discount_space/{id}', 'PaymentController@editDiscountSpace')->name('edit_discount_space');
+    Route::post('/cancel_discount_addition_request/{id}', 'PaymentController@cancelDiscountAdditionRequest')->name('cancel_discount_addition_request');
+    Route::post('/approve_discount_request/{id}', 'PaymentController@approveDiscountRequest')->name('approve_discount_request');
+
+//File management
+
+    Route::get('/view_pdf/{contract_id}/{type}','ContractsController@ViewPdf')->name('view_pdf');
+
 
 //Invoices Space
     Route::get('/invoice_pdf', 'InvoicesController@index');
@@ -448,11 +478,11 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     //Insurance contracts
     Route::get('/terminate_insurance_contract/{id}', 'ContractsController@terminateInsuranceContract')->name('terminate_insurance_contract');
     Route::get('/edit_insurance_contract/{id}/', 'ContractsController@EditInsuranceContractForm')->name('edit_insurance_contract');
-    Route::get('/edit_insurance_contract_final/{contract_id}', 'ContractsController@EditInsuranceContractFinalProcessing')->name('edit_insurance_contract_final');
+    Route::post('/edit_insurance_contract_final/{contract_id}', 'ContractsController@EditInsuranceContractFinalProcessing')->name('edit_insurance_contract_final');
     Route::get('/insurance_contracts_management', 'ContractsController@InsuranceContractsManagement');
     Route::get('/insurance_contract_form', 'ContractsController@InsuranceContractForm');
     Route::get('/insurance_contract_pdf', 'ContractsController@testing');
-    Route::get('/create_insurance_contract', 'ContractsController@CreateInsuranceContract')->name('create_insurance_contract');
+    Route::post('/create_insurance_contract', 'ContractsController@CreateInsuranceContract')->name('create_insurance_contract');
     Route::get('/renew_insurance_contract_form/{id}/', 'ContractsController@RenewInsuranceContractForm')->name('renew_insurance_contract_form');
     Route::get('/insurance_contract_on_fly/{id}/', 'ContractsController@OnFlyInsuranceContractForm')->name('insurance_contract_on_fly');
     Route::get('/autofill_insurance_parameters/', 'ContractsController@autofillParameters')->name('autofill_insurance_parameters');
@@ -473,7 +503,9 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::get('/vehicle_registration_no_suggestions', 'InsuranceController@vehicleRegistrationNumberSuggestions')->name('vehicle_registration_no_suggestions');
     //payments
     Route::post('/create_insurance_payment_manually', 'PaymentController@CreateInsurancePaymentManually')->name('create_insurance_payment_manually');
+    Route::post('/create_insurance_clients_payment_manually', 'PaymentController@CreateInsuranceClientsPaymentManually')->name('create_insurance_clients_payment_manually');
     Route::get('/check_availability_insurance', 'PaymentController@checkAvailabilityInsurance')->name('check_availability_insurance');
+    Route::get('/check_availability_insurance_clients', 'PaymentController@checkAvailabilityInsuranceClients')->name('check_availability_insurance_clients');
 
     //Insurance invoices
     Route::get('/insurance_invoice_management', 'InvoicesController@insuranceInvoiceManagement');
@@ -486,8 +518,13 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::post('/create_insurance_invoice_clients_manually', 'InvoicesController@CreateInsuranceInvoiceClientsManually')->name('create_insurance_invoice_clients_manually');
     Route::get('/get_info_insurance', 'InvoicesController@getInfoInsurance')->name('get_info_insurance');
     Route::get('/contract_availability_insurance', 'InsuranceController@contractAvailabilityInsurance')->name('contract_availability_insurance');
+    Route::get('/autocomplete.sum_insured', 'InsuranceController@autoCompleteSumInsured')->name('autocomplete.sum_insured');
+    Route::get('/get_actual_value', 'InsuranceController@getActualValue')->name('get_actual_value');
 
 
+
+    Route::post('/foward_insurance_invoice/{invoice_id}', 'InvoicesController@fowardInsuranceInvoice')->name('foward_insurance_invoice');
+    Route::post('/foward_insurance_clients_invoice/{invoice_id}', 'InvoicesController@fowardInsuranceClientsInvoice')->name('foward_insurance_clients_invoice');
 
 
 
@@ -503,6 +540,24 @@ Route::group(['middleware' => ['auth', 'car']], function() {
 
     Route::post('/add_account_no_car/{id}', 'InvoicesController@addAccountNumberCar')->name('add_account_no_car');
 
+
+
+    Route::post('/foward_car_invoice/{invoice_id}', 'InvoicesController@fowardCarInvoice')->name('foward_car_invoice');
+
+
+
+});
+
+
+
+
+Route::group(['middleware' => ['auth', 'research']], function() {
+
+    Route::get('/contract_availability_research', 'InvoicesController@contractAvailabilityResearch')->name('contract_availability_research');
+    Route::get('/send_all_invoices_research', 'InvoicesController@sendAllInvoicesResearch')->name('send_all_invoices_research');
+    Route::post('/add_control_no_research/{id}', 'InvoicesController@addControlNumberResearch')->name('add_control_no_research');
+
+    Route::post('/foward_research_invoice/{invoice_id}', 'InvoicesController@fowardResearchInvoice')->name('foward_research_invoice');
 
 
 });

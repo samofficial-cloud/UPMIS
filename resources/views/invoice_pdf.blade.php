@@ -75,7 +75,10 @@
 </head>
 <body>
 <div class="container" >
-
+    <?php
+    $approved_by_signature=DB::table('users')->where('name',$approved_by)->value('signature');
+    $prepared_by_signature=DB::table('users')->where('name',$prepared_by)->value('signature');
+    ?>
 <div style="text-align: center" >
 <h1>University of Dar es salaam</h1>
 <h2>P.O.Box 35091, Dar es salaam, TANZANIA </h2>
@@ -94,7 +97,7 @@
             <p><b>Debtor Address: {{$debtor_address}}</b></p>
             <p><b>Amount: {{number_format($amount_to_be_paid)}}</b></p>
             <p><b>Currency: {{$currency}}</b></p>
-            <p><b>GEPG Control No.: {{$gepg_control_no}}</b></p>
+            <p><b>GePG Control No.: {{$gepg_control_no}}</b></p>
             <p><b>TIN: {{$tin}}</b></p>
         </div>
     </div>
@@ -157,7 +160,7 @@
     <div>
         <div style="float: left; "><p><b>Amount in Words   </b> </p><p class="dottedUnderline">{{$amount_in_words}} </p>
 
-            <p><b>Please make payment through GEPG Control Number: {{$gepg_control_no}}</b></p>
+            <p><b>Please make payment through GePG Control Number: {{$gepg_control_no}}</b></p>
 
 
         </div>
@@ -169,16 +172,17 @@
         <div class="horizontal_align"><b>Prepared By</b></div>
         <div  class="dottedUnderline horizontal_align"><b>{{$prepared_by}}</b></div>
         <div class="horizontal_align_margin "><b>Signature</b></div>
-        <div  class="dottedUnderline horizontal_align">signature</div>
+        <div  class="dottedUnderline horizontal_align"><img src="{{$prepared_by_signature}}" height="20px" width="160px" alt="signature" ></div>
         <div class="horizontal_align_margin"><b>Date</b></div>
         <div  class="dottedUnderline horizontal_align"><b>{{$today}}</b></div>
     </div>
 <br><br>
+    <div style="clear: both;"></div>
     <div style="width: 100%;">
         <div class="horizontal_align"><b>Approved By</b></div>
         <div  class="dottedUnderline horizontal_align"><b>{{$approved_by}} </b></div>
         <div class="horizontal_align_margin "><b>Signature</b></div>
-        <div class="dottedUnderline horizontal_align">signature</div>
+        <div class="dottedUnderline horizontal_align"><img src="{{$approved_by_signature}}" height="20px" width="160px" alt="signature" ></div>
         <div class="horizontal_align_margin"><b>Date</b></div>
         <div class="dottedUnderline horizontal_align"><b>{{$today}}</b></div>
 

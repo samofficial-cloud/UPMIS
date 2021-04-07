@@ -111,7 +111,7 @@ class HomeController extends Controller
         $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
         $operational=operational_expenditure::where('flag','1')->get();
         $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
-        $costcentres=cost_centre::orderBy('costcentre_id','asc')->get();
+        $costcentres=cost_centre::orderBy('costcentre_id','asc')->where('status',1)->get();
         $rooms = DB::table('research_flats_rooms')->where('status','1')->orderby('room_no','asc')->get();
 
          if(Auth::user()->role=='Transport Officer-CPTU'){
@@ -127,7 +127,9 @@ class HomeController extends Controller
           $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
         }
 
+
         return view('businesses')->with('spaces',$spaces)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox)->with('rooms',$rooms)->with('space_inbox',$space_inbox)->with('space_outbox',$space_outbox);
+
     }
 
     public function researchflats(){
@@ -193,7 +195,7 @@ class HomeController extends Controller
             ['first_name' => ucfirst(strtolower($request->get('first_name'))), 'last_name'=>ucfirst(strtolower($request->get('last_name'))), 'gender'=>$request->get('gender'),'professional'=>ucfirst(strtolower($request->get('professional'))),'address'=>ucfirst(strtolower($request->get('address'))), 'email'=>$request->get('email'), 'phone_number'=>$request->get('phone_number'), 'purpose'=>ucfirst(strtolower($request->get('purpose'))), 'passport_no'=>$request->get('passport_no'), 'issue_date'=>$request->get('issue_date'), 'issue_place'=>$request->get('issue_place'), 'room_no'=>$request->get('room_no'), 'arrival_date'=>$request->get('arrival_date'), 'arrival_time'=>$request->get('arrival_time'), 'departure_date'=>$request->get('departure_date'), 'payment_mode'=>'Invoice', 'receipt_no'=>$request->get('receipt_no'), 'receipt_date'=>$request->get('receipt_date'), 'total_days'=>$request->get('total_days'), 'final_payment'=>0,'amount_usd'=>$amount_usd, 'amount_tzs'=>$amount_tzs, 'total_usd'=>$total_usd, 'total_tzs'=>$total_tzs, 'nationality'=>$request->get('nationality'), 'host_name'=>$request->get('host_name'), 'college'=>$request->get('college'),'department'=>$request->get('department'), 'host_address'=>ucfirst(strtolower($request->get('host_address'))), 'host_email'=>$request->get('host_email'), 'host_phone'=>$request->get('host_phone'), 'invoice_debtor'=>$debtor, 'invoice_currency'=>$currency]);
 
        DB::table('research_flats_invoices')->insert(
-                    ['contract_id' => $contract_id, 'invoicing_period_start_date' => $request->get('arrival_date'),'invoicing_period_end_date' => $request->get('departure_date'),'period' => '','project_id' => 'research_flats','debtor_account_code' => '','debtor_name' => $debtor_name,'debtor_address' => '','amount_to_be_paid' => $amount_to_be_paid,'currency_invoice'=>$currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>'inc_code','invoice_category'=>'Research Flats','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Research Flats','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
+                    ['contract_id' => $contract_id, 'invoicing_period_start_date' => $request->get('arrival_date'),'invoicing_period_end_date' => $request->get('departure_date'),'period' => '','project_id' => 'research_flats','debtor_account_code' => '','debtor_name' => $debtor_name,'debtor_address' => '','amount_to_be_paid' => $amount_to_be_paid,'currency_invoice'=>$currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Research Flats','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Research Flats','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
                 );
 
        $invoice_number_created=DB::table('research_flats_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
@@ -2298,6 +2300,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
         }
           }
 
+          //Hire range report
           else if(($_GET['model_fil']!='true')&&($_GET['stat_fil']!='true')&&($_GET['range_fil']=='true')&&($_GET['rent_fil']!='true')){
              $cars=carRental::whereBetween('hire_rate',[ $_GET['min'], $_GET['max'] ])
              ->where('flag','1')
@@ -2322,6 +2325,7 @@ if(($_GET['business_filter']!='true') && ($_GET['contract_filter']!='true') && (
               ->pluck('vehicle_reg_no')->toArray())
               ->get();
         }
+            //Available cars with range report
         else if($_GET['rent']=='Available'){
           $cars=carRental::whereNotIn('vehicle_reg_no',DB::table('car_contracts')->select('vehicle_reg_no')
             ->where('vehicle_reg_no','!=',null)

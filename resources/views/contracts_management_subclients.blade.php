@@ -302,7 +302,7 @@ $i=1;
                         @endif
                     </center></td>
             <td><center>
-                    <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',$var->contract_id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+                    <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',base64_encode(base64_encode(base64_encode($var->contract_id))))}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
 
 
                     @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))

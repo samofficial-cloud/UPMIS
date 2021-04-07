@@ -205,7 +205,7 @@
       <th scope="col"><center>Space ID</center></th>
       <th scope="col"><center>Phone Number</center></th>
       <th scope="col"><center>Email</center></th>
-      <th scope="col"><center>Address</center></th>  
+      <th scope="col"><center>Address</center></th>
       @if($_GET['contract_filter']!='true' && $_GET['payment_filter']!='true')
         <th scope="col"><center>Remarks</center></th>
       @elseif($_GET['contract_filter']!='true' && $_GET['payment_filter']=='true')
@@ -233,7 +233,7 @@
             <th scope="col" style="width: 10%;"><center>Amount</center></th>
           @endif
       @endif
-     
+
     </tr>
   </thead>
   <tbody>
@@ -286,7 +286,7 @@
           <td style="text-align: right;">{{number_format($client->amount_to_be_paid)}}</td>
         @endif
       @endif
-      
+
       </tr>
       <?php $j=$j+1; ?>
       @endforeach
@@ -366,7 +366,7 @@
                                 <th scope="col" style="width: 9%;"><center>End date</center></th>
                                {{--  <th scope="col" ><center>Period</center></th> --}}
                                 <th scope="col" style="width: 10%;"><center>Contract Id</center></th>
-                                <th scope="col" style="width: 12%;"><center>GEPG Control No</center></th>
+                                <th scope="col" style="width: 12%;"><center>GePG Control No</center></th>
                                 <th scope="col" style="width: 9%;"><center>Invoice Date</center></th>
                                 @if($_GET['payment_filter']=='')
                                   <th scope="col" ><center>Currency</center></th>
@@ -384,8 +384,8 @@
                                       <th scope="col"><center>Amount</center></th>
                                     @endif
                                 @endif
-                               
-                                
+
+
                             </tr>
                             </thead>
                             <tbody>
@@ -393,7 +393,7 @@
                                 <tr>
                                     <td scope="row"><center>{{ $i }}.</center></td>
                                     <td>{{$var->debtor_name}}</td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
 
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
@@ -624,7 +624,7 @@ elseif($_GET['report_type']=='invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -639,7 +639,7 @@ elseif($_GET['report_type']=='invoice'){
                       doc.content[2].table.body[i][4].alignment = 'left';
                       doc.content[2].table.body[i][5].alignment = 'left';
                       //doc.content[2].table.body[i][8].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -658,7 +658,7 @@ elseif($_GET['report_type']=='invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -676,7 +676,7 @@ elseif($_GET['report_type']=='invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -719,7 +719,7 @@ elseif($_GET['report_type']=='invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -734,7 +734,7 @@ elseif($_GET['report_type']=='invoice'){
                       doc.content[2].table.body[i][4].alignment = 'left';
                       doc.content[2].table.body[i][5].alignment = 'left';
                       //doc.content[2].table.body[i][8].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -753,7 +753,7 @@ elseif($_GET['report_type']=='invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -771,7 +771,7 @@ elseif($_GET['report_type']=='invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -802,7 +802,7 @@ elseif($_GET['report_type']=='invoice'){
                 columnsa = [7, 9];
 
                 _.each(columns, function(idx) {
-     
+
                 // Remove the formatting to get integer data for summation
                 var intVal = function ( i ) {
                     return typeof i === 'string' ?
@@ -842,10 +842,10 @@ elseif($_GET['report_type']=='invoice'){
                       }
                     }, 0 );
 
-                
 
-                
-                
+
+
+
 
 
                 // Total over this page
@@ -861,7 +861,7 @@ elseif($_GET['report_type']=='invoice'){
                       else{
                         return intVal(a);
                       }
-                      
+
                     }, 0 );
 
 
@@ -877,7 +877,7 @@ elseif($_GET['report_type']=='invoice'){
                       else{
                         return intVal(a);
                       }
-                      
+
                     }, 0 );
 
 
@@ -885,7 +885,7 @@ elseif($_GET['report_type']=='invoice'){
 
 
               _.each(columnsa, function(idx) {
-     
+
                 // Remove the formatting to get integer data for summation
                 var intVal = function ( i ) {
                     return typeof i === 'string' ?
@@ -925,10 +925,10 @@ elseif($_GET['report_type']=='invoice'){
                       }
                     }, 0 );
 
-                
 
-                
-                
+
+
+
 
 
                 // Total over this page
@@ -944,7 +944,7 @@ elseif($_GET['report_type']=='invoice'){
                       else{
                         return intVal(a);
                       }
-                      
+
                     }, 0 );
 
 
@@ -960,33 +960,33 @@ elseif($_GET['report_type']=='invoice'){
                       else{
                         return intVal(a);
                       }
-                      
+
                     }, 0 );
 
 
                    });
 
-                
 
 
-     
+
+
                 // Update footer
-                
+
                  $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-                  $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+                  $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
                 );
                  $('tr:eq(0) th:eq(3)', api.table().footer()).html(
-                  $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)  
+                  $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)
                 );
 
                 $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-                  $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+                  $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
                 );
                 $('tr:eq(1) th:eq(2)', api.table().footer()).html(
-                  $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)  
+                  $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)
                 );
 
-            }, 
+            },
             dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
             buttons: [
                 {   extend: 'pdfHtml5',
@@ -1007,7 +1007,7 @@ elseif($_GET['report_type']=='invoice'){
                                         return {
                                             alignment: 'center',
                                             text: [{ text: page.toString() }]
-                                            
+
                                         }
                       });
 
@@ -1023,7 +1023,7 @@ elseif($_GET['report_type']=='invoice'){
                           doc.content[2].table.body[i][5].alignment = 'left';
                           doc.content[2].table.body[i][8].alignment = 'right';
                           doc.content[2].table.body[i][9].alignment = 'right';
-                        
+
                         };
 
                       doc.defaultStyle.alignment = 'center';
@@ -1042,7 +1042,7 @@ elseif($_GET['report_type']=='invoice'){
             doc.styles.tableHeader.color = 'black';
             doc.styles.tableHeader.bold = 'false';
             doc.styles.tableBodyOdd.fillColor='';
-            doc.styles.tableHeader.fontSize = 10;  
+            doc.styles.tableHeader.fontSize = 10;
             doc.content[2].layout ={
               hLineWidth: function (i, node) {
               return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1060,7 +1060,7 @@ elseif($_GET['report_type']=='invoice'){
               return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
             }
             };
-                      
+
 
                         doc.content.splice( 1, 0, {
                             margin: [ 0, 0, 0, 12 ],
@@ -1088,7 +1088,7 @@ elseif($_GET['report_type']=='invoice'){
             var columns = [7, 8];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1127,10 +1127,10 @@ elseif($_GET['report_type']=='invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -1146,7 +1146,7 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -1162,27 +1162,27 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
 
-        }, 
+        },
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -1203,7 +1203,7 @@ elseif($_GET['report_type']=='invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1219,7 +1219,7 @@ elseif($_GET['report_type']=='invoice'){
                       doc.content[2].table.body[i][5].alignment = 'left';
                       doc.content[2].table.body[i][8].alignment = 'right';
                       doc.content[2].table.body[i][9].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -1238,7 +1238,7 @@ elseif($_GET['report_type']=='invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1256,7 +1256,7 @@ elseif($_GET['report_type']=='invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1284,7 +1284,7 @@ elseif($_GET['report_type']=='invoice'){
             var columns = [7, 8];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1323,10 +1323,10 @@ elseif($_GET['report_type']=='invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -1342,7 +1342,7 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -1358,27 +1358,27 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
 
-        }, 
+        },
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -1399,7 +1399,7 @@ elseif($_GET['report_type']=='invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1414,7 +1414,7 @@ elseif($_GET['report_type']=='invoice'){
                       doc.content[2].table.body[i][4].alignment = 'left';
                       doc.content[2].table.body[i][5].alignment = 'left';
                       doc.content[2].table.body[i][8].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -1433,7 +1433,7 @@ elseif($_GET['report_type']=='invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1451,7 +1451,7 @@ elseif($_GET['report_type']=='invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1482,7 +1482,7 @@ elseif($_GET['report_type']=='invoice'){
             columnsa = [6, 8];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1522,10 +1522,10 @@ elseif($_GET['report_type']=='invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -1541,7 +1541,7 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -1557,7 +1557,7 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -1565,7 +1565,7 @@ elseif($_GET['report_type']=='invoice'){
 
 
           _.each(columnsa, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1605,10 +1605,10 @@ elseif($_GET['report_type']=='invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -1624,7 +1624,7 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -1640,33 +1640,33 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
              $('tr:eq(0) th:eq(3)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)  
+              $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
             $('tr:eq(1) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)  
+              $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)
             );
 
-        }, 
+        },
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -1687,7 +1687,7 @@ elseif($_GET['report_type']=='invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1703,7 +1703,7 @@ elseif($_GET['report_type']=='invoice'){
                       doc.content[2].table.body[i][5].alignment = 'left';
                       doc.content[2].table.body[i][7].alignment = 'right';
                       doc.content[2].table.body[i][8].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -1722,7 +1722,7 @@ elseif($_GET['report_type']=='invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1740,7 +1740,7 @@ elseif($_GET['report_type']=='invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1768,7 +1768,7 @@ elseif($_GET['report_type']=='invoice'){
             var columns = [6, 7];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1807,10 +1807,10 @@ elseif($_GET['report_type']=='invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -1826,7 +1826,7 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -1842,27 +1842,27 @@ elseif($_GET['report_type']=='invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
 
-        }, 
+        },
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -1883,7 +1883,7 @@ elseif($_GET['report_type']=='invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1898,7 +1898,7 @@ elseif($_GET['report_type']=='invoice'){
                       doc.content[2].table.body[i][4].alignment = 'left';
                       doc.content[2].table.body[i][5].alignment = 'left';
                       doc.content[2].table.body[i][7].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -1917,7 +1917,7 @@ elseif($_GET['report_type']=='invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1935,7 +1935,7 @@ elseif($_GET['report_type']=='invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1958,20 +1958,20 @@ elseif($_GET['report_type']=='invoice'){
         }
       }
 
-    
-      
+
+
 
 if(type == 'invoice'){
   if(payment=='true'){
     if(status=='Partially Paid'){
-      var table = $('#myTable1').DataTable({ 
+      var table = $('#myTable1').DataTable({
                    "footerCallback": function ( row, data, start, end, display ){
             var api = this.api(), data;
             var columns = [8, 9],
             columnsa = [8, 10];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -2011,10 +2011,10 @@ if(type == 'invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -2030,7 +2030,7 @@ if(type == 'invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -2046,7 +2046,7 @@ if(type == 'invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -2054,7 +2054,7 @@ if(type == 'invoice'){
 
 
           _.each(columnsa, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -2094,10 +2094,10 @@ if(type == 'invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -2113,7 +2113,7 @@ if(type == 'invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -2129,27 +2129,27 @@ if(type == 'invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
- 
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
              $('tr:eq(0) th:eq(3)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)  
+              $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
             $('tr:eq(1) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)  
+              $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)
             );
 
         },
@@ -2175,7 +2175,7 @@ if(type == 'invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2191,7 +2191,7 @@ if(type == 'invoice'){
                       doc.content[2].table.body[i][6].alignment = 'left';
                       doc.content[2].table.body[i][9].alignment = 'right';
                       doc.content[2].table.body[i][10].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2210,7 +2210,7 @@ if(type == 'invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2228,7 +2228,7 @@ if(type == 'invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2256,7 +2256,7 @@ if(type == 'invoice'){
             var columns = [8, 9];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -2295,10 +2295,10 @@ if(type == 'invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -2314,7 +2314,7 @@ if(type == 'invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -2330,27 +2330,27 @@ if(type == 'invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
 
-        }, 
+        },
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -2373,7 +2373,7 @@ if(type == 'invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2407,7 +2407,7 @@ if(type == 'invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2425,7 +2425,7 @@ if(type == 'invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2453,7 +2453,7 @@ if(type == 'invoice'){
             var columns = [8, 9];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -2492,10 +2492,10 @@ if(type == 'invoice'){
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -2511,7 +2511,7 @@ if(type == 'invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -2527,27 +2527,27 @@ if(type == 'invoice'){
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
 
-        }, 
+        },
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -2570,7 +2570,7 @@ if(type == 'invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2585,7 +2585,7 @@ if(type == 'invoice'){
                       // doc.content[2].table.body[i][3].alignment = 'left';
                       doc.content[2].table.body[i][6].alignment = 'left';
                       doc.content[2].table.body[i][9].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -2604,7 +2604,7 @@ if(type == 'invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2622,7 +2622,7 @@ if(type == 'invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2645,7 +2645,7 @@ if(type == 'invoice'){
     }
   }
   else{
-    var table = $('#myTable1').DataTable({ 
+    var table = $('#myTable1').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -2668,7 +2668,7 @@ if(type == 'invoice'){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2703,7 +2703,7 @@ if(type == 'invoice'){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2721,7 +2721,7 @@ if(type == 'invoice'){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2743,7 +2743,7 @@ if(type == 'invoice'){
       });
   }
 }
- 
+
     });
 </script>
 @endsection

@@ -185,7 +185,7 @@
     @endif
     @elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']=='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b> 
+     <br><br>List of <b>{{$_GET['payment_status']}} Space Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
      <br><br>List of <b>{{$_GET['payment_status']}} Space Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
@@ -206,7 +206,7 @@
                                 <th scope="col" ><center>End date</center></th>
                                {{--  <th scope="col" ><center>Period</center></th> --}}
                                 <th scope="col"><center>Contract Id</center></th>
-                                <th scope="col" ><center>GEPG Control No</center></th>
+                                <th scope="col" ><center>GePG Control No</center></th>
                                 <th scope="col" ><center>Invoice Date</center></th>
                                 @if($_GET['payment_filter']=='')
                                   <th scope="col" ><center>Remarks</center></th>
@@ -221,7 +221,7 @@
                                 @else
                                   <th scope="col" style="width: 13%;"><center>Amount</center></th>
                                 @endif
-                                
+
                             </tr>
                             </thead>
                             <tbody>
@@ -229,7 +229,7 @@
                                 <tr>
                                     <td scope="row" style="text-align: center;">{{ $i }}.</td>
                                     <td>{{$var->debtor_name}}</td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
 
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
@@ -259,7 +259,7 @@
                                          <td style="text-align: right;">{{number_format($var->cumulative_amount)}}</td>
                                       @endif
                                     @endif
-                                     
+
                                   </tr>
                                   <?php
                                   $i=$i+1;
@@ -337,15 +337,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           if((urlParams.get('b_type')=='Space') && (urlParams.get('In_type')=='rent')){
             return  '\n \n List of Space Rent Invoices';
           }
-          
+
           else if(( urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
             return '\n \n List of Space Water Bill Invoices';
           }
-           
+
           else if(( urlParams.get('b_type')=='Space') && ( urlParams.get('In_type')=='electricity')){
             return  '\n \n List of Space Electricity Bill Invoices';
           }
-          
+
           else{
             return '\n \n List of {{$_GET['b_type']}} Invoices';
           }
@@ -361,18 +361,18 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
           return '\n \n List of Space Electricity Bill Invoices for the Year {{$_GET['year']}}';
         }
-         
+
         else{
           return '\n \nList of {{$_GET['b_type']}} Invoices for the Year {{$_GET['year']}}';
         }
-      
+
     }
 
     else if((urlParams.get('c_filter')!='true') && (urlParams.get('payment_filter')=='true')&& (urlParams.get('year_filter')!='true')){
       if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
         return '\n \n List of '+ urlParams.get('payment_status')+ ' Space Rent Invoices';
       }
-     
+
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
        return '\n \n List of ' +urlParams.get('payment_status')+ ' Space Water Bill Invoices';
       }
@@ -380,30 +380,30 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
         return '\n \n List of ' + urlParams.get('payment_status')+ ' Space Electricity Bill Invoices';
       }
-    
+
       else{
         return '\n \n List of '+ urlParams.get('payment_status')+' '+ urlParams.get('b_type') +' Invoices';
       }
-     
+
    }
 
     else if((urlParams.get('c_filter')!='true') && (urlParams.get('payment_filter')=='true')&&(urlParams.get('year_filter')=='true')){
       if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
         return '\n \nList of {{$_GET['payment_status']}} Space Rent Invoices for the Year {{$_GET['year']}}';
       }
-     
+
       else if((urlParams.get('b_type')=='Space') && (urlParams.get('In_type')=='water')){
         return '\n \nList of {{$_GET['payment_status']}} Space Water Bill Invoices for the Year {{$_GET['year']}}';
       }
-     
+
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
         return '\n \nList of {{$_GET['payment_status']}} Space Electricity Bill Invoices for the Year {{$_GET['year']}}';
       }
-     
+
       else{
         return '\n \nList of {{$_GET['payment_status']}} {{$_GET['b_type']}} Invoices for the Year {{$_GET['year']}}';
       }
-     
+
     }
 
 
@@ -411,19 +411,19 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
       if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
         return '\n \nList of {{$_GET['c_name']}} Space Rent Invoices';
       }
-    
+
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
         return '\n \nList of {{$_GET['c_name']}} Space Water Bill Invoices';
       }
-    
+
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
         return '\n \nList of {{$_GET['c_name']}} Space Electricity Bill Invoices';
       }
-     
+
      else{
       return '\n \nList of {{$_GET['c_name']}} {{$_GET['b_type']}} Invoices';
      }
-     
+
   }
 
 
@@ -434,11 +434,11 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
      else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
       return '\n \nList of {{$_GET['c_name']}} Space Water Bill Invoices for the Year {{$_GET['year']}}';
      }
-     
+
     else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
       return '\n \nList of {{$_GET['c_name']}} Space Electricity Bill Invoices for the Year {{$_GET['year']}}';
     }
-    
+
     else{
       return '\n \nList of {{$_GET['c_name']}} {{$_GET['b_type']}} Invoices for the Year {{$_GET['year']}}';
     }
@@ -450,40 +450,40 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
      if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
       return '\n \nList of {{$_GET['payment_status']}} Space Rent Invoices for {{$_GET['c_name']}}';
      }
-     
+
      else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
       return '\n \nList of {{$_GET['payment_status']}} Space Water Bill Invoices for {{$_GET['c_name']}}';
      }
-    
+
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
         return '\n \nList of {{$_GET['payment_status']}} Space Electricity Bill Invoices for {{$_GET['c_name']}}';
       }
-    
+
      else{
       return '\n \nList of {{$_GET['payment_status']}} {{$_GET['b_type']}} Invoices for {{$_GET['c_name']}}';
      }
-     
+
     }
 
     else if((urlParams.get('c_filter')=='true')&&(urlParams.get('payment_filter')=='true')&&(urlParams.get('year_filter')=='true')){
       if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
         return '\n \nList of {{$_GET['payment_status']}} Space Rent Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}} ';
       }
-     
+
      else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
       return '\n \nList of {{$_GET['payment_status']}} Space Water Bill Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}}';
      }
-    
+
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
         return '\n \nList of {{$_GET['payment_status']}} Space Electricity Bill Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}}';
       }
-     
+
      else{
       return '\n \nList of {{$_GET['payment_status']}} {{$_GET['b_type']}} Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}}';
      }
-     
+
     }
-    
+
   }
 
      const queryString2 = window.location.search;
@@ -500,7 +500,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             columnsa = [8, 10];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -540,10 +540,10 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -559,7 +559,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -575,7 +575,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -583,7 +583,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
 
           _.each(columnsa, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -623,10 +623,10 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -642,7 +642,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -658,30 +658,30 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
              $('tr:eq(0) th:eq(3)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)  
+              $.fn.dataTable.render.number(',').display(pagetotalc)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalc)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
             $('tr:eq(1) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)  
+              $.fn.dataTable.render.number(',').display(pagetotald)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totald)
             );
 
         },
@@ -708,7 +708,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                         return {
                                             alignment: 'center',
                                             text: [{ text: page.toString() }]
-                                            
+
                                         }
                       });
 
@@ -741,7 +741,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             doc.styles.tableHeader.color = 'black';
             doc.styles.tableHeader.bold = 'false';
             doc.styles.tableBodyOdd.fillColor='';
-            doc.styles.tableHeader.fontSize = 10;  
+            doc.styles.tableHeader.fontSize = 10;
             doc.content[2].layout ={
               hLineWidth: function (i, node) {
               return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -759,7 +759,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
               return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
             }
             };
-                      
+
 
                         doc.content.splice( 1, 0, {
                             margin: [ 0, 0, 0, 12 ],
@@ -787,7 +787,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             var columns = [8, 9];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -826,10 +826,10 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -845,7 +845,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -861,24 +861,24 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
 
         },
@@ -905,7 +905,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                       return {
                                           alignment: 'center',
                                           text: [{ text: page.toString() }]
-                                          
+
                                       }
                     });
 
@@ -937,7 +937,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           doc.styles.tableHeader.color = 'black';
           doc.styles.tableHeader.bold = 'false';
           doc.styles.tableBodyOdd.fillColor='';
-          doc.styles.tableHeader.fontSize = 10;  
+          doc.styles.tableHeader.fontSize = 10;
           doc.content[2].layout ={
             hLineWidth: function (i, node) {
             return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -955,7 +955,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
           }
           };
-                    
+
 
                       doc.content.splice( 1, 0, {
                           margin: [ 0, 0, 0, 12 ],
@@ -983,7 +983,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             var columns = [8, 9];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1022,10 +1022,10 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -1041,7 +1041,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -1057,24 +1057,24 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
 
         },
@@ -1101,7 +1101,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                       return {
                                           alignment: 'center',
                                           text: [{ text: page.toString() }]
-                                          
+
                                       }
                     });
 
@@ -1133,7 +1133,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           doc.styles.tableHeader.color = 'black';
           doc.styles.tableHeader.bold = 'false';
           doc.styles.tableBodyOdd.fillColor='';
-          doc.styles.tableHeader.fontSize = 10;  
+          doc.styles.tableHeader.fontSize = 10;
           doc.content[2].layout ={
             hLineWidth: function (i, node) {
             return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1151,7 +1151,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
           }
           };
-                    
+
 
                       doc.content.splice( 1, 0, {
                           margin: [ 0, 0, 0, 12 ],
@@ -1182,7 +1182,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             var columns = [9, 10];
 
             _.each(columns, function(idx) {
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -1221,10 +1221,10 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   }
                 }, 0 );
 
-            
 
-            
-            
+
+
+
 
 
             // Total over this page
@@ -1240,7 +1240,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
@@ -1256,27 +1256,27 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                   else{
                     return intVal(a);
                   }
-                  
+
                 }, 0 );
 
 
                });
 
-            
 
 
- 
+
+
             // Update footer
-            
+
              $('tr:eq(0) th:eq(2)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)  
+              $.fn.dataTable.render.number(',').display(pagetotala)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totala)
             );
 
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(
-              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)  
+              $.fn.dataTable.render.number(',').display(pagetotalb)+'<br>'+' Out of: ' +$.fn.dataTable.render.number(',').display(totalb)
             );
 
-        }, 
+        },
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -1300,7 +1300,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1312,7 +1312,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                          doc.content[2].table.body[i][0]=i+'.';
                       doc.content[2].table.body[i][1].alignment = 'left';
                       doc.content[2].table.body[i][10].alignment = 'right';
-                      
+
                       //doc.content[2].table.body[i][9].alignment = 'left';
                     };
 
@@ -1332,7 +1332,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1350,7 +1350,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1372,7 +1372,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
       });
       }
 
-      
+
 
 
   });

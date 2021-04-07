@@ -222,8 +222,14 @@ div.dt-buttons{
                           <option value="" selected></option>
                           @foreach($roles as $role )
 
+                                  @if($role->user_roles=='DVC Administrator')
 
-                              <option value="{{$role->user_roles}}">{{$role->user_roles}}</option>
+                                      <option value="{{$role->user_roles}}">DVC Administration</option>
+                                  @else
+                                      <option value="{{$role->user_roles}}">{{$role->user_roles}}</option>
+                                  @endif
+
+
 
 
                           @endforeach
@@ -299,7 +305,14 @@ div.dt-buttons{
                   <td>{{$var->user_name}}</td>
                   <td>{{$var->email}}</td>
                   <td>{{$var->phone_number}}</td>
-                  <td>{{$var->role}}</td>
+                  <td>
+                      @if($var->role=='DVC Administrator')
+                          DVC Administration
+                      @else
+                      {{$var->role}}
+                      @endif
+
+                  </td>
                   <td><center>{{$var->cost_centre}}</center></td>
 
                   <td>  @if($var->status==0)
@@ -395,11 +408,29 @@ div.dt-buttons{
                                     <?php
                                     $roles=DB::table('general_settings')->get();
                                     ?>
-                                      <option value="{{$var->role}}" selected >{{$var->role}}</option>
+
+                                        @if($var->role=='DVC Administrator')
+
+                                            <option value="{{$var->role}}" selected >DVC Administration</option>
+                                        @else
+                                            <option value="{{$var->role}}" selected >{{$var->role}}</option>
+                                        @endif
+
+
+
 @foreach($roles as $role)
 
                                     @if($role->user_roles!=$var->role)
-                                    <option value="{{$role->user_roles}}" >{{$role->user_roles}}</option>
+
+                                                @if($role->user_roles=='DVC Administrator')
+
+                                                    <option value="{{$role->user_roles}}">DVC Administration</option>
+                                                @else
+                                                    <option value="{{$role->user_roles}}">{{$role->user_roles}}</option>
+                                                @endif
+
+
+
 
                                     @else
                                       @endif
@@ -416,11 +447,21 @@ div.dt-buttons{
                                                 <?php
                                                 $roles=DB::table('general_settings')->get();
                                                 ?>
-                                                <option value="{{$var->role}}" selected>{{$var->role}}</option>
+                                                    @if($var->role=='DVC Administrator')
+
+                                                        <option value="{{$var->role}}" selected >DVC Administration</option>
+                                                    @else
+                                                        <option value="{{$var->role}}" selected >{{$var->role}}</option>
+                                                    @endif
                                                 @foreach($roles as $role)
 
                                                     @if($role->user_roles!=$var->role)
-                                                        <option value="{{$role->user_roles}}" >{{$role->user_roles}}</option>
+                                                            @if($role->user_roles=='DVC Administrator')
+
+                                                                <option value="{{$role->user_roles}}">DVC Administration</option>
+                                                            @else
+                                                                <option value="{{$role->user_roles}}">{{$role->user_roles}}</option>
+                                                            @endif
 
                                                     @else
                                                     @endif

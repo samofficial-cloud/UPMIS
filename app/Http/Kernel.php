@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'space' => 'App\Http\Middleware\SpaceMiddleware',
         'insurance' => 'App\Http\Middleware\InsuranceMiddleware',
         'car' => 'App\Http\Middleware\CarRentalMiddleware',
+        'research' => 'App\Http\Middleware\ResearchFlatsMiddleware',
     ];
 
     /**

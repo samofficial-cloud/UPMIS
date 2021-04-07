@@ -173,7 +173,7 @@
         <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
         <div class="form-group" style="margin-right: 5px;">
-           
+
           <select name="activity_year" id="activity_year" class="form-control" required="">
               <option value=" " disabled selected hidden>Select Year</option>
                 @for($x=-5;$x<=0; $x++)
@@ -182,13 +182,13 @@
           </select>
           <span id="activity_error"></span>
         </div>
-      
+
       <div class="form-group"  style="margin-right: 5px;">
           <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-success">
       </div>
 
-     
-    </form>   
+
+    </form>
   </div>
 </div>
     <div class="card-body">
@@ -222,7 +222,7 @@
                                {{--  <th scope="col" >Period</th> --}}
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" >Amount</th>
-                                {{-- <th scope="col" >GEPG Control No</th> --}}
+                                {{-- <th scope="col" >GePG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
                             </tr>
                             </thead>
@@ -315,7 +315,7 @@
 
       $("#activity_filter").click(function(e){
     e.preventDefault();
-    
+
     var query = $('#activity_year').val();
 
     if(query==null){
@@ -326,7 +326,7 @@
       $('#activity_year').attr('style','border:1px solid #f00');
     }
     else{
-      
+
       $('#activity_error').hide();
       $('#activity_year').attr('style','border:1px solid #ccc');
       $.ajax({
@@ -338,14 +338,14 @@
     .done(function(data) {
       {{$chart->id}}.options.title.text = 'Rental Activities '+query;
       {{ $chart->id }}.data.datasets[0].data =data.activity;
-      {{ $chart->id }}.update(); 
+      {{ $chart->id }}.update();
 
       {{$chart2->id}}.options.title.text = 'Amount Paid to CPTU '+query;
       {{ $chart2->id }}.data.datasets[0].data =data.income;
       {{ $chart2->id }}.update();
       //$("#clientdiv").load(location.href + " #clientdiv");
     });
-    }  
+    }
     return false;
 
 });

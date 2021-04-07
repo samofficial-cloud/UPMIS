@@ -131,7 +131,7 @@ hr {
   $k1 =1;
   $k2=1;
   ?>
-<div class="container" style="max-width: 1308px;">
+<div class="container" style="max-width: 100%;">
   <br>
    @if ($message = Session::get('errors'))
           <div class="alert alert-danger alert-dismissible">
@@ -282,7 +282,7 @@ hr {
 
 
   <div id="space" class="tabcontent" style="padding-top: 10px;">
- 
+
   <div class="tab2">
             <button class="tablinks2" onclick="openSpace(event, 'sp_current')" id="defaultOpen2"><strong>Active</strong></button>
             <button class="tablinks2" onclick="openSpace(event, 'Sp_previous')"><strong>Inactive</strong></button>
@@ -355,7 +355,7 @@ hr {
             <label for="attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -524,7 +524,7 @@ hr {
             <label for="attachment{{$client->client_id}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
-              <span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
+              <span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
           </div>
         </div>
         <br>
@@ -635,7 +635,7 @@ hr {
             <label for="inasp_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="inasp_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -815,7 +815,7 @@ hr {
             <label for="inasp_attachment{{$client->client_id}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="inasp_attachment{{$client->client_id}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
+              <span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
           </div>
         </div>
         <br>
@@ -856,13 +856,13 @@ hr {
 </div>
 
 <div id="car" class="tabcontent" style="padding-top: 10px;">
- 
+
      <div class="tab2">
             <button class="cptulink" onclick="opencptu(event, 'cptu_active')" id="defaultOpencptu"><strong>Active</strong></button>
             <button class="cptulink" onclick="opencptu(event, 'cptu_inactive')"><strong>Inactive</strong></button>
     </div>
      <div id="cptu_active" class="cptucontent">
-   
+
     {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
     @if($privileges=='Read only')
     @else
@@ -927,7 +927,7 @@ hr {
             <label for="acp_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="acp_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1016,7 +1016,7 @@ hr {
             <label for="Carcentre{{$i}}">Cost Centre<span style="color: red;">*</span></label>
             <select type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" required="" onkeyup="filterFunction()">
                 <option value="{{$client->cost_centre}}">{{$client->cost_centre}}-{{$client->faculty}}</option>
-                <?php 
+                <?php
                    $cost_centres=cost_centre::orderBy('costcentre_id','asc')->get();
                 ?>
                     @foreach($cost_centres as $cost_centre)
@@ -1026,12 +1026,12 @@ hr {
                     @endforeach
               </select>
 
-            
+
           </div>
         </div>
 <br>
 
-      
+
             <div class="form-group">
           <div class="form-wrapper">
             <label for="carclient_department{{$i}}">Department/Faculty</label>
@@ -1039,7 +1039,7 @@ hr {
           </div>
         </div>
         <br>
-          
+
 <input type="text" name="Caremail" value="{{$client->email}}" hidden="">
 <input type="text" name="Carcostcentre" value="{{$client->cost_centre}}" hidden="">
 <input type="text" name="Carfullname" value="{{$client->fullName}}" hidden="">
@@ -1102,7 +1102,7 @@ hr {
             <label for="carattachment{{$i}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="carattachment{{$i}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1207,7 +1207,7 @@ hr {
             <label for="incp_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="incp_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1295,7 +1295,7 @@ hr {
             <label for="Carcentre{{$i}}">Cost Centre<span style="color: red;">*</span></label>
             <select type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" required="" onkeyup="filterFunction()">
                 <option value="{{$client->cost_centre}}">{{$client->cost_centre}}-{{$client->faculty}}</option>
-                <?php 
+                <?php
                    $cost_centres=cost_centre::orderBy('costcentre_id','asc')->get();
                 ?>
                     @foreach($cost_centres as $cost_centre)
@@ -1304,7 +1304,7 @@ hr {
                       @endif
                     @endforeach
               </select>
-            
+
           </div>
         </div>
 <br>
@@ -1317,7 +1317,7 @@ hr {
         </div>
         <br>
 
-  
+
 <input type="text" name="Caremail" value="{{$client->email}}" hidden="">
 <input type="text" name="Carcostcentre" value="{{$client->cost_centre}}" hidden="">
 <input type="text" name="Carfullname" value="{{$client->fullName}}" hidden="">
@@ -1379,7 +1379,7 @@ hr {
             <label for="carattachment{{$i}}" class="col-sm-3">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="carattachment{{$i}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1492,7 +1492,7 @@ hr {
             <label for="aia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="aia_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1576,7 +1576,7 @@ hr {
             <label for="client_name{{$j}}">Insurance Class</label>
             <input type="text" id="udia_act_class{{$j}}" name="client_class" class="form-control" value="{{$client->insurance_class}}" readonly="">
           </div>
-        </div>     
+        </div>
 <br>
 
 <div class="form-group">
@@ -1659,7 +1659,7 @@ hr {
             <label for="udia_attachment{{$j}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="udia_attachment{{$j}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1763,7 +1763,7 @@ hr {
             <label for="inia_attachment" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="inia_attachment" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -1843,7 +1843,7 @@ hr {
             <label for="udia_inact_class{{$k}}">Insurance Class</label>
             <input type="text" id="udia_inact_class{{$k}}" name="client_class" class="form-control" value="{{$client->insurance_class}}" readonly="">
           </div>
-        </div>     
+        </div>
 <br>
 
 <div class="form-group">
@@ -1931,7 +1931,7 @@ hr {
             <label for="udia_inact_attachment{{$k}}" class="col-sm-2">Attachments</label>
             <div class="col-sm-9">
               <input type="file" id="inia_attachment{{$k}}" name="filenames[]" class="myfrm form-control" multiple="">
-              <center><span style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+              <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
           </div>
         </div>
         <br>
@@ -2173,10 +2173,10 @@ function myFunction() {
 <script type="text/javascript">
   $(document).ready(function(){
 
-     // document.getElementById("dropdowncon").addEventListener('click', function (event) { 
-     //        //alert("click outside"); 
-     //        event.stopPropagation(); 
-     //    }); 
+     // document.getElementById("dropdowncon").addEventListener('click', function (event) {
+     //        //alert("click outside");
+     //        event.stopPropagation();
+     //    });
 
      pdfMake.fonts = {
         Times: {
@@ -2213,7 +2213,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2224,7 +2224,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2250,15 +2250,15 @@ var table23 = $('#myTable_flatsp').DataTable( {
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2276,7 +2276,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2314,7 +2314,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2325,7 +2325,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2355,7 +2355,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2373,7 +2373,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2411,7 +2411,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2422,7 +2422,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2451,7 +2451,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2469,7 +2469,7 @@ var table23 = $('#myTable_flatsp').DataTable( {
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2507,7 +2507,7 @@ var table3 = $('#myTable3').DataTable( {
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2518,7 +2518,7 @@ var table3 = $('#myTable3').DataTable( {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2547,7 +2547,7 @@ var table3 = $('#myTable3').DataTable( {
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2565,7 +2565,7 @@ var table3 = $('#myTable3').DataTable( {
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2603,7 +2603,7 @@ var table4 = $('#myTable4').DataTable( {
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2614,7 +2614,7 @@ var table4 = $('#myTable4').DataTable( {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2643,7 +2643,7 @@ var table4 = $('#myTable4').DataTable( {
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2661,7 +2661,7 @@ var table4 = $('#myTable4').DataTable( {
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -2699,7 +2699,7 @@ var table5 = $('#myTable5').DataTable( {
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -2710,7 +2710,7 @@ var table5 = $('#myTable5').DataTable( {
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -2739,7 +2739,7 @@ var table5 = $('#myTable5').DataTable( {
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -2757,7 +2757,7 @@ var table5 = $('#myTable5').DataTable( {
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],

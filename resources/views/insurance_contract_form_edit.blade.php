@@ -306,7 +306,10 @@
 
                             <div class="row">
                                 <div class="col-md-12 mx-0">
-                                    <form id="msform" METHOD="GET" action="{{ route('edit_insurance_contract_final',['contract_id'=>$contract_id])}}">
+                                    <form id="msform" onsubmit="return submitFunction()" METHOD="POST" action="{{ route('edit_insurance_contract_final',['contract_id'=>$contract_id])}}">
+
+                                    {{csrf_field()}}
+
                                         <!-- progressbar -->
                                         <ul id="progressbar">
                                             <li class="active" id="personal"><strong>Insurance</strong></li>
@@ -326,76 +329,34 @@
 
                                                         <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
+                                                            <label for="insurance_class"><strong>Class </strong></label>
                                                             <span id="class_msg"></span>
-                                                            <select id="insurance_class" class="form-control"  Required name="insurance_class">
-                                                                <?php
-                                                                $classes=DB::table('insurance_parameters')->get();
-                                                                ?>
-                                                                <option value="{{$var->insurance_class}}" selected>{{$var->insurance_class}}</option>
-                                                                @foreach($classes as $class)
-                                                                    @if($class->classes!=$var->insurance_class)
-                                                                        @if($class->classes!='')
-
-                                                                            <option value="{{$class->classes}}">{{$class->classes}}</option>
-                                                                        @else
-                                                                        @endif
-
-                                                                    @else
-                                                                    @endif
-
-                                                                @endforeach
-                                                            </select>
 
 
+                                                            <input type="text" class="form-control" id="insurance_class" name="insurance_class" readonly  value="{{$var->insurance_class}}" autocomplete="off">
                                                         </div>
-
 
                                                         <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="client_type"><strong>Principal <span style="color: red;"> *</span></strong></label>
+                                                            <label for="client_type"><strong>Principal </strong></label>
                                                             <span id="principal_msg"></span>
-                                                            <?php
-                                                            $companies=DB::table('insurance_parameters')->get();
-                                                            ?>
-                                                            <select id="insurance_company" class="form-control"  name="insurance_company">
-                                                                <option value="{{$var->principal}}">{{$var->principal}}</option>
-                                                                @foreach($companies as $company)
-                                                                    @if($company->company!=null AND $company->company!=$var->principal)
-                                                                        <option value="{{$company->company}}">{{$company->company}}</option>
-                                                                    @else
-                                                                    @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
 
+                                                            <input type="text" class="form-control" id="insurance_company" name="insurance_company" readonly  value="{{$var->principal}}" autocomplete="off">
+                                                        </div>
 
 
                                                         <div id="TypeDiv" style="display: none;" class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
+                                                            <label for="insurance_type"  ><strong>Type </strong></label>
                                                             <span id="itype_msg"></span>
-                                                            <select id="insurance_type"  class="form-control" name="insurance_type" >
 
-                                                                @if($var->insurance_type=="N/A")
-                                                                    <option value="" id="Option" ></option>
-                                                                    <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
-                                                                    <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                                                                @elseif($var->insurance_type=="THIRD PARTY")
-                                                                    <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
-                                                                    <option value="{{$var->insurance_type}}" id="Option" selected>{{$var->insurance_type}}</option>
-                                                                @elseif($var->insurance_type=="COMPREHENSIVE")
-                                                                    <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                                                                    <option value="{{$var->insurance_type}}" id="Option" selected>{{$var->insurance_type}}</option>
-                                                                @else
-                                                                @endif
 
-                                                            </select>
+                                                            <input type="text" class="form-control" id="insurance_type" name="insurance_type" readonly  value="{{$var->insurance_type}}" autocomplete="off">
                                                         </div>
 
                                                         <div id="TypeDivNA" style="display: none;" class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="insurance_type_na"><strong>Type <span style="color: red;"> *</span></strong></label>
+                                                            <label for="insurance_type_na"><strong>Type </strong></label>
                                                             <input type="text" class="form-control" id="insurance_type_na" name="insurance_type" readonly  value="N/A" autocomplete="off">
 
                                                         </div>
@@ -408,23 +369,23 @@
 
                                                         <div class="form-wrapper col-12">
                                                             <br>
-                                                            <label for="space_location"  ><strong>Client Name</strong> <span style="color: red;"> *</span></label>
+                                                            <label for="space_location"  ><strong>Client Name</strong> </label>
                                                             <span id="client_msg"></span>
-                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" class="form-control" required>
+                                                            <input type="text" id="full_name" value="{{$var->full_name}}" name="full_name" readonly class="form-control" required>
                                                         </div>
 
 
 
                                                         <div class="form-wrapper col-6 pt-4">
-                                                            <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
+                                                            <label for="phone_number">Phone Number </label>
                                                             <span id="phone_msg"></span>
-                                                            <input type="text" id="phone_number"  value="{{$var->phone_number}}" name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                            <input type="text" id="phone_number"  value="{{$var->phone_number}}" name="phone_number"  class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                                         </div>
 
                                                         <div class="form-wrapper col-6 pt-4">
-                                                            <label for="email">Email <span style="color: red;"> *</span></label>
+                                                            <label for="email">Email </label>
                                                             <span id="email_msg"></span>
-                                                            <input type="text" name="email" value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
+                                                            <input type="text" name="email" value="{{$var->email}}" id="email" class="form-control"  placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
                                                         </div>
 
 
@@ -439,12 +400,12 @@
                                                             <label for="client_type"><strong>Vehicle Registration Number</strong></label>
                                                             <span id="vehicle_registration_no_msg"></span>
 
-                                                            <input type="text" id="vehicle_registration_no" value="{{$var->vehicle_registration_no}}" name="vehicle_registration_no" class="form-control" >
+                                                            <input type="text" id="vehicle_registration_no" readonly value="{{$var->vehicle_registration_no}}" name="vehicle_registration_no" class="form-control" >
                                                         </div>
 
                                                         <br>
                                                         <div id="vehicle_useDiv" class="form-wrapper col-12" style="display: none;">
-                                                            <label for="vehicle_use"  ><strong>Vehicle Use</strong></label>
+                                                            <label for="vehicle_use"  ><strong>Vehicle Use</strong> <span style="color: red;"> *</span></label>
                                                             <span id="vehicle_use_msg"></span>
                                                             <select class="form-control" id="vehicle_use" name="vehicle_use">
 
@@ -509,6 +470,12 @@
                                                         <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
                                                         <span id="sum_insured_msg"></span>
                                                         <input type="number" min="20" id="sum_insured" name="sum_insured" readonly  value="{{$var->sum_insured}}" class="form-control" >
+                                                    </div>
+
+                                                    <div class="form-wrapper col-12">
+                                                        <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
+                                                        <span id="actual_ex_vat_msg"></span>
+                                                        <input type="number" min="20" id="actual_ex_vat" readonly name="actual_ex_vat" value="{{$var->actual_ex_vat}}" class="form-control" >
                                                     </div>
 
 
@@ -1008,16 +975,12 @@
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
-                                                        <span id="actual_ex_vat_msg"></span>
-                                                        <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" value="{{$var->actual_ex_vat}}" class="form-control" required="">
-                                                    </div>
+
 
                                                     <div id="valueDiv" style="display: none;" class="form-wrapper col-12">
                                                         <label for="amount">Value <span style="color: red;"> *</span></label>
                                                         <span id="value_msg"></span>
-                                                        <input type="number" min="20" id="value" name="value" value="{{$var->value}}" class="form-control" >
+                                                        <input type="number" min="20" id="value" readonly name="value" value="{{$var->value}}" class="form-control" >
                                                     </div>
 
 
@@ -1068,11 +1031,17 @@
                                                     <div class="form-wrapper col-12 pt-4">
                                                         <label for="amount">Receipt Number <span style="color: red;"> *</span></label>
                                                         <span id="receipt_no_msg"></span>
-                                                        <input type="text" id="receipt_no" name="receipt_no" class="form-control" value="{{$var->receipt_no}}" required="">
+                                                        <input type="text" id="receipt_no" name="receipt_no" class="form-control" value="{{$var->receipt_no}}" >
                                                     </div>
 
 
                                                 </div>
+
+                                                <p id="validate_money_msg"></p>
+                                                <br>
+                                                <br>
+
+
 
 
                                             </div>
@@ -1163,6 +1132,12 @@
                                                         </tr>
 
 
+                                                        <tr id="number_of_installments_row_confirm" style="display: none;">
+                                                            <td>Number of installments:</td>
+                                                            <td id="number_of_installments_confirm"></td>
+                                                        </tr>
+
+
                                                         <tr id="first_installment_row_confirm" style="display: none;">
                                                             <td>First installment:</td>
                                                             <td id="first_installment_confirm"></td>
@@ -1173,6 +1148,64 @@
                                                             <td>Second installment:</td>
                                                             <td id="second_installment_confirm"></td>
                                                         </tr>
+
+                                                        <tr id="third_installment_row_confirm" style="display: none;">
+                                                            <td>Third installment:</td>
+                                                            <td id="third_installment_confirm"></td>
+                                                        </tr>
+
+                                                        <tr id="fourth_installment_row_confirm" style="display: none;">
+                                                            <td>Fourth installment:</td>
+                                                            <td id="fourth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="fifth_installment_row_confirm" style="display: none;">
+                                                            <td>Fifth installment:</td>
+                                                            <td id="fifth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="sixth_installment_row_confirm" style="display: none;">
+                                                            <td>Sixth installment:</td>
+                                                            <td id="sixth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="seventh_installment_row_confirm" style="display: none;">
+                                                            <td>Seventh installment:</td>
+                                                            <td id="seventh_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="eighth_installment_row_confirm" style="display: none;">
+                                                            <td>Eighth installment:</td>
+                                                            <td id="eighth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="ninth_installment_row_confirm" style="display: none;">
+                                                            <td>Ninth installment:</td>
+                                                            <td id="ninth_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="tenth_installment_row_confirm" style="display: none;">
+                                                            <td>Tenth installment:</td>
+                                                            <td id="tenth_installment_confirm"></td>
+                                                        </tr>
+
+                                                        <tr id="eleventh_installment_row_confirm" style="display: none;">
+                                                            <td>Eleventh installment:</td>
+                                                            <td id="eleventh_installment_confirm"></td>
+                                                        </tr>
+
+
+                                                        <tr id="twelfth_installment_row_confirm" style="display: none;">
+                                                            <td>Twelfth installment:</td>
+                                                            <td id="twelfth_installment_confirm"></td>
+                                                        </tr>
+
 
 
 
@@ -1223,10 +1256,11 @@
 
 
                                                 </div>
-                                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                                <input type="submit" name="submit" class="submit action-button" value="Save"/>
-                                                <input type="submit" name="submit" class="submit action-button" value="Save and print"/>
-                                                <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                                <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous"/>
+                                                <input type="submit" id="submit5" name="submit" class="submit action-button" value="Save"/>
+                                                <input type="submit" id="save_and_print_btn"  onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
+                                                <input type="button" id="cancel5" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+
                                             </fieldset>
 
 
@@ -1249,6 +1283,39 @@
 @section('pagescript')
 
     <script type="text/javascript">
+
+
+        var button_clicked=null;
+
+        function openNewTab() {
+
+            button_clicked='Save and print';
+        }
+
+        function submitFunction(){
+            $("#cancel5").css("background-color", "#87ceeb");
+            $("#cancel5").val('Finish');
+            $("#previous5").hide();
+            $("#submit5").hide();
+            $("#save_and_print_btn").hide();
+
+            if(button_clicked=='Save and print'){
+
+                $("#msform").attr("target","_blank");
+
+            }else{
+
+
+            }
+
+
+            return true;
+
+        }
+
+
+
+
         window.onload=function(){
 
 
@@ -1829,12 +1896,20 @@
                 }else{
 
                     $('#mode_of_paymentDiv').hide();
-
+                    $('#number_of_installmentsDiv').hide();
                     $('#first_installmentDiv').hide();
                     $('#second_installmentDiv').hide();
+                    $('#third_installmentDiv').hide();
+                    $('#fourth_installmentDiv').hide();
+                    $('#fifth_installmentDiv').hide();
+                    $('#sixth_installmentDiv').hide();
+                    $('#seventh_installmentDiv').hide();
+                    $('#eighth_installmentDiv').hide();
+                    $('#ninth_installmentDiv').hide();
+                    $('#tenth_installmentDiv').hide();
+                    $('#eleventh_installmentDiv').hide();
+                    $('#twelfth_installmentDiv').hide();
 
-                    $('#first_installment').val("");
-                    $('#second_installment').val("");
 
                 }
 
@@ -1978,83 +2053,83 @@
 
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p7=='1' & p8=='1'){
-
+                            gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
                             var type_na_var=document.getElementById("insurance_type_na").value;
 
                             var _token = $('input[name="_token"]').val();
 
-                            if(visible_status!=0) {
-                                console.log('type_na');
-                                var type_var
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type_na: insurance_type_na,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-                                        if(data!=""){
-                                            gonext();
+                            {{--if(visible_status!=0) {--}}
+                            {{--    console.log('type_na');--}}
+                            {{--    var type_var--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type_na: insurance_type_na,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
 
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
 
-                                            document.getElementById("availability_status").innerHTML ='';
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
 
-                                        }else{
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            {{--            }else{--}}
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
 
-                                        }
-                                    },
+                            {{--            }--}}
+                            {{--        },--}}
 
-                                    error : function(data) {
-
-
-
-                                    }
-                                });
-                            }else {
-                                console.log('type');
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type: insurance_type,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-
-                                        if(data!=""){
-                                            gonext();
-
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-
-                                            document.getElementById("availability_status").innerHTML ='';
-
-                                        }else{
-
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
-
-                                        }
-
-                                    },
-
-                                    error : function(data) {
+                            {{--        error : function(data) {--}}
 
 
 
-                                    }
-                                });
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--}else {--}}
+                            {{--    console.log('type');--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type: insurance_type,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
 
-                            }
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
+
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
+
+                            {{--            }else{--}}
+
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
+
+                            {{--            }--}}
+
+                            {{--        },--}}
+
+                            {{--        error : function(data) {--}}
+
+
+
+                            {{--        }--}}
+                            {{--    });--}}
+
+                            {{--}--}}
 
 
 
@@ -2067,83 +2142,83 @@
 
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1'){
-
+                            gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
                             var type_na_var=document.getElementById("insurance_type_na").value;
 
                             var _token = $('input[name="_token"]').val();
 
-                            if(visible_status!=0) {
-                                console.log('type_na');
-                                var type_var
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type_na: insurance_type_na,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-                                        if(data!=""){
-                                            gonext();
+                            {{--if(visible_status!=0) {--}}
+                            {{--    console.log('type_na');--}}
+                            {{--    var type_var--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type_na: insurance_type_na,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
 
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
 
-                                            document.getElementById("availability_status").innerHTML ='';
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
 
-                                        }else{
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            {{--            }else{--}}
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
 
-                                        }
-                                    },
+                            {{--            }--}}
+                            {{--        },--}}
 
-                                    error : function(data) {
-
-
-
-                                    }
-                                });
-                            }else {
-                                console.log('type');
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type: insurance_type,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-
-                                        if(data!=""){
-                                            gonext();
-
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-
-                                            document.getElementById("availability_status").innerHTML ='';
-
-                                        }else{
-
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
-
-                                        }
-
-                                    },
-
-                                    error : function(data) {
+                            {{--        error : function(data) {--}}
 
 
 
-                                    }
-                                });
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--}else {--}}
+                            {{--    console.log('type');--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type: insurance_type,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
 
-                            }
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
+
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
+
+                            {{--            }else{--}}
+
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
+
+                            {{--            }--}}
+
+                            {{--        },--}}
+
+                            {{--        error : function(data) {--}}
+
+
+
+                            {{--        }--}}
+                            {{--    });--}}
+
+                            {{--}--}}
 
 
 
@@ -2170,83 +2245,83 @@
 
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1' & p7=='1' & p8=='1'){
-
+                            gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
                             var type_na_var=document.getElementById("insurance_type_na").value;
 
                             var _token = $('input[name="_token"]').val();
 
-                            if(visible_status!=0) {
-                                console.log('type_na');
-                                var type_var
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type_na: insurance_type_na,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-                                        if(data!=""){
-                                            gonext();
+                            {{--if(visible_status!=0) {--}}
+                            {{--    console.log('type_na');--}}
+                            {{--    var type_var--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type_na: insurance_type_na,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
 
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
 
-                                            document.getElementById("availability_status").innerHTML ='';
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
 
-                                        }else{
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            {{--            }else{--}}
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
 
-                                        }
-                                    },
+                            {{--            }--}}
+                            {{--        },--}}
 
-                                    error : function(data) {
-
-
-
-                                    }
-                                });
-                            }else {
-                                console.log('type');
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type: insurance_type,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-
-                                        if(data!=""){
-                                            gonext();
-
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-
-                                            document.getElementById("availability_status").innerHTML ='';
-
-                                        }else{
-
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
-
-                                        }
-
-                                    },
-
-                                    error : function(data) {
+                            {{--        error : function(data) {--}}
 
 
 
-                                    }
-                                });
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--}else {--}}
+                            {{--    console.log('type');--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type: insurance_type,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
 
-                            }
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
+
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
+
+                            {{--            }else{--}}
+
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
+
+                            {{--            }--}}
+
+                            {{--        },--}}
+
+                            {{--        error : function(data) {--}}
+
+
+
+                            {{--        }--}}
+                            {{--    });--}}
+
+                            {{--}--}}
 
 
 
@@ -2258,82 +2333,82 @@
 
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1'){
-
+                            gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
                             var type_na_var=document.getElementById("insurance_type_na").value;
 
                             var _token = $('input[name="_token"]').val();
 
-                            if(visible_status!=0) {
-                                console.log('type_na');
-                                var type_var
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type_na: insurance_type_na,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-                                        if(data!=""){
-                                            gonext();
+                            {{--if(visible_status!=0) {--}}
+                            {{--    console.log('type_na');--}}
+                            {{--    var type_var--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type_na: insurance_type_na,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
 
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("availability_status").innerHTML ='';
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
 
-                                        }else{
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            {{--            }else{--}}
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
 
-                                        }
-                                    },
+                            {{--            }--}}
+                            {{--        },--}}
 
-                                    error : function(data) {
-
-
-
-                                    }
-                                });
-                            }else {
-                                console.log('type');
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type: insurance_type,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-
-                                        if(data!=""){
-                                            gonext();
-
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-
-                                            document.getElementById("availability_status").innerHTML ='';
-
-                                        }else{
-
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
-
-                                        }
-
-                                    },
-
-                                    error : function(data) {
+                            {{--        error : function(data) {--}}
 
 
 
-                                    }
-                                });
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--}else {--}}
+                            {{--    console.log('type');--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type: insurance_type,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
 
-                            }
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
+
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
+
+                            {{--            }else{--}}
+
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
+
+                            {{--            }--}}
+
+                            {{--        },--}}
+
+                            {{--        error : function(data) {--}}
+
+
+
+                            {{--        }--}}
+                            {{--    });--}}
+
+                            {{--}--}}
 
 
 
@@ -2352,7 +2427,74 @@
                 }
 
 
+                if(insurance_class=='FIRE'){
 
+
+
+                    var commission_percentage=25;
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+
+                }else if(insurance_class=='MOTOR'){
+
+
+
+                    var commission_percentage=12.5;
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+
+                }else if(insurance_class=='MONEY'){
+
+
+
+                    var commission_percentage=15;
+
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+
+                }else if(insurance_class=='LIABILITY'){
+
+
+
+                    var commission_percentage=15;
+
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+
+                }else if(insurance_class=='MARINE' || insurance_class=='FIDELITY GUARANTEE'){
+
+
+
+                    var commission_percentage=15;
+
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+                }
+
+
+
+
+                else{
+
+
+
+
+                }
 
 
             });
@@ -2382,8 +2524,20 @@
                 var currency=document.getElementById('currency').value;
                 var email=$("#email").val();
                 var mode_of_payment=$("#mode_of_payment").val();
+                var number_of_installments=$("#number_of_installments").val();
                 var first_installment=$("#first_installment").val();
                 var second_installment=$("#second_installment").val();
+
+                var third_installment=$("#third_installment").val();
+                var fourth_installment=$("#fourth_installment").val();
+                var fifth_installment=$("#fifth_installment").val();
+                var sixth_installment=$("#sixth_installment").val();
+                var seventh_installment=$("#seventh_installment").val();
+                var eighth_installment=$("#eighth_installment").val();
+                var ninth_installment=$("#ninth_installment").val();
+                var tenth_installment=$("#tenth_installment").val();
+                var eleventh_installment=$("#eleventh_installment").val();
+                var twelfth_installment=$("#twelfth_installment").val();
 
 
                 if(commission_date==""){
@@ -2604,14 +2758,212 @@
 
                 if(mode_of_payment=='By installment'){
                     $('#mode_of_payment_row_confirm').show();
-                    $('#first_installment_row_confirm').show();
-                    $('#second_installment_row_confirm').show();
+                    $('#number_of_installments_row_confirm').show();
+
+                    if(number_of_installments=='2') {
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').hide();
+                        $('#fourth_installment_row_confirm').hide();
+                        $('#fifth_installment_row_confirm').hide();
+                        $('#sixth_installment_row_confirm').hide();
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+                    }
+                    else if(number_of_installments=='3'){
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').hide();
+                        $('#fifth_installment_row_confirm').hide();
+                        $('#sixth_installment_row_confirm').hide();
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }else if(number_of_installments=='4'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').hide();
+                        $('#sixth_installment_row_confirm').hide();
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }else if(number_of_installments=='5'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').hide();
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }else if(number_of_installments=='6'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+
+                        $('#seventh_installment_row_confirm').hide();
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+                    else if(number_of_installments=='7'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+
+                        $('#eighth_installment_row_confirm').hide();
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+
+                    else if(number_of_installments=='8'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+
+                        $('#ninth_installment_row_confirm').hide();
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+
+
+                    else if(number_of_installments=='9'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+                        $('#ninth_installment_row_confirm').show();
+
+                        $('#tenth_installment_row_confirm').hide();
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+                    else if(number_of_installments=='10'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+                        $('#ninth_installment_row_confirm').show();
+                        $('#tenth_installment_row_confirm').show();
+
+                        $('#eleventh_installment_row_confirm').hide();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+
+                    else if(number_of_installments=='11'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+                        $('#ninth_installment_row_confirm').show();
+                        $('#tenth_installment_row_confirm').show();
+                        $('#eleventh_installment_row_confirm').show();
+                        $('#twelfth_installment_row_confirm').hide();
+
+                    }
+
+
+                    else if(number_of_installments=='12'){
+
+                        $('#first_installment_row_confirm').show();
+                        $('#second_installment_row_confirm').show();
+                        $('#third_installment_row_confirm').show();
+                        $('#fourth_installment_row_confirm').show();
+                        $('#fifth_installment_row_confirm').show();
+                        $('#sixth_installment_row_confirm').show();
+                        $('#seventh_installment_row_confirm').show();
+                        $('#eighth_installment_row_confirm').show();
+                        $('#ninth_installment_row_confirm').show();
+                        $('#tenth_installment_row_confirm').show();
+                        $('#eleventh_installment_row_confirm').show();
+                        $('#twelfth_installment_row_confirm').show();
+
+                    }else{
+
+
+
+                    }
+
+
 
                 }else{
 
                     $('#mode_of_payment_row_confirm').hide();
+                    $('#number_of_installments_row_confirm').hide();
                     $('#first_installment_row_confirm').hide();
                     $('#second_installment_row_confirm').hide();
+                    $('#third_installment_row_confirm').hide();
+                    $('#fourth_installment_row_confirm').hide();
+                    $('#fifth_installment_row_confirm').hide();
+                    $('#sixth_installment_row_confirm').hide();
+                    $('#seventh_installment_row_confirm').hide();
+                    $('#eighth_installment_row_confirm').hide();
+                    $('#ninth_installment_row_confirm').hide();
+                    $('#tenth_installment_row_confirm').hide();
+                    $('#eleventh_installment_row_confirm').hide();
+                    $('#twelfth_installment_row_confirm').hide();
                 }
 
 
@@ -2679,11 +3031,338 @@
                     $("#mode_of_payment_confirm").css('font-weight', 'bold');
 
 
-                    $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
-                    $("#first_installment_confirm").css('font-weight', 'bold');
+                    $("#number_of_installments_confirm").html(number_of_installments);
+                    $("#number_of_installments_confirm").css('font-weight', 'bold');
 
-                    $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
-                    $("#second_installment_confirm").css('font-weight', 'bold');
+
+
+                    if(number_of_installments=='2') {
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                    }
+                    else if(number_of_installments=='3'){
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                    }else if(number_of_installments=='4'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+                    }else if(number_of_installments=='5'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment)+" "+currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+                    }else if(number_of_installments=='6'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment)+" "+currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment)+" "+currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+                    }
+                    else if(number_of_installments=='7'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment)+" "+currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment)+" "+currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment)+" "+currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+                    }
+
+                    else if(number_of_installments=='8'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment)+" "+currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment)+" "+currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment)+" "+currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment)+" "+currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+                    }
+
+
+                    else if(number_of_installments=='9'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment)+" "+currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment)+" "+currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment)+" "+currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment)+" "+currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#ninth_installment_confirm").html(thousands_separators(ninth_installment)+" "+currency);
+                        $("#ninth_installment_confirm").css('font-weight', 'bold');
+                    }
+                    else if(number_of_installments=='10'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment)+" "+currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment)+" "+currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment)+" "+currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment)+" "+currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#ninth_installment_confirm").html(thousands_separators(ninth_installment)+" "+currency);
+                        $("#ninth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#tenth_installment_confirm").html(thousands_separators(tenth_installment)+" "+currency);
+                        $("#tenth_installment_confirm").css('font-weight', 'bold');
+                    }
+
+                    else if(number_of_installments=='11'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment)+" "+currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment)+" "+currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment)+" "+currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment)+" "+currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#ninth_installment_confirm").html(thousands_separators(ninth_installment)+" "+currency);
+                        $("#ninth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#tenth_installment_confirm").html(thousands_separators(tenth_installment)+" "+currency);
+                        $("#tenth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#eleventh_installment_confirm").html(thousands_separators(eleventh_installment)+" "+currency);
+                        $("#eleventh_installment_confirm").css('font-weight', 'bold');
+                    }
+
+
+                    else if(number_of_installments=='12'){
+
+
+                        $("#first_installment_confirm").html(thousands_separators(first_installment)+" "+currency);
+                        $("#first_installment_confirm").css('font-weight', 'bold');
+
+                        $("#second_installment_confirm").html(thousands_separators(second_installment)+" "+currency);
+                        $("#second_installment_confirm").css('font-weight', 'bold');
+
+                        $("#third_installment_confirm").html(thousands_separators(third_installment)+" "+currency);
+                        $("#third_installment_confirm").css('font-weight', 'bold');
+
+                        $("#fourth_installment_confirm").html(thousands_separators(fourth_installment)+" "+currency);
+                        $("#fourth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#fifth_installment_confirm").html(thousands_separators(fifth_installment)+" "+currency);
+                        $("#fifth_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#sixth_installment_confirm").html(thousands_separators(sixth_installment)+" "+currency);
+                        $("#sixth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#seventh_installment_confirm").html(thousands_separators(seventh_installment)+" "+currency);
+                        $("#seventh_installment_confirm").css('font-weight', 'bold');
+
+
+                        $("#eighth_installment_confirm").html(thousands_separators(eighth_installment)+" "+currency);
+                        $("#eighth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#ninth_installment_confirm").html(thousands_separators(ninth_installment)+" "+currency);
+                        $("#ninth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#tenth_installment_confirm").html(thousands_separators(tenth_installment)+" "+currency);
+                        $("#tenth_installment_confirm").css('font-weight', 'bold');
+
+                        $("#eleventh_installment_confirm").html(thousands_separators(eleventh_installment)+" "+currency);
+                        $("#eleventh_installment_confirm").css('font-weight', 'bold');
+
+                        $("#twelfth_installment_confirm").html(thousands_separators(twelfth_installment)+" "+currency);
+                        $("#twelfth_installment_confirm").css('font-weight', 'bold');
+                    }else{
+
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                 }else{
@@ -2712,7 +3391,15 @@
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1'  & p9=='1'  & p10=='1') {
 
-                            gonext();
+                            //check amounts if valid
+                            if (actual_ex_vat>=20 ){
+                                document.getElementById("validate_money_msg").innerHTML ='';
+                                gonext();
+                            }else{
+                                document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                document.getElementById("validate_money_msg").style.color='Red';
+
+                            }
 
                         }else{
 
@@ -2728,7 +3415,14 @@
 
                         if(p1=='1' & p2=='1'  & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p9=='1'  & p10=='1') {
 
-                            gonext();
+                            if (actual_ex_vat>=20 ){
+                                document.getElementById("validate_money_msg").innerHTML ='';
+                                gonext();
+                            }else{
+                                document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                                document.getElementById("validate_money_msg").style.color='Red';
+
+                            }
 
                         }else{
 
@@ -2746,7 +3440,14 @@
 
                     if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' & p9=='1'  & p10=='1' ) {
 
-                        gonext();
+                        if (value>=20 ){
+                            document.getElementById("validate_money_msg").innerHTML ='';
+                            gonext();
+                        }else{
+                            document.getElementById("validate_money_msg").innerHTML ='Amount entered cannot be less than 20';
+                            document.getElementById("validate_money_msg").style.color='Red';
+
+                        }
 
                     }else{
 

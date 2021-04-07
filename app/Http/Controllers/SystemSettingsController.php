@@ -146,14 +146,16 @@ if($request->get('cost_centre')=='')
         $name=$request->get('first_name').' '.$request->get('last_name');
 
         $user_name=strtolower($request->get('first_name')[0]).strtolower($request->get('last_name'));
+        $existing_roles=DB::table('users')->where('user_name',$user_name)->get();
 
-        if(DB::table('users')->where('user_name',$user_name)->exists()){
+        foreach($existing_roles as $role){
+        if (DB::table('users')->where('user_name', $user_name)->where('role',$request->get('role'))->exists()) {
 
 
-            return redirect()->back()->with("error","User already exists, please try again");
+            return redirect()->back()->with("error", "User already exists, please try again");
 
         }
-
+    }
 
         $default_password=DB::table('system_settings')->where('id',1)->value('default_password');
 
@@ -192,14 +194,33 @@ if($request->get('cost_centre')=='')
         }
 
 
+        $received_role=strtolower($request->get('user_roles'));
 
-        DB::table('general_settings')->insert([
+        if($received_role=='dvc administration' || $received_role=='dvc adminstration'){
 
-            'user_roles' => $request->get('user_roles'),
-            'category' => $request->get('category'),
-            'privileges' => $request->get('privileges'),
+            DB::table('general_settings')->insert([
 
-        ]);
+                'user_roles' => 'DVC Administrator',
+                'category' => $request->get('category'),
+                'privileges' => $request->get('privileges'),
+
+            ]);
+
+        }else{
+
+            DB::table('general_settings')->insert([
+
+                'user_roles' => $request->get('user_roles'),
+                'category' => $request->get('category'),
+                'privileges' => $request->get('privileges'),
+
+            ]);
+
+        }
+
+
+
+
 
 
 

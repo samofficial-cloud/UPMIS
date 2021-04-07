@@ -83,10 +83,11 @@ class SendInsuranceInvoices extends Command
                 if(!in_array($tempoIn, $tempOut))
                 {
 
-                    $total_amount_collected=DB::table('insurance_contracts')->whereBetween('created_at', [$from, $to])->where('principal',$principal->insurance_company)->sum('premium');
+                    $total_amount_collected=DB::table('insurance_contracts')->whereBetween('created_at', [$from, $to])->where('principal',$principal->insurance_company)->sum('commission');
                     $percentage_fraction=DB::table('system_settings')->where('id',1)->value('insurance_percentage');
 
-                    $amount_ten_percent=round($total_amount_collected*$percentage_fraction);
+//                    $amount_ten_percent=round($total_amount_collected*$percentage_fraction);
+                    $amount_ten_percent=$total_amount_collected;
                     $extracted_contract=DB::table('insurance_contracts')->whereBetween('created_at', [$from, $to])->where('principal',$principal->insurance_company)->get();
 
 

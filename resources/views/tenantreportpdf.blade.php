@@ -55,7 +55,7 @@ $j=1;
 <center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
-     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT  
+     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT
     </b>
 @if($_GET['report_type']=='list')
 @if(($_GET['business_filter']=='true') && ($_GET['contract_filter']=='true') && ($_GET['payment_filter']=='true'))
@@ -185,7 +185,7 @@ $j=1;
                                {{--  <th scope="col" ><center>Period</center></th> --}}
                                 <th scope="col"><center>Contract Id</center></th>
                                 <th scope="col" ><center>Amount</center></th>
-                                <th scope="col" ><center>GEPG Control No</center></th>
+                                <th scope="col" ><center>GePG Control No</center></th>
                                 <th scope="col" ><center>Invoice Date</center></th>
                                 @if($_GET['payment_filter']=='')
                                 <th scope="col" ><center>Remarks</center></th>

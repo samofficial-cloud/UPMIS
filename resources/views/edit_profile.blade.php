@@ -106,14 +106,14 @@
           </div>
 
           <div class="form-group row">
-          <div class="col-sm-3"><strong>Email Address :</strong></div>
+          <div class="col-sm-3"><strong>Email Address<span style="color: red;"> *</span></strong></div>
           <div class="col-sm-7"><input style="color: black;" required type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onblur="validateEmail(this);" maxlength="25" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Enter email address" value="{{ Auth::user()->email }}">
           </div>
           </div>
 
-         
+
           <div class="form-group row">
-          <div class="col-sm-3"><strong>Phone Number :</strong></div>
+          <div class="col-sm-3"><strong>Phone Number<span style="color: red;"> *</span></strong></div>
           <div class="col-sm-7">
             <input style="color: black;" required type="text" name="phoneNumber"
 maxlength = "10" minlength = "10"
@@ -124,7 +124,7 @@ class="form-control" id="phone" aria-describedby="emailHelp"  placeholder="0xxxx
 
 
       <div class="form-group row">
-        <div class="col-sm-3"><strong>Signature :</strong></div>
+        <div class="col-sm-3"><strong>Signature<span style="color: red;"> *</span></strong></div>
           <div class="col-sm-7">
           <canvas id="signature-pad" class="signature-pad" style="border:1px #000 solid; " width=400 height=200></canvas>
           <center><button id="clear" type="button" class="btn btn-danger">Erase Signature</button></center>
@@ -177,35 +177,40 @@ document.getElementById('clear').addEventListener('click', function () {
 });
 
 function savesignature(){
-  console.log("Passed");
+
   if (signaturePad.isEmpty()) {
-    return alert("Please provide a signature first.");
-  }
- var data = signaturePad.toDataURL('image/jpeg');
+     alert("Please provide a signature first.");
+    return false;
+  }else{
 
-  if(data==''){
+      var data = signaturePad.toDataURL('image/jpeg');
 
-  }
+      if(data==''){
 
-  else{
-    // AJAX Code To Submit Form.
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    var user_id = $('#user_id').val();
-    $.ajax({
-      type: 'POST',
-      url: '{{ route('save_signature') }}',
-      data:{"_token": "{{ csrf_token() }}","signature": data, "user_id":user_id},
-      headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-      success: function(data){
-        
       }
-    });
-}
-return true;
+
+      else{
+          // AJAX Code To Submit Form.
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+          var user_id = $('#user_id').val();
+          $.ajax({
+              type: 'POST',
+              url: '{{ route('save_signature') }}',
+              data:{"_token": "{{ csrf_token() }}","signature": data, "user_id":user_id},
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              success: function(data){
+
+              }
+          });
+      }
+      return true;
+
+  }
+
 }
 </script>
 @endsection

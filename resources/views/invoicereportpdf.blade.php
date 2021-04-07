@@ -52,7 +52,7 @@ table, td, th {
 <body>
 	<?php
 	$i=1;
-	
+
 	?>
     <div id="footer">
   <div class="page-number"></div>
@@ -60,7 +60,7 @@ table, td, th {
   <center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
-     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT  
+     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT
     </b>
     @if(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']!='true'))
     @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
@@ -134,7 +134,7 @@ table, td, th {
     @endif
     @elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']=='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b> 
+     <br><br>List of <b>{{$_GET['payment_status']}} Space Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
      <br><br>List of <b>{{$_GET['payment_status']}} Space Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
@@ -156,7 +156,7 @@ table, td, th {
                                {{--  <th scope="col" ><center>Period</center></th> --}}
                                 <th scope="col"><center>Contract Id</center></th>
                                 <th scope="col" style="width: 13%;"><center>Amount</center></th>
-                                <th scope="col" ><center>GEPG Control No</center></th>
+                                <th scope="col" ><center>GePG Control No</center></th>
                                 <th scope="col" ><center>Invoice Date</center></th>
                                 @if($_GET['payment_filter']=='')
                                 <th scope="col" ><center>Remarks</center></th>

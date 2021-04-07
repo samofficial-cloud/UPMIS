@@ -135,6 +135,87 @@ class InsuranceController extends Controller
 
 
 
+    public function autoCompleteSumInsured(Request $request)
+    {
+
+
+
+        if($request->get('number_of_employees'))
+        {
+            $query = $request->get('number_of_employees');
+
+            $data=DB::table('fidelity_guarantee')->select('sum_insured','id')->where('no_of_employees', $query)->get();
+
+            if(count($data)!=0){
+
+                foreach ($data as $var ){
+
+                    echo '<option value=""></option>'.'<option value="'.$var->id.'">'.$var->sum_insured.'</option>';
+
+
+                }
+            }
+            else{
+                echo "0";
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+    }
+
+
+
+
+    public function getActualValue(Request $request)
+    {
+
+
+
+        if($request->get('id'))
+        {
+            $query = $request->get('id');
+
+            $data=DB::table('fidelity_guarantee')->where('id', $query)->value('actual');
+
+            if($data!=''){
+
+                return $data;
+            }
+            else{
+                echo "0";
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+    }
+
+
 
     public function clientNameSuggestions(Request $request)
     {

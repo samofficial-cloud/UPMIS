@@ -90,7 +90,7 @@
           </div>
 
           <div class="form-group{{ $errors->has('new-password') ? ' has-error' : '' }} row">
-            <label for="new-password" class="col-sm-4 control-label"><strong>New Password: <span style="color: red;">*</span></strong><br><p style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Password must be atleast 8 characters)</p></label>
+            <label for="new-password" class="col-sm-4 control-label"><strong>New Password: <span style="color: red;">*</span></strong><br><p style="font-size: 11px; color: red; margin-bottom: -1rem;">(Password must be at least 8 characters)</p></label>
 
             <div class="col-sm-7">
               <input id="new-password" type="password" class="form-control" name="new-password" required>

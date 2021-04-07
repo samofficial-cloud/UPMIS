@@ -1,0 +1,21 @@
+#name: Laravel
+#
+#on:
+#  push:
+#    branches: [ master ]
+#
+#
+#jobs:
+#  laravel-tests:
+#
+#    runs-on: self-hosted
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Configure application
+#      run: |
+#        git pull origin master
+#        php artisan cache:clear
+#        php artisan view:clear
+#        php artisan config:cache
+#        working-directory: /var/www/html

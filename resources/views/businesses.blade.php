@@ -52,7 +52,7 @@
   }
 
   .form-wrapper{
-    width: 100%
+    width: 100%;
   }
 
   .form-inline label {
@@ -294,7 +294,7 @@ input[type=radio]{
 
                                                          @if(Auth::user()->role=='DVC Administrator')
 
-                                                         <a title="Approve this Space" data-toggle="modal" data-target="#approve{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><center><i class="fa fa-eye" style="font-size:20px; color: blue; cursor: pointer;"></i></center></a>
+                                                         <a title="Approve this Space" data-toggle="modal" data-target="#approve{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><center><i class="fas fa-reply" style=" color: #3490dc; cursor: pointer;"></i></center></a>
                                                          <div class="modal fade" id="approve{{$var->id}}" role="dialog">
 
                                                              <div class="modal-dialog" role="document">
@@ -724,7 +724,7 @@ input[type=radio]{
 
                                                  <td><center>
                                                          @if($var->flag==0)
-                                                             DVC Adminstrator
+                                                             DVC Administration
                                                          @elseif($var->flag==1)
                                                              DPDI Planner
                                                          @else
@@ -2082,7 +2082,7 @@ input[type=radio]{
                         <div class="">
 
 
-                            <center><h3><strong>Insurance packages</strong></h3></center>
+                            <center><h3><strong>Insurance Packages</strong></h3></center>
                             <hr>
                             <div class="modal fade" id="add_insurance" role="dialog">
 
@@ -2177,7 +2177,7 @@ input[type=radio]{
                                                             <div class="col-12 inline_block form-wrapper">
                                                                 <label  for="commission_percentage" class=" col-form-label"><strong>Commission percentage (%)</strong><strong><span style="color: red;"> *</span></strong></label>
                                                                 <div class="">
-                                                                    <input type="number" min="1"  step="0.01" class="form-control"  name="commission_percentage" required value=""  id="commission_percentage" autocomplete="off">
+                                                                    <input type="number"  min="1" max="100" step="0.01" class="form-control"  name="commission_percentage" required value=""  id="commission_percentage" autocomplete="off">
                                                                 </div>
                                                             </div>
 
@@ -2248,7 +2248,7 @@ input[type=radio]{
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <b><h5 class="modal-title">Edit insurance package informantion</h5></b>
+                                                                    <b><h5 class="modal-title">Edit Insurance Package Information</h5></b>
 
                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                 </div>
@@ -2281,7 +2281,7 @@ input[type=radio]{
                                                                         <br>
 
 
-                                                                        <div  class="form-group" >
+                                                                        <div  class="form-group">
                                                                             <div class="form-wrapper">
                                                                                 <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
                                                                                 <input type="text" id="insurance_type_edit"  class="form-control" name="insurance_type" readonly  value="{{$var->insurance_type}}" autocomplete="off">
@@ -2299,7 +2299,7 @@ input[type=radio]{
                                                                                     <div class="form-wrapper">
                                                                                         <label  for="commission_percentage" class=" col-form-label"><strong>Commission percentage (%)</strong> <strong> <span style="color: red;"> *</span></strong></label>
 
-                                                                                            <input type="number" min="1"  step="0.01" class="form-control"  name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage_edit" autocomplete="off">
+                                                                                            <input type="number" min="1" max="100" step="0.01" class="form-control"  name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage_edit" autocomplete="off">
 
                                                                                     </div>
 
@@ -2350,7 +2350,7 @@ input[type=radio]{
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <b><h5 class="modal-title">Are you sure you want to delete {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
+                                                                    <b><h5 class="modal-title">Are you sure you want to deactivate {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
 
                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                 </div>
@@ -2619,7 +2619,7 @@ input[type=radio]{
                     <div id="car_rental_inner" style=" padding-top: 1%;" class="tabcontent_inner">
 
                         <div class="tab">
-                            <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>VEHICLE FLEET</strong></button>
+                            <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>VEHICLES FLEET</strong></button>
                             {{-- <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button> --}}
                             <button class="tablinks" onclick="openContracts(event, 'hire')"><strong>HIRE RATE</strong></button>
                             <button class="tablinks" onclick="openContracts(event, 'cost_centres')"><strong>COST CENTRES</strong></button>
@@ -2937,7 +2937,7 @@ input[type=radio]{
                                         <div class="form-wrapper">
                                             <label for="remarks">Remark(s)<span style="color: red;">*</span></label>
                                             <span id="remarksmsg{{$car->id}}"></span>
-                                            <textarea type="text" id="remarks{{$car->id}}" name="reason" class="form-control"></textarea>
+                                            <textarea type="text" id="remarks{{$car->id}}" name="reason" required class="form-control"></textarea>
                                         </div>
                                     </div>
 
@@ -3006,7 +3006,7 @@ input[type=radio]{
 
 
                             <br>
-                            <center><h3><strong>Vehicle Fleet</strong></h3></center>
+                            <center><h3><strong>Vehicles Fleet</strong></h3></center>
                             <hr>
                             <br>
                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
@@ -3155,7 +3155,7 @@ input[type=radio]{
 
 
                             <br>
-                            <center><h3><strong>Vehicle Fleet</strong></h3></center>
+                            <center><h3><strong>Vehicles Fleet</strong></h3></center>
                             <hr>
                             <br>
                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
@@ -3590,7 +3590,7 @@ input[type=radio]{
                                                                             <input type="text" name="centreid" value="{{$var->id}}" hidden="">
 
                                                                             <div align="right">
-                                                                                <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                <button class="btn btn-primary" type="submit">Save</button>
                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                             </div>
 
@@ -4203,13 +4203,13 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
-                filename:'CPTU Vehicle Fleet',
+                filename:'CPTU Vehicles Fleet',
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
                 orientation: 'Potrait',
                 title: 'UNIVERSITY OF DAR ES SALAAM',
-                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n CPTU Vehicle Fleet',
+                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n CPTU Vehicles Fleet',
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
@@ -4292,7 +4292,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             {   extend: 'excelHtml5',
                 text: '<i class="fa fa-file-excel-o"></i> EXCEL',
                 className: 'excelButton',
-                title: 'CPTU Vehicle Fleet',
+                title: 'CPTU Vehicles Fleet',
                 exportOptions: {
                 columns: [1, 2, 3, 4]
                 },
@@ -4596,7 +4596,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             if(role!='Transport Officer-CPTU'){
                 document.getElementById("defaultSelection").click();
             }
-            
+
 
             function openfleet(evt, evtName) {
                 // Declare all variables
@@ -4790,6 +4790,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 $space_status=0;
                 $insurance_status=0;
                 $car_status=0;
+                $research_status=0;
 
                 if ($category=='Real Estate only' OR $category=='All') {
                     $space_status=1;
@@ -4812,30 +4813,50 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
                 }
 
+
+                if ($category=='Research Flats only' OR $category=='All') {
+                    $research_status=1;
+                }
+                else{
+
+                }
+
+
                 ?>
 
             var space_x={!! json_encode($space_status) !!};
             var insurance_x={!! json_encode($insurance_status) !!};
             var car_x={!! json_encode($car_status) !!};
+            var research_x={!! json_encode($research_status) !!};
 
             if(space_x==1){
 
                 $(".insurance_identity").removeClass("defaultBusiness");
                 $(".car_identity").removeClass("defaultBusiness");
+                $('.research_flats_identity').removeClass('defaultBusiness');
                 $('.space_identity').addClass('defaultBusiness');
 
 
             }else if(insurance_x==1){
                 $(".space_identity").removeClass("defaultBusiness");
                 $(".car_identity").removeClass("defaultBusiness");
+                $('.research_flats_identity').removeClass('defaultBusiness');
                 $('.insurance_identity').addClass('defaultBusiness');
 
             }else if(car_x==1){
                 $(".space_identity").removeClass("defaultBusiness");
                 $(".insurance_identity").removeClass("defaultBusiness");
+                $('.research_flats_identity').removeClass('defaultBusiness');
                 $('.car_identity').addClass('defaultBusiness');
 
-            }else{
+            }else if(research_x==1){
+                $(".space_identity").removeClass("defaultBusiness");
+                $(".insurance_identity").removeClass("defaultBusiness");
+                $('.car_identity').removeClass('defaultBusiness');
+                $('.research_flats_identity').addClass('defaultBusiness');
+
+            }
+            else{
 
             }
 
