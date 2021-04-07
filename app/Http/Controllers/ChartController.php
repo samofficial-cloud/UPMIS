@@ -172,7 +172,7 @@ class ChartController extends Controller
         ->select(array(DB::raw('Month(commission_date) as month'),DB::raw('sum(premium) as total')))
         ->whereMonth('commission_date',$days_backwards)
         ->whereYear('commission_date',date('Y'))
-        ->where('insurance_class','PROFFESIONAL INDEMNITY')
+        ->where('insurance_class','PROFESSIONAL INDEMNITY')
         ->groupBy('month')
         ->pluck('total'));
     }

@@ -377,13 +377,13 @@
                                                         <div class="form-wrapper col-6 pt-4">
                                                             <label for="phone_number">Phone Number </label>
                                                             <span id="phone_msg"></span>
-                                                            <input type="text" id="phone_number"  value="{{$var->phone_number}}" name="phone_number" readonly class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                            <input type="text" id="phone_number"  value="{{$var->phone_number}}" name="phone_number"  class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                                         </div>
 
                                                         <div class="form-wrapper col-6 pt-4">
                                                             <label for="email">Email </label>
                                                             <span id="email_msg"></span>
-                                                            <input type="text" name="email" value="{{$var->email}}" id="email" class="form-control" readonly placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
+                                                            <input type="text" name="email" value="{{$var->email}}" id="email" class="form-control"  placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="50">
                                                         </div>
 
 
@@ -468,6 +468,12 @@
                                                         <label for="amount">Sum Insured <span style="color: red;"> *</span></label>
                                                         <span id="sum_insured_msg"></span>
                                                         <input type="number" min="20" id="sum_insured" name="sum_insured" readonly  value="{{$var->sum_insured}}" class="form-control" >
+                                                    </div>
+
+                                                    <div class="form-wrapper col-12">
+                                                        <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
+                                                        <span id="actual_ex_vat_msg"></span>
+                                                        <input type="number" min="20" id="actual_ex_vat" readonly name="actual_ex_vat" value="{{$var->actual_ex_vat}}" class="form-control" >
                                                     </div>
 
 
@@ -967,16 +973,12 @@
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="amount">Actual (Excluding VAT) <span style="color: red;"> *</span></label>
-                                                        <span id="actual_ex_vat_msg"></span>
-                                                        <input type="number" min="20" id="actual_ex_vat" name="actual_ex_vat" value="{{$var->actual_ex_vat}}" class="form-control" >
-                                                    </div>
+
 
                                                     <div id="valueDiv" style="display: none;" class="form-wrapper col-12">
                                                         <label for="amount">Value <span style="color: red;"> *</span></label>
                                                         <span id="value_msg"></span>
-                                                        <input type="number" min="20" id="value" name="value" value="{{$var->value}}" class="form-control" >
+                                                        <input type="number" min="20" id="value" readonly name="value" value="{{$var->value}}" class="form-control" >
                                                     </div>
 
 
@@ -2049,83 +2051,83 @@
 
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p7=='1' & p8=='1'){
-
+                            gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
                             var type_na_var=document.getElementById("insurance_type_na").value;
 
                             var _token = $('input[name="_token"]').val();
 
-                            if(visible_status!=0) {
-                                console.log('type_na');
-                                var type_var
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type_na: insurance_type_na,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-                                        if(data!=""){
-                                            gonext();
+                            {{--if(visible_status!=0) {--}}
+                            {{--    console.log('type_na');--}}
+                            {{--    var type_var--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type_na: insurance_type_na,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
 
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
 
-                                            document.getElementById("availability_status").innerHTML ='';
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
 
-                                        }else{
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            {{--            }else{--}}
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
 
-                                        }
-                                    },
+                            {{--            }--}}
+                            {{--        },--}}
 
-                                    error : function(data) {
-
-
-
-                                    }
-                                });
-                            }else {
-                                console.log('type');
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type: insurance_type,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-
-                                        if(data!=""){
-                                            gonext();
-
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-
-                                            document.getElementById("availability_status").innerHTML ='';
-
-                                        }else{
-
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
-
-                                        }
-
-                                    },
-
-                                    error : function(data) {
+                            {{--        error : function(data) {--}}
 
 
 
-                                    }
-                                });
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--}else {--}}
+                            {{--    console.log('type');--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type: insurance_type,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
 
-                            }
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
+
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
+
+                            {{--            }else{--}}
+
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
+
+                            {{--            }--}}
+
+                            {{--        },--}}
+
+                            {{--        error : function(data) {--}}
+
+
+
+                            {{--        }--}}
+                            {{--    });--}}
+
+                            {{--}--}}
 
 
 
@@ -2138,83 +2140,83 @@
 
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1'){
-
+                            gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
                             var type_na_var=document.getElementById("insurance_type_na").value;
 
                             var _token = $('input[name="_token"]').val();
 
-                            if(visible_status!=0) {
-                                console.log('type_na');
-                                var type_var
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type_na: insurance_type_na,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-                                        if(data!=""){
-                                            gonext();
+                            {{--if(visible_status!=0) {--}}
+                            {{--    console.log('type_na');--}}
+                            {{--    var type_var--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type_na: insurance_type_na,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
 
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
 
-                                            document.getElementById("availability_status").innerHTML ='';
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
 
-                                        }else{
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            {{--            }else{--}}
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
 
-                                        }
-                                    },
+                            {{--            }--}}
+                            {{--        },--}}
 
-                                    error : function(data) {
-
-
-
-                                    }
-                                });
-                            }else {
-                                console.log('type');
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type: insurance_type,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-
-                                        if(data!=""){
-                                            gonext();
-
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-
-                                            document.getElementById("availability_status").innerHTML ='';
-
-                                        }else{
-
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
-
-                                        }
-
-                                    },
-
-                                    error : function(data) {
+                            {{--        error : function(data) {--}}
 
 
 
-                                    }
-                                });
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--}else {--}}
+                            {{--    console.log('type');--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type: insurance_type,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
 
-                            }
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
+
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
+
+                            {{--            }else{--}}
+
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
+
+                            {{--            }--}}
+
+                            {{--        },--}}
+
+                            {{--        error : function(data) {--}}
+
+
+
+                            {{--        }--}}
+                            {{--    });--}}
+
+                            {{--}--}}
 
 
 
@@ -2241,83 +2243,83 @@
 
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1' & p7=='1' & p8=='1'){
-
+                            gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
                             var type_na_var=document.getElementById("insurance_type_na").value;
 
                             var _token = $('input[name="_token"]').val();
 
-                            if(visible_status!=0) {
-                                console.log('type_na');
-                                var type_var
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type_na: insurance_type_na,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-                                        if(data!=""){
-                                            gonext();
+                            {{--if(visible_status!=0) {--}}
+                            {{--    console.log('type_na');--}}
+                            {{--    var type_var--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type_na: insurance_type_na,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
 
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
 
-                                            document.getElementById("availability_status").innerHTML ='';
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
 
-                                        }else{
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            {{--            }else{--}}
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
 
-                                        }
-                                    },
+                            {{--            }--}}
+                            {{--        },--}}
 
-                                    error : function(data) {
-
-
-
-                                    }
-                                });
-                            }else {
-                                console.log('type');
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type: insurance_type,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-
-                                        if(data!=""){
-                                            gonext();
-
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-
-                                            document.getElementById("availability_status").innerHTML ='';
-
-                                        }else{
-
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
-
-                                        }
-
-                                    },
-
-                                    error : function(data) {
+                            {{--        error : function(data) {--}}
 
 
 
-                                    }
-                                });
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--}else {--}}
+                            {{--    console.log('type');--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type: insurance_type,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
 
-                            }
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
+
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
+
+                            {{--            }else{--}}
+
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
+
+                            {{--            }--}}
+
+                            {{--        },--}}
+
+                            {{--        error : function(data) {--}}
+
+
+
+                            {{--        }--}}
+                            {{--    });--}}
+
+                            {{--}--}}
 
 
 
@@ -2329,82 +2331,82 @@
 
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1'){
-
+                            gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
                             var type_na_var=document.getElementById("insurance_type_na").value;
 
                             var _token = $('input[name="_token"]').val();
 
-                            if(visible_status!=0) {
-                                console.log('type_na');
-                                var type_var
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type_na: insurance_type_na,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-                                        if(data!=""){
-                                            gonext();
+                            {{--if(visible_status!=0) {--}}
+                            {{--    console.log('type_na');--}}
+                            {{--    var type_var--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type_na: insurance_type_na,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
 
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-                                            document.getElementById("availability_status").innerHTML ='';
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
 
-                                        }else{
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
+                            {{--            }else{--}}
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
 
-                                        }
-                                    },
+                            {{--            }--}}
+                            {{--        },--}}
 
-                                    error : function(data) {
-
-
-
-                                    }
-                                });
-                            }else {
-                                console.log('type');
-                                $.ajax({
-                                    url: "{{ route('autofill_insurance_parameters') }}",
-                                    method: "GET",
-                                    data: {
-                                        insurance_class: insurance_class,
-                                        insurance_company: insurance_company,
-                                        insurance_type: insurance_type,
-                                        _token: _token
-                                    },
-                                    success: function (data) {
-
-                                        if(data!=""){
-                                            gonext();
-
-                                            document.getElementById("commission_percentage").value=data[0].commission_percentage;
-
-                                            document.getElementById("availability_status").innerHTML ='';
-
-                                        }else{
-
-                                            document.getElementById("availability_status").style.color='Red';
-                                            document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';
-
-                                        }
-
-                                    },
-
-                                    error : function(data) {
+                            {{--        error : function(data) {--}}
 
 
 
-                                    }
-                                });
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--}else {--}}
+                            {{--    console.log('type');--}}
+                            {{--    $.ajax({--}}
+                            {{--        url: "{{ route('autofill_insurance_parameters') }}",--}}
+                            {{--        method: "GET",--}}
+                            {{--        data: {--}}
+                            {{--            insurance_class: insurance_class,--}}
+                            {{--            insurance_company: insurance_company,--}}
+                            {{--            insurance_type: insurance_type,--}}
+                            {{--            _token: _token--}}
+                            {{--        },--}}
+                            {{--        success: function (data) {--}}
 
-                            }
+                            {{--            if(data!=""){--}}
+                            {{--                gonext();--}}
+
+                            {{--                document.getElementById("commission_percentage").value=data[0].commission_percentage;--}}
+
+                            {{--                document.getElementById("availability_status").innerHTML ='';--}}
+
+                            {{--            }else{--}}
+
+                            {{--                document.getElementById("availability_status").style.color='Red';--}}
+                            {{--                document.getElementById("availability_status").innerHTML ='Selected insurance package does not exist for the given principal, please try again';--}}
+
+                            {{--            }--}}
+
+                            {{--        },--}}
+
+                            {{--        error : function(data) {--}}
+
+
+
+                            {{--        }--}}
+                            {{--    });--}}
+
+                            {{--}--}}
 
 
 
@@ -2423,7 +2425,74 @@
                 }
 
 
+                if(insurance_class=='FIRE'){
 
+
+
+                    var commission_percentage=25;
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+
+                }else if(insurance_class=='MOTOR'){
+
+
+
+                    var commission_percentage=12.5;
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+
+                }else if(insurance_class=='MONEY'){
+
+
+
+                    var commission_percentage=15;
+
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+
+                }else if(insurance_class=='LIABILITY'){
+
+
+
+                    var commission_percentage=15;
+
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+
+                }else if(insurance_class=='MARINE' || insurance_class=='FIDELITY GUARANTEE'){
+
+
+
+                    var commission_percentage=15;
+
+
+
+                    $('#commission_percentage').val(commission_percentage);
+
+
+                }
+
+
+
+
+                else{
+
+
+
+
+                }
 
 
             });

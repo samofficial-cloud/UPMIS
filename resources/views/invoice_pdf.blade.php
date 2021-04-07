@@ -75,7 +75,10 @@
 </head>
 <body>
 <div class="container" >
-
+    <?php
+    $approved_by_signature=DB::table('users')->where('name',$approved_by)->value('signature');
+    $prepared_by_signature=DB::table('users')->where('name',$prepared_by)->value('signature');
+    ?>
 <div style="text-align: center" >
 <h1>University of Dar es salaam</h1>
 <h2>P.O.Box 35091, Dar es salaam, TANZANIA </h2>
@@ -169,7 +172,7 @@
         <div class="horizontal_align"><b>Prepared By</b></div>
         <div  class="dottedUnderline horizontal_align"><b>{{$prepared_by}}</b></div>
         <div class="horizontal_align_margin "><b>Signature</b></div>
-        <div  class="dottedUnderline horizontal_align">signature</div>
+        <div  class="dottedUnderline horizontal_align"><img src="{{$prepared_by_signature}}" height="20px" width="160px" alt="signature" ></div>
         <div class="horizontal_align_margin"><b>Date</b></div>
         <div  class="dottedUnderline horizontal_align"><b>{{$today}}</b></div>
     </div>
@@ -179,7 +182,7 @@
         <div class="horizontal_align"><b>Approved By</b></div>
         <div  class="dottedUnderline horizontal_align"><b>{{$approved_by}} </b></div>
         <div class="horizontal_align_margin "><b>Signature</b></div>
-        <div class="dottedUnderline horizontal_align">signature</div>
+        <div class="dottedUnderline horizontal_align"><img src="{{$approved_by_signature}}" height="20px" width="160px" alt="signature" ></div>
         <div class="horizontal_align_margin"><b>Date</b></div>
         <div class="dottedUnderline horizontal_align"><b>{{$today}}</b></div>
 

@@ -501,7 +501,9 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::get('/vehicle_registration_no_suggestions', 'InsuranceController@vehicleRegistrationNumberSuggestions')->name('vehicle_registration_no_suggestions');
     //payments
     Route::post('/create_insurance_payment_manually', 'PaymentController@CreateInsurancePaymentManually')->name('create_insurance_payment_manually');
+    Route::post('/create_insurance_clients_payment_manually', 'PaymentController@CreateInsuranceClientsPaymentManually')->name('create_insurance_clients_payment_manually');
     Route::get('/check_availability_insurance', 'PaymentController@checkAvailabilityInsurance')->name('check_availability_insurance');
+    Route::get('/check_availability_insurance_clients', 'PaymentController@checkAvailabilityInsuranceClients')->name('check_availability_insurance_clients');
 
     //Insurance invoices
     Route::get('/insurance_invoice_management', 'InvoicesController@insuranceInvoiceManagement');
@@ -514,8 +516,13 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::post('/create_insurance_invoice_clients_manually', 'InvoicesController@CreateInsuranceInvoiceClientsManually')->name('create_insurance_invoice_clients_manually');
     Route::get('/get_info_insurance', 'InvoicesController@getInfoInsurance')->name('get_info_insurance');
     Route::get('/contract_availability_insurance', 'InsuranceController@contractAvailabilityInsurance')->name('contract_availability_insurance');
+    Route::get('/autocomplete.sum_insured', 'InsuranceController@autoCompleteSumInsured')->name('autocomplete.sum_insured');
+    Route::get('/get_actual_value', 'InsuranceController@getActualValue')->name('get_actual_value');
 
 
+
+    Route::post('/foward_insurance_invoice/{invoice_id}', 'InvoicesController@fowardInsuranceInvoice')->name('foward_insurance_invoice');
+    Route::post('/foward_insurance_clients_invoice/{invoice_id}', 'InvoicesController@fowardInsuranceClientsInvoice')->name('foward_insurance_clients_invoice');
 
 
 
@@ -533,6 +540,10 @@ Route::group(['middleware' => ['auth', 'car']], function() {
 
 
 
+    Route::post('/foward_car_invoice/{invoice_id}', 'InvoicesController@fowardCarInvoice')->name('foward_car_invoice');
+
+
+
 });
 
 
@@ -544,7 +555,7 @@ Route::group(['middleware' => ['auth', 'research']], function() {
     Route::get('/send_all_invoices_research', 'InvoicesController@sendAllInvoicesResearch')->name('send_all_invoices_research');
     Route::post('/add_control_no_research/{id}', 'InvoicesController@addControlNumberResearch')->name('add_control_no_research');
 
-
+    Route::post('/foward_research_invoice/{invoice_id}', 'InvoicesController@fowardResearchInvoice')->name('foward_research_invoice');
 
 
 });

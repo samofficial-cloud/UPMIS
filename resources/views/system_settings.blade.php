@@ -239,13 +239,13 @@
 
 
 
-                      <div class="group_children">
-                          <div class="form-wrapper">
-                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Percentage used when generating invoice to principals</strong></label>
-                              <input type="number" min="1" max="100" style="display: inline-block; float: right; clear: both;  text-align: center;" required value="{{($var->insurance_percentage)*100}}" id="rent_price_guide_checkbox" name="insurance_percentage" autocomplete="off">
+{{--                      <div class="group_children">--}}
+{{--                          <div class="form-wrapper">--}}
+{{--                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Percentage used when generating invoice to principals</strong></label>--}}
+{{--                              <input type="number" min="1" max="100" style="display: inline-block; float: right; clear: both;  text-align: center;" required value="{{($var->insurance_percentage)*100}}" id="rent_price_guide_checkbox" name="insurance_percentage" autocomplete="off">--}}
 
-                          </div>
-                      </div>
+{{--                          </div>--}}
+{{--                      </div>--}}
 
                       <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
 

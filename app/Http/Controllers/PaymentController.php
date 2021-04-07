@@ -83,11 +83,13 @@ class PaymentController extends Controller
 
         $research_payments=DB::table('research_flats_payments')->join('research_flats_invoices','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')->where('research_flats_invoices.payment_status','Partially Paid')->orWhere('research_flats_invoices.payment_status','Paid')->get();
         $insurance_payments=DB::table('insurance_payments')->join('insurance_invoices','insurance_payments.invoice_number','=','insurance_invoices.invoice_number')->where('insurance_invoices.payment_status','Partially Paid')->orWhere('insurance_invoices.payment_status','Paid')->get();
+        $insurance_clients_payments=DB::table('insurance_clients_payments')->join('insurance_invoices_clients','insurance_clients_payments.invoice_number','=','insurance_invoices_clients.invoice_number')->where('insurance_invoices_clients.payment_status','Partially Paid')->orWhere('insurance_invoices_clients.payment_status','Paid')->get();
+
         $water_bill_payments=DB::table('water_bill_payments')->join('water_bill_invoices','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('water_bill_invoices.payment_status','Partially Paid')->orWhere('water_bill_invoices.payment_status','Paid')->get();
         $electricity_bill_payments=DB::table('electricity_bill_payments')->join('electricity_bill_invoices','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('electricity_bill_invoices.payment_status','Partially Paid')->orWhere('electricity_bill_invoices.payment_status','Paid')->get();
 
 
-        return view('payments_management')->with('space_payments',$space_payments)->with('space_inbox',$space_inbox)->with('space_outbox',$space_outbox)->with('car_rental_payments',$car_rental_payments)->with('insurance_payments',$insurance_payments)->with('research_payments',$research_payments)->with('water_bill_payments',$water_bill_payments)->with('electricity_bill_payments',$electricity_bill_payments);
+        return view('payments_management')->with('space_payments',$space_payments)->with('space_inbox',$space_inbox)->with('space_outbox',$space_outbox)->with('car_rental_payments',$car_rental_payments)->with('insurance_payments',$insurance_payments)->with('research_payments',$research_payments)->with('water_bill_payments',$water_bill_payments)->with('electricity_bill_payments',$electricity_bill_payments)->with('insurance_clients_payments',$insurance_clients_payments);
 
     }
 
@@ -280,6 +282,85 @@ class PaymentController extends Controller
 
 
 
+    public function CreateInsuranceClientsPaymentManually(Request $request)
+    {
+        $amount_to_be_paid=DB::table(' insurance_invoices_clients')->where('invoice_number_votebook', $request->get('invoice_number'))->value('amount_to_be_paid');
+        $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+        if(DB::table('insurance_clients_payments')->where('invoice_number_votebook',$request->get('invoice_number'))->where('receipt_number','!=','')->exists()){
+
+
+            return redirect()->back()->with("error","Payment record already exists for the specified invoice number");
+
+        }else{
+
+
+
+            $payment_status='';
+            $amount_to_be_paid=DB::table(' insurance_invoices_clients')->where('invoice_number_votebook', $request->get('invoice_number'))->value('amount_to_be_paid');
+            $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
+
+
+            if($request->get('amount_paid')<$amount_to_be_paid){
+                $payment_status='Partially Paid';
+
+
+            }elseif($request->get('amount_paid')==$amount_to_be_paid) {
+                $payment_status='Paid';
+
+
+            }else{
+
+
+            }
+
+
+            DB::table('insurance_invoices_clients')
+                ->where('invoice_number_votebook', $request->get('invoice_number'))
+                ->update(['payment_status' => $payment_status]);
+
+
+
+
+
+            DB::table('insurance_clients_payments')
+                ->where('invoice_number_votebook', $request->get('invoice_number'))
+                ->update(['amount_paid' => $request->get('amount_paid')]);
+
+            DB::table('insurance_clients_payments')
+                ->where('invoice_number_votebook', $request->get('invoice_number'))
+                ->update(['amount_not_paid' => $amount_not_paid]);
+
+            DB::table('insurance_clients_payments')
+                ->where('invoice_number_votebook', $request->get('invoice_number'))
+                ->update(['currency_payments' => $request->get('currency_payments')]);
+
+            DB::table('insurance_clients_payments')
+                ->where('invoice_number_votebook', $request->get('invoice_number'))
+                ->update(['receipt_number' => $request->get('receipt_number')]);
+
+            DB::table('insurance_clients_payments')
+                ->where('invoice_number_votebook', $request->get('invoice_number'))
+                ->update(['date_of_payment' => $request->get('date_of_payment')]);
+
+
+
+        }
+
+//        DB::table('insurance_payments')->insert(
+//            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
+//        );
+
+
+
+        return redirect('/payment_management')
+            ->with('success', 'Insurance payment recorded successfully');
+
+    }
+
+
+
 
     public function checkAvailabilityInsurance(Request $request)
     {
@@ -313,7 +394,36 @@ class PaymentController extends Controller
     }
 
 
+    public function checkAvailabilityInsuranceClients(Request $request)
+    {
 
+
+        if($request->get('query'))
+        {
+            $query = $request->get('query');
+
+
+            $data=DB::table('insurance_invoices_clients')->where('invoice_number_votebook',  $query)->get();
+            if(count($data)!=0){
+
+                $data2="";
+                foreach($data as $var){
+                    $data2=$var->currency_invoice;
+
+                }
+                echo $data2;
+            }
+            else{
+                echo "0";
+            }
+
+        }
+
+
+
+
+
+    }
 
     public function CreateCarPaymentManually(Request $request)
     {

@@ -814,9 +814,9 @@
 
     <hr>
 
-    @if(Auth::user()->role=='Accountant-DPDI')
-        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
+    @if($privileges=='Read only')
     @else
+        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
     @endif
 
 
@@ -1298,9 +1298,9 @@
 
                             <hr>
 
-                            @if(Auth::user()->role=='Accountant-DPDI')
-                                <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
+                            @if($privileges=='Read only')
                             @else
+                                <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_space" title="Record new space payment" role="button" aria-pressed="true">Add New Payment</a>
                             @endif
 
 
@@ -1699,9 +1699,9 @@
 
                     <hr>
 
-                    @if(Auth::user()->role=='Accountant-DPDI')
-                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @if($privileges=='Read only')
                     @else
+                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_water" title="Record new water bill payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
 
 
@@ -2022,9 +2022,9 @@
 
                     <hr>
 
-                    @if(Auth::user()->role=='Accountant-DPDI')
-                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_electricity" title="Record new electricity bill payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @if($privileges=='Read only')
                     @else
+                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_electricity" title="Record new electricity bill payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
 
 
@@ -2354,9 +2354,9 @@
                     <h3 style="text-align: center"><strong>Car rental payments</strong></h3>
                     <hr>
 
-                    @if(Auth::user()->role=='Accountant-DPDI')
-                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_car" title="Record new car rental payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @if($privileges=='Read only')
                     @else
+                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_car" title="Record new car rental payment" role="button" aria-pressed="true">Add New Payment</a>
                     @endif
 
                     <div class="modal fade" id="new_payment_car" role="dialog">
@@ -2676,9 +2676,9 @@
                         <h3 style="text-align: center"><strong>Research Flats payments</strong></h3>
                         <hr>
 
-                        @if(Auth::user()->role=='Accountant-DPDI')
-                            <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_research" title="Record new Research Flats payment" role="button" aria-pressed="true">Add New Payment</a>
+                        @if($privileges=='Read only')
                         @else
+                            <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_research" title="Record new Research Flats payment" role="button" aria-pressed="true">Add New Payment</a>
                         @endif
 
                         <div class="modal fade" id="new_payment_research" role="dialog">
@@ -2984,634 +2984,309 @@
 
 
 
-                    <div id="insurance_payments" class="tabcontent" >
+                <div id="insurance_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "   class="tabcontent">
+                    <br>
 
-                        <br>
-                        <div class="tab" style="">
-
-                            <button class="tablinks_inner_insurance " onclick="openInnerPaymentsInsurance(event, 'insurance_category_clients')" id="defaultOpenInsuranceClientsCategory"><strong>Clients</strong></button>
-                            <button class="tablinks_inner_insurance " onclick="openInnerPaymentsInsurance(event, 'insurance_category_principals')"><strong>Principals</strong></button>
-
-                        </div>
+                    <h3 style="text-align: center"><strong>Insurance payments</strong></h3>
+                    <hr>
 
 
-                        <div id="insurance_category_clients" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px;" class="tabcontent_inner_insurance">
+                    @if($privileges=='Read only')
+                    @else
+                        <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true">Add New Payment</a>
+                    @endif
 
 
-                            <br>
-                            <h3 style="text-align: center"><strong>Insurance payments(Clients)</strong></h3>
+                    <div class="modal fade" id="new_payment_insurance" role="dialog">
 
-                            <hr>
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <b><h5 class="modal-title">Adding New Insurance Payment</h5></b>
 
-                            @if(Auth::user()->role=='Accountant-DPDI')
-                                <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance_clients" title="Record new insurance payment" role="button" aria-pressed="true">Add New Payment</a>
-                                <div class="modal fade" id="new_payment_insurance_clients" role="dialog">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
 
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <b><h5 class="modal-title">Adding New Insurance Payment(For clients)</h5></b>
+                                <div class="modal-body">
 
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <form method="post" action="{{ route('create_insurance_payment_manually')}}"  id="form1" >
+                                        {{csrf_field()}}
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for="">Invoice Number <span style="color: red;">*</span></label>
+                                                    <input type="number" min="1" class="form-control" id="invoice_number_insurance" name="invoice_number" value="" Required autocomplete="off">
+                                                    <p id="invoice_availability_insurance" ></p>
+                                                </div>
                                             </div>
-
-                                            <div class="modal-body">
-
-                                                <form method="post" action="{{ route('create_insurance_clients_payment_manually')}}"  id="form1" >
-                                                    {{csrf_field()}}
-
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-12">
-                                                            <div class="form-wrapper">
-                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                <input type="number" min="1" class="form-control" id="invoice_number_insurance_clients" name="invoice_number" value="" Required autocomplete="off">
-                                                                <p id="invoice_availability_insurance_clients" ></p>
-                                                            </div>
-                                                        </div>
-                                                        <br>
+                                            <br>
 
 
 
 
 
-                                                        <div class="form-group col-md-12">
-                                                            <div class="form-wrapper">
-                                                                <label for=""> Amount paid <span style="color: red;">*</span></label>
-                                                                <input type="number" min="0" class="form-control" id="amount_paid_insurance_clients" name="amount_paid" value="" Required  autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-
-
-
-
-                                                        <div class="form-group col-md-12">
-                                                            <label>Currency <span style="color: red;">*</span></label>
-                                                            <div  class="form-wrapper">
-                                                                {{--                                                    <select id="currency_insurance" class="form-control" required name="currency_payments">--}}
-                                                                {{--                                                        <option value="" ></option>--}}
-                                                                {{--                                                        <option value="TZS" >TZS</option>--}}
-                                                                {{--                                                        <option value="USD" >USD</option>--}}
-                                                                {{--                                                    </select>--}}
-                                                                <input type="text"  class="form-control" id="currency_insurance_clients" name="currency_payments" readonly value="" Required  autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-                                                        <div class="form-group col-md-12">
-                                                            <div class="form-wrapper">
-                                                                <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-                                                        <div class="form-group col-md-12">
-                                                            <div class="form-wrapper">
-                                                                <label for=""  >Receipt Number <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" id="receipt_insurance_clients" name="receipt_number" value="" required  autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-
-
-
-
-
-
-
-                                                    </div>
-
-
-                                                    <div align="right">
-                                                        <button id="submit_insurance_clients" class="btn btn-primary" type="submit">Save</button>
-                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                    </div>
-                                                </form>
-
-
-
-
-
-
-
-
-
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""> Amount paid <span style="color: red;">*</span></label>
+                                                    <input type="number" min="0" class="form-control" id="amount_paid_insurance" name="amount_paid" value="" Required  autocomplete="off">
+                                                </div>
                                             </div>
+                                            <br>
+
+
+
+
+
+                                            <div class="form-group col-md-12">
+                                                <label>Currency <span style="color: red;">*</span></label>
+                                                <div  class="form-wrapper">
+{{--                                                    <select id="currency_insurance" class="form-control" required name="currency_payments">--}}
+{{--                                                        <option value="" ></option>--}}
+{{--                                                        <option value="TZS" >TZS</option>--}}
+{{--                                                        <option value="USD" >USD</option>--}}
+{{--                                                    </select>--}}
+                                                    <input type="text"  class="form-control" id="currency_insurance" name="currency_payments" readonly value="" Required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
+                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group col-md-12">
+                                                <div class="form-wrapper">
+                                                    <label for=""  >Receipt Number <span style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="receipt_insurance" name="receipt_number" value="" required  autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <br>
+
+
+
+
+
+
+
+
                                         </div>
-                                    </div>
 
 
-                                </div>
-
-                            @else
-                            @endif
-
-
-
-
-                            <?php
-                            $i=1;
-                            ?>
-
-                            @if(count($insurance_clients_payments)>0)
-                                <br><br>
-                                <div class="col-sm-12">
-                                    <div class="pull-right">
-                                        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
-
-                                            <div class="form-group row" style="margin-right: 5px;">
-                                                <div style="padding: 0px 7px;">
-                                                    From
-                                                </div>
-                                                <div >
-                                                    <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
-                                                    <span id="start_msg3"></span>
-                                                </div>
-
-                                                <div style="padding: 0px 7px;">
-                                                    To
-                                                </div>
-
-                                                <div >
-                                                    <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
-                                                    <span id="end_msg3"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group"  style="margin-right: -13px;">
-                                                <input type="submit" name="filter" value="Filter" id="insurance_filter" class="btn btn-primary">
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div id="insurance_content">
-                                    <table class="hover table table-striped  table-bordered" id="myTable3">
-                                        <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
-
-
-                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
-
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        @foreach($insurance_clients_payments as $var)
-                                            <tr>
-
-                                                <td><center>{{$i}}</center></td>
-                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                <td><center>{{$var->receipt_number}}</center></td>
-                                                <td><center>
-
-
-
-                                                        <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance_clients{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
-                                                        <div class="modal fade" id="invoice_insurance_clients{{$var->id}}" role="dialog">
-
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                    </div>
-
-                                                                    <div class="modal-body">
-                                                                        <table style="width: 100%">
-
-                                                                            <tr>
-                                                                                <td>Client:</td>
-                                                                                <td>{{$var->debtor_name}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td>Invoice Number:</td>
-                                                                                <td>{{$var->invoice_number_votebook}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td>Inc Code:</td>
-                                                                                <td>{{$var->inc_code}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td> Start Date:</td>
-                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td> End Date:</td>
-                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td> Period:</td>
-                                                                                <td> {{$var->period}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td> Project ID:</td>
-                                                                                <td> {{$var->project_id}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td> Amount:</td>
-                                                                                <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td>GePG Control Number:</td>
-                                                                                <td>{{$var->gepg_control_no}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td>Payment Status:</td>
-                                                                                <td>{{$var->payment_status}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td>Invoice Date:</td>
-                                                                                <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
-                                                                            </tr>
-
-
-
-                                                                            <tr>
-                                                                                <td>Comments:</td>
-                                                                                <td>{{$var->user_comments}}</td>
-                                                                            </tr>
-
-
-
-
-
-
-                                                                        </table>
-                                                                        <br>
-                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-
-                                                    </center></td>
-
-
-
-
-
-                                            </tr>
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-
-                                        @endforeach
-
-
-
-
-
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            @else
-                                <p class="mt-4" style="text-align:center;">No records found</p>
-                            @endif
-
-
-                        </div>
-
-                        <div id="insurance_category_principals" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px;" class="tabcontent_inner_insurance">
-
-                            <br>
-                            <h3 style="text-align: center"><strong>Insurance payments(Principals)</strong></h3>
-
-                            <hr>
-
-                            @if(Auth::user()->role=='Accountant-DPDI')
-                                <a data-toggle="modal"  style="background-color: #38c172; padding: 10px; cursor: pointer; border-radius: 0.25rem; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_payment_insurance" title="Record new insurance payment" role="button" aria-pressed="true">Add New Payment</a>
-                                <div class="modal fade" id="new_payment_insurance" role="dialog">
-
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <b><h5 class="modal-title">Adding New Insurance Payment</h5></b>
-
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <form method="post" action="{{ route('create_insurance_payment_manually')}}"  id="form1" >
-                                                    {{csrf_field()}}
-
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-12">
-                                                            <div class="form-wrapper">
-                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                <input type="number" min="1" class="form-control" id="invoice_number_insurance" name="invoice_number" value="" Required autocomplete="off">
-                                                                <p id="invoice_availability_insurance" ></p>
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-
-
-
-
-                                                        <div class="form-group col-md-12">
-                                                            <div class="form-wrapper">
-                                                                <label for=""> Amount paid <span style="color: red;">*</span></label>
-                                                                <input type="number" min="0" class="form-control" id="amount_paid_insurance" name="amount_paid" value="" Required  autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-
-
-
-
-                                                        <div class="form-group col-md-12">
-                                                            <label>Currency <span style="color: red;">*</span></label>
-                                                            <div  class="form-wrapper">
-                                                                {{--                                                    <select id="currency_insurance" class="form-control" required name="currency_payments">--}}
-                                                                {{--                                                        <option value="" ></option>--}}
-                                                                {{--                                                        <option value="TZS" >TZS</option>--}}
-                                                                {{--                                                        <option value="USD" >USD</option>--}}
-                                                                {{--                                                    </select>--}}
-                                                                <input type="text"  class="form-control" id="currency_insurance" name="currency_payments" readonly value="" Required  autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-                                                        <div class="form-group col-md-12">
-                                                            <div class="form-wrapper">
-                                                                <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-                                                        <div class="form-group col-md-12">
-                                                            <div class="form-wrapper">
-                                                                <label for=""  >Receipt Number <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" id="receipt_insurance" name="receipt_number" value="" required  autocomplete="off">
-                                                            </div>
-                                                        </div>
-                                                        <br>
-
-
-
-
-
-
-
-
-                                                    </div>
-
-
-                                                    <div align="right">
-                                                        <button id="submit_insurance" class="btn btn-primary" type="submit">Save</button>
-                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                    </div>
-                                                </form>
-
-
-
-
-
-
-
-
-
-                                            </div>
+                                        <div align="right">
+                                            <button id="submit_insurance" class="btn btn-primary" type="submit">Save</button>
+                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                         </div>
-                                    </div>
+                                    </form>
+
+
+
+
+
+
+
 
 
                                 </div>
-
-                            @else
-                            @endif
-
-
-
-
-                            <?php
-                            $i=1;
-                            ?>
-
-                            @if(count($insurance_payments)>0)
-                                <br><br>
-                                <div class="col-sm-12">
-                                    <div class="pull-right">
-                                        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
-
-                                            <div class="form-group row" style="margin-right: 5px;">
-                                                <div style="padding: 0px 7px;">
-                                                    From
-                                                </div>
-                                                <div >
-                                                    <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
-                                                    <span id="start_msg3"></span>
-                                                </div>
-
-                                                <div style="padding: 0px 7px;">
-                                                    To
-                                                </div>
-
-                                                <div >
-                                                    <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
-                                                    <span id="end_msg3"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group"  style="margin-right: -13px;">
-                                                <input type="submit" name="filter" value="Filter" id="insurance_filter" class="btn btn-primary">
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div id="insurance_content">
-                                    <table class="hover table table-striped  table-bordered" id="myTable3">
-                                        <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
-
-
-                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
-
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        @foreach($insurance_payments as $var)
-                                            <tr>
-
-                                                <td><center>{{$i}}</center></td>
-                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                <td><center>{{$var->receipt_number}}</center></td>
-                                                <td><center>
-
-
-
-                                                        <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
-                                                        <div class="modal fade" id="invoice_insurance{{$var->id}}" role="dialog">
-
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <b><h5 class="modal-title">Invoice Details</h5></b>
-
-                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                    </div>
-
-                                                                    <div class="modal-body">
-                                                                        <table style="width: 100%">
-
-                                                                            <tr>
-                                                                                <td>Client:</td>
-                                                                                <td>{{$var->debtor_name}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td>Invoice Number:</td>
-                                                                                <td>{{$var->invoice_number_votebook}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td>Inc Code:</td>
-                                                                                <td>{{$var->inc_code}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td> Start Date:</td>
-                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td> End Date:</td>
-                                                                                <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td> Period:</td>
-                                                                                <td> {{$var->period}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td> Project ID:</td>
-                                                                                <td> {{$var->project_id}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td> Amount:</td>
-                                                                                <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td>GePG Control Number:</td>
-                                                                                <td>{{$var->gepg_control_no}}</td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <td>Payment Status:</td>
-                                                                                <td>{{$var->payment_status}}</td>
-                                                                            </tr>
-
-
-                                                                            <tr>
-                                                                                <td>Invoice Date:</td>
-                                                                                <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
-                                                                            </tr>
-
-
-
-                                                                            <tr>
-                                                                                <td>Comments:</td>
-                                                                                <td>{{$var->user_comments}}</td>
-                                                                            </tr>
-
-
-
-
-
-
-                                                                        </table>
-                                                                        <br>
-                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-
-                                                    </center></td>
-
-
-
-
-
-                                            </tr>
-                                            <?php
-                                            $i=$i+1;
-                                            ?>
-
-                                        @endforeach
-
-
-
-
-
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            @else
-                                <p class="mt-4" style="text-align:center;">No records found</p>
-                            @endif
-
+                            </div>
                         </div>
-
 
 
                     </div>
+
+                    <?php
+                    $i=1;
+                    ?>
+
+                    @if(count($insurance_payments)>0)
+    <br><br>
+    <div class="col-sm-12">
+        <div class="pull-right">
+        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+        <div class="form-group row" style="margin-right: 5px;">
+          <div style="padding: 0px 7px;">
+              From
+            </div>
+            <div >
+              <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+               <span id="start_msg3"></span>
+            </div>
+
+           <div style="padding: 0px 7px;">
+              To
+            </div>
+
+            <div >
+           <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+            <span id="end_msg3"></span>
+            </div>
+        </div>
+
+      <div class="form-group"  style="margin-right: -13px;">
+          <input type="submit" name="filter" value="Filter" id="insurance_filter" class="btn btn-primary">
+      </div>
+    </form>
+  </div>
+</div>
+
+    <div id="insurance_content">
+                        <table class="hover table table-striped  table-bordered" id="myTable3">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" style="color:#fff;"><center>S/N</center></th>
+
+
+                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
+                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach($insurance_payments as $var)
+                                <tr>
+
+                                    <td><center>{{$i}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
+                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
+                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
+                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
+                                    <td><center>{{$var->receipt_number}}</center></td>
+                                    <td><center>
+
+
+
+                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                            <div class="modal fade" id="invoice_insurance{{$var->id}}" role="dialog">
+
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Invoice Details</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Number:</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Inc Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Start Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> End Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Period:</td>
+                                                                    <td> {{$var->period}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Project ID:</td>
+                                                                    <td> {{$var->project_id}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Amount:</td>
+                                                                    <td> {{$var->amount_to_be_paid}} {{$var->currency_invoice}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>GePG Control Number:</td>
+                                                                    <td>{{$var->gepg_control_no}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Payment Status:</td>
+                                                                    <td>{{$var->payment_status}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>Comments:</td>
+                                                                    <td>{{$var->user_comments}}</td>
+                                                                </tr>
+
+
+
+
+
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </center></td>
+
+
+
+
+
+                                </tr>
+                                <?php
+                                $i=$i+1;
+                                ?>
+
+                            @endforeach
+
+
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @else
+                        <p class="mt-4" style="text-align:center;">No records found</p>
+                    @endif
+
+                </div>
 
 
 
@@ -4505,32 +4180,6 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
 
 
-     <script type="text/javascript">
-         function openInnerPaymentsInsurance(evt, evtName) {
-             // Declare all variables
-             var i, tabcontent, tablinks;
-
-             // Get all elements with class="tabcontent" and hide them
-             tabcontent = document.getElementsByClassName("tabcontent_inner_insurance");
-             for (i = 0; i < tabcontent.length; i++) {
-                 tabcontent[i].style.display = "none";
-             }
-
-             // Get all elements with class="tablinks" and remove the class "active"
-             tablinks = document.getElementsByClassName("tablinks_inner_insurance");
-
-             for (i = 0; i < tablinks.length; i++) {
-                 tablinks[i].className = tablinks[i].className.replace(" active", "");
-             }
-
-             // Show the current tab, and add an "active" class to the button that opened the tab
-             document.getElementById(evtName).style.display = "block";
-             evt.currentTarget.className += " active";
-         }
-         document.getElementById("defaultOpenInsuranceClientsCategory").click();
-     </script>
-
-
     <script>
 
 
@@ -4655,58 +4304,6 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 $('#invoice_number_insurance').attr('style','border:1px solid #ced4da');
             }
         });
-
-
-
-        $('#invoice_number_insurance_clients').on('input', function(e) {
-
-            e.preventDefault();
-            var query = $(this).val();
-            if(query != '')
-            {
-
-                $.ajax({
-                    url:"{{ route('check_availability_insurance_clients') }}",
-                    method:"GET",
-                    data:{query:query},
-                    success:function(data){
-                        if(data=='0'){
-                            $('#invoice_number_insurance_clients').attr('style','border:1px solid #f00');
-                            $("#invoice_availability_insurance_clients").css("color","red");
-                            $("#invoice_availability_insurance_clients").html("Invoice number does not exist");
-
-
-                            $("#amount_paid_insurance_clients").prop('disabled', true);
-                            $("#not_paid_insurance_clients").prop('disabled', true);
-                            $("#currency_insurance_clients").prop('disabled', true);
-                            $("#receipt_insurance_clients").prop('disabled', true);
-                            $("#submit_insurance_clients").prop('disabled', true);
-                            $("#currency_insurance_clients").val("");
-
-                        }
-                        else{
-                            $("#invoice_availability_insurance_clients").html("");
-
-                            $('#invoice_number_insurance_clients').attr('style','border:1px solid #ced4da');
-
-
-                            $("#amount_paid_insurance_clients").prop('disabled', false);
-                            $("#not_paid_insurance_clients").prop('disabled', false);
-                            $("#currency_insurance_clients").prop('disabled', false);
-                            $("#currency_insurance_clients").val(data);
-                            $("#receipt_insurance_clients").prop('disabled', false);
-                            $("#submit_insurance_clients").prop('disabled', false);
-
-                        }
-                    }
-                });
-            }
-            else if(query==''){
-
-                $('#invoice_number_insurance_clients').attr('style','border:1px solid #ced4da');
-            }
-        });
-
 
 
 
