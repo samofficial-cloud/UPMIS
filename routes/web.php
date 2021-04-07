@@ -28,8 +28,9 @@ Route::post('/login/custom', [
     Route::get('/', 'ChartController@index')->name('home');
     Route::get('/home2', 'ChartController@udiaindex')->name('home2');
     Route::get('/home9', 'ChartController@cptuindex')->name('home3');
-     Route::get('/home16', 'ChartController@spaceindex')->name('home4');
-     Route::get('/home23', 'ChartController@voteholderindex')->name('home5');
+    Route::get('/home16', 'ChartController@spaceindex')->name('home4');
+    Route::get('/home23', 'ChartController@voteholderindex')->name('home5');
+    Route::get('/home30', 'ChartController@flatsindex')->name('home6');
 
      Route::get('/dashboard/income_filter','ChartController@income_filter');
      Route::get('/dashboard/activity_filter','ChartController@activity_filter');
@@ -39,6 +40,7 @@ Route::post('/login/custom', [
      Route::get('/home16/activity_filter','ChartController@space_activity_filter');
      Route::get('/home16/contract_filter','ChartController@space_contract_filter');
     Route::get('/home23/activity_filter','ChartController@voteholder_activity_filter');
+    Route::get('/home30/activity_filter','ChartController@flats_activity_filter');
 
     Route::get('/Space', 'SpaceController@index');
     Route::get('/space_contract_on_fly/{id}/', 'ContractsController@OnFlySpaceContractForm')->name('space_contract_on_fly');

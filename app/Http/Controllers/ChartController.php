@@ -7,6 +7,7 @@ use App\insurance_contract;
 use App\Charts\SampleChart;
 Use App\carContract;
 use App\space_contract;
+use App\research_flats_contract;
 use DB;
 use Auth;
 use App\cost_centre;
@@ -582,6 +583,167 @@ class ChartController extends Controller
 
     }
 
+    public function flatsindex(){
+        $year=date('Y');
+        $data = collect([]); 
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $data->push(DB::table('research_flats_contracts')->select('id')
+                            ->whereYear('arrival_date', date('Y'))
+                            ->whereMonth('arrival_date',$days_backwards)
+                            ->count());
+            }
+
+            $chart = new SampleChart;
+            $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+            $chart->title("Rental Activities $year");
+            $chart->options(['scales' => self::chartSetAxes('Month','Rented Room(s)')]);
+            $chart->dataset('Rented Rooms', 'bar', $data )->options([
+            'fill' => 'true',
+            'borderColor' => '#38c172',
+            "borderWidth"=>2,
+            "backgroundColor"=>'#38c172'
+            ]);
+
+            $flats_income = collect([]);
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $flats_income->push(DB::table('research_flats_invoices')
+                    ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_paid) as total')))
+                    ->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')
+                    ->whereMonth('invoicing_period_start_date',$days_backwards)
+                    ->where('payment_status','!=','Not paid')
+                     ->where('currency_invoice','TZS')
+                    ->whereYear('invoicing_period_start_date',date('Y'))
+                    ->groupBy(DB::raw('MONTH(invoicing_period_start_date)'))
+                    ->pluck('total'));
+            }
+
+
+            $flats_income2 = collect([]);
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $flats_income2->push(DB::table('research_flats_invoices')
+                    ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_paid) as total')))
+                    ->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')
+                    ->whereMonth('invoicing_period_start_date',$days_backwards)
+                    ->where('payment_status','!=','Not paid')
+                     ->where('currency_invoice','USD')
+                    ->whereYear('invoicing_period_start_date',date('Y'))
+                    ->groupBy(DB::raw('MONTH(invoicing_period_start_date)'))
+                    ->pluck('total'));
+            }
+
+            $chart2 = new SampleChart;
+            $chart2->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+            $chart2->title("Income Generation $year");
+            $chart2->options(['scales' => self::chartSetAxes('Month','Income Generated')]);
+            $chart2->dataset('Research Flats Income', 'bar', $flats_income)->options([
+                'fill' => 'true',
+                'borderColor' => '#38c172',
+                "borderWidth"=>2,
+                "backgroundColor"=>'#38c172'
+            ]);
+            $chart2->dataset('USD', 'bar', $flats_income2)->options([
+                'fill' => 'true',
+                'borderColor' => '#3490dc',
+                "borderWidth"=>2,
+                "backgroundColor"=>'#3490dc'
+            ]);
+
+
+            $contracts=DB::table('research_flats_contracts')->whereRaw('DATEDIFF(departure_date,CURDATE()) <= 30')->whereRaw('DATEDIFF(departure_date,CURDATE()) > 0')->get();
+
+            $invoices= DB::table('research_flats_invoices')->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')->join('research_flats_contracts','research_flats_contracts.id','=','research_flats_invoices.contract_id')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+
+            return view('dashboard_flats',compact('chart','chart2','contracts','invoices'));
+    }
+
+public function flats_activity_filter(){
+      $data2 = collect([]);
+
+    for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $data2->push(research_flats_contract::select('id')
+                    ->whereYear('arrival_date', $_GET['year'])
+                    ->whereMonth('arrival_date',$days_backwards)
+                    ->distinct('contract_id')
+                    ->count());
+    }
+
+     if ($data2 instanceof Collection) {
+           $data2 = $data2->toArray();
+    }
+
+    $flats_income = collect([]); 
+
+
+    for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $flats_income->push(DB::table('research_flats_invoices')
+            ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_paid) as total')))
+            ->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')
+            ->whereMonth('invoicing_period_start_date',$days_backwards)
+            ->where('payment_status','!=','Not paid')
+             ->where('currency_invoice','TZS')
+            ->whereYear('invoicing_period_start_date',$_GET['year'])
+            ->groupBy(DB::raw('MONTH(invoicing_period_start_date)'))
+            ->pluck('total'));
+    }
+
+    $flats_income2 = collect([]);
+    for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+        $flats_income2->push(DB::table('research_flats_invoices')
+            ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_paid) as total')))
+            ->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')
+            ->whereMonth('invoicing_period_start_date',$days_backwards)
+            ->where('payment_status','!=','Not paid')
+             ->where('currency_invoice','USD')
+            ->whereYear('invoicing_period_start_date',$_GET['year'])
+            ->groupBy(DB::raw('MONTH(invoicing_period_start_date)'))
+            ->pluck('total'));
+    }
+
+    if ($flats_income instanceof Collection) {
+           $flats_income = $flats_income->toArray();
+    }
+
+    $flat2 = array();
+        foreach($flats_income as $i) {
+            if (count($i)==0){
+                $flat2[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flat2[]= $value;   
+                } 
+            }      
+        }
+
+    if ($flats_income2 instanceof Collection) {
+           $flats_income2 = $flats_income2->toArray();
+    }
+
+    $flat3 = array();
+        foreach($flats_income2 as $i) {
+            if (count($i)==0){
+                $flat3[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flat3[]= $value;   
+                } 
+            }      
+        }
+
+        $single_room_clients = DB::table('research_flats_rooms')->join('research_flats_contracts','research_flats_contracts.room_no','=','research_flats_rooms.room_no')->where('category','Single Room')->whereYear('arrival_date',$_GET['year'])->count();
+        $shared_room_clients = DB::table('research_flats_rooms')->join('research_flats_contracts','research_flats_contracts.room_no','=','research_flats_rooms.room_no')->where('category','Shared Room')->whereYear('arrival_date',$_GET['year'])->count();
+        $suite_room_clients = DB::table('research_flats_rooms')->join('research_flats_contracts','research_flats_contracts.room_no','=','research_flats_rooms.room_no')->where('category','Suite Room')->whereYear('arrival_date',$_GET['year'])->count();
+        $total_clients = $single_room_clients + $shared_room_clients +$suite_room_clients;
+
+
+  return response()->json(['activity'=>$data2, 'income'=>$flat2, 'income2'=>$flat3, 'single_room_clients'=>$single_room_clients, 'shared_room_clients'=>$shared_room_clients, 'suite_room_clients'=>$suite_room_clients, 'total'=>$total_clients]);
+
+    }
+
     public function cptuindex(){
         $year=date('Y');
         $data = collect([]); 
@@ -1093,6 +1255,27 @@ class ChartController extends Controller
         ]);
 
 
+        $data31 = collect([]); 
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $data31->push(DB::table('research_flats_contracts')->select('id')
+                            ->whereYear('arrival_date', date('Y'))
+                            ->whereMonth('arrival_date',$days_backwards)
+                            ->count());
+            }
+
+            $chart41 = new SampleChart;
+            $chart41->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+            $chart41->title("Research Flats Activities $year");
+            $chart41->options(['scales' => self::chartSetAxes('Month','Rented Room(s)')]);
+            $chart41->dataset('Total Activities', 'bar', $data31 )->options([
+            'fill' => 'true',
+            'borderColor' => '#6cb2eb',
+            "borderWidth"=>2,
+            "backgroundColor"=>'#6cb2eb'
+            ]);
+
+
     $CPTU_income = collect([]);
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
@@ -1231,6 +1414,53 @@ class ChartController extends Controller
             "borderWidth"=>1,
             "backgroundColor"=>'#4dc0b5'
         ]);
+
+
+          $flats_income = collect([]);
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $flats_income->push(DB::table('research_flats_invoices')
+                    ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_paid) as total')))
+                    ->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')
+                    ->whereMonth('invoicing_period_start_date',$days_backwards)
+                    ->where('payment_status','!=','Not paid')
+                     ->where('currency_invoice','TZS')
+                    ->whereYear('invoicing_period_start_date',date('Y'))
+                    ->groupBy(DB::raw('MONTH(invoicing_period_start_date)'))
+                    ->pluck('total'));
+            }
+
+
+            $flats_income2 = collect([]);
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $flats_income2->push(DB::table('research_flats_invoices')
+                    ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_paid) as total')))
+                    ->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')
+                    ->whereMonth('invoicing_period_start_date',$days_backwards)
+                    ->where('payment_status','!=','Not paid')
+                     ->where('currency_invoice','USD')
+                    ->whereYear('invoicing_period_start_date',date('Y'))
+                    ->groupBy(DB::raw('MONTH(invoicing_period_start_date)'))
+                    ->pluck('total'));
+            }
+
+            $chart7 = new SampleChart;
+            $chart7->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+            $chart7->title("Research Flats Income $year");
+            $chart7->options(['scales' => self::chartSetAxes('Month','Income')]);
+            $chart7->dataset('TZS', 'bar', $flats_income)->options([
+                'fill' => 'true',
+                'borderColor' => '#38c172',
+                "borderWidth"=>2,
+                "backgroundColor"=>'#38c172'
+            ]);
+            $chart7->dataset('USD', 'bar', $flats_income2)->options([
+                'fill' => 'true',
+                'borderColor' => '#3490dc',
+                "borderWidth"=>2,
+                "backgroundColor"=>'#3490dc'
+            ]);
         $today=date('Y-m-d');
 
         $space_contract = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->whereRaw('DATEDIFF(end_date,CURDATE()) <= 30')->whereRaw('DATEDIFF(end_date,CURDATE()) > 0')->get();
@@ -1240,10 +1470,12 @@ class ChartController extends Controller
         $cptu_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
 
         $insurance_invoices= DB::table('insurance_invoices')->join('insurance_payments','insurance_payments.invoice_number','=','insurance_invoices.invoice_number')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
+
+        $flats_invoices= DB::table('research_flats_invoices')->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')->join('research_flats_contracts','research_flats_contracts.id','=','research_flats_invoices.contract_id')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
         
 
 
-        return view('dashboard', compact('chart','chart2','chart3','chart4','chart5','chart6','space_contract','invoices','cptu_invoices','insurance_invoices'));
+        return view('dashboard', compact('chart','chart2','chart3','chart4','chart5','chart6','space_contract','invoices','cptu_invoices','insurance_invoices','chart41','chart7','flats_invoices'));
     }
 
     public function income_filter(){
@@ -1308,6 +1540,36 @@ class ChartController extends Controller
     }
 
 
+              $flats_income = collect([]);
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $flats_income->push(DB::table('research_flats_invoices')
+                    ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_paid) as total')))
+                    ->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')
+                    ->whereMonth('invoicing_period_start_date',$days_backwards)
+                    ->where('payment_status','!=','Not paid')
+                     ->where('currency_invoice','TZS')
+                    ->whereYear('invoicing_period_start_date', $_GET['year'])
+                    ->groupBy(DB::raw('MONTH(invoicing_period_start_date)'))
+                    ->pluck('total'));
+            }
+
+
+            $flats_income2 = collect([]);
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $flats_income2->push(DB::table('research_flats_invoices')
+                    ->select(array(DB::raw('Month(invoicing_period_start_date) as month'),DB::raw('sum(amount_paid) as total')))
+                    ->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')
+                    ->whereMonth('invoicing_period_start_date',$days_backwards)
+                    ->where('payment_status','!=','Not paid')
+                     ->where('currency_invoice','USD')
+                    ->whereYear('invoicing_period_start_date', $_GET['year'])
+                    ->groupBy(DB::raw('MONTH(invoicing_period_start_date)'))
+                    ->pluck('total'));
+            }
+
+
      if ($UDIA_income_britam instanceof Collection) {
            $UDIA_income_britam = $UDIA_income_britam->toArray();
     }
@@ -1318,6 +1580,14 @@ class ChartController extends Controller
 
      if ($UDIA_income_icea instanceof Collection) {
            $UDIA_income_icea = $UDIA_income_icea->toArray();
+    }
+
+    if ($flats_income instanceof Collection) {
+           $flats_income = $flats_income->toArray();
+    }
+
+    if ($flats_income2 instanceof Collection) {
+           $flats_income2 = $flats_income2->toArray();
     }
 
    
@@ -1443,7 +1713,35 @@ class ChartController extends Controller
             
         }
 
-        return response()->json(['cptu'=>$flat, 'udia'=>$flat2, 'space'=>$flat3, 'icea'=>$flata, 'britam'=>$flatb, 'nic'=>$flatc]);
+        $flat4 = array();
+        foreach($flats_income as $i) {
+            if (count($i)==0){
+                $flat4[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flat4[]= $value;   
+            } 
+        }
+            
+            
+        }
+
+        $flat5 = array();
+        foreach($flats_income2 as $i) {
+            if (count($i)==0){
+                $flat5[]=0;
+            }
+            else{
+               foreach ($i as $value) {
+                $flat5[]= $value;   
+            } 
+        }
+            
+            
+        }
+
+        return response()->json(['cptu'=>$flat, 'udia'=>$flat2, 'space'=>$flat3, 'icea'=>$flata, 'britam'=>$flatb, 'nic'=>$flatc,'flats1'=>$flat4,'flats2'=>$flat5]);
     
     }
 
@@ -1478,6 +1776,16 @@ class ChartController extends Controller
                     ->count());
     }
 
+    $data3 = collect([]); 
+
+            for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
+                $data3->push(DB::table('research_flats_contracts')->select('id')
+                            ->whereYear('arrival_date', $_GET['year'])
+                            ->whereMonth('arrival_date',$days_backwards)
+                            ->count());
+            }
+
+
     if ($data instanceof Collection) {
            $data = $data->toArray();
     }
@@ -1491,9 +1799,13 @@ class ChartController extends Controller
            $data2 = $data2->toArray();
     }
 
+    if ($data3 instanceof Collection) {
+           $data3 = $data3->toArray();
+    }
+
    
 
-    return response()->json(['cptu'=>$data, 'udia'=>$data1, 'space'=>$data2]);
+    return response()->json(['cptu'=>$data, 'udia'=>$data1, 'space'=>$data2, 'flats'=>$data3]);
 
     }
 }

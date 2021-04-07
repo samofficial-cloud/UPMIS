@@ -14,6 +14,7 @@ use App\carContract;
 use App\insurance_contract;
 use App\insurance_parameter;
 use Notification;
+use App\research_flats_contract;
 
 class clientsController extends Controller
 {
@@ -33,7 +34,11 @@ class clientsController extends Controller
       ->where('contract','Space')
       ->orderBy('clients.full_name','asc')->get();
 
-    return view('clients')->with('SCclients',$SCclients)->with('SPclients',$SPclients)->with('active_carclients',$active_carclients)->with('inactive_carclients',$inactive_carclients)->with('insuranceclients',$insuranceclients)->with('active_insuranceclients',$active_insuranceclients)->with('inactive_insuranceclients',$inactive_insuranceclients)->with('Spemails',$Spemails);
+      $flats_current = research_flats_contract::select('first_name','last_name','address','email','phone_number')->whereDate('departure_date','>=',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
+
+      $flats_previous = research_flats_contract::select('first_name','last_name','address','email','phone_number')->whereDate('departure_date','<',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
+
+    return view('clients')->with('SCclients',$SCclients)->with('SPclients',$SPclients)->with('active_carclients',$active_carclients)->with('inactive_carclients',$inactive_carclients)->with('insuranceclients',$insuranceclients)->with('active_insuranceclients',$active_insuranceclients)->with('inactive_insuranceclients',$inactive_insuranceclients)->with('Spemails',$Spemails)->with('flats_current',$flats_current)->with('flats_previous',$flats_previous);
     }
 
     public function edit(Request $request){
@@ -150,6 +155,20 @@ class clientsController extends Controller
            $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
            return redirect()->back()->with('success', 'Message Sent Successfully');
         }
+        elseif($type=='flats'){
+          $debtor = $request->get('debtor');
+          $contract_id = $request->get('contract_id');
+          if($debtor=='individual'){
+            $client = research_flat_contract::where('id',$contract_id)->first();
+          }
+          elseif($debtor=='host'){
+            $client = research_flat_contract::select('host_email as email')->where('id',$contract_id)->first();
+          }
+            $salutation = "Research Flats UDSM";
+            $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
+            return redirect()->back()->with('success', 'Message Sent Successfully');
+
+        }
 
       
       }
@@ -177,6 +196,20 @@ class clientsController extends Controller
           $salutation = "University of Dar es Salaam Insurance Agency.";
           Notification::route('mail', $email_address)->notify(new SendMessage2($name, $subject, $message, $salutation));
           return redirect()->back()->with('success', 'Message Sent Successfully');
+        }
+
+         elseif($type=='flats'){
+          $debtor = $request->get('debtor');
+          $contract_id = $request->get('contract_id');
+          if($debtor=='individual'){
+            $client = research_flat_contract::where('id',$contract_id)->first();
+          }
+          elseif($debtor=='host'){
+            $client = research_flat_contract::select('host_email as email')->where('id',$contract_id)->first();
+          }
+            $salutation = "Research Flats UDSM";
+            $client->notify(new SendMessage($name, $subject, $message, $salutation));
+            return redirect()->back()->with('success', 'Message Sent Successfully');
         }
         
       } 
@@ -217,6 +250,10 @@ class clientsController extends Controller
           $client=insurance_parameter::select('company_email as email')->where('company',$name)->first();
           $salutation = "University of Dar es Salaam Insurance Agency.";
         }
+
+         elseif($type=='flats'){
+          
+        }
     // \Notification::send($recipients, new Announcement($centre));
         $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
      
@@ -241,6 +278,9 @@ class clientsController extends Controller
         elseif($type=='principals'){
           $client=insurance_parameter::select('company_email as email')->where('company',$name)->first();
           $salutation = "University of Dar es Salaam Insurance Agency.";
+        }
+        elseif($type=='flats'){
+          
         }
     // \Notification::send($recipients, new Announcement($centre));
         $client->notify(new SendMessage2($name, $subject, $message, $salutation));
