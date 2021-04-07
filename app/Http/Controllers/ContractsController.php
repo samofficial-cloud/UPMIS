@@ -624,6 +624,12 @@ class ContractsController extends Controller
             }
 
             //invoice creation ends
+
+            DB::table('spaces')
+                ->where('space_id', $request->get('space_id_contract'))
+                ->update(['occupation_status' => 1]);
+
+
             return $pdf->stream();
 
 
@@ -979,7 +985,9 @@ class ContractsController extends Controller
 
             //Invoice creation ends
 
-
+            DB::table('spaces')
+                ->where('space_id', $request->get('space_id_contract'))
+                ->update(['occupation_status' => 1]);
 
 
             return redirect('/contracts_management')
