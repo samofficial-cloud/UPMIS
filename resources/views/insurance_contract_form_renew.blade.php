@@ -4309,6 +4309,12 @@
                 $("#receipt_no_confirm").css('font-weight', 'bold');
 
 
+                //to cut to the chase
+                gonext();
+
+
+
+
                 if(insurance_class=='MOTOR'){
 
                     if(insurance_type=='COMPREHENSIVE'){

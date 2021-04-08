@@ -4326,6 +4326,10 @@ $("#next2").click(function(){
     $("#receipt_no_confirm").html(receipt_no);
     $("#receipt_no_confirm").css('font-weight', 'bold');
 
+//to cut to the chase
+    gonext();
+
+
 
  if(insurance_class=='MOTOR'){
 
