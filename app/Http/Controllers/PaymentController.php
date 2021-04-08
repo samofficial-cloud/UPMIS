@@ -284,7 +284,7 @@ class PaymentController extends Controller
 
     public function CreateInsuranceClientsPaymentManually(Request $request)
     {
-        $amount_to_be_paid=DB::table(' insurance_invoices_clients')->where('invoice_number_votebook', $request->get('invoice_number'))->value('amount_to_be_paid');
+        $amount_to_be_paid=DB::table('insurance_invoices_clients')->where('invoice_number_votebook', $request->get('invoice_number'))->value('amount_to_be_paid');
         $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
 
 
@@ -298,7 +298,7 @@ class PaymentController extends Controller
 
 
             $payment_status='';
-            $amount_to_be_paid=DB::table(' insurance_invoices_clients')->where('invoice_number_votebook', $request->get('invoice_number'))->value('amount_to_be_paid');
+            $amount_to_be_paid=DB::table('insurance_invoices_clients')->where('invoice_number_votebook', $request->get('invoice_number'))->value('amount_to_be_paid');
             $amount_not_paid=$amount_to_be_paid-$request->get('amount_paid');
 
 
