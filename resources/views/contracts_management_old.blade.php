@@ -244,6 +244,352 @@ $i=1;
         </thead>
         <tbody>
 
+        @foreach($space_contracts as $var)
+          <tr>
+
+            <td><center>{{$i}}</center></td>
+              <td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->full_name}}</a>
+
+                  @if($var->has_clients==1)
+                 &nbsp; <a href="{{route('space_contracts_subclients',$var->client_id)}}"><i  class=" fas fa-angle-double-down"></i></a>
+                  @else
+                  @endif
+
+
+                      <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">{{$var->full_name}} Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table style="width: 100%">
+                                      <tr>
+                                          <td>Client Type:</td>
+                                          <td>{{$var->type}}</td>
+                                      </tr>
+                                      @if($var->type=='Individual')
+                                          <tr>
+                                              <td> First Name:</td>
+                                              <td> {{$var->first_name}}</td>
+                                          </tr>
+                                          <tr>
+                                              <td>Last Name:</td>
+                                              <td>{{$var->last_name}}</td>
+                                          </tr>
+                                      @elseif($var->type=='Company/Organization')
+                                          <tr>
+                                              <td>Company Name:</td>
+                                              <td>{{$var->first_name}}</td>
+                                          </tr>
+                                      @endif
+                                      <tr>
+                                          <td>Phone Number:</td>
+                                          <td>{{$var->phone_number}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Email:</td>
+                                          <td>{{$var->email}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Address:</td>
+                                          <td>{{$var->address}}</td>
+                                      </tr>
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </td>
+              <td>
+
+                  @if($var->space_id_contract!='')
+                  <a class="link_style" href="{{route('space_details',$var->space_id_contract)}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
+                  @else
+                  @endif
+              </td>
+
+              <td>@if($var->has_clients=="1")
+                  @else
+                      @if($var->academic_dependence=='Yes')
+                      {{number_format($var->academic_season)}} {{$var->currency}}
+                      @else
+                          {{number_format($var->amount)}} {{$var->currency}}
+                      @endif
+
+                  @endif
+
+              </td>
+              <td>
+                  @if($var->has_clients=="1")
+                      @else
+
+                            @if($var->academic_dependence=='Yes')
+                                @if($var->vacation_season=="0")
+                                {{number_format($var->academic_season)}} {{$var->currency}}
+                                @else
+                                {{number_format($var->vacation_season)}} {{$var->currency}}
+                                @endif
+                            @else
+                              {{number_format($var->amount)}} {{$var->currency}}
+                            @endif
+
+                      @endif
+              </td>
+
+
+
+
+            <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
+            <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+            <td><center>{{date('d/m/Y',strtotime($var->creation_date))}}</center></td>
+
+            <td><center>
+                    @if($var->contract_status==0)
+                      TERMINATED
+                    @elseif($var->end_date<date('Y-m-d'))
+                        EXPIRED
+                        @else
+                        ACTIVE
+                        @endif
+                    </center></td>
+            <td><center>
+                    <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',base64_encode(base64_encode(base64_encode($var->contract_id))))}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
+
+                    @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
+                        @if($privileges=='Read only')
+                        @else
+                        <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+
+
+                            <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                            <div class="modal fade" id="terminate{{$var->contract_id}}" role="dialog">
+
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b><h5 class="modal-title">Terminating {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}</h5></b>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <form method="get" action="{{ route('terminate_space_contract',$var->contract_id)}}" >
+                                                {{csrf_field()}}
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper">
+                                                        <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                        <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper" style="text-align: left;">
+                                                        <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>
+                                                        <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox{{$var->contract_id}}" onchange="generateInvoice({{$var->contract_id}})"  name="generate_invoice_checkbox" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div id="invoiceDiv{{$var->contract_id}}" style="display: none;">
+
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6" id="debtor_nameDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Account Code</label>
+                                                                <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="tinDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client TIN</label>
+                                                                <input type="text" class="form-control" id="tin" name="tin" value="{{$var->tin}}" readonly autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="debtor_addressDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="{{$var->address}}" readonly Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div  class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                <input type="date" class="form-control" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                <input type="date" class="form-control" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12 pt-2" id="periodDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Period <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="period{{$var->contract_id}}" name="period" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-6 pt-2" id="contract_idDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="{{$var->contract_id}}" readonly required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="project_idDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="project_id{{$var->contract_id}}" name="project_id" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Amount <span style="color: red;">*</span></label>
+                                                                <input type="number" min="0" class="form-control" id="amount_to_be_paid{{$var->contract_id}}" name="amount_to_be_paid" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="currencyDiv">
+                                                            <label>Currency <span style="color: red;">*</span></label>
+                                                            <div  class="form-wrapper">
+                                                                <select id="currency_invoice{{$var->contract_id}}" class="form-control"  name="currency">
+                                                                    <option value="" ></option>
+                                                                    <option value="TZS" >TZS</option>
+                                                                    <option value="USD" >USD</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="statusDiv">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="status{{$var->contract_id}}" name="status" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12 pt-2" id="descriptionDiv">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="description{{$var->contract_id}}" name="description" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <br>
+                                                <div align="right">
+                                                    <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        @endif
+
+                    @else
+                    @endif
+
+
+
+
+
+                    @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
+{{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
+                        @if($privileges=='Read only')
+                        @else
+                        <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+                        @endif
+
+                        @else
+                    @endif
+
+
+              </center>
+            </td>
+          </tr>
+
+          <?php
+          $i=$i+1;
+          ?>
+
+        @endforeach
 
 
         </tbody>
@@ -468,13 +814,12 @@ $i=1;
                     <table class="hover table table-striped table-bordered" id="myTableInsurance">
                         <thead class="thead-dark">
                         <tr>
-
                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
                             <th scope="col" style="color:#fff;"><center>Client Name</center></th>
 
                             <th scope="col" style="color:#fff;"><center>Class</center></th>
                             <th scope="col" style="color:#fff;"><center>Principal</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Insurance Type</center></th>
+          c                  <th scope="col"  style="color:#fff;"><center>Insurance Type</center></th>
                             <th scope="col"  style="color:#fff;"><center>Commission Date</center></th>
                             <th scope="col"  style="color:#fff;"><center>End Date</center></th>
                             <th scope="col"  style="color:#fff;"><center>Premium</center></th>
@@ -484,12 +829,100 @@ $i=1;
                             <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
                             <th scope="col"  style="color:#fff;"><center>Contract Status</center></th>
                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
-
                         </tr>
                         </thead>
                         <tbody>
 
+                        @foreach($insurance_contracts as $var)
+                            <tr>
 
+                                <td class="counterCell text-center"></td>
+                                <td>{{$var->full_name}}</td>
+                                <td><center>{{$var->insurance_class}}</center></td>
+
+                                <td><center>{{$var->principal}}</center></td>
+                                <td><center>{{$var->insurance_type}}</center></td>
+                                <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
+                                <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
+
+                                <td><center>{{number_format($var->premium)}} {{$var->currency}}</center></td>
+
+                                <td><center>{{number_format($var->commission)}} {{$var->currency}}</center></td>
+
+                                <td><center>{{date("d/m/Y",strtotime($var->created_at))}}</center></td>
+
+                                <td><center>
+                                        @if($var->contract_status==0)
+                                            TERMINATED
+                                        @elseif($var->end_date<date('Y-m-d'))
+                                            EXPIRED
+                                        @else
+                                            ACTIVE
+                                        @endif
+                                    </center></td>
+
+
+                                <td><center>
+                                        <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details_insurance',$var->id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
+
+                                    @if($privileges=='Read only')
+                                        @else
+
+
+                                            @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
+                                                {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
+                                                    <a href="{{ route('renew_insurance_contract_form',$var->id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+
+                                            @else
+                                                <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+                                                <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                <div class="modal fade" id="terminate{{$var->id}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Terminating {{$var->full_name}}'s insurance contract</h5></b>
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <form method="get" action="{{ route('terminate_insurance_contract',$var->id)}}" >
+                                                                    {{csrf_field()}}
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                                            <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <br>
+
+                                                                    <div align="right">
+                                                                        <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                            @endif
+
+                                        @endif
+
+
+                                    </center>
+                                </td>
+                            </tr>
+                        @endforeach
 
 
                         </tbody>
@@ -2185,40 +2618,6 @@ var tablelog = $('#LogTable').DataTable( {
 
         var table = $('#myTablea').DataTable( {
             dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
-
-
-            serverSide:true,
-            ajax: {
-                url:"{{ route('get_space_contracts') }}"
-
-            },
-            columnDefs: [ {
-                "searchable": false,
-                "orderable": false,
-                "targets": 0
-            } ],
-            "order": [[ 1, 'asc' ]],
-
-            columns: [
-
-                {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
-                {data: 'full_name' , className: 'text-center'},
-                {data: 'space_id_contract', className: 'text-center'},
-                {data: 'amount_academic_season', className: 'text-center'},
-                {data: 'amount_vacation_season', className: 'text-center'},
-                {data: 'start_date', className: 'text-center'},
-                {data: 'end_date', className: 'text-center'},
-                {data: 'creation_date', className: 'text-center'},
-                {data: 'contract_status', className: 'text-center'},
-                {data: 'action', className: 'text-center',  orderable: false, searchable: false},
-
-
-
-            ],
-
-
-
-
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Real Estate Contracts',
@@ -2435,43 +2834,8 @@ var tablelog = $('#LogTable').DataTable( {
           ]
         });
 
-        var myTableInsurance = $('#myTableInsurance').DataTable( {
-
-            // deferRender:true,
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
-            // processing:true,
-            serverSide:true,
-            ajax: {
-                url:"{{ route('get_insurance_contracts') }}"
-
-            },
-            columnDefs: [ {
-                "searchable": false,
-                "orderable": false,
-                "targets": 0
-            } ],
-            "order": [[ 1, 'asc' ]],
-
-            columns: [
-
-                {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
-           {data: 'full_name' , className: 'text-center'},
-           {data: 'insurance_class', className: 'text-center'},
-           {data: 'principal', className: 'text-center'},
-           {data: 'insurance_type', className: 'text-center'},
-           {data: 'commission_date', className: 'text-center'},
-           {data: 'end_date', className: 'text-center'},
-           {data: 'premium', className: 'text-center'},
-           {data: 'commission', className: 'text-center'},
-           {data: 'created_at', className: 'text-center'},
-           {data: 'contract_status', className: 'text-center'},
-                {data: 'action', className: 'text-center', name: 'action', orderable: false, searchable: false},
-
-
-
-            ],
-
-
+        var table2 = $('#myTableInsurance').DataTable( {
+           dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Insurance Contracts',
@@ -2572,10 +2936,6 @@ var tablelog = $('#LogTable').DataTable( {
             },
         ]
         });
-
-
-
-
 
         var table3 = $('#myTablecar').DataTable( {
             dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',

@@ -9,6 +9,7 @@ use Auth;
 use App\carContract;
 use PDF;
 use Riskihajar\Terbilang\Facades\Terbilang;
+use DataTables;
 
 class ContractsController extends Controller
 {
@@ -124,6 +125,469 @@ class ContractsController extends Controller
 
     }
 
+        public function getInsuranceContracts(Request $request){
+
+
+            return datatables()->of(DB::table('insurance_contracts'))->addIndexColumn()->editColumn('commission_date', function($row){
+
+                return date("d/m/Y",strtotime($row->commission_date));
+
+            })->editColumn('end_date', function($row){
+
+                return date("d/m/Y",strtotime($row->end_date));
+
+            })->editColumn('premium',function($row){
+
+                return number_format($row->premium).' '.$row->currency;
+
+            })->editColumn('commission',function($row){
+
+                return number_format($row->commission).' '.$row->currency;
+
+            })->editColumn('created_at',function($row){
+
+                return date("d/m/Y",strtotime($row->created_at));
+
+            })->editColumn('contract_status',function($row){
+
+                if($row->contract_status==0){
+                return 'TERMINATED';
+
+                }elseif($row->end_date<date('Y-m-d')){
+
+                    return 'EXPIRED';
+                } else{
+
+                    return 'ACTIVE';
+                }
+
+            })->addColumn('action', function($row){
+
+                $action = '
+ <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="/contract_details_insurance/'.$row->id.'" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
+';
+
+                $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+
+if($privileges=='Read only') {
+
+
+}else{
+        if($row->contract_status==0 OR $row->end_date<date('Y-m-d')){
+
+        $action.='<a href="/renew_insurance_contract_form/'.$row->id.'" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>';
+
+        }else{
+
+
+        $action.=' <a href="/edit_insurance_contract/'.$row->id.'" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+                                                <a data-toggle="modal" data-target="#terminate'.$row->id.'" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                <div class="modal fade" id="terminate'.$row->id.'" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Terminating '.$row->full_name.' insurance contract</h5></b>
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <form method="get" action="/terminate_insurance_contract/'.$row->id.'" >
+                                                                    '.csrf_field().'
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                                            <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <br>
+
+                                                                    <div align="right">
+                                                                        <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>';
+
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                return $action;
+
+            })
+                ->rawColumns(['action'])
+                ->make(true);
+
+
+        }
+
+
+
+
+
+
+    public function getSpaceContracts(Request $request){
+
+
+        return datatables()->of(DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->select('clients.full_name','space_contracts.start_date','space_contracts.end_date','space_contracts.space_id_contract','space_contracts.creation_date','space_contracts.contract_status','space_contracts.contract_id','clients.client_id','clients.tin','clients.address','space_contracts.has_clients','space_contracts.academic_dependence','space_contracts.academic_season','space_contracts.currency','space_contracts.amount','space_contracts.vacation_season')->where('space_contracts.under_client',0)->orderBy('space_contracts.contract_id','desc'))->addIndexColumn()->editColumn('start_date', function($row){
+
+            return date("d/m/Y",strtotime($row->start_date));
+
+        })->editColumn('end_date', function($row){
+
+            return date("d/m/Y",strtotime($row->end_date));
+
+        })->addColumn('space_id_contract',function($row){
+
+            if($row->space_id_contract!=''){
+
+        $space_id_contract='<a class="link_style" href="/space_details/'.$row->space_id_contract.'" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>'.$row->space_id_contract.'</center></a>';
+
+                return $space_id_contract;
+
+            }else{
+
+
+            }
+
+        })->editColumn('creation_date',function($row){
+
+            return date("d/m/Y",strtotime($row->creation_date));
+
+        })->editColumn('contract_status',function($row){
+
+            if($row->contract_status==0){
+                return 'TERMINATED';
+
+            }elseif($row->end_date<date('Y-m-d')){
+
+                return 'EXPIRED';
+            } else{
+
+                return 'ACTIVE';
+            }
+
+        })->addColumn('action', function($row){
+
+            $action ='
+ <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="/contract_details/'.base64_encode(base64_encode(base64_encode($row->contract_id))).'" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
+';
+
+            $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+
+
+                if($privileges=='Read only') {
+
+
+                }else{
+                    if($row->contract_status==0 OR $row->end_date<date('Y-m-d')){
+
+                        $action.='<a href="/renew_space_contract_form/'.$row->contract_id.'" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>';
+
+                    }else{
+
+
+                        $action.=' <a href="/edit_space_contract/'.$row->contract_id.'" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+                                                <a data-toggle="modal" data-target="#terminate'.$row->contract_id.'" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                  <div class="modal fade" id="terminate'.$row->contract_id.'" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b><h5 class="modal-title">Terminating '.$row->full_name.'\'s contract for space id '.$row->space_id_contract.'</h5></b>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <form method="get" action="/terminate_space_contract/'.$row->contract_id.'" >
+                                                '.csrf_field().'
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper">
+                                                        <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                        <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper" style="text-align: left;">
+                                                        <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>
+                                                        <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox'.$row->contract_id.'" onchange="generateInvoice('.$row->contract_id.')"  name="generate_invoice_checkbox" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div id="invoiceDiv'.$row->contract_id.'" style="display: none;">
+
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6" id="debtor_nameDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="'.$row->full_name.'" readonly Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Account Code</label>
+                                                                <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="'.$row->client_id.'"  readonly autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="tinDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client TIN</label>
+                                                                <input type="text" class="form-control" id="tin" name="tin" value="'.$row->tin.'" readonly autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="debtor_addressDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="'.$row->address.'" readonly Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div  class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                <input type="date" class="form-control" id="invoicing_period_start_date'.$row->contract_id.'" name="invoicing_period_start_date" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                <input type="date" class="form-control" id="invoicing_period_end_date'.$row->contract_id.'" name="invoicing_period_end_date" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12 pt-2" id="periodDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Period <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="period'.$row->contract_id.'" name="period" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-6 pt-2" id="contract_idDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="'.$row->contract_id.'" readonly required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="project_idDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="project_id'.$row->contract_id.'" name="project_id" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Amount <span style="color: red;">*</span></label>
+                                                                <input type="number" min="0" class="form-control" id="amount_to_be_paid'.$row->contract_id.'" name="amount_to_be_paid" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="currencyDiv">
+                                                            <label>Currency <span style="color: red;">*</span></label>
+                                                            <div  class="form-wrapper">
+                                                                <select id="currency_invoice'.$row->contract_id.'" class="form-control"  name="currency">
+                                                                    <option value="" ></option>
+                                                                    <option value="TZS" >TZS</option>
+                                                                    <option value="USD" >USD</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="statusDiv">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="status'.$row->contract_id.'" name="status" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12 pt-2" id="descriptionDiv">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="description'.$row->contract_id.'" name="description" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <br>
+                                                <div align="right">
+                                                    <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>';
+
+                    }
+
+
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            return $action;
+
+        })->addColumn('amount_academic_season', function($row){
+
+            if($row->has_clients=="1"){
+
+
+
+            }else{
+                if($row->academic_dependence=='Yes'){
+
+                          return  number_format($row->academic_season).' '.$row->currency;
+
+                }else{
+
+                    return number_format($row->amount).' '.$row->currency;
+
+                }
+
+            }
+
+
+        })->addColumn('amount_vacation_season', function($row){
+
+            if($row->has_clients=="1"){
+
+
+            }else{
+                if($row->academic_dependence=='Yes') {
+                    if ($row->vacation_season == "0") {
+
+                        return number_format($row->academic_season) . ' ' . $row->currency;
+
+                    }else{
+                        return number_format($row->vacation_season) . ' ' . $row->currency;
+                    }
+                }else{
+                        return  number_format($row->amount).' '.$row->currency;
+                    }
+
+                }
+
+
+        })->rawColumns(['action','amount_academic_season','amount_vacation_season','space_id_contract'])
+            ->make(true);
+
+    }
 
 
 

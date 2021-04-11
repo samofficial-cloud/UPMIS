@@ -21,6 +21,13 @@ Route::post('/login/custom', [
 
     Route::group(['middleware' => 'auth'], function(){
 
+    //Data retrieval
+
+        Route::get('/get_insurance_contracts', 'ContractsController@getInsuranceContracts')->name('get_insurance_contracts');
+        Route::get('/get_space_contracts', 'ContractsController@getSpaceContracts')->name('get_space_contracts');
+
+
+
     Route::get('file','UploadFileController@create');
     Route::post('file','UploadFileController@store');
 
