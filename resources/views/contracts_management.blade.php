@@ -67,7 +67,7 @@ div.dt-buttons{
 
 
   .dataTables_wrapper .dataTables_processing {
-      position: fixed;
+      position: relative;
       top: 50%;
       left: 50%;
       width: 200px;
