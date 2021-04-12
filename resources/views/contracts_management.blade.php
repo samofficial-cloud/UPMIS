@@ -2185,8 +2185,7 @@ var tablelog = $('#LogTable').DataTable( {
 
         var table = $('#myTablea').DataTable( {
             dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
-
-
+            processing:true,
             serverSide:true,
             ajax: {
                 url:"{{ route('get_space_contracts') }}"
@@ -2439,7 +2438,7 @@ var tablelog = $('#LogTable').DataTable( {
 
             // deferRender:true,
             dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
-            // processing:true,
+            processing:true,
             serverSide:true,
             ajax: {
                 url:"{{ route('get_insurance_contracts') }}"
