@@ -66,6 +66,27 @@ div.dt-buttons{
 }
 
 
+  .dataTables_wrapper .dataTables_processing {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      height: 20px;
+      margin-bottom: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-left: -100px;
+      margin-top: -26px;
+      text-align: center;
+      padding: 1em 0;
+      z-index: 1;
+  }
+
+
+
+
+
 </style>
 
 @endsection
