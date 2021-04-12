@@ -71,7 +71,7 @@ div.dt-buttons{
       top: 50%;
       left: 50%;
       width: 200px;
-      height: 20px;
+      height: auto;
       margin-bottom: 20px;
       background-color: #fff;
       border: 1px solid #ddd;
