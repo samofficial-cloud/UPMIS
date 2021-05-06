@@ -391,11 +391,18 @@
 
 
 
+                                                        <div id="tinDiv" class="form-group col-12 pt-4">
+                                                            <div class="form-wrapper">
+                                                                <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                                <span id="tin_msg"></span>
+                                                                <input type="number" id="tin" name="tin" value="{{$var->tin}}" class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                                                <p id="error_tin"></p>
+                                                            </div>
+                                                        </div>
 
 
 
-
-                                                        <div id="vehicle_registration_noDiv" class="form-wrapper col-12" style="display: none;">
+                                                        <div id="vehicle_registration_noDiv" class="form-wrapper col-12 pt-4" style="display: none;">
                                                             <br>
                                                             <label for="client_type"><strong>Vehicle Registration Number</strong></label>
                                                             <span id="vehicle_registration_no_msg"></span>
@@ -1853,7 +1860,7 @@
 
         var current_fs, next_fs, previous_fs; //fieldsets
         var opacity;
-        var p1, p2,p3,p4,p5,p6,p7,p8,p9,p10;
+        var p1, p2,p3,p4,p5,p6,p7,p8,p9,p10,ptin;
         var temp;
 
         function properNext(){
@@ -1887,7 +1894,7 @@
                 var insurance_typ=$("#insurance_type").val();
                 var vehicle_registration_no=$("#vehicle_registration_no").val();
                 var vehicle_use=$("#vehicle_use").val();
-
+                var tin=$('#tin').val();
 
                 if(insurance_type=='COMPREHENSIVE'){
                     $('#mode_of_paymentDiv').show();
@@ -1980,6 +1987,24 @@
                 }
 
 
+
+                if(tin=='') {
+                    ptin=0;
+                    var message = document.getElementById('tin_msg');
+                    message.style.color = 'red';
+                    message.innerHTML = "Required";
+                    $('#tin').attr('style', 'border-bottom:1px solid #f00');
+
+                }else{
+                    ptin=1;
+                    $('#tin_msg').hide();
+                    $('#tin').attr('style','border-bottom: 1px solid #ccc');
+                }
+
+
+
+
+
                 if (vehicle_registration_no == "") {
                     p7 = 0;
                     $('#vehicle_registration_no_msg').show();
@@ -2052,7 +2077,7 @@
                     if (insurance_company=="MOTOR"){
 
 
-                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p7=='1' & p8=='1'){
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & p7=='1' & p8=='1' & ptin=='1'){
                             gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
@@ -2141,7 +2166,7 @@
                     }else{
 
 
-                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1'){
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p5=='1' & p6=='1' & ptin=='1'){
                             gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
@@ -2244,7 +2269,7 @@
                     if (insurance_company=="MOTOR"){
 
 
-                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1' & p7=='1' & p8=='1'){
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1' & p7=='1' & p8=='1' & ptin=='1'){
                             gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
@@ -2332,7 +2357,7 @@
                     }else{
 
 
-                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1'){
+                        if(p1=='1' & p2=='1' & p3=='1' & p4=='1' & p6=='1' & ptin=='1'){
                             gonext();
 
                             var type_var= document.getElementById("insurance_type").value;
@@ -3663,6 +3688,28 @@
 
     </script>
 
+    <script>
 
+        function minCharacters(value){
+
+
+
+            if(value.length<9){
+
+                document.getElementById("next1").disabled = true;
+                document.getElementById("error_tin").style.color = 'red';
+                document.getElementById("error_tin").style.float = 'left';
+                document.getElementById("error_tin").style.paddingTop = '1%';
+                document.getElementById("error_tin").innerHTML ='TIN number cannot be less than 9 digits';
+
+            }else{
+                document.getElementById("error_tin").innerHTML ='';
+                document.getElementById("next1").disabled = false;
+            }
+
+        }
+
+
+    </script>
 
 @endsection

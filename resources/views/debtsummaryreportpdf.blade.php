@@ -7,7 +7,7 @@
 table {
   border-collapse: collapse;
    width: 100%;
-   
+
 }
 
 table, td, th {
@@ -101,7 +101,7 @@ $flats_tzsdebt =0;
  					@elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true'))
  						<br><br>Real Estate Revenue Collection and Debts Summary for <strong>Rent</strong>, whose business is <strong>{{$_GET['biz']}}</strong> and Location is <strong>{{$_GET['loc']}}</strong>
  					@elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true'))
- 						<br><br>Real Estate Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>, for <strong>Rent</strong> and whose business is <strong>{{$_GET['biz']}}</strong> 
+ 						<br><br>Real Estate Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>, for <strong>Rent</strong> and whose business is <strong>{{$_GET['biz']}}</strong>
  					@elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true'))
  						<br><br>Real Estate Revenue Collection and Debts Summary for <strong>Rent</strong>, whose business is <strong>{{$_GET['biz']}}</strong>
  					@elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true'))
@@ -120,7 +120,7 @@ $flats_tzsdebt =0;
  					@elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']!='true'))
  						<br><br>Real Estate Revenue Collection and Debts Summary for <strong>Electricity</strong>, whose business is <strong>{{$_GET['biz']}}</strong> and Location is <strong>{{$_GET['loc']}}</strong>
  					@elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']=='true'))
- 						<br><br>Real Estate Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>, for <strong>Electricity</strong> and whose business is <strong>{{$_GET['biz']}}</strong> 
+ 						<br><br>Real Estate Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end']))}}</strong>, for <strong>Electricity</strong> and whose business is <strong>{{$_GET['biz']}}</strong>
  					@elseif(($_GET['bus_fil']=='true') && ($_GET['loc_fil']!='true') && ($_GET['yr_fil']!='true'))
  						<br><br>Real Estate Revenue Collection and Debts Summary for <strong>Electricity</strong>, whose business is <strong>{{$_GET['biz']}}</strong>
  					@elseif(($_GET['bus_fil']!='true') && ($_GET['loc_fil']=='true') && ($_GET['yr_fil']=='true'))
@@ -152,7 +152,7 @@ $flats_tzsdebt =0;
  						<br><br>Real Estate Revenue Collection and Debts Summary for <strong>Water</strong>
  					@endif
 				@endif
-     			
+
  			@elseif($_GET['b_type']=='Car Rental')
  				@if($_GET['yr2_fil']=='true')
  					<br><br>CPTU Revenue Collection and Debts Summary of the Duration <strong>{{date("d/m/Y",strtotime($_GET['start2']))}}</strong> to <strong>{{date("d/m/Y",strtotime($_GET['end2']))}}</strong>
@@ -172,7 +172,7 @@ $flats_tzsdebt =0;
 					<br><br>Revenue Collection and Debts Summary
 				@endif
  			@endif
-     	
+
      </center>
 <br>
 @if($_GET['b_type']=='Space')
@@ -194,7 +194,7 @@ $flats_tzsdebt =0;
 
 				@for($z = 0; $z < count($contract_id); $z++)
 					@foreach($contract_id[$z] as $contract)
-						<?php $a = $a+1;?>	
+						<?php $a = $a+1;?>
 					<tr>
 						<td style="text-align: center">{{$a}}.</td>
 						<td>{{$contract->debtor_name}}</td>
@@ -211,7 +211,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('invoices.contract_id',$contract->contract_id)
 							        			->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('space_payments')
 												->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
@@ -226,7 +226,7 @@ $flats_tzsdebt =0;
 							        			->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('invoices.contract_id',$contract->contract_id)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('space_payments')
 												->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
@@ -235,7 +235,7 @@ $flats_tzsdebt =0;
 												->orderBy('amount_not_paid','dsc')
 												->first();
 									}
-										
+
 								}
 								elseif($_GET['criteria']=='electricity'){
 									if($_GET['yr_fil']=='true'){
@@ -244,7 +244,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('electricity_bill_invoices.contract_id',$contract->contract_id)
 							        			->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('electricity_bill_payments')
 												->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
@@ -259,17 +259,17 @@ $flats_tzsdebt =0;
 							        			->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('electricity_bill_invoices.contract_id',$contract->contract_id)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('electricity_bill_payments')
 												->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
 												->select('amount_not_paid')
 												->where('electricity_bill_invoices.contract_id',$contract->contract_id)
 												->orderBy('amount_not_paid','dsc')
-												->first();	
+												->first();
 									}
 
-												
+
 								}
 
 								elseif($_GET['criteria']=='water'){
@@ -279,7 +279,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('water_bill_invoices.contract_id',$contract->contract_id)
 							        			->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('water_bill_payments')
 												->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
@@ -294,7 +294,7 @@ $flats_tzsdebt =0;
 							        			->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('water_bill_invoices.contract_id',$contract->contract_id)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('water_bill_payments')
 												->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
@@ -303,8 +303,8 @@ $flats_tzsdebt =0;
 												->orderBy('amount_not_paid','dsc')
 												->first();
 									}
-									
-												
+
+
 								}
 
 
@@ -339,11 +339,11 @@ $flats_tzsdebt =0;
 						 	}
 						 ?>
 						 @endif
-						
+
 					</tr>
 					@endforeach
 				@endfor
-				
+
 			</tbody>
 		</table>
 		<table>
@@ -368,7 +368,8 @@ $flats_tzsdebt =0;
 					<th scope="col" style="width: 5%;">SN</th>
 					<th scope="col">Client Name</th>
 					<th scope="col"style="width: 10%;">Contract Id</th>
-					<th scope="col" style="width: 14%;">Cost Center</th>
+					<th scope="col" style="width: 14%;">Cost Centre ID</th>
+					<th scope="col" style="width: 14%;">Cost Centre Name</th>
 					<th scope="col" style="width: 17%;">Destination</th>
 					<th scope="col" style="width: 8%;">Currency</th>
 					<th scope="col" style="width: 12%;">Revenue</th>
@@ -379,12 +380,15 @@ $flats_tzsdebt =0;
 
 				@for($z = 0; $z < count($contract_id); $z++)
 					@foreach($contract_id[$z] as $contract)
-						<?php $a = $a+1;?>	
+						<?php $a = $a+1;?>
 					<tr>
 						<td style="text-align: center">{{$a}}.</td>
 						<td>{{$contract->debtor_name}}</td>
 						<td style="text-align: center">{{$contract->contract_id}}</td>
 						<td style="text-align: center">{{$contract->cost_centre}}</td>
+                        <?php $cost_centre_name=DB::table('cost_centres')->where('costcentre_id',$contract->cost_centre)->value('costcentre');   ?>
+
+                        <td style="text-align: center">{{$cost_centre_name}}</td>
 						<td>{{$contract->destination}}</td>
 						<td style="text-align: center">TZS</td>
 						<?php
@@ -396,7 +400,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('car_rental_invoices.contract_id',$contract->contract_id)
 							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('car_rental_payments')
 												->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
@@ -411,7 +415,7 @@ $flats_tzsdebt =0;
 							        			->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('car_rental_invoices.contract_id',$contract->contract_id)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('car_rental_payments')
 												->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
@@ -420,9 +424,9 @@ $flats_tzsdebt =0;
 												->orderBy('amount_not_paid','dsc')
 												->first();
 							}
-								
-										
-								
+
+
+
 						?>
 						<td style="text-align: right;">{{number_format($income)}}</td>
 						<?php $cptu_income= $cptu_income + $income; ?>
@@ -472,7 +476,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('insurance_invoices.debtor_name',$contract->debtor_name)
 							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('insurance_payments')
 												->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
@@ -487,7 +491,7 @@ $flats_tzsdebt =0;
 							        			->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('insurance_invoices.debtor_name',$contract->debtor_name)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('insurance_payments')
 												->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
@@ -497,27 +501,27 @@ $flats_tzsdebt =0;
 												->first();
 
 								}
-										
-								
+
+
 						?>
 						<td style="text-align: right;">{{number_format($income)}}</td>
 
-						<?php 
+						<?php
 							if($contract->currency_invoice=='USD'){
 								$udia_usdincome= $udia_usdincome + $income;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$udia_tzsincome= $udia_tzsincome + $income; 
+								$udia_tzsincome= $udia_tzsincome + $income;
 							}
 					 	?>
 					 	@if(!isset($debt))
 						 	<td style="text-align: right;">0</td>
-						 	<?php 
+						 	<?php
 						 	if($contract->currency_invoice=='USD'){
 								$udia_usddebt= $udia_usddebt +0;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$udia_tzsdebt= $udia_tzsdebt +0; 
+								$udia_tzsdebt= $udia_tzsdebt +0;
 							}
 							?>
 						@else
@@ -527,7 +531,7 @@ $flats_tzsdebt =0;
 								$udia_usddebt= $udia_usddebt +$debt->amount_not_paid;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$udia_tzsdebt= $udia_tzsdebt +$debt->amount_not_paid; 
+								$udia_tzsdebt= $udia_tzsdebt +$debt->amount_not_paid;
 							}
 							 ?>
 						 @endif
@@ -569,7 +573,7 @@ $flats_tzsdebt =0;
 
 				@for($z = 0; $z < count($contract_id); $z++)
 					@foreach($contract_id[$z] as $contract)
-						<?php $a = $a+1;?>	
+						<?php $a = $a+1;?>
 					<tr>
 						<td style="text-align: center">{{$a}}.</td>
 						<td>{{$contract->debtor_name}}</td>
@@ -579,14 +583,14 @@ $flats_tzsdebt =0;
 						<td style="text-align: center">{{$contract->currency}}</td>
 						<?php
 							$income=array();
-								
+
 									if($_GET['yr2_fil']=='true'){
 										$income=DB::table('space_payments')
 							        			->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('invoices.contract_id',$contract->contract_id)
 							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('space_payments')
 												->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
@@ -601,7 +605,7 @@ $flats_tzsdebt =0;
 							        			->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('invoices.contract_id',$contract->contract_id)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('space_payments')
 												->join('invoices','invoices.invoice_number','=','space_payments.invoice_number')
@@ -610,8 +614,8 @@ $flats_tzsdebt =0;
 												->orderBy('amount_not_paid','dsc')
 												->first();
 									}
-										
-								
+
+
 
 
 					 	?>
@@ -645,11 +649,11 @@ $flats_tzsdebt =0;
 						 	}
 						 ?>
 						 @endif
-						
+
 					</tr>
 					@endforeach
 				@endfor
-				
+
 			</tbody>
 		</table>
 		<table>
@@ -686,7 +690,7 @@ $flats_tzsdebt =0;
 
 				@for($z = 0; $z < count($contract_id2); $z++)
 					@foreach($contract_id2[$z] as $contract)
-						<?php $b = $b+1;?>	
+						<?php $b = $b+1;?>
 					<tr>
 						<td style="text-align: center">{{$b}}.</td>
 						<td>{{$contract->debtor_name}}</td>
@@ -702,7 +706,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('water_bill_invoices.contract_id',$contract->contract_id)
 							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('water_bill_payments')
 												->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
@@ -717,7 +721,7 @@ $flats_tzsdebt =0;
 							        			->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('water_bill_invoices.contract_id',$contract->contract_id)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('water_bill_payments')
 												->join('water_bill_invoices','water_bill_invoices.invoice_number','=','water_bill_payments.invoice_number')
@@ -726,7 +730,7 @@ $flats_tzsdebt =0;
 												->orderBy('amount_not_paid','dsc')
 												->first();
 									}
-									
+
 					 	?>
 						 <td style="text-align: right;">{{number_format($income)}}</td>
 						 <?php
@@ -758,11 +762,11 @@ $flats_tzsdebt =0;
 						 	}
 						 ?>
 						 @endif
-						
+
 					</tr>
 					@endforeach
 				@endfor
-				
+
 			</tbody>
 		</table>
 		<table>
@@ -799,7 +803,7 @@ $flats_tzsdebt =0;
 
 				@for($z = 0; $z < count($contract_id3); $z++)
 					@foreach($contract_id3[$z] as $contract)
-						<?php $c = $c+1;?>	
+						<?php $c = $c+1;?>
 					<tr>
 						<td style="text-align: center">{{$c}}.</td>
 						<td>{{$contract->debtor_name}}</td>
@@ -815,7 +819,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('electricity_bill_invoices.contract_id',$contract->contract_id)
 							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('electricity_bill_payments')
 												->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
@@ -830,14 +834,14 @@ $flats_tzsdebt =0;
 							        			->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('electricity_bill_invoices.contract_id',$contract->contract_id)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('electricity_bill_payments')
 												->join('electricity_bill_invoices','electricity_bill_invoices.invoice_number','=','electricity_bill_payments.invoice_number')
 												->select('amount_not_paid')
 												->where('electricity_bill_invoices.contract_id',$contract->contract_id)
 												->orderBy('amount_not_paid','dsc')
-												->first();	
+												->first();
 									}
 
 
@@ -872,11 +876,11 @@ $flats_tzsdebt =0;
 						 	}
 						 ?>
 						 @endif
-						
+
 					</tr>
 					@endforeach
 				@endfor
-				
+
 			</tbody>
 		</table>
 		<table>
@@ -921,7 +925,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('insurance_invoices.debtor_name',$contract->debtor_name)
 							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('insurance_payments')
 												->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
@@ -936,7 +940,7 @@ $flats_tzsdebt =0;
 							        			->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('insurance_invoices.debtor_name',$contract->debtor_name)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('insurance_payments')
 												->join('insurance_invoices','insurance_invoices.invoice_number','=','insurance_payments.invoice_number')
@@ -946,27 +950,27 @@ $flats_tzsdebt =0;
 												->first();
 
 								}
-										
-								
+
+
 						?>
 						<td style="text-align: right;">{{number_format($income)}}</td>
 
-						<?php 
+						<?php
 							if($contract->currency_invoice=='USD'){
 								$udia_usdincome= $udia_usdincome + $income;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$udia_tzsincome= $udia_tzsincome + $income; 
+								$udia_tzsincome= $udia_tzsincome + $income;
 							}
 					 	?>
 					 	@if(!isset($debt))
 						 	<td style="text-align: right;">0</td>
-						 	<?php 
+						 	<?php
 						 	if($contract->currency_invoice=='USD'){
 								$udia_usddebt= $udia_usddebt +0;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$udia_tzsdebt= $udia_tzsdebt +0; 
+								$udia_tzsdebt= $udia_tzsdebt +0;
 							}
 							?>
 						@else
@@ -976,7 +980,7 @@ $flats_tzsdebt =0;
 								$udia_usddebt= $udia_usddebt +$debt->amount_not_paid;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$udia_tzsdebt= $udia_tzsdebt +$debt->amount_not_paid; 
+								$udia_tzsdebt= $udia_tzsdebt +$debt->amount_not_paid;
 							}
 							 ?>
 						 @endif
@@ -1006,7 +1010,8 @@ $flats_tzsdebt =0;
 					<th scope="col" style="width: 5%;">SN</th>
 					<th scope="col">Client Name</th>
 					<th scope="col"style="width: 10%;">Contract Id</th>
-					<th scope="col" style="width: 14%;">Cost Center</th>
+					<th scope="col" style="width: 14%;">Cost Centre ID</th>
+					<th scope="col" style="width: 14%;">Cost Centre Name</th>
 					<th scope="col" style="width: 17%;">Destination</th>
 					<th scope="col" style="width: 8%;">Currency</th>
 					<th scope="col" style="width: 12%;">Revenue</th>
@@ -1017,12 +1022,15 @@ $flats_tzsdebt =0;
 
 				@for($z = 0; $z < count($contract_id4); $z++)
 					@foreach($contract_id4[$z] as $contract)
-						<?php $e = $e+1;?>	
+						<?php $e = $e+1;?>
 					<tr>
 						<td style="text-align: center">{{$e}}.</td>
 						<td>{{$contract->debtor_name}}</td>
 						<td style="text-align: center">{{$contract->contract_id}}</td>
 						<td style="text-align: center">{{$contract->cost_centre}}</td>
+                        <?php $cost_centre_name=DB::table('cost_centres')->where('costcentre_id',$contract->cost_centre)->value('costcentre');   ?>
+
+                        <td style="text-align: center">{{$cost_centre_name}}</td>
 						<td>{{$contract->destination}}</td>
 						<td style="text-align: center">TZS</td>
 						<?php
@@ -1034,7 +1042,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('car_rental_invoices.contract_id',$contract->contract_id)
 							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('car_rental_payments')
 												->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
@@ -1049,7 +1057,7 @@ $flats_tzsdebt =0;
 							        			->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('car_rental_invoices.contract_id',$contract->contract_id)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('car_rental_payments')
 												->join('car_rental_invoices','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
@@ -1058,9 +1066,9 @@ $flats_tzsdebt =0;
 												->orderBy('amount_not_paid','dsc')
 												->first();
 							}
-								
-										
-								
+
+
+
 						?>
 						<td style="text-align: right;">{{number_format($income)}}</td>
 						<?php $cptu_income= $cptu_income + $income; ?>
@@ -1111,7 +1119,7 @@ $flats_tzsdebt =0;
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('research_flats_invoices.debtor_name',$contract->debtor_name)
 							        			->wherebetween('date_of_payment',[ $_GET['start2'] ,$_GET['end2']])
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('research_flats_payments')
 												->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
@@ -1126,7 +1134,7 @@ $flats_tzsdebt =0;
 							        			->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
 							        			->select(array(DB::raw('sum(amount_paid) as total')))
 							        			->where('research_flats_invoices.debtor_name',$contract->debtor_name)
-							        			->value('total'); 
+							        			->value('total');
 
 										$debt=DB::table('research_flats_payments')
 												->join('research_flats_invoices','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')
@@ -1136,27 +1144,27 @@ $flats_tzsdebt =0;
 												->first();
 
 								}
-										
-								
+
+
 						?>
 						<td style="text-align: right;">{{number_format($income)}}</td>
 
-						<?php 
+						<?php
 							if($contract->currency_invoice=='USD'){
 								$flats_usdincome= $flats_usdincome + $income;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$flats_tzsincome= $flats_tzsincome + $income; 
+								$flats_tzsincome= $flats_tzsincome + $income;
 							}
 					 	?>
 					 	@if(!isset($debt))
 						 	<td style="text-align: right;">0</td>
-						 	<?php 
+						 	<?php
 						 	if($contract->currency_invoice=='USD'){
 								$flats_usddebt= $flats_usddebt +0;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$flats_tzsdebt= $flats_tzsdebt +0; 
+								$flats_tzsdebt= $flats_tzsdebt +0;
 							}
 							?>
 						@else
@@ -1166,7 +1174,7 @@ $flats_tzsdebt =0;
 								$flats_usddebt= $flats_usddebt +$debt->amount_not_paid;
 							}
 							elseif($contract->currency_invoice=='TZS'){
-								$flats_tzsdebt= $flats_tzsdebt +$debt->amount_not_paid; 
+								$flats_tzsdebt= $flats_tzsdebt +$debt->amount_not_paid;
 							}
 							 ?>
 						 @endif

@@ -10,6 +10,7 @@ use App\carContract;
 use PDF;
 use Riskihajar\Terbilang\Facades\Terbilang;
 use DataTables;
+use File;
 
 class ContractsController extends Controller
 {
@@ -18,7 +19,7 @@ class ContractsController extends Controller
      *
      * @return void
      */
-//    public function __construct()
+//    public function __constructpercentage_to_pay()
 //    {
 //        $this->middleware('auth');
 //    }
@@ -261,7 +262,7 @@ if($privileges=='Read only') {
     public function getSpaceContracts(Request $request){
 
 
-        return datatables()->of(DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->select('clients.full_name','space_contracts.start_date','space_contracts.end_date','space_contracts.space_id_contract','space_contracts.creation_date','space_contracts.contract_status','space_contracts.contract_id','clients.client_id','clients.tin','clients.address','space_contracts.has_clients','space_contracts.academic_dependence','space_contracts.academic_season','space_contracts.currency','space_contracts.amount','space_contracts.vacation_season')->where('space_contracts.under_client',0)->orderBy('space_contracts.contract_id','desc'))->addIndexColumn()->editColumn('start_date', function($row){
+        return datatables()->of(DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->select('clients.full_name','space_contracts.start_date','space_contracts.end_date','space_contracts.space_id_contract','space_contracts.creation_date','space_contracts.contract_status','space_contracts.contract_id','clients.client_id','clients.tin','clients.address','space_contracts.has_clients','space_contracts.academic_dependence','space_contracts.academic_season','space_contracts.currency','space_contracts.amount','space_contracts.vacation_season','clients.type','clients.phone_number','clients.first_name','clients.email','clients.last_name')->where('space_contracts.under_client',0)->orderBy('space_contracts.contract_id','desc'))->addIndexColumn()->editColumn('start_date', function($row){
 
             return date("d/m/Y",strtotime($row->start_date));
 
@@ -269,11 +270,95 @@ if($privileges=='Read only') {
 
             return date("d/m/Y",strtotime($row->end_date));
 
+        })->addColumn('full_name',function($row){
+
+
+
+                $full_name='<a class="link_style" data-toggle="modal" data-target="#client'.$row->contract_id.'" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">'.$row->full_name.'</a>';
+
+            if($row->has_clients==1){
+
+
+                $full_name.='<a href="/space_contracts_subclients/'.$row->client_id.'"> <i  class=" fas fa-angle-double-down"></i></a>';
+
+            }else{
+
+
+
+            }
+
+
+            $full_name.=' <div class="modal fade" id="client'.$row->contract_id.'" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">'.$row->full_name.'Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table style="width: 100%">
+                                      <tr>
+                                          <td>Client Type:</td>
+                                          <td>'.$row->type.'</td>
+                                      </tr>';
+
+                                      if($row->type=='Individual'){
+                                         $full_name.='<tr>
+                                              <td> First Name:</td>
+                                              <td>'.$row->first_name.'</td>
+                                          </tr>
+                                          <tr>
+                                              <td>Last Name:</td>
+                                              <td>'.$row->last_name.'</td>
+                                          </tr>';
+
+                                          }
+                                      elseif($row->type=='Company/Organization'){
+                                          $full_name.='<tr>
+                                              <td>Company Name:</td>
+                                              <td>'.$row->first_name.'</td>
+                                          </tr>';
+                                      }
+
+                                      $full_name.='<tr>
+                                          <td>Phone Number:</td>
+                                          <td>'.$row->phone_number.'</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Email:</td>
+                                          <td>'.$row->email.'</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Address:</td>
+                                          <td>'.$row->address.'</td>
+                                      </tr>
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div>';
+
+
+                return $full_name;
+
+
+
+        })->filterColumn('full_name', function($query, $keyword) {
+
+
+            $sql = "clients.full_name  like ?";
+            $query->whereRaw($sql, ["%{$keyword}%"]);
+
         })->addColumn('space_id_contract',function($row){
 
             if($row->space_id_contract!=''){
 
-        $space_id_contract='<a class="link_style" href="/space_details/'.$row->space_id_contract.'" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>'.$row->space_id_contract.'</center></a>';
+            $space_id_contract='<a class="link_style" href="/space_details/'.$row->space_id_contract.'" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>'.$row->space_id_contract.'</center></a>';
 
                 return $space_id_contract;
 
@@ -315,25 +400,33 @@ if($privileges=='Read only') {
                 }else{
                     if($row->contract_status==0 OR $row->end_date<date('Y-m-d')){
 
-                        $action.='<a href="/renew_space_contract_form/'.$row->contract_id.'" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>';
+                        if($row->has_clients=='1'){
+                            $action .= '<a href="/renew_space_contract_form_parent_client/' . $row->contract_id . '" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>';
 
+                        }else {
+                            $action .= '<a href="/renew_space_contract_form/' . $row->contract_id . '" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>';
+                        }
                     }else{
 
 
-                        $action.=' <a href="/edit_space_contract/'.$row->contract_id.'" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                        if($row->has_clients=='1'){
 
-                                                <a data-toggle="modal" data-target="#terminate'.$row->contract_id.'" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-                                                  <div class="modal fade" id="terminate'.$row->contract_id.'" role="dialog">
+
+
+                            $action .= ' <a href="/edit_space_contract_parent_client/' . $row->contract_id . '" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a><a title="Print this contract" href="/print_space_contract/'.$row->contract_id.'"><i class="fa fa-print" aria-hidden="true"></i></a>
+
+                                                <a data-toggle="modal" data-target="#terminate' . $row->contract_id . '" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                  <div class="modal fade" id="terminate' . $row->contract_id . '" role="dialog">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <b><h5 class="modal-title">Terminating '.$row->full_name.'\'s contract for space id '.$row->space_id_contract.'</h5></b>
+                                            <b><h5 class="modal-title">Terminating ' . $row->full_name . '\'s contract for space id ' . $row->space_id_contract . '</h5></b>
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
 
                                         <div class="modal-body">
-                                            <form method="get" action="/terminate_space_contract/'.$row->contract_id.'" >
-                                                '.csrf_field().'
+                                            <form method="get" action="/terminate_space_contract/' . $row->contract_id . '" >
+                                                ' . csrf_field() . '
 
                                                 <div class="form-group">
                                                     <div class="form-wrapper">
@@ -348,19 +441,19 @@ if($privileges=='Read only') {
                                                 <div class="form-group">
                                                     <div class="form-wrapper" style="text-align: left;">
                                                         <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>
-                                                        <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox'.$row->contract_id.'" onchange="generateInvoice('.$row->contract_id.')"  name="generate_invoice_checkbox" autocomplete="off">
+                                                        <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox' . $row->contract_id . '" onchange="generateInvoice(' . $row->contract_id . ')"  name="generate_invoice_checkbox" autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <br>
 
-                                                <div id="invoiceDiv'.$row->contract_id.'" style="display: none;">
+                                                <div id="invoiceDiv' . $row->contract_id . '" style="display: none;">
 
 
                                                     <div class="form-row">
                                                         <div class="form-group col-md-6" id="debtor_nameDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Client Full Name <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="'.$row->full_name.'" readonly Required autocomplete="off">
+                                                                <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="' . $row->full_name . '" readonly Required autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -371,7 +464,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Client Account Code</label>
-                                                                <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="'.$row->client_id.'"  readonly autocomplete="off">
+                                                                <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="' . $row->client_id . '"  readonly autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -381,7 +474,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-12 pt-2" id="tinDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Client TIN</label>
-                                                                <input type="text" class="form-control" id="tin" name="tin" value="'.$row->tin.'" readonly autocomplete="off">
+                                                                <input type="text" class="form-control" id="tin" name="tin" value="' . $row->tin . '" readonly autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -393,7 +486,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-12 pt-2" id="debtor_addressDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Client Address <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="'.$row->address.'" readonly Required autocomplete="off">
+                                                                <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="' . $row->address . '" readonly Required autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -410,7 +503,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                <input type="date" class="form-control" id="invoicing_period_start_date'.$row->contract_id.'" name="invoicing_period_start_date" value=""  autocomplete="off">
+                                                                <input type="date" class="form-control" id="invoicing_period_start_date' . $row->contract_id . '" name="invoicing_period_start_date" value=""  autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -419,7 +512,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                <input type="date" class="form-control" id="invoicing_period_end_date'.$row->contract_id.'" name="invoicing_period_end_date" value=""  autocomplete="off">
+                                                                <input type="date" class="form-control" id="invoicing_period_end_date' . $row->contract_id . '" name="invoicing_period_end_date" value=""  autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -427,7 +520,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-12 pt-2" id="periodDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for="">Period <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" id="period'.$row->contract_id.'" name="period" value=""   autocomplete="off">
+                                                                <input type="text" class="form-control" id="period' . $row->contract_id . '" name="period" value=""   autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -435,7 +528,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-6 pt-2" id="contract_idDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for="">Contract ID <span style="color: red;">*</span></label>
-                                                                <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="'.$row->contract_id.'" readonly required autocomplete="off">
+                                                                <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="' . $row->contract_id . '" readonly required autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -444,7 +537,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-6 pt-2" id="project_idDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Project ID <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" id="project_id'.$row->contract_id.'" name="project_id" value=""  autocomplete="off">
+                                                                <input type="text" class="form-control" id="project_id' . $row->contract_id . '" name="project_id" value=""  autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -453,7 +546,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >
                                                             <div class="form-wrapper">
                                                                 <label for="">Amount <span style="color: red;">*</span></label>
-                                                                <input type="number" min="0" class="form-control" id="amount_to_be_paid'.$row->contract_id.'" name="amount_to_be_paid" value=""   autocomplete="off">
+                                                                <input type="number" min="0" class="form-control" id="amount_to_be_paid' . $row->contract_id . '" name="amount_to_be_paid" value=""   autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -462,7 +555,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-6 pt-2" id="currencyDiv">
                                                             <label>Currency <span style="color: red;">*</span></label>
                                                             <div  class="form-wrapper">
-                                                                <select id="currency_invoice'.$row->contract_id.'" class="form-control"  name="currency">
+                                                                <select id="currency_invoice' . $row->contract_id . '" class="form-control"  name="currency">
                                                                     <option value="" ></option>
                                                                     <option value="TZS" >TZS</option>
                                                                     <option value="USD" >USD</option>
@@ -475,7 +568,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-12 pt-2" id="statusDiv">
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Status <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" id="status'.$row->contract_id.'" name="status" value=""   autocomplete="off">
+                                                                <input type="text" class="form-control" id="status' . $row->contract_id . '" name="status" value=""   autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -483,7 +576,7 @@ if($privileges=='Read only') {
                                                         <div class="form-group col-md-12 pt-2" id="descriptionDiv">
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Description <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" id="description'.$row->contract_id.'" name="description" value=""   autocomplete="off">
+                                                                <input type="text" class="form-control" id="description' . $row->contract_id . '" name="description" value=""   autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -512,6 +605,202 @@ if($privileges=='Read only') {
 
                             </div>';
 
+
+
+
+                        }else {
+                            $action .= ' <a href="/edit_space_contract/' . $row->contract_id . '" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a> <a title="Print this contract" href="/print_space_contract/'.$row->contract_id.'"><i class="fa fa-print" aria-hidden="true"></i></a>
+
+                                                <a data-toggle="modal" data-target="#terminate' . $row->contract_id . '" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                  <div class="modal fade" id="terminate' . $row->contract_id . '" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b><h5 class="modal-title">Terminating ' . $row->full_name . '\'s contract for space id ' . $row->space_id_contract . '</h5></b>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <form method="get" action="/terminate_space_contract/' . $row->contract_id . '" >
+                                                ' . csrf_field() . '
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper">
+                                                        <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                        <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                    </div>
+                                                </div>
+                                                <br>
+
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper" style="text-align: left;">
+                                                        <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>
+                                                        <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox' . $row->contract_id . '" onchange="generateInvoice(' . $row->contract_id . ')"  name="generate_invoice_checkbox" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div id="invoiceDiv' . $row->contract_id . '" style="display: none;">
+
+
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6" id="debtor_nameDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="' . $row->full_name . '" readonly Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Account Code</label>
+                                                                <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="' . $row->client_id . '"  readonly autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="tinDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client TIN</label>
+                                                                <input type="text" class="form-control" id="tin" name="tin" value="' . $row->tin . '" readonly autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="debtor_addressDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="' . $row->address . '" readonly Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div  class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control"  name="inc_code" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                <input type="date" class="form-control" id="invoicing_period_start_date' . $row->contract_id . '" name="invoicing_period_start_date" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                <input type="date" class="form-control" id="invoicing_period_end_date' . $row->contract_id . '" name="invoicing_period_end_date" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12 pt-2" id="periodDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Period <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="period' . $row->contract_id . '" name="period" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-6 pt-2" id="contract_idDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="' . $row->contract_id . '" readonly required autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="project_idDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="project_id' . $row->contract_id . '" name="project_id" value=""  autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >
+                                                            <div class="form-wrapper">
+                                                                <label for="">Amount <span style="color: red;">*</span></label>
+                                                                <input type="number" min="0" class="form-control" id="amount_to_be_paid' . $row->contract_id . '" name="amount_to_be_paid" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-6 pt-2" id="currencyDiv">
+                                                            <label>Currency <span style="color: red;">*</span></label>
+                                                            <div  class="form-wrapper">
+                                                                <select id="currency_invoice' . $row->contract_id . '" class="form-control"  name="currency">
+                                                                    <option value="" ></option>
+                                                                    <option value="TZS" >TZS</option>
+                                                                    <option value="USD" >USD</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                        <div class="form-group col-md-12 pt-2" id="statusDiv">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="status' . $row->contract_id . '" name="status" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <div class="form-group col-md-12 pt-2" id="descriptionDiv">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" id="description' . $row->contract_id . '" name="description" value=""   autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+
+
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <br>
+                                                <div align="right">
+                                                    <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>';
+                        }
                     }
 
 
@@ -584,7 +873,7 @@ if($privileges=='Read only') {
                 }
 
 
-        })->rawColumns(['action','amount_academic_season','amount_vacation_season','space_id_contract'])
+        })->rawColumns(['action','amount_academic_season','amount_vacation_season','space_id_contract','full_name'])
             ->make(true);
 
     }
@@ -674,8 +963,43 @@ if($privileges=='Read only') {
 
     }
 
+
+
+    public function renewSpaceContractFormParentClient(Request $request,$id)
+    {
+        $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->get();
+
+        $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('clients.client_id');
+
+        return view('space_contract_form_renew')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id);
+
+    }
+
     public function CreateSpaceContract(Request $request)
     {
+
+
+        $programming_end_date='';
+        $programming_start_date='';
+        //for programming purposes
+
+
+        $programming_start_date_temp = Carbon::createFromFormat('Y-m-d', $request->get('invoicing_period_end_date'));
+
+
+        $programming_start_date = $programming_start_date_temp->addDays(1);
+
+
+
+            $programming_end_date_temp = Carbon::createFromFormat('Y-m-d', $request->get('invoicing_period_end_date'));
+
+
+        $programming_end_date = $programming_end_date_temp->addMonths($request->get('payment_cycle'))->addDays(1);
+
+
+
+
+
 
         $has_clients=null;
         $under_client=null;
@@ -742,15 +1066,6 @@ if($privileges=='Read only') {
 
 
 
-            $programming_end_date='';
-            //for programming purposes
-
-            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-
-
-            $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
-
-
 
 
 
@@ -815,7 +1130,7 @@ if($privileges=='Read only') {
                 $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
                 );
 
 
@@ -824,74 +1139,130 @@ if($privileges=='Read only') {
 
                 $contract_id_created=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
 
-                if($request->hasfile('tbs_certificate')){
-                    $file=$request->file('tbs_certificate');
-                    $filename=$request->file('tbs_certificate')->getClientOriginalName();
+                $tbs_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('tbs_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+                $gpsa_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('gpsa_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+                $food_business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('food_business_license'))->orderBy('id','desc')->limit(1)->value('folder');
+                $business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('business_license'))->orderBy('id','desc')->limit(1)->value('folder');
+                $osha_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('osha_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+                $tcra_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('tcra_registration'))->orderBy('id','desc')->limit(1)->value('folder');
+                $brela_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('brela_registration'))->orderBy('id','desc')->limit(1)->value('folder');
+
+                if($tbs_certificate_folder!=''){
+//                    $file=$request->file('tbs_certificate');
+
                     $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
                     $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($tbs_certificates_path2,'tbs_certificate.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/tbs_certificate.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tbs_certificate.pdf');
 
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
+                    DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
                 }
 
-                if($request->hasfile('gpsa_certificate')){
-                    $file=$request->file('gpsa_certificate');
-                    $filename=$request->file('gpsa_certificate')->getClientOriginalName();
+                if($gpsa_certificate_folder!=''){
+
                     $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
                     $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($gpsa_certificates_path2,'gpsa_certificate.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$gpsa_certificate_folder.'/'.'certificates/gpsa_certificate.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/gpsa_certificate.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$gpsa_certificate_folder);
+                    DB::table('uploads_temp')->where('folder', $gpsa_certificate_folder)->delete();
+
 
                 }
 
 
 
-                if($request->hasfile('food_business_license')){
-                    $file=$request->file('food_business_license');
-                    $filename=$request->file('food_business_license')->getClientOriginalName();
+                if($food_business_license_folder!=''){
+
                     $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
                     $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($food_business_licenses_path2,'food_business_license.pdf');
+
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$food_business_license_folder.'/'.'certificates/food_business_license.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/food_business_license.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$food_business_license_folder);
+                    DB::table('uploads_temp')->where('folder', $food_business_license_folder)->delete();
 
                 }
 
-                if($request->hasfile('business_license')){
+                if($business_license_folder!=''){
 
-                    $file=$request->file('business_license');
-                    $filename=$request->file('business_license')->getClientOriginalName();
+
                     $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
                     $business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
 
-                    $file->move($business_licenses_path2,'business_license.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/business_license.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/business_license.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
+                    DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
+
 
                 }
 
 
 
-                if($request->hasfile('osha_certificate')){
-                    $file=$request->file('osha_certificate');
-                    $filename=$request->file('osha_certificate')->getClientOriginalName();
+                if($osha_certificate_folder!=''){
+
                     $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
                     $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($osha_certificates_path2,'osha_certificate.pdf');
+
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$osha_certificate_folder.'/'.'certificates/osha_certificate.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/osha_certificate.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$osha_certificate_folder);
+                    DB::table('uploads_temp')->where('folder', $osha_certificate_folder)->delete();
+
 
                 }
 
 
 
-                if($request->hasfile('tcra_registration')){
-                    $file=$request->file('tcra_registration');
-                    $filename=$request->file('tcra_registration')->getClientOriginalName();
+                if($tcra_registration_folder!=''){
+
                     $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
                     $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($tcra_registration_path2,'tcra_registration.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$tcra_registration_folder.'/'.'certificates/tcra_registration.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tcra_registration.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$tcra_registration_folder);
+                    DB::table('uploads_temp')->where('folder', $tcra_registration_folder)->delete();
+
 
                 }
 
-                if($request->hasfile('brela_registration')){
-                    $file=$request->file('brela_registration');
-                    $filename=$request->file('brela_registration')->getClientOriginalName();
+                if($brela_registration_folder!=''){
+
                     $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
                     $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($brela_registration_path2,'brela_registration.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$brela_registration_folder.'/'.'certificates/brela_registration.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/brela_registration.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$brela_registration_folder);
+                    DB::table('uploads_temp')->where('folder', $brela_registration_folder)->delete();
 
                 }
 
@@ -965,7 +1336,7 @@ if($privileges=='Read only') {
 
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
                     );
 
                 } else {
@@ -990,7 +1361,7 @@ if($privileges=='Read only') {
                     $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
                     );
 
 
@@ -1097,7 +1468,7 @@ if($privileges=='Read only') {
             return $pdf->stream();
 
 
-        }else{
+        }elseif($request->get('submit')=='Save'){
 
             //for viewing pdf
             $brela_registration_path=null;
@@ -1139,15 +1510,6 @@ if($privileges=='Read only') {
             }
 
 
-
-
-            $programming_end_date='';
-            //for programming purposes
-
-            $programming_end_date = Carbon::createFromFormat('Y-m-d', $request->get('start_date'));
-
-
-            $programming_end_date = $programming_end_date->addMonths($request->get('payment_cycle'));
 
 
 
@@ -1209,83 +1571,139 @@ if($privileges=='Read only') {
 
 
                 DB::table('space_contracts')->insert(
-                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
+                    ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
                 );
 
 
-//file management starts
+
+                //file management starts
 
                 $contract_id_created=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
 
-                if($request->hasfile('tbs_certificate')){
-                    $file=$request->file('tbs_certificate');
-                    $filename=$request->file('tbs_certificate')->getClientOriginalName();
+                $tbs_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('tbs_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+                $gpsa_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('gpsa_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+                $food_business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('food_business_license'))->orderBy('id','desc')->limit(1)->value('folder');
+                $business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('business_license'))->orderBy('id','desc')->limit(1)->value('folder');
+                $osha_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('osha_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+                $tcra_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('tcra_registration'))->orderBy('id','desc')->limit(1)->value('folder');
+                $brela_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('brela_registration'))->orderBy('id','desc')->limit(1)->value('folder');
+
+                if($tbs_certificate_folder!=''){
+//                    $file=$request->file('tbs_certificate');
+
                     $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
                     $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($tbs_certificates_path2,'tbs_certificate.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/tbs_certificate.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tbs_certificate.pdf');
 
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
+                    DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
                 }
 
-                if($request->hasfile('gpsa_certificate')){
-                    $file=$request->file('gpsa_certificate');
-                    $filename=$request->file('gpsa_certificate')->getClientOriginalName();
+                if($gpsa_certificate_folder!=''){
+
                     $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
                     $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($gpsa_certificates_path2,'gpsa_certificate.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$gpsa_certificate_folder.'/'.'certificates/gpsa_certificate.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/gpsa_certificate.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$gpsa_certificate_folder);
+                    DB::table('uploads_temp')->where('folder', $gpsa_certificate_folder)->delete();
+
 
                 }
 
 
 
-                if($request->hasfile('food_business_license')){
-                    $file=$request->file('food_business_license');
-                    $filename=$request->file('food_business_license')->getClientOriginalName();
+                if($food_business_license_folder!=''){
+
                     $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
                     $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($food_business_licenses_path2,'food_business_license.pdf');
+
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$food_business_license_folder.'/'.'certificates/food_business_license.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/food_business_license.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$food_business_license_folder);
+                    DB::table('uploads_temp')->where('folder', $food_business_license_folder)->delete();
 
                 }
 
-                if($request->hasfile('business_license')){
+                if($business_license_folder!=''){
 
 
-                    $file=$request->file('business_license');
-                    $filename=$request->file('business_license')->getClientOriginalName();
                     $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
                     $business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
 
-                    $file->move($business_licenses_path2,'business_license.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/business_license.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/business_license.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
+                    DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
+
 
                 }
 
 
 
-                if($request->hasfile('osha_certificate')){
-                    $file=$request->file('osha_certificate');
-                    $filename=$request->file('osha_certificate')->getClientOriginalName();
+                if($osha_certificate_folder!=''){
+
                     $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
                     $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($osha_certificates_path2,'osha_certificate.pdf');
+
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$osha_certificate_folder.'/'.'certificates/osha_certificate.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/osha_certificate.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$osha_certificate_folder);
+                    DB::table('uploads_temp')->where('folder', $osha_certificate_folder)->delete();
+
 
                 }
 
 
 
-                if($request->hasfile('tcra_registration')){
-                    $file=$request->file('tcra_registration');
-                    $filename=$request->file('tcra_registration')->getClientOriginalName();
+                if($tcra_registration_folder!=''){
+
                     $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
                     $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($tcra_registration_path2,'tcra_registration.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$tcra_registration_folder.'/'.'certificates/tcra_registration.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tcra_registration.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$tcra_registration_folder);
+                    DB::table('uploads_temp')->where('folder', $tcra_registration_folder)->delete();
+
 
                 }
 
-                if($request->hasfile('brela_registration')){
-                    $file=$request->file('brela_registration');
-                    $filename=$request->file('brela_registration')->getClientOriginalName();
+                if($brela_registration_folder!=''){
+
                     $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
                     $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $file->move($brela_registration_path2,'brela_registration.pdf');
+                    $temp_path=public_path('uploads/temp/space_contracts/'.$brela_registration_folder.'/'.'certificates/brela_registration.pdf');
+                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/brela_registration.pdf');
+
+                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                    File::makeDirectory($new_directory,0777,true,true);
+                    File::move($temp_path, $new_path);
+                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$brela_registration_folder);
+                    DB::table('uploads_temp')->where('folder', $brela_registration_folder)->delete();
 
                 }
 
@@ -1361,7 +1779,7 @@ if($privileges=='Read only') {
 
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
                     );
 
                 } else {
@@ -1387,7 +1805,7 @@ if($privileges=='Read only') {
                     $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
                     DB::table('space_contracts')->insert(
-                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $request->get('invoicing_period_end_date'),'programming_start_date' => $request->get('invoicing_period_start_date'),'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract')]
+                        ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
                     );
 
 
@@ -1457,6 +1875,10 @@ if($privileges=='Read only') {
             return redirect('/contracts_management')
                 ->with('success', 'Contract created successfully');
 
+        }else{
+
+
+
         }
 
 
@@ -1475,6 +1897,243 @@ if($privileges=='Read only') {
 
 
 
+    public function getParentCurrency(Request $request)
+    {
+
+
+
+        if($request->get('query'))
+        {
+            $query = $request->get('query');
+
+
+
+            $data=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('clients.client_id', $query)->value('currency');
+
+            if($data!=''){
+
+
+                return $data;
+            }
+            else{
+                echo "0";
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+
+    }
+
+
+
+
+
+
+
+    public function storeTemporarily(Request $request){
+
+
+        if($request->hasfile('tbs_certificate')){
+            $file=$request->file('tbs_certificate');
+
+            $unique_folder=uniqid().'-'.now()->timestamp;
+            $tbs_certificates_path2=public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$unique_folder.'/'.'certificates/';
+            $file->move($tbs_certificates_path2,'tbs_certificate.pdf');
+            DB::table('uploads_temp')->insert(['folder' => $unique_folder, 'file_name'=>'tbs_certificate.pdf']);
+            return $unique_folder;
+        }
+
+        else if($request->hasfile('gpsa_certificate')){
+            $file=$request->file('gpsa_certificate');
+//            $filename=$request->file('gpsa_certificate')->getClientOriginalName();
+            $unique_folder=uniqid().'-'.now()->timestamp;
+            $gpsa_certificates_path2=public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$unique_folder.'/'.'certificates/';
+            $file->move($gpsa_certificates_path2,'gpsa_certificate.pdf');
+            DB::table('uploads_temp')->insert(['folder' => $unique_folder, 'file_name'=>'gpsa_certificate.pdf']);
+            return $unique_folder;
+        }
+
+
+
+        else if($request->hasfile('food_business_license')){
+            $file=$request->file('food_business_license');
+//            $filename=$request->file('food_business_license')->getClientOriginalName();
+            $unique_folder=uniqid().'-'.now()->timestamp;
+            $food_business_licenses_path2=public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$unique_folder.'/'.'certificates/';
+            $file->move($food_business_licenses_path2,'food_business_license.pdf');
+            DB::table('uploads_temp')->insert(['folder' => $unique_folder, 'file_name'=>'food_business_license.pdf']);
+            return $unique_folder;
+        }
+
+        else if($request->hasfile('business_license')){
+
+            $file=$request->file('business_license');
+//            $filename=$request->file('business_license')->getClientOriginalName();
+            $unique_folder=uniqid().'-'.now()->timestamp;
+            $business_licenses_path2=public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$unique_folder.'/'.'certificates/';
+
+            $file->move($business_licenses_path2,'business_license.pdf');
+            DB::table('uploads_temp')->insert(['folder' => $unique_folder, 'file_name'=>'business_license.pdf']);
+            return $unique_folder;
+        }
+
+
+
+        else if($request->hasfile('osha_certificate')){
+            $file=$request->file('osha_certificate');
+//            $filename=$request->file('osha_certificate')->getClientOriginalName();
+            $unique_folder=uniqid().'-'.now()->timestamp;
+            $osha_certificates_path2=public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$unique_folder.'/'.'certificates/';
+            $file->move($osha_certificates_path2,'osha_certificate.pdf');
+            DB::table('uploads_temp')->insert(['folder' => $unique_folder, 'file_name'=>'osha_certificate.pdf']);
+            return $unique_folder;
+        }
+
+
+
+        else if($request->hasfile('tcra_registration')){
+            $file=$request->file('tcra_registration');
+//            $filename=$request->file('tcra_registration')->getClientOriginalName();
+            $unique_folder=uniqid().'-'.now()->timestamp;
+            $tcra_registration_path2=public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$unique_folder.'/'.'certificates/';
+            $file->move($tcra_registration_path2,'tcra_registration.pdf');
+            DB::table('uploads_temp')->insert(['folder' => $unique_folder, 'file_name'=>'tcra_registration.pdf']);
+            return $unique_folder;
+        }
+
+        else if($request->hasfile('brela_registration')){
+            $file=$request->file('brela_registration');
+//            $filename=$request->file('brela_registration')->getClientOriginalName();
+            $unique_folder=uniqid().'-'.now()->timestamp;
+            $brela_registration_path2=public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$unique_folder.'/'.'certificates/';
+            $file->move($brela_registration_path2,'brela_registration.pdf');
+
+            DB::table('uploads_temp')->insert(['folder' => $unique_folder, 'file_name'=>'brela_registration.pdf']);
+            return $unique_folder;
+        }else{
+
+
+            return '';
+        }
+
+    }
+
+
+    public function removeTemporaryUploads(Request $request){
+
+        $folderId = request()->getContent();
+        File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$folderId);
+        DB::table('uploads_temp')->where('folder', $folderId)->delete();
+
+        return 'Folder deleted successfully';
+    }
+
+
+
+    public function printSpaceContract($id){
+
+        $contract_data=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_id',$id)->get();
+        $has_clients=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id',$id)->value('has_clients');
+        $parent_client_data=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id',$id)->get();
+
+
+
+
+        if($has_clients=='1'){
+            foreach ($parent_client_data as $var){
+
+                $data = [
+
+                    'first_name'   => $var->first_name,
+                    'last_name'   => $var->last_name,
+                    'company_name'   => $var->full_name,
+                    'client_type'   => $var->type,
+                    'address'   => $var->address,
+                    'phone_number'   => $var->phone_number,
+                    'email'   => $var->email,
+                    'start_date'   => $var->start_date,
+                    'duration'   => $var->duration,
+                    'duration_period'   => $var->duration_period,
+                    'payment_cycle'   => $var->payment_cycle,
+                    'percentage'   => $var->percentage,
+                    'currency'   => $var->currency
+
+                ];
+
+            }
+
+
+
+            $pdf = PDF::loadView('space_contract_parent_client_pdf',$data);
+            return $pdf->stream();
+
+        }else{
+
+
+            foreach ($contract_data as $var){
+
+                $data = [
+
+                    'first_name'   => $var->first_name,
+                    'last_name'   => $var->last_name,
+                    'company_name'   => $var->full_name,
+                    'client_type'   => $var->type,
+                    'address'   => $var->address,
+                    'phone_number'   => $var->phone_number,
+                    'email'   => $var->email,
+                    'major_industry'   => $var->major_industry,
+                    'minor_industry'   => $var->minor_industry,
+                    'location'   => $var->location,
+                    'sub_location'   => $var->sub_location,
+                    'academic_dependence'   => $var->academic_dependence,
+                    'space_number'   => $var->space_id_contract,
+                    'space_size'   => $var->size,
+                    'has_water_bill'   => $var->has_water_bill,
+                    'has_electricity_bill'   => $var->has_electricity_bill,
+                    'start_date'   => $var->start_date,
+                    'duration'   => $var->duration,
+                    'duration_period'   => $var->duration_period,
+                    'academic_season'   => $var->academic_season,
+                    'vacation_season'   => $var->vacation_season,
+                    'amount'   => $var->amount,
+                    'rent_sqm'   => $var->rent_sqm,
+                    'payment_cycle'   => $var->payment_cycle,
+                    'escalation_rate'   => $var->escalation_rate,
+                    'currency'   => $var->currency
+
+                ];
+
+            }
+
+
+
+            $pdf = PDF::loadView('space_contract_pdf',$data);
+            return $pdf->stream();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 
     public function RenewSpaceContract(Request $request,$id)
     {
@@ -1717,6 +2376,18 @@ if($privileges=='Read only') {
         $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->get();
 
         $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->value('clients.client_id');
+
+        return view('space_contract_form_edit')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id);
+    }
+
+
+
+    public function EditSpaceContractFormParentClient(Request $request,$id)
+    {
+
+        $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->get();
+
+        $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('clients.client_id');
 
         return view('space_contract_form_edit')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id);
     }
@@ -2597,7 +3268,7 @@ if($request->get('mode_of_payment')=='By installment'){
 //ended here today
 
     DB::table('insurance_contracts')->insert(
-        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments'),'remarks'=>$remarks]
+        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments'),'remarks'=>$remarks,'tin'=>$request->get('tin')]
     );
 
 
@@ -4181,7 +4852,7 @@ if($request->get('mode_of_payment')=='By installment'){
 
 
     DB::table('insurance_contracts')->insert(
-        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
+        ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments'),'tin'=>$request->get('tin')]
     );
 
 
@@ -4528,7 +5199,7 @@ if($request->get('mode_of_payment')=='By installment'){
 
 
                 DB::table('insurance_contracts')->insert(
-                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments'),'remarks'=>$remarks]
+                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments'),'remarks'=>$remarks,'tin'=>$request->get('tin')]
                 );
 
 
@@ -6116,7 +6787,7 @@ if($request->get('mode_of_payment')=='By installment'){
 
 
                 DB::table('insurance_contracts')->insert(
-                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments')]
+                    ['vehicle_registration_no' => $vehicle_reg_var, 'vehicle_use' => $vehicle_use_var, 'principal' => $request->get('insurance_company'), 'insurance_type' => $request->get('insurance_type'), 'commission_date' => $request->get('commission_date'), 'end_date' => $end_date, 'sum_insured' => $request->get('sum_insured'), 'premium' => $request->get('premium'),'actual_ex_vat' => $request->get('actual_ex_vat'),'currency' => $request->get('currency'),'commission' => $request->get('commission'),'receipt_no' => $request->get('receipt_no'),'full_name' => $request->get('full_name'),'duration' => $request->get('duration'),'duration_period' => $request->get('duration_period'),'commission_percentage' => $request->get('commission_percentage'),'insurance_class' => $request->get('insurance_class'),'phone_number' => $request->get('phone_number'),'email' => $request->get('email'),'cover_note' => $cover_note,'sticker_no' => $sticker_no,'value' => $value,'mode_of_payment'   => $mode_of_payment,'first_installment'   => $first_installment,'second_installment'   => $second_installment,'third_installment'=>$third_installment,'fourth_installment'=>$fourth_installment,'fifth_installment'=>$fifth_installment,'sixth_installment'=>$sixth_installment,'seventh_installment'=>$seventh_installment,'eighth_installment'=>$eighth_installment,'ninth_installment'=>$ninth_installment,'tenth_installment'=>$tenth_installment,'eleventh_installment'=>$eleventh_installment,'twelfth_installment'=>$twelfth_installment,'number_of_installments'=>$request->get('number_of_installments'),'tin'=>$request->get('tin')]
                 );
 
 
@@ -6214,6 +6885,56 @@ if($request->get('mode_of_payment')=='By installment'){
 
         return view('insurance_contract_form_renew')->with('contract_id',$id)->with('contract_data',$contract_data);
     }
+
+
+
+    public function generateCollegeList(Request $request)
+    {
+        $colleges=DB::table('colleges')->where('campus_id',$request->get('campus_id'))->get();
+
+        $output='';
+        $output .= '<option value="'."".'">'."".'</option>';
+
+        $tempOut = array();
+
+        foreach($colleges as $college) {
+
+            $tempoIn=$college->college_name;
+            if(!in_array($tempoIn, $tempOut)) {
+                $output .= '<option value="' . $college->id . '">' . $college->college_name.' - '.$college->college_description. '</option>';
+                array_push($tempOut,$tempoIn);
+            }
+        }
+
+        echo $output;
+
+    }
+
+
+
+
+    public function generateDepartmentList(Request $request)
+    {
+        $departments=DB::table('departments')->where('college_id',$request->get('college_id'))->get();
+
+        $output='';
+        $output .= '<option value="'."".'">'."".'</option>';
+
+        $tempOut = array();
+
+        foreach($departments as $department) {
+
+            $tempoIn=$department->department_name;
+            if(!in_array($tempoIn, $tempOut)) {
+                $output .= '<option value="' . $department->department_name . '">' . $department->department_name.' - '.$department->department_description. '</option>';
+                array_push($tempOut,$tempoIn);
+            }
+        }
+
+        echo $output;
+
+    }
+
 
 
     public function EditInsuranceContractFinalProcessing(Request $request,$contract_id)
@@ -6391,6 +7112,11 @@ if($request->get('mode_of_payment')=='By installment'){
             DB::table('insurance_contracts')
                 ->where('id', $contract_id)
                 ->update(['cover_note' => $cover_note]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['tin'=>$request->get('tin')]);
 
 
 
@@ -6618,6 +7344,11 @@ if($request->get('mode_of_payment')=='By installment'){
             DB::table('insurance_contracts')
                 ->where('id', $contract_id)
                 ->update(['cover_note' => $cover_note]);
+
+
+            DB::table('insurance_contracts')
+                ->where('id', $contract_id)
+                ->update(['tin'=>$request->get('tin')]);
 
 
             return redirect('/contracts_management')

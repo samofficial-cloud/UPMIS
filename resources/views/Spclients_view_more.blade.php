@@ -160,7 +160,7 @@ hr {
         <tr>
         <th scope="col" style="color:#fff;"><center>S/N</center></th>
         <th scope="col" style="color:#fff;"><center>Contract Id</center></th>
-        <th scope="col" style="color:#fff;"><center>Space Id</center></th>
+        <th scope="col" style="color:#fff;"><center>Real Estate</center></th>
           <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
           <th scope="col"  style="color:#fff;"><center>End Date</center></th>
           <th scope="col"  style="color:#fff;"><center>Major Industry</center></th>
@@ -194,7 +194,7 @@ hr {
                                           <td colspan="2">{{$var->contract_id}}</td>
                                       </tr>
                                       <tr>
-                                          <td>Space ID</td>
+                                          <td>Real Estate Number</td>
                                           <td colspan="2">{{$var->space_id_contract}}</td>
                                       </tr>
                                       <tr>
@@ -276,7 +276,7 @@ hr {
                                 </div>
 
                                 <div class="modal-body">
-                                  <b><h5 class="modal-title">Are you sure you want to terminate {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}?</h5></b>
+                                  <b><h5 class="modal-title">Are you sure you want to terminate {{$var->full_name}}'s contract for Real Estate Number {{$var->space_id_contract}}?</h5></b>
                                     <form method="get" action="{{ route('terminate_space_contract',$var->contract_id)}}" >
                                         {{csrf_field()}}
 
@@ -327,7 +327,7 @@ hr {
                             @foreach($invoices as $var)
                                 <tr>
                                     <td class="counterCell text-center">.</td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                     <td><center>{{$var->period}}</center></td>
@@ -351,7 +351,7 @@ hr {
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Space Id:</td>
+                                                                    <td> Real Estate Number:</td>
                                                                     <td colspan="2"> {{$var->space_id_contract}}</td>
                                                                 </tr>
                                                                 @if($var->academic_dependence=="Yes")

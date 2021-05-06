@@ -219,9 +219,9 @@
   <div class="card bg-primary text-white">
     <div class="card-body" style="line-height: 25px;" >
       <h5 class="card-title">General Statistics<i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
-       Available Spaces: {{$available_spaces}}
-      <br>Occupied Spaces: {{$occupied_spaces}}
-      <br>Total Spaces: {{$total_spaces}}
+       Available Real Estate: {{$available_spaces}}
+      <br>Occupied Real Estate: {{$occupied_spaces}}
+      <br>Total Real Estate: {{$total_spaces}}
       <hr style="margin-top: 1rem;
     margin-bottom: 1rem;
     border: 0;
@@ -370,7 +370,7 @@
                                           <td colspan="2">{{$space->contract_id}}</td>
                                       </tr>
                                       <tr>
-                                          <td>Space ID</td>
+                                          <td>Real Estate ID</td>
                                           <td colspan="2">{{$space->space_id_contract}}</td>
                                       </tr>
                                       <tr>
@@ -608,7 +608,7 @@
                                           <td colspan="2">{{$space->contract_id}}</td>
                                       </tr>
                                       <tr>
-                                          <td>Space ID</td>
+                                          <td>Real Estate ID</td>
                                           <td colspan="2">{{$space->space_id_contract}}</td>
                                       </tr>
                                       <tr>
@@ -750,7 +750,7 @@
    <br>
    <div class="card">
     <div class="card-body">
-     <h4 class="card-title" style="font-family: sans-serif;">Outstanding Space Debt(s)</h4>
+     <h4 class="card-title" style="font-family: sans-serif;">Outstanding Real Estate Debt(s)</h4>
      <hr>
      <a title="Send email to selected clients" href="#" id="debt_notify_all" class="btn btn-info btn-sm" data-toggle="modal" data-target="#debt_mail" role="button" aria-pressed="true" style="
     padding: 10px;
@@ -942,7 +942,7 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Space Number</td>
+                                                                    <td> Real Estate Number</td>
                                                                     <td colspan="2"> {{$var->space_id_contract}}</td>
                                                                 </tr>
                                                                 @if($var->academic_dependence=="Yes")
@@ -1305,7 +1305,7 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Space Number</td>
+                                                                    <td> Real Estate Number</td>
                                                                     <td colspan="2"> {{$var->space_id_contract}}</td>
                                                                 </tr>
                                                                 @if($var->academic_dependence=="Yes")
@@ -1670,7 +1670,7 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Space Number</td>
+                                                                    <td> Real Estate Number</td>
                                                                     <td colspan="2"> {{$var->space_id_contract}}</td>
                                                                 </tr>
                                                                 @if($var->academic_dependence=="Yes")
@@ -2270,7 +2270,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
       {{ $chart->id }}.data.datasets[0].data =data.activity;
       {{ $chart->id }}.update();
 
-      {{$chart1->id}}.options.title.text = 'Space Income Generation '+query;
+      {{$chart1->id}}.options.title.text = 'Real Estate Income Generation '+query;
       {{ $chart1->id }}.data.datasets[0].data =data.income;
       {{ $chart1->id }}.data.datasets[1].data =data.income2;
       {{ $chart1->id }}.update();

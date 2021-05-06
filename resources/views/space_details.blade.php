@@ -130,11 +130,11 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h2 style="text-align: center;">Space details</h2>
+                                <h2 style="text-align: center;">Real Estate details</h2>
                                 <hr>
                                 <table class="table table-striped table-bordered" style="width: 100%">
                                     <tr>
-                                        <td>Space number:</td>
+                                        <td>Real Estate number:</td>
                                         <td>{{$var->space_id}}</td>
                                     </tr>
 

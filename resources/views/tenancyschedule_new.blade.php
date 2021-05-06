@@ -149,7 +149,7 @@
   <thead class="thead-dark">
   <tr>
     <th scope="col" style="width: 5%;">SN</th>
-    <th scope="col" style="width: 9%;">Space Id</th>
+    <th scope="col" style="width: 9%;">Real Estate</th>
     <th scope="col" style="width: 20%;">Tenant Name</th>
     <th scope="col">Lease Start</th>
     <th scope="col">Lease End</th>

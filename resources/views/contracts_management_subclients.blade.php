@@ -179,7 +179,7 @@ $i=1;
         <tr>
           <th scope="col" style="color:#fff;"><center>S/N</center></th>
           <th scope="col" style="color:#fff;">Client Name</th>
-          <th scope="col" style="color:#fff;"><center>Space Number</center></th>
+          <th scope="col" style="color:#fff;"><center>Real Estate Number</center></th>
           <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
           <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
@@ -322,7 +322,7 @@ $i=1;
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                        <b><h5 class="modal-title">Terminating {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}</h5></b>
+                                        <b><h5 class="modal-title">Terminating {{$var->full_name}}'s contract for Real Estate Number {{$var->space_id_contract}}</h5></b>
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
 

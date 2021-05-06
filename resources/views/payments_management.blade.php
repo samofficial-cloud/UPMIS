@@ -196,7 +196,7 @@
                     <br>
                     <div class="tab" style="">
 
-                        <button class="tablinks_inner " onclick="openInnerInvoices(event, 'space_payments_inner')" id="defaultOpen"><strong>Space</strong></button>
+                        <button class="tablinks_inner " onclick="openInnerInvoices(event, 'space_payments_inner')" id="defaultOpen"><strong>Real Estate</strong></button>
                         <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'water_payments')"><strong>Water Bills</strong></button>
                         <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'electricity_payments')"><strong>Electricity Bills</strong></button>
                     </div>
@@ -812,7 +812,7 @@
 <div id="space_complete_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_deep_inner">
     <br>
 
-    <h3 style="text-align: center"><strong>Space payments</strong></h3>
+    <h3 style="text-align: center"><strong>Real Estate payments</strong></h3>
 
     <hr>
 
@@ -980,6 +980,7 @@
                     <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
 
                     <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                    <th scope="col"  style="color:#fff;"><center>Status</center></th>
                     <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
 
@@ -1005,6 +1006,13 @@
                             </center></td>
                         <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                         <td><center>{{$var->receipt_number}}</center></td>
+                        <td><center>@if($var->status_payment=='0')
+                                    CANCELLED
+                                @elseif($var->status_payment=='1')
+                                    OK
+                                @else
+                                @endif
+                            </center></td>
                         <td><center>
 
 
@@ -1296,7 +1304,7 @@
                         <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; " class="tabcontent_inner">
                             <br>
 
-                            <h3 style="text-align: center"><strong>Space payments</strong></h3>
+                            <h3 style="text-align: center"><strong>Real Estate payments</strong></h3>
 
                             <hr>
 
@@ -1463,6 +1471,7 @@
                                             <th scope="col"  style="color:#fff;"><center>Over payment</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
 
@@ -1488,6 +1497,13 @@
                                                     </center></td>
                                                 <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                                 <td><center>{{$var->receipt_number}}</center></td>
+                                                <td><center>@if($var->status_payment=='0')
+                                                            CANCELLED
+                                                        @elseif($var->status_payment=='1')
+                                                            OK
+                                                        @else
+                                                        @endif
+                                                    </center></td>
                                                 <td><center>
 
 
@@ -1856,6 +1872,7 @@
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                             </tr>
@@ -1871,6 +1888,13 @@
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                     <td><center>{{$var->receipt_number}}</center></td>
+                                    <td><center>@if($var->status_payment=='0')
+                                                CANCELLED
+                                            @elseif($var->status_payment=='1')
+                                                OK
+                                            @else
+                                            @endif
+                                        </center></td>
                                     <td><center>
 
 
@@ -2183,6 +2207,7 @@
                                 <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
 
                                 <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                             </tr>
@@ -2198,6 +2223,13 @@
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                     <td><center>{{$var->receipt_number}}</center></td>
+                                    <td><center>@if($var->status_payment=='0')
+                                                CANCELLED
+                                            @elseif($var->status_payment=='1')
+                                                OK
+                                            @else
+                                            @endif
+                                        </center></td>
                                     <td><center>
 
 
@@ -2512,6 +2544,7 @@
                                 <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                             </tr>
@@ -2527,6 +2560,13 @@
                                     <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                     <td><center>{{$var->receipt_number}}</center></td>
+                                    <td><center>@if($var->status_payment=='0')
+                                                CANCELLED
+                                            @elseif($var->status_payment=='1')
+                                                OK
+                                            @else
+                                            @endif
+                                        </center></td>
                                     <td><center>
 
 
@@ -2834,6 +2874,7 @@
                                         <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                         <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                         <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                        <th scope="col"  style="color:#fff;"><center>Status</center></th>
                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                     </tr>
@@ -2849,6 +2890,13 @@
                                             <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                             <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                             <td><center>{{$var->receipt_number}}</center></td>
+                                            <td><center>@if($var->status_payment=='0')
+                                                        CANCELLED
+                                                    @elseif($var->status_payment=='1')
+                                                        OK
+                                                    @else
+                                                    @endif
+                                                </center></td>
                                             <td><center>
 
 
@@ -3162,6 +3210,7 @@
                                             <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                         </tr>
@@ -3177,6 +3226,13 @@
                                                 <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                                 <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                                 <td><center>{{$var->receipt_number}}</center></td>
+                                                <td><center>@if($var->status_payment=='0')
+                                                            CANCELLED
+                                                        @elseif($var->status_payment=='1')
+                                                            OK
+                                                        @else
+                                                        @endif
+                                                    </center></td>
                                                 <td><center>
 
 
@@ -3469,6 +3525,7 @@
                                             <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
+                                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                         </tr>
@@ -3484,6 +3541,13 @@
                                                 <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
                                                 <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
                                                 <td><center>{{$var->receipt_number}}</center></td>
+                                                <td><center>@if($var->status_payment=='0')
+                                                            CANCELLED
+                                                        @elseif($var->status_payment=='1')
+                                                            OK
+                                                        @else
+                                                        @endif
+                                                    </center></td>
                                                 <td><center>
 
 

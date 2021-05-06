@@ -48,17 +48,10 @@ class SendInvoices extends Command
 //        );
 
 
-
-
-
         //create space invoice automatically begin
 
         $today=date('Y-m-d');
 
-//        $startTime = Carbon::parse($cleanObj->starttime);
-//        $diff = $cleanObj->created_at->diffInHours($startTime);
-//        $monthly_email_date = Carbon::now()->startOfMonth();
-//
 
         $days_in_advance_for_creating_invoice=DB::table('system_settings')->where('id',1)->value('days_in_advance_for_invoices');
 
@@ -107,21 +100,6 @@ class SendInvoices extends Command
             }
 
             $amount_in_words='';
-
-            if($var->currency=='TZS'){
-                $amount_in_words=Terbilang::make(($var->amount+$amount_not_paid),' TZS',' ');
-
-            }if ($var->currency=='USD'){
-
-                $amount_in_words=Terbilang::make(($var->amount+$amount_not_paid),' USD',' ');
-            }
-
-            else{
-
-
-            }
-
-
             $amount='';
             $sem_one_start_date=DB::table('system_settings')->where('id',1)->value('semester_one_start');
             $sem_one_end_date=DB::table('system_settings')->where('id',1)->value('semester_one_end');
@@ -132,43 +110,107 @@ class SendInvoices extends Command
 
 
 
-            if($var->academic_dependence=='Yes'){
+                if($var->academic_dependence=='Yes'){
 
-            $today_date=$today;
+                    $today_date=$today;
 
-            $today_date=date('Y-m-d', strtotime($today_date));
+                    $today_date=date('Y-m-d', strtotime($today_date));
 
-                $sem_one_start_date = date('Y-m-d', strtotime($sem_one_start_date));
-                $sem_one_end_date = date('Y-m-d', strtotime($sem_one_end_date));
-                $sem_two_start_date = date('Y-m-d', strtotime($sem_two_start_date));
-                $sem_two_end_date = date('Y-m-d', strtotime($sem_two_end_date));
+                    $sem_one_start_date = date('Y-m-d', strtotime($sem_one_start_date));
+                    $sem_one_end_date = date('Y-m-d', strtotime($sem_one_end_date));
+                    $sem_two_start_date = date('Y-m-d', strtotime($sem_two_start_date));
+                    $sem_two_end_date = date('Y-m-d', strtotime($sem_two_end_date));
 
-                if (($today_date >= $sem_one_start_date) && ($today_date <= $sem_one_end_date)){
-                    $amount=$var->academic_season;
+                    if (($var->programming_start_date >= $sem_one_start_date) && ($var->programming_end_date <= $sem_one_end_date)){
+                        $amount=$var->academic_season;
 
-                }elseif(($today_date >= $sem_two_start_date) && ($today_date <= $sem_two_end_date))
-                {
-                    $amount=$var->academic_season;
+                        if($var->currency=='TZS'){
+                            $amount_in_words=Terbilang::make(($amount+$amount_not_paid),' TZS',' ');
+
+                        }if ($var->currency=='USD'){
+
+                            $amount_in_words=Terbilang::make(($amount+$amount_not_paid),' USD',' ');
+                        }
+                        else{
+
+
+                        }
+
+
+
+                    }elseif(($var->programming_start_date >= $sem_two_start_date) && ($var->programming_end_date <= $sem_two_end_date))
+                    {
+
+                        $amount=$var->academic_season;
+
+
+                        if($var->currency=='TZS'){
+                            $amount_in_words=Terbilang::make(($amount+$amount_not_paid),' TZS',' ');
+
+                        }if ($var->currency=='USD'){
+
+                        $amount_in_words=Terbilang::make(($amount+$amount_not_paid),' USD',' ');
+                    }
+                    else{
+
+
+                    }
+
+
+                    }else{
+
+                        //in the middle or vacation
+                        $amount=$var->vacation_season;
+
+
+                        if($var->currency=='TZS'){
+                            $amount_in_words=Terbilang::make(($amount+$amount_not_paid),' TZS',' ');
+
+                        }if ($var->currency=='USD'){
+
+                            $amount_in_words=Terbilang::make(($amount+$amount_not_paid),' USD',' ');
+                        }
+                        else{
+
+
+                        }
+
+
+
+
+                    }
+
 
                 }else{
-                    $amount=$var->vacation_season;
+
+                    $amount=$var->amount;
+
+
+                    if($var->currency=='TZS'){
+                        $amount_in_words=Terbilang::make(($amount+$amount_not_paid),' TZS',' ');
+
+                    }if ($var->currency=='USD'){
+
+                        $amount_in_words=Terbilang::make(($amount+$amount_not_paid),' USD',' ');
+                    }
+                    else{
+
+
+                    }
+
 
                 }
 
 
-            }else{
-
-             $amount=$var->amount;
 
 
-            }
+
 
 
 
 
             $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
             $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
-
 
 
 //            $invoice_to_be_created=DB::table('invoices')->where('invoicing_period_start_date',$var->programming_start_date)->where('invoicing_period_end_date',$var->programming_end_date)->where('debtor_name',$var->full_name)->where('amount_to_be_paid',$var->amount)->where('currency',$var->currency)->where('contract_id',$var->contract_id)->get();

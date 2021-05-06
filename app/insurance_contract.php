@@ -9,4 +9,5 @@ class insurance_contract extends Model
 {
     //
     use Notifiable;
+
 }

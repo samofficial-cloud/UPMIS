@@ -190,9 +190,16 @@ class HomeController extends Controller
       $today=date('Y-m-d');
 
 
+      $campus_host=DB::table('campuses')->where('id',$request->get('campus_host'))->value('campus_name');
+        $college_host=DB::table('colleges')->where('id',$request->get('college_host'))->value('college_name');
+        $campus_individual=DB::table('campuses')->where('id',$request->get('campus_individual'))->value('campus_name');
+        $college_individual=DB::table('colleges')->where('id',$request->get('college_individual'))->value('college_name');
+
+
+
 
       $contract_id = DB::table('research_flats_contracts')->insertGetId(
-            ['first_name' => ucfirst(strtolower($request->get('first_name'))), 'last_name'=>ucfirst(strtolower($request->get('last_name'))), 'gender'=>$request->get('gender'),'professional'=>ucfirst(strtolower($request->get('professional'))),'address'=>ucfirst(strtolower($request->get('address'))), 'email'=>$request->get('email'), 'phone_number'=>$request->get('phone_number'), 'purpose'=>ucfirst(strtolower($request->get('purpose'))), 'passport_no'=>$request->get('passport_no'), 'issue_date'=>$request->get('issue_date'), 'issue_place'=>$request->get('issue_place'), 'room_no'=>$request->get('room_no'), 'arrival_date'=>$request->get('arrival_date'), 'arrival_time'=>$request->get('arrival_time'), 'departure_date'=>$request->get('departure_date'), 'payment_mode'=>'Invoice', 'receipt_no'=>$request->get('receipt_no'), 'receipt_date'=>$request->get('receipt_date'), 'total_days'=>$request->get('total_days'), 'final_payment'=>0,'amount_usd'=>$amount_usd, 'amount_tzs'=>$amount_tzs, 'total_usd'=>$total_usd, 'total_tzs'=>$total_tzs, 'nationality'=>$request->get('nationality'), 'host_name'=>$request->get('host_name'), 'college'=>$request->get('college'),'department'=>$request->get('department'), 'host_address'=>ucfirst(strtolower($request->get('host_address'))), 'host_email'=>$request->get('host_email'), 'host_phone'=>$request->get('host_phone'), 'invoice_debtor'=>$debtor, 'invoice_currency'=>$currency]);
+            ['first_name' => ucfirst(strtolower($request->get('first_name'))), 'last_name'=>ucfirst(strtolower($request->get('last_name'))), 'gender'=>$request->get('gender'),'professional'=>ucfirst(strtolower($request->get('professional'))),'address'=>ucfirst(strtolower($request->get('address'))), 'email'=>$request->get('email'), 'phone_number'=>$request->get('phone_number'), 'purpose'=>ucfirst(strtolower($request->get('purpose'))), 'passport_no'=>$request->get('passport_no'), 'issue_date'=>$request->get('issue_date'), 'issue_place'=>$request->get('issue_place'), 'room_no'=>$request->get('room_no'), 'arrival_date'=>$request->get('arrival_date'), 'arrival_time'=>$request->get('arrival_time'), 'departure_date'=>$request->get('departure_date'), 'payment_mode'=>'Invoice', 'receipt_no'=>$request->get('receipt_no'), 'receipt_date'=>$request->get('receipt_date'), 'total_days'=>$request->get('total_days'), 'final_payment'=>0,'amount_usd'=>$amount_usd, 'amount_tzs'=>$amount_tzs, 'total_usd'=>$total_usd, 'total_tzs'=>$total_tzs, 'nationality'=>$request->get('nationality'), 'host_name'=>$request->get('host_name'), 'college_host'=>$college_host,'department_host'=>$request->get('department_host'),'campus_host'=>$campus_host, 'host_address'=>ucfirst(strtolower($request->get('host_address'))), 'host_email'=>$request->get('host_email'), 'host_phone'=>$request->get('host_phone'), 'invoice_debtor'=>$debtor, 'invoice_currency'=>$currency, 'college_individual'=>$college_individual,'department_individual'=>$request->get('department_individual'),'campus_individual'=>$campus_individual,'tin'=>$request->get('tin'),'client_category'=>$request->get('client_category'),'client_type'=>$request->get('client_type'),'id_type'=>$request->get('id_type'),'id_number'=>$request->get('id_number')]);
 
        DB::table('research_flats_invoices')->insert(
                     ['contract_id' => $contract_id, 'invoicing_period_start_date' => $request->get('arrival_date'),'invoicing_period_end_date' => $request->get('departure_date'),'period' => '','project_id' => 'research_flats','debtor_account_code' => '','debtor_name' => $debtor_name,'debtor_address' => '','amount_to_be_paid' => $amount_to_be_paid,'currency_invoice'=>$currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Research Flats','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Research Flats','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
@@ -222,6 +229,14 @@ class HomeController extends Controller
       return View('research_flats_contract_edit',compact('contract','room_cat'));
     }
 
+
+    public function renewResearchForm($id){
+        $contract=DB::table('research_flats_contracts')->where('id', $id)->first();
+        $room_cat = DB::table('research_flats_rooms')->select('category')->where('room_no',$contract->room_no)->value('category');
+        return View('research_flats_contract_renew',compact('contract','room_cat'));
+    }
+
+
     public function sendeditResearchForm(Request $request, $id){
        DB::table('research_flats_contracts')
                 ->where('id', $id)
@@ -230,6 +245,40 @@ class HomeController extends Controller
         DB::table('research_flats_contracts')
                 ->where('id', $id)
                 ->update(['last_name' => $request->get('last_name')]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['client_category' => $request->get('client_category')]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['client_type' => $request->get('client_type')]);
+
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['campus_individual' => $request->get('campus_individual')]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['college_individual' => $request->get('college_individual')]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['department_individual' => $request->get('department_individual')]);
+
+
+
+
+
+
+
+
 
         DB::table('research_flats_contracts')
                 ->where('id', $id)
@@ -312,13 +361,39 @@ class HomeController extends Controller
                 ->where('id', $id)
                 ->update(['host_name' => $request->get('host_name')]);
 
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['college' => $request->get('college')]);
+
 
         DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['department' => $request->get('department')]);
+            ->where('id', $id)
+            ->update(['campus_host' => $request->get('campus_host')]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['college_host' => $request->get('college_host')]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['department_host' => $request->get('department_host')]);
+
+
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['tin' => $request->get('tin')]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['id_type' => $request->get('id_type')]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['id_number' => $request->get('id_number')]);
+
 
         DB::table('research_flats_contracts')
                 ->where('id', $id)
@@ -476,7 +551,7 @@ class HomeController extends Controller
      public function flat_all_details(Request $request){
         $details= DB::table('research_flats_contracts')->where('first_name', $request->get('first'))->where('last_name', $request->get('last'))->orderby('id','dsc')->distinct()->first();
 
-      return response()->json(['first'=>$details->first_name, 'last'=>$details->last_name, 'email'=>$details->email, 'gender'=>$details->gender, 'prof'=>$details->professional, 'address'=>$details->address, 'phone'=>$details->phone_number,'purpose'=>$details->purpose,'passport_no'=>$details->passport_no, 'issue'=>$details->issue_date, 'place'=>$details->issue_place, 'nationality'=>$details->nationality]);
+      return response()->json(['first'=>$details->first_name, 'last'=>$details->last_name, 'email'=>$details->email, 'gender'=>$details->gender, 'prof'=>$details->professional, 'address'=>$details->address, 'phone'=>$details->phone_number,'purpose'=>$details->purpose,'passport_no'=>$details->passport_no, 'issue'=>$details->issue_date, 'place'=>$details->issue_place, 'nationality'=>$details->nationality,'tin'=>$details->tin]);
      }
 
 

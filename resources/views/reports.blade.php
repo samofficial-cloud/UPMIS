@@ -231,7 +231,7 @@ $year=$current-3;
               <option value="research_flats">Research Flats</option>
               @endif
               @if ($category=='Real Estate only' OR $category=='All')
-              <option value="space">Space Module</option>
+              <option value="space">Real Estate Module</option>
               <option value="tenant">Tenants Module</option>
               @endif
               @if ($category=='All')
@@ -248,8 +248,8 @@ $year=$current-3;
           <span id="spacetypemsg"></span>
             <select class="form-control" id="major_industry" name="major_industry">
               <option value=" " disabled selected hidden>Select Report Type</option>
-              <option value="list">List of Spaces</option>
-              <option value="history">Space History</option>
+              <option value="list">List of Real Estate</option>
+              <option value="history">Real Estate History</option>
             </select>
         </div>
     </div>
@@ -279,12 +279,12 @@ $year=$current-3;
 
     <div class="form-group" id="space_idDiv" style="display: none;">
       <div class="form-wrapper">
-      <label for="space_id"  >Space Id<span style="color: red;">*</span></label>
+      <label for="space_id"  >Real Estate Number<span style="color: red;">*</span></label>
       <span id="spaceidmsg"></span>
      {{-- <input type="text" class="form-control" id="space_id" name="space_id" value="" autocomplete="off"> --}}
        {{-- <select class="form-control" id="space_id" name="space_id">
         <option value="" disabled selected hidden>Select Space</option>
-         
+
        </select> --}}
         <span id="nameListSpaceId"></span>
       </div>
@@ -644,7 +644,7 @@ $year=$current-3;
 
                   <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="t_invoiceCriteria" id="space_rent" value="rent" checked="">
-                  <label for="space_rent" class="form-check-label">Space Rent</label>
+                  <label for="space_rent" class="form-check-label">Real Estate Rent</label>
 
                  </div>
 
@@ -797,7 +797,7 @@ $year=$current-3;
             <select class="form-control" id="car_type" name="car_type">
               <option value=" " disabled selected hidden>Select Report Type</option>
               {{-- <option value="car history">List of Car Rental History</option> --}}
-              
+
               <option value="clients">List of Clients</option>
               <option value="cars">List of Rental Cars</option>
               <option value="history">Car Rental History</option>
@@ -829,7 +829,7 @@ $year=$current-3;
                 <option value="{{$vehicle->vehicle_reg_no}}">{{$vehicle->vehicle_reg_no}} - {{$vehicle->vehicle_model}}</option>
               @endforeach
             </select>
-            
+
           </div>
         </div>
 
@@ -1165,7 +1165,7 @@ $year=$current-3;
             <select class="form-control" id="contractbusiness_type" name="contractbusiness_type">
               <option value=" " disabled selected hidden>Select Business Type</option>
                @if ($category=='Real Estate only' OR $category=='All')
-              <option value="Space">SPACE</option>
+              <option value="Space">Real Estate</option>
               @endif
               @if($category=='Insurance only' OR $category=='All')
               <option value="Insurance">INSURANCE</option>
@@ -1343,7 +1343,7 @@ $year=$current-3;
 
                   <div class="form-wrapper col-3">
                   <label for="summary_space" style=" display: block;
-    white-space: nowrap;">Space Rent
+    white-space: nowrap;">Real Estate Rent
                   <input class="form-check-input" type="radio" name="summary_criteria" id="summary_space" value="space" checked="">
                 </label>
                  </div>
@@ -1495,7 +1495,7 @@ $year=$current-3;
 
                  <div class="col-3 form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="In_SpaceCriteria" id="space_rent2" value="rent" checked="">
-                  <label for="space_rent2" class="form-check-label">Space Rent</label>
+                  <label for="space_rent2" class="form-check-label">Real Estate Rent</label>
                 </div>
 
                  <div class="col-3 form-check form-check-inline">
@@ -1704,7 +1704,7 @@ $year=$current-3;
               <option value="Expired">Expired</option>
             </select>
         </div>
-    </div>  
+    </div>
 
 
   </div>
@@ -3580,7 +3580,7 @@ function myFunction() {
 var a;
    // $('#space_id').click(function(e){
    //  e.preventDefault();
-        
+
 
 
    //  });
@@ -4258,7 +4258,7 @@ var a100=0;
           $('#flatscontracts_filterBydiv').show();
           $('#room_categoryDiv').hide();
           $('#flatsrooms_filterBydiv').hide();
-        } 
+        }
     });
 
 
@@ -4439,7 +4439,7 @@ var a100=0;
        else if (query2=='history'){
         p1=1;
         var query6=$('#space_id').val();
-        
+
         if(query6==null){
           p5=0;
           $('#spaceidmsg').show();
@@ -4875,7 +4875,7 @@ var a100=0;
           var query483 = $('#summary_start_date').val(),
             query4831 = $('#summary_end_date').val();
 
-       
+
         if(query483==""){
           p483=0;
           $('#summary_startdatemsg').show();
@@ -4915,7 +4915,7 @@ var a100=0;
       else{
         p483=1;
 
-        p4831 =1; 
+        p4831 =1;
 
       }
 
@@ -4923,7 +4923,7 @@ var a100=0;
         var query484 = $('#summary2_start_date').val(),
             query485 = $('#summary2_end_date').val();
 
-       
+
         if(query484==""){
           p484=0;
           $('#summary2_startdatemsg').show();
@@ -4963,7 +4963,7 @@ var a100=0;
       else{
         p484=1;
 
-        p485=1; 
+        p485=1;
 
       }
       if(p480==1 && p481==1 && p482==1&&p483==1 &&p4831==1 &&p484==1&&p485==1){
@@ -5071,7 +5071,7 @@ var a100=0;
 
         }
         else if(query50=='contracts'){
-          p51 = 1; p52=1; 
+          p51 = 1; p52=1;
           $('#flatsreporttypemsg').hide();
           $('#flats_reporttype').attr('style','border: 1px solid #ccc');
 
@@ -5680,7 +5680,7 @@ var a100=0;
               var message=document.getElementById('carhistory_startdatemsg');
               message.style.color='red';
               message.innerHTML="Required";
-              $('#carhistory_start_date').attr('style','border-bottom:1px solid #f00'); 
+              $('#carhistory_start_date').attr('style','border-bottom:1px solid #f00');
               }
               else{
                 p490=1;
@@ -5693,12 +5693,12 @@ var a100=0;
                 var message=document.getElementById('carhistory_enddatemsg');
                 message.style.color='red';
                 message.innerHTML="Required";
-                $('#carhistory_end_date').attr('style','border-bottom:1px solid #f00'); 
+                $('#carhistory_end_date').attr('style','border-bottom:1px solid #f00');
               }
               else{
                 p491=1;
                 $('#carhistory_enddatemsg').hide();
-                 $('#carhistory_end_date').attr('style','border-bottom:1px solid #ccc'); 
+                 $('#carhistory_end_date').attr('style','border-bottom:1px solid #ccc');
               }
               if(query490!='' && query491!=''){
                 if(query490>query491){
@@ -5707,7 +5707,7 @@ var a100=0;
                     query491 = query492;
                 }
               }
-              
+
 
          }
          else{
@@ -6262,13 +6262,13 @@ var a100=0;
     allowClear: true,
   });
 
-  
-   
+
+
     $("#Con_clientname" ).select2({
       placeholder: "Select Client",
       theme: "bootstrap",
       allowClear: true,
-        ajax: { 
+        ajax: {
           url: "{{route('ajax.client_names')}}",
          method:"POST",
           dataType: 'json',
@@ -6297,7 +6297,7 @@ var a100=0;
       placeholder: "Select Client",
       theme: "bootstrap",
       allowClear: true,
-        ajax: { 
+        ajax: {
           url: "{{route('ajax.client_names')}}",
          method:"POST",
           dataType: 'json',
@@ -6321,7 +6321,7 @@ var a100=0;
 
       });
 
-    
+
 
     });
 </script>

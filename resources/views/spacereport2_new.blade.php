@@ -119,12 +119,12 @@
         </ul>
     </div>
 <div class="main_content">
-  <?php $i=1; 
+  <?php $i=1;
   $location = DB::table('spaces')->select('sub_location')->where('space_id',$_GET['space_id'])->value('sub_location');
   ?>
   <br>
   <div class="container" style="max-width: 100%;">
-   <center><h4> 
+   <center><h4>
     @if($_GET['filter_date']=='true')
       <br><br>{{$_GET['space_id']}} - {{$location}} Renting History Report for the Duration from {{date("d/m/Y",strtotime($_GET['start_date']))}} to {{date("d/m/Y",strtotime($_GET['end_date']))}}
     @else
@@ -163,7 +163,7 @@
 </div>
 </div>
 <br>
-  
+
 <div class="card">
   <div class="card-body">
   <h3>2. Occupation History</h3>
@@ -217,7 +217,7 @@
         </tbody>
 </table>
 @else
-<h3>This space has/was not been lease yet for the specified duration</h3>
+<h3>This Real Estate has/was not been lease yet for the specified duration</h3>
 @endif
 </div>
 </div>
@@ -256,7 +256,7 @@
                                 </tbody>
                               </table>
                               @else
-<h3>This space has no  previous debts</h3>
+<h3>This Real Estate has no  previous debts</h3>
 @endif
 </div>
 </div>
@@ -286,7 +286,7 @@ function settitle(){
     if($_GET['filter_date']=='true'){
       echo $_GET['space_id'].' - '.$location.', Occupation History Report for the Duration from '.date("d/m/Y",strtotime($_GET['start_date'])).' to '.date("d/m/Y",strtotime($_GET['end_date']));
     }
-    
+
      else{
          echo $_GET['space_id'].' - '.$location.', Occupation History Report';
      }
@@ -299,14 +299,14 @@ function settitle2(){
     if($_GET['filter_date']=='true'){
       echo $_GET['space_id'].' - '.$location.', Debts Report for the Duration from '.date("d/m/Y",strtotime($_GET['start_date'])).' to '.date("d/m/Y",strtotime($_GET['end_date']));
     }
-    
+
      else{
          echo $_GET['space_id'].' - '.$location.', Debts Report';
      }
   ?>';
 }
 
-var table = $('#myTable2').DataTable({ 
+var table = $('#myTable2').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -329,7 +329,7 @@ var table = $('#myTable2').DataTable({
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -342,7 +342,7 @@ var table = $('#myTable2').DataTable({
                       doc.content[2].table.body[i][1].alignment = 'left';
                       doc.content[2].table.body[i][5].alignment = 'right';
                       doc.content[2].table.body[i][6].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -361,7 +361,7 @@ var table = $('#myTable2').DataTable({
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -379,7 +379,7 @@ var table = $('#myTable2').DataTable({
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -400,7 +400,7 @@ var table = $('#myTable2').DataTable({
           ]
       });
 
-var table = $('#myTable3').DataTable({ 
+var table = $('#myTable3').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -423,7 +423,7 @@ var table = $('#myTable3').DataTable({
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -436,7 +436,7 @@ var table = $('#myTable3').DataTable({
                       doc.content[2].table.body[i][1].alignment = 'left';
                       doc.content[2].table.body[i][5].alignment = 'right';
                       //doc.content[2].table.body[i][6].alignment = 'right';
-                    
+
                     };
 
                   doc.defaultStyle.alignment = 'center';
@@ -455,7 +455,7 @@ var table = $('#myTable3').DataTable({
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -473,7 +473,7 @@ var table = $('#myTable3').DataTable({
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],

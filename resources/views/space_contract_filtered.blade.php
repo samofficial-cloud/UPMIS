@@ -103,7 +103,7 @@
                                           <td colspan="2">{{$space->contract_id}}</td>
                                       </tr>
                                       <tr>
-                                          <td>Space ID</td>
+                                          <td>Real Estate Number</td>
                                           <td colspan="2">{{$space->space_id_contract}}</td>
                                       </tr>
                                       <tr>

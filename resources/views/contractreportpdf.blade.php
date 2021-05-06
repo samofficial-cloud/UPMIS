@@ -72,7 +72,7 @@ table {
 <center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
-     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
+     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT
     </b>
   @if(($_GET['c_filter']!='true') && ($_GET['con_filter']!='true') && ($_GET['y_filter']!='true'))
   <br><br>List of <b>{{$_GET['business_type']}}</b> Contracts
@@ -100,7 +100,7 @@ table {
         <tr>
           <th scope="col"><center>S/N</center></th>
           <th scope="col"><center>Client Name</center></th>
-          <th scope="col"><center>Space Id</center></th>
+          <th scope="col"><center>Real Estate Number</center></th>
            <th scope="col"><center>Currency</center></th>
           <th scope="col" colspan="2"><center>Amount</center></th>
           <th scope="col" ><center>Payment Cycle</center></th>

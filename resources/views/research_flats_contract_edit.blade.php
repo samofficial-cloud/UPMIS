@@ -326,23 +326,78 @@ $today=date('Y-m-d');
                                 <div class="form-card">
                                     <h2 class="fs-title">Client Information</h2>
                                 <div class="form-group row" id="namediv">
+
+
+
+
+                                    <div class="form-wrapper col-12" id="client_categoryDiv">
+                                        <label for="client_category">Client Category<span style="color: red;">*</span></label>
+                                        <span id="client_category_msg"></span>
+                                        <input type="text" id="client_category" name="client_category" class="form-control" autocomplete="off" value="{{$contract->client_category}}"  readonly>
+                                    </div>
+
+
+                                    @if($contract->client_type!='')
+                                    <div class="form-wrapper col-12 pt-4" id="client_typeDiv" >
+                                        <label for="client_type">Client Type<span style="color: red;">*</span></label>
+                                        <span id="client_type_msg"></span>
+                                        <input type="text" id="client_type" name="client_type" class="form-control" autocomplete="off" value="{{$contract->client_type}}"  readonly>
+
+                                    </div>
+                                    @else
+                                    @endif
+
+                                    @if($contract->campus_individual!='')
+                                    <div class="form-wrapper col-6 pt-4" id="campus_individualDiv" >
+                                        <label for="campus_individual">Campus<span style="color: red;">*</span></label>
+                                        <span id="campus_individual_msg"></span>
+                                        <input type="text" id="campus_individual" name="campus_individual" class="form-control" autocomplete="off" value="{{$contract->campus_individual}}"  readonly>
+                                    </div>
+                                    @else
+                                    @endif
+
+                                    @if($contract->college_individual!='')
+                                    <div class="form-wrapper col-6 pt-4" id="college_individualDiv" >
+                                        <label for="college_individual">College<span style="color: red;">*</span></label>
+                                        <span id="college_individual_msg"></span>
+                                        <input type="text" id="college_individual" name="college_individual" class="form-control" autocomplete="off" value="{{$contract->college_individual}}"  readonly>
+                                    </div>
+                                    @else
+                                    @endif
+
+
+                                    @if($contract->department_individual!='')
+                                    <div class="form-wrapper col-12 pt-4" id="department_individualDiv" >
+                                        <label for="department_individual">Department<span style="color: red;">*</span></label>
+                                        <span id="department_individual_msg"></span>
+                                        <input type="text" id="department_individual" name="department_individual" class="form-control" autocomplete="off" value="{{$contract->department_individual}}"  readonly>
+                                    </div>
+                                    @else
+                                    @endif
+
+
+
+
+
+
+
                                     <div class="form-wrapper col-4">
                                         <label for="first_name">First Name<span style="color: red;">*</span></label>
                                             <span id="firstnamemsg"></span>
-                                        <input type="text" id="first_name" name="first_name" class="form-control" autocomplete="off" value="{{$contract->first_name}}" required="" readonly="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
+                                        <input type="text" id="first_name" name="first_name" class="form-control" autocomplete="off" value="{{$contract->first_name}}"  readonly="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
                                         <span id="nameList"></span>
                                     </div>
                                     <div class="form-wrapper col-5">
                                         <label for="last_name">Last Name<span style="color: red;">*</span></label>
                                         <span id="lastnamemsg"></span>
-                                        <input type="text" id="last_name" name="last_name" class="form-control" required="" readonly="" value="{{$contract->last_name}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                        <input type="text" id="last_name" name="last_name" class="form-control"  readonly="" value="{{$contract->last_name}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                     </div>
 
                                     <div class="form-wrapper col-3">
                                         <label for="gender">Gender<span style="color: red;">*</span></label>
                                             <span id="gendermsg"></span>
-                                            <input type="text" id="gender" name="gender" class="form-control" required="" readonly="" value="{{$contract->gender}}">
-                                        {{-- <select class="form-control" required="" id="gender" name="gender">
+                                            <input type="text" id="gender" name="gender" class="form-control"  readonly="" value="{{$contract->gender}}">
+                                        {{-- <select class="form-control"  id="gender" name="gender">
                                           <option value="{{$contract->gender}}">{{$contract->gender}}</option>
                                             @if($contract->gender!='Female')
                                                 <option value="Female">Female</option>
@@ -357,7 +412,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="professional">Professional<span style="color: red;">*</span></label>
                                             <span id="profmsg"></span>
-                                            <input type="text" id="professional" name="professional" class="form-control" required="" value="{{$contract->professional}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="professional" name="professional" class="form-control"  value="{{$contract->professional}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
@@ -365,20 +420,34 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-4">
                                             <label for="address">Address<span style="color: red;">*</span></label>
                                             <span id="addressmsg"></span>
-                                            <input type="text" id="address" name="address" class="form-control"  required="" value="{{$contract->address}}">
+                                            <input type="text" id="address" name="address" class="form-control"   value="{{$contract->address}}">
                                         </div>
 
                                         <div class="form-wrapper col-5">
                                             <label for="email">Email<span style="color: red;">*</span></label>
                                             <span id="emailmsg"></span>
-                                            <input type="text" name="email" id="email" class="form-control" required placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25" value="{{$contract->email}}">
+                                            <input type="text" name="email" id="email" class="form-control"  placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25" value="{{$contract->email}}">
                                         </div>
 
                                         <div class="form-wrapper col-3">
                                             <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
                                             <span id="phonemsg"></span>
-                                            <input type="text" id="phone_number" required name="phone_number" value="{{$contract->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                            <input type="text" id="phone_number" name="phone_number" value="{{$contract->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                         </div>
+
+                                       @if($contract->tin!='')
+                                       <div id="tinDiv" class="form-group col-12">
+                                           <div class="form-wrapper">
+                                               <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                               <span id="tin_msg"></span>
+                                               <input type="number" id="tin" name="tin" class="form-control" value="{{$contract->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                               <p id="error_tin"></p>
+                                           </div>
+                                       </div>
+                                       @else
+                                       @endif
+
+
 
                                     </div>
 
@@ -386,7 +455,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="nationality">Nationality<span style="color: red;">*</span></label>
                                             <span id="nationality_msg"></span>
-                                            <input type="text" id="nationality" name="nationality" class="form-control" required="" value="{{$contract->nationality}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="nationality" name="nationality" class="form-control"  value="{{$contract->nationality}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
@@ -394,28 +463,85 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="purpose">Purpose of Visit<span style="color: red;">*</span></label>
                                             <span id="purposemsg"></span>
-                                            <input type="text" id="purpose" name="purpose" class="form-control" required="" value="{{$contract->purpose}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="purpose" name="purpose" class="form-control"  value="{{$contract->purpose}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
                                      <div class="form-group row">
                                         <div class="form-wrapper col-4">
-                                            <label for="passport_no">Passport No<span style="color: red;">*</span></label>
+                                            <label for="passport_no">Passport No</label>
                                             <span id="pass_nomsg"></span>
-                                            <input type="text" id="passport_no" name="passport_no" class="form-control" required="" value="{{$contract->passport_no}}">
+                                            <input type="text" id="passport_no" name="passport_no" class="form-control"  value="{{$contract->passport_no}}">
                                         </div>
 
                                         <div class="form-wrapper col-4">
                                             <label for="issue_date">Date of Issue<span style="color: red;">*</span></label>
                                             <span id="issue_datemsg"></span>
-                                            <input type="date" id="issue_date" name="issue_date" class="form-control" required="" max="{{date('Y-m-d')}}" value="{{$contract->issue_date}}">
+                                            <input type="date" id="issue_date" name="issue_date" class="form-control"  max="{{date('Y-m-d')}}" value="{{$contract->issue_date}}">
                                         </div>
 
                                          <div class="form-wrapper col-4">
                                             <label for="issue_place">Place of Issue<span style="color: red;">*</span></label>
                                             <span id="issue_placemsg"></span>
-                                            <input type="text" id="issue_place" name="issue_place" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" value="{{$contract->issue_place}}">
+                                            <input type="text" id="issue_place" name="issue_place" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" value="{{$contract->issue_place}}">
                                         </div>
+
+
+                                         @if($contract->id_type!='')
+                                         <div class="form-wrapper col-12" id="id_typeDiv" >
+                                             <label for="id_type">Type of Identification Card<span style="color: red;">*</span></label>
+                                             <span id="id_type_msg"></span>
+                                             <select class="form-control id_type"  id="id_type" name="id_type">
+                                                 <option value="{{$contract->id_type}}" selected>{{$contract->id_type}}</option>
+
+                                                 @if($contract->id_type=='National Identity Card')
+                                                     <option value="Driving License">Driving Licence</option>
+                                                     <option value="Voters Card">Voters Card</option>
+                                                     <option value="Workers Identity Card">Workers Identity Card</option>
+
+                                                 @elseif($contract->id_type=='Driving License')
+                                                     <option value="National Identity Card">National Identity Card</option>
+                                                     <option value="Voters Card">Voters Card</option>
+                                                     <option value="Workers Identity Card">Workers Identity Card</option>
+
+                                                 @elseif($contract->id_type=='Voters Card')
+                                                     <option value="National Identity Card">National Identity Card</option>
+                                                     <option value="Driving License">Driving Licence</option>
+                                                     <option value="Workers Identity Card">Workers Identity Card</option>
+
+                                                 @elseif($contract->id_type=='Workers Identity Card')
+                                                 <option value="National Identity Card">National Identity Card</option>
+                                                 <option value="Driving License">Driving Licence</option>
+                                                 <option value="Voters Card">Voters Card</option>
+                                                 @else
+                                                 @endif
+
+                                             </select>
+                                         </div>
+                                         @else
+                                         @endif
+
+                                         @if($contract->id_number!='')
+                                         <div class="form-wrapper col-12 pt-4" id="id_numberDiv" >
+                                             <label for="id_number">ID Number<span style="color: red;">*</span></label>
+                                             <span id="id_number_msg"></span>
+                                             <input type="text" id="id_number" value="{{$contract->id_number}}" name="id_number" class="form-control">
+                                         </div>
+                                         @else
+                                         @endif
+
+                                         <div class="form-wrapper col-12">
+                                             <label for="has_host">Has host/Contact person?<span style="color: red;">*</span></label>
+                                             <span id="has_host_msg"></span>
+                                             @if($contract->host_name=='')
+                                                 <input type="text" id="has_host" name="has_host" value="No" class="form-control" readonly>
+                                             @else
+                                                 <input type="text" id="has_host" name="has_host" value="Yes" class="form-control" readonly>
+                                             @endif
+
+                                         </div>
+
+
                                     </div>
                                 </div>
                                     <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
@@ -429,21 +555,30 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="host_name">Host Name<span style="color: red;">*</span></label>
                                             <span id="host_namemsg"></span>
-                                            <input type="text" id="host_name" name="host_name" class="form-control" required="" readonly="" value="{{$contract->host_name}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="host_name" name="host_name" class="form-control"  readonly="" value="{{$contract->host_name}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                 </div>
 
-                                     <div class="form-group row">
-                                        <div class="form-wrapper col-6">
-                                            <label for="college">College/School<span style="color: red;">*</span></label>
-                                            <span id="collegemsg"></span>
-                                            <input type="text" id="college" name="college" class="form-control" required="" readonly="" value="{{$contract->college}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                    <div class="form-group row">
+                                        <div class="form-wrapper col-6 pt-4" id="campus_hostDiv" >
+                                            <label for="campus_host">Campus<span style="color: red;">*</span></label>
+                                            <span id="campus_host_msg"></span>
+                                            <input type="text" id="campus_host" name="campus_host" readonly class="form-control" value="{{$contract->campus_host}}">
                                         </div>
 
-                                        <div class="form-wrapper col-6">
-                                            <label for="department">Department<span style="color: red;">*</span></label>
-                                            <span id="departmentmsg"></span>
-                                            <input type="text" id="department" name="department" class="form-control" required="" readonly="" value="{{$contract->department}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+
+                                        <div class="form-wrapper col-6 pt-4" id="college_hostDiv" >
+                                            <label for="college_host">College<span style="color: red;">*</span></label>
+                                            <span id="college_host_msg"></span>
+                                            <input type="text" id="college_host" name="college_host" readonly class="form-control" value="{{$contract->college_host}}">
+                                        </div>
+
+
+
+                                        <div class="form-wrapper col-12 pt-4" id="department_hostDiv" >
+                                            <label for="department_host">Department<span style="color: red;">*</span></label>
+                                            <span id="department_host_msg"></span>
+                                            <input type="text" id="department_host" name="department_host" readonly class="form-control" value="{{$contract->department_host}}">
                                         </div>
                                     </div>
 
@@ -451,20 +586,25 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-4">
                                             <label for="host_address">Address<span style="color: red;">*</span></label>
                                             <span id="host_addressmsg"></span>
-                                            <input type="text" id="host_address" name="host_address" class="form-control" value="{{$contract->host_address}}" required="" >
+                                            <input type="text" id="host_address" name="host_address" class="form-control" value="{{$contract->host_address}}"  >
                                         </div>
 
                                         <div class="form-wrapper col-5">
                                             <label for="host_email">Email<span style="color: red;">*</span></label>
                                             <span id="host_emailmsg"></span>
-                                            <input type="text" id="host_email" name="host_email" class="form-control" required="" value="{{$contract->host_email}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="host_email" name="host_email" class="form-control"  value="{{$contract->host_email}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
 
                                         <div class="form-wrapper col-3">
                                             <label for="host_phone">Phone Number <span style="color: red;"> *</span></label>
                                             <span id="host_phonemsg"></span>
-                                            <input type="text" id="host_phone" required name="host_phone" class="form-control" value="{{$contract->host_phone}}" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                            <input type="text" id="host_phone"  name="host_phone" class="form-control" value="{{$contract->host_phone}}" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                         </div>
+
+
+
+
+
                                     </div>
                               </div>
                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -480,7 +620,7 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper">
                                         <label for="room_no">Room No.<span style="color: red;">*</span></label>
                                         <span id="roommsg"></span>
-                                        <input type="text" class="form-control" required="" id="room_no" name="room_no" value="{{$contract->room_no}}" required="" readonly="">
+                                        <input type="text" class="form-control"  id="room_no" name="room_no" value="{{$contract->room_no}}"  readonly="">
 
                                         </div>
                                     </div>
@@ -489,13 +629,13 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper col-6">
                                             <label for="arrival_date">Date of Arrival<span style="color: red;">*</span></label>
                                             <span id="arrival_datemsg"></span>
-                                            <input type="date" id="arrival_date" name="arrival_date" class="form-control" value="{{$contract->arrival_date}}" required="" readonly="">
+                                            <input type="date" id="arrival_date" name="arrival_date" class="form-control" value="{{$contract->arrival_date}}"  readonly="">
                                       </div>
 
                                       <div class="form-wrapper col-6">
                                             <label for="arrival_time">Time<span style="color: red;">*</span></label>
                                             <span id="arrival_timemsg"></span>
-                                            <input type="time" id="arrival_time" name="arrival_time" class="form-control" required="" value="{{$contract->arrival_time}}">
+                                            <input type="time" id="arrival_time" name="arrival_time" class="form-control"  value="{{$contract->arrival_time}}">
                                       </div>
                                     </div>
 
@@ -503,7 +643,7 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper">
                                             <label for="departure_date">Expected Date of Departure<span style="color: red;">*</span></label>
                                             <span id="departure_datemsg"></span>
-                                            <input type="date" id="departure_date" name="departure_date" class="form-control" required="" value="{{$contract->departure_date}}" readonly="">
+                                            <input type="date" id="departure_date" name="departure_date" class="form-control"  value="{{$contract->departure_date}}" readonly="">
                                       </div>
                                     </div>
                                 </div>
@@ -555,13 +695,13 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_no">Receipt No<span style="color: red;">*</span></label>
                                           <span id="receipt_no_msg"></span>
-                                          <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="" value="{{$contract->receipt_no}}">
+                                          <input type="text" id="receipt_no" name="receipt_no" class="form-control"  value="{{$contract->receipt_no}}">
                                       </div>
 
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_date">Of Date<span style="color: red;">*</span></label>
                                           <span id="receipt_date_msg"></span>
-                                            <input type="date" id="receipt_date" name="receipt_date" class="form-control" required="" value="{{$contract->receipt_date}}">
+                                            <input type="date" id="receipt_date" name="receipt_date" class="form-control"  value="{{$contract->receipt_date}}">
                                       </div>
                                     </div>
 
@@ -569,7 +709,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="total_days">Total No. of days stayed at Research Flats <span style="color: red;">*</span></label>
                                             <span id="total_days_msg"></span>
-                                            <input type="text" id="total_days" name="total_days" class="form-control" required="" readonly="" value="{{$contract->total_days}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                            <input type="text" id="total_days" name="total_days" class="form-control"  readonly="" value="{{$contract->total_days}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                         </div>
                                     </div>
 
@@ -580,7 +720,7 @@ $today=date('Y-m-d');
                                     {{-- <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="final_payment">Final Payment(if applicable USD/TZS)<span style="color: red;">*</span></label>
-                                            <input type="text" id="final_payment" name="final_payment" class="form-control" required="" value="{{$contract->final_payment}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                            <input type="text" id="final_payment" name="final_payment" class="form-control"  value="{{$contract->final_payment}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                         </div>
                                     </div> --}}
                                 </div>
@@ -598,7 +738,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                       <div class="form-wrapper">
                                         <label for="debtor">Debtor<span style="color: red;">*</span></label>
-                                        <input type="text" class="form-control" required="" id="debtor" name="debtor" readonly="" value="{{ucfirst(strtolower($contract->invoice_debtor))}}">
+                                        <input type="text" class="form-control"  id="debtor" name="debtor" readonly="" value="{{ucfirst(strtolower($contract->invoice_debtor))}}">
                                         {{-- <select class="form-control" required="" id="debtor" name="debtor" required="">
                                           <option value="" disabled selected hidden>Select Debtor</option>
                                             <option value="individual">Individual</option>
@@ -610,7 +750,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="currency">Currency<span style="color: red;">*</span></label>
-                                            <input type="text" class="form-control" id="currency" name="currency" required="" readonly="" value="{{$contract->invoice_currency}}">
+                                            <input type="text" class="form-control" id="currency" name="currency"  readonly="" value="{{$contract->invoice_currency}}">
                                             {{-- <select class="form-control" required="" id="currency" name="currency" required="">
                                               <option value=""disabled selected hidden>Select Currency</option>
                                               <option value="TZS">TZS</option>
@@ -680,6 +820,22 @@ $(".previous").click(function(){
     current_fs = $(this).parent();
     previous_fs = $(this).parent().prev();
 
+
+
+    var has_host=$('#has_host').val();
+
+    if(has_host=='Yes'){
+
+
+
+    }else{
+
+        previous_fs = $(this).parent().prev().prev();
+
+    }
+
+
+
     //Remove class active
     $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
@@ -703,7 +859,7 @@ $(".previous").click(function(){
 });
 
         $("#next1").click(function(){
-            var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,p11,p12;
+            var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,p11,p12,ptin;
             current_fs = $(this).parent();
             next_fs = $(this).parent().next();
             var first = $('#first_name').val(),
@@ -717,7 +873,12 @@ $(".previous").click(function(){
                 passport_no = $('#passport_no').val(),
                 issue_date = $('#issue_date').val(),
                 issue_place = $('#issue_place').val();
-            nationality = $('#nationality').val();
+                nationality = $('#nationality').val();
+                has_host=$('#has_host').val();
+                tin=$('#tin').val();
+
+
+
 
             if(first==''){
                 p1=0;
@@ -807,7 +968,7 @@ $(".previous").click(function(){
 
             var phone_digits=$('#phone_number').val().length;
 
-            if(phone_digits<10) {
+            if(phone_digits<10){
                 p7=0;
                 $('#phonemsg').show();
                 var message = document.getElementById('phonemsg');
@@ -838,19 +999,6 @@ $(".previous").click(function(){
                 $('#purpose').attr('style','border-bottom: 1px solid #ccc');
             }
 
-            if(passport_no==""){
-                p9=0;
-                $('#pass_nomsg').show();
-                var message=document.getElementById('pass_nomsg');
-                message.style.color='red';
-                message.innerHTML="Required";
-                $('#passport_no').attr('style','border-bottom:1px solid #f00');
-            }
-            else{
-                p9=1;
-                $('#pass_nomsg').hide();
-                $('#passport_no').attr('style','border-bottom: 1px solid #ccc');
-            }
 
             if(issue_date==""){
                 p10=0;
@@ -895,8 +1043,76 @@ $(".previous").click(function(){
                 $('#nationality').attr('style','border-bottom: 1px solid #ccc');
             }
 
-            if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p9==1 && p10==1 && p11==1 && p12==1){
-                gonext();
+
+
+
+            if(tin==""){
+                ptin=0;
+                $('#tin_msg').show();
+                var message=document.getElementById('tin_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#tin').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                ptin=1;
+                $('#tin_msg').hide();
+                $('#tin').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+
+
+
+            if(nationality.toLowerCase()=='tanzanian'){
+
+                if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p10==1 && p11==1 && p12==1 && ptin==1){
+
+
+                    if(has_host=='Yes'){
+
+                        next_fs = $(this).parent().next();
+                    }else{
+
+                        next_fs = $(this).parent().next().next();
+
+                    }
+
+
+                    gonext();
+                }
+
+            }else{
+
+                if(passport_no==""){
+                    p9=0;
+                    $('#pass_nomsg').show();
+                    var message=document.getElementById('pass_nomsg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#passport_no').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+                    p9=1;
+                    $('#pass_nomsg').hide();
+                    $('#passport_no').attr('style','border-bottom: 1px solid #ccc');
+                }
+
+                if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p9==1 && p10==1 && p11==1 && p12==1 && ptin==1){
+
+                    if(has_host=='Yes'){
+
+                        next_fs = $(this).parent().next();
+                    }else{
+
+                        next_fs = $(this).parent().next().next();
+
+                    }
+
+
+                    gonext();
+                }
+
+
             }
         });
 
@@ -1120,6 +1336,13 @@ $("#next2").click(function(){
             var category= $('#category').val();
             var p1, p2, p3, p4, p5, p6, p7;
 
+
+
+
+
+
+
+
             if(category=='Shared Room'){
                 var usd = $('#shared_room_usd').val(),
                     tzs = $('#shared_room').val(),
@@ -1306,4 +1529,33 @@ $("#next2").click(function(){
         });
 });
 </script>
+
+
+
+
+<script>
+
+    function minCharacters(value){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("next1").disabled = true;
+            document.getElementById("error_tin").style.color = 'red';
+            document.getElementById("error_tin").style.float = 'left';
+            document.getElementById("error_tin").style.paddingTop = '1%';
+            document.getElementById("error_tin").innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin").innerHTML ='';
+            document.getElementById("next1").disabled = false;
+        }
+
+    }
+
+
+</script>
+
+
 @endsection

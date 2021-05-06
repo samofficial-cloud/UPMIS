@@ -307,7 +307,7 @@ select.list-dt:focus {
     <div class="row justify-content-center mt-0">
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                <h2><strong>Renting Space Contract Information</strong></h2>
+                <h2><strong>Real Estate Contract Information</strong></h2>
                 <p>Fill all form fields with (*) to go to the next step</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
@@ -317,7 +317,7 @@ select.list-dt:focus {
                             <!-- progressbar -->
                             <ul style="text-align: center;" id="progressbar">
                             	<li class="active" id="personal"><strong>Client</strong></li>
-                                <li  id="account"><strong>Renting Space</strong></li>
+                                <li  id="account"><strong>Real Estate</strong></li>
                                 <li id="payment"><strong>Payment</strong></li>
                                 <li id="confirm"><strong>Confirm</strong></li>
                             </ul>
@@ -415,9 +415,13 @@ select.list-dt:focus {
                                             <div class="form-wrapper">
                                                 <label for="parent_client">Parent client </label>
                                                 <span id="parent_client_msg"></span>
-                                                <input type="text" id="parent_client" readonly value="{{$var->parent_client}}"  name="parent_client" class="form-control">
+                                              <?php  $parent_client_name=DB::table('clients')->where('client_id',$var->parent_client)->value('full_name');   ?>
+
+                                                <input type="text"  readonly value="{{$parent_client_name}}" class="form-control">
                                             </div>
                                         </div>
+
+                                        <input type="hidden" id="parent_client"  value="{{$var->parent_client}}"  name="parent_client" class="form-control">
                                     @else
                                     @endif
 
@@ -431,10 +435,10 @@ select.list-dt:focus {
                             {{-- Second Form --}}
                             <fieldset>
                                 <div class="form-card">
-                                  <h2 class="fs-title">Renting Space Information</h2>
+                                  <h2 class="fs-title">Real Estate Information</h2>
 
-
-
+                                    @if($var->has_clients=='1')
+                                    @else
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
@@ -466,7 +470,7 @@ select.list-dt:focus {
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
-                                            <label for="" ><strong>Space Number</strong></label>
+                                            <label for="" ><strong>Real Estate Number</strong></label>
                                             <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" readonly Required autocomplete="off">
                                         </div>
 
@@ -488,7 +492,7 @@ select.list-dt:focus {
                                             <input type="text" readonly class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
                                         </div>
                                     </div>
-
+                                    @endif
 
 
                                     @endforeach
@@ -731,9 +735,10 @@ select.list-dt:focus {
                                             <span id="currency_msg"></span>
                                             <select id="currency" class="form-control"  name="currency">
                                                 <option value="" ></option>
-                                                <option value="TZS" >TZS</option>
-                                                <option value="USD" >USD</option>
+                                                <option id="currency_tzs" value="TZS" >TZS</option>
+                                                <option id="currency_usd" value="USD" >USD</option>
                                             </select>
+                                            <p class="pt-2" style="display: none;" id="currency_clause"><b>N.B This is the currency that will be used for all sub-clients</b></p>
                                         </div>
 
 
@@ -742,18 +747,38 @@ select.list-dt:focus {
 
                                     <div class="form-group row">
 
-                                        <div class="form-wrapper col-6">
+                                        <div class="form-wrapper col-12">
                                             <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
                                             <span id="payment_cycle_msg"></span>
                                             <input type="number"  id="payment_cycle" name="payment_cycle" class="form-control">
 
                                         </div>
 
-                                        <div class="form-wrapper col-6">
+                                        <div class="form-wrapper col-12" id="escalation_rateDiv" style="display: none;">
                                             <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                             <span id="escalation_rate_msg"></span>
                                             <input type="number"  id="escalation_rate" name="escalation_rate" class="form-control" >
                                         </div>
+
+
+
+
+                                        <div class="form-wrapper col-6" id="escalation_rate_vacationDiv" style="display: none;">
+                                            <label for="escalation_rate_vacation">Escalation Rate(Vacation season) <span style="color: red;"> *</span></label>
+                                            <span id="escalation_rate_vacation_msg"></span>
+                                            <input type="number"  id="escalation_rate_vacation" name="escalation_rate_vacation" class="form-control" >
+                                        </div>
+
+
+
+
+                                        <div class="form-wrapper col-6" id="escalation_rate_academicDiv" style="display: none;">
+                                            <label for="escalation_rate_academic">Escalation Rate(Academic season) <span style="color: red;"> *</span></label>
+                                            <span id="escalation_rate_academic_msg"></span>
+                                            <input type="number"  id="escalation_rate_academic" name="escalation_rate_academic" class="form-control" >
+                                        </div>
+
+
 
 
                                     </div>
@@ -841,14 +866,14 @@ select.list-dt:focus {
                                         </tr>
 
                                         <tr>
-                                            <td>Space number:</td>
+                                            <td>Real Estate number:</td>
                                             <td id="space_number_confirm"></td>
                                         </tr>
 
 
 
                                         <tr>
-                                            <td>Space size(SQM):</td>
+                                            <td>Real Estate size(SQM):</td>
                                             <td id="space_size_confirm"></td>
                                         </tr>
 
@@ -1265,12 +1290,35 @@ select.list-dt:focus {
     </script>
 
     <script type="text/javascript">
+
+        var temp;
+        function properNext(){
+            temp=1;
+        }
+
+        function properNextZero(){
+            temp=0;
+        }
+
         $(document).ready(function(){
 
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
             var p1, p2,p3;
+
+
+
+
             $("#next1").click(function(){
+
+
+                if(temp==1) {
+                    next_fs = $(this).parent().next().next();
+                }else{
+                    next_fs = $(this).parent().next();
+                }
+
+
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
                 var clientType=$("#client_type").val(),
@@ -1279,6 +1327,21 @@ select.list-dt:focus {
                     companyName=$("#company_name").val();
 
                 var client_type_contract=$("#client_type_contract").val();
+                var parent_client=$("#parent_client").val();
+
+
+                if(client_type_contract=='Direct and has clients'){
+
+                    $('#renting_space').hide();
+                    properNext();
+
+                }else{
+
+                    $('#renting_space').show();
+                    properNextZero();
+
+                }
+
 
                 if(clientType=="1"){
                     $('#ctypemsg').hide();
@@ -1380,15 +1443,72 @@ select.list-dt:focus {
                     // $('#amountDiv').show();
                     $('#rent_sqmDiv').show();
                     $('#currencydiv').show();
+                    $('#currency_clause').hide();
 
                     //old indirect code ends
+
+
+
+
+
+                    var query=parent_client;
+
+                    $.ajax({
+                        url:"{{ route('get_parent_currency') }}",
+                        method:"get",
+                        data:{query:query},
+                        success:function(data){
+                            if(data=='0'){
+
+
+                                $('#currency_tzs').show();
+                                $('#currency_usd').show();
+
+                            }
+                            else{
+
+
+
+
+
+                                if(data=='TZS'){
+
+
+
+
+                                    $('#currency_usd').hide();
+                                    $('#currency_tzs').show();
+                                }else if(data=='USD'){
+
+                                    $('#currency_tzs').hide();
+                                    $('#currency_usd').show();
+
+                                }else{
+
+                                    $('#currency_tzs').show();
+                                    $('#currency_usd').show();
+
+                                }
+
+
+
+
+
+                            }
+                        }
+                    });
+
+
+
+
 
 
                 }else if(client_type_contract=='Direct and has clients'){
 
 
 
-
+                    $('#currency_tzs').show();
+                    $('#currency_usd').show();
 
 
 
@@ -1400,8 +1520,8 @@ select.list-dt:focus {
                     $('#vacationDiv').hide();
                     $('#amountDiv').hide();
                     $('#rent_sqmDiv').hide();
-                    $('#currencydiv').hide();
-
+                    $('#currencydiv').show();
+                    $('#currency_clause').show();
                     $('#contract_categoryDiv').hide();
                     $('#has_additional_businessesDiv').hide();
                     $('#has_security_depositDiv').hide();
@@ -1413,6 +1533,13 @@ select.list-dt:focus {
                 }
 
                 else{
+
+
+
+                    $('#currency_tzs').show();
+                    $('#currency_usd').show();
+
+
                     $('#business_licenseDiv').hide();
                     $('#percentage_to_payDiv').hide();
                     $('#academic_dependenceDiv').show();
@@ -1424,6 +1551,7 @@ select.list-dt:focus {
 
                     $('#rent_sqmDiv').show();
                     $('#currencydiv').show();
+                    $('#currency_clause').hide();
 
 
 
@@ -1656,6 +1784,8 @@ select.list-dt:focus {
                 var currency=document.getElementById('currency').value;
                 var payment_cycle=document.getElementById('payment_cycle').value;
                 var escalation_rate=document.getElementById('escalation_rate').value;
+                var escalation_rate_vacation=document.getElementById('escalation_rate_vacation').value;
+                var escalation_rate_academic=document.getElementById('escalation_rate_academic').value;
                 var space_size=document.getElementById('space_size').value;
                 var has_water_bill=document.getElementById('has_water_bill').value;
                 var has_electricity_bill=document.getElementById('has_electricity_bill').value;
@@ -1829,7 +1959,7 @@ select.list-dt:focus {
 
 
                 if(escalation_rate==""){
-                    p10=0;
+
                     $('#escalation_rate_msg').show();
                     var message=document.getElementById('escalation_rate_msg');
                     message.style.color='red';
@@ -1837,10 +1967,61 @@ select.list-dt:focus {
                     $('#escalation_rate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p10=1;
+
                     $('#escalation_rate_msg').hide();
                     $('#escalation_rate').attr('style','border-bottom: 1px solid #ccc');
 
+                }
+
+
+
+                if(escalation_rate_vacation==""){
+
+                    $('#escalation_rate_vacation_msg').show();
+                    var message=document.getElementById('escalation_rate_vacation_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#escalation_rate_vacation').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+
+                    $('#escalation_rate_vacation_msg').hide();
+                    $('#escalation_rate_vacation').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(escalation_rate_academic==""){
+
+                    $('#escalation_rate_academic_msg').show();
+                    var message=document.getElementById('escalation_rate_academic_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#escalation_rate_academic').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+
+                    $('#escalation_rate_academic_msg').hide();
+                    $('#escalation_rate_academic').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(escalation_rate=='' && $('#escalation_rateDiv:visible').length !=0) {
+
+                    p10=0;
+                }
+                else if(escalation_rate_vacation=='' && $('#escalation_rate_vacationDiv:visible').length !=0) {
+                    p10=0;
+
+                }
+                else if(escalation_rate_academic=='' && $('#escalation_rate_academicDiv:visible').length !=0) {
+                    p10=0;
+
+                }
+                else{
+
+                    p10=1;
                 }
 
 
@@ -3634,6 +3815,17 @@ select.list-dt:focus {
 
                 if(query=='Yes') {
 
+
+                    $('#escalation_rate_vacationDiv').show();
+                    $('#escalation_rate_academicDiv').show();
+                    $('#escalation_rateDiv').hide();
+
+                    document.getElementById("escalation_rate").disabled = true;
+                    document.getElementById("escalation_rate_academic").disabled = false;
+                    document.getElementById("escalation_rate_vacation").disabled = false;
+
+
+
                     $('#academicDiv').show();
                     document.getElementById("academic_season").disabled = false;
                     var ele = document.getElementById("academic_season");
@@ -3663,6 +3855,22 @@ select.list-dt:focus {
 
                 }else if(query=='No'){
 
+
+                    $('#escalation_rate_vacationDiv').hide();
+                    $('#escalation_rate_academicDiv').hide();
+                    $('#escalation_rateDiv').show();
+
+
+                    document.getElementById("escalation_rate").disabled = false;
+                    document.getElementById("escalation_rate_academic").disabled = true;
+                    document.getElementById("escalation_rate_vacation").disabled = true;
+
+
+
+
+
+
+
                     $('#academicDiv').hide();
                     document.getElementById("academic_season").disabled = true;
                     var ele = document.getElementById("academic_season");
@@ -3690,6 +3898,11 @@ select.list-dt:focus {
                     $('#vacationDiv').hide();
                     $('#academicDiv').hide();
                     $('#amountDiv').hide();
+
+                    $('#escalation_rate_vacationDiv').hide();
+                    $('#escalation_rate_academicDiv').hide();
+                    $('#escalation_rateDiv').hide();
+
 
                 }
 

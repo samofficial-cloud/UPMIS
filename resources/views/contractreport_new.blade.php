@@ -137,7 +137,7 @@
         <tr>
           <th scope="col"><center>S/N</center></th>
           <th scope="col"><center>Client Name</center></th>
-          <th scope="col"><center>Space Id</center></th>
+          <th scope="col"><center>Real Estate Number</center></th>
            <th scope="col"><center>Currency</center></th>
           <th scope="col"><center>Amount (Academic Season)</center></th>
           <th scope="col"><center>Amount (Vacation Season)</center></th>
@@ -209,7 +209,7 @@
           <th scope="col"><center>S/N</center></th>
           <th scope="col"><center>Client Name</center></th>
           <th scope="col" ><center>Insurance Package</center></th>
-          <th scope="col"><center>Principal</center></th> 
+          <th scope="col"><center>Principal</center></th>
           <th scope="col" ><center>Insurance Type</center></th>
           <th scope="col" ><center>Commission Date</center></th>
           <th scope="col" style="width: 10%;"><center>End Date</center></th>
@@ -256,7 +256,8 @@
     <tr>
       <th scope="col"><center>S/N</center></th>
       <th scope="col"><center>Client Name</center></th>
-      <th scope="col"><center>Cost Centre</center></th>
+      <th scope="col"><center>Cost Centre ID</center></th>
+      <th scope="col"><center>Cost Centre Name</center></th>
       <th scope="col"><center>Vehicle Registration No.</center></th>
       <th scope="col"><center>Destination</center></th>
       <th scope="col"><center>Start Date</center></th>
@@ -273,6 +274,9 @@
       <td style="text-align: center;">{{$i}}.</td>
       <td>{{$var->fullName}}</td>
       <td><center>{{$var->cost_centre}}</center></td>
+        <?php $cost_centre_name=DB::table('cost_centres')->where('costcentre_id',$var->cost_centre)->value('costcentre');   ?>
+
+        <td>{{$cost_centre_name}}</td>
       <td>{{$var->vehicle_reg_no}}</td>
       <td>{{$var->destination}}</td>
       <td><center>{{date("d/m/Y",strtotime($var->start_date))}}</center></td>
@@ -317,15 +321,15 @@ function settitle(){
    if(($_GET['c_filter']!='true') && ($_GET['con_filter']!='true') && ($_GET['y_filter']!='true')){
       echo 'List of '.$_GET['business_type'].' Contracts';
    }
-  
+
   elseif(($_GET['c_filter']!='true') && ($_GET['con_filter']!='true') && ($_GET['y_filter']=='true')){
     echo 'List of '.$_GET['business_type'].' Contracts whose Lease '.ucfirst(strtolower($_GET['lease'])).' Year is '.$_GET['year'];
   }
-  
+
  elseif(($_GET['c_filter']!='true') && ($_GET['con_filter']=='true') && ($_GET['y_filter']!='true')) {
    echo 'List of '.$_GET['con_status'].' '.$_GET['business_type'].' Contracts';
  }
- 
+
  elseif(($_GET['c_filter']!='true') && ($_GET['con_filter']=='true') && ($_GET['y_filter']=='true')){
    echo 'List of '.$_GET['con_status'].' '.$_GET['business_type'].' Contracts whose Lease '.ucfirst(strtolower($_GET['lease'])).' Year is '.$_GET['year'];
  }
@@ -335,11 +339,11 @@ function settitle(){
   elseif(($_GET['c_filter']=='true') && ($_GET['con_filter']!='true') && ($_GET['y_filter']=='true')){
      echo 'List of '.$_GET['c_name'].' '.$_GET['business_type'].' Contracts whose Lease '.ucfirst(strtolower($_GET['lease'])).' Year is '.$_GET['year'];
   }
-   
+
   elseif(($_GET['c_filter']=='true') && ($_GET['con_filter']=='true') && ($_GET['y_filter']!='true')){
      echo 'List of '.$_GET['con_status'].' '.$_GET['c_name'].' '.$_GET['business_type'].' Contracts';
   }
-    
+
  elseif(($_GET['c_filter']=='true') && ($_GET['con_filter']=='true') && ($_GET['y_filter']=='true')){
   echo 'List of '.$_GET['con_status'].' '.$_GET['c_name'].' '.$_GET['business_type'].' Contracts whose Lease '.ucfirst(strtolower($_GET['lease'])).' Year is '.$_GET['year'];
  }
@@ -350,7 +354,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
 
 
  if( filter =='true'){
-  var table = $('#SpaceTable').DataTable({ 
+  var table = $('#SpaceTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -373,7 +377,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -406,7 +410,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -424,7 +428,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -446,7 +450,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
       });
 
 
- var table = $('#CarTable').DataTable({ 
+ var table = $('#CarTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -458,7 +462,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                 messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4,5, 6, 7]
+                    columns: [ 0, 1, 2, 3, 4,5, 6, 7,8]
                 },
 
                 customize: function ( doc ) {
@@ -469,13 +473,13 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
 
 
-                  doc.content[2].table.widths = [22, '*', 80, 100, 120, 70, 70, 80];
+                  doc.content[2].table.widths = [22, '*', 80,100, 100, 120, 70, 70, 80];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -502,7 +506,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -520,7 +524,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -535,15 +539,15 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                 className: 'excelButton',
                 title: settitle(),
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7]
+                columns: [1, 2, 3, 4, 5, 6, 7,8]
                 },
             },
           ]
       });
 
- 
 
-  var table3 = $('#InsuranceTable').DataTable({ 
+
+  var table3 = $('#InsuranceTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -566,7 +570,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -601,7 +605,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -619,7 +623,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -641,7 +645,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
       });
  }
  else{
-  var table = $('#SpaceTable').DataTable({ 
+  var table = $('#SpaceTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -664,7 +668,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -697,7 +701,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -715,7 +719,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -737,7 +741,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
       });
 
 
- var table = $('#CarTable').DataTable({ 
+ var table = $('#CarTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -749,7 +753,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                 messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4,5, 6, 7,8]
+                    columns: [ 0, 1, 2, 3, 4,5, 6, 7,8,9]
                 },
 
                 customize: function ( doc ) {
@@ -760,13 +764,13 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
 
 
-                  doc.content[2].table.widths = [22, '*', 70, 90, 100, 70, 70, 70,65];
+                  doc.content[2].table.widths = [22, '*', 70, 90,90, 100, 70, 70, 70,65];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -793,7 +797,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -811,7 +815,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -826,15 +830,15 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                 className: 'excelButton',
                 title: settitle(),
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7,8]
+                columns: [1, 2, 3, 4, 5, 6, 7,8,9]
                 },
             },
           ]
       });
 
- 
 
-  var table3 = $('#InsuranceTable').DataTable({ 
+
+  var table3 = $('#InsuranceTable').DataTable({
         dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
@@ -857,7 +861,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -892,7 +896,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -910,7 +914,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -932,7 +936,7 @@ var filter = '<?php echo $_GET['con_filter'];?>';
       });
  }
 
- 
+
 });
 </script>
 

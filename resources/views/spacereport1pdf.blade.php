@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Space Report</title>
+	<title>Real Estate Report</title>
 </head>
 <style>
 table {
@@ -54,101 +54,101 @@ table, td, th {
   <div class="page-number"></div>
 </div>
 	<?php
-      
+
       $today= date('Y-m-d');
       $i=1;
-      
+
 	?>
 	<center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
-     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT  
+     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT
     </b>
   @if($_GET['module']=='space')
     @if($_GET['major_industry']=='list')
         @if(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']=='true'))
             @if($_GET['space_status']=='1')
-              <br><br>List of Occupied Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+              <br><br>List of Occupied Real Estate at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
             @elseif($_GET['space_status']=='0')
-              <br><br>List of Vacant Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+              <br><br>List of Vacant Real Estate at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
             @endif
 
         @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']!='true'))
             @if($_GET['space_status']=='1')
-              <br><br>List of Occupied Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+              <br><br>List of Occupied Real Estate at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
             @elseif($_GET['space_status']=='0')
-              <br><br>List of Vacant Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+              <br><br>List of Vacant Real Estate at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
             @endif
 
         @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']=='true'))
-            <br><br>List of Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+            <br><br>List of Real Estate at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
 
         @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']!='true'))
-            <br><br>List of Spaces at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+            <br><br>List of Real Estate at <strong>{{$_GET['location']}}</strong> Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
 
         @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']=='true'))
             @if($_GET['space_status']=='1')
-              <br><br>List of Occupied Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+              <br><br>List of Occupied Real Estate Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
             @elseif($_GET['space_status']=='0')
-              <br><br>List of Vacant Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+              <br><br>List of Vacant Real Estate Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
             @endif
 
         @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']!='true'))
             @if($_GET['space_status']=='1')
-              <br><br>List of Occupied Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+              <br><br>List of Occupied Real Estate Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
             @elseif($_GET['space_status']=='0')
-              <br><br>List of Vacant Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+              <br><br>List of Vacant Real Estate Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
             @endif
 
         @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']=='true'))
-            <br><br>List of Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
+            <br><br>List of Real Estate Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong> and Major industry is <strong>{{$_GET['ind']}}</strong>
 
         @elseif(($_GET['space_prize']=='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']!='true'))
-            <br><br>List of Spaces Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
+            <br><br>List of Real Estate Whose Price Range is Between <strong>{{number_format($_GET['min_price'])}}</strong> and <strong>{{number_format($_GET['max_price'])}}</strong>
 
         @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']=='true'))
             @if($_GET['space_status']=='1')
-              <br><br>List of Occupied Spaces at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+              <br><br>List of Occupied Real Estate at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
             @elseif($_GET['space_status']=='0')
-              <br><br>List of Vacant Spaces at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+              <br><br>List of Vacant Real Estate at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
             @endif
 
         @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']!='true'))
             @if($_GET['space_status']=='1')
-              <br><br>List of Occupied Spaces at <strong>{{$_GET['location']}}</strong>
+              <br><br>List of Occupied Real Estate at <strong>{{$_GET['location']}}</strong>
             @elseif($_GET['space_status']=='0')
-              <br><br>List of Vacant Spaces at <strong>{{$_GET['location']}}</strong>
+              <br><br>List of Vacant Real Estate at <strong>{{$_GET['location']}}</strong>
             @endif
 
         @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']=='true'))
-          <br><br>List of Registered Spaces at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+          <br><br>List of Registered Real Estate at <strong>{{$_GET['location']}}</strong> Whose Major industry is <strong>{{$_GET['ind']}}</strong>
 
         @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']=='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']!='true'))
-          <br><br>List of All Registered Spaces at <strong>{{$_GET['location']}}</strong>
+          <br><br>List of All Registered Real Estate at <strong>{{$_GET['location']}}</strong>
 
         @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']=='true'))
             @if($_GET['space_status']=='1')
-              <br><br>List of Occupied Spaces Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+              <br><br>List of Occupied Real Estate Whose Major industry is <strong>{{$_GET['ind']}}</strong>
             @elseif($_GET['space_status']=='0')
-              <br><br>List of Vacant Spaces Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+              <br><br>List of Vacant Real Estate Whose Major industry is <strong>{{$_GET['ind']}}</strong>
             @endif
 
         @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']=='true') && ($_GET['ind_fil']!='true'))
             @if($_GET['space_status']=='1')
-              <br><br>List of Occupied Spaces
+              <br><br>List of Occupied Real Estate
             @elseif($_GET['space_status']=='0')
-              <br><br>List of Vacant Spaces
+              <br><br>List of Vacant Real Estate
             @endif
 
         @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']=='true'))
-            <br><br>List of Registered Spaces Whose Major industry is <strong>{{$_GET['ind']}}</strong>
+            <br><br>List of Registered Real Estate Whose Major industry is <strong>{{$_GET['ind']}}</strong>
 
         @elseif(($_GET['space_prize']!='true') &&($_GET['location_status']!='true')&& ($_GET['status']!='true') && ($_GET['ind_fil']!='true'))
-            <br><br>List of All Registered Spaces
+            <br><br>List of All Registered Real Estate
         @endif
     @endif
   @endif
-    
+
     </center>
 <br>
 @if(count($spaces)>0)
@@ -156,7 +156,7 @@ table, td, th {
         <thead class="thead-dark">
         <tr>
           <th scope="col" style="width: 5%;"><center>S/N</center></th>
-          <th scope="col"><center>Space Id</center></th>
+          <th scope="col"><center>Real Estate Number</center></th>
           <th scope="col"><center>Major Industry</center></th>
            <th scope="col"><center>Minor Industry</center></th>
           <th scope="col" style="width: 20%"><center>Location</center></th>

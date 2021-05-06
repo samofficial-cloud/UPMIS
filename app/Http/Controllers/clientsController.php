@@ -23,20 +23,20 @@ class clientsController extends Controller
   $SCclients=client::whereIn('full_name',space_contract::select('full_name')->whereDate('end_date','>=',date('Y-m-d'))->where('contract_status','1')->distinct()->pluck('full_name')->toArray())
       ->where('contract','Space')
       ->orderBy('clients.full_name','asc')->get();
-  $SPclients=client::select('client_id','email','phone_number','address','clients.full_name','contract_status')->join('space_contracts', 'space_contracts.full_name','=','clients.full_name')->where('contract','Space')->whereDate('end_date','<',date('Y-m-d'))->orwhere('contract_status','0')->orderBy('clients.full_name','asc')->distinct()->get();
-  $active_carclients=carContract::select('fullName','email','cost_centre','faculty')->whereDate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
-  $inactive_carclients=carContract::select('fullName','email','cost_centre','faculty')->whereDate('end_date','<',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
+  $SPclients=client::select('client_id','email','phone_number','address','clients.full_name','contract_status','tin')->join('space_contracts', 'space_contracts.full_name','=','clients.full_name')->where('contract','Space')->whereDate('end_date','<',date('Y-m-d'))->orwhere('contract_status','0')->orderBy('clients.full_name','asc')->distinct()->get();
+  $active_carclients=carContract::select('fullName','email','cost_centre','faculty','tin','id')->whereDate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
+  $inactive_carclients=carContract::select('fullName','email','cost_centre','faculty','tin','id')->whereDate('end_date','<',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
    $insuranceclients=insurance_contract::orderBy('full_name','asc')->get();
-   $active_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class')->whereDate('end_date','>=',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
-   $inactive_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class')->whereDate('end_date','<',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
+   $active_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class','tin','id')->whereDate('end_date','>=',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
+   $inactive_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class','tin','id')->whereDate('end_date','<',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
 
    $Spemails=client::whereIn('full_name',space_contract::select('full_name')->where('contract_status','1')->distinct()->pluck('full_name')->toArray())
       ->where('contract','Space')
       ->orderBy('clients.full_name','asc')->get();
 
-      $flats_current = research_flats_contract::select('first_name','last_name','address','email','phone_number')->whereDate('departure_date','>=',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
+      $flats_current = research_flats_contract::select('first_name','last_name','address','email','phone_number','tin','id')->whereDate('departure_date','>=',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
 
-      $flats_previous = research_flats_contract::select('first_name','last_name','address','email','phone_number')->whereDate('departure_date','<',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
+      $flats_previous = research_flats_contract::select('first_name','last_name','address','email','phone_number','tin','id')->whereDate('departure_date','<',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
 
     return view('clients')->with('SCclients',$SCclients)->with('SPclients',$SPclients)->with('active_carclients',$active_carclients)->with('inactive_carclients',$inactive_carclients)->with('insuranceclients',$insuranceclients)->with('active_insuranceclients',$active_insuranceclients)->with('inactive_insuranceclients',$inactive_insuranceclients)->with('Spemails',$Spemails)->with('flats_current',$flats_current)->with('flats_previous',$flats_previous);
     }
@@ -46,6 +46,7 @@ class clientsController extends Controller
         $email=$request->get('email');
         $phone_number=$request->get('phone_number');
         $address=$request->get('address');
+        $tin=$request->get('tin');
     	DB::table('clients')
                 ->where('full_name', $full_name)
                 ->update(['address' => $address]);
@@ -54,12 +55,16 @@ class clientsController extends Controller
                 ->where('full_name', $full_name)
                 ->update(['email' => $email]);
 
+        DB::table('clients')
+            ->where('full_name', $full_name)
+            ->update(['tin' => $tin]);
+
             DB::table('clients')
                 ->where('full_name', $full_name)
                 ->update(['phone_number' => $phone_number]);
 
 
-         return redirect()->back()->with('success', 'Client Details Edited Successfully');  
+         return redirect()->back()->with('success', 'Client Details Edited Successfully');
     }
 
 
@@ -67,10 +72,17 @@ class clientsController extends Controller
         $full_name=$request->get('client_name');
         $email=$request->get('email');
         $phone_number=$request->get('phone_number');
+        $tin=$request->get('tin');
         //$address=$request->get('address');
       DB::table('insurance_contracts')
                 ->where('full_name', $full_name)
                 ->update(['email' => $email]);
+
+
+        DB::table('insurance_contracts')
+            ->where('full_name', $full_name)
+            ->update(['tin' => $tin]);
+
 
 
             DB::table('insurance_contracts')
@@ -78,8 +90,44 @@ class clientsController extends Controller
                 ->update(['phone_number' => $phone_number]);
 
 
-         return redirect()->back()->with('success', 'Client Details Edited Successfully');  
+         return redirect()->back()->with('success', 'Client Details Edited Successfully');
     }
+
+
+
+
+    public function editResearchclients(Request $request,$id){
+
+        $email=$request->get('email');
+        $phone_number=$request->get('phone_number');
+        $tin=$request->get('tin');
+        $address=$request->get('address');
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['email' => $email]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['tin' => $tin]);
+
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['phone_number' => $phone_number]);
+
+
+        DB::table('research_flats_contracts')
+            ->where('id', $id)
+            ->update(['address' => $address]);
+
+
+        return redirect()->back()->with('success', 'Client Details Edited Successfully');
+    }
+
+
 
     public function ClientViewMore($id){
     $clientname=client::select('full_name')->where('client_id',$id)->value('full_name');
@@ -94,8 +142,9 @@ class clientsController extends Controller
         $invoices= DB::table('car_rental_invoices')
                    ->whereIn('contract_id',DB::table('car_contracts')->select('id')->where('email',$email)->where('fullName',$name)->where('cost_centre',$centre)->pluck('id')->toArray())
                    ->get();
-       return view('carClients_view_more')->with('clientname',$name)->with('clientemail',$email)->with('clientcentre',$centre)->with('contracts',$contracts)->with('invoices',$invoices);  
+       return view('carClients_view_more')->with('clientname',$name)->with('clientemail',$email)->with('clientcentre',$centre)->with('contracts',$contracts)->with('invoices',$invoices);
     }
+
 
     public function InsuranceViewMore($name, $email, $phone_number){
       $contracts=insurance_contract::where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->get();
@@ -103,7 +152,25 @@ class clientsController extends Controller
       $total_commision_usd=insurance_contract::select('commission')->where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->where('currency','USD')->sum('commission');
       $total_premium_tzs=insurance_contract::select('premium')->where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->where('currency','TZS')->sum('premium');
       $total_premium_usd=insurance_contract::select('premium')->where('email',$email)->where('full_name',$name)->where('phone_number',$phone_number)->where('currency','USD')->sum('premium');
-       return view('insurance_view_more')->with('clientname',$name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('total_commision_tzs',$total_commision_tzs)->with('total_commision_usd',$total_commision_usd)->with('total_premium_tzs',$total_premium_tzs)->with('total_premium_usd',$total_premium_usd);  
+       return view('insurance_view_more')->with('clientname',$name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('total_commision_tzs',$total_commision_tzs)->with('total_commision_usd',$total_commision_usd)->with('total_premium_tzs',$total_premium_tzs)->with('total_premium_usd',$total_premium_usd);
+    }
+
+
+
+    public function ResearchClientsViewMore($first_name,$last_name, $email, $phone_number){
+        $contracts=DB::table('research_flats_contracts')->where('email',$email)->where('first_name',$first_name)->where('last_name',$last_name)->where('phone_number',$phone_number)->get();
+
+        $invoices=DB::table('research_flats_invoices')->whereIn('contract_id',DB::table('research_flats_contracts')->select('id')->where('email',$email)->where('first_name',$first_name)->where('last_name',$last_name)->where('phone_number',$phone_number))->get();
+
+        return view('research_clients_view_more')->with('clientname',$first_name.' '.$last_name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('invoices',$invoices);
+    }
+
+    public function InsuranceClientsViewMore($full_name, $email, $phone_number){
+        $contracts=DB::table('insurance_contracts')->where('email',$email)->where('full_name',$full_name)->where('phone_number',$phone_number)->get();
+
+        $invoices=DB::table('insurance_invoices_clients')->whereIn('contract_id',DB::table('insurance_contracts')->select('id')->where('email',$email)->where('full_name',$full_name)->where('phone_number',$phone_number))->get();
+
+        return view('insurance_clients_view_more')->with('clientname',$full_name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('invoices',$invoices);
     }
 
     public function SendMessage(Request $request){
@@ -111,7 +178,7 @@ class clientsController extends Controller
         $subject=$request->get('subject');
         $message=$request->get('message');
         $type=$request->get('type');
-       
+
 
         if($request->hasfile('filenames')){
 
@@ -156,21 +223,24 @@ class clientsController extends Controller
            return redirect()->back()->with('success', 'Message Sent Successfully');
         }
         elseif($type=='flats'){
-          $debtor = $request->get('debtor');
-          $contract_id = $request->get('contract_id');
-          if($debtor=='individual'){
-            $client = research_flat_contract::where('id',$contract_id)->first();
-          }
-          elseif($debtor=='host'){
-            $client = research_flat_contract::select('host_email as email')->where('id',$contract_id)->first();
-          }
+            //          $debtor = $request->get('debtor');
+            $contract_id = $request->get('contract_id');
+            $client = research_flats_contract::where('id',$contract_id)->first();
+//          if($debtor=='individual'){
+//            $client = research_flat_contract::where('id',$contract_id)->first();
+//          }
+//          elseif($debtor=='host'){
+//            $client = research_flat_contract::select('host_email as email')->where('id',$contract_id)->first();
+//          }
+
+
             $salutation = "Research Flats UDSM";
-            $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
+            $client->notify(new SendMessage($name, $subject, $message,$filepaths,$salutation));
             return redirect()->back()->with('success', 'Message Sent Successfully');
 
         }
 
-      
+
       }
       else{
         if($type=='space'){
@@ -199,25 +269,26 @@ class clientsController extends Controller
         }
 
          elseif($type=='flats'){
-          $debtor = $request->get('debtor');
+//          $debtor = $request->get('debtor');
           $contract_id = $request->get('contract_id');
-          if($debtor=='individual'){
-            $client = research_flat_contract::where('id',$contract_id)->first();
-          }
-          elseif($debtor=='host'){
-            $client = research_flat_contract::select('host_email as email')->where('id',$contract_id)->first();
-          }
+          $client = research_flats_contract::where('id',$contract_id)->first();
+//          if($debtor=='individual'){
+//            $client = research_flat_contract::where('id',$contract_id)->first();
+//          }
+//          elseif($debtor=='host'){
+//            $client = research_flat_contract::select('host_email as email')->where('id',$contract_id)->first();
+//          }
             $salutation = "Research Flats UDSM";
-            $client->notify(new SendMessage($name, $subject, $message, $salutation));
+            $client->notify(new SendMessage2($name, $subject, $message, $salutation));
             return redirect()->back()->with('success', 'Message Sent Successfully');
         }
-        
-      } 
+
+      }
     }
 
     public function SendMessage2(Request $request){
         $raw_names=$request->get('client_name');
-        $names = explode (",", $raw_names);  
+        $names = explode (",", $raw_names);
         $subject=$request->get('subject');
         $message=$request->get('message');
         $type=$request->get('type');
@@ -226,13 +297,13 @@ class clientsController extends Controller
           foreach($request->file('filenames') as $file) {
               //$filename = $file->getClientOriginalName().'.'.$file->extension();
               $filename = $file->getClientOriginalName();
-                
+
               $filepaths[]=public_path().'/'.'uploads'.'/'.$filename;
               // $filename[]=$file->getClientOriginalName();
               // $mime[]=$file->getMimeType();
               $file->move(public_path().'/uploads/', $filename);
             }
-        
+
         foreach($names as $name){
           if($type=='space'){
            $client=client::where('full_name',$name)->first();
@@ -252,13 +323,18 @@ class clientsController extends Controller
         }
 
          elseif($type=='flats'){
-          
-        }
+             $spilted_name=explode(' ', $name);
+             $first_name=$spilted_name[0];
+             $last_name=$spilted_name[1];
+
+             $client=research_flats_contract::select('email')->where('first_name',$first_name)->where('last_name',$last_name)->latest('id')->first();
+             $salutation = "Research Flats UDSM.";
+         }
     // \Notification::send($recipients, new Announcement($centre));
         $client->notify(new SendMessage($name, $subject, $message, $filepaths, $salutation));
-     
+
         }
-    
+
       return redirect()->back()->with('success', 'Message Sent Successfully');
       }
       else{
@@ -280,16 +356,21 @@ class clientsController extends Controller
           $salutation = "University of Dar es Salaam Insurance Agency.";
         }
         elseif($type=='flats'){
-          
+            $spilted_name=explode(' ', $name);
+            $first_name=$spilted_name[0];
+            $last_name=$spilted_name[1];
+
+            $client=research_flats_contract::select('email')->where('first_name',$first_name)->where('last_name',$last_name)->latest('id')->first();
+            $salutation = "Research Flats UDSM.";
         }
     // \Notification::send($recipients, new Announcement($centre));
         $client->notify(new SendMessage2($name, $subject, $message, $salutation));
         }
          return redirect()->back()->with('success', 'Message Sent Successfully');
-      } 
+      }
     }
     public function editCarclients(Request $request){
-      
+
        DB::table('car_contracts')
             ->where('email',$request->get('Caremail'))
             ->where('fullName',$request->get('Carfullname'))
@@ -309,13 +390,20 @@ class clientsController extends Controller
             ->update(['cost_centre' => $request->get('cost_centre')]);
 
 
-           
+
+        DB::table('car_contracts')
+            ->where('email',$request->get('Caremail'))
+            ->where('fullName',$request->get('Carfullname'))
+            ->where('cost_centre',$request->get('Carcostcentre'))
+            ->update(['tin' => $request->get('tin')]);
+
+
 
              return redirect()->back()->with('success', 'Details Edited Successfully');
     }
 
     public function ajaxclient_names(Request $request){
-       
+
       $query = $request->get('query');
       $queryy= $request->get('queryy');
 
@@ -324,9 +412,9 @@ class clientsController extends Controller
           $data = space_contract::select('full_name')->distinct()->orderBy('full_name','asc')->limit(10)->get();
         }
         else{
-         $data = space_contract::select('full_name')->where('full_name', 'LIKE', "%{$query}%")->distinct()->orderBy('full_name','asc')->limit(10)->get(); 
+         $data = space_contract::select('full_name')->where('full_name', 'LIKE', "%{$query}%")->distinct()->orderBy('full_name','asc')->limit(10)->get();
         }
-        
+
       }
 
       elseif ($queryy=='Insurance') {
@@ -336,7 +424,7 @@ class clientsController extends Controller
         else{
           $data = insurance_contract::select('full_name')->where('full_name', 'LIKE', "%{$query}%")->distinct()->orderBy('full_name','asc')->limit(10)->get();
         }
-       
+
       }
 
       elseif($queryy=='Car Rental'){
@@ -346,10 +434,10 @@ class clientsController extends Controller
         else{
           $data = carContract::select('fullName')->where('form_completion','1')->where('fullName', 'LIKE', "%{$query}%")->distinct()->orderBy('fullName','asc')->limit(10)->get();
         }
-    
+
       }
 
-     
+
     if($queryy=='Car Rental'){
 
          $response = array();
@@ -371,7 +459,7 @@ class clientsController extends Controller
          );
       }
     }
-     
+
 
       echo json_encode($response);
       exit;

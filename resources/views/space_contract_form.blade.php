@@ -249,6 +249,9 @@
             object-fit: cover
         }
     </style>
+
+
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -323,7 +326,7 @@
                 <div class="row justify-content-center mt-0">
                     <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
                         <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                            <h2><strong>Renting Space Contract Information</strong></h2>
+                            <h2><strong>Real Estate Contract Information</strong></h2>
                             <p>Fill all form fields with (*) to go to the next step</p>
                             <div class="row">
                                 <div class="col-md-12 mx-0">
@@ -334,7 +337,7 @@
                                     <!-- progressbar -->
                                         <ul id="progressbar">
                                             <li class="active" id="personal"><strong>Client</strong></li>
-                                            <li  id="renting_space"><strong>Renting Space</strong></li>
+                                            <li  id="renting_space"><strong>Real Estate</strong></li>
                                             <li id="payment"><strong>Payment</strong></li>
                                             <li id="confirm"><strong>Confirm</strong></li>
 {{--                                            <li id="invoice"><strong>Invoice</strong></li>--}}
@@ -481,7 +484,7 @@
                                         {{-- Second Form --}}
                                         <fieldset>
                                             <div class="form-card">
-                                                <h2 class="fs-title">Renting Space Information</h2>
+                                                <h2 class="fs-title">Real Estate Information</h2>
 
 
 
@@ -550,7 +553,7 @@
 
 
                                                     <div class="form-wrapper col-12 pt-2">
-                                                        <label for="" ><strong>Space Number <span style="color: red;"> *</span></strong></label>
+                                                        <label for="" ><strong>Real Estate Number <span style="color: red;"> *</span></strong></label>
                                                         <span id="space_id_msg"></span>
 
                                                         <select class="form-control" id="space_id_contract"  name="space_id_contract" >
@@ -620,73 +623,73 @@
 
 
 
-                                                    <div id="tbs_certificateDiv" style="display: none;" class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
+                                                    <div id="tbs_certificateDiv" style="display: none;" class=" col-6 pt-4">
+                                                        <div class="">
                                                             <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                             <span id="tbs_certificate_msg"></span>
-                                                            <input type="file" id="tbs_certificate" name="tbs_certificate" class="form-control">
+                                                            <input type="file" id="tbs_certificate" name="tbs_certificate" >
                                                         </div>
                                                     </div>
 
 
-                                                    <div id="gpsa_certificateDiv" style="display: none;"  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
+                                                    <div id="gpsa_certificateDiv" style="display: none;"  class=" col-6 pt-4">
+                                                        <div class="">
                                                             <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                             <span id="gpsa_certificate_msg"></span>
-                                                            <input type="file" id="gpsa_certificate" name="gpsa_certificate" class="form-control">
+                                                            <input type="file" id="gpsa_certificate" name="gpsa_certificate" >
                                                         </div>
                                                     </div>
 
 
-                                                    <div id="food_business_licenseDiv" style="display: none;" class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
+                                                    <div id="food_business_licenseDiv" style="display: none;" class=" col-6 pt-4">
+                                                        <div class="">
                                                             <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                             <span id="food_business_license_msg"></span>
-                                                            <input type="file" id="food_business_license" name="food_business_license" class="form-control">
+                                                            <input type="file" id="food_business_license" name="food_business_license" >
                                                         </div>
                                                     </div>
 
 
-                                                    <div style="display: none;" id="business_licenseDiv" class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
+                                                    <div style="display: none;" id="business_licenseDiv" class=" col-6 pt-4">
+                                                        <div class="">
                                                             <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                             <span id="business_license_msg"></span>
-                                                            <input type="file" id="business_license"  name="business_license" class="form-control">
+                                                            <input type="file" id="business_license"  name="business_license" >
                                                         </div>
                                                     </div>
 
 
 
-                                                    <div style="display: none;" id="osha_certificateDiv" class="form-group col-12 pt-4">
-                                                        <div class="form-wrapper">
+                                                    <div style="display: none;" id="osha_certificateDiv" class=" col-12 pt-4">
+                                                        <div class="">
                                                             <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                             <span id="osha_certificate_msg"></span>
-                                                            <input type="file" id="osha_certificate"  name="osha_certificate" class="form-control">
+                                                            <input type="file" id="osha_certificate"  name="osha_certificate" >
                                                         </div>
                                                     </div>
 
 
-                                                    <div style="display: none;" id="tcra_registrationDiv"  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
+                                                    <div style="display: none;" id="tcra_registrationDiv"  class=" col-6 pt-4">
+                                                        <div class="">
                                                             <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                             <span id="tcra_registration_msg"></span>
-                                                            <input type="file"  id="tcra_registration"  name="tcra_registration" class="form-control">
+                                                            <input type="file"  id="tcra_registration"  name="tcra_registration" >
                                                         </div>
                                                     </div>
 
 
-                                                    <div style="display: none;" id="brela_registrationDiv" class="form-group col-12">
-                                                        <div class="form-wrapper">
+                                                    <div style="display: none;" id="brela_registrationDiv" class=" col-12">
+                                                        <div class="">
                                                             <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                             <span id="brela_registration_msg"></span>
-                                                            <input type="file" id="brela_registration"  name="brela_registration" class="form-control">
+                                                            <input type="file" id="brela_registration"  name="brela_registration" >
                                                         </div>
                                                     </div>
 
 
 
 
-                                                    <div class="form-wrapper col-12 pt-4">
+                                                    <div class="form-wrapper col-12 " style="margin-top: 4.5rem !important;">
                                                         <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                                         <span id="start_date_msg"></span>
                                                         <input type="date" id="start_date" name="start_date" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
@@ -823,10 +826,11 @@
                                                         <label for="currency">Currency <span style="color: red;"> *</span></label>
                                                         <span id="currency_msg"></span>
                                                         <select id="currency" class="form-control"  name="currency">
-                                                            <option value="" ></option>
-                                                            <option value="TZS" >TZS</option>
-                                                            <option value="USD" >USD</option>
+                                                            <option id="default_select_option" value="" selected></option>
+                                                            <option id="currency_tzs" value="TZS" >TZS</option>
+                                                            <option id="currency_usd" value="USD" >USD</option>
                                                         </select>
+                                                        <p class="pt-2" style="display: none;" id="currency_clause"><b>N.B This is the currency that will be used for all sub-clients</b></p>
                                                     </div>
 
 
@@ -835,18 +839,36 @@
 
                                                 <div class="form-group row">
 
-                                                    <div class="form-wrapper col-6">
+                                                    <div class="form-wrapper col-12">
                                                         <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
                                                         <span id="payment_cycle_msg"></span>
                                                         <input type="number"  id="payment_cycle" name="payment_cycle" class="form-control">
 
                                                     </div>
 
-                                                    <div class="form-wrapper col-6">
+                                                    <div class="form-wrapper col-12" id="escalation_rateDiv" style="display: none;">
                                                         <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                                         <span id="escalation_rate_msg"></span>
                                                         <input type="number"  id="escalation_rate" name="escalation_rate" class="form-control" >
                                                     </div>
+
+
+                                                    <div class="form-wrapper col-6" id="escalation_rate_vacationDiv" style="display: none;">
+                                                        <label for="escalation_rate_vacation">Escalation Rate(Vacation season) <span style="color: red;"> *</span></label>
+                                                        <span id="escalation_rate_vacation_msg"></span>
+                                                        <input type="number"  id="escalation_rate_vacation" name="escalation_rate_vacation" class="form-control" >
+                                                    </div>
+
+
+
+
+                                                    <div class="form-wrapper col-6" id="escalation_rate_academicDiv" style="display: none;">
+                                                        <label for="escalation_rate_academic">Escalation Rate(Academic season) <span style="color: red;"> *</span></label>
+                                                        <span id="escalation_rate_academic_msg"></span>
+                                                        <input type="number"  id="escalation_rate_academic" name="escalation_rate_academic" class="form-control" >
+                                                    </div>
+
+
 
 
                                                 </div>
@@ -934,14 +956,14 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td>Space number:</td>
+                                                        <td>Real Estate number:</td>
                                                         <td id="space_number_confirm"></td>
                                                     </tr>
 
 
 
                                                     <tr>
-                                                        <td>Space size(SQM):</td>
+                                                        <td>Real Estate size(SQM):</td>
                                                         <td id="space_size_confirm"></td>
                                                     </tr>
 
@@ -1375,7 +1397,7 @@
 
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
-            var p1, p2,p3,p4,p5,p6,p7;
+            var p1, p2,p3,p4,p5,p6,p7,p14,p15,p16,p17,p18,p19,p20;
 
 
             var temp;
@@ -1459,6 +1481,406 @@
             function properNextZero(){
                 temp=0;
             }
+
+
+            //File pond starts
+
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+            FilePond.registerPlugin(FilePondPluginFileValidateSize);
+
+
+
+            const tbs_certificateinputElement = document.querySelector('#tbs_certificate');
+            const tbs_certificatepond = FilePond.create(tbs_certificateinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+
+
+                        checkRequired(14);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(14);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+            const gpsa_certificateinputElement = document.querySelector('#gpsa_certificate');
+            const gpsa_certificatepond = FilePond.create(gpsa_certificateinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+
+
+                        checkRequired(15);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(15);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+
+            const food_business_licenseinputElement = document.querySelector('#food_business_license');
+            const food_business_licensepond = FilePond.create(food_business_licenseinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+
+                        checkRequired(16);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(16);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+            const business_licenseinputElement = document.querySelector('#business_license');
+            const business_licensepond = FilePond.create(business_licenseinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+
+                        checkRequired(17);
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(17);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+
+
+
+
+            const osha_certificateinputElement = document.querySelector('#osha_certificate');
+            const osha_certificatepond = FilePond.create(osha_certificateinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+                        checkRequired(18);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(18);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+            const tcra_registrationinputElement = document.querySelector('#tcra_registration');
+            const tcra_registrationpond = FilePond.create(tcra_registrationinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+                        checkRequired(19);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(19);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+            const brela_registrationinputElement = document.querySelector('#brela_registration');
+            const brela_registrationpond = FilePond.create(brela_registrationinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+                        checkRequired(20);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(20);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+
+
+
+
+            });
+
+
+
+
+
+            $(function(){
+
+                // Turn input element into a pond with configuration options
+                $('input[type="file"]').filepond({
+                    allowMultiple: false
+                });
+
+
+
+                // Listen for addfile event
+                $('input[type="file"]').on('FilePond:addfile', function(error, file) {
+                    console.log('file added event');
+                });
+
+                // Manually add a file using the addfile method
+                // $('input[type="file"]').filepond('addFile', 'index.html').then(function(file){
+                //     console.log('file added', file);
+                // });
+
+
+
+
+
+                FilePond.setOptions({
+                    server: {
+                        url: '/upload',
+                        headers: {
+
+                            'X-CSRF-TOKEN': '{{csrf_token()}}'
+                        },
+
+                        revert:{
+
+                            url: '/revert_upload',
+                            headers: {
+
+                                'X-CSRF-TOKEN': '{{csrf_token()}}'
+                            },
+
+
+                            onload: function (responce) {
+                                console.log(responce);
+
+                            },
+
+
+
+                        }
+
+
+
+                    },
+
+                    labelFileProcessing: 'Uploading',
+
+                    acceptedFileTypes: ['application/pdf'],
+
+                    fileValidateTypeLabelExpectedTypes: 'Expects pdf',
+
+                    maxFileSize: '15MB'
+
+
+                });
+
+
+
+
+
+
+
+
+
+            });
+
+            //Filepond ends
+
+            function checkRequired(number){
+                if(number=='14'){
+                  p14=1;
+                }else if(number=='15'){
+                  p15=1;
+
+                }else if(number=='16'){
+
+                  p16=1;
+
+                }else if(number=='17'){
+
+                    p17=1;
+                }else if(number=='18'){
+
+                    p18=1;
+
+                }else if(number=='19'){
+
+                    p19=1;
+                }else if(number=='20'){
+
+                    p20=1;
+                }else{
+
+
+
+                }
+            }
+
+
+
+            function onFileRemove(number){
+                if(number=='14'){
+                    p14=0;
+                }else if(number=='15'){
+                    p15=0;
+
+                }else if(number=='16'){
+
+                    p16=0;
+
+                }else if(number=='17'){
+
+                    p17=0;
+                }else if(number=='18'){
+
+                    p18=0;
+
+                }else if(number=='19'){
+
+                    p19=0;
+                }else if(number=='20'){
+
+                    p20=0;
+                }else{
+
+
+
+                }
+            }
+
 
 
 
@@ -1687,11 +2109,55 @@
                     // $('#amountDiv').show();
                     $('#rent_sqmDiv').show();
                     $('#currencydiv').show();
-
+                    $('#currency_clause').hide();
                     //old indirect code ends
 
+                    var query=parent_client;
+
+                    $.ajax({
+                        url:"{{ route('get_parent_currency') }}",
+                        method:"get",
+                        data:{query:query},
+                        success:function(data){
+                            if(data=='0'){
 
 
+                                $('#currency_tzs').show();
+                                $('#currency_usd').show();
+
+                            }
+                            else{
+
+
+
+
+
+                                if(data=='TZS'){
+
+
+
+
+                                $('#currency_usd').hide();
+                                    $('#currency_tzs').show();
+                                }else if(data=='USD'){
+
+                                    $('#currency_tzs').hide();
+                                    $('#currency_usd').show();
+
+                                }else{
+
+                                    $('#currency_tzs').show();
+                                    $('#currency_usd').show();
+
+                                }
+
+
+
+
+
+                            }
+                        }
+                    });
 
 
 
@@ -1709,10 +2175,8 @@
 
                 }else if(client_type_contract=='Direct and has clients'){
 
-
-
-
-
+                    $('#currency_tzs').show();
+                    $('#currency_usd').show();
 
 
                     $('#percentage_to_payDiv').show();
@@ -1723,8 +2187,8 @@
                     $('#vacationDiv').hide();
                     $('#amountDiv').hide();
                     $('#rent_sqmDiv').hide();
-                    $('#currencydiv').hide();
-
+                    $('#currencydiv').show();
+                    $('#currency_clause').show();
                     $('#contract_categoryDiv').hide();
                     $('#has_additional_businessesDiv').hide();
 
@@ -1738,6 +2202,11 @@
                 }
 
                 else{
+
+                    $('#currency_tzs').show();
+                    $('#currency_usd').show();
+
+
                     $('#business_licenseDiv').hide();
                     $('#percentage_to_payDiv').hide();
                     $('#academic_dependenceDiv').show();
@@ -1748,7 +2217,7 @@
 
                     $('#rent_sqmDiv').show();
                     $('#currencydiv').show();
-
+                    $('#currency_clause').hide();
 
                     if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' ){
                         gonext();
@@ -1948,7 +2417,7 @@
             $("#next3").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
-                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p26;
+                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p21,p22,p23,p26;
                 var first_name=document.getElementById('first_name').value;
                 var last_name=document.getElementById('last_name').value;
                 var company_name=document.getElementById('company_name').value;
@@ -1977,6 +2446,8 @@
                 var currency=document.getElementById('currency').value;
                 var payment_cycle=document.getElementById('payment_cycle').value;
                 var escalation_rate=document.getElementById('escalation_rate').value;
+                var escalation_rate_vacation=document.getElementById('escalation_rate_vacation').value;
+                var escalation_rate_academic=document.getElementById('escalation_rate_academic').value;
                 var space_size=document.getElementById('space_size').value;
                 var has_water_bill=document.getElementById('has_water_bill').value;
                 var has_electricity_bill=document.getElementById('has_electricity_bill').value;
@@ -2151,7 +2622,7 @@
 
 
                 if(escalation_rate==""){
-                    p10=0;
+
                     $('#escalation_rate_msg').show();
                     var message=document.getElementById('escalation_rate_msg');
                     message.style.color='red';
@@ -2159,11 +2630,68 @@
                     $('#escalation_rate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p10=1;
+
                     $('#escalation_rate_msg').hide();
                     $('#escalation_rate').attr('style','border-bottom: 1px solid #ccc');
 
                 }
+
+
+
+                if(escalation_rate_vacation==""){
+
+                    $('#escalation_rate_vacation_msg').show();
+                    var message=document.getElementById('escalation_rate_vacation_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#escalation_rate_vacation').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+
+                    $('#escalation_rate_vacation_msg').hide();
+                    $('#escalation_rate_vacation').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(escalation_rate_academic==""){
+
+                    $('#escalation_rate_academic_msg').show();
+                    var message=document.getElementById('escalation_rate_academic_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#escalation_rate_academic').attr('style','border-bottom:1px solid #f00');
+                }
+                else{
+
+                    $('#escalation_rate_academic_msg').hide();
+                    $('#escalation_rate_academic').attr('style','border-bottom: 1px solid #ccc');
+
+                }
+
+
+                if(escalation_rate=='' && $('#escalation_rateDiv:visible').length !=0) {
+
+                    p10=0;
+                }
+                else if(escalation_rate_vacation=='' && $('#escalation_rate_vacationDiv:visible').length !=0) {
+                    p10=0;
+
+                }
+                else if(escalation_rate_academic=='' && $('#escalation_rate_academicDiv:visible').length !=0) {
+                    p10=0;
+
+                }
+                else{
+
+                    p10=1;
+                }
+
+
+
+
+
+
 
 
                 if(percentage_to_pay==""){
@@ -2219,7 +2747,7 @@
 
 
                 if(tbs_certificate==""){
-                    p14=0;
+
                     $('#tbs_certificate_msg').show();
                     var message=document.getElementById('tbs_certificate_msg');
                     message.style.color='red';
@@ -2227,7 +2755,7 @@
                     $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p14=1;
+
                     $('#tbs_certificate_msg').hide();
                     $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2235,8 +2763,15 @@
 
 
 
+
+
+
+
+
+
+
                 if(gpsa_certificate==""){
-                    p15=0;
+
                     $('#gpsa_certificate_msg').show();
                     var message=document.getElementById('gpsa_certificate_msg');
                     message.style.color='red';
@@ -2244,15 +2779,22 @@
                     $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p15=1;
+
                     $('#gpsa_certificate_msg').hide();
                     $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
+
+
+
+
+
+
+
                 if(food_business_license==""){
-                    p16=0;
+
                     $('#food_business_license_msg').show();
                     var message=document.getElementById('food_business_license_msg');
                     message.style.color='red';
@@ -2260,15 +2802,20 @@
                     $('#food_business_license').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p16=1;
+
                     $('#food_business_license_msg').hide();
                     $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
+
+
+
+
+
                 if(business_license==""){
-                    p17=0;
+
                     $('#business_license_msg').show();
                     var message=document.getElementById('business_license_msg');
                     message.style.color='red';
@@ -2276,15 +2823,20 @@
                     $('#business_license').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p17=1;
+
                     $('#business_license_msg').hide();
                     $('#business_license').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
+
+
+
+
+
                 if(osha_certificate==""){
-                    p18=0;
+
                     $('#osha_certificate_msg').show();
                     var message=document.getElementById('osha_certificate_msg');
                     message.style.color='red';
@@ -2292,7 +2844,7 @@
                     $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p18=1;
+
                     $('#osha_certificate_msg').hide();
                     $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2300,8 +2852,13 @@
 
 
 
+
+
+
+
+
                 if(tcra_registration==""){
-                    p19=0;
+
                     $('#tcra_registration_msg').show();
                     var message=document.getElementById('tcra_registration_msg');
                     message.style.color='red';
@@ -2309,7 +2866,7 @@
                     $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p19=1;
+
                     $('#tcra_registration_msg').hide();
                     $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2318,8 +2875,12 @@
 
 
 
+
+
+
+
                 if(brela_registration==""){
-                    p20=0;
+
                     $('#brela_registration_msg').show();
                     var message=document.getElementById('brela_registration_msg');
                     message.style.color='red';
@@ -2327,11 +2888,16 @@
                     $('#brela_registration').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p20=1;
+
                     $('#brela_registration_msg').hide();
                     $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
 
                 }
+
+
+
+
+
 
 
                 if(additional_businesses_list==""){
@@ -3899,6 +4465,15 @@
 
                 if(query=='Yes') {
 
+                    $('#escalation_rate_vacationDiv').show();
+                    $('#escalation_rate_academicDiv').show();
+                    $('#escalation_rateDiv').hide();
+
+                    document.getElementById("escalation_rate").disabled = true;
+                    document.getElementById("escalation_rate_academic").disabled = false;
+                    document.getElementById("escalation_rate_vacation").disabled = false;
+
+
                     $('#academicDiv').show();
                     document.getElementById("academic_season").disabled = false;
                     // var ele = document.getElementById("academic_season");
@@ -3923,6 +4498,15 @@
                         //Do Nothing
                     }
                 }else if(query=='No'){
+
+
+                    $('#escalation_rate_vacationDiv').hide();
+                    $('#escalation_rate_academicDiv').hide();
+                    $('#escalation_rateDiv').show();
+
+                    document.getElementById("escalation_rate").disabled = false;
+                    document.getElementById("escalation_rate_academic").disabled = true;
+                    document.getElementById("escalation_rate_vacation").disabled = true;
 
                     $('#academicDiv').hide();
                     document.getElementById("academic_season").disabled = true;
@@ -3949,6 +4533,13 @@
                     $('#vacationDiv').hide();
                     $('#academicDiv').hide();
                     $('#amountDiv').hide();
+
+                    $('#escalation_rate_vacationDiv').hide();
+                    $('#escalation_rate_academicDiv').hide();
+                    $('#escalation_rateDiv').hide();
+
+
+
 
                 }
 

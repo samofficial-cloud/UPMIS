@@ -26,10 +26,20 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('command:sendInvoices')
-                  ->everyMinute();
+             ->dailyAt('03:40')->timezone('Africa/Dar_es_Salaam');
 
         $schedule->command('command:sendInsuranceInvoices')
-            ->everyMinute();
+            ->dailyAt('03:35')->timezone('Africa/Dar_es_Salaam');
+
+
+        $schedule->command('command:sendParentClientsInvoices')
+            ->dailyAt('03:30')->timezone('Africa/Dar_es_Salaam');
+
+
+        $schedule->command('command:UpdateSpaceContractsAmount')
+            ->dailyAt('03:00')->timezone('Africa/Dar_es_Salaam');
+
+
 
 
 

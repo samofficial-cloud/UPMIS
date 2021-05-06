@@ -70,8 +70,8 @@ table, td, th {
 	<center>
 		<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 			<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
-     		<br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT  
-		
+     		<br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT
+
 		@if(($_GET['b_fil']=='true') && ($_GET['l_fil']=='true'))
 			<br><br>Tenancy Schedule {{DateTime::createFromFormat('!m', $x1)->format('F')}} {{$_GET['year']}} to {{DateTime::createFromFormat('!m', $x3)->format('F')}} {{$_GET['year']}} for {{$_GET['b_type']}} at {{$_GET['loc']}} Area
 		@elseif(($_GET['b_fil']=='true') && ($_GET['l_fil']!='true'))
@@ -89,7 +89,7 @@ table, td, th {
 	<thead class="thead-dark">
 	<tr>
 		<th scope="col" style="width: 5%;">SN</th>
-		<th scope="col" style="width: 9%;">Space Id</th>
+		<th scope="col" style="width: 9%;">Real Estate Number</th>
 		<th scope="col" style="width: 20%;">Tenant Name</th>
 		<th scope="col">Lease Start</th>
 		<th scope="col">Lease End</th>
@@ -126,7 +126,7 @@ table, td, th {
     								->pluck('amount_paid')
     								->toArray();
       				}
-    
+
     			}
 
 			?>
@@ -143,13 +143,13 @@ table, td, th {
       					<td style="text-align: right;">{{number_format($invoice[$i][0])}}</td>
       				@else
       					<td style="text-align: center;">0</td>
-      				@endif     					
+      				@endif
 			@endfor
 
 		</tr>
 		@endforeach
 
-		
+
 	</tbody>
 </table>
 </body>

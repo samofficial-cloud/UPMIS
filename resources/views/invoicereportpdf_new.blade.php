@@ -115,81 +115,81 @@
     <center><h4>
     @if(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']!='true'))
     @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>Space Rent</b> Invoices
+     <br><br>List of <b>Real Estate Rent</b> Invoices
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
-     <br><br>List of <b>Space Water Bill</b> Invoices
+     <br><br>List of <b>Real Estate Water Bill</b> Invoices
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
-     <br><br>List of <b>Space Electricity Bill</b> Invoices
+     <br><br>List of <b>Real Estate Electricity Bill</b> Invoices
      @else
      <br><br>List of <b>{{$_GET['b_type']}}</b> Invoices
     @endif
     @elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']=='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>Space Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>Real Estate Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b>
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
-     <br><br>List of <b>Space Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>Real Estate Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
-     <br><br>List of <b>Space Electricity Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>Real Estate Electricity Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
      @else
      <br><br>List of <b>{{$_GET['b_type']}}</b> Invoices for the Year <b>{{$_GET['year']}}</b>
     @endif
      @elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']!='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Rent</b> Invoices
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Rent</b> Invoices
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Water Bill</b> Invoices
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Water Bill</b> Invoices
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Electricity Bill</b> Invoices
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Electricity Bill</b> Invoices
      @else
      <br><br>List of <b>{{$_GET['payment_status']}} {{$_GET['b_type']}}</b> Invoices
     @endif
      @elseif(($_GET['c_filter']!='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']=='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b>
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Electricity Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Electricity Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
      @else
      <br><br>List of <b>{{$_GET['payment_status']}} {{$_GET['b_type']}}</b> Invoices for the Year <b>{{$_GET['year']}}</b>
     @endif
      @elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']!='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>{{$_GET['c_name']}} Space Rent</b> Invoices
+     <br><br>List of <b>{{$_GET['c_name']}} Real Estate Rent</b> Invoices
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
-     <br><br>List of <b>{{$_GET['c_name']}} Space Water Bill</b> Invoices
+     <br><br>List of <b>{{$_GET['c_name']}} Real Estate Water Bill</b> Invoices
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
-     <br><br>List of <b>{{$_GET['c_name']}} Space Electricity Bill</b> Invoices
+     <br><br>List of <b>{{$_GET['c_name']}} Real Estate Electricity Bill</b> Invoices
      @else
      <br><br>List of <b>{{$_GET['c_name']}} {{$_GET['b_type']}}</b> Invoices
     @endif
     @elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']!='true')&&($_GET['year_filter']=='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>{{$_GET['c_name']}} Space Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>{{$_GET['c_name']}} Real Estate Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b>
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
-     <br><br>List of <b>{{$_GET['c_name']}} Space Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>{{$_GET['c_name']}} Real Estate Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
-     <br><br>List of <b>{{$_GET['c_name']}} Space Electricity Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
+     <br><br>List of <b>{{$_GET['c_name']}} Real Estate Electricity Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b>
      @else
      <br><br>List of <b>{{$_GET['c_name']}} {{$_GET['b_type']}}</b> Invoices for the Year <b>{{$_GET['year']}}</b>
     @endif
      @elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']!='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Rent</b> Invoices for <b>{{$_GET['c_name']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Rent</b> Invoices for <b>{{$_GET['c_name']}}</b>
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Water Bill</b> Invoices for <b>{{$_GET['c_name']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Water Bill</b> Invoices for <b>{{$_GET['c_name']}}</b>
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Electricity Bill</b> Invoices for <b>{{$_GET['c_name']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Electricity Bill</b> Invoices for <b>{{$_GET['c_name']}}</b>
      @else
      <br><br>List of <b>{{$_GET['payment_status']}} {{$_GET['b_type']}}</b> Invoices for <b>{{$_GET['c_name']}}</b>
     @endif
     @elseif(($_GET['c_filter']=='true')&&($_GET['payment_filter']=='true')&&($_GET['year_filter']=='true'))
      @if(($_GET['b_type']=='Space') &&($_GET['In_type']=='rent'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Rent</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
      @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='water'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Water Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
       @elseif(($_GET['b_type']=='Space') &&($_GET['In_type']=='electricity'))
-     <br><br>List of <b>{{$_GET['payment_status']}} Space Electricity Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
+     <br><br>List of <b>{{$_GET['payment_status']}} Real Estate Electricity Bill</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
      @else
      <br><br>List of <b>{{$_GET['payment_status']}} {{$_GET['b_type']}}</b> Invoices for the Year <b>{{$_GET['year']}}</b> for <b>{{$_GET['c_name']}}</b>
     @endif
@@ -335,15 +335,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
       if((urlParams.get('c_filter')!='true')&&(urlParams.get('payment_filter')!='true')&&( urlParams.get('year_filter')!='true')){
 
           if((urlParams.get('b_type')=='Space') && (urlParams.get('In_type')=='rent')){
-            return  '\n \n List of Space Rent Invoices';
+            return  '\n \n List of Real Estate Rent Invoices';
           }
 
           else if(( urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
-            return '\n \n List of Space Water Bill Invoices';
+            return '\n \n List of Real Estate Water Bill Invoices';
           }
 
           else if(( urlParams.get('b_type')=='Space') && ( urlParams.get('In_type')=='electricity')){
-            return  '\n \n List of Space Electricity Bill Invoices';
+            return  '\n \n List of Real Estate Electricity Bill Invoices';
           }
 
           else{
@@ -353,13 +353,13 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
     else if((urlParams.get('c_filter')!='true')&&(urlParams.get('payment_filter')!='true')&&(urlParams.get('year_filter')=='true')){
         if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
-          return '\n \n List of Space Rent Invoices for the Year {{$_GET['year']}}';
+          return '\n \n List of Real Estate Rent Invoices for the Year {{$_GET['year']}}';
         }
         else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
-            return '\n \n List of Space Water Bill Invoices for the Year {{$_GET['year']}}';
+            return '\n \n List of Real Estate Water Bill Invoices for the Year {{$_GET['year']}}';
         }
         else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
-          return '\n \n List of Space Electricity Bill Invoices for the Year {{$_GET['year']}}';
+          return '\n \n List of Real Estate Electricity Bill Invoices for the Year {{$_GET['year']}}';
         }
 
         else{
@@ -370,15 +370,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
     else if((urlParams.get('c_filter')!='true') && (urlParams.get('payment_filter')=='true')&& (urlParams.get('year_filter')!='true')){
       if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
-        return '\n \n List of '+ urlParams.get('payment_status')+ ' Space Rent Invoices';
+        return '\n \n List of '+ urlParams.get('payment_status')+ ' Real Estate Rent Invoices';
       }
 
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
-       return '\n \n List of ' +urlParams.get('payment_status')+ ' Space Water Bill Invoices';
+       return '\n \n List of ' +urlParams.get('payment_status')+ ' Real Estate Water Bill Invoices';
       }
 
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
-        return '\n \n List of ' + urlParams.get('payment_status')+ ' Space Electricity Bill Invoices';
+        return '\n \n List of ' + urlParams.get('payment_status')+ ' Real Estate Electricity Bill Invoices';
       }
 
       else{
@@ -389,15 +389,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
     else if((urlParams.get('c_filter')!='true') && (urlParams.get('payment_filter')=='true')&&(urlParams.get('year_filter')=='true')){
       if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
-        return '\n \nList of {{$_GET['payment_status']}} Space Rent Invoices for the Year {{$_GET['year']}}';
+        return '\n \nList of {{$_GET['payment_status']}} Real Estate Rent Invoices for the Year {{$_GET['year']}}';
       }
 
       else if((urlParams.get('b_type')=='Space') && (urlParams.get('In_type')=='water')){
-        return '\n \nList of {{$_GET['payment_status']}} Space Water Bill Invoices for the Year {{$_GET['year']}}';
+        return '\n \nList of {{$_GET['payment_status']}} Real Estate Water Bill Invoices for the Year {{$_GET['year']}}';
       }
 
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
-        return '\n \nList of {{$_GET['payment_status']}} Space Electricity Bill Invoices for the Year {{$_GET['year']}}';
+        return '\n \nList of {{$_GET['payment_status']}} Real Estate Electricity Bill Invoices for the Year {{$_GET['year']}}';
       }
 
       else{
@@ -409,15 +409,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
   else if((urlParams.get('c_filter')=='true')&&(urlParams.get('payment_filter')!='true')&&(urlParams.get('year_filter')!='true')){
       if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
-        return '\n \nList of {{$_GET['c_name']}} Space Rent Invoices';
+        return '\n \nList of {{$_GET['c_name']}} Real Estate Rent Invoices';
       }
 
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
-        return '\n \nList of {{$_GET['c_name']}} Space Water Bill Invoices';
+        return '\n \nList of {{$_GET['c_name']}} Real Estate Water Bill Invoices';
       }
 
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
-        return '\n \nList of {{$_GET['c_name']}} Space Electricity Bill Invoices';
+        return '\n \nList of {{$_GET['c_name']}} Real Estate Electricity Bill Invoices';
       }
 
      else{
@@ -429,14 +429,14 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
   else if((urlParams.get('c_filter')=='true')&&(urlParams.get('payment_filter')!='true')&&(urlParams.get('year_filter')=='true')){
      if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
-      return '\n \nList of {{$_GET['c_name']}} Space Rent Invoices for the Year {{$_GET['year']}}';
+      return '\n \nList of {{$_GET['c_name']}} Real Estate Rent Invoices for the Year {{$_GET['year']}}';
      }
      else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
-      return '\n \nList of {{$_GET['c_name']}} Space Water Bill Invoices for the Year {{$_GET['year']}}';
+      return '\n \nList of {{$_GET['c_name']}} Real Estate Water Bill Invoices for the Year {{$_GET['year']}}';
      }
 
     else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
-      return '\n \nList of {{$_GET['c_name']}} Space Electricity Bill Invoices for the Year {{$_GET['year']}}';
+      return '\n \nList of {{$_GET['c_name']}} Real Estate Electricity Bill Invoices for the Year {{$_GET['year']}}';
     }
 
     else{
@@ -448,15 +448,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
   else if((urlParams.get('c_filter')=='true')&&(urlParams.get('payment_filter')=='true')&&(urlParams.get('year_filter')!='true')){
 
      if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
-      return '\n \nList of {{$_GET['payment_status']}} Space Rent Invoices for {{$_GET['c_name']}}';
+      return '\n \nList of {{$_GET['payment_status']}} Real Estate Rent Invoices for {{$_GET['c_name']}}';
      }
 
      else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
-      return '\n \nList of {{$_GET['payment_status']}} Space Water Bill Invoices for {{$_GET['c_name']}}';
+      return '\n \nList of {{$_GET['payment_status']}} Real Estate Water Bill Invoices for {{$_GET['c_name']}}';
      }
 
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
-        return '\n \nList of {{$_GET['payment_status']}} Space Electricity Bill Invoices for {{$_GET['c_name']}}';
+        return '\n \nList of {{$_GET['payment_status']}} Real Estate Electricity Bill Invoices for {{$_GET['c_name']}}';
       }
 
      else{
@@ -467,15 +467,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
     else if((urlParams.get('c_filter')=='true')&&(urlParams.get('payment_filter')=='true')&&(urlParams.get('year_filter')=='true')){
       if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='rent')){
-        return '\n \nList of {{$_GET['payment_status']}} Space Rent Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}} ';
+        return '\n \nList of {{$_GET['payment_status']}} Real Estate Rent Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}} ';
       }
 
      else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='water')){
-      return '\n \nList of {{$_GET['payment_status']}} Space Water Bill Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}}';
+      return '\n \nList of {{$_GET['payment_status']}} Real Estate Water Bill Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}}';
      }
 
       else if((urlParams.get('b_type')=='Space') &&(urlParams.get('In_type')=='electricity')){
-        return '\n \nList of {{$_GET['payment_status']}} Space Electricity Bill Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}}';
+        return '\n \nList of {{$_GET['payment_status']}} Real Estate Electricity Bill Invoices for the Year {{$_GET['year']}} for {{$_GET['c_name']}}';
       }
 
      else{

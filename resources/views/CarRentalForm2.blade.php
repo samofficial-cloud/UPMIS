@@ -194,7 +194,7 @@ $today=date('Y-m-d');
     <div class="row justify-content-center mt-0">
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-            	<h4><strong>UNIVERSITY OF DAR ES SALAAM - MAIN ADMINISTRATION</strong></h4>
+            	<h4><strong>UNIVERSITY OF DAR ES SALAAM - MAIN ADMINISTRATION</strong></h4>w
                 <h4><strong>CENTRAL POOL TRANSPORTATION UNIT<br>VEHICLE REQUISTION FORM</strong></h4>
                 <div class="row">
                     <div class="col-md-12 mx-0">
@@ -249,12 +249,25 @@ $today=date('Y-m-d');
 
 					</div>
 
-                    <div class="form-group">
+
+                                    <div class="form-group row">
+                    <div class="form-group col-6">
                     <div class="form-wrapper">
                         <label for="email">Email<span style="color: red;">*</span></label>
                         <input type="text" name="email" id="email" class="form-control" required placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
                     </div>
                 </div>
+
+                                        <div id="tinDiv" class="form-group col-6 ">
+                                            <div class="form-wrapper">
+                                                <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                <span id="tin_msg"></span>
+                                                <input type="number" id="tin" name="tin" required class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                                <p id="error_tin"></p>
+                                            </div>
+                                        </div>
+
+                                    </div>
 
 					<div class="form-group row" id="facultydiv">
 						<div class="form-wrapper col-6">
@@ -581,4 +594,29 @@ $(document).on('click', '#list', function(){
 
 });
 </script>
+
+<script>
+
+    function minCharacters(value){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("forward").disabled = true;
+            document.getElementById("error_tin").style.color = 'red';
+            document.getElementById("error_tin").style.float = 'left';
+            document.getElementById("error_tin").style.paddingTop = '1%';
+            document.getElementById("error_tin").innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin").innerHTML ='';
+            document.getElementById("forward").disabled = false;
+        }
+
+    }
+
+
+</script>
+
 @endsection

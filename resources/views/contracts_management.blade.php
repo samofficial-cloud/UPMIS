@@ -235,7 +235,7 @@ div.dt-buttons{
     padding: 10px;
     margin-left: 2px;
     margin-bottom: 15px;
-    margin-top: 4px;" role="button" aria-pressed="true" title="Add new Space Contract">Add New Contract</a>
+    margin-top: 4px;" role="button" aria-pressed="true" title="Add new Real Estate Contract">Add New Contract</a>
                 @endif
 
                 <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>
@@ -251,7 +251,7 @@ $i=1;
         <tr>
           <th scope="col" style="color:#fff;"><center>S/N</center></th>
           <th scope="col" style="color:#fff;">Client Name</th>
-          <th scope="col" style="color:#fff;"><center>Space Number</center></th>
+          <th scope="col" style="color:#fff;"><center>Real Estate Number</center></th>
           <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
           <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
@@ -298,6 +298,7 @@ $i=1;
                         <tr>
                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
                             <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                            <th scope="col" style="color:#fff;"><center>Contract ID</center></th>
                             <th scope="col" style="color:#fff;"><center>Host Name</center></th>
                             <th scope="col" style="color:#fff;"><center>Arrival Date</center></th>
                             <th scope="col" style="color:#fff;"><center>Departure Date</center></th>
@@ -313,6 +314,7 @@ $i=1;
                             <tr>
                               <td style="text-align: center;">{{$r}}.</td>
                               <td>
+
                                 <a class="link_style" data-toggle="modal" data-target="#flat_client{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->first_name}} {{$var->last_name}}</a>
 
                                     <div class="modal fade" id="flat_client{{$var->id}}" role="dialog">
@@ -347,7 +349,16 @@ $i=1;
                                       </tr>
                                       <tr>
                                         <td>Passport No</td>
-                                        <td>{{$var->passport_no}}</td>
+                                        <td>
+
+                                            @if($var->passport_no=='')
+                                                N/A
+                                            @else
+                                            {{$var->passport_no}}
+                                            @endif
+
+
+                                        </td>
                                       </tr>
                                       <tr>
                                         <td>Passport Issue Date</td>
@@ -365,7 +376,16 @@ $i=1;
                               </div>
                             </div>
                                 </td>
+                                <td style="text-align: center;">{{$var->id}}</td>
                                 <td>
+
+                                    @if($var->host_name=='')
+                                    N/A
+                                    @else
+
+
+
+
                                   <a class="link_style" data-toggle="modal" data-target="#flat_host{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->host_name}}</a>
 
                                     <div class="modal fade" id="flat_host{{$var->id}}" role="dialog">
@@ -384,11 +404,11 @@ $i=1;
                                       </tr>
                                       <tr>
                                         <td>College</td>
-                                        <td>{{$var->college}}</td>
+                                        <td>{{$var->college_host}}</td>
                                       </tr>
                                       <tr>
                                         <td>Department</td>
-                                        <td>{{$var->department}}</td>
+                                        <td>{{$var->department_host}}</td>
                                       </tr>
                                       <tr>
                                         <td>Address</td>
@@ -409,7 +429,10 @@ $i=1;
                                 </div>
                               </div>
                             </div>
+                                  @endif
+
                                 </td>
+
                               <td style="text-align: center;">{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
                               <td style="text-align: center;">{{date("d/m/Y",strtotime($var->departure_date))}}</td>
                               <td>
@@ -453,8 +476,9 @@ $i=1;
                               <td style="text-align: right;">{{number_format($var->total_usd)}}</td>
                               <td style="text-align: right;">{{number_format($var->total_tzs)}}</td>
                               <td>
-                                <a title="Edit this contract" href="{{ route('editResearchForm', $var->id) }}"><i class="fa fa-edit" aria-hidden="true" style="font-size:20px; color:green;"></i></a></center>
-
+                                  <center>
+                                <a title="Edit this contract" href="{{ route('editResearchForm', $var->id) }}"><i class="fa fa-edit" aria-hidden="true" style="font-size:20px; color:green;"></i></a>
+{{--                                      <a href="{{ route('renewResearchForm', $var->id)}}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>--}}
                                 <a title="Download this contract" href="{{ route('printResearchForm') }}?id={{$var->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center>
                               </td>
                             </tr>
@@ -2206,7 +2230,7 @@ var tablelog = $('#LogTable').DataTable( {
 
         var table = $('#myTablea').DataTable( {
             dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
-            processing:true,
+            // processing:true,
             serverSide:true,
             ajax: {
                 url:"{{ route('get_space_contracts') }}"
@@ -2222,7 +2246,7 @@ var tablelog = $('#LogTable').DataTable( {
             columns: [
 
                 {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
-                {data: 'full_name' , className: 'text-center'},
+                {data: 'full_name' , className: 'text-center',searchable: true},
                 {data: 'space_id_contract', className: 'text-center'},
                 {data: 'amount_academic_season', className: 'text-center'},
                 {data: 'amount_vacation_season', className: 'text-center'},
@@ -2231,8 +2255,6 @@ var tablelog = $('#LogTable').DataTable( {
                 {data: 'creation_date', className: 'text-center'},
                 {data: 'contract_status', className: 'text-center'},
                 {data: 'action', className: 'text-center',  orderable: false, searchable: false},
-
-
 
             ],
 
@@ -2459,7 +2481,7 @@ var tablelog = $('#LogTable').DataTable( {
 
             // deferRender:true,
             dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
-            processing:true,
+
             serverSide:true,
             ajax: {
                 url:"{{ route('get_insurance_contracts') }}"
@@ -3319,4 +3341,7 @@ var tablelog = $('#LogTable').DataTable( {
         });
       });
     </script>
+
+
+
 @endsection

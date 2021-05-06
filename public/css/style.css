@@ -91,6 +91,12 @@ width:100%;
   padding: 10px;
 }
 
+
+
+
+
+
+
 /* .flex_container_wide_div h3 {
   text-align: center;
 } */
@@ -889,9 +895,9 @@ margin-left: 43.5%;
     background-color:white;
     vertical-align:bottom;
 
-    padding-top: 20%; 
-    filter: alpha(opacity=75); 
-    opacity: 0.98; 
+    padding-top: 20%;
+    filter: alpha(opacity=75);
+    opacity: 0.98;
 
     font-size:large;
     color:blue;
@@ -901,4 +907,14 @@ margin-left: 43.5%;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+}
+
+
+.filepond--root .filepond--drop-label {
+    min-height: 2.3em !important;
+}
+
+.filepond--file-wrapper{
+
+    background: #821513 !important;
 }

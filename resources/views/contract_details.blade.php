@@ -28,9 +28,6 @@
         table.dataTable {
             font-family: "Nunito", sans-serif;
             font-size: 15px;
-
-
-
         }
         table.dataTable.no-footer {
             border-bottom: 0px solid #111;
@@ -248,7 +245,7 @@
                         @if($var->has_clients==1)
                         @else
                             <tr>
-                                <td> Space Number:</td>
+                                <td> Real Estate Number:</td>
                                 <td> {{$var->space_id_contract}}</td>
                             </tr>
 
@@ -381,14 +378,14 @@
                             @if($privileges=='Read only')
                             @else
                                 @if(Auth::user()->role=='DPDI Planner')
-                                <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice" title="Add new Space Invoice" role="button" aria-pressed="true">Add New Invoice</a>
+                                <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#new_invoice" title="Add new Real Estate Invoice" role="button" aria-pressed="true">Add New Invoice</a>
 
                                     <div class="modal fade" id="new_invoice" role="dialog">
 
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <b><h5 class="modal-title">Create New Space Invoice</h5></b>
+                                                    <b><h5 class="modal-title">Create New Real Estate Invoice</h5></b>
 
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 </div>

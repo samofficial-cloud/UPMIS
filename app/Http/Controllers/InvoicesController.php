@@ -359,6 +359,507 @@ class InvoicesController extends Controller
 
     }
 
+
+    public function PrintSpaceInvoice($id){
+
+        $invoice_data=DB::table('invoices')->where('invoice_number',$id)->get();
+        $today=date('d/m/Y');
+    foreach ($invoice_data as $var) {
+
+    $data = [
+        'invoice_number'   => $var->invoice_number_votebook,
+        'project_id' => $var->project_id,
+        'debtor_account_code'  => $var->debtor_account_code,
+        'debtor_name'   => $var->debtor_name,
+        'debtor_address' => $var->debtor_address,
+        'amount_to_be_paid'  => $var->amount_to_be_paid,
+        'currency'   => $var->currency_invoice,
+        'gepg_control_no' => $var->gepg_control_no,
+        'tin'  => $var->tin,
+        'vrn'   => $var->vrn,
+        'invoice_date' =>date("d/m/Y",strtotime($var->invoice_date)) ,
+        'period'  => $var->period,
+        'financial_year'   => $var->financial_year,
+        'max_no_of_days_to_pay' => $var->max_no_of_days_to_pay,
+        'status'  => $var->status,
+        'inc_code'   => $var->inc_code,
+        'amount_in_words' => $var->amount_in_words,
+        'description' => $var->description,
+        'prepared_by' => $var->prepared_by,
+        'approved_by' => $var->approved_by,
+        'today' => $today
+    ];
+
+
+
+}
+
+
+
+        $pdf = PDF::loadView('invoice_pdf',$data);
+
+
+        return $pdf->stream();
+
+
+
+    }
+
+
+
+    public function PrintWaterInvoice($id){
+
+        $invoice_data=DB::table('water_bill_invoices')->where('invoice_number',$id)->get();
+        $today=date('d/m/Y');
+        foreach ($invoice_data as $var) {
+
+            $data = [
+                'invoice_number'   => $var->invoice_number_votebook,
+                'project_id' => $var->project_id,
+                'debtor_account_code'  => $var->debtor_account_code,
+                'debtor_name'   => $var->debtor_name,
+                'debtor_address' => $var->debtor_address,
+                'amount_to_be_paid'  => $var->cumulative_amount,
+                'currency'   => $var->currency_invoice,
+                'gepg_control_no' => $var->gepg_control_no,
+                'tin'  => $var->tin,
+                'vrn'   => $var->vrn,
+                'invoice_date' =>date("d/m/Y",strtotime($var->invoice_date)) ,
+                'period'  => $var->period,
+                'financial_year'   => $var->financial_year,
+                'max_no_of_days_to_pay' => $var->max_no_of_days_to_pay,
+                'status'  => $var->status,
+                'inc_code'   => $var->inc_code,
+                'amount_in_words' => $var->amount_in_words,
+                'description' => $var->description,
+                'prepared_by' => $var->prepared_by,
+                'approved_by' => $var->approved_by,
+                'today' => $today
+            ];
+
+
+
+        }
+
+
+
+        $pdf = PDF::loadView('invoice_pdf',$data);
+
+
+        return $pdf->stream();
+
+
+
+    }
+
+
+    public function PrintElectricityInvoice($id){
+
+        $invoice_data=DB::table('water_bill_invoices')->where('invoice_number',$id)->get();
+        $today=date('d/m/Y');
+        foreach ($invoice_data as $var) {
+
+            $data = [
+                'invoice_number'   => $var->invoice_number_votebook,
+                'project_id' => $var->project_id,
+                'debtor_account_code'  => $var->debtor_account_code,
+                'debtor_name'   => $var->debtor_name,
+                'debtor_address' => $var->debtor_address,
+                'amount_to_be_paid'  => $var->cumulative_amount,
+                'currency'   => $var->currency_invoice,
+                'gepg_control_no' => $var->gepg_control_no,
+                'tin'  => $var->tin,
+                'vrn'   => $var->vrn,
+                'invoice_date' =>date("d/m/Y",strtotime($var->invoice_date)) ,
+                'period'  => $var->period,
+                'financial_year'   => $var->financial_year,
+                'max_no_of_days_to_pay' => $var->max_no_of_days_to_pay,
+                'status'  => $var->status,
+                'inc_code'   => $var->inc_code,
+                'amount_in_words' => $var->amount_in_words,
+                'description' => $var->description,
+                'prepared_by' => $var->prepared_by,
+                'approved_by' => $var->approved_by,
+                'today' => $today
+            ];
+
+
+
+        }
+
+
+
+        $pdf = PDF::loadView('invoice_pdf',$data);
+
+
+        return $pdf->stream();
+
+
+
+    }
+
+
+
+
+    public function PrintResearchInvoice($id){
+
+        $invoice_data=DB::table('research_flats_invoices')->where('invoice_number',$id)->get();
+        $today=date('d/m/Y');
+        foreach ($invoice_data as $var) {
+
+            $data = [
+                'invoice_number'   => $var->invoice_number_votebook,
+                'project_id' => $var->project_id,
+                'debtor_account_code'  => $var->debtor_account_code,
+                'debtor_name'   => $var->debtor_name,
+                'debtor_address' => $var->debtor_address,
+                'amount_to_be_paid'  => $var->amount_to_be_paid,
+                'currency'   => $var->currency_invoice,
+                'gepg_control_no' => $var->gepg_control_no,
+                'tin'  => $var->tin,
+                'vrn'   => $var->vrn,
+                'invoice_date' =>date("d/m/Y",strtotime($var->invoice_date)) ,
+                'period'  => $var->period,
+                'financial_year'   => $var->financial_year,
+                'max_no_of_days_to_pay' => $var->max_no_of_days_to_pay,
+                'status'  => $var->status,
+                'inc_code'   => $var->inc_code,
+                'amount_in_words' => $var->amount_in_words,
+                'description' => $var->description,
+                'prepared_by' => $var->prepared_by,
+                'approved_by' => $var->approved_by,
+                'today' => $today
+            ];
+
+
+
+        }
+
+
+
+        $pdf = PDF::loadView('invoice_pdf',$data);
+
+
+        return $pdf->stream();
+
+
+
+    }
+
+
+
+
+    public function PrintCarInvoice($id){
+
+        $invoice_data=DB::table('car_rental_invoices')->where('invoice_number',$id)->get();
+        $today=date('d/m/Y');
+        foreach ($invoice_data as $var) {
+
+            $data = [
+                'invoice_number'   => $var->invoice_number_votebook,
+                'project_id' => $var->project_id,
+                'debtor_account_code'  => $var->debtor_account_code,
+                'debtor_name'   => $var->debtor_name,
+                'debtor_address' => $var->debtor_address,
+                'amount_to_be_paid'  => $var->amount_to_be_paid,
+                'currency'   => $var->currency_invoice,
+                'gepg_control_no' => $var->gepg_control_no,
+                'tin'  => $var->tin,
+                'vrn'   => $var->vrn,
+                'invoice_date' =>date("d/m/Y",strtotime($var->invoice_date)) ,
+                'period'  => $var->period,
+                'financial_year'   => $var->financial_year,
+                'max_no_of_days_to_pay' => $var->max_no_of_days_to_pay,
+                'status'  => $var->status,
+                'inc_code'   => $var->inc_code,
+                'amount_in_words' => $var->amount_in_words,
+                'description' => $var->description,
+                'prepared_by' => $var->prepared_by,
+                'approved_by' => $var->approved_by,
+                'today' => $today
+            ];
+
+
+        }
+
+
+
+        $pdf = PDF::loadView('invoice_pdf',$data);
+
+
+        return $pdf->stream();
+
+
+
+    }
+
+
+
+    public function PrintCarInvoiceAccount($id){
+
+        $invoice_data=DB::table('car_rental_invoices')->where('invoice_number',$id)->get();
+        $today=date('d/m/Y');
+        foreach ($invoice_data as $var) {
+
+            $data = [
+                'invoice_number'   => $var->invoice_number_votebook,
+                'project_id' => $var->project_id,
+                'debtor_account_code'  => $var->debtor_account_code,
+                'debtor_name'   => $var->debtor_name,
+                'debtor_address' => $var->debtor_address,
+                'amount_to_be_paid'  => $var->amount_to_be_paid,
+                'currency'   => $var->currency_invoice,
+                'gepg_control_no' => $var->account_no,
+                'tin'  => $var->tin,
+                'vrn'   => $var->vrn,
+                'invoice_date' =>date("d/m/Y",strtotime($var->invoice_date)) ,
+                'period'  => $var->period,
+                'financial_year'   => $var->financial_year,
+                'max_no_of_days_to_pay' => $var->max_no_of_days_to_pay,
+                'status'  => $var->status,
+                'inc_code'   => $var->inc_code,
+                'amount_in_words' => $var->amount_in_words,
+                'description' => $var->description,
+                'prepared_by' => $var->prepared_by,
+                'approved_by' => $var->approved_by,
+                'today' => $today
+            ];
+
+
+        }
+
+
+
+        $pdf = PDF::loadView('invoice_car_pdf',$data);
+
+
+        return $pdf->stream();
+
+
+
+    }
+
+
+
+
+
+    public function PrintInsuranceInvoiceClients($id){
+
+        $invoice_data=DB::table('insurance_invoices_clients')->where('invoice_number',$id)->get();
+        $today=date('d/m/Y');
+        foreach ($invoice_data as $var) {
+
+            $data = [
+                'invoice_number'   => $var->invoice_number_votebook,
+                'project_id' => $var->project_id,
+                'debtor_account_code'  => $var->debtor_account_code,
+                'debtor_name'   => $var->debtor_name,
+                'debtor_address' => $var->debtor_address,
+                'amount_to_be_paid'  => $var->amount_to_be_paid,
+                'currency'   => $var->currency_invoice,
+                'gepg_control_no' => $var->gepg_control_no,
+                'tin'  => $var->tin,
+                'vrn'   => $var->vrn,
+                'invoice_date' =>date("d/m/Y",strtotime($var->invoice_date)) ,
+                'period'  => $var->period,
+                'financial_year'   => $var->financial_year,
+                'max_no_of_days_to_pay' => $var->max_no_of_days_to_pay,
+                'status'  => $var->status,
+                'inc_code'   => $var->inc_code,
+                'amount_in_words' => $var->amount_in_words,
+                'description' => $var->description,
+                'prepared_by' => $var->prepared_by,
+                'approved_by' => $var->approved_by,
+                'today' => $today
+            ];
+
+
+        }
+
+
+
+        $pdf = PDF::loadView('invoice_pdf',$data);
+
+
+        return $pdf->stream();
+
+
+
+    }
+
+
+
+
+    public function PrintInsuranceInvoicePrincipals($id){
+
+        $invoice_data=DB::table('insurance_invoices')->where('invoice_number',$id)->get();
+        $today=date('d/m/Y');
+        foreach ($invoice_data as $var) {
+
+            $data = [
+                'invoice_number'   => $var->invoice_number_votebook,
+                'project_id' => $var->project_id,
+                'debtor_account_code'  => $var->debtor_account_code,
+                'debtor_name'   => $var->debtor_name,
+                'debtor_address' => $var->debtor_address,
+                'amount_to_be_paid'  => $var->amount_to_be_paid,
+                'currency'   => $var->currency_invoice,
+                'gepg_control_no' => $var->gepg_control_no,
+                'tin'  => $var->tin,
+                'vrn'   => $var->vrn,
+                'invoice_date' =>date("d/m/Y",strtotime($var->invoice_date)) ,
+                'period'  => $var->period,
+                'financial_year'   => $var->financial_year,
+                'max_no_of_days_to_pay' => $var->max_no_of_days_to_pay,
+                'status'  => $var->status,
+                'inc_code'   => $var->inc_code,
+                'amount_in_words' => $var->amount_in_words,
+                'description' => $var->description,
+                'prepared_by' => $var->prepared_by,
+                'approved_by' => $var->approved_by,
+                'today' => $today
+            ];
+
+
+        }
+
+
+
+        $pdf = PDF::loadView('invoice_pdf',$data);
+
+
+        return $pdf->stream();
+
+
+
+    }
+
+
+    public function CancelSpaceInvoice($id){
+
+        DB::table('invoices')
+            ->where('invoice_number', $id)
+            ->update(['invoice_status' => 0]);
+
+
+        DB::table('space_payments')
+            ->where('invoice_number', $id)
+            ->update(['status_payment' => 0]);
+
+        return redirect('/invoice_management')
+            ->with('success', 'Invoice cancelled successfully');
+
+    }
+
+
+    public function CancelWaterInvoice($id){
+
+        DB::table('water_bill_invoices')
+            ->where('invoice_number', $id)
+            ->update(['invoice_status' => 0]);
+
+        DB::table('water_bill_payments')
+            ->where('invoice_number', $id)
+            ->update(['status_payment' => 0]);
+
+        return redirect('/invoice_management')
+            ->with('success', 'Invoice cancelled successfully');
+
+    }
+
+
+
+
+    public function CancelElectricityInvoice($id){
+
+        DB::table('electricity_bill_invoices')
+            ->where('invoice_number', $id)
+            ->update(['invoice_status' => 0]);
+
+
+        DB::table('electricity_bill_payments')
+            ->where('invoice_number', $id)
+            ->update(['status_payment' => 0]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Invoice cancelled successfully');
+
+    }
+
+
+    public function CancelResearchInvoice($id){
+
+        DB::table('research_flats_invoices')
+            ->where('invoice_number', $id)
+            ->update(['invoice_status' => 0]);
+
+
+        DB::table('research_flats_payments')
+            ->where('invoice_number', $id)
+            ->update(['status_payment' => 0]);
+
+        return redirect('/invoice_management')
+            ->with('success', 'Invoice cancelled successfully');
+
+    }
+
+
+    public function CancelInsuranceClientsInvoice($id){
+
+        DB::table('insurance_invoices_clients')
+            ->where('invoice_number', $id)
+            ->update(['invoice_status' => 0]);
+
+        DB::table('insurance_clients_payments')
+            ->where('invoice_number', $id)
+            ->update(['status_payment' => 0]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Invoice cancelled successfully');
+
+
+    }
+
+    public function CancelInsurancePrincipalsInvoice($id){
+
+        DB::table('insurance_invoices')
+            ->where('invoice_number', $id)
+            ->update(['invoice_status' => 0]);
+
+
+        DB::table('insurance_payments')
+            ->where('invoice_number', $id)
+            ->update(['status_payment' => 0]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Invoice cancelled successfully');
+
+    }
+
+
+    public function CancelCarInvoice($id){
+
+        DB::table('car_rental_invoices')
+            ->where('invoice_number', $id)
+            ->update(['invoice_status' => 0]);
+
+
+
+        DB::table('car_rental_payments')
+            ->where('invoice_number', $id)
+            ->update(['status_payment' => 0]);
+
+
+        return redirect('/invoice_management')
+            ->with('success', 'Invoice cancelled successfully');
+
+    }
+
+
+
 //For space Invoices
     public function invoiceManagement()
     {

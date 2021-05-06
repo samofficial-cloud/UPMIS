@@ -473,6 +473,27 @@ if($request->get('cost_centre')=='')
             ->update(['day_for_insurance_invoice' => $request->get('day_for_insurance_invoice')]);
 
 
+
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['space_invoice_start_day' => $request->get('space_invoice_start_day')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['space_invoice_end_day' => $request->get('space_invoice_end_day')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['day_to_send_space_invoice' => $request->get('day_to_send_space_invoice')]);
+
+
+
+
+
         DB::table('system_settings')
             ->where('id', 1)
             ->update(['default_password' => $request->get('default_password')]);

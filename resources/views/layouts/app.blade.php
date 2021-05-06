@@ -33,6 +33,7 @@
 <script src="{{ asset('js/sidebar.js') }}" ></script>
 <script src="{{asset('select2/dist/js/select2.min.js')}}" type="text/javascript"></script>
 
+    <script src="{{ asset('js/jquery-ui.js') }}" ></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -43,8 +44,15 @@
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/free.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/filepond.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{asset('select2/dist/css/select2.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('select2-bootstrap/dist/select2-bootstrap.min.css')}}">
+
+    <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/jquery-ui.structure.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/jquery-ui.theme.css') }}" rel="stylesheet">
+
 
      @yield('style')
 </head>
@@ -362,7 +370,13 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{asset('js/filepond.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/filepond.jquery.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/filepond-plugin-file-validate-size.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/filepond-plugin-file-validate-type.js')}}" type="text/javascript"></script>
     @yield('pagescript')
+
+
 </body>
 
 <footer class="footer">

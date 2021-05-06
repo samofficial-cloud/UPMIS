@@ -151,7 +151,7 @@ hr {
 
     <div class="tab">
       @if ($category=='Real Estate only' OR $category=='All')
-        <button class="tablinks space_clients" onclick="openClients(event, 'space')" id="defaultOpen"><strong>Space</strong></button>
+        <button class="tablinks space_clients" onclick="openClients(event, 'space')" id="defaultOpen"><strong>Real Estate</strong></button>
       @else
       @endif
 
@@ -187,6 +187,92 @@ hr {
     color: #fff;font-size: 16px;
     margin-bottom: 5px;
     margin-top: 4px;" href="/contracts_management/research_flats">Add Client</a>
+
+
+                 <a title="Send email to selected clients" href="#" id="asp_btn_mail_flats_current" class="btn btn-info btn-sm" data-toggle="modal" data-target="#asp_mail_flats_current" role="button" aria-pressed="true" style="
+    padding: 10px;
+    color: #fff;font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 4px;
+    display: none;
+    float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
+                 <div class="modal fade" id="asp_mail_flats_current" role="dialog">
+                     <div class="modal-dialog modal-lg" role="document">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                                 <b><h5 class="modal-title">New Message</h5></b>
+
+                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                             </div>
+
+                             <div class="modal-body">
+                                 <form method="post" action="{{ route('SendMessage2') }}" enctype="multipart/form-data">
+                                     {{csrf_field()}}
+                                     <div class="form-group row">
+                                         <label for="asp_client_names" class="col-sm-2">To</label>
+                                         <div class="col-sm-9">
+                                             <input type="text" id="aflats_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
+                                             <p id="aflats_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
+                                         </div>
+                                     </div>
+
+                                     <div class="form-group row">
+                                         <label for="aflats_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label></label>
+                                         <div class="col-sm-9">
+                                             <input type="text" id="aflats_subject" name="subject" class="form-control" value="" required="">
+                                         </div>
+                                     </div>
+                                     <br>
+
+                                     <div class="form-group row">
+                                         <label for="asp_greetings" class="col-sm-2">Salutation</label>
+                                         <div class="col-sm-9">
+                                             <input type="text" id="aflats_greetings" name="greetings" class="form-control" value="Dear " readonly="">
+                                         </div>
+                                     </div>
+                                     <br>
+
+                                     <div class="form-group row">
+                                         <label for="asp_message" class="col-sm-2">Body<span style="color: red;">*</span></label></label>
+                                         <div class="col-sm-9">
+                                             <textarea type="text" id="asp_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
+                                         </div>
+                                     </div>
+                                     <br>
+
+                                     <div class="form-group row">
+                                         <label for="attachment" class="col-sm-2">Attachments</label>
+                                         <div class="col-sm-9">
+                                             <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
+                                             <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+                                         </div>
+                                     </div>
+                                     <br>
+                                     <div class="form-group row">
+                                         <label for="asp_closing" class="col-sm-2">Closing</label>
+                                         <div class="col-sm-9">
+                                             <input type="text" id="asp_closing" name="closing" class="form-control" value="Regards, Research Flats UDSM" readonly="">
+                                         </div>
+                                     </div>
+                                     <br>
+
+                                     <input type="text" name="type" value="flats" hidden="">
+
+                                     <div align="right">
+                                         <button class="btn btn-primary" type="submit">Send</button>
+                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                     </div>
+                                 </form>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
+
+
+
+
+
     <br><br>
             @endif
             <center><h3><strong>Active Clients</strong></h3></center>
@@ -197,10 +283,11 @@ hr {
     <tr>
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+  <th scope="col" style="color:#fff;"><center>TIN</center></th>
   <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
       <th scope="col" style="color:#fff;"><center>Email</center></th>
       <th scope="col" style="color:#fff;"><center>Address</center></th>
-      {{-- <th scope="col" style="color:#fff;"><center>Action</center></th> --}}
+       <th scope="col" style="color:#fff;"><center>Action</center></th>
     </tr>
   </thead>
   <tbody>
@@ -208,13 +295,167 @@ hr {
     <tr>
       <th scope="row" style="text-align: center;">{{$k1}}.</th>
       <td>{{$client->first_name}} {{$client->last_name}}</td>
+      <td>{{$client->tin}}</td>
       <td>{{$client->phone_number}}</td>
       <td>{{$client->email}}</td>
       <td>{{$client->address}}</td>
-      {{-- <td><center>
-        
-      </center>
-    </td> --}}
+        <td><center>
+                <a title="View More Details" role="button" href="{{ route('ResearchClientsViewMore',[$client->first_name,$client->last_name,$client->email,$client->phone_number]) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
+                {{-- @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
+                @if($privileges=='Read only')
+                @else
+                    <a title="Edit Client Details" data-toggle="modal" data-target="#edit_research{{$client->id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                    <div class="modal fade" id="edit_research{{$client->id}}" role="dialog">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
+
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form method="post" action="{{ route('editResearchclients',$client->id) }}">
+                                        {{csrf_field()}}
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="client_name{{$client->id}}">Client Name</label>
+                                                <input type="text" id="client_name{{$client->id}}" name="client_name" class="form-control" value="{{$client->first_name.' '.$client->last_name}}" readonly="">
+                                            </div>
+                                        </div>
+                                        <br>
+
+
+
+                                        <div  class="form-group ">
+                                            <div class="form-wrapper">
+                                                <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                <span id="tin_msg"></span>
+                                                <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersResearchActive(this.value,{{$client->id}});"  maxlength = "9">
+                                                <p id="error_tin_research_active{{$client->id}}"></p>
+                                            </div>
+                                        </div>
+
+                                        <br>
+
+
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="phone_number{{$client->id}}">Phone Number<span style="color: red;">*</span></label>
+
+                                                <input type="text" id="phone_number{{$client->id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                       maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="email{{$client->id}}">Email<span style="color: red;">*</span></label>
+                                                <input type="text" id="email{{$client->id}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="address{{$client->id}}">Address<span style="color: red;">*</span></label>
+                                                <input type="text" id="address{{$client->id}}" name="address" class="form-control" value="{{$client->address}}" required="">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <input type="text" name="id" value="{{$client->id}}" hidden="">
+
+                                        <div align="right">
+                                            <button class="btn btn-primary" id="research_active{{$client->id}}" type="submit">Save</button>
+                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if($client->email!='')
+                        <a title="Send Email to this Client" data-toggle="modal" data-target="#mail{{$client->id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+                        <div class="modal fade" id="mail{{$client->id}}" role="dialog">
+                            <div class="modal-dialog  modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">New Message</h5></b>
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
+                                            {{csrf_field()}}
+                                            <div class="form-group row">
+                                                <label for="client_names{{$client->id}}" class="col-sm-2">To</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="client_names{{$client->id}}" name="client_name" class="form-control" value="{{$client->first_name.' '.$client->last_name}}" readonly="">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="form-group row">
+                                                <label for="subject{{$client->id}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="subject{{$client->id}}" name="subject" class="form-control" value="" required="" >
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="form-group row">
+                                                <label for="greetings{{$client->id}}" class="col-sm-2">Salutation</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="greetings{{$client->id}}" name="greetings" class="form-control" value="Dear {{$client->first_name.' '.$client->last_name}}," readonly="">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group row">
+                                                <label for="message{{$client->id}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
+                                                <div class="col-sm-9">
+                                                    <textarea type="text" id="message{{$client->id}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group row">
+                                                <label for="attachment{{$client->id}}" class="col-sm-2">Attachments</label>
+                                                <div class="col-sm-9">
+                                                    <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
+                                                    <span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <input type="text" name="type" value="flats" hidden="">
+                                            <input type="text" name="contract_id" value="{{$client->id}}" hidden="">
+
+                                            <div class="form-group row">
+                                                <label for="closing{{$client->id}}" class="col-sm-2">Closing</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="closing{{$client->id}}" name="closing" class="form-control" value="Regards, Research Flats UDSM." readonly="">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div align="right">
+                                                <button class="btn btn-primary" type="submit">Send</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+                    @endif
+                @endif
+            </center>
+        </td>
   </tr>
   <?php $k1 = $k1 +1; ?>
   @endforeach
@@ -236,6 +477,96 @@ hr {
     color: #fff;font-size: 16px;
     margin-bottom: 5px;
     margin-top: 4px;" href="/contracts_management/research_flats">Add Client</a>
+
+
+
+
+
+           <a title="Send email to selected clients" href="#" id="inasp_btn_mail_flats_current" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inasp_mail_flats_current" role="button" aria-pressed="true" style="
+    padding: 10px;
+    color: #fff;font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 4px;
+    display: none;
+    float: right;"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #f8fafc; cursor: pointer;"></i> Mail</a>
+           <div class="modal fade" id="inasp_mail_flats_current" role="dialog">
+               <div class="modal-dialog modal-lg" role="document">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <b><h5 class="modal-title">New Message</h5></b>
+
+                           <button type="button" class="close" data-dismiss="modal">&times;</button>
+                       </div>
+
+                       <div class="modal-body">
+                           <form method="post" action="{{ route('SendMessage2') }}" enctype="multipart/form-data">
+                               {{csrf_field()}}
+                               <div class="form-group row">
+                                   <label for="asp_client_names" class="col-sm-2">To</label>
+                                   <div class="col-sm-9">
+                                       <input type="text" id="inaflats_client_names" name="client_name" class="form-control" value="" readonly="" hidden="">
+                                       <p id="inaflats_par_names" style="display: block;border: 1px solid #ced4da;border-radius: 0.25rem;padding: 0.375rem 0.75rem;"></p>
+                                   </div>
+                               </div>
+
+                               <div class="form-group row">
+                                   <label for="inaflats_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label></label>
+                                   <div class="col-sm-9">
+                                       <input type="text" id="inaflats_subject" name="subject" class="form-control" value="" required="">
+                                   </div>
+                               </div>
+                               <br>
+
+                               <div class="form-group row">
+                                   <label for="asp_greetings" class="col-sm-2">Salutation</label>
+                                   <div class="col-sm-9">
+                                       <input type="text" id="inaflats_greetings" name="greetings" class="form-control" value="Dear " readonly="">
+                                   </div>
+                               </div>
+                               <br>
+
+                               <div class="form-group row">
+                                   <label for="asp_message" class="col-sm-2">Body<span style="color: red;">*</span></label></label>
+                                   <div class="col-sm-9">
+                                       <textarea type="text" id="asp_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
+                                   </div>
+                               </div>
+                               <br>
+
+                               <div class="form-group row">
+                                   <label for="attachment" class="col-sm-2">Attachments</label>
+                                   <div class="col-sm-9">
+                                       <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
+                                       <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+                                   </div>
+                               </div>
+                               <br>
+                               <div class="form-group row">
+                                   <label for="asp_closing" class="col-sm-2">Closing</label>
+                                   <div class="col-sm-9">
+                                       <input type="text" id="asp_closing" name="closing" class="form-control" value="Regards, Research Flats UDSM" readonly="">
+                                   </div>
+                               </div>
+                               <br>
+
+                               <input type="text" name="type" value="flats" hidden="">
+
+                               <div align="right">
+                                   <button class="btn btn-primary" type="submit">Send</button>
+                                   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                               </div>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+
+
+
+
+
+
     <br><br>
             @endif
 
@@ -248,10 +579,11 @@ hr {
     <tr>
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+  <th scope="col" style="color:#fff;"><center>TIN</center></th>
   <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
       <th scope="col" style="color:#fff;"><center>Email</center></th>
       <th scope="col" style="color:#fff;"><center>Address</center></th>
-      {{-- <th scope="col" style="color:#fff;"><center>Action</center></th> --}}
+       <th scope="col" style="color:#fff;"><center>Action</center></th>
     </tr>
   </thead>
   <tbody>
@@ -259,13 +591,167 @@ hr {
     <tr>
       <th scope="row" style="text-align: center;">{{$k2}}.</th>
       <td>{{$client->first_name}} {{$client->last_name}}</td>
+      <td>{{$client->tin}}</td>
       <td>{{$client->phone_number}}</td>
       <td>{{$client->email}}</td>
       <td>{{$client->address}}</td>
-      {{-- <td><center>
-         
-      </center>
-    </td> --}}
+        <td><center>
+                <a title="View More Details" role="button" href="{{ route('ResearchClientsViewMore',[$client->first_name,$client->last_name,$client->email,$client->phone_number]) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
+                {{-- @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
+                @if($privileges=='Read only')
+                @else
+                    <a title="Edit Client Details" data-toggle="modal" data-target="#edit_research_inactive{{$client->id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                    <div class="modal fade" id="edit_research_inactive{{$client->id}}" role="dialog">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
+
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form method="post" action="{{ route('editResearchclients',$client->id) }}">
+                                        {{csrf_field()}}
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="client_name{{$client->id}}">Client Name</label>
+                                                <input type="text" id="client_name{{$client->id}}" name="client_name" class="form-control" value="{{$client->first_name.' '.$client->last_name}}" readonly="">
+                                            </div>
+                                        </div>
+                                        <br>
+
+
+
+                                        <div  class="form-group ">
+                                            <div class="form-wrapper">
+                                                <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                <span id="tin_msg"></span>
+                                                <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersResearchInActive(this.value,{{$client->id}});"  maxlength = "9">
+                                                <p id="error_tin_research_inactive{{$client->id}}"></p>
+                                            </div>
+                                        </div>
+
+                                        <br>
+
+
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="phone_number{{$client->id}}">Phone Number<span style="color: red;">*</span></label>
+
+                                                <input type="text" id="phone_number{{$client->id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                       maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="email{{$client->id}}">Email<span style="color: red;">*</span></label>
+                                                <input type="text" id="email{{$client->id}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="address{{$client->id}}">Address<span style="color: red;">*</span></label>
+                                                <input type="text" id="address{{$client->id}}" name="address" class="form-control" value="{{$client->address}}" required="">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <input type="text" name="id" value="{{$client->id}}" hidden="">
+
+                                        <div align="right">
+                                            <button class="btn btn-primary" id="research_inactive{{$client->id}}" type="submit">Save</button>
+                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if($client->email!='')
+                        <a title="Send Email to this Client" data-toggle="modal" data-target="#mail_inactive{{$client->id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+                        <div class="modal fade" id="mail_inactive{{$client->id}}" role="dialog">
+                            <div class="modal-dialog  modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">New Message</h5></b>
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
+                                            {{csrf_field()}}
+                                            <div class="form-group row">
+                                                <label for="client_names{{$client->id}}" class="col-sm-2">To</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="client_names{{$client->id}}" name="client_name" class="form-control" value="{{$client->first_name.' '.$client->last_name}}" readonly="">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="form-group row">
+                                                <label for="subject{{$client->id}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="subject{{$client->id}}" name="subject" class="form-control" value="" required="" >
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="form-group row">
+                                                <label for="greetings{{$client->id}}" class="col-sm-2">Salutation</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="greetings{{$client->id}}" name="greetings" class="form-control" value="Dear {{$client->first_name.' '.$client->last_name}}," readonly="">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group row">
+                                                <label for="message{{$client->id}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
+                                                <div class="col-sm-9">
+                                                    <textarea type="text" id="message{{$client->id}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div class="form-group row">
+                                                <label for="attachment{{$client->id}}" class="col-sm-2">Attachments</label>
+                                                <div class="col-sm-9">
+                                                    <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
+                                                    <span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <input type="text" name="type" value="flats" hidden="">
+                                            <input type="text" name="contract_id" value="{{$client->id}}" hidden="">
+
+                                            <div class="form-group row">
+                                                <label for="closing{{$client->id}}" class="col-sm-2">Closing</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="closing{{$client->id}}" name="closing" class="form-control" value="Regards, Research Flats UDSM." readonly="">
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <div align="right">
+                                                <button class="btn btn-primary" type="submit">Send</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+                    @endif
+                @endif
+            </center>
+        </td>
   </tr>
   <?php $k2 = $k2 +1; ?>
   @endforeach
@@ -328,7 +814,7 @@ hr {
         </div>
 
         <div class="form-group row">
-            <label for="asp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label></label>
+            <label for="asp_subject" class="col-sm-2">Subject<span style="color: red;">*</span></label>
             <div class="col-sm-9">
             <input type="text" id="asp_subject" name="subject" class="form-control" value="" required="">
           </div>
@@ -390,6 +876,7 @@ hr {
     <tr>
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+  <th scope="col" style="color:#fff;"><center>TIN</center></th>
   <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
       <th scope="col" style="color:#fff;"><center>Email</center></th>
       <th scope="col" style="color:#fff;"><center>Address</center></th>
@@ -401,6 +888,12 @@ hr {
     <tr>
       <th scope="row" style="text-align: center;">{{$a1}}.</th>
       <td>{{$client->full_name}}</td>
+        <td>@if($client->tin=='')
+                N/A
+            @else
+                {{$client->tin}}
+            @endif
+        </td>
       <td>{{$client->phone_number}}</td>
       <td>{{$client->email}}</td>
       <td>{{$client->address}}</td>
@@ -439,6 +932,18 @@ hr {
         </div>
 <br>
 
+                      <div  class="form-group ">
+                          <div class="form-wrapper">
+                              <label for="tin">TIN <span style="color: red;"> *</span></label>
+                              <span id="tin_msg"></span>
+                              <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersSpaceActive(this.value,{{$client->client_id}});"  maxlength = "9">
+                              <p id="error_tin_space_active{{$client->client_id}}"></p>
+                          </div>
+                      </div>
+
+                      <br>
+
+
 <div class="form-group">
           <div class="form-wrapper">
             <label for="phone_number{{$client->client_id}}">Phone Number<span style="color: red;">*</span></label>
@@ -468,7 +973,7 @@ hr {
         <input type="text" name="id" value="{{$client->client_id}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Save</button>
+  <button class="btn btn-primary" id="space_active{{$client->client_id}}" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -670,6 +1175,7 @@ hr {
     <tr>
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+  <th scope="col" style="color:#fff;"><center>TIN</center></th>
   <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
       <th scope="col" style="color:#fff;"><center>Email</center></th>
       <th scope="col" style="color:#fff;"><center>Address</center></th>
@@ -682,6 +1188,12 @@ hr {
     <tr>
      <th scope="row" style="text-align: center;">{{$a2}}.</th>
       <td>{{$client->full_name}}</td>
+      <td>@if($client->tin=='')
+              N/A
+          @else
+              {{$client->tin}}
+          @endif
+      </td>
       <td>{{$client->phone_number}}</td>
       <td>{{$client->email}}</td>
       <td>{{$client->address}}</td>
@@ -695,8 +1207,8 @@ hr {
          {{--  @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
          @if($privileges=='Read only')
           @else
-           <a title="Edit Client Details" data-toggle="modal" data-target="#edit{{$client->client_id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-         <div class="modal fade" id="edit{{$client->client_id}}" role="dialog">
+           <a title="Edit Client Details" data-toggle="modal" data-target="#edit_space_inactive{{$client->client_id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+         <div class="modal fade" id="edit_space_inactive{{$client->client_id}}" role="dialog">
 
               <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -724,6 +1236,18 @@ hr {
           </div>
         </div>
 <br>
+
+
+                      <div  class="form-group ">
+                          <div class="form-wrapper">
+                              <label for="tin">TIN <span style="color: red;"> *</span></label>
+                              <span id="tin_msg"></span>
+                              <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersSpaceInactive(this.value,{{$client->client_id}});" maxlength = "9">
+                              <p id="error_tin_space_inactive{{$client->client_id}}"></p>
+                          </div>
+                      </div>
+                      <br>
+
 
 <div class="form-group">
           <div class="form-wrapper">
@@ -754,7 +1278,7 @@ hr {
         <input type="text" name="id" value="{{$client->client_id}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Save</button>
+  <button class="btn btn-primary" id="space_inactive{{$client->client_id}}" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -960,6 +1484,7 @@ hr {
     <tr>
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+  <th scope="col" style="color:#fff;"><center>TIN</center></th>
   <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
   <th scope="col" style="color:#fff;"><center>Department</center></th>
   <th scope="col" style="color:#fff;"><center>Email</center></th>
@@ -972,6 +1497,14 @@ hr {
     <tr>
       <th scope="row" style="text-align: center;">{{$a3}}.</th>
       <td>{{$client->fullName}}</td>
+        <td>
+            @if($client->tin=='')
+                N/A
+            @else
+                {{$client->tin}}
+            @endif
+
+        </td>
       <td><center>{{$client->cost_centre}}</center></td>
       <td>{{$client->faculty}}</td>
       <td>{{$client->email}}</td>
@@ -1002,6 +1535,18 @@ hr {
           </div>
         </div>
         <br>
+
+
+                      <div  class="form-group ">
+                          <div class="form-wrapper">
+                              <label for="tin">TIN <span style="color: red;"> *</span></label>
+                              <span id="tin_msg"></span>
+                              <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersCarActive(this.value,{{$client->id}});"  maxlength = "9">
+                              <p id="error_tin_car_active{{$client->id}}"></p>
+                          </div>
+                      </div>
+
+                      <br>
 
 <div class="form-group">
           <div class="form-wrapper">
@@ -1045,7 +1590,7 @@ hr {
 <input type="text" name="Carfullname" value="{{$client->fullName}}" hidden="">
 
      <div align="right">
-  <button class="btn btn-primary" type="submit">Save</button>
+  <button class="btn btn-primary" id="car_active{{$client->id}}" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -1239,6 +1784,7 @@ hr {
     <tr>
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+  <th scope="col" style="color:#fff;"><center>TIN</center></th>
   <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
   <th scope="col" style="color:#fff;"><center>Department</center></th>
   <th scope="col" style="color:#fff;"><center>Email</center></th>
@@ -1251,6 +1797,14 @@ hr {
     <tr>
       <th scope="row" style="text-align: center;">{{$a4}}.</th>
       <td>{{$client->fullName}}</td>
+      <td>
+          @if($client->tin=='')
+          N/A
+          @else
+          {{$client->tin}}
+        @endif
+
+      </td>
       <td><center>{{$client->cost_centre}}</center></td>
       <td>{{$client->faculty}}</td>
       <td>{{$client->email}}</td>
@@ -1260,8 +1814,8 @@ hr {
         {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
         @if($privileges=='Read only')
         @else
-        <a title="Edit Client Details" data-toggle="modal" data-target="#Caredit{{$i}}" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-         <div class="modal fade" id="Caredit{{$i}}" role="dialog">
+        <a title="Edit Client Details" data-toggle="modal" data-target="#Caredit_inactive{{$i}}" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+         <div class="modal fade" id="Caredit_inactive{{$i}}" role="dialog">
 
               <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
@@ -1281,6 +1835,21 @@ hr {
           </div>
         </div>
         <br>
+
+
+
+                      <div  class="form-group ">
+                          <div class="form-wrapper">
+                              <label for="tin">TIN <span style="color: red;"> *</span></label>
+                              <span id="tin_msg"></span>
+                              <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersCarInactive(this.value,{{$client->id}});"  maxlength = "9">
+                              <p id="error_tin_car_inactive{{$client->id}}"></p>
+                          </div>
+                      </div>
+
+                      <br>
+
+
 
 <div class="form-group">
           <div class="form-wrapper">
@@ -1323,7 +1892,7 @@ hr {
 <input type="text" name="Carfullname" value="{{$client->fullName}}" hidden="">
 
      <div align="right">
-  <button class="btn btn-primary" type="submit">Save</button>
+  <button class="btn btn-primary" id="car_inactive{{$client->id}}" type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -1523,6 +2092,7 @@ hr {
     <tr>
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+  <th scope="col" style="color:#fff;"><center>TIN</center></th>
    <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
   <th scope="col" style="color:#fff;"><center>Email</center></th>
   <th scope="col" style="color:#fff;"><center>Class</center></th>
@@ -1534,6 +2104,15 @@ hr {
     <tr>
       <th scope="row" style="text-align: center;">{{$a5}}.</th>
       <td>{{$client->full_name}}</td>
+      <td>
+          @if($client->tin=='')
+          N/A
+          @else
+          {{$client->tin}}
+          @endif
+
+
+      </td>
       <td>{{$client->phone_number}}</td>
       {{-- <td>{{ucfirst(strtolower($client->principal))}}</td>
       <td>{{ucfirst(strtolower($client->insurance_type))}}</td>
@@ -1598,12 +2177,23 @@ hr {
         </div>
 <br>
 
+                      <div  class="form-group ">
+                          <div class="form-wrapper">
+                              <label for="tin">TIN <span style="color: red;"> *</span></label>
+                              <span id="tin_msg"></span>
+                              <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersInsuranceActive(this.value,{{$client->id}});"  maxlength = "9">
+                              <p id="error_tin_insurance_active{{$client->id}}"></p>
+                          </div>
+                      </div>
+
+                      <br>
+
 
 <br>
         <input type="text" name="id" value="{{$j}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Save</button>
+  <button class="btn btn-primary" id="insurance_active{{$client->id}}"  type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -1795,6 +2385,7 @@ hr {
     <tr>
   <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
   <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+  <th scope="col" style="color:#fff;"><center>TIN</center></th>
    <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
   <th scope="col" style="color:#fff;"><center>Email</center></th>
   <th scope="col" style="color:#fff;"><center>Class</center></th>
@@ -1806,18 +2397,27 @@ hr {
     <tr>
       <th scope="row" style="text-align: center;">{{$a6}}.</th>
       <td>{{$client->full_name}}</td>
+        <td>
+            @if($client->tin=='')
+                N/A
+            @else
+                {{$client->tin}}
+            @endif
+
+
+        </td>
       <td>{{$client->phone_number}}</td>
       {{-- <td>{{ucfirst(strtolower($client->principal))}}</td> --}}
       <td>{{$client->email}}</td>
       <td>{{$client->insurance_class}}</td>
       <td>
         <center>
-         <a title="View More Details" role="button" href="#"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
+            <a title="View More Details" role="button" href="{{ route('InsuranceClientsViewMore',[$client->full_name,$client->email,$client->phone_number])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
         {{-- @if(Auth::user()->role=='Insurance Officer' OR Auth::user()->role=='System Administrator') --}}
         @if($privileges=='Read only')
         @else
-        <a title="Edit Client Details" data-toggle="modal" data-target="#in_editIns{{$k}}" role="button" aria-pressed="true" id="{{$k}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-         <div class="modal fade" id="in_editIns{{$k}}" role="dialog">
+        <a title="Edit Client Details" data-toggle="modal" data-target="#in_editIns_inactive{{$k}}" role="button" aria-pressed="true" id="{{$k}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+         <div class="modal fade" id="in_editIns_inactive{{$k}}" role="dialog">
 
               <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -1865,6 +2465,19 @@ hr {
         </div>
 <br>
 
+
+
+                      <div  class="form-group ">
+                          <div class="form-wrapper">
+                              <label for="tin">TIN <span style="color: red;"> *</span></label>
+                              <span id="tin_msg"></span>
+                              <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersInsuranceInactive(this.value,{{$client->id}});"  maxlength = "9">
+                              <p id="error_tin_insurance_inactive{{$client->id}}"></p>
+                          </div>
+                      </div>
+
+                      <br>
+
 {{-- <div class="form-group">
           <div class="form-wrapper">
             <label for="address{{$k}}">Address</label>
@@ -1875,7 +2488,7 @@ hr {
         <input type="text" name="id" value="{{$k}}" hidden="">
 
         <div align="right">
-  <button class="btn btn-primary" type="submit">Save</button>
+  <button class="btn btn-primary" id="insurance_inactive{{$client->id}}"  type="submit">Save</button>
   <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
   </form>
@@ -3199,8 +3812,330 @@ $('#myTable5').on('click', '[name="cost_centre"]', function(e){
 
 
 
+
+
+      //flats active starts
+
+      var table26 = $('#myTable_flatsc').DataTable();
+
+      $('#myTable_flatsc tbody').on( 'click', 'tr', function () {
+          document.getElementById("aflats_par_names").innerHTML="";
+          document.getElementById("aflats_greetings").value="Dear ";
+          var emailz = $(this).find('td:eq(2)').text();
+          if(emailz==""){
+
+          }
+          else{
+
+              $(this).toggleClass('selected');
+              var count6=table26.rows('.selected').data().length +' row(s) selected';
+              if(count6>'2'){
+                  $('#asp_btn_mail_flats_current').show();
+              }
+              else{
+                  $('#asp_btn_mail_flats_current').hide();
+              }
+          }
+      });
+
+
+
+      $('#asp_btn_mail_flats_current').click( function () {
+          document.getElementById("aflats_par_names").innerHTML="";
+          document.getElementById("aflats_greetings").value="Dear ";
+          var datas6 = table26.rows('.selected').data();
+          var result6 = [];
+          for (var i = 0; i < datas6.length; i++)
+          {
+              result6.push(datas6[i][1]);
+          }
+
+          $('#aflats_client_names').val(result6).toString();
+
+          var content6 = document.getElementById("aflats_par_names");
+          for(var i=0; i< result6.length;i++){
+              if(i==(result6.length-1)){
+                  content6.innerHTML += result6[i]+ '.';
+              }
+              else{
+                  content6.innerHTML += result6[i] + ', ';
+              }
+
+          }
+
+          var salutation6 = document.getElementById("aflats_greetings");
+          for(var i=0; i< result6.length;i++){
+              if(i==(result6.length-1)){
+                  salutation6.value += result6[i]+ '.';
+              }
+              else{
+                  salutation6.value += result6[i] + ', ';
+              }
+
+          }
+          //console.log(result);
+      });
+
+      //flats active ends
+
+
+//flats inactive starts
+
+      var table27 = $('#myTable_flatsp').DataTable();
+
+      $('#myTable_flatsp tbody').on( 'click', 'tr', function () {
+          document.getElementById("inaflats_par_names").innerHTML="";
+          document.getElementById("inaflats_greetings").value="Dear ";
+          var emailz = $(this).find('td:eq(2)').text();
+          if(emailz==""){
+
+          }
+          else{
+
+              $(this).toggleClass('selected');
+              var count6=table27.rows('.selected').data().length +' row(s) selected';
+              if(count6>'2'){
+                  $('#inasp_btn_mail_flats_current').show();
+              }
+              else{
+                  $('#inasp_btn_mail_flats_current').hide();
+              }
+          }
+      });
+
+
+
+      $('#inasp_btn_mail_flats_current').click( function () {
+          document.getElementById("inaflats_par_names").innerHTML="";
+          document.getElementById("inaflats_greetings").value="Dear ";
+          var datas6 = table27.rows('.selected').data();
+          var result6 = [];
+          for (var i = 0; i < datas6.length; i++)
+          {
+              result6.push(datas6[i][1]);
+          }
+
+          $('#inaflats_client_names').val(result6).toString();
+
+          var content6 = document.getElementById("inaflats_par_names");
+          for(var i=0; i< result6.length;i++){
+              if(i==(result6.length-1)){
+                  content6.innerHTML += result6[i]+ '.';
+              }
+              else{
+                  content6.innerHTML += result6[i] + ', ';
+              }
+
+          }
+
+          var salutation6 = document.getElementById("inaflats_greetings");
+          for(var i=0; i< result6.length;i++){
+              if(i==(result6.length-1)){
+                  salutation6.value += result6[i]+ '.';
+              }
+              else{
+                  salutation6.value += result6[i] + ', ';
+              }
+
+          }
+          //console.log(result);
+      });
+
+
+
+      //flats inactive ends
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
 
 
 </script>
+
+
+<script>
+
+    function minCharactersSpaceActive(value,client_id){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("space_active"+client_id).disabled = true;
+            document.getElementById("error_tin_space_active"+client_id).style.color = 'red';
+            document.getElementById("error_tin_space_active"+client_id).style.float = 'left';
+            document.getElementById("error_tin_space_active"+client_id).style.paddingTop = '1%';
+            document.getElementById("error_tin_space_active"+client_id).innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin_space_active"+client_id).innerHTML ='';
+            document.getElementById("space_active"+client_id).disabled = false;
+        }
+
+    }
+
+
+    function minCharactersSpaceInactive(value,client_id){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("space_inactive"+client_id).disabled = true;
+            document.getElementById("error_tin_space_inactive"+client_id).style.color = 'red';
+            document.getElementById("error_tin_space_inactive"+client_id).style.float = 'left';
+            document.getElementById("error_tin_space_inactive"+client_id).style.paddingTop = '1%';
+            document.getElementById("error_tin_space_inactive"+client_id).innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin_space_inactive"+client_id).innerHTML ='';
+            document.getElementById("space_inactive"+client_id).disabled = false;
+        }
+
+    }
+
+
+
+
+    function minCharactersCarActive(value,client_id){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("car_active"+client_id).disabled = true;
+            document.getElementById("error_tin_car_active"+client_id).style.color = 'red';
+            document.getElementById("error_tin_car_active"+client_id).style.float = 'left';
+            document.getElementById("error_tin_car_active"+client_id).style.paddingTop = '1%';
+            document.getElementById("error_tin_car_active"+client_id).innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin_car_active"+client_id).innerHTML ='';
+            document.getElementById("car_active"+client_id).disabled = false;
+        }
+
+    }
+
+
+    function minCharactersCarInactive(value,client_id){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("car_inactive"+client_id).disabled = true;
+            document.getElementById("error_tin_car_inactive"+client_id).style.color = 'red';
+            document.getElementById("error_tin_car_inactive"+client_id).style.float = 'left';
+            document.getElementById("error_tin_car_inactive"+client_id).style.paddingTop = '1%';
+            document.getElementById("error_tin_car_inactive"+client_id).innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin_car_inactive"+client_id).innerHTML ='';
+            document.getElementById("car_inactive"+client_id).disabled = false;
+        }
+
+    }
+
+
+
+
+
+    function minCharactersInsuranceActive(value,client_id){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("insurance_active"+client_id).disabled = true;
+            document.getElementById("error_tin_insurance_active"+client_id).style.color = 'red';
+            document.getElementById("error_tin_insurance_active"+client_id).style.float = 'left';
+            document.getElementById("error_tin_insurance_active"+client_id).style.paddingTop = '1%';
+            document.getElementById("error_tin_insurance_active"+client_id).innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin_insurance_active"+client_id).innerHTML ='';
+            document.getElementById("insurance_active"+client_id).disabled = false;
+        }
+
+    }
+
+
+    function minCharactersInsuranceInactive(value,client_id){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("insurance_inactive"+client_id).disabled = true;
+            document.getElementById("error_tin_insurance_inactive"+client_id).style.color = 'red';
+            document.getElementById("error_tin_insurance_inactive"+client_id).style.float = 'left';
+            document.getElementById("error_tin_insurance_inactive"+client_id).style.paddingTop = '1%';
+            document.getElementById("error_tin_insurance_inactive"+client_id).innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin_insurance_inactive"+client_id).innerHTML ='';
+            document.getElementById("insurance_inactive"+client_id).disabled = false;
+        }
+
+    }
+
+
+
+
+    function minCharactersResearchActive(value,client_id){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("research_active"+client_id).disabled = true;
+            document.getElementById("error_tin_research_active"+client_id).style.color = 'red';
+            document.getElementById("error_tin_research_active"+client_id).style.float = 'left';
+            document.getElementById("error_tin_research_active"+client_id).style.paddingTop = '1%';
+            document.getElementById("error_tin_research_active"+client_id).innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin_research_active"+client_id).innerHTML ='';
+            document.getElementById("research_active"+client_id).disabled = false;
+        }
+
+    }
+
+
+    function minCharactersResearchInActive(value,client_id){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("research_inactive"+client_id).disabled = true;
+            document.getElementById("error_tin_research_inactive"+client_id).style.color = 'red';
+            document.getElementById("error_tin_research_inactive"+client_id).style.float = 'left';
+            document.getElementById("error_tin_research_inactive"+client_id).style.paddingTop = '1%';
+            document.getElementById("error_tin_research_inactive"+client_id).innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin_research_inactive"+client_id).innerHTML ='';
+            document.getElementById("research_inactive"+client_id).disabled = false;
+        }
+
+    }
+
+
+
+
+</script>
+
+
 @endsection

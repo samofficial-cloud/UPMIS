@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>SPACE CONTRACT</title>
+    <title>REAL ESTATE CONTRACT</title>
 </head>
 <style>
     table {
@@ -53,7 +53,7 @@
             <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT
         </b>
 
-        <h2>Space contract</h2>
+        <h2>Real Estate Contract</h2>
     </center>
 
 
@@ -64,24 +64,24 @@
 
 
 
-    @if($client_type=='1')
-    <div style="width: 100%; clear: both;">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First name:</div>
-        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$first_name}}</b></div>
+    @if($client_type=='Individual')
+        <div style="width: 100%; clear: both;">
+            <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First name:</div>
+            <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$first_name}}</b></div>
 
-    </div>
+        </div>
 
-    <div style="width: 100%; clear: both;">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Last name:</div>
-        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$last_name}}</b></div>
+        <div style="width: 100%; clear: both;">
+            <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Last name:</div>
+            <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$last_name}}</b></div>
 
-    </div>
-    @elseif($client_type=='2')
-    <div style="width: 100%; clear: both;">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Company name:</div>
-        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$company_name}}</b></div>
+        </div>
+    @elseif($client_type=='Company/Organization')
+        <div style="width: 100%; clear: both;">
+            <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Company name:</div>
+            <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$company_name}}</b></div>
 
-    </div>
+        </div>
     @else
     @endif
 
@@ -112,7 +112,7 @@
 
 
 
-        <h2 style="clear: both; padding-top: 2%">B. Renting space information</h2>
+        <h2 style="clear: both; padding-top: 2%">B. Real Estate information</h2>
 
 
 
@@ -150,14 +150,14 @@
 
 
     <div style="width: 100%; clear: both; ">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Space number:</div>
+        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Real Estate number:</div>
         <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$space_number}}</b></div>
 
     </div>
 
 
     <div style="width: 100%; clear: both; ">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Space size (SQM):</div>
+        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Real Estate size (SQM):</div>
         <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$space_size}}</b></div>
 
     </div>
@@ -237,7 +237,7 @@
 
     <div style="width: 100%; clear: both; ">
         <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Payment cycle:</div>
-        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$payment_cycle}} </b></div>
+        <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$payment_cycle}} Months</b></div>
 
     </div>
 

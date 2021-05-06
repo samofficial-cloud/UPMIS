@@ -326,22 +326,104 @@ $today=date('Y-m-d');
                                 <div class="form-card">
                                     <h2 class="fs-title">Client Information</h2>
                                 <div class="form-group row" id="namediv">
-                                    <div class="form-wrapper col-4">
-                                        <label for="first_name">First Name<span style="color: red;">*</span></label>
-                                            <span id="firstnamemsg"></span>
-                                        <input type="text" id="first_name" name="first_name" class="form-control" autocomplete="off" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
-                                        <span id="nameList"></span>
-                                    </div>
-                                    <div class="form-wrapper col-5">
-                                        <label for="last_name">Last Name<span style="color: red;">*</span></label>
-                                        <span id="lastnamemsg"></span>
-                                        <input type="text" id="last_name" name="last_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+
+
+
+
+                                    <div class="form-wrapper col-12" id="client_categoryDiv">
+                                        <label for="client_category">Client Category<span style="color: red;">*</span></label>
+                                        <span id="client_category_msg"></span>
+                                        <select class="form-control"  id="client_category" name="client_category">
+                                            <option value=""></option>
+                                            <option value="Domestic">Domestic</option>
+                                            <option value="Foreigner">Foreigner</option>
+                                        </select>
                                     </div>
 
-                                    <div class="form-wrapper col-3">
+
+                                    <div class="form-wrapper col-12 pt-4" id="client_typeDiv" style="display: none;">
+                                        <label for="client_type">Client Type<span style="color: red;">*</span></label>
+                                        <span id="client_type_msg"></span>
+                                        <select class="form-control"  id="client_type" name="client_type">
+                                            <option value=""></option>
+                                            <option value="Internal">Internal</option>
+                                            <option value="External">External</option>
+                                        </select>
+                                    </div>
+
+                                    <?php $campuses=DB::table('campuses')->get();   ?>
+
+                                    <div class="form-wrapper col-6 pt-4" id="campus_individualDiv" style="display: none;">
+                                        <label for="campus_individual">Campus<span style="color: red;">*</span></label>
+                                        <span id="campus_individual_msg"></span>
+                                        <select class="form-control campus"  id="campus_individual" name="campus_individual">
+                                            <option value=""></option>
+
+                                            <?php
+
+                                            $tempOut = array();
+                                            foreach($campuses as $values){
+                                                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                $val = (iterator_to_array($iterator,true));
+                                                $tempoIn=$val['campus_name'];
+
+                                                if(!in_array($tempoIn, $tempOut))
+                                                {
+                                                    print('<option value="'.$val['id'].'">'.$val['campus_name'].' - '.$val['campus_description'].'</option>');
+                                                    array_push($tempOut,$tempoIn);
+                                                }
+
+                                            }
+                                            ?>
+
+
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-wrapper col-6 pt-4" id="college_individualDiv" style="display: none;">
+                                        <label for="college_individual">College<span style="color: red;">*</span></label>
+                                        <span id="college_individual_msg"></span>
+                                        <select class="form-control college"  id="college_individual" name="college_individual">
+
+
+                                        </select>
+                                    </div>
+
+
+
+                                    <div class="form-wrapper col-12 pt-4" id="department_individualDiv" style="display: none;">
+                                        <label for="department_individual">Department<span style="color: red;">*</span></label>
+                                        <span id="department_individual_msg"></span>
+                                        <select class="form-control department"  id="department_individual" name="department_individual">
+
+
+                                        </select>
+                                    </div>
+
+
+
+
+
+
+
+
+                                    <div class="form-wrapper col-4 pt-4">
+                                        <label for="first_name">First Name<span style="color: red;">*</span></label>
+                                            <span id="firstnamemsg"></span>
+                                        <input type="text" id="first_name" name="first_name" class="form-control" autocomplete="off"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
+                                        <span id="nameList"></span>
+                                    </div>
+                                    <div class="form-wrapper col-5 pt-4">
+                                        <label for="last_name">Last Name<span style="color: red;">*</span></label>
+                                        <span id="lastnamemsg"></span>
+                                        <input type="text" id="last_name" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                    </div>
+
+                                    <div class="form-wrapper col-3 pt-4">
                                         <label for="gender">Gender<span style="color: red;">*</span></label>
                                             <span id="gendermsg"></span>
-                                        <select class="form-control" required="" id="gender" name="gender">
+                                        <select class="form-control"  id="gender" name="gender">
                                           <option value="" disabled selected hidden>Select Gender</option>
                                           <option value="Female">Female</option>
                                           <option value="Male">Male</option>
@@ -352,7 +434,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="professional">Professional<span style="color: red;">*</span></label>
                                             <span id="profmsg"></span>
-                                            <input type="text" id="professional" name="professional" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="professional" name="professional" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
@@ -360,29 +442,41 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-4">
                                             <label for="address">Address<span style="color: red;">*</span></label>
                                             <span id="addressmsg"></span>
-                                            <input type="text" id="address" name="address" class="form-control"  required="">
+                                            <input type="text" id="address" name="address" class="form-control"  >
                                         </div>
 
                                         <div class="form-wrapper col-5">
                                             <label for="email">Email<span style="color: red;">*</span></label>
                                             <span id="emailmsg"></span>
-                                            <input type="text" name="email" id="email" class="form-control" required placeholder="someone@example.com" >
+                                            <input type="text" name="email" id="email" class="form-control"  placeholder="someone@example.com" >
                                         </div>
 
                                         <div class="form-wrapper col-3">
                                             <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
                                             <span id="phonemsg"></span>
-                                            <input type="text" id="phone_number" required name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                            <input type="text" id="phone_number"  name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                         </div>
+
+
+                                       <div id="tinDiv" class="form-group col-12" style="display: none;">
+                                           <div class="form-wrapper">
+                                               <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                               <span id="tin_msg"></span>
+                                               <input type="number" id="tin" name="tin" class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                               <p id="error_tin"></p>
+                                           </div>
+                                       </div>
+
+
 
                                     </div>
 
 
                                     <div class="form-group">
                                         <div class="form-wrapper">
-                                            <label for="nationality">Nationality<span style="color: red;">*</span></label>
+                                            <label for="nationality">Nationality</label>
                                             <span id="nationality_msg"></span>
-                                            <input type="text" id="nationality" name="nationality" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="nationality" name="nationality" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
@@ -390,28 +484,63 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="purpose">Purpose of Visit<span style="color: red;">*</span></label>
                                             <span id="purposemsg"></span>
-                                            <input type="text" id="purpose" name="purpose" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="purpose" name="purpose" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
                                      <div class="form-group row">
                                         <div class="form-wrapper col-4">
-                                            <label for="passport_no">Passport No<span style="color: red;">*</span></label>
+                                            <label for="passport_no">Passport No</label>
                                             <span id="pass_nomsg"></span>
-                                            <input type="text" id="passport_no" name="passport_no" class="form-control" required="">
+                                            <input type="text" id="passport_no" name="passport_no" class="form-control" >
                                         </div>
 
                                         <div class="form-wrapper col-4">
                                             <label for="issue_date">Date of Issue<span style="color: red;">*</span></label>
                                             <span id="issue_datemsg"></span>
-                                            <input type="date" id="issue_date" name="issue_date" class="form-control" required="" max="{{date('Y-m-d')}}">
+                                            <input type="date" id="issue_date" name="issue_date" class="form-control"  max="{{date('Y-m-d')}}">
                                         </div>
 
                                          <div class="form-wrapper col-4">
                                             <label for="issue_place">Place of Issue<span style="color: red;">*</span></label>
                                             <span id="issue_placemsg"></span>
-                                            <input type="text" id="issue_place" name="issue_place" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="issue_place" name="issue_place" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
+
+
+                                         <div class="form-wrapper col-12" id="id_typeDiv" style="display: none;">
+                                             <label for="id_type">Type of Identification Card<span style="color: red;">*</span></label>
+                                             <span id="id_type_msg"></span>
+                                             <select class="form-control id_type"  id="id_type" name="id_type">
+                                                 <option value=""></option>
+                                                 <option value="National Identity Card">National Identity Card</option>
+                                                 <option value="Driving License">Driving Licence</option>
+
+                                                 <option value="Voters Card">Voters Card</option>
+                                                 <option value="Workers Identity Card">Workers Identity Card</option>
+                                             </select>
+                                         </div>
+
+
+                                         <div class="form-wrapper col-12 pt-4" id="id_numberDiv" style="display: none;">
+                                             <label for="id_number">ID Number<span style="color: red;">*</span></label>
+                                             <span id="id_number_msg"></span>
+                                             <input type="text" id="id_number" name="id_number" class="form-control">
+                                         </div>
+
+
+                                         <div class="form-wrapper col-12">
+                                             <label for="has_host">Has host/Contact person?<span style="color: red;">*</span></label>
+                                             <span id="has_host_msg"></span>
+                                             <select class="form-control"  id="has_host" name="has_host">
+                                                 <option value=""></option>
+                                                 <option value="No">No</option>
+                                                 <option value="Yes">Yes</option>
+                                             </select>
+                                         </div>
+
+
+
                                     </div>
                                 </div>
                                     <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
@@ -425,41 +554,77 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="host_name">Host Name<span style="color: red;">*</span></label>
                                             <span id="host_namemsg"></span>
-                                            <input type="text" id="host_name" name="host_name" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="host_name" name="host_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                 </div>
 
                                      <div class="form-group row">
-                                        <div class="form-wrapper col-6">
-                                            <label for="college">College/School<span style="color: red;">*</span></label>
-                                            <span id="collegemsg"></span>
-                                            <input type="text" id="college" name="college" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                        </div>
+                                         <div class="form-wrapper col-6 pt-4" id="campus_hostDiv" >
+                                             <label for="campus_host">Campus<span style="color: red;">*</span></label>
+                                             <span id="campus_host_msg"></span>
+                                             <select class="form-control campus"  id="campus_host" name="campus_host">
+                                                 <option value=""></option>
 
-                                        <div class="form-wrapper col-6">
-                                            <label for="department">Department<span style="color: red;">*</span></label>
-                                            <span id="departmentmsg"></span>
-                                            <input type="text" id="department" name="department" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                        </div>
+                                                 <?php
+
+                                                 $tempOut = array();
+                                                 foreach($campuses as $values){
+                                                     $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                     $val = (iterator_to_array($iterator,true));
+                                                     $tempoIn=$val['campus_name'];
+
+                                                     if(!in_array($tempoIn, $tempOut))
+                                                     {
+                                                         print('<option value="'.$val['id'].'">'.$val['campus_name'].' - '.$val['campus_description'].'</option>');
+                                                         array_push($tempOut,$tempoIn);
+                                                     }
+
+                                                 }
+                                                 ?>
+
+
+                                             </select>
+                                         </div>
+
+
+                                         <div class="form-wrapper col-6 pt-4" id="college_hostDiv" >
+                                             <label for="college_host">College<span style="color: red;">*</span></label>
+                                             <span id="college_host_msg"></span>
+                                             <select class="form-control college"  id="college_host" name="college_host">
+
+
+                                             </select>
+                                         </div>
+
+
+
+                                         <div class="form-wrapper col-12 pt-4" id="department_hostDiv" >
+                                             <label for="department_host">Department<span style="color: red;">*</span></label>
+                                             <span id="department_host_msg"></span>
+                                             <select class="form-control department"  id="department_host" name="department_host">
+
+
+                                             </select>
+                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <div class="form-wrapper col-4">
+                                        <div class="form-wrapper col-4 pt-4">
                                             <label for="host_address">Address<span style="color: red;">*</span></label>
                                             <span id="host_addressmsg"></span>
-                                            <input type="text" id="host_address" name="host_address" class="form-control" required="" >
+                                            <input type="text" id="host_address" name="host_address" class="form-control"  >
                                         </div>
 
-                                        <div class="form-wrapper col-5">
+                                        <div class="form-wrapper col-5 pt-4">
                                             <label for="host_email">Email<span style="color: red;">*</span></label>
                                             <span id="host_emailmsg"></span>
-                                            <input type="text" id="host_email" name="host_email" class="form-control" required="" >
+                                            <input type="text" id="host_email" name="host_email" class="form-control"  >
                                         </div>
 
-                                        <div class="form-wrapper col-3">
+                                        <div class="form-wrapper col-3 pt-4">
                                             <label for="host_phone">Phone Number <span style="color: red;"> *</span></label>
                                             <span id="host_phonemsg"></span>
-                                            <input type="text" id="host_phone" required name="host_phone" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                            <input type="text" id="host_phone"  name="host_phone" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                         </div>
                                     </div>
                               </div>
@@ -476,7 +641,7 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper">
                                         <label for="room_no">Room No.<span style="color: red;">*</span></label>
                                         <span id="roommsg"></span>
-                                        <select class="form-control" required="" id="room_no" name="room_no">
+                                        <select class="form-control"  id="room_no" name="room_no">
                                           <option value="" disabled selected hidden>Select Room No.</option>
                                           <?php $rooms = DB::table('research_flats_rooms')->select('room_no','category')->orderBy('room_no','asc')->get(); ?>
                                           @foreach($rooms as $room)
@@ -490,13 +655,13 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper col-6">
                                             <label for="arrival_date">Date of Arrival<span style="color: red;">*</span></label>
                                             <span id="arrival_datemsg"></span>
-                                            <input type="date" id="arrival_date" name="arrival_date" class="form-control" required="" max="{{date('Y-m-d')}}">
+                                            <input type="date" id="arrival_date" name="arrival_date" class="form-control"  max="{{date('Y-m-d')}}">
                                       </div>
 
                                       <div class="form-wrapper col-6">
                                             <label for="arrival_time">Time<span style="color: red;">*</span></label>
                                             <span id="arrival_timemsg"></span>
-                                            <input type="time" id="arrival_time" name="arrival_time" class="form-control" required="">
+                                            <input type="time" id="arrival_time" name="arrival_time" class="form-control" >
                                       </div>
                                     </div>
 
@@ -504,7 +669,7 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper">
                                             <label for="departure_date">Expected Date of Departure<span style="color: red;">*</span></label>
                                             <span id="departure_datemsg"></span>
-                                            <input type="date" id="departure_date" name="departure_date" class="form-control" required="" min="{{date('Y-m-d')}}">
+                                            <input type="date" id="departure_date" name="departure_date" class="form-control"  min="{{date('Y-m-d')}}">
                                       </div>
                                     </div>
                                 </div>
@@ -521,7 +686,7 @@ $today=date('Y-m-d');
                                     {{-- <div class="form-group">
                                       <div class="form-wrapper">
                                         <label for="payment_mode">Mode of Payment<span style="color: red;">*</span></label>
-                                        <select class="form-control" required="" id="payment_mode" name="payment_mode">
+                                        <select class="form-control"  id="payment_mode" name="payment_mode">
                                           <option value="" disabled selected hidden>Select Mode of Payment</option>
                                             <option value="Cash">Cash</option>
                                             <option value="Cheque">Cheque</option>
@@ -564,13 +729,13 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_no">Receipt No<span style="color: red;">*</span></label>
                                             <span id="receipt_no_msg"></span>
-                                            <input type="text" id="receipt_no" name="receipt_no" class="form-control" required="">
+                                            <input type="text" id="receipt_no" name="receipt_no" class="form-control" >
                                       </div>
 
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_date">Of Date<span style="color: red;">*</span></label>
                                             <span id="receipt_date_msg"></span>
-                                            <input type="date" id="receipt_date" name="receipt_date" class="form-control" required="">
+                                            <input type="date" id="receipt_date" name="receipt_date" class="form-control" >
                                       </div>
                                     </div>
 
@@ -578,7 +743,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="total_days">Total No. of days stayed at Research Flats <span style="color: red;">*</span></label>
                                             <span id="total_days_msg"></span>
-                                            <input type="text" id="total_days" name="total_days" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                            <input type="text" id="total_days" name="total_days" class="form-control"  onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                         </div>
                                     </div>
 
@@ -587,12 +752,12 @@ $today=date('Y-m-d');
                                    {{--  <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="final_payment">Final Payment(if applicable USD/TZS)<span style="color: red;">*</span></label>
-                                            <input type="text" id="final_payment" name="final_payment" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                            <input type="text" id="final_payment" name="final_payment" class="form-control"  onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                         </div>
                                     </div> --}}
                                 </div>
                                {{--  <button class="btn btn-primary" type="submit" id="forward">Save</button> --}}
-                               <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                               <input id="previous_button_custom" type="button" name="previous" class="previous action-button-previous" value="Previous" />
 
                                 <input type="button" id="next3" name="next" class="next action-button" value="Next Step" />
                                 <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
@@ -605,10 +770,10 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                       <div class="form-wrapper">
                                         <label for="debtor">Debtor<span style="color: red;">*</span></label>
-                                        <select class="form-control" required="" id="debtor" name="debtor" required="">
+                                        <select class="form-control" required="" id="debtor" name="debtor" >
                                           <option value="" disabled selected hidden>Select Debtor</option>
                                             <option value="individual">Individual</option>
-                                            <option value="host">Host</option>
+                                            <option id="host_option" value="host">Host</option>
                                         </select>
                                         </div>
                                     </div>
@@ -616,7 +781,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for="currency">Currency<span style="color: red;">*</span></label>
-                                            <select class="form-control" required="" id="currency" name="currency" required="">
+                                            <select class="form-control"  id="currency" name="currency" required="">
                                               <option value=""disabled selected hidden>Select Currency</option>
                                               <option value="TZS">TZS</option>
                                               <option value="USD">USD</option>
@@ -680,9 +845,25 @@ var p1, p2;
 
 
 $(".previous").click(function(){
-
     current_fs = $(this).parent();
     previous_fs = $(this).parent().prev();
+    var has_host=$('#has_host').val();
+
+    if(has_host=='Yes'){
+
+
+
+    }else{
+
+        previous_fs = $(this).parent().prev().prev();
+
+    }
+
+
+
+
+
+
 
     //Remove class active
     $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
@@ -707,9 +888,9 @@ $(".previous").click(function(){
 });
 
 $("#next1").click(function(){
-    var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,p11,p12;
+    var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,p11,p12,p13,ptin,p_all;
     current_fs = $(this).parent();
-    next_fs = $(this).parent().next();
+
     var first = $('#first_name').val(),
         last = $('#last_name').val(),
         gender =$('#gender').val(),
@@ -722,6 +903,18 @@ $("#next1").click(function(){
         issue_date = $('#issue_date').val(),
         issue_place = $('#issue_place').val();
         nationality = $('#nationality').val();
+        has_host = $('#has_host').val();
+        tin = $('#tin').val();
+        client_category = $('#client_category').val();
+        client_type = $('#client_type').val();
+        campus_individual = $('#campus_individual').val();
+        college_individual = $('#college_individual').val();
+        department_individual = $('#department_individual').val();
+        id_type= $('#id_type').val();
+        id_number= $('#id_number').val();
+
+
+
 
         if(first==''){
             p1=0;
@@ -842,19 +1035,7 @@ $("#next1").click(function(){
             $('#purpose').attr('style','border-bottom: 1px solid #ccc');
         }
 
-         if(passport_no==""){
-            p9=0;
-             $('#pass_nomsg').show();
-             var message=document.getElementById('pass_nomsg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#passport_no').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p9=1;
-            $('#pass_nomsg').hide();
-            $('#passport_no').attr('style','border-bottom: 1px solid #ccc');
-        }
+
 
         if(issue_date==""){
             p10=0;
@@ -884,33 +1065,301 @@ $("#next1").click(function(){
             $('#issue_place').attr('style','border-bottom: 1px solid #ccc');
         }
 
+            if(nationality==""){
+                p12=0;
+                $('#nationality_msg').show();
+                var message=document.getElementById('nationality_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#nationality').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p12=1;
+                $('#nationality_msg').hide();
+                $('#nationality').attr('style','border-bottom: 1px solid #ccc');
+            }
 
-        if(nationality==""){
-            p12=0;
-             $('#nationality_msg').show();
-             var message=document.getElementById('nationality_msg');
-             message.style.color='red';
-             message.innerHTML="Required";
-             $('#nationality').attr('style','border-bottom:1px solid #f00');
-        }
-        else{
-            p12=1;
-            $('#nationality_msg').hide();
-            $('#nationality').attr('style','border-bottom: 1px solid #ccc');
-        }
 
-        if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1 && p9==1 && p10==1 && p11==1 && p12==1){
-           gonext();
-        }
+
+
+            if(has_host==""){
+                p13=0;
+                $('#has_host_msg').show();
+                var message=document.getElementById('has_host_msg');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#has_host').attr('style','border-bottom:1px solid #f00');
+            }
+            else{
+                p13=1;
+                $('#has_host_msg').hide();
+                $('#has_host').attr('style','border-bottom: 1px solid #ccc');
+            }
+
+
+
+
+
+
+
+                if(client_category=='Foreigner'){
+
+
+                    if(passport_no==""){
+
+                        $('#pass_nomsg').show();
+                        var message=document.getElementById('pass_nomsg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#passport_no').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+
+                        $('#pass_nomsg').hide();
+                        $('#passport_no').attr('style','border-bottom: 1px solid #ccc');
+                    }
+
+
+                }else if(client_category=='Domestic'){
+
+                    if(tin==""){
+
+                        $('#tin_msg').show();
+                        var message=document.getElementById('tin_msg');
+                        message.style.color='red';
+                        message.innerHTML="Required";
+                        $('#tin').attr('style','border-bottom:1px solid #f00');
+                    }
+                    else{
+
+                        $('#tin_msg').hide();
+                        $('#tin').attr('style','border-bottom: 1px solid #ccc');
+                    }
+
+
+                }else{
+
+
+
+                }
+
+
+
+
+
+    if(client_category==""){
+
+        $('#client_category_msg').show();
+        var message=document.getElementById('client_category_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#client_category').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+
+        $('#client_category_msg').hide();
+        $('#client_category').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+
+    if(client_type==""){
+
+        $('#client_type_msg').show();
+        var message=document.getElementById('client_type_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#client_type').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+
+        $('#client_type_msg').hide();
+        $('#client_type').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+    if(campus_individual==""){
+
+        $('#campus_individual_msg').show();
+        var message=document.getElementById('campus_individual_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#campus_individual').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+
+        $('#campus_individual_msg').hide();
+        $('#campus_individual').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+
+    if(college_individual==""){
+
+        $('#college_individual_msg').show();
+        var message=document.getElementById('college_individual_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#college_individual').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+
+        $('#college_individual_msg').hide();
+        $('#college_individual').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+    if(department_individual==""){
+
+        $('#department_individual_msg').show();
+        var message=document.getElementById('department_individual_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#department_individual').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+
+        $('#department_individual_msg').hide();
+        $('#department_individual').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+
+
+    if(id_type==""){
+
+        $('#id_type_msg').show();
+        var message=document.getElementById('id_type_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#id_type').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+
+        $('#id_type_msg').hide();
+        $('#id_type').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+
+
+    if(id_number==""){
+
+        $('#id_number_msg').show();
+        var message=document.getElementById('id_number_msg');
+        message.style.color='red';
+        message.innerHTML="Required";
+        $('#id_number').attr('style','border-bottom:1px solid #f00');
+    }
+    else{
+
+        $('#id_number_msg').hide();
+        $('#id_number').attr('style','border-bottom: 1px solid #ccc');
+    }
+
+
+
+
+    if(client_category=='' && $('#client_categoryDiv:visible').length !=0) {
+
+        p_all=0;
+
+    }
+
+    else if(client_type=='' && $('#client_typeDiv:visible').length !=0) {
+
+        p_all=0;
+
+    }
+
+    else if(campus_individual=='' && $('#campus_individualDiv:visible').length !=0) {
+
+        p_all=0;
+
+    }
+
+    else if(college_individual=='' && $('#college_individualDiv:visible').length !=0) {
+
+        p_all=0;
+
+    }
+
+
+    else if(department_individual=='' && $('#department_individualDiv:visible').length !=0) {
+
+        p_all=0;
+
+    }
+
+
+    else if(id_type=='' && $('#id_typeDiv:visible').length !=0) {
+
+        p_all=0;
+
+    }
+
+    else if(id_number=='' && $('#id_numberDiv:visible').length !=0) {
+
+        p_all=0;
+
+    }
+
+
+    else if(tin=='' && $('#tinDiv:visible').length !=0) {
+
+        p_all=0;
+
+    }
+    else if(passport_no=='' && client_category=='Foreigner') {
+
+        p_all=0;
+
+    }
+
+
+    else{
+
+        p_all=1;
+    }
+
+
+
+            if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1 && p8==1  && p10==1 && p11==1 && p12==1 && p13==1  && p_all==1){
+
+
+                if(has_host=='Yes'){
+
+                    next_fs = $(this).parent().next();
+                }else{
+
+                    next_fs = $(this).parent().next().next();
+
+                }
+
+
+                gonext();
+
+            }else{
+
+
+
+
+            }
+
+
+
+
+
 });
 
     $("#next0").click(function(){
-        var p1, p2, p3, p4, p5, p6;
+        var p1, p2, p3, p4, p5, p6,p7;
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
         var host_name = $('#host_name').val(),
-            college = $('#college').val(),
-            department = $('#department').val(),
+            college = $('#college_host').val(),
+            campus = $('#campus_host').val(),
+            department = $('#department_host').val(),
             host_address = $('#host_address').val(),
             host_email= $('#host_email').val(),
             host_phone=$('#host_phone').val();
@@ -930,30 +1379,30 @@ $("#next1").click(function(){
 
             if(college==""){
                 p2=0;
-                 $('#collegemsg').show();
-                 var message=document.getElementById('collegemsg');
+                 $('#college_host_msg').show();
+                 var message=document.getElementById('college_host_msg');
                  message.style.color='red';
                  message.innerHTML="Required";
-                 $('#college').attr('style','border-bottom:1px solid #f00');
+                 $('#college_host').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p2=1;
-                $('#collegemsg').hide();
-                $('#college').attr('style','border-bottom: 1px solid #ccc');
+                $('#college_host_msg').hide();
+                $('#college_host').attr('style','border-bottom: 1px solid #ccc');
             }
 
             if(department==""){
                 p3=0;
-                 $('#departmentmsg').show();
-                 var message=document.getElementById('departmentmsg');
+                 $('#department_host_msg').show();
+                 var message=document.getElementById('department_host_msg');
                  message.style.color='red';
                  message.innerHTML="Required";
-                 $('#department').attr('style','border-bottom:1px solid #f00');
+                 $('#department_host').attr('style','border-bottom:1px solid #f00');
             }
             else{
                 p3=1;
-                $('#departmentmsg').hide();
-                $('#department').attr('style','border-bottom: 1px solid #ccc');
+                $('#department_host_msg').hide();
+                $('#department_host').attr('style','border-bottom: 1px solid #ccc');
             }
 
             if(host_address==""){
@@ -1001,10 +1450,24 @@ $("#next1").click(function(){
             $('#host_phone').attr('style','border-bottom: 1px solid #ccc');
         }
 
+        if(campus==""){
+            p7=0;
+            $('#campus_host_msg').show();
+            var message=document.getElementById('campus_host_msg');
+            message.style.color='red';
+            message.innerHTML="Required";
+            $('#campus_host').attr('style','border-bottom:1px solid #f00');
+        }
+        else{
+            p7=1;
+            $('#campus_host_msg').hide();
+            $('#campus_host').attr('style','border-bottom: 1px solid #ccc');
+        }
 
 
 
-            if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1){
+
+            if(p1==1 && p2==1 && p3==1 && p4==1 && p5==1 && p6==1 && p7==1){
               gonext();
             }
     });
@@ -1125,6 +1588,24 @@ $("#next3").click(function(){
     next_fs = $(this).parent().next();
      var category= $('#category').val();
      var p1, p2, p3, p4, p5, p6, p7;
+
+
+     var has_host=$('#has_host').val();
+
+
+     if(has_host=='Yes'){
+
+         $('#host_option').show();
+         $('#host_option').attr('disabled', false);
+
+     }else{
+
+         $('#host_option').hide();
+         $('#host_option').attr('disabled', true);
+
+     }
+
+
 
      if(category=='Shared Room'){
         var usd = $('#shared_room_usd').val(),
@@ -1418,6 +1899,7 @@ $("#next3").click(function(){
                         $('#phone_number').val(data.phone);
                         $('#purpose').val(data.purpose);
                         $('#passport_no').val(data.passport_no);
+                        $('#tin').val(data.tin);
                         $('#issue_date').val(data.issue);
                         $('#issue_place').val(data.place);
                         $('#nationality').val(data.nationality);
@@ -1467,4 +1949,327 @@ $("#next3").click(function(){
 
         });
 </script>
+
+
+<script>
+
+    function minCharacters(value){
+
+
+
+        if(value.length<9){
+
+            document.getElementById("next1").disabled = true;
+            document.getElementById("error_tin").style.color = 'red';
+            document.getElementById("error_tin").style.float = 'left';
+            document.getElementById("error_tin").style.paddingTop = '1%';
+            document.getElementById("error_tin").innerHTML ='TIN number cannot be less than 9 digits';
+
+        }else{
+            document.getElementById("error_tin").innerHTML ='';
+            document.getElementById("next1").disabled = false;
+        }
+
+    }
+
+
+
+    $('#client_category').click(function(){
+
+        var client_category=$(this).val();
+
+        if(client_category=='Domestic'){
+            $('#client_type').attr('disabled', false);
+            $('#id_type').attr('disabled', false);
+            $('#id_number').attr('disabled', false);
+            $('#tin').attr('disabled', false);
+            $('#client_typeDiv').show();
+            $('#id_typeDiv').show();
+            $('#id_numberDiv').show();
+            $('#tinDiv').show();
+
+            $('#nationality').val('Tanzanian');
+            $('#nationality').prop('readonly',true);
+
+
+        }else if(client_category=='Foreigner'){
+
+            $('#client_typeDiv').hide();
+            $('#campus_individualDiv').hide();
+            $('#college_individualDiv').hide();
+            $('#department_individualDiv').hide();
+            $('#campus_individual').attr('disabled', true);
+            $('#college_individual').attr('disabled', true);
+            $('#department_individual').attr('disabled', true);
+            $('#client_type').attr('disabled', true);
+            $('#id_type').attr('disabled', true);
+            $('#id_number').attr('disabled', true);
+            $('#tin').attr('disabled', true);
+            $('#id_typeDiv').hide();
+            $('#id_numberDiv').hide();
+            $('#tinDiv').hide();
+            $('#nationality').val('');
+            $('#nationality').prop('readonly',false);
+
+
+        }else{
+
+            $('#client_typeDiv').hide();
+            $('#campus_individualDiv').hide();
+            $('#college_individualDiv').hide();
+            $('#department_individualDiv').hide();
+            $('#campus_individual').attr('disabled', true);
+            $('#college_individual').attr('disabled', true);
+            $('#department_individual').attr('disabled', true);
+            $('#client_type').attr('disabled', true);
+            $('#id_type').attr('disabled', true);
+            $('#id_number').attr('disabled', true);
+            $('#tin').attr('disabled', true);
+            $('#id_typeDiv').hide();
+            $('#id_numberDiv').hide();
+            $('#tinDiv').hide();
+            $('#nationality').val('');
+            $('#nationality').prop('readonly',false);
+
+        }
+
+
+
+    });
+
+
+
+    $('#client_type').click(function(){
+
+        var client_type=$(this).val();
+
+        if(client_type=='Internal'){
+
+            $('#campus_individual').attr('disabled', false);
+            $('#college_individual').attr('disabled', false);
+            $('#department_individual').attr('disabled', false);
+            $('#campus_individualDiv').show();
+            $('#college_individualDiv').show();
+            $('#department_individualDiv').show();
+
+        }else if(client_type=='External'){
+
+            $('#campus_individualDiv').hide();
+            $('#college_individualDiv').hide();
+            $('#department_individualDiv').hide();
+
+            $('#campus_individual').attr('disabled', true);
+            $('#college_individual').attr('disabled', true);
+            $('#department_individual').attr('disabled', true);
+
+
+
+
+
+
+
+        }else{
+
+            $('#campus_individualDiv').hide();
+            $('#college_individualDiv').hide();
+            $('#department_individualDiv').hide();
+
+        }
+
+
+
+
+
+    });
+
+
+    $('#campus_individual').on('input',function(e){
+        e.preventDefault();
+        var campus_id = $(this).val();
+
+
+        if(campus_id != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('generate_college_list')}}",
+                method:"POST",
+                data:{campus_id:campus_id,_token:_token},
+                success:function(data){
+                    if(data=='0'){
+
+                    }
+                    else{
+
+
+                        $('#college_individual').html(data);
+                    }
+                }
+            });
+        }
+        else if(campus_id==''){
+
+        }
+    });
+
+
+
+
+    $('#college_individual').on('input',function(e){
+        e.preventDefault();
+        var college_id = $(this).val();
+
+
+        if(college_id != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('generate_department_list')}}",
+                method:"POST",
+                data:{college_id:college_id,_token:_token},
+                success:function(data){
+                    if(data=='0'){
+
+                    }
+                    else{
+
+
+                        $('#department_individual').html(data);
+                    }
+                }
+            });
+        }
+        else if(college_id==''){
+
+        }
+    });
+
+
+
+
+
+
+
+    $('#campus_host').on('input',function(e){
+        e.preventDefault();
+        var campus_id = $(this).val();
+
+
+        if(campus_id != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('generate_college_list')}}",
+                method:"POST",
+                data:{campus_id:campus_id,_token:_token},
+                success:function(data){
+                    if(data=='0'){
+
+                    }
+                    else{
+
+
+                        $('#college_host').html(data);
+                    }
+                }
+            });
+        }
+        else if(campus_id==''){
+
+        }
+    });
+
+
+
+
+    $('#college_host').on('input',function(e){
+        e.preventDefault();
+        var college_id = $(this).val();
+
+
+        if(college_id != '')
+        {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('generate_department_list')}}",
+                method:"POST",
+                data:{college_id:college_id,_token:_token},
+                success:function(data){
+                    if(data=='0'){
+
+                    }
+                    else{
+
+
+                        $('#department_host').html(data);
+                    }
+                }
+            });
+        }
+        else if(college_id==''){
+
+        }
+    });
+
+
+
+
+    $(document).ready(function(){
+
+        $(document).ready(function() {
+            $('.campus').select2(
+                {
+                    placeholder: "Select Campus",
+                    theme: "bootstrap",
+                    allowClear: true,
+                }
+            );
+        });
+
+
+        $(document).ready(function() {
+            $('.college').select2(
+                {
+                    placeholder: "Select College",
+                    theme: "bootstrap",
+                    allowClear: true,
+                }
+            );
+        });
+
+
+        $(document).ready(function() {
+            $('.department').select2(
+                {
+                    placeholder: "Select Department",
+                    theme: "bootstrap",
+                    allowClear: true,
+                }
+            );
+        });
+
+
+        $(document).ready(function() {
+            $('.id_type').select2(
+                {
+                    placeholder: "Select Identification Card Type",
+                    theme: "bootstrap",
+                    allowClear: true,
+                }
+            );
+        });
+
+
+
+    });
+
+
+</script>
+
+
+
+
+
+
+
 @endsection

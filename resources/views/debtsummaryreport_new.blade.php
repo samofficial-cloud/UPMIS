@@ -438,13 +438,14 @@ $flats_tzsincome = 0;
       <thead class="thead-dark">
         <tr>
           <th scope="col" style="width: 5%;">SN</th>
-          <th scope="col">Client Name</th>
-          <th scope="col"style="width: 10%;">Contract Id</th>
-          <th scope="col" style="width: 14%;">Cost Center</th>
-          <th scope="col" style="width: 17%;">Destination</th>
-          <th scope="col" style="width: 8%;">Currency</th>
-          <th scope="col" style="width: 12%;">Revenue</th>
-          <th scope="col" style="width: 12%;">Debt</th>
+          <th scope="col" style="text-align: center;">Client Name</th>
+          <th scope="col"style="width: 10%; text-align: center;">Contract Id</th>
+          <th scope="col" style="width: 14%; text-align: center;">Cost Centre ID</th>
+          <th scope="col" style="width: 14%; text-align: center;">Cost Centre Name</th>
+          <th scope="col" style="width: 17%; text-align: center;">Destination</th>
+          <th scope="col" style="width: 8%; text-align: center;">Currency</th>
+          <th scope="col" style="width: 12%; text-align: center;">Revenue</th>
+          <th scope="col" style="width: 12%; text-align: center;">Debt</th>
         </tr>
       </thead>
       <tbody>
@@ -457,6 +458,9 @@ $flats_tzsincome = 0;
             <td>{{$contract->debtor_name}}</td>
             <td style="text-align: center">{{$contract->contract_id}}</td>
             <td style="text-align: center">{{$contract->cost_centre}}</td>
+              <?php $cost_centre_name=DB::table('cost_centres')->where('costcentre_id',$contract->cost_centre)->value('costcentre');   ?>
+
+            <td style="text-align: left">{{$cost_centre_name}}</td>
             <td>{{$contract->destination}}</td>
             <td style="text-align: center">TZS</td>
             <?php
@@ -1859,7 +1863,7 @@ function revenuetzs(row, data, start, end, display){
                 messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT'+settitle(),
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4,5, 6, 7]
+                    columns: [ 0, 1, 2, 3, 4,5, 6, 7,8]
                 },
 
                 customize: function ( doc ) {
@@ -1876,7 +1880,7 @@ function revenuetzs(row, data, start, end, display){
 
 
 
-                  doc.content[2].table.widths = [22, '*', 60, 110, 150, 50, 60, 60];
+                  doc.content[2].table.widths = [22, '*', 50, 100,110, 150, 50, 60, 60];
                   var rowCount = doc.content[2].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[2].table.body[i][0]=i+'.';
@@ -1950,7 +1954,7 @@ function revenuetzs(row, data, start, end, display){
                 className: 'excelButton',
                 title: settitle(),
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7]
+                columns: [1, 2, 3, 4, 5, 6, 7,8]
                 },
             },
           ]

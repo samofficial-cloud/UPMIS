@@ -241,12 +241,26 @@ $today=date('Y-m-d');
                         </div>
                     </div>
 
-                    <div class="form-group">
-                    <div class="form-wrapper">
-                        <label for="email">Client Email</label>
-                        <input type="text" name="email" id="email" class="form-control" readonly="" value="{{$contract->email}}">
-                    </div>
-                </div>
+                                    <div class="form-group row" >
+
+                                        <div class="form-group col-6">
+                                            <div class="form-wrapper">
+                                                <label for="email">Client Email</label>
+                                                <input type="text" name="email" id="email" class="form-control" readonly="" value="{{$contract->email}}">
+                                            </div>
+                                        </div>
+
+                                        <div id="tinDiv" class="form-group col-6 ">
+                                            <div class="form-wrapper">
+                                                <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                <span id="tin_msg"></span>
+                                                <input type="number" readonly id="tin" name="tin" required class="form-control"  value="{{$contract->tin}}">
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
 
 					<div class="form-group row" id="facultydiv">
 						<div class="form-wrapper col-6">
@@ -371,8 +385,8 @@ $today=date('Y-m-d');
                             <label for="approve_name">Signature<span style="color: red;">*</span></label>
                             <span id="signaturemsg"></span>
                             <div style="border-bottom: 1px solid #ccc;" >
-                               <img src="{{$contract->accountant_signature}}" height="40px" width="180px" alt="signature" > 
-                            </div>       
+                               <img src="{{$contract->accountant_signature}}" height="40px" width="180px" alt="signature" >
+                            </div>
                         </div>
                     </div>
                         </div>
@@ -444,8 +458,8 @@ $today=date('Y-m-d');
                             <label for="approve_name">Signature<span style="color: red;">*</span></label>
                             <span id="signaturemsg"></span>
                             <div style="border-bottom: 1px solid #ccc;" >
-                               <img src="{{$contract->vote_holder_signature}}" height="40px" width="180px" alt="signature" > 
-                            </div>       
+                               <img src="{{$contract->vote_holder_signature}}" height="40px" width="180px" alt="signature" >
+                            </div>
                         </div>
                     </div>
                                 </div>
@@ -462,7 +476,7 @@ $today=date('Y-m-d');
                         <fieldset>
                 @if($nature=='Private')
                     @if($payment_status=='Paid')
-                        <div class="form-card">        
+                        <div class="form-card">
                             <div class="form-group">
                                 <div class="form-wrapper">
                                     <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
@@ -494,9 +508,9 @@ $today=date('Y-m-d');
                                     <label for="approve_name">Signature<span style="color: red;">*</span></label>
                                     <span id="signaturemsg"></span>
                                     <div style="border-bottom: 1px solid #ccc;" >
-                                       <img src="{{ Auth::user()->signature}}" height="40px" width="180px" alt="signature" > 
+                                       <img src="{{ Auth::user()->signature}}" height="40px" width="180px" alt="signature" >
                                     </div>
-                                        
+
                                 </div>
 
 
@@ -510,7 +524,7 @@ $today=date('Y-m-d');
                         </div>
                     @endif
                     @else
-                        <div class="form-card">        
+                        <div class="form-card">
                             <div class="form-group">
                                 <div class="form-wrapper">
                                     <label for="vehicle_reg">Vehicle Reg. No<span style="color: red;">*</span></label>
@@ -541,16 +555,16 @@ $today=date('Y-m-d');
                                     <label for="approve_name">Signature<span style="color: red;">*</span></label>
                                     <span id="signaturemsg"></span>
                                     <div style="border-bottom: 1px solid #ccc;" >
-                                       <img src="{{ Auth::user()->signature}}" height="40px" width="180px" alt="signature" > 
+                                       <img src="{{ Auth::user()->signature}}" height="40px" width="180px" alt="signature" >
                                     </div>
-                                        
+
                                 </div>
                             </div>
                                 <input type="text" name="contract_id" value="{{$contract->id}}" hidden="">
                             </div>
                             <button class="btn btn-primary" type="submit">Forward</button>
                     @endif
-                         
+
                         </fieldset>
                     </form>
 

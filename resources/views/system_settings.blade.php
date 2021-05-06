@@ -311,9 +311,37 @@
 
                       <div class="group_children">
                           <div class="form-wrapper">
-                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Days before the payment cycle ends for which the system will create space invoices automatically</strong></label>
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Days before the payment cycle ends for which the system will create space invoices automatically(For Direct clients)</strong></label>
                               <input type="number" min="1"  max="27"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->days_in_advance_for_invoices}}" id="rent_price_guide_checkbox" name="days_in_advance_for_invoices" required autocomplete="off">
 
+                          </div>
+                      </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Day in a month for the system to generate space invoices automatically(For Direct clients with sub-clients)</strong></label>
+                              <input type="number" min="1"  max="31" style="display: inline-block; float: right; clear: both;   text-align: center;" required value="{{$var->day_to_send_space_invoice}}" id="rent_price_guide_checkbox" name="day_to_send_space_invoice" autocomplete="off">
+
+                          </div>
+                      </div>
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Invoice start day(Day in a month)</strong></label>
+                              <input type="number" min="1"  max="31" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->space_invoice_start_day}}"  name="space_invoice_start_day" autocomplete="off">
+
+                          </div>
+                      </div>
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Invoice end day(Day in a month)</strong></label>
+                              <input type="number" min="1"  max="31"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->space_invoice_end_day}}"  name="space_invoice_end_day" required autocomplete="off">
                           </div>
                       </div>
 
@@ -471,4 +499,24 @@
 
     });
 </script>
+
+
+{{--<script>--}}
+
+
+{{--    $( ".days").datepicker({--}}
+{{--        format: "dd",--}}
+
+{{--        calendarWeeks: true,--}}
+{{--        autoclose: true,--}}
+{{--        todayHighlight: true,--}}
+{{--        rtl: true,--}}
+{{--        orientation: "auto"--}}
+{{--    });--}}
+
+
+{{--</script>--}}
+
+
+
 @endsection

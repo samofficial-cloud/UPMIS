@@ -200,7 +200,7 @@ input[type=radio]{
 
 
                         @if ($category=='Real Estate only' OR $category=='All')
-                            <button class="tablinks_inner space_identity" onclick="openInnerInvoices(event, 'space_inner')" id="defaultBusiness"><strong>Spaces</strong></button>
+                            <button class="tablinks_inner space_identity" onclick="openInnerInvoices(event, 'space_inner')" id="defaultBusiness"><strong>Real Estate</strong></button>
                         @else
                         @endif
 
@@ -235,7 +235,7 @@ input[type=radio]{
                              <div class="tab">
                                  <button class="spaces_tablinks" onclick="openSpaces(event, 'space_inbox')" id="defaultSelection"><strong>Inbox</strong></button>
                                  <button class="spaces_tablinks" onclick="openSpaces(event, 'space_outbox')"><strong>Outbox</strong></button>
-                                 <button class="spaces_tablinks" onclick="openSpaces(event, 'approved_spaces')"><strong>Spaces</strong></button>
+                                 <button class="spaces_tablinks" onclick="openSpaces(event, 'approved_spaces')"><strong>Real Estate</strong></button>
 
 
                              </div>
@@ -253,7 +253,7 @@ input[type=radio]{
                                              <th scope="col" ><center>S/N</center></th>
                                              <th scope="col">Major Industry</th>
                                              <th scope="col">Minor Industry</th>
-                                             <th scope="col">Space Number</th>
+                                             <th scope="col">Real Estate Number</th>
                                              <th scope="col" >Location</th>
                                              <th scope="col" >Sub Location</th>
                                              <th scope="col" ><center>Size (SQM)</center></th>
@@ -626,7 +626,7 @@ input[type=radio]{
                                                              <div class="modal-dialog" role="document">
                                                                  <div class="modal-content">
                                                                      <div class="modal-header">
-                                                                         <b><h5 class="modal-title">Are you sure you want to delete the space with space number {{$var->space_id}}?</h5></b>
+                                                                         <b><h5 class="modal-title">Are you sure you want to delete the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
 
                                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                      </div>
@@ -685,7 +685,7 @@ input[type=radio]{
                                              <th scope="col"><center>S/N</center></th>
                                              <th scope="col">Major Industry</th>
                                              <th scope="col">Minor Industry</th>
-                                             <th scope="col">Space Number</th>
+                                             <th scope="col">Real Estate Number</th>
                                              <th scope="col" >Location</th>
                                              <th scope="col" >Sub Location</th>
                                              <th scope="col" ><center>Size (SQM)</center></th>
@@ -761,7 +761,7 @@ input[type=radio]{
 
                                  <div class="">
                                      <br>
-                                     <center><h3><strong>Renting spaces</strong></h3></center>
+                                     <center><h3><strong>Real Estate</strong></h3></center>
                                      <hr>
 
 
@@ -770,7 +770,7 @@ input[type=radio]{
                                          <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
     margin-left: -2px;
     margin-bottom: 15px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add New Space</a>
+    margin-top: 4px;" role="button" aria-pressed="true">Add New Real Estate</a>
                                      @else
                                      @endif
 
@@ -781,7 +781,7 @@ input[type=radio]{
                                          <div class="modal-dialog" role="document">
                                              <div class="modal-content">
                                                  <div class="modal-header">
-                                                     <b><h5 class="modal-title">Add New Renting Space</h5></b>
+                                                     <b><h5 class="modal-title">Add New Real Estate</h5></b>
 
                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                  </div>
@@ -984,7 +984,7 @@ input[type=radio]{
                                              <th scope="col" style="color:#fff;"><center>S/N</center></th>
                                              <th scope="col" style="color:#fff;">Major Industry</th>
                                              <th scope="col" style="color:#fff;">Minor Industry</th>
-                                             <th scope="col" style="color:#fff;">Space Number</th>
+                                             <th scope="col" style="color:#fff;">Real Estate Number</th>
                                              <th scope="col"  style="color:#fff;">Location</th>
                                              <th scope="col"  style="color:#fff;">Sub Location</th>
                                              <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
@@ -1044,7 +1044,7 @@ input[type=radio]{
                                                              <div class="modal-dialog" role="document">
                                                                  <div class="modal-content">
                                                                      <div class="modal-header">
-                                                                         <b><h5 class="modal-title">Full Space Details</h5></b>
+                                                                         <b><h5 class="modal-title">Full Real Estate Details</h5></b>
 
                                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                      </div>
@@ -1052,7 +1052,7 @@ input[type=radio]{
                                                                      <div class="modal-body">
                                                                          <table style="width: 100%">
                                                                              <tr>
-                                                                                 <td>Space number:</td>
+                                                                                 <td>Real Estate number:</td>
                                                                                  <td>{{$var->space_id}}</td>
                                                                              </tr>
 
@@ -1141,12 +1141,12 @@ input[type=radio]{
                                                              @if($var->occupation_status==1)
 
                                                              @else
-                                                                 <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+                                                                 <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this Real Estate"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
                                                              @endif
 
 
 
-                                                             <a data-toggle="modal" title="Delete space" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                             <a data-toggle="modal" title="Delete Real Estate" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
                                                          @endif
 
                                                          <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
@@ -1154,7 +1154,7 @@ input[type=radio]{
                                                              <div class="modal-dialog" role="document">
                                                                  <div class="modal-content">
                                                                      <div class="modal-header">
-                                                                         <b><h5 class="modal-title">Edit Renting Space Information</h5></b>
+                                                                         <b><h5 class="modal-title">Edit Real Estate Information</h5></b>
 
                                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                      </div>
@@ -1354,7 +1354,7 @@ input[type=radio]{
                                                              <div class="modal-dialog" role="document">
                                                                  <div class="modal-content">
                                                                      <div class="modal-header">
-                                                                         <b><h5 class="modal-title">Are you sure you want to deactivate the space with space number {{$var->space_id}}?</h5></b>
+                                                                         <b><h5 class="modal-title">Are you sure you want to deactivate the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
 
                                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                      </div>
@@ -1420,7 +1420,7 @@ input[type=radio]{
 
                              <div class="">
                                  <br>
-                                 <center><h3><strong>Renting spaces</strong></h3></center>
+                                 <center><h3><strong>Real Estate</strong></h3></center>
                                  <hr>
 
 
@@ -1429,7 +1429,7 @@ input[type=radio]{
                                      <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
     margin-left: -2px;
     margin-bottom: 15px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add New Space</a>
+    margin-top: 4px;" role="button" aria-pressed="true">Add New Real Estate</a>
                                  @else
                                  @endif
 
@@ -1440,7 +1440,7 @@ input[type=radio]{
                                      <div class="modal-dialog" role="document">
                                          <div class="modal-content">
                                              <div class="modal-header">
-                                                 <b><h5 class="modal-title">Add New Renting Space</h5></b>
+                                                 <b><h5 class="modal-title">Add New Real Estate</h5></b>
 
                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
                                              </div>
@@ -1643,7 +1643,7 @@ input[type=radio]{
                                          <th scope="col" style="color:#fff;"><center>S/N</center></th>
                                          <th scope="col" style="color:#fff;">Major Industry</th>
                                          <th scope="col" style="color:#fff;">Minor Industry</th>
-                                         <th scope="col" style="color:#fff;">Space Number</th>
+                                         <th scope="col" style="color:#fff;">Real Estate Number</th>
                                          <th scope="col"  style="color:#fff;">Location</th>
                                          <th scope="col"  style="color:#fff;">Sub Location</th>
                                          <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
@@ -1703,7 +1703,7 @@ input[type=radio]{
                                                          <div class="modal-dialog" role="document">
                                                              <div class="modal-content">
                                                                  <div class="modal-header">
-                                                                     <b><h5 class="modal-title">Full Space Details</h5></b>
+                                                                     <b><h5 class="modal-title">Full Real Estate Details</h5></b>
 
                                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                  </div>
@@ -1711,7 +1711,7 @@ input[type=radio]{
                                                                  <div class="modal-body">
                                                                      <table style="width: 100%">
                                                                          <tr>
-                                                                             <td>Space number:</td>
+                                                                             <td>Real Estate number:</td>
                                                                              <td>{{$var->space_id}}</td>
                                                                          </tr>
 
@@ -1795,17 +1795,17 @@ input[type=radio]{
 
                                                      @if($privileges=='Read only')
                                                      @else
-                                                         <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                                                         <a data-toggle="modal" title="Edit Real Estate information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
                                                          @if($var->occupation_status==1)
 
                                                          @else
-                                                             <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this space"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+                                                             <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this Real Estate"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
                                                          @endif
 
 
 
-                                                         <a data-toggle="modal" title="Delete space" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                         <a data-toggle="modal" title="Delete Real Estate" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
                                                      @endif
 
                                                      <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
@@ -1813,7 +1813,7 @@ input[type=radio]{
                                                          <div class="modal-dialog" role="document">
                                                              <div class="modal-content">
                                                                  <div class="modal-header">
-                                                                     <b><h5 class="modal-title">Edit Renting Space Information</h5></b>
+                                                                     <b><h5 class="modal-title">Edit Real Estate Information</h5></b>
 
                                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                  </div>
@@ -2013,7 +2013,7 @@ input[type=radio]{
                                                          <div class="modal-dialog" role="document">
                                                              <div class="modal-content">
                                                                  <div class="modal-header">
-                                                                     <b><h5 class="modal-title">Are you sure you want to deactivate the space with space number {{$var->space_id}}?</h5></b>
+                                                                     <b><h5 class="modal-title">Are you sure you want to deactivate the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
 
                                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                  </div>
@@ -3541,6 +3541,7 @@ input[type=radio]{
                                         <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
                                         <th scope="col" style="color:#fff;"><center>Cost Centre Id</center></th>
                                         <th scope="col" style="color:#fff;"><center>Cost Centre Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Division ID</center></th>
                                         {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
                                         @if($privileges=='Read only')
                                         @else
@@ -3554,6 +3555,7 @@ input[type=radio]{
                                             <td><center>{{$k}}.</center></td>
                                             <td><center>{{$var->costcentre_id}}</center></td>
                                             <td>{{$var->costcentre}}</td>
+                                            <td>{{$var->division_id}}</td>
                                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
                                             @if($privileges=='Read only')
                                             @else
@@ -3906,13 +3908,13 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
         buttons: [
             {   extend: 'pdfHtml5',
-                filename:'Renting Spaces',
+                filename:'Real Estate',
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
                 orientation: 'Landscape',
                 title: 'UNIVERSITY OF DAR ES SALAAM',
-                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Renting Spaces',
+                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Real Estate',
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
@@ -3993,7 +3995,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             {   extend: 'excelHtml5',
                 text: '<i class="fa fa-file-excel-o"></i> EXCEL',
                 className: 'excelButton',
-                title: 'Renting Spaces',
+                title: 'Real Estate',
                 exportOptions: {
                 columns: [1, 2, 3, 4, 5, 6, 7]
                 },

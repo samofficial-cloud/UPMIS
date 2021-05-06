@@ -233,7 +233,7 @@ hr {
                             @foreach($invoices as $var)
                                 <tr>
                                     <td class="counterCell text-center">.</td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>{{$var->invoice_number_votebook}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                    {{--  <td><center>{{$var->period}}</center></td> --}}

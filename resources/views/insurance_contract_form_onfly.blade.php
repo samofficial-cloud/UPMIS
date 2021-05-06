@@ -820,6 +820,19 @@
                                                         </div>
 
 
+
+
+                                                        <div id="tinDiv" class="form-group col-12 pt-4" style="display: none;">
+                                                            <div class="form-wrapper">
+                                                                <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                                <span id="tin_msg"></span>
+                                                                <input type="number" id="tin" name="tin" class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                                                <p id="error_tin"></p>
+                                                            </div>
+                                                        </div>
+
+
+
                                                         <div id="vehicle_registration_noDiv"  class="form-wrapper col-12" style="display: none;">
                                                             <br>
                                                             <label for="client_type"><strong>Vehicle Registration Number</strong> <span style="color: red;"> *</span></label>
@@ -1495,6 +1508,7 @@
                     $('#client_nameDiv').hide();
                     $('#phone_numberDiv').hide();
                     $('#emailDiv').hide();
+                    $('#tinDiv').hide();
                     $('#vehicle_registration_noDiv').hide();
                     // $('#vehicle_useDiv').hide();
 
@@ -1520,6 +1534,7 @@
                         $('#client_nameDiv').show();
                         $('#phone_numberDiv').show();
                         $('#emailDiv').show();
+                        $('#tinDiv').show();
 
                         $('#sticker_noDiv').show();
                         document.getElementById("sticker_no").disabled = false;
@@ -1561,6 +1576,7 @@
                         $('#client_nameDiv').show();
                         $('#phone_numberDiv').show();
                         $('#emailDiv').show();
+                        $('#tinDiv').show();
 
                         $('#sticker_noDiv').hide();
                         document.getElementById("sticker_no").disabled = true;
@@ -1597,6 +1613,7 @@
                         $('#client_nameDiv').show();
                         $('#phone_numberDiv').show();
                         $('#emailDiv').show();
+                        $('#tinDiv').show();
 
                         $('#sticker_noDiv').show();
                         document.getElementById("sticker_no").disabled = false;
@@ -1637,6 +1654,7 @@
                         $('#client_nameDiv').show();
                         $('#phone_numberDiv').show();
                         $('#emailDiv').show();
+                        $('#tinDiv').show();
 
                         $('#sticker_noDiv').hide();
                         document.getElementById("sticker_no").disabled = true;
@@ -1695,6 +1713,7 @@
                         $('#client_nameDiv').show();
                         $('#phone_numberDiv').show();
                         $('#emailDiv').show();
+                        $('#tinDiv').show();
 
                         $('#sticker_noDiv').show();
                         document.getElementById("sticker_no").disabled = false;
@@ -1730,6 +1749,7 @@
                         $('#client_nameDiv').show();
                         $('#phone_numberDiv').show();
                         $('#emailDiv').show();
+                        $('#tinDiv').show();
 
                         $('#sticker_noDiv').hide();
                         document.getElementById("sticker_no").disabled = true;
@@ -1764,6 +1784,7 @@
                     $('#client_nameDiv').hide();
                     $('#phone_numberDiv').hide();
                     $('#emailDiv').hide();
+                    $('#tinDiv').hide();
                     $('#vehicle_registration_noDiv').hide();
                     // $('#vehicle_useDiv').hide();
 
@@ -2457,7 +2478,7 @@
                 var carry_passenger=$('#carry_passenger').val();
                 var number_of_tonnes=$('#number_of_tonnes').val();
                 var number_of_seats=$('#number_of_seats').val();
-
+                var tin=$('#tin').val();
 
 
                 if(insurance_class=='FIDELITY GUARANTEE'){
@@ -2665,6 +2686,21 @@
                     p5=1;
                     $('#phone_msg').hide();
                     $('#phone_number').attr('style','border-bottom: 1px solid #ccc');
+                }
+
+
+
+                if(tin=='') {
+
+                    var message = document.getElementById('tin_msg');
+                    message.style.color = 'red';
+                    message.innerHTML = "Required";
+                    $('#tin').attr('style', 'border-bottom:1px solid #f00');
+
+                }else{
+
+                    $('#tin_msg').hide();
+                    $('#tin').attr('style','border-bottom: 1px solid #ccc');
                 }
 
 
@@ -2937,6 +2973,12 @@
                 }
 
                 else if(number_of_employees=='' && $('#number_of_employeesDiv:visible').length !=0) {
+
+                    p_all=0;
+
+                }
+
+                else if(tin=='' && $('#tinDiv:visible').length !=0) {
 
                     p_all=0;
 
@@ -11307,5 +11349,30 @@
 
 
     {{--</script>--}}
+
+    <script>
+
+        function minCharacters(value){
+
+
+
+            if(value.length<9){
+
+                document.getElementById("next1").disabled = true;
+                document.getElementById("error_tin").style.color = 'red';
+                document.getElementById("error_tin").style.float = 'left';
+                document.getElementById("error_tin").style.paddingTop = '1%';
+                document.getElementById("error_tin").innerHTML ='TIN number cannot be less than 9 digits';
+
+            }else{
+                document.getElementById("error_tin").innerHTML ='';
+                document.getElementById("next1").disabled = false;
+            }
+
+        }
+
+
+    </script>
+
 
 @endsection

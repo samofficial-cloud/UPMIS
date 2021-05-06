@@ -202,7 +202,7 @@
       <th scope="col"><center>S/N</center></th>
       <th scope="col" style="width: 18%;"><center>Client Name</center></th>
      {{--  <th scope="col"><center>Client Type</center></th> --}}
-      <th scope="col"><center>Space ID</center></th>
+      <th scope="col"><center>Real Estate Number</center></th>
       <th scope="col"><center>Phone Number</center></th>
       <th scope="col"><center>Email</center></th>
       <th scope="col"><center>Address</center></th>

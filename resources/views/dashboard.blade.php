@@ -171,7 +171,7 @@
   <div class="card text-white" style="background-color: #eb9025;">
     <div class="card-body">
      <h5 class="card-title">Spaces <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
-      <p>Total Spaces: {{$total_spaces}}
+      <p>Total Real Estate: {{$total_spaces}}
       <br>Occupied: {{count($occupied_spaces)}}
       <br>Available: {{$available_spaces}}
     </div>
@@ -213,7 +213,7 @@
   </div>
 </div>
           <div class="card-body">
-            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Space Activities</h4>
+            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Real Estate Activities</h4>
             <hr>
         <div class="card-deck">
   <div class="card border-info">
@@ -234,7 +234,7 @@
 <br>
   <div class="card">
     <div class="card-body">
-     <h4 class="card-title" style="font-family: sans-serif;">Space Contract(s) that are about to expire (Within 30 days prior to date)</h4>
+     <h4 class="card-title" style="font-family: sans-serif;">Real Estate Contract(s) that are about to expire (Within 30 days prior to date)</h4>
      <hr>
         <a title="Send email to selected clients" href="#" id="notify_all" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inia_mail" role="button" aria-pressed="true" style="
     padding: 10px;
@@ -405,7 +405,7 @@
                                           <td colspan="2">{{$space->contract_id}}</td>
                                       </tr>
                                       <tr>
-                                          <td>Space ID:</td>
+                                          <td>Real Estate ID:</td>
                                           <td colspan="2">{{$space->space_id_contract}}</td>
                                       </tr>
                                       <tr>
@@ -573,7 +573,7 @@
 </div>
           <div class="card-body" >
             <div id="content">
-            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Space Income Generation</h4>
+            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Real Estate Income Generation</h4>
             <hr>
             <div >
     <center><div id="loading"></div></center>
@@ -598,7 +598,7 @@
 <br>
 <div class="card">
     <div class="card-body">
-     <h4 class="card-title" style="font-family: sans-serif;">Outstanding Space Debt(s)</h4>
+     <h4 class="card-title" style="font-family: sans-serif;">Outstanding Real Estate Debt(s)</h4>
      <hr>
        <a title="Send email to selected clients" href="#" id="debt_notify_all" class="btn btn-info btn-sm" data-toggle="modal" data-target="#debt_mail" role="button" aria-pressed="true" style="
     padding: 10px;
@@ -784,7 +784,7 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td> Space Number:</td>
+                                                                    <td> Real Estate Number:</td>
                                                                     <td colspan="2"> {{$var->space_id_contract}}</td>
                                                                 </tr>
 
@@ -2037,15 +2037,15 @@ $("#income_filter").click(function(e){
       // $chart5->id.data.datasets.label = 'CPTU Income';
       {{ $chart5->id }}.update();
 
-      {{$chart6->id}}.options.title.text = 'Space Income Generation '+query;
+      {{$chart6->id}}.options.title.text = 'Real Estate Income Generation '+query;
       {{ $chart6->id }}.data.datasets[0].data =data.space;
 
-      {{ $chart6->id }}.update(); 
+      {{ $chart6->id }}.update();
 
       {{$chart7->id}}.options.title.text = 'Research Flats Income Generation '+query;
       {{ $chart7->id }}.data.datasets[0].data =data.flats1;
       {{ $chart7->id }}.data.datasets[1].data =data.flats2;
-      {{ $chart7->id }}.update(); 
+      {{ $chart7->id }}.update();
 
     });
     }
@@ -2085,14 +2085,14 @@ $("#activity_filter").click(function(e){
       {{ $chart2->id }}.data.datasets[0].data =data.cptu;
       {{ $chart2->id }}.update();
 
-      {{$chart3->id}}.options.title.text = 'Space Activities '+query;
+      {{$chart3->id}}.options.title.text = 'Real Estate Activities '+query;
       {{ $chart3->id }}.data.datasets[0].data =data.space;
 
-      {{ $chart3->id }}.update(); 
+      {{ $chart3->id }}.update();
 
       {{$chart41->id}}.options.title.text = 'Research Flats Activities '+query;
       {{ $chart41->id }}.data.datasets[0].data =data.flats;
-      {{ $chart41->id }}.update(); 
+      {{ $chart41->id }}.update();
 
     });
     }

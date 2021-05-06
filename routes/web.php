@@ -27,8 +27,15 @@ Route::post('/login/custom', [
         Route::get('/get_space_contracts', 'ContractsController@getSpaceContracts')->name('get_space_contracts');
 
 
+        //Data upload
+        Route::post('/upload', 'ContractsController@storeTemporarily');
 
-    Route::get('file','UploadFileController@create');
+        //Delete data
+        Route::delete('/upload/revert_upload', 'ContractsController@removeTemporaryUploads');
+
+
+
+        Route::get('file','UploadFileController@create');
     Route::post('file','UploadFileController@store');
 
     Route::get('/', 'ChartController@index')->name('home');
@@ -85,11 +92,12 @@ Route::post('/login/custom', [
      Route::get('/contracts_management/research_flat/print','HomeController@printResearchForm')->name('printResearchForm');
 
      Route::get('/contracts_management/research_flat/edit/{id}','HomeController@editResearchForm')->name('editResearchForm');
+     Route::get('/contracts_management/research_flat/renew/{id}','HomeController@renewResearchForm')->name('renewResearchForm');
 
      Route::post('/contracts_management/research_flat/send_edit/{id}','HomeController@sendeditResearchForm')->name('sendeditResearchForm');
 
 
-    Route::get('/invoice_management/space/filter', 'InvoicesController@space_filter');
+     Route::get('/invoice_management/space/filter', 'InvoicesController@space_filter');
 
 
 
@@ -148,15 +156,19 @@ Route::post('/login/custom', [
 
 Route::post('/clients/Space/edit', 'clientsController@edit')->name('editclients');
 
+Route::post('/clients/Research/edit/{id}', 'clientsController@editResearchclients')->name('editResearchclients');
+
 Route::post('/clients/Car/edit', 'clientsController@editCarclients')->name('editCarclients');
 
 Route::post('/clients/Insurance/edit', 'clientsController@editIns')->name('editInsclients');
 
 Route::get('/clients/Space/view_more/{id}','clientsController@ClientViewMore')->name('ClientViewMore');
 
+Route::get('/clients/Research/view_more/{first_name}/{last_name}/{email}/{phone_number}','clientsController@ResearchClientsViewMore')->name('ResearchClientsViewMore');
+
 Route::get('/clients/car_rental/view_more/{name}/{email}/{centre}','clientsController@CarViewMore')->name('CarClientsViewMore');
 
-Route::get('/clients/insurance/view_more/{name}/{email}/{centre}','clientsController@InsuranceViewMore')->name('InsuranceClientsViewMore');
+Route::get('/clients/insurance/view_more/{full_name}/{email}/{phone_number}','clientsController@InsuranceClientsViewMore')->name('InsuranceClientsViewMore');
 
 Route::post('/clients/Space/SendMessage', 'clientsController@SendMessage')->name('SendMessage');
 
@@ -399,7 +411,9 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
     Route::get('/space_contracts_subclients/{client_id}', 'ContractsController@SpaceContractsSubClientsManagement')->name('space_contracts_subclients');
     Route::get('/renew_space_contract_form/{id}','ContractsController@renewSpaceContractForm')->name('renew_space_contract_form');
+    Route::get('/renew_space_contract_form_parent_client/{id}','ContractsController@renewSpaceContractFormParentClient')->name('renew_space_contract_form_parent_client');
     Route::get('/edit_space_contract/{id}/', 'ContractsController@EditSpaceContractForm')->name('edit_contract');
+    Route::get('/edit_space_contract_parent_client/{id}/', 'ContractsController@EditSpaceContractFormParentClient')->name('edit_contract_parent_client');
     Route::post('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
     Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
     Route::post('/approve_space', 'SpaceController@approveSpace')->name('approve_space');
@@ -423,6 +437,9 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
     Route::get('/contract_availability_space', 'InvoicesController@contractAvailabilitySpace')->name('contract_availability_space');
+    Route::get('/get_parent_currency', 'ContractsController@getParentCurrency')->name('get_parent_currency');
+    Route::get('/print_space_contract/{id}', 'ContractsController@printSpaceContract')->name('print_space_contract');
+
 
     // Water Bills
     Route::get('/create_water_bills_invoice', 'InvoicesController@CreateWaterBillsInvoice')->name('create_water_bills_invoice');
@@ -475,6 +492,18 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/send_invoice_space/{id}', 'InvoicesController@sendInvoiceSpace')->name('send_invoice_space');
     Route::post('/change_payment_status_space/{id}', 'InvoicesController@changePayementStatusSpace')->name('change_payment_status_space');
     Route::get('/create_space_invoice', 'InvoicesController@CreateSpaceInvoice')->name('create_space_invoice');
+    Route::get('/print_space_invoice/{id}', 'InvoicesController@PrintSpaceInvoice')->name('print_space_invoice');
+    Route::get('/print_water_invoice/{id}', 'InvoicesController@PrintWaterInvoice')->name('print_water_invoice');
+    Route::get('/print_electricity_invoice/{id}', 'InvoicesController@PrintElectricityInvoice')->name('print_electricity_invoice');
+
+
+
+    Route::post('/cancel_space_invoice/{id}', 'InvoicesController@CancelSpaceInvoice')->name('cancel_space_invoice');
+    Route::post('/cancel_water_invoice/{id}', 'InvoicesController@CancelWaterInvoice')->name('cancel_water_invoice');
+    Route::post('/cancel_electricity_invoice/{id}', 'InvoicesController@CancelElectricityInvoice')->name('cancel_electricity_invoice');
+
+
+
 
 });
 
@@ -534,6 +563,12 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::post('/foward_insurance_clients_invoice/{invoice_id}', 'InvoicesController@fowardInsuranceClientsInvoice')->name('foward_insurance_clients_invoice');
 
 
+    Route::get('/print_insurance_invoice_clients/{id}', 'InvoicesController@PrintInsuranceInvoiceClients')->name('print_insurance_invoice_clients');
+    Route::get('/print_insurance_invoice_principals/{id}', 'InvoicesController@PrintInsuranceInvoicePrincipals')->name('print_insurance_invoice_principals');
+
+    Route::get('/cancel_insurance_invoice_clients/{id}', 'InvoicesController@CancelInsuranceClientsInvoice')->name('cancel_insurance_invoice_clients');
+    Route::get('/cancel_insurance_invoice_principals/{id}', 'InvoicesController@CancelInsurancePrincipalsInvoice')->name('cancel_insurance_invoice_principals');
+
 
 
 });
@@ -551,6 +586,11 @@ Route::group(['middleware' => ['auth', 'car']], function() {
 
     Route::post('/foward_car_invoice/{invoice_id}', 'InvoicesController@fowardCarInvoice')->name('foward_car_invoice');
 
+    Route::get('/print_car_invoice/{id}', 'InvoicesController@PrintCarInvoice')->name('print_car_invoice');
+    Route::get('/print_car_invoice_account/{id}', 'InvoicesController@PrintCarInvoiceAccount')->name('print_car_invoice_account');
+
+
+    Route::get('/cancel_car_invoice/{id}', 'InvoicesController@CancelCarInvoice')->name('cancel_car_invoice');
 
 
 });
@@ -565,6 +605,14 @@ Route::group(['middleware' => ['auth', 'research']], function() {
     Route::post('/add_control_no_research/{id}', 'InvoicesController@addControlNumberResearch')->name('add_control_no_research');
 
     Route::post('/foward_research_invoice/{invoice_id}', 'InvoicesController@fowardResearchInvoice')->name('foward_research_invoice');
+
+    Route::post('/generate_college_list', 'ContractsController@generateCollegeList')->name('generate_college_list');
+    Route::post('/generate_department_list', 'ContractsController@generateDepartmentList')->name('generate_department_list');
+
+
+    Route::get('/print_research_invoice/{id}', 'InvoicesController@PrintResearchInvoice')->name('print_research_invoice');
+
+    Route::get('/cancel_research_invoice/{id}', 'InvoicesController@CancelResearchInvoice')->name('cancel_research_invoice');
 
 
 });

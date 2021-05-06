@@ -64,16 +64,16 @@ table {
   <div class="page-number"></div>
 </div>
 	<?php
-	use App\space_contract;
+	use App\Real Estate_contract;
   use App\space;
 
-  
+
   $i=1;
 	?>
 	<center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
-     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT  
+     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT
     </b>
     @if($_GET['filter_date']=='true')
     <br><br><strong>{{$_GET['space_id']}} Renting History Report for the Duration from {{date("d/m/Y",strtotime($_GET['start_date']))}} to {{date("d/m/Y",strtotime($_GET['end_date']))}}</strong>
@@ -86,7 +86,7 @@ table {
 <table style="width: 50%">
   @foreach($details as $details)
   <tr>
-    <td>Space Type</td>
+    <td>Real Estate Type</td>
     <td>{{$details->major_industry}}</td>
   </tr>
   <tr>
@@ -156,7 +156,7 @@ table {
         </tbody>
 </table>
 @else
-<h3>This space has/was not been lease yet for the specified duration</h3>
+<h3>This Real Estate has/was not been lease yet for the specified duration</h3>
 @endif
 <br>
 <hr>
@@ -191,7 +191,7 @@ table {
                                 </tbody>
                               </table>
                               @else
-<h3>This space has no  previous debts</h3>
+<h3>This Real Estate has no  previous debts</h3>
 @endif
 </body>
 </html>
