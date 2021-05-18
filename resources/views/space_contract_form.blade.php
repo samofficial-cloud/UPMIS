@@ -251,7 +251,7 @@
     </style>
 
 
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+
 @endsection
 
 @section('content')
@@ -1088,12 +1088,12 @@
 
 
 
-                                                    <div class="form-group col-12 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                        </div>
-                                                    </div>
+{{--                                                    <div class="form-group col-12 pt-4">--}}
+{{--                                                        <div class="form-wrapper">--}}
+{{--                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>--}}
+{{--                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
 
 
 
@@ -1398,6 +1398,16 @@
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
             var p1, p2,p3,p4,p5,p6,p7,p14,p15,p16,p17,p18,p19,p20;
+
+
+
+            p14=0;
+            p15=0;
+            p16=0;
+            p17=0;
+            p18=0;
+            p19=0;
+            p20=0;
 
 
             var temp;
@@ -1817,7 +1827,7 @@
 
             });
 
-            //Filepond ends
+
 
             function checkRequired(number){
                 if(number=='14'){
@@ -1881,7 +1891,7 @@
                 }
             }
 
-
+//Filepond ends
 
 
             $("#next1").click(function(){
@@ -2746,7 +2756,7 @@
 
 
 
-                if(tbs_certificate==""){
+                if(p14=="0"){
 
                     $('#tbs_certificate_msg').show();
                     var message=document.getElementById('tbs_certificate_msg');
@@ -2770,7 +2780,7 @@
 
 
 
-                if(gpsa_certificate==""){
+                if(p15=="0"){
 
                     $('#gpsa_certificate_msg').show();
                     var message=document.getElementById('gpsa_certificate_msg');
@@ -2793,7 +2803,7 @@
 
 
 
-                if(food_business_license==""){
+                if(p16=="0"){
 
                     $('#food_business_license_msg').show();
                     var message=document.getElementById('food_business_license_msg');
@@ -2814,7 +2824,7 @@
 
 
 
-                if(business_license==""){
+                if(p17=="0"){
 
                     $('#business_license_msg').show();
                     var message=document.getElementById('business_license_msg');
@@ -2835,7 +2845,7 @@
 
 
 
-                if(osha_certificate==""){
+                if(p18=="0"){
 
                     $('#osha_certificate_msg').show();
                     var message=document.getElementById('osha_certificate_msg');
@@ -2857,7 +2867,7 @@
 
 
 
-                if(tcra_registration==""){
+                if(p19=="0"){
 
                     $('#tcra_registration_msg').show();
                     var message=document.getElementById('tcra_registration_msg');
@@ -2879,7 +2889,7 @@
 
 
 
-                if(brela_registration==""){
+                if(p20=="0"){
 
                     $('#brela_registration_msg').show();
                     var message=document.getElementById('brela_registration_msg');

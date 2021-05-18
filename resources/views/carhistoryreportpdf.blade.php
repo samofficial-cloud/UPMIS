@@ -41,7 +41,7 @@ table, td, th {
 </style>
 <body>
 	<?php
-    
+
     $i=1;
     $k =1;
 	?>
@@ -51,13 +51,13 @@ table, td, th {
 <center>
 	<b>UNIVERSITY OF DAR ES SALAAM<br><br>
 	<img src="{{public_path('/images/logo_udsm.jpg')}}" height="70px"></img>
-     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT
-    @if($_GET['date_fil']=='true') 
-      <br><br>History Report for <strong>{{$_GET['reg']}} Between {{date("d/m/Y",strtotime($_GET['start']))}} and {{date("d/m/Y",strtotime($_GET['end']))}}</strong> 
+     <br>DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTMENT
+    @if($_GET['date_fil']=='true')
+      <br><br>History Report for <strong>{{$_GET['reg']}} Between {{date("d/m/Y",strtotime($_GET['start']))}} and {{date("d/m/Y",strtotime($_GET['end']))}}</strong>
     @else
      <br><br>History Report for <strong>{{$_GET['reg']}}</strong>
     @endif
-    </b> 
+    </b>
 </center>
 
 <h3>Vehicle Details</h3>

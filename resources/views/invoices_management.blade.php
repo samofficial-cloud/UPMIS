@@ -198,11 +198,11 @@
                         <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'water_invoices')"><strong>Water Bills</strong></button>
                         <button class="tablinks_inner bills" onclick="openInnerInvoices(event, 'electricity_invoices')"><strong>Electricity Bills</strong></button>
                     </div>
-                    @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner')
+                    @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner' || Auth::user()->role=='Director DPDI')
 
                         <div id="space_invoices_inner" style="   " class="tabcontent_inner">
 
-                            @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner')
+                            @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner' || Auth::user()->role=='Director DPDI')
 
 
                                 <br>
@@ -215,51 +215,54 @@
 
 
 
-                                @if(Auth::user()->role=='Accountant-DPDI')
+                                @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='Director DPDI')
                                     {{--                      space invoice  inbox start--}}
                                     <div  id="space_invoice_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner">
                                         <br>
 
-                                        @if($space_invoice_inbox!='')
 
-                                            <div style="float:right; margin-bottom: 1%;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_space"  role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>
-                                            <div class="modal fade" id="send_invoice_space" role="dialog">
+{{--                                        @if(Auth::user()->role=='Director DPDI')--}}
+{{--                                        @if($space_invoice_inbox!='')--}}
 
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title">Sending all invoices to respective clients</h5></b>
+{{--                                            <div style="float:right; margin-bottom: 1%;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_space"  role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>--}}
+{{--                                            <div class="modal fade" id="send_invoice_space" role="dialog">--}}
 
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
+{{--                                                <div class="modal-dialog" role="document">--}}
+{{--                                                    <div class="modal-content">--}}
+{{--                                                        <div class="modal-header">--}}
+{{--                                                            <b><h5 class="modal-title">Sending all invoices to respective clients</h5></b>--}}
 
-                                                        <div class="modal-body">
-                                                            <form method="get" action="{{ route('send_all_invoices_space')}}">
-                                                                {{csrf_field()}}
+{{--                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+{{--                                                        </div>--}}
 
-                                                                <div align="right">
-                                                                    <button id="send_all_space" class="btn btn-primary" type="submit" id="newdata">Send</button>
-                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                </div>
+{{--                                                        <div class="modal-body">--}}
+{{--                                                            <form method="get" action="{{ route('send_all_invoices_space')}}">--}}
+{{--                                                                {{csrf_field()}}--}}
 
-
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
+{{--                                                                <div align="right">--}}
+{{--                                                                    <button id="send_all_space" class="btn btn-primary" type="submit" id="newdata">Send</button>--}}
+{{--                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
+{{--                                                                </div>--}}
 
 
-                                            </div>
+{{--                                                            </form>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+
+
+{{--                                            </div>--}}
 
 
 
 
 
 
-                                        @else
-                                        @endif
+{{--                                        @else--}}
+{{--                                        @endif--}}
 
-
+{{--                                        @else--}}
+{{--                                        @endif--}}
 
 
 
@@ -282,7 +285,7 @@
                                                         <th scope="col" ><center>Start Date</center></th>
                                                         <th scope="col" ><center>End Date</center></th>
                                                         <th scope="col" ><center>Amount</center></th>
-                                                        <th scope="col" ><center>Payment Status</center></th>
+
                                                         <th scope="col" ><center>Invoice Date</center></th>
                                                         <th scope="col" ><center>Action</center></th>
                                                     </tr>
@@ -302,7 +305,7 @@
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                                             <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
@@ -344,7 +347,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -537,17 +540,252 @@
 
 
                                                                     @if($var->email_sent_status=='NOT SENT')
+
+                                                                          @if(Auth::user()->role=='Director DPDI')
+                                                                            <a title="Reply" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-reply"></i></a>
+                                                                                <div class="modal fade" id="send_invoice{{$var->invoice_number}}" role="dialog">
+
+                                                                                    <div class="modal-dialog" role="document">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <b><h5 class="modal-title">APPROVAL OF INVOICE</h5></b>
+
+                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                            </div>
+
+                                                                                            <div class="modal-body">
+                                                                                                <form method="post" action="{{ route('send_invoice_space',$var->invoice_number)}}"  id="form1" >
+                                                                                                    {{csrf_field()}}
+
+
+
+
+
+
+                                                                                                     <div class="form-row">
+
+
+
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="debtor_name" readonly value="{{$var->debtor_name}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Account Code</label>
+                                                                                                    <input type="text" class="form-control"  readonly name="debtor_account_code" value="{{$var->debtor_account_code}}"  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client TIN</label>
+                                                                                                    <input type="text" class="form-control"  readonly name="tin" value="{{$var->tin}}"  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="debtor_address" value="{{$var->debtor_address}}" readonly  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                                                        <div  class="form-group col-md-6 mt-1 ">
+                                                                                                            <div class="form-wrapper">
+                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
+                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <br>
+
+
+
+                                                                                                        <div class="form-group col-md-6 mt-1">
+                                                                                                            <div class="form-wrapper">
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
+
+                                                                                                            </div>
+                                                                                                        </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  readonly name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                                                    <input type="date" class="form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                                                    <input type="date" class="form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for="">Period <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="period" value="{{$var->period}}"  required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div   class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="project_id" value="{{$var->project_id}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+                                                                                            <div   class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for="">Amount <span style="color: red;">*</span></label>
+                                                                                                    <input type="number" min="20" class="form-control" readonly id="" name="amount_to_be_paid" value="{{$var->amount_to_be_paid}}" Required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <label>Currency <span style="color: red;">*</span></label>
+                                                                                                <div  class="form-wrapper">
+                                                                                                    <input type="text"  class="form-control" readonly id="" name="currency" value="{{$var->currency}}" Required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="status" value="{{$var->status}}" required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="description" value="{{$var->description}}" required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+                                                                                        </div>
+
+<br>
+
+                                                                                                     <div class="row">
+                                                                <div class="form-wrapper col-12">
+                                                                    <label for="approval_status">Do you approve this invoice?</label>
+                                                                </div>
+                                                            </div>
+
+                                                                                                                       <div class="form-group">
+
+
+
+
+                                                            <div class="row">
+                                                                <div class="form-wrapper col-6">
+                                                                    <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$var->invoice_number}}" value="Accepted" checked="">
+                                                                    <label for="Approve{{$var->invoice_number}}" class="form-check-label">Approve</label>
+                                                                </div>
+
+                                                                <div class="form-wrapper col-6">
+                                                                    <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$var->invoice_number}}" value="Rejected">
+                                                                    <label for="Reject{{$var->invoice_number}}" class="form-check-label">Decline</label>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group" id="remarksDiv{{$var->invoice_number}}" style="display: none;">
+                                                            <div class="form-wrapper">
+                                                                <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                <span id="remarksmsg{{$var->invoice_number}}"></span>
+                                                                <textarea  type="text" id="remarks{{$var->invoice_number}}" name="reason" class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <input type="text" name="id" value="{{$var->invoice_number}}" hidden="">
+
+
+
+
+                                                                                                    <br>
+                                                                                                    <div align="right">
+                                                            <button style="display:none;" class="btn btn-primary" type="submit" id="proceed{{$var->invoice_number}}" onclick=" return validate({{$var->invoice_number}})">Proceed</button>
+                                                            <button  class="btn btn-primary" type="submit" id="approve{{$var->invoice_number}}" onclick=" return validate({{$var->invoice_number}})">Approve and Send</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                                                                </form>
+
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+
+                                                                                </div>
+
+                                                                                @else
+                                                                                @endif
+
+
+
+
+
+
                                                                         @if($privileges=='Read only')
                                                                         @else
 
-                                                                            @if($var->gepg_control_no=='')
+
+                                                                            @if(Auth::user()->role=='Accountant-DPDI')
+                                                                                @if($var->gepg_control_no=='' || $var->rejected=='1')
                                                                                 <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
                                                                                 <div class="modal fade" id="add_control_number{{$var->invoice_number}}" role="dialog">
 
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding Income code, Invoice number and GePG control number</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -571,7 +809,7 @@
                                                                                                         <div style="padding-top: 2%;" class="form-group">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
+                                                                                                                <input type="number" min="1"  class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -579,6 +817,33 @@
 
 
 
+                                                                                                    @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
+
+
+
+
+
+                                                                                                    @if($var->gepg_control_no=='')
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
@@ -588,12 +853,23 @@
 
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                    @else
+                                                                                                      <div class="form-group">
+                                                                                                        <div class="form-wrapper">
+                                                                                                            <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
+
+                                                                                                            <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" Required autocomplete="off">
+                                                                                                            <p id="error_gepg_all{{$var->invoice_number}}"></p>
+
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    @endif
 
 
 
                                                                                                     <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn_all{{$var->invoice_number}}" class="btn btn-primary" type="submit">Save</button>
+                                                                                                    <div style="clear:both;" align="right">
+                                                                                                        <button id="sendbtn_all{{$var->invoice_number}}" class="btn btn-primary" type="submit">Forward</button>
                                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                                     </div>
                                                                                                 </form>
@@ -605,79 +881,17 @@
 
 
                                                                                 </div>
+
+                                                                                @else
+                                                                                @endif
+
 
                                                                             @else
                                                                             @endif
 
-                                                                            <a title="Send invoice" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-                                                                                <div class="modal fade" id="send_invoice{{$var->invoice_number}}" role="dialog">
-
-                                                                                    <div class="modal-dialog" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
-
-                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                            </div>
-
-                                                                                            <div class="modal-body">
-                                                                                                <form method="post" action="{{ route('send_invoice_space',$var->invoice_number)}}"  id="form1" >
-                                                                                                    {{csrf_field()}}
-
-
-                                                                                                    @if($var->invoice_number_votebook=='')
-                                                                                                        <div style="padding-top: 2%;" class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-
-                                                                                                    @else
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                    @endif
-
-                                                                                                    @if($var->gepg_control_no=='')
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
-                                                                                                                <p id="error_gepg{{$var->invoice_number}}"></p>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @else
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
-
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @endif
 
 
 
-                                                                                                    <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
-                                                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                                    </div>
-                                                                                                </form>
-
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-
-
-                                                                                </div>
 
                                                                         @endif
 
@@ -880,6 +1094,7 @@
                                                         <th scope="col" ><center>Invoice start date</center></th>
                                                         <th scope="col" ><center>Invoice end date</center></th>
                                                         <th scope="col" ><center>Amount</center></th>
+                                                        <th scope="col" ><center>Status</center></th>
                                                         <th scope="col" ><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -895,6 +1110,17 @@
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                                             <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
+                                                            <td><center>
+                                                                    @if($var->rejected==1)
+                                                                     <div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div>
+                                                                        @elseif($var->rejected==0)
+
+                                                                         <div ><span style="background-color: #0aac19; color:white;  padding:3px;   text-align: center;">CREATED</span> </div>
+                                                                    @else
+                                                                    @endif
+
+
+                                                                </center></td>
                                                             <td><center>
 
                                                                     <a title="View contract" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-file-text" aria-hidden="true"></i></center></a>
@@ -1014,7 +1240,12 @@
 
 
 
+
+
                                                                     <a  title="Forward invoice" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-arrow-alt-circle-right"></i></center></a>
+
+
+
                                                                     <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
                                                                         <div class="modal-dialog" role="document">
@@ -1033,6 +1264,20 @@
 
 
                                                                                         <div class="form-row">
+
+
+
+                                                                                            @if($var->rejected==1)
+                                                                                          <div class="form-group col-12">
+                                                                                        <div class="form-wrapper">
+                                                                                            <label for="remarks" style="color: red;">This invoice has been declined due to the following reason(s):</label>
+                                                                                            <textarea type="text"  name="reason" class="form-control" readonly="">{{$var->reason}}</textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <br>
+                                                            <br>
+                                                                                                @else
+                                                                                                @endif
 
 
 
@@ -1075,12 +1320,12 @@
                                                                                                 </div>
                                                                                             </div>
 
-                                                                                            <div  class="form-group col-md-12 mt-1">
-                                                                                                <div class="form-wrapper">
-                                                                                                    <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                                </div>
-                                                                                            </div>
+{{--                                                                                            <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                                <div class="form-wrapper">--}}
+{{--                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                                </div>--}}
+{{--                                                                                            </div>--}}
 
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
@@ -1278,7 +1523,7 @@
                                         @endif
 
                                     </div>
-                                @elseif (Auth::user()->role=='Accountant-DPDI')
+                                @elseif (Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='Director DPDI')
 
                                     <div id="space_invoice_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner">
                                         <br>
@@ -1303,6 +1548,7 @@
                                                         <th scope="col" ><center>Amount</center></th>
                                                         <th scope="col" ><center>Payment Status</center></th>
                                                         <th scope="col" ><center>Invoice Date</center></th>
+                                                        <th scope="col" ><center>Stage</center></th>
                                                         <th scope="col" ><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -1321,7 +1567,14 @@
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                                             <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td><center>
+
+                                                                    @if($var->email_sent_status=='NOT SENT')
+                                                                        N/A
+                                                                    @else
+                                                                    {{$var->payment_status}}
+                                                                    @endif
+                                                                </center></td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
@@ -1330,6 +1583,18 @@
 
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
 
+                                                            <td><center>
+                                                                    @if($var->rejected==1)
+                                                                        Planning Officer
+
+                                                                    @elseif($var->email_sent_status=='NOT SENT')
+                                                                        Director- DPDI
+                                                                    @else
+                                                                    CLIENT
+                                                                    @endif
+
+
+                                                                </center>  </td>
 
                                                             <td><center>
 
@@ -1364,7 +1629,7 @@
 
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -1625,75 +1890,75 @@
                                                                             @else
                                                                             @endif
 
-                                                                            <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_outbox{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-                                                                                <div class="modal fade" id="send_invoice_outbox{{$var->invoice_number}}" role="dialog">
+{{--                                                                            <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_outbox{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>--}}
+{{--                                                                                <div class="modal fade" id="send_invoice_outbox{{$var->invoice_number}}" role="dialog">--}}
 
-                                                                                    <div class="modal-dialog" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
+{{--                                                                                    <div class="modal-dialog" role="document">--}}
+{{--                                                                                        <div class="modal-content">--}}
+{{--                                                                                            <div class="modal-header">--}}
+{{--                                                                                                <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>--}}
 
-                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                            </div>
+{{--                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+{{--                                                                                            </div>--}}
 
-                                                                                            <div class="modal-body">
-                                                                                                <form method="post" action="{{ route('send_invoice_space',$var->invoice_number)}}"  id="form1" >
-                                                                                                    {{csrf_field()}}
-
-
-                                                                                                    @if($var->invoice_number_votebook=='')
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-
-                                                                                                    @else
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                    @endif
-
-                                                                                                    @if($var->gepg_control_no=='')
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
-                                                                                                                <p id="error_gepg{{$var->invoice_number}}"></p>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @else
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
-
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @endif
+{{--                                                                                            <div class="modal-body">--}}
+{{--                                                                                                <form method="post" action="{{ route('send_invoice_space',$var->invoice_number)}}"  id="form1" >--}}
+{{--                                                                                                    {{csrf_field()}}--}}
 
 
+{{--                                                                                                    @if($var->invoice_number_votebook=='')--}}
+{{--                                                                                                        <div style="padding-top: 2%;" class="form-group ">--}}
+{{--                                                                                                            <div class="form-wrapper">--}}
+{{--                                                                                                                <label for=""  >Invoice Number <span style="color: red;">*</span></label>--}}
+{{--                                                                                                                <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">--}}
+{{--                                                                                                            </div>--}}
+{{--                                                                                                        </div>--}}
+{{--                                                                                                        <br>--}}
 
-                                                                                                    <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
-                                                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                                    </div>
-                                                                                                </form>
+{{--                                                                                                    @else--}}
+{{--                                                                                                        <div style="padding-top: 2%;" class="form-group ">--}}
+{{--                                                                                                            <div class="form-wrapper">--}}
+{{--                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>--}}
+{{--                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">--}}
+{{--                                                                                                            </div>--}}
+{{--                                                                                                        </div>--}}
+{{--                                                                                                        <br>--}}
+{{--                                                                                                    @endif--}}
+
+{{--                                                                                                    @if($var->gepg_control_no=='')--}}
+{{--                                                                                                        <div class="form-group">--}}
+{{--                                                                                                            <div class="form-wrapper">--}}
+{{--                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>--}}
+{{--                                                                                                                <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">--}}
+{{--                                                                                                                <p id="error_gepg{{$var->invoice_number}}"></p>--}}
+{{--                                                                                                            </div>--}}
+{{--                                                                                                        </div>--}}
+{{--                                                                                                    @else--}}
+{{--                                                                                                        <div class="form-group">--}}
+{{--                                                                                                            <div class="form-wrapper">--}}
+{{--                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>--}}
+{{--                                                                                                                <input  id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">--}}
+
+{{--                                                                                                            </div>--}}
+{{--                                                                                                        </div>--}}
+{{--                                                                                                    @endif--}}
 
 
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
+
+{{--                                                                                                    <br>--}}
+{{--                                                                                                    <div align="right">--}}
+{{--                                                                                                        <button id="sendbtn{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>--}}
+{{--                                                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
+{{--                                                                                                    </div>--}}
+{{--                                                                                                </form>--}}
 
 
-                                                                                </div>
+{{--                                                                                            </div>--}}
+{{--                                                                                        </div>--}}
+{{--                                                                                    </div>--}}
+
+
+{{--                                                                                </div>--}}
 
                                                                         @endif
 
@@ -1974,12 +2239,12 @@
 
 
 
-                                                                <div style="display: none;" id="inc_codeDiv" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_codeDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
 
                                                                 <div style="display: none;" id="invoicing_period_start_dateDiv" class="form-group col-md-6 mt-1">
@@ -2218,7 +2483,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -2851,12 +3116,12 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div style="display: none;" id="inc_codeDiv" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_codeDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
 
 
@@ -3096,7 +3361,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -3881,7 +4146,7 @@
 
                                                                                         <div  class="form-group col-md-12 mt-1">
                                                                                             <div class="form-wrapper">
-                                                                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                                                <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                                                                 <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
                                                                                             </div>
                                                                                         </div>
@@ -4166,7 +4431,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -4775,12 +5040,12 @@
 
 
 
-                                                                <div style="display: none;" id="inc_codeDiv" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_codeDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
 
 
@@ -5020,7 +5285,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -5659,12 +5924,12 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div style="display: none;" id="inc_codeDiv" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_codeDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control" id="inc_code" name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
                                                                 <div style="display: none;" id="invoicing_period_start_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
@@ -5902,7 +6167,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -6453,11 +6718,11 @@
                     @endif
 
                     {{--Water bill starts--}}
-                    @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner')
+                    @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner' || Auth::user()->role=='Director DPDI')
 
                         <div id="water_invoices" style="   " class="tabcontent_inner">
 
-                            @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner')
+                            @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner' || Auth::user()->role=='Director DPDI')
 
 
                                 <br>
@@ -6470,43 +6735,43 @@
 
 
 
-                                @if(Auth::user()->role=='Accountant-DPDI')
+                                @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='Director DPDI')
                                     {{--                      water invoice  inbox start--}}
                                     <div  id="water_invoice_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner_water">
                                         <br>
 
-                                        @if($water_invoice_inbox!='')
-                                            <div style="float:right; margin-bottom: 1%;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_water"  role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>
+{{--                                        @if($water_invoice_inbox!='')--}}
+{{--                                            <div style="float:right; margin-bottom: 1%;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_water"  role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>--}}
 
-                                            <div class="modal fade" id="send_invoice_water" role="dialog">
+{{--                                            <div class="modal fade" id="send_invoice_water" role="dialog">--}}
 
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title">Sending all invoices to respective clients</h5></b>
+{{--                                                <div class="modal-dialog" role="document">--}}
+{{--                                                    <div class="modal-content">--}}
+{{--                                                        <div class="modal-header">--}}
+{{--                                                            <b><h5 class="modal-title">Sending all invoices to respective clients</h5></b>--}}
 
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
+{{--                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+{{--                                                        </div>--}}
 
-                                                        <div class="modal-body">
-                                                            <form method="get" action="{{ route('send_all_invoices_water')}}" >
-                                                                {{csrf_field()}}
+{{--                                                        <div class="modal-body">--}}
+{{--                                                            <form method="get" action="{{ route('send_all_invoices_water')}}" >--}}
+{{--                                                                {{csrf_field()}}--}}
 
-                                                                <div align="right">
-                                                                    <button id="send_all_water" class="btn btn-primary" type="submit" id="newdata">Send</button>
-                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                </div>
-
-
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
+{{--                                                                <div align="right">--}}
+{{--                                                                    <button id="send_all_water" class="btn btn-primary" type="submit" id="newdata">Send</button>--}}
+{{--                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
+{{--                                                                </div>--}}
 
 
-                                            </div>
-                                        @else
-                                        @endif
+{{--                                                            </form>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+
+
+{{--                                            </div>--}}
+{{--                                        @else--}}
+{{--                                        @endif--}}
 
 
 
@@ -6593,7 +6858,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -6619,10 +6884,39 @@
                                                                                             <td> {{$var->project_id}}</td>
                                                                                         </tr>
 
+
+                                                                                        <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
+
+
                                                                                         <tr>
                                                                                             <td> Debt:</td>
                                                                                             <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
                                                                                         </tr>
+
+
+
+
                                                                                         <tr>
                                                                                             <td>Current Amount:</td>
                                                                                             @if($var->current_amount==0)
@@ -6787,10 +7081,283 @@
 
 
                                                                     @if($var->email_sent_status=='NOT SENT')
+
+ @if(Auth::user()->role=='Director DPDI')
+                                                                            <a title="Reply" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-reply"></i></a>
+                                                                                <div class="modal fade" id="send_invoice_water{{$var->invoice_number}}" role="dialog">
+
+                                                                                    <div class="modal-dialog" role="document">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <b><h5 class="modal-title">APPROVAL OF INVOICE</h5></b>
+
+                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                            </div>
+
+                                                                                            <div class="modal-body">
+                                                                                                <form method="post" action="{{ route('send_invoice_water_bills',$var->invoice_number)}}"  id="form1" >
+                                                                                                    {{csrf_field()}}
+
+
+
+
+
+
+                                                                                                     <div class="form-row">
+
+
+
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="debtor_name" readonly value="{{$var->debtor_name}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Account Code</label>
+                                                                                                    <input type="text" class="form-control"  readonly name="debtor_account_code" value="{{$var->debtor_account_code}}"  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client TIN</label>
+                                                                                                    <input type="text" class="form-control"  readonly name="tin" value="{{$var->tin}}"  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="debtor_address" value="{{$var->debtor_address}}" readonly  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                                                        <div  class="form-group col-md-6 mt-1 ">
+                                                                                                            <div class="form-wrapper">
+                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
+                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <br>
+
+
+
+                                                                                                        <div class="form-group col-md-6 mt-1">
+                                                                                                            <div class="form-wrapper">
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <input   type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
+
+                                                                                                            </div>
+                                                                                                        </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for="" >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  readonly name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                                                    <input type="date" class="form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                                                    <input type="date" class="form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for="">Period <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="period" value="{{$var->period}}"  required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div   class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="project_id" value="{{$var->project_id}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Beginning Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="text" readonly  class="form-control"   name="begin_units" value="{{$var->begin_units}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">End Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="text"  readonly class="form-control"  name="end_units" value="{{$var->end_units}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Units consumed</label>
+                                                                        <input type="text"  class="form-control"  readonly name="units_usage" value="{{$var->consumed_units}}" Required  autocomplete="off">
+                                                                        <p class="pt-1"><b>N.B</b> Unit price is {{$var->unit_price}} TZS</p>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Debt </label>
+                                                                        <input type="text"  class="form-control" readonly  name="debt" value="{{$var->debt}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Current Amount </label>
+                                                                        <input type="text"  class="form-control" readonly  name="current_amount" value="{{$var->current_amount}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Cumulative Amount(Amount to be paid) </label>
+                                                                        <input type="text"  readonly class="form-control"  name="amount_to_be_paid" value="{{$var->cumulative_amount}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <label>Currency <span style="color: red;">*</span></label>
+                                                                                                <div  class="form-wrapper">
+                                                                                                    <input type="text"  class="form-control" readonly id="" name="currency" value="{{$var->currency}}" Required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="status" value="{{$var->status}}" required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="description" value="{{$var->description}}" required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+                                                                                        </div>
+
+<br>
+
+                                                                                                     <div class="row">
+                                                                <div class="form-wrapper col-12">
+                                                                    <label for="approval_status">Do you approve this invoice?</label>
+                                                                </div>
+                                                            </div>
+
+                                                                                                                       <div class="form-group">
+
+
+
+
+                                                            <div class="row">
+                                                                <div class="form-wrapper col-6">
+                                                                    <input class="form-check-input" type="radio" name="approval_status_water" id="Approve_water{{$var->invoice_number}}" value="Accepted" checked="">
+                                                                    <label for="Approve_water{{$var->invoice_number}}" class="form-check-label">Approve</label>
+                                                                </div>
+
+                                                                <div class="form-wrapper col-6">
+                                                                    <input class="form-check-input" type="radio" name="approval_status_water" id="Reject_water{{$var->invoice_number}}" value="Rejected">
+                                                                    <label for="Reject_water{{$var->invoice_number}}" class="form-check-label">Decline</label>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group" id="remarks_waterDiv{{$var->invoice_number}}" style="display: none;">
+                                                            <div class="form-wrapper">
+                                                                <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                <span id="remarks_water_msg{{$var->invoice_number}}"></span>
+                                                                <textarea  type="text" id="remarks_water{{$var->invoice_number}}" name="reason" class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <input type="text" name="id" value="{{$var->invoice_number}}" hidden="">
+
+
+
+
+                                                                                                    <br>
+                                                                                                    <div align="right">
+                                                            <button style="display:none;" class="btn btn-primary" type="submit" id="proceed_water{{$var->invoice_number}}" onclick=" return validateWater({{$var->invoice_number}})">Proceed</button>
+                                                            <button  class="btn btn-primary" type="submit" id="approve_water{{$var->invoice_number}}" onclick=" return validateWater({{$var->invoice_number}})">Approve and Send</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                                                                </form>
+
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+
+                                                                                </div>
+
+                                                                                @else
+                                                                                @endif
+
                                                                         @if($privileges=='Read only')
                                                                         @else
 
-                                                                            @if($var->gepg_control_no=='')
+                                                                            @if(Auth::user()->role=='Accountant-DPDI')
+                                                                                @if($var->gepg_control_no=='' || $var->rejected=='1')
                                                                                 <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                                 <div class="modal fade" id="add_control_number_water{{$var->invoice_number}}" role="dialog">
@@ -6798,7 +7365,7 @@
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding Income code, Invoice number and GePG control number</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -6850,11 +7417,35 @@
                                                                                                     @endif
 
 
+
+                                                                                                         @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
+
+
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
 
-                                                                                                            <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="" Required autocomplete="off">
+                                                                                                            <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWaterAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" Required autocomplete="off">
                                                                                                             <p id="error_gepg_water_all{{$var->invoice_number}}"></p>
 
                                                                                                         </div>
@@ -6863,8 +7454,8 @@
 
 
                                                                                                     <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn_water_all{{$var->invoice_number}}" class="btn btn-primary" type="submit">Save</button>
+                                                                                                    <div style="clear: both;" align="right">
+                                                                                                        <button id="sendbtn_water_all{{$var->invoice_number}}" class="btn btn-primary" type="submit">Forward</button>
                                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                                     </div>
                                                                                                 </form>
@@ -6876,103 +7467,14 @@
 
 
                                                                                 </div>
+                                                                              @else
+                                                                                @endif
+
+
                                                                             @else
                                                                             @endif
 
-                                                                            <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-                                                                                <div class="modal fade" id="send_invoice_water{{$var->invoice_number}}" role="dialog">
 
-                                                                                    <div class="modal-dialog" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
-
-                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                            </div>
-
-                                                                                            <div class="modal-body">
-                                                                                                <form method="post" action="{{ route('send_invoice_water_bills',$var->invoice_number)}}"  id="form1" >
-                                                                                                    {{csrf_field()}}
-
-                                                                                                    {{--                                                                            <div class="form-group row">--}}
-
-                                                                                                    {{--                                                                                <div class="form-wrapper col-6">--}}
-                                                                                                    {{--                                                                                    <label for="amount">Current Amount</label>--}}
-                                                                                                    {{--                                                                                    <input id="gepg{{$var->invoice_number}}" type="number" min="0" id="amount" name="current_amount" class="form-control" required="">--}}
-                                                                                                    {{--                                                                                </div>--}}
-
-                                                                                                    {{--                                                                                <div class="form-wrapper col-6">--}}
-                                                                                                    {{--                                                                                    <label for="currency">Currency</label>--}}
-                                                                                                    {{--                                                                                    <select id="currency" class="form-control" name="currency" >--}}
-                                                                                                    {{--                                                                                        <option value="{{$var->currency_invoice}}" >{{$var->currency_invoice}}</option>--}}
-
-                                                                                                    {{--                                                                                    </select>--}}
-                                                                                                    {{--                                                                                </div>--}}
-
-
-
-                                                                                                    {{--                                                                            </div>--}}
-
-                                                                                                    {{--                                                                            <br>--}}
-
-
-                                                                                                    @if($var->invoice_number_votebook=='')
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-
-                                                                                                    @else
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                    @endif
-
-
-                                                                                                    @if($var->gepg_control_no=='')
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
-                                                                                                                <p id="error_gepg_water{{$var->invoice_number}}"></p>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @else
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
-
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @endif
-
-
-
-
-
-
-                                                                                                    <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn_water{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
-                                                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                                    </div>
-                                                                                                </form>
-
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-
-
-                                                                                </div>
 
 
                                                                         @endif
@@ -7179,6 +7681,7 @@
                                                         <th scope="col" ><center>Invoice start date</center></th>
                                                         <th scope="col" ><center>Invoice end date</center></th>
                                                         <th scope="col" ><center>Amount</center></th>
+                                                        <th scope="col" ><center>Status</center></th>
                                                         <th scope="col" ><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -7194,6 +7697,22 @@
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                                             <td><center>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</center></td>
+
+
+
+                                                                <td><center>
+                                                                    @if($var->rejected==1)
+                                                                     <div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div>
+                                                                        @elseif($var->rejected==0)
+
+                                                                         <div ><span style="background-color: #0aac19; color:white;  padding:3px;   text-align: center;">CREATED</span> </div>
+                                                                    @else
+                                                                    @endif
+
+
+                                                                </center></td>
+
+
                                                             <td><center>
 
                                                                     <a title="View contract" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract_water{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fa fa-file-text" aria-hidden="true"></i></center></a>
@@ -7359,12 +7878,12 @@
                                                                                                 </div>
                                                                                             </div>
 
-                                                                                            <div  class="form-group col-md-12 mt-1">
-                                                                                                <div class="form-wrapper">
-                                                                                                    <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                                </div>
-                                                                                            </div>
+{{--                                                                                            <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                                <div class="form-wrapper">--}}
+{{--                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                                </div>--}}
+{{--                                                                                            </div>--}}
 
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
@@ -7401,16 +7920,60 @@
 
 
 
-                                                                                            <div   class="form-group col-md-6 mt-1">
-                                                                                                <div class="form-wrapper">
-                                                                                                    <label for="">Amount <span style="color: red;">*</span></label>
-                                                                                                    <input type="number" min="20" class="form-control" id="" name="amount_to_be_paid" value="{{$var->cumulative_amount}}" Required  autocomplete="off">
-                                                                                                </div>
-                                                                                            </div>
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Beginning Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="text"   class="form-control"   name="begin_units" value="{{$var->begin_units}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">End Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="text"   class="form-control"  name="end_units" value="{{$var->end_units}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Units consumed</label>
+                                                                        <input type="text"  class="form-control"  name="units_usage" value="{{$var->consumed_units}}" Required  autocomplete="off">
+                                                                        <p class="pt-1"><b>N.B</b> Unit price is {{$var->unit_price}} TZS</p>
+                                                                    </div>
+                                                                </div>
 
 
 
-                                                                                            <div  class="form-group col-md-6 mt-1">
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Debt </label>
+                                                                        <input type="text"  class="form-control"   name="debt" value="{{$var->debt}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Current Amount </label>
+                                                                        <input type="text"  class="form-control"   name="current_amount" value="{{$var->current_amount}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Cumulative Amount(Amount to be paid) </label>
+                                                                        <input type="text"   class="form-control"  name="amount_to_be_paid" value="{{$var->cumulative_amount}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
                                                                                                 <label>Currency <span style="color: red;">*</span></label>
                                                                                                 <div  class="form-wrapper">
                                                                                                     <select id="" class="form-control" required name="currency">
@@ -7564,7 +8127,7 @@
                                         @endif
 
                                     </div>
-                                @elseif (Auth::user()->role=='Accountant-DPDI')
+                                @elseif (Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='Director DPDI')
 
                                     <div id="water_invoice_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner_water">
                                         <br>
@@ -7589,6 +8152,7 @@
                                                         <th scope="col" ><center>Amount</center></th>
                                                         <th scope="col" ><center>Payment Status</center></th>
                                                         <th scope="col" ><center>Invoice Date</center></th>
+                                                        <th scope="col" ><center>Stage</center></th>
                                                         <th scope="col" ><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -7607,7 +8171,14 @@
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                                             <td><center>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                             <td><center>
+
+                                                                    @if($var->email_sent_status=='NOT SENT')
+                                                                        N/A
+                                                                    @else
+                                                                    {{$var->payment_status}}
+                                                                    @endif
+                                                                </center></td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
@@ -7616,6 +8187,18 @@
 
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
 
+                                                            <td><center>
+                                                                    @if($var->rejected==1)
+                                                                        Planning Officer
+
+                                                                    @elseif($var->email_sent_status=='NOT SENT')
+                                                                        Director- DPDI
+                                                                    @else
+                                                                    CLIENT
+                                                                    @endif
+
+
+                                                                </center>  </td>
 
                                                             <td><center>
 
@@ -7635,81 +8218,124 @@
                                                                                 </div>
 
                                                                                 <div class="modal-body">
-                                                                                    <table class="table table-striped table-bordered " style="width: 100%">
+                                                                                  <table class="table table-striped table-bordered" style="width: 100%">
 
-                                                                                        <tr>
-                                                                                            <td>Client:</td>
-                                                                                            <td>{{$var->debtor_name}}</td>
+                                                                                    <tr>
+                                                                                        <td>Client:</td>
+                                                                                        <td>{{$var->debtor_name}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Invoice Number:</td>
+                                                                                        <td>{{$var->invoice_number_votebook}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Income(Inc) Code:</td>
+                                                                                        <td>{{$var->inc_code}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td> Start Date:</td>
+                                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td> End Date:</td>
+                                                                                        <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td> Period:</td>
+                                                                                        <td> {{$var->period}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td> Project ID:</td>
+                                                                                        <td> {{$var->project_id}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
                                                                                         </tr>
 
 
                                                                                         <tr>
-                                                                                            <td>Invoice Number:</td>
-                                                                                            <td>{{$var->invoice_number_votebook}}</td>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
-                                                                                            <td>{{$var->inc_code}}</td>
-                                                                                        </tr>
-
-                                                                                        <tr>
-                                                                                            <td> Start Date:</td>
-                                                                                            <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
                                                                                         </tr>
 
 
                                                                                         <tr>
-                                                                                            <td> End Date:</td>
-                                                                                            <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
-                                                                                        </tr>
-
-                                                                                        <tr>
-                                                                                            <td> Period:</td>
-                                                                                            <td> {{$var->period}}</td>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
                                                                                         </tr>
 
 
-                                                                                        <tr>
-                                                                                            <td> Project ID:</td>
-                                                                                            <td> {{$var->project_id}}</td>
-                                                                                        </tr>
+                                                                                    <tr>
+                                                                                        <td> Debt:</td>
+                                                                                        <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Current Amount:</td>
+                                                                                        @if($var->current_amount==0)
+                                                                                            <td>N/A</td>
+                                                                                        @else
+                                                                                            <td>{{number_format($var->current_amount)}} {{$var->currency_invoice}}</td>
+                                                                                        @endif
 
-                                                                                        <tr>
-                                                                                            <td> Amount:</td>
-                                                                                            <td> {{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
-                                                                                        </tr>
+                                                                                    </tr>
 
+                                                                                    <tr>
 
-                                                                                        <tr>
-                                                                                            <td>GePG Control Number:</td>
-                                                                                            <td>{{$var->gepg_control_no}}</td>
-                                                                                        </tr>
-
-                                                                                        <tr>
-                                                                                            <td>Payment Status:</td>
-                                                                                            <td>{{$var->payment_status}}</td>
-                                                                                        </tr>
-
-
-                                                                                        <tr>
-                                                                                            <td>Invoice Date:</td>
-                                                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
-                                                                                        </tr>
+                                                                                        <td>Cumulative Amount:</td>
+                                                                                        @if($var->cumulative_amount==0)
+                                                                                            <td>N/A</td>
+                                                                                        @else
+                                                                                            <td>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
+                                                                                        @endif
+                                                                                    </tr>
 
 
+                                                                                    <tr>
+                                                                                        <td>GePG Control Number:</td>
+                                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                                    </tr>
 
-                                                                                        <tr>
-                                                                                            <td>Comments:</td>
-                                                                                            <td>{{$var->user_comments}}</td>
-                                                                                        </tr>
+                                                                                    <tr>
+                                                                                        <td>Payment Status:</td>
+                                                                                        <td>{{$var->payment_status}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Invoice Date:</td>
+                                                                                        <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                                    </tr>
+
+
+
+                                                                                    <tr>
+                                                                                        <td>Comments:</td>
+                                                                                        <td>{{$var->user_comments}}</td>
+                                                                                    </tr>
 
 
 
 
 
 
-                                                                                    </table>
+                                                                                </table>
                                                                                     <br>
                                                                                     <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
                                                                                 </div>
@@ -7929,101 +8555,7 @@
                                                                             @else
                                                                             @endif
 
-                                                                            <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_outbox_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
-                                                                                <div class="modal fade" id="send_invoice_outbox_water{{$var->invoice_number}}" role="dialog">
-
-                                                                                    <div class="modal-dialog" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
-
-                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                            </div>
-
-                                                                                            <div class="modal-body">
-                                                                                                <form method="post" action="{{ route('send_invoice_water_bills',$var->invoice_number)}}"  id="form1" >
-                                                                                                    {{csrf_field()}}
-
-                                                                                                    {{--                                                                            <div class="form-group row">--}}
-
-                                                                                                    {{--                                                                                <div class="form-wrapper col-6">--}}
-                                                                                                    {{--                                                                                    <label for="amount">Current Amount</label>--}}
-                                                                                                    {{--                                                                                    <input id="gepg{{$var->invoice_number}}" type="number" min="0" id="amount" name="current_amount" class="form-control" required="">--}}
-                                                                                                    {{--                                                                                </div>--}}
-
-                                                                                                    {{--                                                                                <div class="form-wrapper col-6">--}}
-                                                                                                    {{--                                                                                    <label for="currency">Currency</label>--}}
-                                                                                                    {{--                                                                                    <select id="currency" class="form-control" name="currency" >--}}
-                                                                                                    {{--                                                                                        <option value="{{$var->currency_invoice}}" >{{$var->currency_invoice}}</option>--}}
-
-                                                                                                    {{--                                                                                    </select>--}}
-                                                                                                    {{--                                                                                </div>--}}
-
-
-
-                                                                                                    {{--                                                                            </div>--}}
-
-                                                                                                    {{--                                                                            <br>--}}
-
-
-                                                                                                    @if($var->invoice_number_votebook=='')
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-
-                                                                                                    @else
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                    @endif
-
-
-                                                                                                    @if($var->gepg_control_no=='')
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
-                                                                                                                <p id="error_gepg_water{{$var->invoice_number}}"></p>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @else
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControlWater(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
-
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @endif
-
-
-
-
-
-
-                                                                                                    <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn_water{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
-                                                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                                    </div>
-                                                                                                </form>
-
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-
-
-                                                                                </div>
 
                                                                         @endif
 
@@ -8304,12 +8836,12 @@
                                                                 </div>
 
 
-                                                                <div style="display: none;" id="inc_code_waterDiv" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_code_waterDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
 
 
@@ -8339,15 +8871,41 @@
 
 
 
+                                                                <div id="begin_unitsDiv" style="display: none;" class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Beginning Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="number" min="1" class="form-control"  id="begin_units" name="begin_units" value="" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
 
 
+                                                                <div id="end_unitsDiv" style="display: none;" class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">End Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="number" min="1" class="form-control" id="end_units" name="end_units" value="" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
 
 
+                                                                <div id="units_usageDiv" style="display: none;" class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Units consumed</label>
+                                                                        <input type="number" min="1" class="form-control" id="units_usage" readonly name="units_usage" value="" Required  autocomplete="off">
+
+                                                                        <?php
+                                                                        $unit_price_water=DB::table('system_settings')->where('id',1)->value('unit_price_water');
+                                                                        ?>
+
+                                                                        <p class="pt-1"><b>N.B</b> Unit price is {{$unit_price_water}}</p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <input type="hidden" name="unit_price" value="{{$unit_price_water}}">
 
 
                                                                 <div id="debt_waterDiv" style="display: none;" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
-                                                                        <label for="">Debt <span style="color: red;">*</span></label>
+                                                                        <label for="">Debt </label>
                                                                         <input type="number" min="0" class="form-control" readonly id="debt_water" name="debt" value="" Required  autocomplete="off">
                                                                     </div>
                                                                 </div>
@@ -8355,15 +8913,15 @@
 
                                                                 <div id="current_amount_waterDiv" style="display: none;" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
-                                                                        <label for="">Current Amount <span style="color: red;">*</span></label>
-                                                                        <input type="number" min="20" class="form-control" id="current_amount_water" name="current_amount" value="" Required  autocomplete="off">
+                                                                        <label for="">Current Amount </label>
+                                                                        <input type="number" min="20" class="form-control" readonly id="current_amount_water" name="current_amount" value="" Required  autocomplete="off">
                                                                     </div>
                                                                 </div>
 
 
                                                                 <div id="cumulative_amount_waterDiv" style="display: none;" class="form-group col-md-12 mt-1">
                                                                     <div class="form-wrapper">
-                                                                        <label for="">Cumulative Amount <span style="color: red;">*</span></label>
+                                                                        <label for="">Cumulative Amount </label>
                                                                         <input type="number" min="20" readonly class="form-control" id="cumulative_amount_water" name="cumulative_amount" value="" Required  autocomplete="off">
                                                                     </div>
                                                                 </div>
@@ -8555,7 +9113,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -8580,6 +9138,30 @@
                                                                                         <td> Project ID:</td>
                                                                                         <td> {{$var->project_id}}</td>
                                                                                     </tr>
+
+
+                                                                                    <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
 
                                                                                     <tr>
                                                                                         <td> Debt:</td>
@@ -9245,12 +9827,12 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div style="display: none;" id="inc_code_water2Div" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_code_water2Div" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_waterDiv">
                                                                     <div class="form-wrapper">
@@ -9492,7 +10074,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -9517,6 +10099,28 @@
                                                                                         <td> Project ID:</td>
                                                                                         <td> {{$var->project_id}}</td>
                                                                                     </tr>
+
+                                                                                    <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
 
                                                                                     <tr>
                                                                                         <td> Debt:</td>
@@ -10315,12 +10919,12 @@
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <div  class="form-group col-md-12 mt-1">
-                                                                                            <div class="form-wrapper">
-                                                                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                            </div>
-                                                                                        </div>
+{{--                                                                                        <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                            <div class="form-wrapper">--}}
+{{--                                                                                                <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                            </div>--}}
+{{--                                                                                        </div>--}}
 
                                                                                         <div  class="form-group col-md-6 mt-1">
                                                                                             <div class="form-wrapper">
@@ -10602,7 +11206,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -10627,6 +11231,30 @@
                                                                                             <td> Project ID:</td>
                                                                                             <td> {{$var->project_id}}</td>
                                                                                         </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
 
                                                                                         <tr>
                                                                                             <td> Debt:</td>
@@ -11259,12 +11887,12 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div style="display: none;" id="inc_code_water3Div" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_code_water3Div" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_waterDiv">
                                                                     <div class="form-wrapper">
@@ -11505,7 +12133,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -11530,6 +12158,30 @@
                                                                                         <td> Project ID:</td>
                                                                                         <td> {{$var->project_id}}</td>
                                                                                     </tr>
+
+
+                                                                                    <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
 
                                                                                     <tr>
                                                                                         <td> Debt:</td>
@@ -12195,12 +12847,12 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div style="display: none;" id="inc_code_water4Div" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_code_water4Div" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_waterDiv">
                                                                     <div class="form-wrapper">
@@ -12443,7 +13095,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -12468,6 +13120,29 @@
                                                                                         <td> Project ID:</td>
                                                                                         <td> {{$var->project_id}}</td>
                                                                                     </tr>
+
+                                                                                    <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
 
                                                                                     <tr>
                                                                                         <td> Debt:</td>
@@ -13050,11 +13725,11 @@
 
                     {{--                        Electricity  bill starts--}}
 
-                    @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner')
+                    @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner' || Auth::user()->role=='Director DPDI')
 
                         <div id="electricity_invoices" style="   " class="tabcontent_inner">
 
-                            @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner')
+                            @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='DPDI Planner' || Auth::user()->role=='Director DPDI')
 
 
                                 <br>
@@ -13067,42 +13742,42 @@
 
 
 
-                                @if(Auth::user()->role=='Accountant-DPDI')
+                                @if(Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='Director DPDI')
                                     {{--                      electricity invoice  inbox start--}}
                                     <div  id="electricity_invoice_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner_electricity">
                                         <br>
 
-                                        @if($electricity_invoice_inbox!='')
-                                            <div style="float:right; margin-bottom: 1%;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_electricity"  role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>
-                                            <div class="modal fade" id="send_invoice_electricity" role="dialog">
+{{--                                        @if($electricity_invoice_inbox!='')--}}
+{{--                                            <div style="float:right; margin-bottom: 1%;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#send_invoice_electricity"  role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true"></i> Send All Invoices</a></div>--}}
+{{--                                            <div class="modal fade" id="send_invoice_electricity" role="dialog">--}}
 
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title">Sending all invoices to respective clients</h5></b>
+{{--                                                <div class="modal-dialog" role="document">--}}
+{{--                                                    <div class="modal-content">--}}
+{{--                                                        <div class="modal-header">--}}
+{{--                                                            <b><h5 class="modal-title">Sending all invoices to respective clients</h5></b>--}}
 
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
+{{--                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+{{--                                                        </div>--}}
 
-                                                        <div class="modal-body">
-                                                            <form method="get" action="{{ route('send_all_invoices_electricity')}}">
-                                                                {{csrf_field()}}
+{{--                                                        <div class="modal-body">--}}
+{{--                                                            <form method="get" action="{{ route('send_all_invoices_electricity')}}">--}}
+{{--                                                                {{csrf_field()}}--}}
 
-                                                                <div align="right">
-                                                                    <button id="send_all_electricity" class="btn btn-primary" type="submit" id="newdata">Send</button>
-                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                </div>
-
-
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
+{{--                                                                <div align="right">--}}
+{{--                                                                    <button id="send_all_electricity" class="btn btn-primary" type="submit" id="newdata">Send</button>--}}
+{{--                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
+{{--                                                                </div>--}}
 
 
-                                            </div>
-                                        @else
-                                        @endif
+{{--                                                            </form>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+
+
+{{--                                            </div>--}}
+{{--                                        @else--}}
+{{--                                        @endif--}}
 
 
 
@@ -13189,7 +13864,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -13214,6 +13889,30 @@
                                                                                             <td> Project ID:</td>
                                                                                             <td> {{$var->project_id}}</td>
                                                                                         </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
 
                                                                                         <tr>
                                                                                             <td> Debt:</td>
@@ -13385,9 +14084,286 @@
 
 
                                                                     @if($var->email_sent_status=='NOT SENT')
+
+                                                                            @if(Auth::user()->role=='Director DPDI')
+
+                                                                            <a title="Reply" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-reply"></i></a>
+                                                                                <div class="modal fade" id="send_invoice_electricity{{$var->invoice_number}}" role="dialog">
+
+                                                                                    <div class="modal-dialog" role="document">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <b><h5 class="modal-title">APPROVAL OF INVOICE</h5></b>
+
+                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                            </div>
+
+                                                                                            <div class="modal-body">
+                                                                                                <form method="post" action="{{ route('send_invoice_electricity_bills',$var->invoice_number)}}"  id="form1" >
+                                                                                                    {{csrf_field()}}
+
+
+
+
+
+
+                                                                                                     <div class="form-row">
+
+
+
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="debtor_name" readonly value="{{$var->debtor_name}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Account Code</label>
+                                                                                                    <input type="text" class="form-control"  readonly name="debtor_account_code" value="{{$var->debtor_account_code}}"  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client TIN</label>
+                                                                                                    <input type="text" class="form-control"  readonly name="tin" value="{{$var->tin}}"  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="debtor_address" value="{{$var->debtor_address}}" readonly  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                                                        <div  class="form-group col-md-6 mt-1 ">
+                                                                                                            <div class="form-wrapper">
+                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
+                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <br>
+
+
+
+                                                                                                        <div class="form-group col-md-6 mt-1">
+                                                                                                            <div class="form-wrapper">
+                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
+                                                                                                                <input   type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minControl(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control" id="course_name" name="gepg_control_no" value="{{$var->gepg_control_no}}" readonly autocomplete="off">
+
+                                                                                                            </div>
+                                                                                                        </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for="" >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  readonly name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                                                    <input type="date" class="form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-6 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                                                    <input type="date" class="form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for="">Period <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="period" value="{{$var->period}}"  required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div   class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="project_id" value="{{$var->project_id}}" Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Beginning Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="text" readonly  class="form-control"   name="begin_units" value="{{$var->begin_units}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">End Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="text"  readonly class="form-control"  name="end_units" value="{{$var->end_units}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Units consumed</label>
+                                                                        <input type="text"  class="form-control"  readonly name="units_usage" value="{{$var->consumed_units}}" Required  autocomplete="off">
+                                                                        <p class="pt-1"><b>N.B</b> Unit price is {{$var->unit_price}} TZS</p>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Debt </label>
+                                                                        <input type="text"  class="form-control" readonly  name="debt" value="{{$var->debt}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Current Amount </label>
+                                                                        <input type="text"  class="form-control" readonly  name="current_amount" value="{{$var->current_amount}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Cumulative Amount(Amount to be paid) </label>
+                                                                        <input type="text"  readonly class="form-control"  name="amount_to_be_paid" value="{{$var->cumulative_amount}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <label>Currency <span style="color: red;">*</span></label>
+                                                                                                <div  class="form-wrapper">
+                                                                                                    <input type="text"  class="form-control" readonly id="" name="currency" value="{{$var->currency}}" Required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="status" value="{{$var->status}}" required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control" readonly id="" name="description" value="{{$var->description}}" required  autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+                                                                                        </div>
+
+<br>
+
+                                                                                                     <div class="row">
+                                                                <div class="form-wrapper col-12">
+                                                                    <label for="approval_status">Do you approve this invoice?</label>
+                                                                </div>
+                                                            </div>
+
+                                                                                                                       <div class="form-group">
+
+
+
+
+                                                            <div class="row">
+                                                                <div class="form-wrapper col-6">
+                                                                    <input class="form-check-input" type="radio" name="approval_status_electricity" id="Approve_electricity{{$var->invoice_number}}" value="Accepted" checked="">
+                                                                    <label for="Approve_electricity{{$var->invoice_number}}" class="form-check-label">Approve</label>
+                                                                </div>
+
+                                                                <div class="form-wrapper col-6">
+                                                                    <input class="form-check-input" type="radio" name="approval_status_electricity" id="Reject_electricity{{$var->invoice_number}}" value="Rejected">
+                                                                    <label for="Reject_electricity{{$var->invoice_number}}" class="form-check-label">Decline</label>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group" id="remarks_electricityDiv{{$var->invoice_number}}" style="display: none;">
+                                                            <div class="form-wrapper">
+                                                                <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                <span id="remarks_electricitymsg{{$var->invoice_number}}"></span>
+                                                                <textarea  type="text" id="remarks_electricity{{$var->invoice_number}}" name="reason" class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <input type="text" name="id" value="{{$var->invoice_number}}" hidden="">
+
+
+
+
+                                                                                                    <br>
+                                                                                                    <div align="right">
+                                                            <button style="display:none;" class="btn btn-primary" type="submit" id="proceed_electricity{{$var->invoice_number}}" onclick=" return validateElectricity({{$var->invoice_number}})">Proceed</button>
+                                                            <button  class="btn btn-primary" type="submit" id="approve_electricity{{$var->invoice_number}}" onclick=" return validateElectricity({{$var->invoice_number}})">Approve and Send</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                                                                </form>
+
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+
+                                                                                </div>
+
+                                                                                @else
+                                                                                @endif
+
+
+
+
                                                                         @if($privileges=='Read only')
                                                                         @else
-                                                                            @if($var->gepg_control_no=='')
+                                                                            @if(Auth::user()->role=='Accountant-DPDI')
+                                                                                @if($var->gepg_control_no=='' || $var->rejected=='1')
                                                                                 <a title="Add invoice and GePG control numbers" data-toggle="modal" style="color: #3490dc; cursor: pointer;"  data-target="#add_control_number_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-file-medical"></i></a>
 
                                                                                 <div class="modal fade" id="add_control_number_electricity{{$var->invoice_number}}" role="dialog">
@@ -13395,7 +14371,7 @@
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
+                                                                                                <b><h5 class="modal-title">Adding Income code, Invoice number and GePG control number</h5></b>
 
                                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                             </div>
@@ -13443,10 +14419,34 @@
                                                                                                         <br>
                                                                                                     @endif
 
+
+                                                                                                         @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
+
+
                                                                                                     <div class="form-group">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                            <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
+                                                                                                            <input id="gepg_electricity{{$var->invoice_number}}"  type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricityAll(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}" Required autocomplete="off">
                                                                                                             <p id="error_gepg_electricity_all{{$var->invoice_number}}"></p>
                                                                                                         </div>
                                                                                                     </div>
@@ -13454,8 +14454,8 @@
 
 
                                                                                                     <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn_electricity_all{{$var->invoice_number}}" class="btn btn-primary" type="submit">Save</button>
+                                                                                                    <div style="clear: both;" align="right">
+                                                                                                        <button id="sendbtn_electricity_all{{$var->invoice_number}}" class="btn btn-primary" type="submit">Forward</button>
                                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                                     </div>
                                                                                                 </form>
@@ -13467,106 +14467,15 @@
 
 
                                                                                 </div>
+                                                                              @else
+                                                                                @endif
+
+
                                                                             @else
                                                                             @endif
 
 
-                                                                                <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 
-
-                                                                                <div class="modal fade" id="send_invoice_electricity{{$var->invoice_number}}" role="dialog">
-
-                                                                                    <div class="modal-dialog" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
-
-                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                            </div>
-
-                                                                                            <div class="modal-body">
-                                                                                                <form method="post" action="{{ route('send_invoice_electricity_bills',$var->invoice_number)}}"  id="form1" >
-                                                                                                    {{csrf_field()}}
-
-
-                                                                                                    {{--                                                                            <div class="form-group row">--}}
-
-                                                                                                    {{--                                                                                <div class="form-wrapper col-6">--}}
-                                                                                                    {{--                                                                                    <label for="amount">Current Amount</label>--}}
-                                                                                                    {{--                                                                                    <input type="number" min="0" id="amount" name="current_amount" class="form-control" required="">--}}
-                                                                                                    {{--                                                                                </div>--}}
-
-                                                                                                    {{--                                                                                <div class="form-wrapper col-6">--}}
-                                                                                                    {{--                                                                                    <label for="currency">Currency</label>--}}
-                                                                                                    {{--                                                                                    <select id="currency" class="form-control" name="currency" >--}}
-                                                                                                    {{--                                                                                        <option value="{{$var->currency_invoice}}">{{$var->currency_invoice}}</option>--}}
-                                                                                                    {{--                                                                                    </select>--}}
-                                                                                                    {{--                                                                                </div>--}}
-
-
-
-                                                                                                    {{--                                                                            </div>--}}
-
-                                                                                                    {{--                                                                            <br>--}}
-
-                                                                                                    @if($var->invoice_number_votebook=='')
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-
-                                                                                                    @else
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                    @endif
-
-
-
-                                                                                                    @if($var->gepg_control_no=='')
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
-                                                                                                                <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @else
-
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
-
-                                                                                                            </div>
-                                                                                                        </div>
-
-
-                                                                                                    @endif
-
-
-
-                                                                                                    <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn_electricity{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
-                                                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                                    </div>
-                                                                                                </form>
-
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-
-
-                                                                                </div>
 
                                                                         @endif
 
@@ -13770,6 +14679,7 @@
                                                         <th scope="col" ><center>Invoice start date</center></th>
                                                         <th scope="col" ><center>Invoice end date</center></th>
                                                         <th scope="col" ><center>Amount</center></th>
+                                                        <th scope="col" ><center>Status</center></th>
                                                         <th scope="col" ><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -13785,6 +14695,21 @@
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                                             <td><center>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</center></td>
+
+                                                            <td><center>
+                                                                    @if($var->rejected==1)
+                                                                     <div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div>
+                                                                        @elseif($var->rejected==0)
+
+                                                                         <div ><span style="background-color: #0aac19; color:white;  padding:3px;   text-align: center;">CREATED</span> </div>
+                                                                    @else
+                                                                    @endif
+
+
+                                                                </center></td>
+
+
+
                                                             <td><center>
 
                                                                     <a title="View contract" style="color:#3490dc !important; display:inline-block;     margin-top: 3px;
@@ -13951,12 +14876,12 @@
                                                                                                 </div>
                                                                                             </div>
 
-                                                                                            <div  class="form-group col-md-12 mt-1">
-                                                                                                <div class="form-wrapper">
-                                                                                                    <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                                </div>
-                                                                                            </div>
+{{--                                                                                            <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                                <div class="form-wrapper">--}}
+{{--                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                                </div>--}}
+{{--                                                                                            </div>--}}
 
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
@@ -13993,16 +14918,60 @@
 
 
 
-                                                                                            <div   class="form-group col-md-6 mt-1">
-                                                                                                <div class="form-wrapper">
-                                                                                                    <label for="">Amount <span style="color: red;">*</span></label>
-                                                                                                    <input type="number" min="20" class="form-control" id="" name="amount_to_be_paid" value="{{$var->cumulative_amount}}" Required  autocomplete="off">
-                                                                                                </div>
-                                                                                            </div>
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Beginning Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="text"   class="form-control"   name="begin_units" value="{{$var->begin_units}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">End Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="text"   class="form-control"  name="end_units" value="{{$var->end_units}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Units consumed</label>
+                                                                        <input type="text"  class="form-control"  name="units_usage" value="{{$var->consumed_units}}" Required  autocomplete="off">
+                                                                        <p class="pt-1"><b>N.B</b> Unit price is {{$var->unit_price}} TZS</p>
+                                                                    </div>
+                                                                </div>
 
 
 
-                                                                                            <div  class="form-group col-md-6 mt-1">
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Debt </label>
+                                                                        <input type="text"  class="form-control"   name="debt" value="{{$var->debt}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Current Amount </label>
+                                                                        <input type="text"  class="form-control"   name="current_amount" value="{{$var->current_amount}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div   class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Cumulative Amount(Amount to be paid) </label>
+                                                                        <input type="text"   class="form-control"  name="amount_to_be_paid" value="{{$var->cumulative_amount}}" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                                            <div  class="form-group col-md-12 mt-1">
                                                                                                 <label>Currency <span style="color: red;">*</span></label>
                                                                                                 <div  class="form-wrapper">
                                                                                                     <select id="" class="form-control" required name="currency">
@@ -14156,7 +15125,7 @@
                                         @endif
 
                                     </div>
-                                @elseif (Auth::user()->role=='Accountant-DPDI')
+                                @elseif (Auth::user()->role=='Accountant-DPDI' || Auth::user()->role=='Director DPDI')
 
                                     <div id="electricity_invoice_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner_electricity">
                                         <br>
@@ -14181,6 +15150,7 @@
                                                         <th scope="col" ><center>Amount</center></th>
                                                         <th scope="col" ><center>Payment Status</center></th>
                                                         <th scope="col" ><center>Invoice Date</center></th>
+                                                        <th scope="col" ><center>Stage</center></th>
                                                         <th scope="col" ><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -14199,7 +15169,14 @@
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
                                                             <td><center>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td><center>
+
+                                                                    @if($var->email_sent_status=='NOT SENT')
+                                                                        N/A
+                                                                    @else
+                                                                    {{$var->payment_status}}
+                                                                    @endif
+                                                                </center></td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
@@ -14207,7 +15184,18 @@
                                                             {{--                                                @endif </td>--}}
 
                                                             <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
+ <td><center>
+                                                                    @if($var->rejected==1)
+                                                                        Planning Officer
 
+                                                                    @elseif($var->email_sent_status=='NOT SENT')
+                                                                        Director- DPDI
+                                                                    @else
+                                                                    CLIENT
+                                                                    @endif
+
+
+                                                                </center>  </td>
 
                                                             <td><center>
 
@@ -14241,7 +15229,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -14266,6 +15254,33 @@
                                                                                             <td> Project ID:</td>
                                                                                             <td> {{$var->project_id}}</td>
                                                                                         </tr>
+
+
+
+                                                                                        <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
+
+
 
                                                                                         <tr>
                                                                                             <td> Debt:</td>
@@ -14521,100 +15536,7 @@
                                                                             @else
                                                                             @endif
 
-                                                                            <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_outbox_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-                                                                                <div class="modal fade" id="send_invoice_outbox_electricity{{$var->invoice_number}}" role="dialog">
 
-                                                                                    <div class="modal-dialog" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
-
-                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                            </div>
-
-                                                                                            <div class="modal-body">
-                                                                                                <form method="post" action="{{ route('send_invoice_electricity_bills',$var->invoice_number)}}"  id="form1" >
-                                                                                                    {{csrf_field()}}
-
-
-                                                                                                    {{--                                                                            <div class="form-group row">--}}
-
-                                                                                                    {{--                                                                                <div class="form-wrapper col-6">--}}
-                                                                                                    {{--                                                                                    <label for="amount">Current Amount</label>--}}
-                                                                                                    {{--                                                                                    <input type="number" min="0" id="amount" name="current_amount" class="form-control" required="">--}}
-                                                                                                    {{--                                                                                </div>--}}
-
-                                                                                                    {{--                                                                                <div class="form-wrapper col-6">--}}
-                                                                                                    {{--                                                                                    <label for="currency">Currency</label>--}}
-                                                                                                    {{--                                                                                    <select id="currency" class="form-control" name="currency" >--}}
-                                                                                                    {{--                                                                                        <option value="{{$var->currency_invoice}}">{{$var->currency_invoice}}</option>--}}
-                                                                                                    {{--                                                                                    </select>--}}
-                                                                                                    {{--                                                                                </div>--}}
-
-
-
-                                                                                                    {{--                                                                            </div>--}}
-
-                                                                                                    {{--                                                                            <br>--}}
-
-                                                                                                    @if($var->invoice_number_votebook=='')
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for=""  >Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" class="form-control" id="votebook_space" name="invoice_number_votebook" value="" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-
-                                                                                                    @else
-                                                                                                        <div style="padding-top: 2%;" class="form-group ">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="">Invoice Number <span style="color: red;">*</span></label>
-                                                                                                                <input type="number" min="1" readonly class="form-control" id="votebook_space" name="invoice_number_votebook" value="{{$var->invoice_number_votebook}}" Required autocomplete="off">
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                    @endif
-
-
-
-                                                                                                    @if($var->gepg_control_no=='')
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg_electricity{{$var->invoice_number}}" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="" Required autocomplete="off">
-                                                                                                                <p id="error_gepg_electricity{{$var->invoice_number}}"></p>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    @else
-
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="form-wrapper">
-                                                                                                                <label for="course_name">GePG Control Number <span style="color: red;">*</span></label>
-                                                                                                                <input id="gepg_electricity{{$var->invoice_number}}" readonly type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);  minControlElectricity(this.value,{{$var->invoice_number}});" maxlength = "12" class="form-control"  name="gepg_control_no" value="{{$var->gepg_control_no}}"  autocomplete="off">
-
-                                                                                                            </div>
-                                                                                                        </div>
-
-
-                                                                                                    @endif
-
-
-
-                                                                                                    <br>
-                                                                                                    <div align="right">
-                                                                                                        <button id="sendbtn_electricity{{$var->invoice_number}}" class="btn btn-primary" type="submit">Send</button>
-                                                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                                    </div>
-                                                                                                </form>
-
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-
-
-                                                                                </div>
                                                                         @endif
 
 
@@ -14893,12 +15815,12 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div style="display: none;" id="inc_code_electricityDiv" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_code_electricityDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_electricityDiv">
                                                                     <div class="form-wrapper">
@@ -14927,9 +15849,36 @@
 
 
 
+                                                            <div id="begin_units_electricityDiv" style="display: none;" class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Beginning Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="number" min="1" class="form-control"  id="begin_units_electricity" name="begin_units" value="" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
 
 
+                                                                <div id="end_units_electricityDiv" style="display: none;" class="form-group col-md-6 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">End Period Units <span style="color: red;">*</span></label>
+                                                                        <input type="number" min="1" class="form-control" id="end_units_electricity" name="end_units" value="" Required  autocomplete="off">
+                                                                    </div>
+                                                                </div>
 
+
+                                                                <div id="units_usage_electricityDiv" style="display: none;" class="form-group col-md-12 mt-1">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="">Units consumed</label>
+                                                                        <input type="number" min="1" class="form-control" id="units_usage_electricity" readonly name="units_usage" value="" Required  autocomplete="off">
+
+                                                                        <?php
+                                                                        $unit_price_electricity=DB::table('system_settings')->where('id',1)->value('unit_price_electricity');
+                                                                        ?>
+
+                                                                        <p class="pt-1"><b>N.B</b> Unit price is {{$unit_price_electricity}}</p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <input type="hidden" name="unit_price" value="{{$unit_price_electricity}}">
 
 
                                                                 <div id="debt_electricityDiv" style="display: none;" class="form-group col-md-6 mt-1">
@@ -14945,7 +15894,7 @@
                                                                 <div id="current_amount_electricityDiv" class="form-group col-md-6 mt-1" style="display: none;">
                                                                     <div class="form-wrapper">
                                                                         <label for="">Current Amount <span style="color: red;">*</span></label>
-                                                                        <input type="number" min="20" class="form-control" id="current_amount_electricity" name="current_amount" value="" Required  autocomplete="off">
+                                                                        <input type="number" min="20" class="form-control" readonly id="current_amount_electricity" name="current_amount" value="" Required  autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -15139,7 +16088,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -15164,6 +16113,31 @@
                                                                                         <td> Project ID:</td>
                                                                                         <td> {{$var->project_id}}</td>
                                                                                     </tr>
+
+
+                                                                                    <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
+
 
                                                                                     <tr>
                                                                                         <td> Debt:</td>
@@ -15825,12 +16799,12 @@
 
 
 
-                                                                <div style="display: none;" id="inc_code_electricity2Div" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_code_electricity2Div" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
 
 
@@ -16073,7 +17047,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -16098,6 +17072,29 @@
                                                                                         <td> Project ID:</td>
                                                                                         <td> {{$var->project_id}}</td>
                                                                                     </tr>
+
+                                                                                    <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
 
                                                                                     <tr>
                                                                                         <td> Debt:</td>
@@ -16889,12 +17886,12 @@
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <div  class="form-group col-md-12 mt-1">
-                                                                                            <div class="form-wrapper">
-                                                                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                            </div>
-                                                                                        </div>
+{{--                                                                                        <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                            <div class="form-wrapper">--}}
+{{--                                                                                                <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                            </div>--}}
+{{--                                                                                        </div>--}}
 
                                                                                         <div  class="form-group col-md-6 mt-1">
                                                                                             <div class="form-wrapper">
@@ -17176,7 +18173,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -17204,6 +18201,30 @@
                                                                                             <td> Project ID:</td>
                                                                                             <td> {{$var->project_id}}</td>
                                                                                         </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
 
                                                                                         <tr>
                                                                                             <td> Debt:</td>
@@ -17832,12 +18853,12 @@
                                                                 </div>
 
 
-                                                                <div style="display: none;" id="inc_code_electricity3Div" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_code_electricity3Div" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
 
 
@@ -18080,7 +19101,7 @@
 
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -18107,6 +19128,31 @@
                                                                                         <td> Project ID:</td>
                                                                                         <td> {{$var->project_id}}</td>
                                                                                     </tr>
+
+
+                                                                                    <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
+
 
                                                                                     <tr>
                                                                                         <td> Debt:</td>
@@ -18765,12 +19811,12 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div style="display: none;" id="inc_code_electricity4Div" class="form-group col-md-12 mt-1">
-                                                                    <div class="form-wrapper">
-                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div style="display: none;" id="inc_code_electricity4Div" class="form-group col-md-12 mt-1">--}}
+{{--                                                                    <div class="form-wrapper">--}}
+{{--                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
 
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_electricityDiv">
                                                                     <div class="form-wrapper">
@@ -19011,7 +20057,7 @@
                                                                                     </tr>
 
                                                                                     <tr>
-                                                                                        <td>Inc Code:</td>
+                                                                                        <td>Income(Inc) Code:</td>
                                                                                         <td>{{$var->inc_code}}</td>
                                                                                     </tr>
 
@@ -19038,6 +20084,31 @@
                                                                                         <td> {{$var->project_id}}</td>
                                                                                     </tr>
 
+
+                                                                                        <tr>
+                                                                                            <td> Beginning Period Units:</td>
+                                                                                            <td>{{$var->begin_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td> End Period Units:</td>
+                                                                                            <td>{{$var->end_units}} </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td> Consumed Units:</td>
+                                                                                            <td>{{$var->consumed_units}} </td>
+                                                                                        </tr>
+
+
+                                                                                        <tr>
+                                                                                            <td>Unit Price:</td>
+                                                                                            <td>{{$var->unit_price}} TZS</td>
+                                                                                        </tr>
+
+
+
                                                                                     <tr>
                                                                                         <td> Debt:</td>
                                                                                         <td>{{number_format($var->debt)}} {{$var->currency_invoice}}</td>
@@ -19053,13 +20124,13 @@
                                                                                     </tr>
 
                                                                                     <tr>
-
                                                                                         <td>Cumulative Amount:</td>
                                                                                         @if($var->cumulative_amount==0)
                                                                                             <td>N/A</td>
                                                                                         @else
                                                                                             <td>{{number_format($var->cumulative_amount)}} {{$var->currency_invoice}}</td>
                                                                                         @endif
+
                                                                                     </tr>
 
 
@@ -19765,7 +20836,7 @@
                                                                                             </tr>
 
                                                                                             <tr>
-                                                                                                <td>Inc Code:</td>
+                                                                                                <td>Income(Inc) Code:</td>
                                                                                                 <td>{{$var->inc_code}}</td>
                                                                                             </tr>
 
@@ -20000,6 +21071,27 @@
 
 
 
+                                                                                                            @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
 
 
 
@@ -20070,6 +21162,33 @@
 
 
 
+
+                                                                                                            @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
+
+
+
+
+
                                                                                                         @if($var->account_no=='')
                                                                                                             <div class="form-group">
                                                                                                                 <div class="form-wrapper">
@@ -20113,7 +21232,7 @@
                                                                                             <div class="modal-dialog" role="document">
                                                                                                 <div class="modal-content">
                                                                                                     <div class="modal-header">
-                                                                                                        <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
+                                                                                                        <b><h5 class="modal-title">Adding Income code, Invoice number and GePG control number</h5></b>
 
                                                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                                     </div>
@@ -20141,6 +21260,30 @@
                                                                                                                 </div>
                                                                                                                 <br>
                                                                                                             @endif
+
+
+
+                                                                                                                 @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
 
 
 
@@ -20207,6 +21350,32 @@
                                                                                                             </div>
                                                                                                             <br>
                                                                                                         @endif
+
+
+
+                                                                                                                    @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
+
+
 
                                                                                                         @if($var->gepg_control_no=='')
                                                                                                             <div class="form-group">
@@ -20631,12 +21800,12 @@
                                                                                                     </div>
                                                                                                 </div>
 
-                                                                                                <div  class="form-group col-md-12 mt-1">
-                                                                                                    <div class="form-wrapper">
-                                                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                        <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                                    </div>
-                                                                                                </div>
+{{--                                                                                                <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                                    <div class="form-wrapper">--}}
+{{--                                                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                        <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                                    </div>--}}
+{{--                                                                                                </div>--}}
 
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
@@ -20918,7 +22087,7 @@
                                                                                             </tr>
 
                                                                                             <tr>
-                                                                                                <td>Inc Code:</td>
+                                                                                                <td>Income(Inc) Code:</td>
                                                                                                 <td>{{$var->inc_code}}</td>
                                                                                             </tr>
 
@@ -21667,12 +22836,12 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <div style="display: none;" id="inc_code_carDiv" class="form-group col-md-12 mt-1">
-                                                                        <div class="form-wrapper">
-                                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                                        </div>
-                                                                    </div>
+{{--                                                                    <div style="display: none;" id="inc_code_carDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                                        <div class="form-wrapper">--}}
+{{--                                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                                        </div>--}}
+{{--                                                                    </div>--}}
 
                                                                     <div style="display:none;" id="invoicing_period_start_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
@@ -21900,7 +23069,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -22243,7 +23412,7 @@
 
                                                                     <div style="display: none;" id="inc_code_carDiv" class="form-group col-md-12 mt-1">
                                                                         <div class="form-wrapper">
-                                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                                         </div>
                                                                     </div>
@@ -22474,7 +23643,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -22959,12 +24128,12 @@
                                                                                                 </div>
                                                                                             </div>
 
-                                                                                            <div  class="form-group col-md-12 mt-1">
-                                                                                                <div class="form-wrapper">
-                                                                                                    <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                                </div>
-                                                                                            </div>
+{{--                                                                                            <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                                <div class="form-wrapper">--}}
+{{--                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                                </div>--}}
+{{--                                                                                            </div>--}}
 
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
@@ -23245,7 +24414,7 @@
                                                                                             </tr>
 
                                                                                             <tr>
-                                                                                                <td>Inc Code:</td>
+                                                                                                <td>Income(Inc) Code:</td>
                                                                                                 <td>{{$var->inc_code}}</td>
                                                                                             </tr>
 
@@ -23996,7 +25165,7 @@
 
                                                                     <div style="display: none;" id="inc_code_carDiv" class="form-group col-md-12 mt-1">
                                                                         <div class="form-wrapper">
-                                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                                         </div>
                                                                     </div>
@@ -24227,7 +25396,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -24569,7 +25738,7 @@
 
                                                                     <div style="display: none;" id="inc_code_carDiv" class="form-group col-md-12 mt-1">
                                                                         <div class="form-wrapper">
-                                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                                         </div>
                                                                     </div>
@@ -24800,7 +25969,7 @@
                                                                                         </tr>
 
                                                                                         <tr>
-                                                                                            <td>Inc Code:</td>
+                                                                                            <td>Income(Inc) Code:</td>
                                                                                             <td>{{$var->inc_code}}</td>
                                                                                         </tr>
 
@@ -25219,7 +26388,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -25386,7 +26555,7 @@
                                                                         <div class="modal-dialog" role="document">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
-                                                                                    <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
+                                                                                    <b><h5 class="modal-title">Adding Income code, Invoice number and GePG control number</h5></b>
 
                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                 </div>
@@ -25414,6 +26583,30 @@
                                                                                             </div>
                                                                                             <br>
                                                                                         @endif
+
+
+
+                                                                                             @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
 
 
 
@@ -25483,6 +26676,30 @@
                                                                                         </div>
                                                                                         <br>
                                                                                     @endif
+
+
+                                                                                              @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
+
 
                                                                                     @if($var->gepg_control_no=='')
                                                                                         <div class="form-group">
@@ -25878,12 +27095,12 @@
                                                                                                     </div>
                                                                                                 </div>
 
-                                                                                                <div  class="form-group col-md-12 mt-1">
-                                                                                                    <div class="form-wrapper">
-                                                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                        <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                                    </div>
-                                                                                                </div>
+{{--                                                                                                <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                                    <div class="form-wrapper">--}}
+{{--                                                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                        <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                                    </div>--}}
+{{--                                                                                                </div>--}}
 
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
@@ -26165,7 +27382,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -26728,12 +27945,12 @@
                                                         </div>
                                                     </div>
 
-                                                    <div style="display: none;" id="inc_code_researchDiv" class="form-group col-md-12 mt-1">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                        </div>
-                                                    </div>
+{{--                                                    <div style="display: none;" id="inc_code_researchDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                        <div class="form-wrapper">--}}
+{{--                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
 
                                                     <div style="display:none;" id="invoicing_period_start_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
@@ -26962,7 +28179,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -27264,7 +28481,7 @@
 
                                                     <div style="display: none;" id="inc_code_researchDiv" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -27496,7 +28713,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -27911,7 +29128,7 @@
 
                                                                                                 <div  class="form-group col-md-12 mt-1">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                                                                         <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
@@ -28196,7 +29413,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -28760,7 +29977,7 @@
 
                                                     <div style="display: none;" id="inc_code_researchDiv" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -28992,7 +30209,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -29293,7 +30510,7 @@
 
                                                     <div style="display: none;" id="inc_code_researchDiv" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -29525,7 +30742,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -29920,7 +31137,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -30011,7 +31228,7 @@
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
+                                                                                <b><h5 class="modal-title">Adding Income code, Invoice number and GePG control number</h5></b>
 
                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                             </div>
@@ -30038,6 +31255,29 @@
                                                                                         </div>
                                                                                         <br>
                                                                                     @endif
+
+
+                                                                                         @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
 
 
                                                                                     <div class="form-group">
@@ -30107,6 +31347,32 @@
                                                                                         </div>
                                                                                         <br>
                                                                                     @endif
+
+
+
+
+                                                                                     @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
+
 
 
 
@@ -31051,12 +32317,12 @@
                                                                                                     </div>
                                                                                                 </div>
 
-                                                                                                <div  class="form-group col-md-12 mt-1">
-                                                                                                    <div class="form-wrapper">
-                                                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                        <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                                    </div>
-                                                                                                </div>
+{{--                                                                                                <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                                    <div class="form-wrapper">--}}
+{{--                                                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                        <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                                    </div>--}}
+{{--                                                                                                </div>--}}
 
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
@@ -31342,7 +32608,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -31824,12 +33090,12 @@
 
 
 
-                                                    <div style="display: none;" id="inc_code_insuranceDiv" class="form-group col-md-12 mt-1">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                        </div>
-                                                    </div>
+{{--                                                    <div style="display: none;" id="inc_code_insuranceDiv" class="form-group col-md-12 mt-1">--}}
+{{--                                                        <div class="form-wrapper">--}}
+{{--                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
 
 
 
@@ -32083,7 +33349,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -32955,7 +34221,7 @@
 
                                                     <div style="display: none;" id="inc_code_insuranceDiv" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -33212,7 +34478,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -34755,7 +36021,7 @@
 
                                                                                                 <div  class="form-group col-md-12 mt-1">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                                                                         <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
@@ -35044,7 +36310,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -35528,7 +36794,7 @@
 
                                                     <div style="display: none;" id="inc_code_insuranceDiv" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -35785,7 +37051,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -36654,7 +37920,7 @@
 
                                                     <div style="display: none;" id="inc_code_insuranceDiv" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -36911,7 +38177,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -37858,7 +39124,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -37949,7 +39215,7 @@
                                                                     <div class="modal-dialog" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <b><h5 class="modal-title">Adding invoice and GePG control numbers</h5></b>
+                                                                                <b><h5 class="modal-title">Adding Income code, Invoice number and GePG control number</h5></b>
 
                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                             </div>
@@ -37976,6 +39242,29 @@
                                                                                         </div>
                                                                                         <br>
                                                                                     @endif
+
+
+                                                                                         @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
 
 
                                                                                     <div class="form-group">
@@ -38045,6 +39334,30 @@
                                                                                         </div>
                                                                                         <br>
                                                                                     @endif
+
+
+
+                                                                                      @if($var->inc_code=='')
+
+                                                                                            <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+
+                                                                                                    @else
+                                                                                                      <div  class="form-group ">
+                                                                                                <div class="form-wrapper">
+                                                                                                    <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
+                                                                                                    <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                                        <br>
+                                                                                                    @endif
 
 
 
@@ -38350,7 +39663,7 @@
 
 
 
-                                                    <div class="form-group col-md-6 mt-1" style="display: none;" id="tin_insuranceDiv">
+                                                    <div class="form-group col-md-12 mt-1" style="display: none;" id="tin_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Principal TIN</label>
                                                             <input type="text" class="form-control" id="tin_insurance" readonly name="tin" value="{{$var->tin}}"  autocomplete="off">
@@ -38368,12 +39681,12 @@
                                                         </div>
                                                     </div>
 
-                                                                                                <div  class="form-group col-md-12 mt-1">
-                                                                                                    <div class="form-wrapper">
-                                                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                                                                        <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
-                                                                                                    </div>
-                                                                                                </div>
+{{--                                                                                                <div  class="form-group col-md-12 mt-1">--}}
+{{--                                                                                                    <div class="form-wrapper">--}}
+{{--                                                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                                                                        <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">--}}
+{{--                                                                                                    </div>--}}
+{{--                                                                                                </div>--}}
 
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
@@ -38655,7 +39968,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -39161,12 +40474,12 @@
                                                     </div>
 
 
-                                                    <div style="display: none;" id="inc_code_insurance2Div" class="form-group col-md-12 mt-1">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                                        </div>
-                                                    </div>
+{{--                                                    <div style="display: none;" id="inc_code_insurance2Div" class="form-group col-md-12 mt-1">--}}
+{{--                                                        <div class="form-wrapper">--}}
+{{--                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>--}}
+{{--                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
 
 
 
@@ -39392,7 +40705,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -39642,7 +40955,7 @@
 
                                                     <div style="display: none;" id="inc_code_insurance2Div" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -39871,7 +41184,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -40152,7 +41465,7 @@
 
                                                                                                 <div  class="form-group col-md-12 mt-1">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                                                        <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                                                                         <input type="text" class="form-control"  name="inc_code" value="{{$var->inc_code}}"  Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
@@ -40437,7 +41750,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -40944,7 +42257,7 @@
 
                                                     <div style="display: none;" id="inc_code_insurance2Div" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -41173,7 +42486,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -41423,7 +42736,7 @@
 
                                                     <div style="display: none;" id="inc_code_insurance2Div" class="form-group col-md-12 mt-1">
                                                         <div class="form-wrapper">
-                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                            <label for=""  >Income(Inc) Code<span style="color: red;">*</span></label>
                                                             <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
                                                         </div>
                                                     </div>
@@ -41652,7 +42965,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td>Inc Code:</td>
+                                                                            <td>Income(Inc) Code:</td>
                                                                             <td>{{$var->inc_code}}</td>
                                                                         </tr>
 
@@ -42003,6 +43316,26 @@
             }else{
                 document.getElementById("error_gepg_insurance_all"+id).innerHTML ='';
                 document.getElementById("sendbtn_insurance_all"+id).disabled = false;
+            }
+
+        }
+
+
+        function minControlInsuranceAllPrincipals(value,id){
+
+
+
+            if(value.length<12){
+
+                document.getElementById("sendbtn_insurance_all_principals"+id).disabled = true;
+                document.getElementById("error_gepg_insurance_all_principals"+id).style.color = 'red';
+                document.getElementById("error_gepg_insurance_all_principals"+id).style.float = 'left';
+                document.getElementById("error_gepg_insurance_all_principals"+id).style.paddingTop = '1%';
+                document.getElementById("error_gepg_insurance_all_principals"+id).innerHTML ='GePG Control number cannot be less than 12 digits';
+
+            }else{
+                document.getElementById("error_gepg_insurance_all_principals"+id).innerHTML ='';
+                document.getElementById("sendbtn_insurance_all_principals"+id).disabled = false;
             }
 
         }
@@ -43436,6 +44769,9 @@
                             $("#electricity_contract_availability").css("background-color","#ccd8e263");
                             $("#electricity_contract_availability").html("Contract does not exist or does not include electricity bill");
                             $('#debt_electricityDiv').hide();
+                             $('#begin_units_electricityDiv').hide();
+                            $('#end_units_electricityDiv').hide();
+                            $('#units_usage_electricityDiv').hide();
                             $('#current_amount_electricityDiv').hide();
                             $('#cumulative_amount_electricityDiv').hide();
                             $('#currency_electricityDiv').hide();
@@ -43466,6 +44802,10 @@
                             $("#electricity_contract_availability").html("");
                             $('#contract_id_electricity').attr('style','border:1px solid #ced4da');
                             $('#debt_electricityDiv').show();
+
+                            $('#begin_units_electricityDiv').show();
+                            $('#end_units_electricityDiv').show();
+                            $('#units_usage_electricityDiv').show();
 
                             $('#debt_electricity').val(final_data.amount_not_paid);
 
@@ -43548,25 +44888,122 @@
             }
         });
 
-        $('#current_amount_water').on('input', function(e) {
+        // $('#current_amount_water').on('input', function(e) {
+        //
+        //     e.preventDefault();
+        //     var query = $(this).val();
+        //
+        //     var current=$('#current_amount_water').val();
+        //     var debt=$('#debt_water').val();
+        //     if(query != '')
+        //     {
+        //         $('#cumulative_amount_water').val(parseInt(debt, 10)+parseInt(current, 10));
+        //
+        //
+        //     }
+        //     else {
+        //         $('#cumulative_amount_water').val("");
+        //
+        //
+        //     }
+        // });
+
+
+                <?php
+                $unit_price_water=DB::table('system_settings')->where('id',1)->value('unit_price_water');
+                                                                        ?>
+
+        $('#begin_units').on('input', function(e) {
 
             e.preventDefault();
-            var query = $(this).val();
+            var begin_units = $(this).val();
+            var end_units=$('#end_units').val();
 
-            var current=$('#current_amount_water').val();
+            var unit_price_water={!! json_encode($unit_price_water) !!};
+            var usage= (+end_units)-(+begin_units);
             var debt=$('#debt_water').val();
-            if(query != '')
-            {
-                $('#cumulative_amount_water').val(parseInt(debt, 10)+parseInt(current, 10));
+
+            $('#units_usage').val(usage);
+
+            var current_amount_water=Math.round(((unit_price_water*usage) + Number.EPSILON) * 100) / 100;
+
+            $('#current_amount_water').val(current_amount_water);
 
 
-            }
-            else {
-                $('#cumulative_amount_water').val("");
+            $('#cumulative_amount_water').val(parseInt(debt, 10)+parseInt(current_amount_water, 10));
 
 
-            }
         });
+
+
+        $('#end_units').on('input', function(e) {
+
+                    e.preventDefault();
+                    var end_units = $(this).val();
+                    var begin_units=$('#begin_units').val();
+                    var unit_price_water={!! json_encode($unit_price_water) !!};
+                    var usage= (+end_units)-(+begin_units);
+                    var debt=$('#debt_water').val();
+
+                    $('#units_usage').val(usage);
+
+                    var current_amount_water=Math.round(((unit_price_water*usage) + Number.EPSILON) * 100) / 100;
+
+                    $('#current_amount_water').val(current_amount_water);
+
+
+                    $('#cumulative_amount_water').val(parseInt(debt, 10)+parseInt(current_amount_water, 10));
+
+
+                });
+
+            <?php
+            $unit_price_electricity=DB::table('system_settings')->where('id',1)->value('unit_price_electricity');
+                                                                                    ?>
+
+        $('#begin_units_electricity').on('input', function(e) {
+
+            e.preventDefault();
+            var begin_units = $(this).val();
+            var end_units=$('#end_units_electricity').val();
+            var unit_price_electricity={!! json_encode($unit_price_electricity) !!};
+            var usage= (+end_units)-(+begin_units);
+            var debt=$('#debt_electricity').val();
+
+            $('#units_usage_electricity').val(usage);
+
+            var current_amount_electricity=Math.round(((unit_price_electricity*usage) + Number.EPSILON) * 100) / 100;
+
+            $('#current_amount_electricity').val(current_amount_electricity);
+
+            $('#cumulative_amount_electricity').val(parseInt(debt, 10)+parseInt(current_amount_electricity, 10));
+
+        });
+
+
+        $('#end_units_electricity').on('input', function(e) {
+
+                    e.preventDefault();
+                    var end_units = $(this).val();
+                    var begin_units=$('#begin_units_electricity').val();
+                    var unit_price_electricity={!! json_encode($unit_price_electricity) !!};
+                    var usage= (+end_units)-(+begin_units);
+                    var debt=$('#debt_electricity').val();
+
+                    $('#units_usage_electricity').val(usage);
+
+                    var current_amount_electricity=Math.round(((unit_price_electricity*usage) + Number.EPSILON) * 100) / 100;
+
+                    $('#current_amount_electricity').val(current_amount_electricity);
+
+
+                    $('#cumulative_amount_electricity').val(parseInt(debt, 10)+parseInt(current_amount_electricity, 10));
+
+
+                });
+
+
+
 
 
         $('#contract_id_water').on('input', function(e) {
@@ -43588,6 +45025,9 @@
                             $("#water_contract_availability").css("display","block");
                             $("#water_contract_availability").html("Contract does not exist or does not include water bill");
                             $('#debt_waterDiv').hide();
+                            $('#begin_unitsDiv').hide();
+                            $('#end_unitsDiv').hide();
+                            $('#units_usageDiv').hide();
                             $('#current_amount_waterDiv').hide();
                             $('#cumulative_amount_waterDiv').hide();
                             $('#currency_waterDiv').hide();
@@ -43617,6 +45057,11 @@
                             $("#water_contract_availability").html("");
                             $('#contract_id_water').attr('style','border:1px solid #ced4da');
                             $('#debt_waterDiv').show();
+
+                            $('#begin_unitsDiv').show();
+                            $('#end_unitsDiv').show();
+                            $('#units_usageDiv').show();
+
                             $('#description_waterDiv').show();
 
                             var final_data=JSON.parse(data);
@@ -45064,5 +46509,187 @@
 
     </script>
 
+
+
+
+     <script type="text/javascript">
+
+
+       $(document).ready(function() {
+
+
+            $('input[name="approval_status"]').click(function (e) {
+                var id = e.target.id.replace(/\D/g, '');
+                var query = $(this).val();
+
+                if (query == 'Rejected') {
+                    $('#remarksDiv' + id).show();
+                    $('#proceed' + id).show();
+                    $('#approve' + id).hide();
+
+                } else {
+                    $('#remarksDiv' + id).hide();
+                    $('#proceed' + id).hide();
+                    $('#approve' + id).show();
+                }
+
+            });
+
+
+
+                $('input[name="approval_status_electricity"]').click(function (e) {
+                                var id = e.target.id.replace(/\D/g, '');
+                                var query = $(this).val();
+
+                                if (query == 'Rejected') {
+                                    $('#remarks_electricityDiv' + id).show();
+                                    $('#proceed_electricity' + id).show();
+                                    $('#approve_electricity' + id).hide();
+
+                                } else {
+                                    $('#remarks_electricityDiv' + id).hide();
+                                    $('#proceed_electricity' + id).hide();
+                                    $('#approve_electricity' + id).show();
+                                }
+
+                            });
+
+
+
+
+ $('input[name="approval_status_water"]').click(function (e) {
+                                var id = e.target.id.replace(/\D/g, '');
+                                var query = $(this).val();
+
+                                if (query == 'Rejected') {
+                                    $('#remarks_waterDiv' + id).show();
+                                    $('#proceed_water' + id).show();
+                                    $('#approve_water' + id).hide();
+
+                                } else {
+                                    $('#remarks_waterDiv' + id).hide();
+                                    $('#proceed_water' + id).hide();
+                                    $('#approve_water' + id).show();
+                                }
+
+                            });
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+         function validate(ids){
+             var query = document.querySelector('input[name="approval_status"]:checked').value;
+             if(query=='Rejected'){
+                 var query2 = $('#remarks'+ids).val();
+                 if(query2==''){
+                     $('#remarksmsg'+ids).show();
+                     var message=document.getElementById('remarksmsg'+ids);
+                     message.style.color='red';
+                     message.innerHTML="Required";
+                     $('#remarks'+ids).attr('style','border:1px solid #f00');
+                     return false;
+                 }
+                 else{
+                     $('#remarksmsg'+ids).hide();
+                     $('#remarks'+ids).attr('style','border:1px solid #ccc');
+                     return true;
+                 }
+
+
+                 document.getElementById('remarks'+ids).required=true;
+             }else{
+
+                 document.getElementById('remarks'+ids).required=false;
+
+             }
+
+
+         }
+
+
+
+
+          function validateWater(ids){
+             var query = document.querySelector('input[name="approval_status_water"]:checked').value;
+
+             if(query=='Rejected'){
+                 var query2 = $('#remarks_water'+ids).val();
+
+                 if(query2=='' || query2==null){
+
+                     $('#remarks_water_msg'+ids).show();
+                     var message=document.getElementById('remarks_water_msg'+ids);
+                     message.innerHTML="Required";
+                     message.style.color='red';
+                     $('#remarks_water'+ids).attr('style','border:1px solid #f00');
+
+                     return false;
+                 }
+                 else{
+                     $('#remarks_water_msg'+ids).hide();
+                     $('#remarks_water'+ids).attr('style','border:1px solid #ccc');
+                     return true;
+                 }
+
+
+                 document.getElementById('remarks_water'+ids).required=true;
+             }else{
+
+                 document.getElementById('remarks_water'+ids).required=false;
+
+             }
+
+
+         }
+
+
+
+
+         function validateElectricity(ids){
+             var query = document.querySelector('input[name="approval_status_electricity"]:checked').value;
+             if(query=='Rejected'){
+                 var query2 = $('#remarks_electricity'+ids).val();
+                 if(query2==''){
+                     $('#remarks_electricitymsg'+ids).show();
+                     var message=document.getElementById('remarks_electricitymsg'+ids);
+                     message.style.color='red';
+                     message.innerHTML="Required";
+                     $('#remarks_electricity'+ids).attr('style','border:1px solid #f00');
+                     return false;
+                 }
+                 else{
+                     $('#remarks_electricitymsg'+ids).hide();
+                     $('#remarks_electricity'+ids).attr('style','border:1px solid #ccc');
+                     return true;
+                 }
+
+
+                 document.getElementById('remarks_electricity'+ids).required=true;
+             }else{
+
+                 document.getElementById('remarks_electricity'+ids).required=false;
+
+             }
+
+
+         }
+
+
+
+
+
+     </script>
 
 @endsection

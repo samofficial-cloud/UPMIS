@@ -1,245 +1,245 @@
 @extends('layouts.app')
 
 @section('style')
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0
-        }
+<style type="text/css">
+	* {
+    margin: 0;
+    padding: 0
+}
 
-        html {
-            height: 100%
-        }
+html {
+    height: 100%
+}
 
-        #grad1 {
-            background-color: : #9C27B0;
-            /*background-image: linear-gradient(120deg, #FF4081, #81D4FA)*/
-        }
+#grad1 {
+    background-color: : #9C27B0;
+    /*background-image: linear-gradient(120deg, #FF4081, #81D4FA)*/
+}
 
-        #msform {
-            text-align: center;
-            position: relative;
-            margin-top: 20px
-        }
+#msform {
+    text-align: center;
+    position: relative;
+    margin-top: 20px
+}
 
-        #msform fieldset .form-card {
-            background: white;
-            border: 0 none;
-            border-radius: 0px;
-            box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-            padding: 20px 40px 30px 40px;
-            box-sizing: border-box;
-            width: 94%;
-            margin: 0 3% 20px 3%;
-            position: relative
-        }
+#msform fieldset .form-card {
+    background: white;
+    border: 0 none;
+    border-radius: 0px;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    padding: 20px 40px 30px 40px;
+    box-sizing: border-box;
+    width: 94%;
+    margin: 0 3% 20px 3%;
+    position: relative
+}
 
-        #msform fieldset {
-            background: white;
-            border: 0 none;
-            border-radius: 0.5rem;
-            box-sizing: border-box;
-            width: 100%;
-            margin: 0;
-            padding-bottom: 20px;
-            position: relative
-        }
+#msform fieldset {
+    background: white;
+    border: 0 none;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 20px;
+    position: relative
+}
 
-        #msform fieldset:not(:first-of-type) {
-            display: none
-        }
+#msform fieldset:not(:first-of-type) {
+    display: none
+}
 
-        #msform fieldset .form-card {
-            text-align: left;
-            color: #9E9E9E
-        }
+#msform fieldset .form-card {
+    text-align: left;
+    color: #9E9E9E
+}
 
-        #msform input,
-        #msform textarea {
-            padding: 0px 8px 4px 8px;
-            border: none;
-            border-bottom: 1px solid #ccc;
-            border-radius: 0px;
-            margin-bottom: 25px;
-            margin-top: 2px;
-            width: 100%;
-            box-sizing: border-box;
-            /*font-family: montserrat;*/
-            color: #2C3E50;
-            font-size: 16px;
-            letter-spacing: 1px
-        }
+#msform input,
+#msform textarea {
+    padding: 0px 8px 4px 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 25px;
+    margin-top: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    /*font-family: montserrat;*/
+    color: #2C3E50;
+    font-size: 16px;
+    letter-spacing: 1px
+}
 
-        #msform input:focus,
-        #msform textarea:focus {
-            -moz-box-shadow: none !important;
-            -webkit-box-shadow: none !important;
-            box-shadow: none !important;
-            border: none;
-            font-weight: bold;
-            border-bottom: 2px solid skyblue;
-            outline-width: 0
-        }
+#msform input:focus,
+#msform textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: none;
+    font-weight: bold;
+    border-bottom: 2px solid skyblue;
+    outline-width: 0
+}
 
-        #msform .action-button {
-            width: 150px;
-            background: skyblue;
-            font-weight: bold;
-            color: white;
-            border: 0 none;
-            border-radius: 0px;
-            cursor: pointer;
-            padding: 10px 5px;
-            margin: 10px 5px
-        }
+#msform .action-button {
+    width: 150px;
+    background: skyblue;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 0px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px
+}
 
-        #msform .action-button:hover,
-        #msform .action-button:focus {
-            box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue
-        }
+#msform .action-button:hover,
+#msform .action-button:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue
+}
 
-        #msform .action-button-previous {
-            width: 150px;
-            background: #616161;
-            font-weight: bold;
-            color: white;
-            border: 0 none;
-            border-radius: 0px;
-            cursor: pointer;
-            padding: 10px 5px;
-            margin: 10px 5px
-        }
+#msform .action-button-previous {
+    width: 150px;
+    background: #616161;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 0px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px
+}
 
-        #msform .action-button-previous:hover,
-        #msform .action-button-previous:focus {
-            box-shadow: 0 0 0 2px white, 0 0 0 3px #616161
-        }
+#msform .action-button-previous:hover,
+#msform .action-button-previous:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161
+}
 
-        select.list-dt {
-            border: none;
-            outline: 0;
-            border-bottom: 1px solid #ccc;
-            padding: 2px 5px 3px 5px;
-            margin: 2px
-        }
+select.list-dt {
+    border: none;
+    outline: 0;
+    border-bottom: 1px solid #ccc;
+    padding: 2px 5px 3px 5px;
+    margin: 2px
+}
 
-        select.list-dt:focus {
-            border-bottom: 2px solid skyblue
-        }
+select.list-dt:focus {
+    border-bottom: 2px solid skyblue
+}
 
-        .card {
-            z-index: 0;
-            border: none;
-            border-radius: 0.5rem;
-            position: relative
-        }
+.card {
+    z-index: 0;
+    border: none;
+    border-radius: 0.5rem;
+    position: relative
+}
 
-        .fs-title {
-            font-size: 25px;
-            color: #2C3E50;
-            margin-bottom: 10px;
-            font-weight: bold;
-            text-align: left
-        }
+.fs-title {
+    font-size: 25px;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left
+}
 
-        #progressbar {
-            margin-bottom: 30px;
-            overflow: hidden;
-            color: lightgrey;
-            margin-left: 0%;
-        }
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: lightgrey;
+    margin-left: 0%;
+}
 
-        #progressbar .active {
-            color: #000000
-        }
+#progressbar .active {
+    color: #000000
+}
 
-        #progressbar li {
-            list-style-type: none;
-            font-size: 12px;
-            width: 25%;
-            float: left;
-            position: relative
-        }
+#progressbar li {
+    list-style-type: none;
+    font-size: 12px;
+    width: 25%;
+    float: left;
+    position: relative
+}
 
-        #progressbar #account:before {
-            font-family: FontAwesome;
-            content: "\f04d"
-        }
+#progressbar #account:before {
+    font-family: FontAwesome;
+    content: "\f04d"
+}
 
-        #progressbar #personal:before {
-            font-family: FontAwesome;
-            content: "\f007"
-        }
+#progressbar #personal:before {
+    font-family: FontAwesome;
+    content: "\f007"
+}
 
-        #progressbar #payment:before {
-            font-family: FontAwesome;
-            content: "\f09d"
-        }
+#progressbar #payment:before {
+    font-family: FontAwesome;
+    content: "\f09d"
+}
 
-        #progressbar #confirm:before {
-            font-family: FontAwesome;
-            content: "\f00c"
-        }
+#progressbar #confirm:before {
+    font-family: FontAwesome;
+    content: "\f00c"
+}
 
-        #progressbar li:before {
-            width: 50px;
-            height: 50px;
-            line-height: 45px;
-            display: block;
-            font-size: 18px;
-            color: #ffffff;
-            background: lightgray;
-            border-radius: 50%;
-            margin: 0 auto 10px auto;
-            padding: 2px
-        }
+#progressbar li:before {
+    width: 50px;
+    height: 50px;
+    line-height: 45px;
+    display: block;
+    font-size: 18px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    padding: 2px
+}
 
-        #progressbar li:after {
-            content: '';
-            width: 100%;
-            height: 2px;
-            background: lightgray;
-            position: absolute;
-            left: 0;
-            top: 25px;
-            z-index: -1
-        }
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: lightgray;
+    position: absolute;
+    left: 0;
+    top: 25px;
+    z-index: -1
+}
 
-        #progressbar li.active:before,
-        #progressbar li.active:after {
-            background: skyblue
-        }
+#progressbar li.active:before,
+#progressbar li.active:after {
+    background: skyblue
+}
 
-        .radio-group {
-            position: relative;
-            margin-bottom: 25px
-        }
+.radio-group {
+    position: relative;
+    margin-bottom: 25px
+}
 
-        .radio {
-            display: inline-block;
-            width: 204;
-            height: 104;
-            border-radius: 0;
-            background: lightblue;
-            box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-            box-sizing: border-box;
-            cursor: pointer;
-            margin: 8px 2px
-        }
+.radio {
+    display: inline-block;
+    width: 204;
+    height: 104;
+    border-radius: 0;
+    background: lightblue;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 8px 2px
+}
 
-        .radio:hover {
-            box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3)
-        }
+.radio:hover {
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3)
+}
 
-        .radio.selected {
-            box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1)
-        }
+.radio.selected {
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1)
+}
 
-        .fit-image {
-            width: 100%;
-            object-fit: cover
-        }
-    </style>
+.fit-image {
+    width: 100%;
+    object-fit: cover
+}
+</style>
 @endsection
 
 @section('content')
@@ -253,893 +253,659 @@
     date_sub($date,date_interval_create_from_date_string("7 days"));
 
     ?>
-    <!-- MultiStep Form -->
-    <div class="wrapper">
-        <div class="sidebar">
-            <ul style="list-style-type:none;">
+<!-- MultiStep Form -->
+<div class="wrapper">
+<div class="sidebar">
+        <ul style="list-style-type:none;">
 
-                <?php
-                $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
-                ?>
+            <?php
+            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
+            ?>
 
-                @if($category=='All')
-                    <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
-                @elseif($category=='Insurance only')
-                    <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @elseif($category=='Real Estate only')
-                    <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @elseif($category=='Research Flats only')
-                    <li><a href="{{ route('home6') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @endif
-                @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-                    <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @endif
-                @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
-                    <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @endif
-                @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
-                    <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
-                @endif
+            @if($category=='All')
+           <li><a href="/"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Insurance only')
+          <li><a href="{{ route('home2') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Real Estate only')
+          <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @elseif($category=='Research Flats only')
+          <li><a href="{{ route('home6') }}"><i class="fas fa-home active"></i>Home</a></li>
+           @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role=='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
+          <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
+          @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role=='Accountant-Cost Centre'))
+            <li><a href="{{ route('home5') }}"><i class="fas fa-home active"></i>Home</a></li>
+          @endif
 
-                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+            @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-                    <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
+                <li><a href="/businesses"><i class="fa fa-building" aria-hidden="true"></i> Businesses</a></li>
                 @else
                 @endif
-                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+    @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
 
-                    <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
-                @endif
-                <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
-                <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
+            <li><a href="/clients"><i class="fas fa-user"></i>Clients</a></li>
+    @endif
+            <li><a href="/contracts_management"><i class="fas fa-file-contract"></i>Contracts</a></li>
+            <li><a href="/invoice_management"><i class="fas fa-file-contract"></i>Invoices</a></li>
 
-                <li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
-                @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
-                    <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+<li><a href="/payment_management"><i class="fas fa-money-bill"></i>Payments</a></li>
+ @if((Auth::user()->role!='Vote Holder')&&(Auth::user()->role!='Accountant-Cost Centre'))
+            <li><a href="/reports"><i class="fas fa-file-pdf"></i>Reports</a></li>
+  @endif
+@admin
+            <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
+          @endadmin
+        </ul>
+    </div>
+<div class="main_content">
+<div class="container-fluid" id="grad1">
+    <div class="row justify-content-center mt-0">
+        <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                <h2><strong>Real Estate Contract Information</strong></h2>
+                <p>Fill all form fields with (*) to go to the next step</p>
+                <div class="row">
+                    <div class="col-md-12 mx-0">
+
+                        <form id="msform"  METHOD="POST" enctype="multipart/form-data" action="{{ route('space_contract_approval_response')}}">
+                        {{csrf_field()}}
+                            <!-- progressbar -->
+                            <ul style="text-align: center;" id="progressbar">
+                            	<li class="active" id="personal"><strong>Client</strong></li>
+                                <li  id="account"><strong>Real Estate</strong></li>
+                                <li id="payment"><strong>Payment</strong></li>
+                                <li id="confirm"><strong>Approval</strong></li>
+                            </ul>
+                             <!-- fieldsets -->
+                            <fieldset>
+                                @foreach ($contract_data as $var)
+
+
+                                <div class="form-card">
+                                   <h2 class="fs-title">Client Information</h2> <div class="form-group">
+					<div class="form-wrapper" id="clientdiv">
+          <label for="client_type">Client Type*</label>
+          <span id="ctypemsg"></span>
+            <select class="form-control" readonly id="client_type" name="client_type">
+
+                @if($var->type=="Individual")
+                    <option value="1" selected>{{$var->type}}</option>
+                @else
+                    <option value="2" selected>{{$var->type}}</option>
                 @endif
-                @admin
-                <li><a href="/user_role_management"><i class="fas fa-user-friends hvr-icon" aria-hidden="true"></i>Manage Users</a></li>
-                <li><a href="/system_settings"><i class="fa fa-cog pr-1" aria-hidden="true"></i>System settings</a></li>
-                @endadmin
-            </ul>
+
+            </select>
+
         </div>
-        <div class="main_content">
-            <div class="container-fluid" id="grad1">
-                <div class="row justify-content-center mt-0">
-                    <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
-                        <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                            <h2><strong>Real Estate Contract Information</strong></h2>
-                            <p>Fill all form fields with (*) to go to the next step</p>
-                            <div class="row">
-                                <div class="col-md-12 mx-0">
-                                    <form  onsubmit="return submitFunction()" id="msform" METHOD="POST" enctype="multipart/form-data" action="{{ route('create_space_contract')}}">
-                                    {{csrf_field()}}
+    </div>
+
+        <div class="form-group row" id="namediv" style="display: none;">
+						<div class="form-wrapper col-6">
+							<label for="first_name">First Name</label>
+                            <span id="name1msg"></span>
+							<input type="text" readonly id="first_name" value="{{$var->first_name}}" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+						</div>
+						<div class="form-wrapper col-6">
+							<label for="last_name">Last Name</label>
+                            <span id="name2msg"></span>
+							<input type="text" id="last_name" readonly value="{{$var->last_name}}" name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+						</div>
+					</div>
+
+					<div class="form-group" id="companydiv" style="display: none;">
+					<div class="form-wrapper">
+						<label for="company_name">Company Name</label>
+                        <span id="cnamemsg"></span>
+						<input type="text" readonly id="company_name" name="company_name" value="{{$var->first_name}}" class="form-control">
+					</div>
+				</div>
+
+    <div class="form-group row">
 
 
-                                        <!-- progressbar -->
-                                        <ul  id="progressbar">
-                                            <li class="active" id="personal"><strong>Client</strong></li>
-                                            <li  id="account"><strong>Real Estate</strong></li>
-                                            <li id="payment"><strong>Payment</strong></li>
-                                            <li id="confirm"><strong>Confirm</strong></li>
-                                        </ul>
-                                        <!-- fieldsets -->
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Client Information</h2> <div class="form-group">
-                                                    <div class="form-wrapper" id="clientdiv">
-                                                        <label for="client_type">Client Type <span style="color: red;"> *</span></label>
-                                                        <span id="ctypemsg"></span>
-                                                        <select class="form-control"  id="client_type" name="client_type">
-                                                            <option value="0" disabled selected hidden>select client type</option>
-                                                            <option value="1">Individual</option>
-                                                            <option value="2">Company/Organization</option>
-                                                        </select>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row" id="namediv" style="display: none;">
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="first_name">First Name <span style="color: red;"> *</span></label>
-                                                        <span id="name1msg"></span>
-                                                        <input type="text" id="first_name" required name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                                    </div>
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="last_name">Last Name <span style="color: red;"> *</span></label>
-                                                        <span id="name2msg"></span>
-                                                        <input type="text" id="last_name" name="last_name" class="form-control" required onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="companydiv" style="display: none;">
-                                                    <div class="form-wrapper">
-                                                        <label for="company_name">Company Name <span style="color: red;"> *</span></label>
-                                                        <span id="cnamemsg"></span>
-                                                        <input type="text" id="company_name"  name="company_name" class="form-control">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="official_client_id">Client ID<span style="color: red;"> *</span></label>
-                                                        <span id="official_client_id_msg"></span>
-                                                        <input type="text" id="official_client_id" name="official_client_id" class="form-control">
-                                                    </div>
+        <div class="form-wrapper col-12">
+            <label for="official_client_id">Client ID</label>
+            <span id="official_client_id_msg"></span>
+            <input type="text" id="official_client_id" readonly value="{{$var->official_client_id}}" name="official_client_id" class="form-control">
+        </div>
 
 
 
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="email">Email</label>
-                                                        <span id="email_msg"></span>
-                                                        <input type="text" name="email" id="email" class="form-control" placeholder="someone@example.com">
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
-                                                        <span id="phone_msg"></span>
-                                                        <input type="text" id="phone_number"  name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-                                                    </div>
+					<div class="form-wrapper col-6">
+						<label for="email">Email</label>
+						<input type="text" name="email" readonly value="{{$var->email}}" id="email" class="form-control" placeholder="someone@example.com" >
+					</div>
 
 
+                    <div class="form-wrapper col-6">
+                        <label for="phone_number">Phone Number</label>
+                        <span id="phone_msg"></span>
+                        <input type="text" id="phone_number"  name="phone_number" value="{{$var->phone_number}}" readonly class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                    </div>
 
-                                                </div>
 
-
-
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="address">Address <span style="color: red;"> *</span></label>
-                                                        <span id="address_msg"></span>
-                                                        <input type="text" id="address" name="address"  class="form-control">
-                                                    </div>
-                                                </div>
+				</div>
 
 
 
-                                                <div class="form-group">
-                                                    <div class="form-wrapper" >
-                                                        <label for="client_type_contract">Client Type<span style="color: red;"> *</span></label>
-                                                        <span id="ctype_contract_msg"></span>
-                                                        <select class="form-control"  id="client_type_contract" name="client_type_contract">
-                                                            <option value=""></option>
-                                                            <option value="Direct">Direct</option>
-                                                            <option value="Indirect">Indirect</option>
-                                                        </select>
+				<div class="form-group">
+					<div class="form-wrapper">
+						<label for="address">Address</label>
+						<input type="text" readonly id="address" name="address" value="{{$var->address}}" class="form-control">
+					</div>
+				</div>
 
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="form-group">
-                                                    <div id="parent_clientDiv" style="display: none;" class="form-wrapper  pt-1">
-                                                        <label for="parent_client"  ><strong>Parent client <span style="color: red;"> *</span></strong></label>
-                                                        <span id="parent_client_msg"></span>
-                                                        <select id="parent_client"  class="form-control" name="parent_client" >
-                                                            <option value="" selected></option>
-
-                                                            <?php
-                                                            $parent_clients=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.has_clients',1)->where('space_contracts.contract_status',1)->where('space_contracts.end_date','>',date('Y-m-d'))->get();
-
-
-                                                            $tempOut = array();
-                                                            foreach($parent_clients as $values){
-                                                                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
-                                                                $val = (iterator_to_array($iterator,true));
-                                                                $tempoIn=$val['full_name'];
-
-                                                                if(!in_array($tempoIn, $tempOut))
-                                                                {
-                                                                    print('<option value="'.$val['client_id'].'">'.$val['full_name'].'</option>');
-                                                                    array_push($tempOut,$tempoIn);
-                                                                }
-
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for="client_type_contract">Client Type </label>
+                                            <span id="client_type_contract_msg"></span>
+                                            <input type="text" id="client_type_contract" readonly value="{{$var->client_type_contract}}"  name="client_type_contract" class="form-control">
+                                        </div>
+                                    </div>
 
 
 
+                                    @if($var->parent_client!='')
+                                        <div class="form-group">
+                                            <div class="form-wrapper">
+                                                <label for="parent_client">Parent client </label>
+                                                <span id="parent_client_msg"></span>
+                                              <?php  $parent_client_name=DB::table('clients')->where('client_id',$var->parent_client)->value('full_name');   ?>
 
-
-
-
-
+                                                <input type="text"  readonly value="{{$parent_client_name}}" class="form-control">
                                             </div>
-                                            <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
-                                            <a href="/businesses" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
-                                        </fieldset>
-                                        {{-- Second Form --}}
-                                        <fieldset>
-                                            @foreach($space_info as $var)
-                                                <div class="form-card">
-                                                    <h2 class="fs-title">Real Estate Information</h2>
+                                        </div>
 
+                                        <input type="hidden" id="parent_client"  value="{{$var->parent_client}}"  name="parent_client" class="form-control">
+                                    @else
+                                    @endif
 
 
 
-                                                    <div class="form-group row">
-
-                                                        <div class="form-wrapper col-6">
-                                                            <label for="major_industry"  ><strong>Major industry</strong></label>
-                                                            <input type="text" class="form-control" id="getMajor" name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
-                                                        </div>
-
-                                                        <div class="form-wrapper col-6">
-                                                            <label for=""  ><strong>Minor industry</strong></label>
-                                                            <input type="text" class="form-control" id="minor_list" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group row">
-
-                                                        <div class="form-wrapper col-6">
-                                                            <label for="space_location"  ><strong>Location</strong></label>
-                                                            <input type="text" class="form-control" id="space_location" name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
-                                                        </div>
-
-                                                        <div class="form-wrapper col-6">
-                                                            <label for="space_location"  ><strong>Sub location</strong></label>
-                                                            <input type="text" readonly class="form-control" id="space_sub_location" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group row">
-
-                                                        <div class="form-wrapper col-6">
-                                                            <label for="" ><strong>Real Estate Number</strong></label>
-                                                            <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" readonly Required autocomplete="off">
-                                                        </div>
-
-                                                        <div class="form-wrapper col-6">
-                                                            <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                                            <input type="number"  step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group row">
-
-                                                        <div class="form-wrapper col-6">
-                                                            <label for="has_water_bill"  ><strong>Required to also pay Water bill</strong></label>
-                                                            <input type="text" readonly class="form-control" id="has_water_bill" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
-                                                        </div>
-
-                                                        <div class="form-wrapper col-6">
-                                                            <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill</strong></label>
-                                                            <input type="text" readonly class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-                                                </div>
-                                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                                <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
-                                                <a href="/businesses" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
-                                            @endforeach
-                                        </fieldset>
-                                        {{-- Third Form --}}
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Payment Information</h2>
-                                                <div class="form-group row">
-
-
-                                                    <div id="contract_categoryDiv" class="form-wrapper col-12" style="display: none">
-                                                        <label for="contract_category">Category of contract <span style="color: red;"> *</span></label>
-                                                        <span id="contract_category_msg"></span>
-                                                        <select id="contract_category" class="form-control" name="contract_category" >
-                                                            <option value="" ></option>
-                                                            <option value="Solicited" >Solicited</option>
-                                                            <option value="Unsolicited" >Unsolicited</option>
-                                                        </select>
-                                                    </div>
-
-
-
-                                                    <div id="tinDiv" class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
-                                                            <span id="tin_msg"></span>
-                                                            <input type="number" id="tin"  name="tin" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
-                                                            <p id="error_tin"></p>
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div id="tbs_certificateDiv" style="display: none;" class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                            <span id="tbs_certificate_msg"></span>
-                                                            <input type="file" id="tbs_certificate"    name="tbs_certificate" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div id="gpsa_certificateDiv" style="display: none;"  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                            <span id="gpsa_certificate_msg"></span>
-                                                            <input type="file" id="gpsa_certificate"  name="gpsa_certificate" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div id="food_business_licenseDiv" style="display: none;" class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                            <span id="food_business_license_msg"></span>
-                                                            <input type="file" id="food_business_license"  name="food_business_license" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div style="display: none;" id="business_licenseDiv" class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                            <span id="business_license_msg"></span>
-                                                            <input type="file" id="business_license"  name="business_license">
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div style="display: none;" id="osha_certificateDiv" class="form-group col-12 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                            <span id="osha_certificate_msg"></span>
-                                                            <input type="file" id="osha_certificate"  name="osha_certificate" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div style="display: none;" id="tcra_registrationDiv"  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                            <span id="tcra_registration_msg"></span>
-                                                            <input type="file"  id="tcra_registration"  name="tcra_registration" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div style="display: none;" id="brela_registrationDiv" class="form-group col-12">
-                                                        <div class="form-wrapper">
-                                                            <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                            <span id="brela_registration_msg"></span>
-                                                            <input type="file" id="brela_registration"  name="brela_registration" >
-                                                        </div>
-                                                    </div>
-
-
-
-
-                                                    <div class="form-wrapper col-12 pt-4" style="margin-top: 4.5rem !important;">
-                                                        <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
-                                                        <span id="start_date_msg"></span>
-                                                        <input type="date" id="start_date" name="start_date" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="duration">Duration <span style="color: red;"> *</span></label>
-                                                        <span id="duration_msg"></span>
-                                                        <input type="number"   id="duration" name="duration" class="form-control"  >
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="currency">Period <span style="color: red;"> *</span></label>
-                                                        <span id="duration_period_msg"></span>
-                                                        <select id="duration_period" class="form-control" name="duration_period" >
-                                                            <option value="" ></option>
-                                                            <option value="Months" >Months</option>
-                                                            <option value="Years" >Years</option>
-                                                        </select>
-                                                    </div>
-
-
-
-                                                    <div id="percentage_to_payDiv"  class="form-wrapper pt-4 col-12">
-                                                        <label for="percentage_to_pay">Percentage to be paid(Of total collection) <span style="color: red;"> *</span></label>
-                                                        <span id="percentage_to_pay_msg"></span>
-                                                        <input type="number"   step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
-                                                    </div>
-
-
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <div id="academic_dependenceDiv" class="form-wrapper col-12">
-                                                        <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
-                                                        <span id="academic_dependence_msg"></span>
-                                                        <select id="academic_dependence" class="form-control" name="academic_dependence" >
-                                                            <option value="" ></option>
-                                                            <option value="No" >No</option>
-                                                            <option value="Yes" >Yes</option>
-                                                        </select>
-                                                    </div>
-
-
-                                                    <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
-                                                        <span id="academic_season_msg"></span>
-                                                        <input type="number"  id="academic_season" name="academic_season" class="form-control">
-                                                    </div>
-
-
-                                                    <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
-                                                        <span id="vacation_season_msg"></span>
-                                                        <input type="number"  id="vacation_season" name="vacation_season" class="form-control" >
-                                                    </div>
-
-                                                    <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                                                        <label for="amount">Amount per payment cycle<span style="color: red;"> *</span></label>
-                                                        <span id="amount_msg"></span>
-                                                        <input type="number" id="amount" name="amount" class="form-control" >
-                                                    </div>
-
-                                                    <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
-                                                        <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
-                                                        <input type="number"  id="rent_sqm" name="rent_sqm"  class="form-control">
-                                                    </div>
-
-                                                    <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style="display: none; text-align: left;">
-
-                                                        <label for="has_additional_businesses" style="display: inline-block;">Has additional businesses in the area</label>
-                                                        <input type="checkbox"  style="display: inline-block;" value="1" id="has_additional_businesses" onchange="showAdditionalBusinesses()"  name="has_additional_businesses" autocomplete="off">
-
-                                                    </div>
-
-
-
-                                                    <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" style="display: none;">
-                                                        <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
-                                                        <span id="additional_businesses_list_msg"></span>
-                                                        <textarea style="width: 100%;" id="additional_businesses_list" name="additional_businesses_list"></textarea>
-
-                                                    </div>
-
-
-                                                    <div id="additional_businesses_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
-                                                        <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
-                                                        <span id="additional_businesses_amount_msg"></span>
-                                                        <input type="number"  id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
-                                                    </div>
-
-                                                    <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
-                                                        <label for="total_amount">Total amount per payment cycle<span style="color: red;"> *</span></label>
-                                                        <span id="total_amount_msg"></span>
-                                                        <input type="text"  id="total_amount" readonly name="total_amount" class="form-control">
-                                                    </div>
-
-
-                                                    <div id="academic_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="academic_season_total">Total amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
-                                                        <span id="academic_season_total_msg"></span>
-                                                        <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
-                                                    </div>
-
-
-                                                    <div id="vacation_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="vacation_season_total">Total amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
-                                                        <span id="vacation_season_total_msg"></span>
-                                                        <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
-                                                    </div>
-
-
-
-                                                    <div id="has_security_depositDiv" class="form-wrapper col-12">
-                                                        <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
-                                                        <span id="has_security_deposit_msg"></span>
-                                                        <select id="has_security_deposit" class="form-control" name="has_security_deposit">
-                                                            <option value="" ></option>
-                                                            <option value="No" >No</option>
-                                                            <option value="Yes" >Yes</option>
-                                                        </select>
-                                                    </div>
-
-
-                                                    <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                                                        <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
-                                                        <span id="security_deposit_msg"></span>
-                                                        <input type="text" readonly id="security_deposit" name="security_deposit" class="form-control" >
-                                                    </div>
-
-
-
-                                                    <div id="currencydiv" class="form-wrapper col-12 pt-4">
-                                                        <label for="currency">Currency <span style="color: red;"> *</span></label>
-                                                        <span id="currency_msg"></span>
-                                                        <select id="currency" class="form-control"  name="currency">
-                                                            <option value="" ></option>
-                                                            <option id="currency_tzs" value="TZS" >TZS</option>
-                                                            <option id="currency_usd" value="USD" >USD</option>
-                                                        </select>
-                                                    </div>
-
-
-
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
-                                                        <span id="payment_cycle_msg"></span>
-                                                        <input type="number"  id="payment_cycle" name="payment_cycle" class="form-control">
-
-                                                    </div>
-
-                                                    <div class="form-wrapper col-12" id="escalation_rateDiv" style="display: none;">
-                                                        <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_msg"></span>
-                                                        <input type="number"  id="escalation_rate" name="escalation_rate" class="form-control" >
-                                                    </div>
-
-
-                                                    <div class="form-wrapper col-6" id="escalation_rate_vacationDiv" style="display: none;">
-                                                        <label for="escalation_rate_vacation">Escalation Rate(Vacation season) <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_vacation_msg"></span>
-                                                        <input type="number"  id="escalation_rate_vacation" name="escalation_rate_vacation" class="form-control" >
-                                                    </div>
-
-
-
-
-                                                    <div class="form-wrapper col-6" id="escalation_rate_academicDiv" style="display: none;">
-                                                        <label for="escalation_rate_academic">Escalation Rate(Academic season) <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_academic_msg"></span>
-                                                        <input type="number"  id="escalation_rate_academic" name="escalation_rate_academic" class="form-control" >
-                                                    </div>
-
-
-
-
-
-
-
-
-                                                </div>
-
-
-                                                <p id="validate_money_msg"></p>
-                                                <br>
-                                                <br>
-
-                                            </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-
-                                            <input type="button" id="next3" name="next" class="next action-button" value="Next" />
-                                            <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
-                                        </fieldset>
-
-
-
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 style="text-align: center !important;" class="fs-title">Full contract details</h2>
-                                                <table class="table table-bordered table-striped" style="width: 100%; margin-top:3%;">
-
-
-
-                                                    <tr>
-                                                        <td>Client type</td>
-                                                        <td id="client_type_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr id="first_name_row_confirm" style="display: none;">
-                                                        <td>First name:</td>
-                                                        <td id="first_name_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr id="last_name_row_confirm" style="display: none;">
-                                                        <td>Last name:</td>
-                                                        <td id="last_name_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr id="company_name_row_confirm" style="display: none;">
-                                                        <td>Company name:</td>
-                                                        <td id="company_name_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td> Email:</td>
-                                                        <td id="email_confirm"> </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td> Phone number:</td>
-                                                        <td id="phone_number_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td> Address:</td>
-                                                        <td id="address_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td> Major industry:</td>
-                                                        <td id="major_industry_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td> Minor industry:</td>
-                                                        <td id="minor_industry_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td> Location:</td>
-                                                        <td id="location_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td>Sub location:</td>
-                                                        <td id="sub_location_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Real Estate number:</td>
-                                                        <td id="space_number_confirm"></td>
-                                                    </tr>
-
-
-
-                                                    <tr>
-                                                        <td>Real Estate size(SQM):</td>
-                                                        <td id="space_size_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Has electricity bill:</td>
-                                                        <td id="has_electricity_bill_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td>Has water bill:</td>
-                                                        <td id="has_water_bill_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td>Start date:</td>
-                                                        <td id="start_date_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Duration:</td>
-                                                        <td id="duration_confirm"></td>
-                                                    </tr>
-
-
-
-                                                    <tr>
-                                                        <td>Depend on academic year:</td>
-                                                        <td id="academic_dependance_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr id="amount_academic_row_confirm" style="display: none;" >
-                                                        <td>Amount(Academic season):</td>
-                                                        <td id="amount_academic_confirm"></td>
-                                                    </tr>
-
-                                                    <tr id="amount_vacation_row_confirm" style="display: none;">
-                                                        <td>Amount(Vacation season):</td>
-                                                        <td id="amount_vacation_confirm"></td>
-                                                    </tr>
-
-                                                    <tr id="amount_row_confirm" style="display: none;">
-                                                        <td>Amount:</td>
-                                                        <td id="amount_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr >
-                                                        <td>Rent/SQM:</td>
-                                                        <td id="rent_sqm_confirm"></td>
-                                                    </tr>
-
-
-
-                                                    <tr>
-                                                        <td>Payment cycle:</td>
-                                                        <td id="payment_cycle_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Escalation Rate:</td>
-                                                        <td id="escalation_rate_confirm"></td>
-                                                    </tr>
-
-
-
-
-
-                                                </table>
-
-
-                                            </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="button" id="next4" name="next" class="next action-button" value="Next"/>
-                                            <a href="/businesses" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
-                                        </fieldset>
-
-
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Invoice Information</h2>
-                                                <div class="form-group row">
-
-
-                                                    <div class="form-group col-12 pt-4"  >
-                                                        <div class="form-wrapper">
-                                                            <label for="debtor_name">Client Full Name </label>
-
-                                                            <input type="text" id="debtor_name" readonly name="debtor_name" class="form-control">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Client Account Code</label>
-                                                            <input type="text" class="form-control" id="debtor_account_code_space" readonly name="debtor_account_code" value=""  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
-                                                            <input type="text" readonly id="tin_invoice"  name="tin_invoice" class="form-control">
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div class="form-group col-12 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Client Address </label>
-                                                            <input type="text" class="form-control" id="debtor_address_space" name="debtor_address" value="" readonly autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-{{--                                                    <div class="form-group col-12 pt-4">--}}
-{{--                                                        <div class="form-wrapper">--}}
-{{--                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>--}}
-{{--                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-
-
-                                                    <div class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Invoice Start Date <span style="color: red;"> *</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date" name="invoicing_period_start_date" value="" required autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="">Invoice End Date <span style="color: red;"> *</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date" name="invoicing_period_end_date" value="" required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="">Period <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div   class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Project ID <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="" name="project_id" value="" required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="">Amount <span style="color: red;"> *</span></label>
-                                                            <input type="number" min="20" class="form-control" id="amount_to_be_paid" name="amount_to_be_paid" value="" required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div  class="form-wrapper">
-                                                            <label>Currency </label>
-                                                            <input type="text" class="form-control" id="currency_invoice" name="currency_invoice" value="" readonly  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div  class="form-group col-md-12 mt-1">
-                                                        <div class="form-wrapper">
-                                                            <label for="" >Status <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="status" name="status" value="" required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div  class="form-group col-md-12 mt-1">
-                                                        <div class="form-wrapper">
-                                                            <label for="" >Description <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="description" name="description" value="" required autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-
-
-
-
-
-
-
-
-                                            </div>
-                                            <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous"/>
-                                            <input type="submit" id="submit5" name="submit" class="submit action-button" value="Save"/>
-                                            <input type="submit" id="save_and_print_btn" onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
-                                            <input type="button" id="cancel5" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
-
-
-                                        </fieldset>
-
-
-
-
-
-
-                                    </form>
                                 </div>
-                            </div>
-                        </div>
+ <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
+  <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                                    {{-- <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;"> --}}
+                            </fieldset>
+                            {{-- Second Form --}}
+                            <fieldset>
+                                <div class="form-card">
+                                  <h2 class="fs-title">Real Estate Information</h2>
+
+                                    @if($var->has_clients=='1')
+                                    @else
+                                    <div class="form-group row">
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="major_industry"  ><strong>Major industry</strong></label>
+                                            <input type="text" class="form-control" id="getMajor" name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for=""  ><strong>Minor industry</strong></label>
+                                            <input type="text" class="form-control" id="minor_list" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="space_location"  ><strong>Location</strong></label>
+                                            <input type="text" class="form-control" id="space_location"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="space_location"  ><strong>Sub location</strong></label>
+                                            <input type="text" readonly class="form-control" id="space_sub_location" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="" ><strong>Real Estate Number</strong></label>
+                                            <input type="text" class="form-control" id="space_id_contract" name="space_id_contract" value="{{$var->space_id}}" readonly Required autocomplete="off">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                                            <input type="number"  step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}" readonly autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="has_water_bill"  ><strong>Need to also pay Water bill</strong></label>
+                                            <input type="text" readonly class="form-control" id="has_water_bill" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
+                                            <input type="text" readonly class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
+                                        </div>
+                                    </div>
+                                    @endif
+
+
+                                    @endforeach
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
+                                 <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                                {{-- <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;"> --}}
+                            </fieldset>
+                            {{-- Third Form --}}
+                            <fieldset>
+                                <div class="form-card">
+                                    <h2 class="fs-title">Payment Information</h2>
+                                    <div class="form-group row">
+
+
+                                        <div id="contract_categoryDiv" class="form-wrapper col-12" style="display: none">
+                                            <label for="contract_category">Category of contract <span style="color: red;"> *</span></label>
+                                            <span id="contract_category_msg"></span>
+                                            <select id="contract_category" class="form-control" name="contract_category" >
+                                                <option value="" ></option>
+                                                <option value="Solicited" >Solicited</option>
+                                                <option value="Unsolicited" >Unsolicited</option>
+                                            </select>
+                                        </div>
+
+
+
+                                        <div id="tinDiv" class="form-group col-6 pt-4">
+                                            <div class="form-wrapper">
+                                                <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                <span id="tin_msg"></span>
+                                                <input type="number" id="tin" name="tin" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                                <p id="error_tin"></p>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div id="tbs_certificateDiv" style="display: none;" class="form-group col-6 pt-4">
+                                            <div class="form-wrapper">
+                                                <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                                                <span id="tbs_certificate_msg"></span>
+                                                <input type="file" id="tbs_certificate"    name="tbs_certificate" class="form-control">
+                                            </div>
+                                        </div>
+
+
+                                        <div id="gpsa_certificateDiv" style="display: none;"  class="form-group col-6 pt-4">
+                                            <div class="form-wrapper">
+                                                <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                                                <span id="gpsa_certificate_msg"></span>
+                                                <input type="file" id="gpsa_certificate"  name="gpsa_certificate" class="form-control">
+                                            </div>
+                                        </div>
+
+
+                                        <div id="food_business_licenseDiv" style="display: none;" class="form-group col-6 pt-4">
+                                            <div class="form-wrapper">
+                                                <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
+                                                <span id="food_business_license_msg"></span>
+                                                <input type="file" id="food_business_license"  name="food_business_license" class="form-control">
+                                            </div>
+                                        </div>
+
+
+                                        <div style="display: none;" id="business_licenseDiv" class="form-group col-6 pt-4">
+                                            <div class="form-wrapper">
+                                                <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                                                <span id="business_license_msg"></span>
+                                                <input type="file" id="business_license"  name="business_license" class="form-control">
+                                            </div>
+                                        </div>
+
+
+
+                                        <div style="display: none;" id="osha_certificateDiv" class="form-group col-12 pt-4">
+                                            <div class="form-wrapper">
+                                                <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                                                <span id="osha_certificate_msg"></span>
+                                                <input type="file" id="osha_certificate"  name="osha_certificate" class="form-control">
+                                            </div>
+                                        </div>
+
+
+                                        <div style="display: none;" id="tcra_registrationDiv"  class="form-group col-6 pt-4">
+                                            <div class="form-wrapper">
+                                                <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                                                <span id="tcra_registration_msg"></span>
+                                                <input type="file"  id="tcra_registration"  name="tcra_registration" class="form-control">
+                                            </div>
+                                        </div>
+
+
+                                        <div style="display: none;" id="brela_registrationDiv" class="form-group col-12">
+                                            <div class="form-wrapper">
+                                                <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
+                                                <span id="brela_registration_msg"></span>
+                                                <input type="file" id="brela_registration"  name="brela_registration" class="form-control">
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="form-wrapper col-12 pt-4">
+                                            <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
+                                            <span id="start_date_msg"></span>
+                                            <input type="date" id="start_date" name="start_date" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="duration">Duration <span style="color: red;"> *</span></label>
+                                            <span id="duration_msg"></span>
+                                            <input type="number" id="duration" name="duration" class="form-control">
+                                        </div>
+
+                                        <div class="form-wrapper col-6">
+                                            <label for="currency">Period <span style="color: red;"> *</span></label>
+                                            <span id="duration_period_msg"></span>
+                                            <select id="duration_period" class="form-control" name="duration_period">
+                                                <option value="" ></option>
+                                                <option value="Months" >Months</option>
+                                                <option value="Years" >Years</option>
+                                            </select>
+                                        </div>
+
+
+
+                                        <div id="percentage_to_payDiv"  class="form-wrapper pt-4 col-12">
+                                            <label for="percentage_to_pay">Percentage to be paid(Of total collection) <span style="color: red;"> *</span></label>
+                                            <span id="percentage_to_pay_msg"></span>
+                                            <input type="number"  step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-group row">
+
+                                        <div id="academic_dependenceDiv" class="form-wrapper col-12">
+                                            <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
+                                            <span id="academic_dependence_msg"></span>
+                                            <select id="academic_dependence" class="form-control" name="academic_dependence" >
+                                                <option value="" ></option>
+                                                <option value="No" >No</option>
+                                                <option value="Yes" >Yes</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                            <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                            <span id="academic_season_msg"></span>
+                                            <input type="number"  id="academic_season" name="academic_season" class="form-control" >
+                                        </div>
+
+
+                                        <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                            <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                            <span id="vacation_season_msg"></span>
+                                            <input type="number"  id="vacation_season" name="vacation_season" class="form-control" >
+                                        </div>
+
+                                        <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
+                                            <label for="amount">Amount per payment cycle<span style="color: red;"> *</span></label>
+                                            <span id="amount_msg"></span>
+                                            <input type="number"  id="amount" name="amount" class="form-control" >
+                                        </div>
+
+                                        <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
+                                            <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
+                                            <input type="number"  id="rent_sqm" name="rent_sqm"  class="form-control">
+                                        </div>
+
+                                        <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style="display: none; text-align: left;">
+
+                                            <label for="has_additional_businesses" style="display: inline-block;">Has additional businesses in the area</label>
+                                            <input type="checkbox"  style="display: inline-block;" value="1" id="has_additional_businesses" onchange="showAdditionalBusinesses()"  name="has_additional_businesses" autocomplete="off">
+
+                                        </div>
+
+
+
+                                        <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" style="display: none;">
+                                            <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
+                                            <span id="additional_businesses_list_msg"></span>
+                                            <textarea style="width: 100%;" id="additional_businesses_list" name="additional_businesses_list"></textarea>
+
+                                        </div>
+
+
+                                        <div id="additional_businesses_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
+                                            <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
+                                            <span id="additional_businesses_amount_msg"></span>
+                                            <input type="number"  id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
+                                        </div>
+
+                                        <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
+                                            <label for="total_amount">Total amount per payment cycle<span style="color: red;"> *</span></label>
+                                            <span id="total_amount_msg"></span>
+                                            <input type="text"  id="total_amount" readonly name="total_amount" class="form-control">
+                                        </div>
+
+
+                                        <div id="academic_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                            <label for="academic_season_total">Total amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                            <span id="academic_season_total_msg"></span>
+                                            <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
+                                        </div>
+
+
+                                        <div id="vacation_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                            <label for="vacation_season_total">Total amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                            <span id="vacation_season_total_msg"></span>
+                                            <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
+                                        </div>
+
+
+                                        <div id="has_security_depositDiv" class="form-wrapper col-12">
+                                            <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
+                                            <span id="has_security_deposit_msg"></span>
+                                            <select id="has_security_deposit" class="form-control" name="has_security_deposit">
+                                                <option value="" ></option>
+                                                <option value="No" >No</option>
+                                                <option value="Yes" >Yes</option>
+                                            </select>
+                                        </div>
+
+                                        <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
+                                            <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
+                                            <span id="security_deposit_msg"></span>
+                                            <input type="text" readonly id="security_deposit" name="security_deposit" class="form-control">
+                                        </div>
+
+
+
+                                        <div id="currencydiv" class="form-wrapper col-12 pt-4">
+                                            <label for="currency">Currency <span style="color: red;"> *</span></label>
+                                            <span id="currency_msg"></span>
+                                            <select id="currency" class="form-control"  name="currency">
+                                                <option value="" ></option>
+                                                <option id="currency_tzs" value="TZS" >TZS</option>
+                                                <option id="currency_usd" value="USD" >USD</option>
+                                            </select>
+                                            <p class="pt-2" style="display: none;" id="currency_clause"><b>N.B This is the currency that will be used for all sub-clients</b></p>
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="form-group row">
+
+                                        <div class="form-wrapper col-12">
+                                            <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
+                                            <span id="payment_cycle_msg"></span>
+                                            <input type="number"  id="payment_cycle" name="payment_cycle" class="form-control">
+
+                                        </div>
+
+                                        <div class="form-wrapper col-12" id="escalation_rateDiv" style="display: none;">
+                                            <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
+                                            <span id="escalation_rate_msg"></span>
+                                            <input type="number"  id="escalation_rate" name="escalation_rate" class="form-control" >
+                                        </div>
+
+
+
+
+                                        <div class="form-wrapper col-6" id="escalation_rate_vacationDiv" style="display: none;">
+                                            <label for="escalation_rate_vacation">Escalation Rate(Vacation season) <span style="color: red;"> *</span></label>
+                                            <span id="escalation_rate_vacation_msg"></span>
+                                            <input type="number"  id="escalation_rate_vacation" name="escalation_rate_vacation" class="form-control" >
+                                        </div>
+
+
+
+
+                                        <div class="form-wrapper col-6" id="escalation_rate_academicDiv" style="display: none;">
+                                            <label for="escalation_rate_academic">Escalation Rate(Academic season) <span style="color: red;"> *</span></label>
+                                            <span id="escalation_rate_academic_msg"></span>
+                                            <input type="number"  id="escalation_rate_academic" name="escalation_rate_academic" class="form-control" >
+                                        </div>
+
+
+
+
+                                    </div>
+
+
+                                    <p id="validate_money_msg"></p>
+                                    <br>
+                                    <br>
+
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+
+                                <input type="button" id="next3" name="next" class="next action-button" value="Next" />
+                                <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                            </fieldset>
+
+
+
+                            <fieldset>
+                                <div class="form-card">
+
+
+
+
+                                        <center><div class="row">
+                                            <div class="form-wrapper col-12">
+                                                <label for="approval_status">Do you approve this contract?</label>
+                                            </div>
+                                        </div>
+                                        </center>
+
+                                        <div class="form-group pt-5">
+
+
+
+
+                                            <div class="row">
+                                                <div class="form-wrapper col-6">
+                                                    <input class="form-check-input" type="radio" name="approval_status" id="Approve" value="Accepted" checked="">
+                                                    <label for="Approve" class="form-check-label">Approve</label>
+                                                </div>
+
+                                                <div class="form-wrapper col-6">
+                                                    <input class="form-check-input" type="radio" name="approval_status" id="Reject" value="Rejected">
+                                                    <label for="Reject" class="form-check-label">Decline</label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="remarksDiv" style="display: none;">
+                                            <div class="form-wrapper">
+                                                <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                <span id="remarks_msg"></span>
+                                                <textarea  type="text" id="remarks" name="approval_remarks" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+
+
+                                    <input type="hidden" name="contract_id"  value="{{$contract_id}}">
+
+
+
+
+
+</div>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                <input type="submit" id="proceed" onclick=" return validate();" name="next" class="next action-button" value="Proceed" />
+                                <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                            </fieldset>
+
+
+
+
+
+
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
+</div>
 @endsection
 
 @section('pagescript')
 
+    <script>
+
+        $('#has_security_deposit').click(function() {
+            var query=$(this).val();
+            var academic_dependence=$('#academic_dependence').val();
+            var academic_season=$('#academic_season').val();
+            var amount=$('#amount').val();
+            var additional_businesses_amount=$('#additional_businesses_amount').val();
+            if(query=='Yes') {
+                $('#security_depositDiv').show();
+
+                if(academic_dependence=='Yes'){
+
+                    $('#security_deposit').val((+academic_season  +  +additional_businesses_amount)*6);
+
+                }else{
+
+                    $('#security_deposit').val((+amount  +  +additional_businesses_amount)*6);
+                }
+
+
+
+            }else if(query=='No'){
+                $('#security_depositDiv').hide();
+                $('#security_deposit').val("0");
+
+            }else{
+                $('#security_depositDiv').hide();
+                $('#security_deposit').val("0");
+
+            }
+
+
+
+        });
+
+    </script>
 
     <script>
 
@@ -1167,36 +933,6 @@
 
 
     <script type="text/javascript">
-
-        var button_clicked=null;
-
-        function openNewTab() {
-
-            button_clicked='Save and print';
-        }
-
-        function submitFunction(){
-            $("#cancel5").css("background-color", "#87ceeb");
-            $("#cancel5").val('Finish');
-            $("#previous5").hide();
-            $("#submit5").hide();
-            $("#save_and_print_btn").hide();
-
-            if(button_clicked=='Save and print'){
-
-                $("#msform").attr("target","_blank");
-
-            }else{
-
-
-            }
-
-
-            return true;
-
-        }
-
-
 
         function showAdditionalBusinesses() {
 
@@ -1254,29 +990,6 @@
         }
 
 
-
-
-
-        $('#client_type_contract').on('change',function(e){
-            e.preventDefault();
-            var client_type_contract = $(this).val();
-
-            if (client_type_contract=='Indirect'){
-                $('#parent_clientDiv').show();
-
-
-            }else{
-
-                $('#parent_clientDiv').hide();
-
-            }
-
-
-
-        });
-
-
-
         $('#additional_businesses_amount').on('input',function(e){
             e.preventDefault();
             var additional_businesses_amount=$(this).val();
@@ -1309,440 +1022,93 @@
 
 
 
+        var button_clicked=null;
+
+        function openNewTab() {
+
+            button_clicked='Save and print';
+        }
+
+        function submitFunction(){
+            $("#cancel5").css("background-color", "#87ceeb");
+            $("#cancel5").val('Finish');
+            $("#previous5").hide();
+            $("#submit5").hide();
+            $("#save_and_print_btn").hide();
+
+            if(button_clicked=='Save and print'){
+
+                $("#msform").attr("target","_blank");
+
+            }else{
+
+
+            }
+
+
+            return true;
+
+        }
+
+
+
+        window.onload=function(){
+            document.getElementById("client_type").click();
+        };
+    </script>
+
+    <script type="text/javascript">
+
+        var temp;
+        function properNext(){
+            temp=1;
+        }
+
+        function properNextZero(){
+            temp=0;
+        }
 
         $(document).ready(function(){
 
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
-            var p1, p2,p3,p4,p5,p6,p7,p14,p15,p16,p17,p18,p19,p20;
-
-
-            p14=0;
-            p15=0;
-            p16=0;
-            p17=0;
-            p18=0;
-            p19=0;
-            p20=0;
-
-            //File pond starts
-
-            FilePond.registerPlugin(FilePondPluginFileValidateType);
-
-            FilePond.registerPlugin(FilePondPluginFileValidateSize);
-
-
-
-            const tbs_certificateinputElement = document.querySelector('#tbs_certificate');
-            const tbs_certificatepond = FilePond.create(tbs_certificateinputElement, {
-                onaddfile: (error, file) => {
-
-                    if(error==null){
-
-
-                        checkRequired(14);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-                ,onremovefile: (error, file) => {
-
-                    if(error==null){
-                        onFileRemove(14);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-
-            });
-
-
-            const gpsa_certificateinputElement = document.querySelector('#gpsa_certificate');
-            const gpsa_certificatepond = FilePond.create(gpsa_certificateinputElement, {
-                onaddfile: (error, file) => {
-
-                    if(error==null){
-
-
-                        checkRequired(15);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-                ,onremovefile: (error, file) => {
-
-                    if(error==null){
-                        onFileRemove(15);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-
-            });
-
-
-
-
-
-            const food_business_licenseinputElement = document.querySelector('#food_business_license');
-            const food_business_licensepond = FilePond.create(food_business_licenseinputElement, {
-                onaddfile: (error, file) => {
-
-                    if(error==null){
-
-                        checkRequired(16);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-                ,onremovefile: (error, file) => {
-
-                    if(error==null){
-                        onFileRemove(16);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-
-            });
-
-
-
-
-            const business_licenseinputElement = document.querySelector('#business_license');
-            const business_licensepond = FilePond.create(business_licenseinputElement, {
-                onaddfile: (error, file) => {
-
-                    if(error==null){
-
-                        checkRequired(17);
-                    }else{
-
-
-
-                    }
-
-
-                }
-                ,onremovefile: (error, file) => {
-
-                    if(error==null){
-                        onFileRemove(17);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-
-            });
-
-
-
-
-
-
-
-
-            const osha_certificateinputElement = document.querySelector('#osha_certificate');
-            const osha_certificatepond = FilePond.create(osha_certificateinputElement, {
-                onaddfile: (error, file) => {
-
-                    if(error==null){
-                        checkRequired(18);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-                ,onremovefile: (error, file) => {
-
-                    if(error==null){
-                        onFileRemove(18);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-
-            });
-
-
-
-
-            const tcra_registrationinputElement = document.querySelector('#tcra_registration');
-            const tcra_registrationpond = FilePond.create(tcra_registrationinputElement, {
-                onaddfile: (error, file) => {
-
-                    if(error==null){
-                        checkRequired(19);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-                ,onremovefile: (error, file) => {
-
-                    if(error==null){
-                        onFileRemove(19);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-
-            });
-
-
-
-
-            const brela_registrationinputElement = document.querySelector('#brela_registration');
-            const brela_registrationpond = FilePond.create(brela_registrationinputElement, {
-                onaddfile: (error, file) => {
-
-                    if(error==null){
-                        checkRequired(20);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-
-                ,onremovefile: (error, file) => {
-
-                    if(error==null){
-                        onFileRemove(20);
-
-                    }else{
-
-
-
-                    }
-
-
-                }
-
-
-
-
-
-            });
-
-
-
-
-
-            $(function(){
-
-                // Turn input element into a pond with configuration options
-                $('input[type="file"]').filepond({
-                    allowMultiple: false
-                });
-
-
-
-                // Listen for addfile event
-                $('input[type="file"]').on('FilePond:addfile', function(error, file) {
-                    console.log('file added event');
-                });
-
-                // Manually add a file using the addfile method
-                // $('input[type="file"]').filepond('addFile', 'index.html').then(function(file){
-                //     console.log('file added', file);
-                // });
-
-
-
-
-
-                FilePond.setOptions({
-                    server: {
-                        url: '/upload',
-                        headers: {
-
-                            'X-CSRF-TOKEN': '{{csrf_token()}}'
-                        },
-
-                        revert:{
-
-                            url: '/revert_upload',
-                            headers: {
-
-                                'X-CSRF-TOKEN': '{{csrf_token()}}'
-                            },
-
-
-                            onload: function (responce) {
-                                console.log(responce);
-
-                            },
-
-
-
-                        }
-
-
-
-                    },
-
-                    labelFileProcessing: 'Uploading',
-
-                    acceptedFileTypes: ['application/pdf'],
-
-                    fileValidateTypeLabelExpectedTypes: 'Expects pdf',
-
-                    maxFileSize: '15MB'
-
-
-                });
-
-
-
-
-
-
-
-
-
-            });
-
-
-
-            function checkRequired(number){
-                if(number=='14'){
-                    p14=1;
-                }else if(number=='15'){
-                    p15=1;
-
-                }else if(number=='16'){
-
-                    p16=1;
-
-                }else if(number=='17'){
-
-                    p17=1;
-                }else if(number=='18'){
-
-                    p18=1;
-
-                }else if(number=='19'){
-
-                    p19=1;
-                }else if(number=='20'){
-
-                    p20=1;
-                }else{
-
-
-
-                }
-            }
-
-
-
-            function onFileRemove(number){
-                if(number=='14'){
-                    p14=0;
-                }else if(number=='15'){
-                    p15=0;
-
-                }else if(number=='16'){
-
-                    p16=0;
-
-                }else if(number=='17'){
-
-                    p17=0;
-                }else if(number=='18'){
-
-                    p18=0;
-
-                }else if(number=='19'){
-
-                    p19=0;
-                }else if(number=='20'){
-
-                    p20=0;
-                }else{
-
-
-
-                }
-            }
-
-//Filepond ends
-
+            var p1, p2,p3;
 
 
 
 
             $("#next1").click(function(){
+
+
+                if(temp==1) {
+                    next_fs = $(this).parent().next().next();
+                }else{
+                    next_fs = $(this).parent().next();
+                }
+
+
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
                 var clientType=$("#client_type").val(),
                     firstName=$("#first_name").val(),
                     lastName=$("#last_name").val(),
                     companyName=$("#company_name").val();
-                var email=$("#email").val();
-                var address=$("#address").val();
-                var tin=$("#tin").val();
-                var official_client_id=$("#official_client_id").val();
+
                 var client_type_contract=$("#client_type_contract").val();
                 var parent_client=$("#parent_client").val();
 
+
+                if(client_type_contract=='Direct and has clients'){
+
+                    $('#renting_space').hide();
+                    properNext();
+
+                }else{
+
+                    $('#renting_space').show();
+                    properNextZero();
+
+                }
 
 
                 if(clientType=="1"){
@@ -1780,22 +1146,6 @@
                     }
 
 
-                    if(email==""){
-                        p1=0;
-                        $('#email_msg').show();
-                        var message=document.getElementById('email_msg');
-                        message.style.color='red';
-                        message.innerHTML="Required";
-                        $('#email').attr('style','border-bottom:1px solid #f00');
-                    }
-                    else{
-                        p1=1;
-                        $('#email_msg').hide();
-                        $('#email').attr('style','border-bottom: 1px solid #ccc');
-
-                    }
-
-
                 }
 
                 else if(clientType=="2"){
@@ -1815,25 +1165,6 @@
                         $('#company_name').attr('style','border-bottom: 1px solid #ccc');
 
                     }
-
-
-                    if(email==""){
-                        p1=0;
-                        $('#email_msg').show();
-                        var message=document.getElementById('email_msg');
-                        message.style.color='red';
-                        message.innerHTML="Required";
-                        $('#email').attr('style','border-bottom:1px solid #f00');
-                    }
-                    else{
-                        p1=1;
-                        $('#email_msg').hide();
-                        $('#email').attr('style','border-bottom: 1px solid #ccc');
-
-                    }
-
-
-
                 }
 
                 else{
@@ -1842,6 +1173,7 @@
                     message.style.color='red';
                     message.innerHTML="Required";
                     $('#client_type').attr('style','border:1px solid #f00');
+
 
                 }
                 var phone_digits=$('#phone_number').val().length;
@@ -1861,77 +1193,6 @@
 
 
 
-
-                if(address==""){
-                    p3=0;
-                    $('#address_msg').show();
-                    var message=document.getElementById('address_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#address').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-                    p3=1;
-                    $('#address_msg').hide();
-                    $('#address').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-                if(official_client_id==""){
-                    p5=0;
-                    $('#official_client_id_msg').show();
-                    var message=document.getElementById('official_client_id_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#official_client_id').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-                    p5=1;
-                    $('#official_client_id_msg').hide();
-                    $('#official_client_id').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-                if(client_type_contract==""){
-                    p6=0;
-                    $('#ctype_contract_msg').show();
-                    var message=document.getElementById('ctype_contract_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#client_type_contract').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-                    p6=1;
-                    $('#ctype_contract_msg').hide();
-                    $('#client_type_contract').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-                if(parent_client==""){
-                    p7=0;
-                    $('#parent_client_msg').show();
-                    var message=document.getElementById('parent_client_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#parent_client').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-                    p7=1;
-                    $('#parent_client_msg').hide();
-                    $('#parent_client').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
                 if (client_type_contract=='Indirect'){
 
                     //old indirect code starts
@@ -1950,8 +1211,12 @@
                     // $('#amountDiv').show();
                     $('#rent_sqmDiv').show();
                     $('#currencydiv').show();
+                    $('#currency_clause').hide();
 
                     //old indirect code ends
+
+
+
 
 
                     var query=parent_client;
@@ -2004,6 +1269,8 @@
 
 
 
+
+
                 }else if(client_type_contract=='Direct and has clients'){
 
 
@@ -2021,8 +1288,8 @@
                     $('#vacationDiv').hide();
                     $('#amountDiv').hide();
                     $('#rent_sqmDiv').hide();
-                    $('#currencydiv').hide();
-
+                    $('#currencydiv').show();
+                    $('#currency_clause').show();
                     $('#contract_categoryDiv').hide();
                     $('#has_additional_businessesDiv').hide();
                     $('#has_security_depositDiv').hide();
@@ -2035,6 +1302,8 @@
 
                 else{
 
+
+
                     $('#currency_tzs').show();
                     $('#currency_usd').show();
 
@@ -2044,11 +1313,13 @@
                     $('#academic_dependenceDiv').show();
                     $('#contract_categoryDiv').show();
                     $('#has_additional_businessesDiv').show();
+
                     $('#has_security_depositDiv').show();
 
 
                     $('#rent_sqmDiv').show();
                     $('#currencydiv').show();
+                    $('#currency_clause').hide();
 
 
 
@@ -2058,8 +1329,7 @@
 
 
 
-
-                if(p1=='1' & p2=='1' & p3=='1' & p5=='1'){
+                if(p1=='1' & p2=='1'){
                     gonext();
                 }
 
@@ -2250,11 +1520,10 @@
             });
 
 
-
             $("#next3").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
-                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p21,p22,p23,p26;
+                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p26;
                 var first_name=document.getElementById('first_name').value;
                 var last_name=document.getElementById('last_name').value;
                 var company_name=document.getElementById('company_name').value;
@@ -2576,8 +1845,8 @@
 
 
 
-                if(p14=="0"){
-
+                if(tbs_certificate==""){
+                    p14=0;
                     $('#tbs_certificate_msg').show();
                     var message=document.getElementById('tbs_certificate_msg');
                     message.style.color='red';
@@ -2585,7 +1854,7 @@
                     $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-
+                    p14=1;
                     $('#tbs_certificate_msg').hide();
                     $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2593,8 +1862,8 @@
 
 
 
-                if(p15=="0"){
-
+                if(gpsa_certificate==""){
+                    p15=0;
                     $('#gpsa_certificate_msg').show();
                     var message=document.getElementById('gpsa_certificate_msg');
                     message.style.color='red';
@@ -2602,15 +1871,15 @@
                     $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-
+                    p15=1;
                     $('#gpsa_certificate_msg').hide();
                     $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
-                if(p16=="0"){
-
+                if(food_business_license==""){
+                    p16=0;
                     $('#food_business_license_msg').show();
                     var message=document.getElementById('food_business_license_msg');
                     message.style.color='red';
@@ -2618,15 +1887,15 @@
                     $('#food_business_license').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-
+                    p16=1;
                     $('#food_business_license_msg').hide();
                     $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
-                if(p17=="0"){
-
+                if(business_license==""){
+                    p17=0;
                     $('#business_license_msg').show();
                     var message=document.getElementById('business_license_msg');
                     message.style.color='red';
@@ -2634,15 +1903,15 @@
                     $('#business_license').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-
+                    p17=1;
                     $('#business_license_msg').hide();
                     $('#business_license').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
-                if(p18=="0"){
-
+                if(osha_certificate==""){
+                    p18=0;
                     $('#osha_certificate_msg').show();
                     var message=document.getElementById('osha_certificate_msg');
                     message.style.color='red';
@@ -2650,7 +1919,7 @@
                     $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-
+                    p18=1;
                     $('#osha_certificate_msg').hide();
                     $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2658,8 +1927,8 @@
 
 
 
-                if(p19=="0"){
-
+                if(tcra_registration==""){
+                    p19=0;
                     $('#tcra_registration_msg').show();
                     var message=document.getElementById('tcra_registration_msg');
                     message.style.color='red';
@@ -2667,7 +1936,7 @@
                     $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-
+                    p19=1;
                     $('#tcra_registration_msg').hide();
                     $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2676,8 +1945,8 @@
 
 
 
-                if(p20=="0"){
-
+                if(brela_registration==""){
+                    p20=0;
                     $('#brela_registration_msg').show();
                     var message=document.getElementById('brela_registration_msg');
                     message.style.color='red';
@@ -2685,7 +1954,7 @@
                     $('#brela_registration').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-
+                    p20=1;
                     $('#brela_registration_msg').hide();
                     $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
 
@@ -4156,7 +3425,6 @@
 
 
 
-
             function gonext(){
                 console.log(3);
 
@@ -4243,127 +3511,66 @@
         });
     </script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+	$(document).ready(function() {
 
 
 
-
-            $('#academic_season').on('input',function(e){
-                e.preventDefault();
-                var academic_season=$(this).val();
-                var additional_businesses_amount=$('#additional_businesses_amount').val();
-
-                $('#security_deposit').val((+academic_season  +  +additional_businesses_amount)*6);
-
-            });
-
-
-            $('#amount').on('input',function(e){
-                e.preventDefault();
-                var amount=$(this).val();
-                var additional_businesses_amount=$('#additional_businesses_amount').val();
-
-                $('#security_deposit').val((+amount  +  +additional_businesses_amount)*6);
-
-            });
-
-
-
-
-
-
-
-
-            $('#client_type').click(function(){
-                var query = $(this).val();
-                if(query=='1'){
-                    $('#namediv').show();
-                    $('#companydiv').hide();
-                    $('#company_name').val("");
-                    var ele4 = document.getElementById("company_name");
-                    ele4.required = false;
-
-                    var ele5 = document.getElementById("first_name");
-                    ele5.required = true;
-
-                    var ele6 = document.getElementById("last_name");
-                    ele6.required = true;
-                }
-                else if(query=='2'){
-                    $('#companydiv').show();
-                    $('#namediv').hide();
-                    $('#first_name').val("");
-                    $('#last_name').val("");
-                    var ele4 = document.getElementById("company_name");
-                    ele4.required = true;
-
-                    var ele5 = document.getElementById("first_name");
-                    ele5.required = false;
-
-                    var ele6 = document.getElementById("last_name");
-                    ele6.required = false;
-
-                }
-                else{
-                    $('#namediv').hide();
-                    $('#companydiv').hide();
-                    $('#first_name').val("");
-                    $('#last_name').val("");
-                    $('#company_name').val("");
-                }
-
-            });
-        });
-    </script>
-
-
-
-    <script>
-
-
-        $('#has_security_deposit').click(function() {
-            var query=$(this).val();
-            var academic_dependence=$('#academic_dependence').val();
-            var academic_season=$('#academic_season').val();
-            var amount=$('#amount').val();
+        $('#academic_season').on('input',function(e){
+            e.preventDefault();
+            var academic_season=$(this).val();
             var additional_businesses_amount=$('#additional_businesses_amount').val();
-            if(query=='Yes') {
-                $('#security_depositDiv').show();
 
-                if(academic_dependence=='Yes'){
-
-                    $('#security_deposit').val((+academic_season  +  +additional_businesses_amount)*6);
-
-                }else{
-
-                    $('#security_deposit').val((+amount  +  +additional_businesses_amount)*6);
-                }
-
-
-
-            }else if(query=='No'){
-                $('#security_depositDiv').hide();
-                $('#security_deposit').val("0");
-
-            }else{
-                $('#security_depositDiv').hide();
-                $('#security_deposit').val("0");
-
-            }
-
-
+            $('#security_deposit').val((+academic_season  +  +additional_businesses_amount)*6);
 
         });
 
 
-    </script>
+        $('#amount').on('input',function(e){
+            e.preventDefault();
+            var amount=$(this).val();
+            var additional_businesses_amount=$('#additional_businesses_amount').val();
+
+            $('#security_deposit').val((+amount  +  +additional_businesses_amount)*6);
+
+        });
 
 
 
+
+
+
+
+
+
+    $('#client_type').click(function(){
+       var query = $(this).val();
+       if(query=='1'){
+        $('#namediv').show();
+        $('#companydiv').hide();
+        $('#company_name').val("");
+       }
+       else if(query=='2'){
+        $('#companydiv').show();
+        $('#namediv').hide();
+        $('#first_name').val("");
+        $('#last_name').val("");
+       }
+       else{
+        $('#namediv').hide();
+        $('#companydiv').hide();
+        $('#first_name').val("");
+        $('#last_name').val("");
+        $('#company_name').val("");
+       }
+
+      });
+    });
+</script>
 
     <script>
         $( document ).ready(function() {
+
 
             $('#academic_dependence').click(function() {
                 var query=$(this).val();
@@ -4372,6 +3579,7 @@
                 var amount=$('#amount').val();
                 var additional_businesses_amount=$('#additional_businesses_amount').val();
                 var has_security_deposit=$('#has_security_deposit').val();
+
 
                 if(query=='Yes') {
 
@@ -4383,6 +3591,7 @@
                     document.getElementById("escalation_rate").disabled = true;
                     document.getElementById("escalation_rate_academic").disabled = false;
                     document.getElementById("escalation_rate_vacation").disabled = false;
+
 
 
                     $('#academicDiv').show();
@@ -4402,6 +3611,7 @@
                     var ele = document.getElementById("amount");
                     ele.required = false;
 
+
                     if(has_security_deposit=='Yes')
                     {
                         $('#security_deposit').val((+academic_season + +additional_businesses_amount) * 6);
@@ -4410,17 +3620,21 @@
                     }
 
 
-                }else if(query=='No'){
 
+                }else if(query=='No'){
 
 
                     $('#escalation_rate_vacationDiv').hide();
                     $('#escalation_rate_academicDiv').hide();
                     $('#escalation_rateDiv').show();
 
+
                     document.getElementById("escalation_rate").disabled = false;
                     document.getElementById("escalation_rate_academic").disabled = true;
                     document.getElementById("escalation_rate_vacation").disabled = true;
+
+
+
 
 
 
@@ -4440,6 +3654,7 @@
                     var ele = document.getElementById("amount");
                     ele.required = true;
 
+
                     if(has_security_deposit=='Yes') {
                         $('#security_deposit').val((+amount + +additional_businesses_amount) * 6);
                     }else{
@@ -4451,16 +3666,17 @@
                     $('#vacationDiv').hide();
                     $('#academicDiv').hide();
                     $('#amountDiv').hide();
+
                     $('#escalation_rate_vacationDiv').hide();
                     $('#escalation_rate_academicDiv').hide();
                     $('#escalation_rateDiv').hide();
+
 
                 }
 
 
 
             });
-
 
 
 
@@ -4564,5 +3780,69 @@
 
 
     </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+
+            $('input[name="approval_status"]').click(function (e) {
+                var id = e.target.id.replace(/\D/g, '');
+                var query = $(this).val();
+
+                if (query == 'Rejected') {
+                    $('#remarksDiv').show();
+
+
+                } else {
+                    $('#remarksDiv').hide();
+
+                }
+
+            });
+
+
+        });
+
+        function validate(){
+            var query = document.querySelector('input[name="approval_status"]:checked').value;
+            if(query=='Rejected'){
+                var query2 = $('#remarks').val();
+                if(query2==''){
+                    $('#remarks_msg').show();
+                    var message=document.getElementById('remarks_msg');
+                    message.style.color='red';
+                    message.innerHTML="Required";
+                    $('#remarks').attr('style','border:1px solid #f00');
+                    return false;
+                }
+                else{
+                    $('#remarks_msg').hide();
+                    $('#remarks').attr('style','border:1px solid #ccc');
+                    return true;
+                }
+
+
+                document.getElementById('remarks').required=true;
+            }else{
+
+                document.getElementById('remarks').required=false;
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+    </script>
+
 
 @endsection

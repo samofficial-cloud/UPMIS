@@ -188,6 +188,8 @@ hr {
                                           <td>Hire Rate :</td>
                                           <td>{{number_format($var->hire_rate)}}</td>
                                       </tr>
+
+
                                       <tr>
                                           <td>Status:</td>
                                           <td>{{$var->vehicle_status}}</td>

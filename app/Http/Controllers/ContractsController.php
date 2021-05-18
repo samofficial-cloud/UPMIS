@@ -31,8 +31,84 @@ class ContractsController extends Controller
      */
     public function ContractsManagement()
     {
-        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.under_client',0)->orderBy('space_contracts.contract_id','desc')->get();
-//        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
+        $space_contracts_approval_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage',1)->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_declined_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage',2)->orderBy('space_contracts.contract_id','desc')->get();
+
+
+        $space_contract_inbox=null;
+        $space_contract_outbox=null;
+
+
+
+        if(Auth::user()->role=='DPDI Planner'){
+            if(count($space_contracts_declined_stage)==0){
+
+
+            }else{
+
+                $space_contract_inbox=$space_contracts_declined_stage;
+            }
+
+
+
+            if(count($space_contracts_approval_stage)==0){
+
+
+
+            }else{
+
+                $space_contract_outbox=$space_contracts_approval_stage;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Director DPDI'){
+
+            if(count($space_contracts_approval_stage)==0){
+
+
+            }else{
+
+                $space_contract_inbox=$space_contracts_approval_stage;
+            }
+
+            if(count($space_contracts_declined_stage)==0){
+
+
+            }else{
+
+                $space_contract_outbox=$space_contracts_declined_stage;
+
+            }
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+        else{
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        //        $space_contracts_inactive=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.contract_status',0)->orWhereDate('end_date','<',date('Y-m-d'))->get();
         $insurance_contracts=DB::table('insurance_contracts')->get();
 
         $research_contracts=DB::table('research_flats_contracts')->get();
@@ -122,7 +198,7 @@ class ContractsController extends Controller
 
       }
 
-        return view('contracts_management')->with('space_contracts',$space_contracts)->with('insurance_contracts',$insurance_contracts)->with('outbox',$outbox)->with('inbox',$inbox)->with('closed_inact',$closed_inact)->with('closed_act',$closed_act)->with('research_contracts',$research_contracts);
+        return view('contracts_management')->with('insurance_contracts',$insurance_contracts)->with('outbox',$outbox)->with('inbox',$inbox)->with('closed_inact',$closed_inact)->with('closed_act',$closed_act)->with('research_contracts',$research_contracts)->with('space_contract_inbox',$space_contract_inbox)->with('space_contract_outbox',$space_contract_outbox);
 
     }
 
@@ -262,7 +338,7 @@ if($privileges=='Read only') {
     public function getSpaceContracts(Request $request){
 
 
-        return datatables()->of(DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->select('clients.full_name','space_contracts.start_date','space_contracts.end_date','space_contracts.space_id_contract','space_contracts.creation_date','space_contracts.contract_status','space_contracts.contract_id','clients.client_id','clients.tin','clients.address','space_contracts.has_clients','space_contracts.academic_dependence','space_contracts.academic_season','space_contracts.currency','space_contracts.amount','space_contracts.vacation_season','clients.type','clients.phone_number','clients.first_name','clients.email','clients.last_name')->where('space_contracts.under_client',0)->orderBy('space_contracts.contract_id','desc'))->addIndexColumn()->editColumn('start_date', function($row){
+        return datatables()->of(DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->select('clients.full_name','space_contracts.start_date','space_contracts.end_date','space_contracts.space_id_contract','space_contracts.creation_date','space_contracts.contract_status','space_contracts.contract_id','clients.client_id','clients.tin','clients.address','space_contracts.has_clients','space_contracts.academic_dependence','space_contracts.academic_season','space_contracts.currency','space_contracts.amount','space_contracts.vacation_season','clients.type','clients.phone_number','clients.first_name','clients.email','clients.last_name')->where('space_contracts.under_client',0)->where('space_contracts.contract_stage',3)->orderBy('space_contracts.contract_id','desc'))->addIndexColumn()->editColumn('start_date', function($row){
 
             return date("d/m/Y",strtotime($row->start_date));
 
@@ -964,6 +1040,69 @@ if($privileges=='Read only') {
     }
 
 
+    public function ApproveSpaceContractForm(Request $request,$id)
+    {
+        $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->get();
+
+        $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->value('clients.client_id');
+
+        return view('space_contract_form_approval')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id);
+
+    }
+
+
+
+    public function SpaceContractApprovalResponse(Request $request)
+    {
+
+
+        if($request->get('approval_status')=='Rejected'){
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $request->get('contract_id'))
+                ->update(['contract_stage' => 2]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $request->get('contract_id'))
+                ->update(['edit_status' => 0]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $request->get('contract_id'))
+                ->update(['approval_remarks' => $request->get('approval_remarks')]);
+
+
+
+            return redirect('/contracts_management')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $request->get('contract_id'))
+                ->update(['contract_stage' => 3]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $request->get('contract_id'))
+                ->update(['edit_status' => 0]);
+
+
+            return redirect('/contracts_management')
+                ->with('success', 'Contract approved successfully');
+
+
+
+
+        }
+
+
+
+
+    }
+
+
 
     public function renewSpaceContractFormParentClient(Request $request,$id)
     {
@@ -1147,7 +1286,7 @@ if($privileges=='Read only') {
                 $tcra_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('tcra_registration'))->orderBy('id','desc')->limit(1)->value('folder');
                 $brela_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('brela_registration'))->orderBy('id','desc')->limit(1)->value('folder');
 
-                if($tbs_certificate_folder!=''){
+                if($tbs_certificate_folder!=null){
 //                    $file=$request->file('tbs_certificate');
 
                     $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
@@ -1162,7 +1301,7 @@ if($privileges=='Read only') {
                     DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
                 }
 
-                if($gpsa_certificate_folder!=''){
+                if($gpsa_certificate_folder!=null){
 
                     $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
                     $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1180,7 +1319,7 @@ if($privileges=='Read only') {
 
 
 
-                if($food_business_license_folder!=''){
+                if($food_business_license_folder!=null){
 
                     $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
                     $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1196,7 +1335,7 @@ if($privileges=='Read only') {
 
                 }
 
-                if($business_license_folder!=''){
+                if($business_license_folder!=null){
 
 
                     $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
@@ -1216,7 +1355,7 @@ if($privileges=='Read only') {
 
 
 
-                if($osha_certificate_folder!=''){
+                if($osha_certificate_folder!=null){
 
                     $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
                     $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1235,7 +1374,7 @@ if($privileges=='Read only') {
 
 
 
-                if($tcra_registration_folder!=''){
+                if($tcra_registration_folder!=null){
 
                     $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
                     $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1251,7 +1390,7 @@ if($privileges=='Read only') {
 
                 }
 
-                if($brela_registration_folder!=''){
+                if($brela_registration_folder!=null){
 
                     $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
                     $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1465,6 +1604,21 @@ if($privileges=='Read only') {
                 ->update(['occupation_status' => 1]);
 
 
+
+            DB::table('space_contracts')
+                ->where('contract_id', $created_contract_id)
+                ->update(['contract_stage' => 1]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $created_contract_id)
+                ->update(['reason_for_forwarding' => 'New Contract']);
+
+
+
+
+
             return $pdf->stream();
 
 
@@ -1588,7 +1742,7 @@ if($privileges=='Read only') {
                 $tcra_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('tcra_registration'))->orderBy('id','desc')->limit(1)->value('folder');
                 $brela_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('brela_registration'))->orderBy('id','desc')->limit(1)->value('folder');
 
-                if($tbs_certificate_folder!=''){
+                if($tbs_certificate_folder!=null){
 //                    $file=$request->file('tbs_certificate');
 
                     $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
@@ -1603,7 +1757,7 @@ if($privileges=='Read only') {
                     DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
                 }
 
-                if($gpsa_certificate_folder!=''){
+                if($gpsa_certificate_folder!=null){
 
                     $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
                     $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1621,7 +1775,7 @@ if($privileges=='Read only') {
 
 
 
-                if($food_business_license_folder!=''){
+                if($food_business_license_folder!=null){
 
                     $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
                     $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1637,7 +1791,7 @@ if($privileges=='Read only') {
 
                 }
 
-                if($business_license_folder!=''){
+                if($business_license_folder!=null){
 
 
                     $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
@@ -1657,7 +1811,7 @@ if($privileges=='Read only') {
 
 
 
-                if($osha_certificate_folder!=''){
+                if($osha_certificate_folder!=null){
 
                     $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
                     $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1676,7 +1830,7 @@ if($privileges=='Read only') {
 
 
 
-                if($tcra_registration_folder!=''){
+                if($tcra_registration_folder!=null){
 
                     $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
                     $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1692,7 +1846,7 @@ if($privileges=='Read only') {
 
                 }
 
-                if($brela_registration_folder!=''){
+                if($brela_registration_folder!=null){
 
                     $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
                     $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
@@ -1870,6 +2024,17 @@ if($privileges=='Read only') {
             DB::table('spaces')
                 ->where('space_id', $request->get('space_id_contract'))
                 ->update(['occupation_status' => 1]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $created_contract_id)
+                ->update(['contract_stage' => 1]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $created_contract_id)
+                ->update(['reason_for_forwarding' => 'New Contract']);
+
 
 
             return redirect('/contracts_management')
@@ -2513,35 +2678,53 @@ if($privileges=='Read only') {
 
 
             if ($request->get('academic_dependence') == 'Yes') {
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id)
-                    ->update(['academic_season' => $request->get('academic_season')]);
+
+                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
+
 
 
                 DB::table('space_contracts')
                     ->where('contract_id', $contract_id)
-                    ->update(['vacation_season' => $request->get('vacation_season')]);
+                    ->update(['academic_season' => $academic_season_total]);
+
 
                 DB::table('space_contracts')
                     ->where('contract_id', $contract_id)
-                    ->update(['amount' => 0]);
+                    ->update(['vacation_season' => $vacation_season_total]);
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['amount' => $amount_total]);
+
 
 
             } elseif ($request->get('academic_dependence') == 'No') {
 
+
+                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+                $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
+
+
+
+
                 DB::table('space_contracts')
                     ->where('contract_id', $contract_id)
-                    ->update(['amount' => $request->get('amount')]);
+                    ->update(['amount' => $amount_total]);
 
 
                 DB::table('space_contracts')
                     ->where('contract_id', $contract_id)
-                    ->update(['academic_season' => 0]);
+                    ->update(['academic_season' => $academic_season_total]);
 
 
                 DB::table('space_contracts')
                     ->where('contract_id', $contract_id)
-                    ->update(['vacation_season' => 0]);
+                    ->update(['vacation_season' => $vacation_season_total]);
 
 
             } else {
@@ -2623,6 +2806,17 @@ if($privileges=='Read only') {
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
                 ->update(['rent_sqm' => $rent_sqm]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['contract_stage' => 1]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['edit_status' => 1]);
 
 
             $data = [
@@ -2880,6 +3074,19 @@ if($privileges=='Read only') {
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
                 ->update(['rent_sqm' => $rent_sqm]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['contract_stage' => 1]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['edit_status' => 1]);
+
+
 
 
             return redirect('/contracts_management')
@@ -7361,5 +7568,76 @@ if($request->get('mode_of_payment')=='By installment'){
     }
 
 
+
+
+    public function getSpaceContractIds(Request $request) {
+
+
+        $contract_ids= DB::table('space_contracts')->where('full_name',$request->get('client_name'))->get();
+        $output='';
+        $output .= '<option value="'."".'">'."".'</option>';
+
+        $tempOut = array();
+
+        foreach($contract_ids as $contract_id) {
+
+            $tempoIn=$contract_id->contract_id;
+            if(!in_array($tempoIn, $tempOut)) {
+                $output .= '<option value="' . $contract_id->contract_id . '">' . $contract_id->contract_id . '</option>';
+                array_push($tempOut,$tempoIn);
+            }
+        }
+
+        echo $output;
+
+
+    }
+
+                public function getPaymentHistory(Request $request){
+
+                    $data=null;
+
+
+
+
+
+                    if($_GET['criteria']=='rent') {
+
+                        $data = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->get();
+
+                    }else if($_GET['criteria']=='water'){
+
+                        $data = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('water_bill_invoices', 'water_bill_invoices.contract_id', '=', 'space_contracts.contract_id')->join('water_bill_payments', 'water_bill_payments.invoice_number', '=', 'water_bill_invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->get();
+
+
+
+
+                    }else if($_GET['criteria']=='electricity'){
+
+                        $data = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('electricity_bill_invoices', 'electricity_bill_invoices.contract_id', '=', 'space_contracts.contract_id')->join('electricity_bill_payments', 'electricity_bill_payments.invoice_number', '=', 'electricity_bill_invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->get();
+
+
+                    }
+
+                    $location = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->limit(1)->value('spaces.location');
+                    $business_type = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->limit(1)->value('spaces.major_industry');
+                    $start_date = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->limit(1)->value('space_contracts.start_date');
+                    $end_date = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->limit(1)->value('space_contracts.end_date');
+                    $duration = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->limit(1)->value('space_contracts.duration');
+                    $duration_period = DB::table('space_contracts')->join('spaces', 'space_contracts.space_id_contract', '=', 'spaces.space_id')->join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')->where('space_contracts.contract_id',$_GET['contract_id'])->where('email_sent_status', 'SENT')->limit(1)->value('space_contracts.duration_period');
+                    $contract_duration=$duration.' '.$duration_period.'('.date("d/m/Y",strtotime($start_date)).' - '.date("d/m/Y",strtotime($end_date)).')';
+
+
+                    if(count($data)==0){
+                        return redirect()->back()->with('errors', "No data found to generate the requested report");
+                    }
+                    else{
+                        return View('payment_history_report')->with('data',$data)->with('location',$location)->with('business_type',$business_type)->with('contract_duration',$contract_duration);
+
+                    }
+
+
+
+                }
 
 }

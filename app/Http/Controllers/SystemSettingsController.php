@@ -493,6 +493,16 @@ if($request->get('cost_centre')=='')
 
 
 
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['unit_price_water' => $request->get('unit_price_water')]);
+
+
+        DB::table('system_settings')
+            ->where('id', 1)
+            ->update(['unit_price_electricity' => $request->get('unit_price_electricity')]);
+
+
 
         DB::table('system_settings')
             ->where('id', 1)

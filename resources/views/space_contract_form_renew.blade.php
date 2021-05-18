@@ -536,7 +536,7 @@ select.list-dt:focus {
                                             <div class="form-wrapper">
                                                 <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                 <span id="tbs_certificate_msg"></span>
-                                                <input type="file" id="tbs_certificate"    name="tbs_certificate" class="form-control">
+                                                <input type="file" id="tbs_certificate"    name="tbs_certificate" >
                                             </div>
                                         </div>
 
@@ -545,7 +545,7 @@ select.list-dt:focus {
                                             <div class="form-wrapper">
                                                 <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                 <span id="gpsa_certificate_msg"></span>
-                                                <input type="file" id="gpsa_certificate"  name="gpsa_certificate" class="form-control">
+                                                <input type="file" id="gpsa_certificate"  name="gpsa_certificate" >
                                             </div>
                                         </div>
 
@@ -554,7 +554,7 @@ select.list-dt:focus {
                                             <div class="form-wrapper">
                                                 <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
                                                 <span id="food_business_license_msg"></span>
-                                                <input type="file" id="food_business_license"  name="food_business_license" class="form-control">
+                                                <input type="file" id="food_business_license"  name="food_business_license" >
                                             </div>
                                         </div>
 
@@ -563,7 +563,7 @@ select.list-dt:focus {
                                             <div class="form-wrapper">
                                                 <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                 <span id="business_license_msg"></span>
-                                                <input type="file" id="business_license"  name="business_license" class="form-control">
+                                                <input type="file" id="business_license"  name="business_license" >
                                             </div>
                                         </div>
 
@@ -573,7 +573,7 @@ select.list-dt:focus {
                                             <div class="form-wrapper">
                                                 <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                 <span id="osha_certificate_msg"></span>
-                                                <input type="file" id="osha_certificate"  name="osha_certificate" class="form-control">
+                                                <input type="file" id="osha_certificate"  name="osha_certificate" >
                                             </div>
                                         </div>
 
@@ -582,7 +582,7 @@ select.list-dt:focus {
                                             <div class="form-wrapper">
                                                 <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                 <span id="tcra_registration_msg"></span>
-                                                <input type="file"  id="tcra_registration"  name="tcra_registration" class="form-control">
+                                                <input type="file"  id="tcra_registration"  name="tcra_registration" >
                                             </div>
                                         </div>
 
@@ -591,14 +591,14 @@ select.list-dt:focus {
                                             <div class="form-wrapper">
                                                 <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
                                                 <span id="brela_registration_msg"></span>
-                                                <input type="file" id="brela_registration"  name="brela_registration" class="form-control">
+                                                <input type="file" id="brela_registration"  name="brela_registration" >
                                             </div>
                                         </div>
 
 
 
 
-                                        <div class="form-wrapper col-12 pt-4">
+                                        <div class="form-wrapper col-12 pt-4" style="margin-top: 4.5rem !important;">
                                             <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                             <span id="start_date_msg"></span>
                                             <input type="date" id="start_date" name="start_date" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
@@ -994,12 +994,12 @@ select.list-dt:focus {
                                             </div>
                                         </div>
 
-                                        <div class="form-group col-12 pt-4">
-                                            <div class="form-wrapper">
-                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                                <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                                            </div>
-                                        </div>
+{{--                                        <div class="form-group col-12 pt-4">--}}
+{{--                                            <div class="form-wrapper">--}}
+{{--                                                <label for=""  >Inc Code<span style="color: red;">*</span></label>--}}
+{{--                                                <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
                                         <div class="form-group col-6 pt-4">
                                             <div class="form-wrapper">
@@ -1304,7 +1304,423 @@ select.list-dt:focus {
 
             var current_fs, next_fs, previous_fs; //fieldsets
             var opacity;
-            var p1, p2,p3;
+            var p1, p2,p3,p4,p5,p6,p7,p14,p15,p16,p17,p18,p19,p20;
+
+
+
+            p14=0;
+            p15=0;
+            p16=0;
+            p17=0;
+            p18=0;
+            p19=0;
+            p20=0;
+
+
+
+
+
+            //File pond starts
+
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+            FilePond.registerPlugin(FilePondPluginFileValidateSize);
+
+
+
+            const tbs_certificateinputElement = document.querySelector('#tbs_certificate');
+            const tbs_certificatepond = FilePond.create(tbs_certificateinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+
+
+                        checkRequired(14);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(14);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+            const gpsa_certificateinputElement = document.querySelector('#gpsa_certificate');
+            const gpsa_certificatepond = FilePond.create(gpsa_certificateinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+
+
+                        checkRequired(15);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(15);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+
+            const food_business_licenseinputElement = document.querySelector('#food_business_license');
+            const food_business_licensepond = FilePond.create(food_business_licenseinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+
+                        checkRequired(16);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(16);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+            const business_licenseinputElement = document.querySelector('#business_license');
+            const business_licensepond = FilePond.create(business_licenseinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+
+                        checkRequired(17);
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(17);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+
+
+
+
+            const osha_certificateinputElement = document.querySelector('#osha_certificate');
+            const osha_certificatepond = FilePond.create(osha_certificateinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+                        checkRequired(18);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(18);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+            const tcra_registrationinputElement = document.querySelector('#tcra_registration');
+            const tcra_registrationpond = FilePond.create(tcra_registrationinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+                        checkRequired(19);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(19);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+            });
+
+
+
+
+            const brela_registrationinputElement = document.querySelector('#brela_registration');
+            const brela_registrationpond = FilePond.create(brela_registrationinputElement, {
+                onaddfile: (error, file) => {
+
+                    if(error==null){
+                        checkRequired(20);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+                ,onremovefile: (error, file) => {
+
+                    if(error==null){
+                        onFileRemove(20);
+
+                    }else{
+
+
+
+                    }
+
+
+                }
+
+
+
+
+
+            });
+
+
+
+
+
+            $(function(){
+
+                // Turn input element into a pond with configuration options
+                $('input[type="file"]').filepond({
+                    allowMultiple: false
+                });
+
+
+
+                // Listen for addfile event
+                $('input[type="file"]').on('FilePond:addfile', function(error, file) {
+                    console.log('file added event');
+                });
+
+                // Manually add a file using the addfile method
+                // $('input[type="file"]').filepond('addFile', 'index.html').then(function(file){
+                //     console.log('file added', file);
+                // });
+
+
+
+
+
+                FilePond.setOptions({
+                    server: {
+                        url: '/upload',
+                        headers: {
+
+                            'X-CSRF-TOKEN': '{{csrf_token()}}'
+                        },
+
+                        revert:{
+
+                            url: '/revert_upload',
+                            headers: {
+
+                                'X-CSRF-TOKEN': '{{csrf_token()}}'
+                            },
+
+
+                            onload: function (responce) {
+                                console.log(responce);
+
+                            },
+
+
+
+                        }
+
+
+
+                    },
+
+                    labelFileProcessing: 'Uploading',
+
+                    acceptedFileTypes: ['application/pdf'],
+
+                    fileValidateTypeLabelExpectedTypes: 'Expects pdf',
+
+                    maxFileSize: '15MB'
+
+
+                });
+
+
+
+
+
+
+
+
+
+            });
+
+
+
+            function checkRequired(number){
+                if(number=='14'){
+                    p14=1;
+                }else if(number=='15'){
+                    p15=1;
+
+                }else if(number=='16'){
+
+                    p16=1;
+
+                }else if(number=='17'){
+
+                    p17=1;
+                }else if(number=='18'){
+
+                    p18=1;
+
+                }else if(number=='19'){
+
+                    p19=1;
+                }else if(number=='20'){
+
+                    p20=1;
+                }else{
+
+
+
+                }
+            }
+
+
+
+            function onFileRemove(number){
+                if(number=='14'){
+                    p14=0;
+                }else if(number=='15'){
+                    p15=0;
+
+                }else if(number=='16'){
+
+                    p16=0;
+
+                }else if(number=='17'){
+
+                    p17=0;
+                }else if(number=='18'){
+
+                    p18=0;
+
+                }else if(number=='19'){
+
+                    p19=0;
+                }else if(number=='20'){
+
+                    p20=0;
+                }else{
+
+
+
+                }
+            }
+
+//Filepond ends
+
+
 
 
 
@@ -1755,7 +2171,7 @@ select.list-dt:focus {
             $("#next3").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
-                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p26;
+                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p21,p22,p23,p26;
                 var first_name=document.getElementById('first_name').value;
                 var last_name=document.getElementById('last_name').value;
                 var company_name=document.getElementById('company_name').value;
@@ -2077,8 +2493,8 @@ select.list-dt:focus {
 
 
 
-                if(tbs_certificate==""){
-                    p14=0;
+                if(p14=="0"){
+
                     $('#tbs_certificate_msg').show();
                     var message=document.getElementById('tbs_certificate_msg');
                     message.style.color='red';
@@ -2086,7 +2502,7 @@ select.list-dt:focus {
                     $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p14=1;
+
                     $('#tbs_certificate_msg').hide();
                     $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2094,8 +2510,8 @@ select.list-dt:focus {
 
 
 
-                if(gpsa_certificate==""){
-                    p15=0;
+                if(p15=="0"){
+
                     $('#gpsa_certificate_msg').show();
                     var message=document.getElementById('gpsa_certificate_msg');
                     message.style.color='red';
@@ -2103,15 +2519,15 @@ select.list-dt:focus {
                     $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p15=1;
+
                     $('#gpsa_certificate_msg').hide();
                     $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
-                if(food_business_license==""){
-                    p16=0;
+                if(p16=="0"){
+
                     $('#food_business_license_msg').show();
                     var message=document.getElementById('food_business_license_msg');
                     message.style.color='red';
@@ -2119,15 +2535,15 @@ select.list-dt:focus {
                     $('#food_business_license').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p16=1;
+
                     $('#food_business_license_msg').hide();
                     $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
-                if(business_license==""){
-                    p17=0;
+                if(p17=="0"){
+
                     $('#business_license_msg').show();
                     var message=document.getElementById('business_license_msg');
                     message.style.color='red';
@@ -2135,15 +2551,15 @@ select.list-dt:focus {
                     $('#business_license').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p17=1;
+
                     $('#business_license_msg').hide();
                     $('#business_license').attr('style','border-bottom: 1px solid #ccc');
 
                 }
 
 
-                if(osha_certificate==""){
-                    p18=0;
+                if(p18=="0"){
+
                     $('#osha_certificate_msg').show();
                     var message=document.getElementById('osha_certificate_msg');
                     message.style.color='red';
@@ -2151,7 +2567,7 @@ select.list-dt:focus {
                     $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p18=1;
+
                     $('#osha_certificate_msg').hide();
                     $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2159,8 +2575,8 @@ select.list-dt:focus {
 
 
 
-                if(tcra_registration==""){
-                    p19=0;
+                if(p19=="0"){
+
                     $('#tcra_registration_msg').show();
                     var message=document.getElementById('tcra_registration_msg');
                     message.style.color='red';
@@ -2168,7 +2584,7 @@ select.list-dt:focus {
                     $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p19=1;
+
                     $('#tcra_registration_msg').hide();
                     $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
 
@@ -2177,8 +2593,8 @@ select.list-dt:focus {
 
 
 
-                if(brela_registration==""){
-                    p20=0;
+                if(p20=="0"){
+
                     $('#brela_registration_msg').show();
                     var message=document.getElementById('brela_registration_msg');
                     message.style.color='red';
@@ -2186,7 +2602,7 @@ select.list-dt:focus {
                     $('#brela_registration').attr('style','border-bottom:1px solid #f00');
                 }
                 else{
-                    p20=1;
+
                     $('#brela_registration_msg').hide();
                     $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
 

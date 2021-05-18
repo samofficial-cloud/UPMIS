@@ -313,6 +313,8 @@ Route::get('/reports/insurance/pdf','HomeController@insurancereportPDF')->name('
 
 Route::get('/reports/tenant/pdf','HomeController@tenantreportPDF')->name('tenantreportpdf');
 
+Route::get('/reports/tenant/aging_analysis','HomeController@tenantAgingAnalysisReport')->name('tenant_aging_analysis_report');
+
 Route::get('/reports/car_rental/pdf','HomeController@carreportPDF')->name('carreportpdf');
 
 Route::get('/reports/car_rental2/pdf','HomeController@carreportPDF2')->name('carreportpdf2');
@@ -422,9 +424,16 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
     Route::get('/cancel_space_addition/{id}', 'SpaceController@CancelSpaceAddition')->name('cancel_space_addition');
     Route::post('/generate_minor_list', 'SpaceController@generateMinorList')->name('generate_minor_list');
+
     Route::post('/generate_location_list', 'SpaceController@generateLocationList')->name('generate_location_list');
     Route::post('/generate_sub_location_list', 'SpaceController@generateSubLocationList')->name('generate_sub_location_list');
     Route::post('/generate_space_id_list', 'SpaceController@generateSpaceIdList')->name('generate_space_id_list');
+
+
+    Route::post('/get_space_contract_ids', 'ContractsController@getSpaceContractIds')->name('get_space_contract_ids');
+    Route::get('/reports/payment/payment_history', 'ContractsController@getPaymentHistory')->name('payment_history');
+
+
     Route::get('/send_all_invoices_space', 'InvoicesController@sendAllInvoicesSpace')->name('send_all_invoices_space');
     Route::post('/add_control_no_space/{id}', 'InvoicesController@addControlNumberSpace')->name('add_control_no_space');
     Route::get('/space_contract_on_fly/{id}/', 'ContractsController@OnFlySpaceContractForm')->name('space_contract_on_fly');
@@ -435,6 +444,8 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/space_details/{space_id}', 'ContractsController@SpaceDetails')->name('space_details');
     Route::post('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
     Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');
+    Route::get('/space_contract_approval/{id}', 'ContractsController@ApproveSpaceContractForm')->name('space_contract_approval');
+    Route::post('/space_contract_approval_response', 'ContractsController@SpaceContractApprovalResponse')->name('space_contract_approval_response');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
     Route::get('/contract_availability_space', 'InvoicesController@contractAvailabilitySpace')->name('contract_availability_space');
     Route::get('/get_parent_currency', 'ContractsController@getParentCurrency')->name('get_parent_currency');
@@ -502,6 +513,10 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/cancel_water_invoice/{id}', 'InvoicesController@CancelWaterInvoice')->name('cancel_water_invoice');
     Route::post('/cancel_electricity_invoice/{id}', 'InvoicesController@CancelElectricityInvoice')->name('cancel_electricity_invoice');
 
+    Route::get('/conferences_management', 'SpaceController@conferencesManagement')->name('conferences_management');
+    Route::post('/edit_event/{id}', 'SpaceController@editEvent')->name('edit_event');
+    Route::post('/add_event', 'SpaceController@addEvent')->name('add_event');
+    Route::post('/delete_event/{id}', 'SpaceController@deleteEvent')->name('delete_event');
 
 
 

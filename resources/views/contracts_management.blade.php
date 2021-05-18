@@ -222,59 +222,562 @@ div.dt-buttons{
 
 
 
-
+          @if(Auth::user()->role=='Director DPDI' || Auth::user()->role=='DPDI Planner')
 
             <div id="space_contracts" class="tabcontentOuter">
                 <br>
 
 
 
-                @if($privileges=='Read only')
+                <br>
+                <div class="tab" style="">
+
+                    <button class="tablinks_deep_inner_space " onclick="openDeepInnerSpace(event, 'space_contract_inbox')" id="defaultOpenDeepInnerSpace"><strong>Inbox</strong></button>
+                    <button class="tablinks_deep_inner_space " onclick="openDeepInnerSpace(event, 'space_contract_outbox')"><strong>Outbox</strong></button>
+                    <button class="tablinks_deep_inner_space " onclick="openDeepInnerSpace(event, 'space_complete_contracts')"><strong>Contracts</strong></button>
+                </div>
+
+
+                @if(Auth::user()->role=='Director DPDI')
+
+                <div id="space_contract_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner_space">
+                    <?php
+                    $i=1;
+                    ?>
+@if($space_contract_inbox!='')
+                    <table class="table">
+                        <thead >
+                        <tr>
+                            <th scope="col" ><center>S/N</center></th>
+                            <th scope="col" >Client Name</th>
+                            <th scope="col" ><center>Contract ID</center></th>
+                            <th scope="col" ><center>Real Estate Number</center></th>
+                            <th scope="col"  ><center>Amount(Academic season)</center></th>
+                            <th scope="col"  ><center>Amount(Vacation season)</center></th>
+                            <th scope="col"  ><center>Start Date</center></th>
+                            <th scope="col"  ><center>End Date</center></th>
+
+                            <th scope="col"  ><center>Description</center></th>
+                            <th scope="col"  ><center>Action</center></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach($space_contract_inbox as $var)
+                            <tr>
+
+                                <td> <center>{{$i}}</center>  </td>
+
+                                <td>{{$var->full_name}}</td>
+                                <td>{{$var->contract_id}}</td>
+                                <td>{{$var->space_id_contract}}</td>
+                                <td>@if($var->has_clients=="1")
+                                    @else
+                                        @if($var->academic_dependence=='Yes')
+                                            {{number_format($var->academic_season)}} {{$var->currency}}
+                                        @else
+                                            {{number_format($var->amount)}} {{$var->currency}}
+                                        @endif
+
+                                    @endif
+
+                                </td>
+                                <td>
+                                    @if($var->has_clients=="1")
+                                    @else
+
+                                        @if($var->academic_dependence=='Yes')
+                                            @if($var->vacation_season=="0")
+                                                {{number_format($var->academic_season)}} {{$var->currency}}
+                                            @else
+                                                {{number_format($var->vacation_season)}} {{$var->currency}}
+                                            @endif
+                                        @else
+                                            {{number_format($var->amount)}} {{$var->currency}}
+                                        @endif
+
+                                    @endif
+                                </td>
+
+
+                                <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
+                                <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+
+                                @if($var->edit_status=='1')
+                                    <div ><span style="background-color: orange; color:white;  padding:3px;   text-align: center;"><a title="View Reason" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#reason{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true">View Reason</a></span> </div>
+
+                                    <div class="modal fade" id="reason{{$var->contract_id}}" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Description</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <form method="post" action=""   >
+                                                        {{csrf_field()}}
+
+
+                                                        <div class="form-row">
+
+
+                                                                <div class="form-group col-12">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="remarks" style="color: red;"></label>
+                                                                        <textarea type="text"  name="reason" class="form-control" readonly="">{{$var->reason_for_forwarding}}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <br>
+
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                @else
+                                    <td><center> <div ><span style="background-color: #0aac19; color:white;  padding:3px;   text-align: center;">{{$var->reason_for_forwarding}}</span> </div></center>  </td>
+                                    @endif
+
+                                <td><center>
+
+
+
+
+
+
+
+
+                                        <a title="Review" href="/space_contract_approval/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
+
+
+
+
+
+
+
+                                    </center></td>
+
+
+
+                            </tr>
+                            <?php
+                            $i=$i+1;
+                            ?>
+                        @endforeach
+
+
+
+
+
+                        </tbody>
+                    </table>
+
+                    @else
+                        <p class="mt-4" style="text-align:center;">No records found</p>
+                    @endif
+
+
+                </div>
+
+
                 @else
-        <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
+
+                    <div id="space_contract_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner_space">
+                        <?php
+                        $i=1;
+                        ?>
+                    @if($space_contract_inbox!='')
+                        <table class="table">
+                            <thead >
+                            <tr>
+                                <th scope="col" ><center>S/N</center></th>
+                                <th scope="col" >Client Name</th>
+                                <th scope="col" ><center>Contract ID</center></th>
+                                <th scope="col" ><center>Real Estate Number</center></th>
+                                <th scope="col"  ><center>Amount(Academic season)</center></th>
+                                <th scope="col"  ><center>Amount(Vacation season)</center></th>
+                                <th scope="col"  ><center>Start Date</center></th>
+                                <th scope="col"  ><center>End Date</center></th>
+
+                                <th scope="col"  ><center>Status</center></th>
+                                <th scope="col"  ><center>Reason</center></th>
+                                <th scope="col"  ><center>Action</center></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach($space_contract_inbox as $var)
+                                <tr>
+
+                                    <td> <center>{{$i}}</center>  </td>
+
+                                    <td>{{$var->full_name}}</td>
+                                    <td>{{$var->contract_id}}</td>
+                                    <td>{{$var->space_id_contract}}</td>
+                                    <td>@if($var->has_clients=="1")
+                                        @else
+                                            @if($var->academic_dependence=='Yes')
+                                                {{number_format($var->academic_season)}} {{$var->currency}}
+                                            @else
+                                                {{number_format($var->amount)}} {{$var->currency}}
+                                            @endif
+
+                                        @endif
+
+                                    </td>
+                                    <td>
+                                        @if($var->has_clients=="1")
+                                        @else
+
+                                            @if($var->academic_dependence=='Yes')
+                                                @if($var->vacation_season=="0")
+                                                    {{number_format($var->academic_season)}} {{$var->currency}}
+                                                @else
+                                                    {{number_format($var->vacation_season)}} {{$var->currency}}
+                                                @endif
+                                            @else
+                                                {{number_format($var->amount)}} {{$var->currency}}
+                                            @endif
+
+                                        @endif
+                                    </td>
+
+
+                                    <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
+                                    <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+                                    <td><center>
+
+
+                                            <div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div>
+
+
+                                        </center></td>
+
+
+
+                                    <td><center>
+
+
+                                        <a title="View Reason" style="cursor: pointer;"  class="" data-toggle="modal" data-target="#reason{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true">View Reason</a>
+
+                                        <div class="modal fade" id="reason{{$var->contract_id}}" role="dialog">
+
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <b><h5 class="modal-title">Reason</h5></b>
+
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <form method="post" action=""   >
+                                                            {{csrf_field()}}
+
+
+                                                            <div class="form-row">
+
+
+                                                                <div class="form-group col-12">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="remarks" style="color: red;"></label>
+                                                                        <textarea type="text"  name="reason" class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <br>
+
+
+
+                                                            </div>
+
+
+                                                            <div align="right">
+
+                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        </center></td>
+
+                                    <td><center>
+
+
+
+
+
+
+
+@if($var->has_clients=='1')
+                                                <a title="Review" href="/edit_space_contract_parent_client/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
+    @else
+                                            <a title="Review" href="/edit_space_contract/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
+@endif
+
+
+
+
+
+
+                                        </center></td>
+
+
+
+                                </tr>
+                                <?php
+                                $i=$i+1;
+                                ?>
+                            @endforeach
+
+
+
+
+
+                            </tbody>
+                        </table>
+                        @else
+                            <p class="mt-4" style="text-align:center;">No records found</p>
+                        @endif
+
+                    </div>
+
+                @endif
+
+
+
+
+                <div id="space_contract_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner_space">
+
+                    <?php
+                    $i=1;
+                    ?>
+                    @if($space_contract_outbox!='')
+
+                    <table class="table ">
+                        <thead >
+                        <tr>
+                            <th scope="col" ><center>S/N</center></th>
+                            <th scope="col" >Client Name</th>
+                            <th scope="col" ><center>Contract ID</center></th>
+                            <th scope="col" ><center>Real Estate Number</center></th>
+                            <th scope="col"  ><center>Amount(Academic season)</center></th>
+                            <th scope="col"  ><center>Amount(Vacation season)</center></th>
+                            <th scope="col"  ><center>Start Date</center></th>
+                            <th scope="col"  ><center>End Date</center></th>
+
+                            <th scope="col"  ><center>Stage</center></th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach($space_contract_outbox as $var)
+                            <tr>
+
+                                <td> <center>{{$i}}</center>  </td>
+
+                                <td>{{$var->full_name}}</td>
+                                <td>{{$var->contract_id}}</td>
+                                <td>{{$var->space_id_contract}}</td>
+                                <td>@if($var->has_clients=="1")
+                                    @else
+                                        @if($var->academic_dependence=='Yes')
+                                            {{number_format($var->academic_season)}} {{$var->currency}}
+                                        @else
+                                            {{number_format($var->amount)}} {{$var->currency}}
+                                        @endif
+
+                                    @endif
+
+                                </td>
+                                <td>
+                                    @if($var->has_clients=="1")
+                                    @else
+
+                                        @if($var->academic_dependence=='Yes')
+                                            @if($var->vacation_season=="0")
+                                                {{number_format($var->academic_season)}} {{$var->currency}}
+                                            @else
+                                                {{number_format($var->vacation_season)}} {{$var->currency}}
+                                            @endif
+                                        @else
+                                            {{number_format($var->amount)}} {{$var->currency}}
+                                        @endif
+
+                                    @endif
+                                </td>
+
+
+                                <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
+                                <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+
+                                @if(Auth::user()->role=='Director DPDI')
+                                <td><center>Planning Officer</center></td>
+                                @else
+                                    <td><center>Director DPDI</center></td>
+                                @endif
+
+
+                            </tr>
+                            <?php
+                            $i=$i+1;
+                            ?>
+                        @endforeach
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    @else
+                        <p class="mt-4" style="text-align:center;">No records found</p>
+                    @endif
+
+                </div>
+
+
+
+
+                <div id="space_complete_contracts" style="border-bottom-left-radius: 50px 20px;    border: 1px solid #ccc; padding: 1%;" class="tabcontent_deep_inner_space">
+
+<br>
+
+                    @if($privileges=='Read only')
+                    @else
+                        <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
     padding: 10px;
     margin-left: 2px;
     margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true" title="Add new Real Estate Contract">Add New Contract</a>
-                @endif
+                    @endif
 
-                <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>
+                    <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>
 
-                <hr>
-<?php
-$i=1;
-?>
-
-
-      <table class="hover table table-striped table-bordered" id="myTablea">
-        <thead class="thead-dark">
-        <tr>
-          <th scope="col" style="color:#fff;"><center>S/N</center></th>
-          <th scope="col" style="color:#fff;">Client Name</th>
-          <th scope="col" style="color:#fff;"><center>Real Estate Number</center></th>
-          <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
-          <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
-
-          <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-          <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-          <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
-
-          <th scope="col"  style="color:#fff;"><center>Status</center></th>
-          <th scope="col"  style="color:#fff;"><center>Action</center></th>
-        </tr>
-        </thead>
-        <tbody>
+                    <hr>
+                    <?php
+                    $i=1;
+                    ?>
 
 
+                    <table style="width: 100%;" class="hover table table-striped table-bordered" id="myTablea">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                            <th scope="col" style="color:#fff;">Client Name</th>
+                            <th scope="col" style="color:#fff;"><center>Real Estate Number</center></th>
+                            <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
+                            <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
-        </tbody>
-      </table>
+                            <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                            <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
 
+                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+
+                        </tbody>
+                    </table>
+
+
+
+
+
+                </div>
 
 
 
 
             </div>
+          @else
+
+              <div id="space_contracts" class="tabcontentOuter">
+                  <br>
+
+
+
+                  @if($privileges=='Read only')
+                  @else
+                      <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
+    padding: 10px;
+    margin-left: 2px;
+    margin-bottom: 15px;
+    margin-top: 4px;" role="button" aria-pressed="true" title="Add new Real Estate Contract">Add New Contract</a>
+                  @endif
+
+                  <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>
+
+                  <hr>
+                  <?php
+                  $i=1;
+                  ?>
+
+
+                  <table class="hover table table-striped table-bordered" id="myTablea">
+                      <thead class="thead-dark">
+                      <tr>
+                          <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                          <th scope="col" style="color:#fff;">Client Name</th>
+                          <th scope="col" style="color:#fff;"><center>Real Estate Number</center></th>
+                          <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
+                          <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
+
+                          <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                          <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                          <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
+
+                          <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                          <th scope="col"  style="color:#fff;"><center>Action</center></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+
+
+
+                      </tbody>
+                  </table>
+
+
+
+
+
+              </div>
+
+
+          @endif
+
+
+
+
+
+
 
 
              <div id="research_flats_contracts" class="tabcontentOuter">
@@ -3341,6 +3844,33 @@ var tablelog = $('#LogTable').DataTable( {
         });
       });
     </script>
+
+
+
+<script type="text/javascript">
+    function openDeepInnerSpace(evt, evtName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent_deep_inner_space");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks_deep_inner_space");
+
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(evtName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    document.getElementById("defaultOpenDeepInnerSpace").click();
+</script>
 
 
 

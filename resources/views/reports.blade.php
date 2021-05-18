@@ -561,9 +561,58 @@ $year=$current-3;
               <option value="list">List of Tenants</option>
               <option value="invoice">Tenants Invoice</option>
               <option value="schedule">Tenancy Schedule</option>
+              <option value="aging_analysis">Aging Analysis</option>
             </select>
         </div>
     </div>
+
+                                    <div id="client_type_contractDiv" class="form-group"  style="display: none;">
+                                        <div class="form-wrapper" >
+                                            <label for="client_type_contract">Type of Clients<span style="color: red;"> *</span></label>
+                                            <span id="ctype_contract_msg"></span>
+                                            <select class="form-control"  id="client_type_contract" name="client_type_contract">
+                                                <option value=""></option>
+                                                <option value="Direct">Direct</option>
+{{--                                                <option value="Direct and has clients">Direct and has clients</option>--}}
+                                                <option value="Indirect">Indirect</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                        <div id="parent_clientDiv" style="display: none;" class="form-wrapper  pt-1">
+                                            <label for="parent_client"  ><strong>Parent client <span style="color: red;"> *</span></strong></label>
+                                            <span id="parent_client_msg"></span>
+                                            <select id="parent_client"  class="form-control" name="parent_client" >
+                                                <option value="" selected></option>
+
+                                                <?php
+                                                $parent_clients=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.has_clients',1)->where('space_contracts.contract_status',1)->where('space_contracts.end_date','>',date('Y-m-d'))->get();
+
+
+                                                $tempOut = array();
+                                                foreach($parent_clients as $values){
+                                                    $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                    $val = (iterator_to_array($iterator,true));
+                                                    $tempoIn=$val['full_name'];
+
+                                                    if(!in_array($tempoIn, $tempOut))
+                                                    {
+                                                        print('<option value="'.$val['client_id'].'">'.$val['full_name'].'</option>');
+                                                        array_push($tempOut,$tempoIn);
+                                                    }
+
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+
+
+
+
 
     <div class="form-group" id="TenantfilterBydiv" style="display: none;">
       <div class="form-wrapper">
@@ -589,6 +638,33 @@ $year=$current-3;
            </div>
 
 
+                                    <div class="form-group" id="TenantfilteragingAnalysisBydiv" style="display: none;">
+                                        <div class="form-wrapper">
+                                            <label for="Criteria">Filter By</label>
+                                            <div class="row">
+
+                                                <div class="col-3 form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="business_filter" id="business_filter_aging" value="">
+                                                    <label for="business_filter" class="form-check-label">Business Type</label>
+                                                </div>
+
+                                                <div class="col-3 form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="contract_filter" id="contract_filter_aging" value="">
+                                                    <label for="contract_filter" class="form-check-label">Contract Status</label>
+                                                </div>
+
+
+                                                <div class="col-3 form-check form-check-inline" id="aging_location_filter_div">
+                                                    <input class="form-check-input" type="checkbox" name="aging_location_filter" id="aging_location_filter" value="">
+                                                    <label for="summary_location_filter" class="form-check-label">Location</label>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
            <div class="form-group" id="businesstypediv" style="display: none;">
           <div class="form-wrapper">
           <label for="business_type">Select Business Type<span style="color: red;">*</span></label>
@@ -609,6 +685,19 @@ $year=$current-3;
             </select>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div class="form-group" id="contractstatusdiv" style="display: none;">
           <div class="form-wrapper">
@@ -701,7 +790,7 @@ $year=$current-3;
     </div>
 
     <div class="form-group row" id="tenancysheduleduration" style="display: none;">
-      <div class="form-wrapper col-4">
+      <div class="form-wrapper col-4 pt-3">
               <label for="tenancy_year">Year<span style="color: red;">*</span></label>
               <span id="tenancyyearmsg"></span>
               <select class="form-control" id="tenancy_year" name="tenancy_year">
@@ -712,7 +801,7 @@ $year=$current-3;
               </select>
         </div>
 
-        <div class="form-wrapper col-4">
+        <div class="form-wrapper col-4 pt-3">
               <label for="tenancy_end">Duration<span style="color: red;">*</span></label>
               <span id="tenancyendmsg"></span>
               <select class="form-control" id="tenancy_end" name="tenancy_end">
@@ -724,7 +813,7 @@ $year=$current-3;
 
         </div>
 
-        <div class="form-wrapper col-4">
+        <div class="form-wrapper col-4 pt-3">
               <label for="tenancy_start">From<span style="color: red;">*</span></label>
               <span id="tenancystartmsg"></span>
               <select class="form-control" id="tenancy_start" name="tenancy_start">
@@ -1233,6 +1322,15 @@ $year=$current-3;
           </div>
         </div>
 
+
+
+
+
+
+
+
+
+
         <div class="form-group" id="Conpaymentstatusdiv" style="display: none;">
           <div class="form-wrapper">
           <label for="Con_payment_status">Select Contract Status<span style="color: red;">*</span></label>
@@ -1285,9 +1383,73 @@ $year=$current-3;
               <option value=" " disabled selected hidden>Select Report Type</option>
               <option value="list">List of Invoices</option>
               <option value="summary">Revenue and Debt summary</option>
+
+                @if ($category=='Real Estate only' OR $category=='All')
+              <option value="payment_history">Payment History</option>
+                @else
+                @endif
             </select>
         </div>
     </div>
+
+
+
+                                    <div class="form-group" id="PaymentHistoryCriteriaDiv" style="display: none;">
+                                        <div class="form-wrapper">
+                                            <label for="Criteria">Criteria<span style="color: red;">*</span></label>
+                                            <span id=""></span>
+                                            <div class="row">
+
+                                                <div class="col-3 form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="" id="space_rent_history" value="rent" checked="">
+                                                    <label for="space_rent_history" class="form-check-label">Real Estate</label>
+
+                                                </div>
+
+                                                <div class="col-3 form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="" id="electricity_bill_history" value="electricity" >
+                                                    <label for="electricity_bill_history" class="form-check-label">Electricity Bill</label>
+                                                </div>
+
+                                                <div class="col-3 form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="" id="water_bill_history" value="water">
+                                                    <label for="water_bill_history" class="form-check-label">Water Bill</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group" id="payment_historyClientsDiv" style="display: none;">
+                                        <div class="form-wrapper">
+                                            <label for="payment_historyClients">Client Name<span style="color: red;">*</span></label>
+                                            <span id="payment_historyClientsmsg"></span>
+                                            <select class="form-control" id="payment_historyClients" name="client_name">
+                                                <option value=" " disabled selected hidden>Select Client Name</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group" id="payment_historyContractIdDiv" style="display: none;">
+                                        <div class="form-wrapper">
+                                            <label for="payment_historyContractId">Contract ID<span style="color: red;">*</span></label>
+                                            <span id="payment_historyContractIdmsg"></span>
+                                            <select class="form-control" id="payment_historyContractId" name="contract_id">
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
 
     <div class="form-group" id="Inbusinesstypediv" style="display: none;">
           <div class="form-wrapper">
@@ -1472,6 +1634,28 @@ $year=$current-3;
             </select>
         </div>
     </div>
+
+
+
+
+                                    <div class="form-group" id="aging_locationdiv" style="display: none;">
+                                        <div class="form-wrapper">
+                                            <label for="aging_location">Location<span style="color: red;">*</span></label>
+                                            <span id="aginglocationmsg"></span>
+                                            <select class="form-control" id="aging_location" name="aging_location">
+                                                <option value=" " disabled selected hidden>Select Location</option>
+                                                <?php
+                                                $locations=DB::table('space_locations')->select('location')->distinct()->orderBy('location','asc')->get();
+                                                ?>
+                                                @foreach($locations as $location)
+                                                    <option value="{{$location->location}}">{{$location->location}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+
 
     <div class="form-group row" id="summary_yeardiv" style="display: none;">
         <div class="form-wrapper col-6">
@@ -1755,6 +1939,7 @@ function myFunction() {
        $('#businesstypediv').hide();
        $('#contractstatusdiv').hide();
        $('#paymentstatusdiv').hide();
+
        $("input[name='principal_filter']:checked").prop("checked", false);
        $("input[name='insurance_typefilter']:checked").prop("checked", false);
        $("input[name='business_filter']:checked").prop("checked", false);
@@ -2992,6 +3177,9 @@ function myFunction() {
       $("#summary_location_filter:checked").prop("checked", false);
       $("#summary_year_filter:checked").prop("checked", false);
       $("#summary_year_filter2:checked").prop("checked", false);
+         $('#payment_historyClientsDiv').hide();
+         $('#PaymentHistoryCriteriaDiv').hide();
+         $('#payment_historyContractIdDiv').hide();
      }
      else if(query=='summary'){
       $('#summarybiztypediv').show();
@@ -3007,11 +3195,37 @@ function myFunction() {
       $("#In_client_filter:checked").prop("checked", false);
       $("#In_payment_filter:checked").prop("checked", false);
       $("#In_year_filter:checked").prop("checked", false);
+
+         $('#payment_historyClientsDiv').hide();
+         $('#PaymentHistoryCriteriaDiv').hide();
+         $('#payment_historyContractIdDiv').hide();
+
+     }else if(query=='payment_history'){
+
+         $('#payment_historyClientsDiv').show();
+         $('#PaymentHistoryCriteriaDiv').show();
+         $('#payment_historyContractIdDiv').show();
+
+         $('#summarybiztypediv').hide();
+         $('#summaryspacefilterBydiv').hide();
+         $('#summaryspacefilterBydiv2').hide();
+         $('#summaryshowcriteriadiv').hide();
+         $('#summaryspacecriteriadiv').hide();
+         $('#summary_businessdiv').hide();
+         $('#summary_locationdiv').hide();
+         $('#summary_yeardiv').hide();
+         $('#InvoicefilterBydiv').hide();
+         $('#Inbusinesstypediv').hide();
+         $('#Inyeardiv').hide();
      }
      else{
       $('#InvoicefilterBydiv').hide();
       $('#Inbusinesstypediv').hide();
       $('#summarybiztypediv').hide();
+
+         $('#payment_historyClientsDiv').hide();
+         $('#PaymentHistoryCriteriaDiv').hide();
+         $('#payment_historyContractIdDiv').hide();
      }
      });
 
@@ -3104,6 +3318,46 @@ function myFunction() {
       $('#summary_location').val(" ");
     }
     });
+
+
+
+      $('#client_type_contract').click(function(){
+          var client_type_contract = $(this).val();
+          if(client_type_contract=='Direct'){
+
+              $('#parent_clientDiv').hide();
+              $('#parent_client').val("");
+
+          }else if(client_type_contract=='Indirect'){
+              $('#parent_client').val("");
+              $('#parent_clientDiv').show();
+
+          }
+          else{
+
+              $('#parent_clientDiv').hide();
+              $('#parent_client').val("");
+
+          }
+
+      });
+
+
+
+
+
+      $("#aging_location_filter").click(function(){
+          if($(this).is(":checked")){
+              $(this).val("true");
+              $('#aging_locationdiv').show();
+          }
+          else{
+              $(this).val("");
+              $('#aging_locationdiv').hide();
+              $('#aging_location').val(" ");
+          }
+      });
+
 
     $("#summary_year_filter").click(function(){
     if($(this).is(":checked")){
@@ -3478,6 +3732,22 @@ function myFunction() {
 
     });
 
+
+
+      $("#business_filter_aging").click(function(){
+          if($(this).is(":checked")){
+              $('#businesstypediv').show();
+              $("#business_filter_aging").val("true");
+          }
+          else{
+              $('#businesstypediv').hide();
+              $('#business_type').val(" ");
+              $("#business_filter_aging").val("");
+          }
+
+      });
+
+
    $("#contract_filter").click(function(){
     if($(this).is(":checked")){
       $('#contractstatusdiv').show();
@@ -3490,6 +3760,23 @@ function myFunction() {
     }
 
     });
+
+
+
+      $("#contract_filter_aging").click(function(){
+          if($(this).is(":checked")){
+              $('#contractstatusdiv').show();
+              $("#contract_filter").val("true");
+          }
+          else{
+              $("#contract_filter").val("");
+              $('#contract_status').val(" ");
+              $('#contractstatusdiv').hide();
+          }
+
+      });
+
+
 
    $("#payment_filter").click(function(){
     if($(this).is(":checked")){
@@ -3623,6 +3910,12 @@ $("#tenant_type").click(function(){
    $('#t_invoice_end_date').attr('style','border-bottom:1px solid #ccc');
    $('#tenancy_business').val(" ");
   $('#tenancy_location').val(" ");
+     $('#TenantfilteragingAnalysisBydiv').hide();
+     $('#client_type_contractDiv').hide();
+     $('#parent_clientDiv').hide();
+
+     $('#client_type_contractDiv').val("");
+     $('#parent_clientDiv').val("");
  }
 
  else if(query=='invoice'){
@@ -3651,9 +3944,21 @@ $("#tenant_type").click(function(){
    $('#t_invoice_end_date').attr('style','border-bottom:1px solid #ccc');
    $('#tenancy_business').val(" ");
     $('#tenancy_location').val(" ");
+     $('#TenantfilteragingAnalysisBydiv').hide();
+
+     $('#client_type_contractDiv').hide();
+     $('#parent_clientDiv').hide();
+     $('#client_type_contractDiv').val("");
+     $('#parent_clientDiv').val("");
  }
 
  else if(query=='schedule'){
+
+     $('#client_type_contractDiv').show();
+
+
+
+
   $('#tenancysheduleduration').show();
   $('#tenancyfilterBydiv').show();
   $('#TenantInvoiceCriteriadiv').hide();
@@ -3682,6 +3987,32 @@ $("#tenant_type").click(function(){
    $('#t_Invoice_start_date').attr('style','border-bottom:1px solid #ccc');
    $('#t_invoice_enddatemsg').hide();
    $('#t_invoice_end_date').attr('style','border-bottom:1px solid #ccc');
+     $('#TenantfilteragingAnalysisBydiv').hide();
+ }else if(query=='aging_analysis'){
+     $('#client_type_contractDiv').hide();
+     $('#parent_clientDiv').hide();
+     $('#client_type_contractDiv').val("");
+     $('#parent_clientDiv').val("");
+
+     $('#TenantfilteragingAnalysisBydiv').show();
+     $('#TenantInvoiceCriteriadiv').show();
+
+     $('#tenancyfilterBydiv').hide();
+     $('#tenancysheduleduration').hide();
+     $('#t_invoicedurationdiv').hide();
+     $('#TenantInvoicefilterBydiv').hide();
+     $('#tInvoicepaymentstatusdiv').hide();
+     $('#t_Invoice_startdatemsg').hide();
+     $('#t_invoice_enddatemsg').hide();
+     $('#businesstypediv').hide();
+     $('#paymentstatusdiv').hide();
+     $('#t_Invoice_startdatemsg').hide();
+     $('#t_invoice_enddatemsg').hide();
+     $('#business_type').val(' ');
+     $('#contract_status').val(' ');
+     $('#payment_status').val(' ');
+
+
  }
    });
 
@@ -4983,7 +5314,100 @@ var a100=0;
             }
         });
       }
-    }
+    }else if(query34=='payment_history'){
+
+              var payment_historyContractId =$('#payment_historyContractId').val();
+              if(payment_historyContractId==null){
+                  p15=0;
+                  $('#payment_historyContractIdmsg').show();
+                  var message=document.getElementById('payment_historyContractIdmsg');
+                  message.style.color='red';
+                  message.innerHTML="Required";
+                  $('#payment_historyContractId').attr('style','border:1px solid #f00');
+              }
+              else{
+                  p15=1;
+                  $('#payment_historyContractIdmsg').hide();
+                  $('#payment_historyContractId').attr('style','border: 1px solid #ccc');
+              }
+
+
+          var payment_historyClients =$('#payment_historyClients').val();
+          if(payment_historyClients==null){
+              p16=0;
+              $('#payment_historyClientsmsg').show();
+              var message=document.getElementById('payment_historyClientsmsg');
+              message.style.color='red';
+              message.innerHTML="Required";
+              $('#payment_historyClients').attr('style','border:1px solid #f00');
+          }
+          else{
+              p16=1;
+              $('#payment_historyClientsmsg').hide();
+              $('#payment_historyClients').attr('style','border: 1px solid #ccc');
+          }
+
+
+
+          if(p15==1 && p16==1){
+
+              var _token = $('input[name="_token"]').val();
+
+
+
+              var contract_id =$('#payment_historyContractId').val();
+
+              var client_name=$('#payment_historyClients').val();
+
+              var criteria=null;
+
+              if($('#space_rent_history').is(':checked')) {
+
+                  criteria=$('#space_rent_history').val();
+              }else if($('#water_bill_history').is(':checked')){
+
+                  criteria=$('#water_bill_history').val();
+
+              }else if($('#electricity_bill_history').is(':checked')){
+
+                  criteria=$('#electricity_bill_history').val();
+
+              }else{
+
+
+              }
+
+
+
+
+              var payment_history_data = "contract_id=" + contract_id+'&criteria='+criteria+'&client_name='+client_name;
+
+              $.ajax({
+                  url: "{{ route('payment_history') }}",
+                  method:"GET",
+                  data: payment_history_data,
+                  contentType: "application/x-www-form-urlencoded",
+                  success: function(data) {
+                      window.location.href = "/reports/payment/payment_history?"+payment_history_data;
+                  },
+                  error: function(jqXHR, textStatus, errorThrown) {
+                      console.log(errorThrown);
+                  }
+              });
+
+
+
+
+          }
+
+
+
+
+
+
+
+
+      }
   }
 
     else if(query=='system'){
@@ -5257,10 +5681,50 @@ var a100=0;
       }
 
       else if(query12=='schedule'){
-        var p450,p451,p452,p453,p454,p455;
+        var p450,p451,p452,p453,p454,p455,prclient,tpclient;
         var query450=$('#tenancy_year').val(),
             query451=$('#tenancy_end').val(),
             query452=$('#tenancy_start').val();
+
+        var client_type_contract=$('#client_type_contract').val();
+        var parent_client=$('#parent_client').val();
+
+
+
+          if(client_type_contract==''){
+              tpclient=0;
+              $('#ctype_contract_msg').show();
+              var message=document.getElementById('ctype_contract_msg');
+              message.style.color='red';
+              message.innerHTML="Required";
+              $('#client_type_contract').attr('style','border:1px solid #f00');
+          }
+          else{
+              tpclient=1;
+              $('#ctype_contract_msg').hide();
+              $('#client_type_contract').attr('style','border: 1px solid #ccc');
+          }
+
+
+          if(parent_client==''){
+              prclient=0;
+              $('#parent_client_msg').show();
+              var message=document.getElementById('parent_client_msg');
+              message.style.color='red';
+              message.innerHTML="Required";
+              $('#parent_client').attr('style','border:1px solid #f00');
+          }
+          else{
+              prclient=1;
+              $('#parent_client_msg').hide();
+              $('#parent_client').attr('style','border: 1px solid #ccc');
+          }
+
+
+
+
+
+
 
             if(query450==null){
               p450=0;
@@ -5351,23 +5815,55 @@ var a100=0;
               $('#tenancy_location').attr('style','border:1px solid #ccc');
             }
 
-            if(p450==1 && p451==1 && p452==1 && p453==1 && p454==1){
-              var _token = $('input[name="_token"]').val();
-              var postData450 = "report_type="+ query12+ "&year="+ query450+ "&start=" + query452 + "&duration=" + query451 + "&b_fil="+$('#tenancy_business_filter').val()+"&b_type="+query453+"&l_fil="+$('#tenancy_location_filter').val()+"&loc="+query454;
 
-              $.ajax({
-              url: "{{ route('spacereport1') }}",
-              method:"GET",
-              data: postData450,
-              contentType: "application/x-www-form-urlencoded",
-              success: function(data) {
-                window.location.href = "/reports/tenancy/pdf?"+postData450;
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
+
+            if(client_type_contract=='Indirect'){
+
+                if(p450==1 && p451==1 && p452==1 && p453==1 && p454==1 && tpclient==1 && prclient==1){
+                    var _token = $('input[name="_token"]').val();
+                    var postData450 = "report_type="+ query12+ "&year="+ query450+ "&start=" + query452 + "&duration=" + query451 + "&b_fil="+$('#tenancy_business_filter').val()+"&b_type="+query453+"&l_fil="+$('#tenancy_location_filter').val()+"&loc="+query454+"&client_type_contract="+client_type_contract+"&parent_client="+parent_client;
+
+                    $.ajax({
+                        url: "{{ route('spacereport1') }}",
+                        method:"GET",
+                        data: postData450,
+                        contentType: "application/x-www-form-urlencoded",
+                        success: function(data) {
+                            window.location.href = "/reports/tenancy/pdf?"+postData450;
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+                }
+
+            }else{
+
+
+                if(p450==1 && p451==1 && p452==1 && p453==1 && p454==1 && tpclient==1){
+                    var _token = $('input[name="_token"]').val();
+                    var postData450 = "report_type="+ query12+ "&year="+ query450+ "&start=" + query452 + "&duration=" + query451 + "&b_fil="+$('#tenancy_business_filter').val()+"&b_type="+query453+"&l_fil="+$('#tenancy_location_filter').val()+"&loc="+query454+"&client_type_contract="+client_type_contract+"&parent_client="+parent_client;
+
+                    $.ajax({
+                        url: "{{ route('spacereport1') }}",
+                        method:"GET",
+                        data: postData450,
+                        contentType: "application/x-www-form-urlencoded",
+                        success: function(data) {
+                            window.location.href = "/reports/tenancy/pdf?"+postData450;
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+                }
+
+
             }
-        });
-            }
+
+
+
+
 
       }
       else if(query12=='list'){
@@ -5488,7 +5984,173 @@ var a100=0;
             }
         });
         }
+          }else if(query12=='aging_analysis'){
+
+
+          if($('#business_filter_aging').is(":checked")){
+              var query13 =$('#business_type').val();
+              if(query13==null){
+                  p15=0;
+                  $('#businesstypemsg').show();
+                  var message=document.getElementById('businesstypemsg');
+                  message.style.color='red';
+                  message.innerHTML="Required";
+                  $('#business_type').attr('style','border:1px solid #f00');
+              }
+              else{
+                  p15=1;
+                  $('#businesstypemsg').hide();
+                  $('#business_type').attr('style','border: 1px solid #ccc');
+              }
           }
+          else{
+              p15=1;
+              $('#businesstypemsg').hide();
+              $('#business_type').attr('style','border: 1px solid #ccc');
+          }
+
+
+          if($('#contract_filter_aging').is(":checked")){
+              var query14 =$('#contract_status').val();
+              if(query14==null){
+                  p16=0;
+                  $('#contractstatusmsg').show();
+                  var message=document.getElementById('contractstatusmsg');
+                  message.style.color='red';
+                  message.innerHTML="Required";
+                  $('#contract_status').attr('style','border:1px solid #f00');
+              }
+              else{
+                  p16=1;
+                  $('#contractstatusmsg').hide();
+                  $('#contract_status').attr('style','border: 1px solid #ccc');
+              }
+          }
+          else{
+              p16=1;
+              $('#contractstatusmsg').hide();
+              $('#contract_status').attr('style','border: 1px solid #ccc');
+          }
+
+
+          if($('#aging_location_filter').is(":checked")){
+              var query482=$('#aging_location').val();
+              if(query482==null){
+                  p17=0;
+                  $('#aginglocationmsg').show();
+                  var message=document.getElementById('aginglocationmsg');
+                  message.style.color='red';
+                  message.innerHTML="Required";
+                  $('#aging_location').attr('style','border:1px solid #f00');
+              }
+              else{
+                  p17=1;
+                  $('#aginglocationmsg').hide();
+                  $('#aging_location').attr('style','border:1px solid #ccc');
+              }
+          }
+          else{
+              p17=1;
+          }
+
+
+          var criteria=null;
+
+          if($('#space_rent').is(':checked')) {
+
+              criteria=$('#space_rent').val();
+          }else if($('#water_bill').is(':checked')){
+
+              criteria=$('#water_bill').val();
+
+          }else if($('#electricity_bill').is(':checked')){
+
+              criteria=$('#electricity_bill').val();
+
+          }else{
+
+
+          }
+
+
+
+          if(p15==1 && p16==1 && p17==1){
+
+              var _token = $('input[name="_token"]').val();
+
+              var sent_location=$('#aging_location').val();
+              var sent_business_type =$('#business_type').val();
+              var sent_contract_status =$('#contract_status').val();
+
+
+              if(sent_contract_status=='-1'){
+
+                  sent_contract_status='Terminated';
+
+
+              }else if(sent_contract_status=='0'){
+
+                  sent_contract_status='Expired';
+
+
+              }else if(sent_contract_status==1){
+
+
+                  sent_contract_status='Active';
+
+              }else{
+
+
+
+              }
+
+
+
+
+
+              if(sent_business_type==null){
+                  sent_business_type='';
+              }
+
+              if(sent_contract_status==null){
+                  sent_contract_status='';
+              }
+
+              if(sent_location==null){
+                  sent_location='';
+              }
+
+
+
+              var aging_analysis_data = "business_type=" + sent_business_type  + "&contract_status=" + sent_contract_status +"&criteria="+criteria+"&location="+sent_location;
+
+
+
+              $.ajax({
+                  url: "{{ route('tenant_aging_analysis_report') }}",
+                  method:"GET",
+                  data: aging_analysis_data,
+                  contentType: "application/x-www-form-urlencoded",
+                  success: function(data) {
+                      window.location.href = "/reports/tenant/aging_analysis?"+aging_analysis_data;
+                  },
+                  error: function(jqXHR, textStatus, errorThrown) {
+                      console.log(errorThrown);
+                  }
+              });
+
+
+
+
+
+
+          }
+
+
+
+
+
+      }
 
     }
 
@@ -6291,6 +6953,75 @@ var a100=0;
         }
 
       });
+
+
+
+      $("#payment_historyClients" ).select2({
+          placeholder: "Select Client",
+          theme: "bootstrap",
+          allowClear: true,
+          ajax: {
+              url: "{{route('ajax.client_names')}}",
+              method:"POST",
+              dataType: 'json',
+              delay: 250,
+              data: function (params) {
+                  //console.log($('#contractbusiness_type').val());
+                  return {
+                      _token:$('input[name="_token"]').val(),
+                      queryy:'Space',
+                      query: params.term // search term
+                  };
+              },
+              processResults: function (response) {
+                  //console.log(response);
+                  return {
+                      results: response
+                  };
+              },
+              cache: true
+          }
+
+      });
+
+
+
+
+
+
+      $('#payment_historyClients').on('input',function(e){
+          e.preventDefault();
+          var client_name = $(this).val();
+
+
+          if(client_name != '')
+          {
+              var _token = $('input[name="_token"]').val();
+              $.ajax({
+                  url:"{{ route('get_space_contract_ids') }}",
+                  method:"POST",
+                  data:{client_name:client_name, _token:_token},
+                  success:function(data){
+                      if(data=='0'){
+
+                      }
+                      else{
+
+
+                          $('#payment_historyContractId').html(data);
+                      }
+                  }
+              });
+          }
+          else if(client_name==''){
+
+          }
+      });
+
+
+
+
+
 
 
       $("#In_clientname" ).select2({

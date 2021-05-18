@@ -567,50 +567,130 @@ class HomeController extends Controller
     $invoice=[];
     $contract_id=[];
 
-  if(($_GET['b_fil']=='true') && ($_GET['l_fil']=='true')){
+    if($_GET['client_type_contract']=='Indirect'){
 
-     $details=DB::table('invoices')
-        ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
-        ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
-        ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
-        ->where('spaces.major_industry',$_GET['b_type'])
-        ->where('spaces.location',$_GET['loc'])
-        ->whereYear('invoicing_period_start_date',$_GET['year'])
-        ->distinct()->orderBy('invoices.contract_id')
-        ->get();
-  }
 
-  elseif(($_GET['b_fil']=='true') && ($_GET['l_fil']!='true')){
-     $details=DB::table('invoices')
-        ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
-        ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
-        ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
-        ->where('spaces.major_industry',$_GET['b_type'])
-        ->whereYear('invoicing_period_start_date',$_GET['year'])
-        ->distinct()->orderBy('invoices.contract_id')
-        ->get();
-  }
 
-  elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']=='true')){
-     $details=DB::table('invoices')
-        ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
-        ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
-        ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
-        ->where('spaces.location',$_GET['loc'])
-        ->whereYear('invoicing_period_start_date',$_GET['year'])
-        ->distinct()->orderBy('invoices.contract_id')
-        ->get();
-  }
 
-  elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']!='true')){
-     $details=DB::table('invoices')
-        ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
-        ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
-        ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
-        ->whereYear('invoicing_period_start_date',$_GET['year'])
-        ->distinct()->orderBy('invoices.contract_id')
-        ->get();
-  }
+        if(($_GET['b_fil']=='true') && ($_GET['l_fil']=='true')){
+
+            $details=DB::table('invoices')
+                ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+                ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                ->where('spaces.major_industry',$_GET['b_type'])
+                ->where('spaces.location',$_GET['loc'])
+                ->where('space_contracts.parent_client',$_GET['parent_client'])
+                ->whereYear('invoicing_period_start_date',$_GET['year'])
+                ->distinct()->orderBy('invoices.contract_id')
+                ->get();
+        }
+
+        elseif(($_GET['b_fil']=='true') && ($_GET['l_fil']!='true')){
+            $details=DB::table('invoices')
+                ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+                ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                ->where('spaces.major_industry',$_GET['b_type'])
+                ->where('space_contracts.parent_client',$_GET['parent_client'])
+                ->whereYear('invoicing_period_start_date',$_GET['year'])
+                ->distinct()->orderBy('invoices.contract_id')
+                ->get();
+        }
+
+        elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']=='true')){
+            $details=DB::table('invoices')
+                ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+                ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                ->where('spaces.location',$_GET['loc'])
+                ->where('space_contracts.parent_client',$_GET['parent_client'])
+                ->whereYear('invoicing_period_start_date',$_GET['year'])
+                ->distinct()->orderBy('invoices.contract_id')
+                ->get();
+        }
+
+        elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']!='true')){
+            $details=DB::table('invoices')
+                ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+                ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                ->where('space_contracts.parent_client',$_GET['parent_client'])
+                ->whereYear('invoicing_period_start_date',$_GET['year'])
+                ->distinct()->orderBy('invoices.contract_id')
+                ->get();
+        }
+
+
+
+
+
+    }else{
+
+
+        if(($_GET['b_fil']=='true') && ($_GET['l_fil']=='true')){
+
+            $details=DB::table('invoices')
+                ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+                ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                ->where('spaces.major_industry',$_GET['b_type'])
+                ->where('spaces.location',$_GET['loc'])
+                ->where('space_contracts.has_clients',0)
+                ->where('space_contracts.under_client',0)
+                ->whereYear('invoicing_period_start_date',$_GET['year'])
+                ->distinct()->orderBy('invoices.contract_id')
+                ->get();
+        }
+
+        elseif(($_GET['b_fil']=='true') && ($_GET['l_fil']!='true')){
+            $details=DB::table('invoices')
+                ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+                ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                ->where('spaces.major_industry',$_GET['b_type'])
+                ->where('space_contracts.has_clients',0)
+                ->where('space_contracts.under_client',0)
+                ->whereYear('invoicing_period_start_date',$_GET['year'])
+                ->distinct()->orderBy('invoices.contract_id')
+                ->get();
+        }
+
+        elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']=='true')){
+            $details=DB::table('invoices')
+                ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+                ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                ->where('spaces.location',$_GET['loc'])
+                ->where('space_contracts.has_clients',0)
+                ->where('space_contracts.under_client',0)
+                ->whereYear('invoicing_period_start_date',$_GET['year'])
+                ->distinct()->orderBy('invoices.contract_id')
+                ->get();
+        }
+
+        elseif(($_GET['b_fil']!='true') && ($_GET['l_fil']!='true')){
+            $details=DB::table('invoices')
+                ->select('debtor_name','invoices.contract_id','space_id_contract','currency','escalation_rate','start_date','end_date')
+                ->join('space_contracts','space_contracts.contract_id','=','invoices.contract_id')
+                ->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')
+                ->where('space_contracts.has_clients',0)
+                ->where('space_contracts.under_client',0)
+                ->whereYear('invoicing_period_start_date',$_GET['year'])
+                ->distinct()->orderBy('invoices.contract_id')
+                ->get();
+        }
+
+
+
+    }
+
+
+
+
+
+
+
 
     $x1= $_GET['start'];
     $x2= $_GET['duration'];
@@ -1520,45 +1600,86 @@ class HomeController extends Controller
       }
 
       public function spacereport2PDF(){
-       $details=space::where('space_id',$_GET['space_id'])->get();
-       $from=date('Y-m-d',strtotime($_GET['start_date']));
-$to=date('Y-m-d',strtotime($_GET['end_date']));
-  if($_GET['filter_date']=='true'){
-      $space=space_contract::join('spaces', 'spaces.space_id', '=', 'space_contracts.space_id_contract')
-      ->where('space_contracts.space_id_contract',$_GET['space_id'])->wherebetween('space_contracts.start_date',[ $from ,$to ])
-      ->orwherebetween('space_contracts.end_date',[ $from ,$to ])->where('space_contracts.space_id_contract',$_GET['space_id'])
-      ->get();
 
-      $invoices=space_contract::join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')
-      ->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')
-      ->where('space_contracts.space_id_contract',$_GET['space_id'])
-      ->wherebetween('space_contracts.start_date',[ $from ,$to ])->where('invoices.payment_status','!=','Paid')
-      ->orwherebetween('space_contracts.end_date',[ $from ,$to ])->where('invoices.payment_status','!=','Paid')
-      ->where('space_contracts.space_id_contract',$_GET['space_id'])
-      ->get();
-  }
-  else{
-     $space=space_contract::join('spaces', 'spaces.space_id', '=', 'space_contracts.space_id_contract')->where('space_contracts.space_id_contract',$_GET['space_id'])->get();
-
-     $invoices=space_contract::join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')
-      ->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')
-      ->where('space_contracts.space_id_contract',$_GET['space_id'])
-      ->where('invoices.payment_status','!=','Paid')
-      ->get();
-  }
-  if((count($space)==0) && (count($invoices)==0)){
-   return redirect()->back()->with('errors', "No data found to generate the requested report");
-  }
-  else{
+        $minor_industry=DB::table('spaces')->where('space_id',$_GET['space_id'])->value('minor_industry');
+        $location=DB::table('spaces')->where('space_id',$_GET['space_id'])->get();
 
 
-     // $pdf = PDF::loadView('spacereport2pdf',['details'=>$details, 'space'=>$space,'invoices'=>$invoices])->setPaper('a4', 'landscape');
+        if($minor_industry=='Conference centre'){
 
-     //    return $pdf->stream('Spaces History.pdf');
 
-    return View('spacereport2_new', compact('details','space','invoices'));
 
-  }
+            $from=date('Y-m-d',strtotime($_GET['start_date']));
+            $to=date('Y-m-d',strtotime($_GET['end_date']));
+            if($_GET['filter_date']=='true'){
+
+
+                $conference_events=DB::table('conference_events')->where('conference_id',$_GET['space_id'])->where('status',1)->wherebetween('event_date',[ $from ,$to ])->get();
+            }
+            else{
+                $conference_events=DB::table('conference_events')->where('conference_id',$_GET['space_id'])->where('status',1)->get();
+            }
+            if((count($conference_events)==0)){
+                return redirect()->back()->with('errors', "No data found to generate the requested report");
+            }
+            else{
+
+
+                // $pdf = PDF::loadView('spacereport2pdf',['details'=>$details, 'space'=>$space,'invoices'=>$invoices])->setPaper('a4', 'landscape');
+
+                //    return $pdf->stream('Spaces History.pdf');
+
+                return View('conference_centre_report', compact('conference_events','location'));
+
+            }
+
+
+
+        }else{
+
+            $details=space::where('space_id',$_GET['space_id'])->get();
+            $from=date('Y-m-d',strtotime($_GET['start_date']));
+            $to=date('Y-m-d',strtotime($_GET['end_date']));
+            if($_GET['filter_date']=='true'){
+                $space=space_contract::join('spaces', 'spaces.space_id', '=', 'space_contracts.space_id_contract')
+                    ->where('space_contracts.space_id_contract',$_GET['space_id'])->wherebetween('space_contracts.start_date',[ $from ,$to ])
+                    ->orwherebetween('space_contracts.end_date',[ $from ,$to ])->where('space_contracts.space_id_contract',$_GET['space_id'])
+                    ->get();
+
+                $invoices=space_contract::join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')
+                    ->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')
+                    ->where('space_contracts.space_id_contract',$_GET['space_id'])
+                    ->wherebetween('space_contracts.start_date',[ $from ,$to ])->where('invoices.payment_status','!=','Paid')
+                    ->orwherebetween('space_contracts.end_date',[ $from ,$to ])->where('invoices.payment_status','!=','Paid')
+                    ->where('space_contracts.space_id_contract',$_GET['space_id'])
+                    ->get();
+            }
+            else{
+                $space=space_contract::join('spaces', 'spaces.space_id', '=', 'space_contracts.space_id_contract')->where('space_contracts.space_id_contract',$_GET['space_id'])->get();
+
+                $invoices=space_contract::join('invoices', 'invoices.contract_id', '=', 'space_contracts.contract_id')
+                    ->join('space_payments', 'space_payments.invoice_number', '=', 'invoices.invoice_number')
+                    ->where('space_contracts.space_id_contract',$_GET['space_id'])
+                    ->where('invoices.payment_status','!=','Paid')
+                    ->get();
+            }
+            if((count($space)==0) && (count($invoices)==0)){
+                return redirect()->back()->with('errors', "No data found to generate the requested report");
+            }
+            else{
+
+
+                // $pdf = PDF::loadView('spacereport2pdf',['details'=>$details, 'space'=>$space,'invoices'=>$invoices])->setPaper('a4', 'landscape');
+
+                //    return $pdf->stream('Spaces History.pdf');
+
+                return View('spacereport2_new', compact('details','space','invoices'));
+
+            }
+
+        }
+
+
 
       }
 
@@ -3070,5 +3191,678 @@ else{
           }
         }
       }
+
+
+
+
+      public function tenantAgingAnalysisReport(){
+
+          $age_analysis=null;
+
+          if($_GET['criteria']=='rent'){
+
+
+              if($_GET['business_type']!='' AND $_GET['contract_status']!='' AND $_GET['location']!=''){
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }elseif ($_GET['business_type']!='' AND $_GET['contract_status']!=''){
+
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+
+
+
+              }else if($_GET['business_type']!='' AND  $_GET['location']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['contract_status']!='' AND $_GET['location']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['contract_status']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+              }else if($_GET['location']!=''){
+
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['business_type']!=''){
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else{
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('invoices','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }
+
+              if(count($age_analysis)==0){
+                  return redirect()->back()->with('errors', "No data found to generate the requested report");
+              }
+              else{
+                  return View('aging_analysis_report',compact('age_analysis'));
+
+              }
+
+
+
+          }else if($_GET['criteria']=='water'){
+
+
+              if($_GET['business_type']!='' AND $_GET['contract_status']!='' AND $_GET['location']!=''){
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }elseif ($_GET['business_type']!='' AND $_GET['contract_status']!=''){
+
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+
+
+
+              }else if($_GET['business_type']!='' AND  $_GET['location']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['contract_status']!='' AND $_GET['location']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['contract_status']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+              }else if($_GET['location']!=''){
+
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['business_type']!=''){
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else{
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('water_bill_invoices','water_bill_invoices.contract_id','=','space_contracts.contract_id')->join('water_bill_payments','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }
+
+
+              if(count($age_analysis)==0){
+                  return redirect()->back()->with('errors', "No data found to generate the requested report");
+              }
+              else{
+                  return View('aging_analysis_report',compact('age_analysis'));
+
+              }
+
+
+
+
+          }else if($_GET['criteria']=='electricity'){
+
+
+              if($_GET['business_type']!='' AND $_GET['contract_status']!='' AND $_GET['location']!=''){
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }elseif ($_GET['business_type']!='' AND $_GET['contract_status']!=''){
+
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+
+
+
+              }else if($_GET['business_type']!='' AND  $_GET['location']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['contract_status']!='' AND $_GET['location']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['contract_status']!=''){
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+              }else if($_GET['location']!=''){
+
+
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.location',$_GET['location'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else if($_GET['business_type']!=''){
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('spaces.major_industry',$_GET['business_type'])->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }else{
+
+                  if($_GET['contract_status']=='Active'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('space_contracts.end_date','>=',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+                  }else if($_GET['contract_status']=='Expired'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('space_contracts.end_date','<',date('Y-m-d'))->where('email_sent_status','SENT')->get();
+
+
+                  }else if($_GET['contract_status']=='Terminated'){
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('space_contracts.contract_status',0)->where('email_sent_status','SENT')->get();
+
+
+                  }else{
+
+                      $age_analysis=DB::table('space_contracts')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->join('electricity_bill_invoices','electricity_bill_invoices.contract_id','=','space_contracts.contract_id')->join('electricity_bill_payments','electricity_bill_payments.invoice_number','=','electricity_bill_invoices.invoice_number')->where('email_sent_status','SENT')->get();
+
+
+                  }
+
+
+              }
+
+
+              if(count($age_analysis)==0){
+                  return redirect()->back()->with('errors', "No data found to generate the requested report");
+              }
+              else{
+                  return View('aging_analysis_report',compact('age_analysis'));
+
+              }
+
+
+
+          }else{
+
+
+
+          }
+
+
+
+
+
+      }
+
+
 
 }

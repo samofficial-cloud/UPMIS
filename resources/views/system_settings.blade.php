@@ -345,6 +345,30 @@
                           </div>
                       </div>
 
+
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles"  style="display: inline-block;"><strong>Unit price in TZS(Water)</strong></label>
+                              <input type="number" step="0.01"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->unit_price_water}}"  name="unit_price_water" required autocomplete="off">
+                          </div>
+                      </div>
+
+
+                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
+
+                      <div class="group_children">
+                          <div class="form-wrapper">
+                              <label class="label_styles"  style="display: inline-block;"><strong>Unit price in TZS(Electricity)</strong></label>
+                              <input type="number" step="0.01"  style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->unit_price_electricity}}"  name="unit_price_electricity" required autocomplete="off">
+                          </div>
+                      </div>
+
+
+
+
 {{--                      <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">--}}
 
 {{--                      <div class="group_children">--}}

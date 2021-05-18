@@ -511,6 +511,12 @@ foreach($minor_industries as $minor_industry) {
 
 
 
+
+
+
+
+
+
     public function generateLocationList(Request $request) {
 
 
@@ -608,9 +614,107 @@ foreach($minor_industries as $minor_industry) {
    }
  }
 
+
+
+
+    public function conferencesManagement(Request $request)
+    {
+
+
+        $events=DB::table('conference_events')->where('status',1)->get();
+
+        return View('conferences_management')->with('events',$events);
+
+
+
+    }
+
+
+
+    public function addEvent(Request $request)
+    {
+
+
+
+        DB::table('conference_events')->insert(['client_name' =>$request->get('client_name'), 'conference_id' => $request->get('conference_id'), 'event_description' => $request->get('event_description'),'rent' =>  $request->get('rent'),'rent_currency' =>  $request->get('rent_currency'),'event_date' =>  $request->get('event_date')]);
+
+
+
+        return redirect()->back()->with("success","Event Added Successfully");
+
+
+
+    }
+
+
+    public function editEvent(Request $request,$id)
+    {
+
+
+        DB::table('conference_events')
+            ->where('id', $id)
+            ->update(['client_name' =>$request->get('client_name')]);
+
+
+
+        DB::table('conference_events')
+            ->where('id', $id)
+            ->update(['conference_id' => $request->get('conference_id')]);
+
+
+
+
+        DB::table('conference_events')
+            ->where('id', $id)
+            ->update(['event_description' => $request->get('event_description')]);
+
+        DB::table('conference_events')
+            ->where('id', $id)
+            ->update(['rent' =>  $request->get('rent')]);
+
+
+
+
+        DB::table('conference_events')
+            ->where('id', $id)
+            ->update(['rent_currency' =>  $request->get('rent_currency')]);
+
+
+
+        DB::table('conference_events')
+            ->where('id', $id)
+            ->update(['event_date' =>  $request->get('event_date')]);
+
+
+
+        return redirect()->back()->with("success","Event Edited Successfully");
+
+
+
+    }
+
+
+
+
+    public function deleteEvent($id)
+    {
+
+        DB::table('conference_events')
+            ->where('id', $id)
+            ->update(['status' =>  0]);
+
+
+        return redirect()->back()->with("success","Event deleted Successfully");
+
+
+    }
+
+
+
+
  public function fetchspaceidss(Request $request){
 if($request->get('query')){
-    $data = space::select('space_id', 'sub_location')->where('major_industry', $request->get('query'))->orderBy('space_id','asc')->get();
+    $data = space::select('space_id', 'sub_location')->where('major_industry', $request->get('query'))->where('flag',2)->orderBy('space_id','asc')->get();
      if(count($data)!=0){
         $output = '<select class="form-control" id="space_id" name="space_id">';
         $output .='<option value="" disabled selected hidden>Select Space</option>';
