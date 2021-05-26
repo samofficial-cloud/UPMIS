@@ -1297,178 +1297,7 @@ if($privileges=='Read only') {
 
 
 
-                //file management starts
 
-                $contract_id_created=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
-
-                $tbs_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('tbs_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
-                $gpsa_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('gpsa_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
-                $food_business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('food_business_license'))->orderBy('id','desc')->limit(1)->value('folder');
-                $business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('business_license'))->orderBy('id','desc')->limit(1)->value('folder');
-                $osha_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('osha_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
-                $tcra_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('tcra_registration'))->orderBy('id','desc')->limit(1)->value('folder');
-                $brela_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('brela_registration'))->orderBy('id','desc')->limit(1)->value('folder');
-
-                if($tbs_certificate_folder!=null){
-//                    $file=$request->file('tbs_certificate');
-
-                    $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
-                    $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/tbs_certificate.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tbs_certificate.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
-                    DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
-                }
-
-                if($gpsa_certificate_folder!=null){
-
-                    $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
-                    $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$gpsa_certificate_folder.'/'.'certificates/gpsa_certificate.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/gpsa_certificate.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$gpsa_certificate_folder);
-                    DB::table('uploads_temp')->where('folder', $gpsa_certificate_folder)->delete();
-
-
-                }
-
-
-
-                if($food_business_license_folder!=null){
-
-                    $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
-                    $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$food_business_license_folder.'/'.'certificates/food_business_license.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/food_business_license.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$food_business_license_folder);
-                    DB::table('uploads_temp')->where('folder', $food_business_license_folder)->delete();
-
-                }
-
-                if($business_license_folder!=null){
-
-
-                    $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
-                    $business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/business_license.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/business_license.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
-                    DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
-
-
-                }
-
-
-
-                if($osha_certificate_folder!=null){
-
-                    $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
-                    $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$osha_certificate_folder.'/'.'certificates/osha_certificate.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/osha_certificate.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$osha_certificate_folder);
-                    DB::table('uploads_temp')->where('folder', $osha_certificate_folder)->delete();
-
-
-                }
-
-
-
-                if($tcra_registration_folder!=null){
-
-                    $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
-                    $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$tcra_registration_folder.'/'.'certificates/tcra_registration.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tcra_registration.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$tcra_registration_folder);
-                    DB::table('uploads_temp')->where('folder', $tcra_registration_folder)->delete();
-
-
-                }
-
-                if($brela_registration_folder!=null){
-
-                    $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
-                    $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$brela_registration_folder.'/'.'certificates/brela_registration.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/brela_registration.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$brela_registration_folder);
-                    DB::table('uploads_temp')->where('folder', $brela_registration_folder)->delete();
-
-                }
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['tbs_certificate' => $tbs_certificates_path]);
-
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['gpsa_certificate' => $gpsa_certificates_path]);
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['food_business_license' => $food_business_licenses_path]);
-
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['business_license' => $business_licenses_path]);
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['osha_certificate' => $osha_certificates_path]);
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['tcra_registration' => $tcra_registration_path]);
-
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['brela_registration' => $brela_registration_path]);
-
-
-
-                //File management ends
 
 
 
@@ -1555,6 +1384,183 @@ if($privileges=='Read only') {
 
                 }
             }
+
+
+
+
+            //file management starts
+
+            $contract_id_created=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
+
+            $tbs_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('tbs_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+            $gpsa_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('gpsa_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+            $food_business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('food_business_license'))->orderBy('id','desc')->limit(1)->value('folder');
+            $business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('business_license'))->orderBy('id','desc')->limit(1)->value('folder');
+            $osha_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('osha_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+            $tcra_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('tcra_registration'))->orderBy('id','desc')->limit(1)->value('folder');
+            $brela_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('brela_registration'))->orderBy('id','desc')->limit(1)->value('folder');
+
+            if($tbs_certificate_folder!=null){
+//                    $file=$request->file('tbs_certificate');
+
+                $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
+                $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/tbs_certificate.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tbs_certificate.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
+                DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
+            }
+
+            if($gpsa_certificate_folder!=null){
+
+                $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
+                $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                $temp_path=public_path('uploads/temp/space_contracts/'.$gpsa_certificate_folder.'/'.'certificates/gpsa_certificate.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/gpsa_certificate.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$gpsa_certificate_folder);
+                DB::table('uploads_temp')->where('folder', $gpsa_certificate_folder)->delete();
+
+
+            }
+
+
+
+            if($food_business_license_folder!=null){
+
+                $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
+                $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+
+                $temp_path=public_path('uploads/temp/space_contracts/'.$food_business_license_folder.'/'.'certificates/food_business_license.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/food_business_license.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$food_business_license_folder);
+                DB::table('uploads_temp')->where('folder', $food_business_license_folder)->delete();
+
+            }
+
+            if($business_license_folder!=null){
+
+
+                $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
+                $business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+
+                $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/business_license.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/business_license.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
+                DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
+
+
+            }
+
+
+
+            if($osha_certificate_folder!=null){
+
+                $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
+                $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+
+                $temp_path=public_path('uploads/temp/space_contracts/'.$osha_certificate_folder.'/'.'certificates/osha_certificate.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/osha_certificate.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$osha_certificate_folder);
+                DB::table('uploads_temp')->where('folder', $osha_certificate_folder)->delete();
+
+
+            }
+
+
+
+            if($tcra_registration_folder!=null){
+
+                $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
+                $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                $temp_path=public_path('uploads/temp/space_contracts/'.$tcra_registration_folder.'/'.'certificates/tcra_registration.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tcra_registration.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$tcra_registration_folder);
+                DB::table('uploads_temp')->where('folder', $tcra_registration_folder)->delete();
+
+
+            }
+
+            if($brela_registration_folder!=null){
+
+                $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
+                $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                $temp_path=public_path('uploads/temp/space_contracts/'.$brela_registration_folder.'/'.'certificates/brela_registration.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/brela_registration.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$brela_registration_folder);
+                DB::table('uploads_temp')->where('folder', $brela_registration_folder)->delete();
+
+            }
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['tbs_certificate' => $tbs_certificates_path]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['gpsa_certificate' => $gpsa_certificates_path]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['food_business_license' => $food_business_licenses_path]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['business_license' => $business_licenses_path]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['osha_certificate' => $osha_certificates_path]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['tcra_registration' => $tcra_registration_path]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['brela_registration' => $brela_registration_path]);
+
+
+
+            //File management ends
+
 
 
 
@@ -1792,178 +1798,6 @@ if($privileges=='Read only') {
 
 
 
-                //file management starts
-
-                $contract_id_created=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
-
-                $tbs_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('tbs_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
-                $gpsa_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('gpsa_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
-                $food_business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('food_business_license'))->orderBy('id','desc')->limit(1)->value('folder');
-                $business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('business_license'))->orderBy('id','desc')->limit(1)->value('folder');
-                $osha_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('osha_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
-                $tcra_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('tcra_registration'))->orderBy('id','desc')->limit(1)->value('folder');
-                $brela_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('brela_registration'))->orderBy('id','desc')->limit(1)->value('folder');
-
-                if($tbs_certificate_folder!=null){
-//                    $file=$request->file('tbs_certificate');
-
-                    $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
-                    $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/tbs_certificate.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tbs_certificate.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
-                    DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
-                }
-
-                if($gpsa_certificate_folder!=null){
-
-                    $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
-                    $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$gpsa_certificate_folder.'/'.'certificates/gpsa_certificate.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/gpsa_certificate.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$gpsa_certificate_folder);
-                    DB::table('uploads_temp')->where('folder', $gpsa_certificate_folder)->delete();
-
-
-                }
-
-
-
-                if($food_business_license_folder!=null){
-
-                    $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
-                    $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$food_business_license_folder.'/'.'certificates/food_business_license.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/food_business_license.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$food_business_license_folder);
-                    DB::table('uploads_temp')->where('folder', $food_business_license_folder)->delete();
-
-                }
-
-                if($business_license_folder!=null){
-
-
-                    $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
-                    $business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/business_license.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/business_license.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
-                    DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
-
-
-                }
-
-
-
-                if($osha_certificate_folder!=null){
-
-                    $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
-                    $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$osha_certificate_folder.'/'.'certificates/osha_certificate.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/osha_certificate.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$osha_certificate_folder);
-                    DB::table('uploads_temp')->where('folder', $osha_certificate_folder)->delete();
-
-
-                }
-
-
-
-                if($tcra_registration_folder!=null){
-
-                    $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
-                    $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$tcra_registration_folder.'/'.'certificates/tcra_registration.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tcra_registration.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$tcra_registration_folder);
-                    DB::table('uploads_temp')->where('folder', $tcra_registration_folder)->delete();
-
-
-                }
-
-                if($brela_registration_folder!=null){
-
-                    $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
-                    $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                    $temp_path=public_path('uploads/temp/space_contracts/'.$brela_registration_folder.'/'.'certificates/brela_registration.pdf');
-                    $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/brela_registration.pdf');
-
-                    $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
-                    File::makeDirectory($new_directory,0777,true,true);
-                    File::move($temp_path, $new_path);
-                    File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$brela_registration_folder);
-                    DB::table('uploads_temp')->where('folder', $brela_registration_folder)->delete();
-
-                }
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['tbs_certificate' => $tbs_certificates_path]);
-
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['gpsa_certificate' => $gpsa_certificates_path]);
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['food_business_license' => $food_business_licenses_path]);
-
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['business_license' => $business_licenses_path]);
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['osha_certificate' => $osha_certificates_path]);
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['tcra_registration' => $tcra_registration_path]);
-
-
-
-                DB::table('space_contracts')
-                    ->where('contract_id', $contract_id_created)
-                    ->update(['brela_registration' => $brela_registration_path]);
-
-
-
-                //File management ends
 
 
 
@@ -2053,6 +1887,187 @@ if($privileges=='Read only') {
 
                 }
             }
+
+
+
+
+
+
+            //file management starts
+
+            $contract_id_created=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
+
+            $tbs_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('tbs_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+            $gpsa_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('gpsa_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+            $food_business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('food_business_license'))->orderBy('id','desc')->limit(1)->value('folder');
+            $business_license_folder=DB::table('uploads_temp')->where('folder',$request->get('business_license'))->orderBy('id','desc')->limit(1)->value('folder');
+            $osha_certificate_folder=DB::table('uploads_temp')->where('folder',$request->get('osha_certificate'))->orderBy('id','desc')->limit(1)->value('folder');
+            $tcra_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('tcra_registration'))->orderBy('id','desc')->limit(1)->value('folder');
+            $brela_registration_folder=DB::table('uploads_temp')->where('folder',$request->get('brela_registration'))->orderBy('id','desc')->limit(1)->value('folder');
+
+            if($tbs_certificate_folder!=null){
+//                    $file=$request->file('tbs_certificate');
+
+                $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
+                $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/tbs_certificate.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tbs_certificate.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
+                DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
+            }
+
+            if($gpsa_certificate_folder!=null){
+
+                $gpsa_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'gpsa_certificate.pdf';
+                $gpsa_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                $temp_path=public_path('uploads/temp/space_contracts/'.$gpsa_certificate_folder.'/'.'certificates/gpsa_certificate.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/gpsa_certificate.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$gpsa_certificate_folder);
+                DB::table('uploads_temp')->where('folder', $gpsa_certificate_folder)->delete();
+
+
+            }
+
+
+
+            if($food_business_license_folder!=null){
+
+                $food_business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'food_business_license.pdf';
+                $food_business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+
+                $temp_path=public_path('uploads/temp/space_contracts/'.$food_business_license_folder.'/'.'certificates/food_business_license.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/food_business_license.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$food_business_license_folder);
+                DB::table('uploads_temp')->where('folder', $food_business_license_folder)->delete();
+
+            }
+
+            if($business_license_folder!=null){
+
+
+                $business_licenses_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'business_license.pdf';
+                $business_licenses_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+
+                $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/business_license.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/business_license.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
+                DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
+
+
+            }
+
+
+
+            if($osha_certificate_folder!=null){
+
+                $osha_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'osha_certificate.pdf';
+                $osha_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+
+                $temp_path=public_path('uploads/temp/space_contracts/'.$osha_certificate_folder.'/'.'certificates/osha_certificate.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/osha_certificate.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$osha_certificate_folder);
+                DB::table('uploads_temp')->where('folder', $osha_certificate_folder)->delete();
+
+
+            }
+
+
+
+            if($tcra_registration_folder!=null){
+
+                $tcra_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tcra_registration.pdf';
+                $tcra_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                $temp_path=public_path('uploads/temp/space_contracts/'.$tcra_registration_folder.'/'.'certificates/tcra_registration.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tcra_registration.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$tcra_registration_folder);
+                DB::table('uploads_temp')->where('folder', $tcra_registration_folder)->delete();
+
+
+            }
+
+            if($brela_registration_folder!=null){
+
+                $brela_registration_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'brela_registration.pdf';
+                $brela_registration_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
+                $temp_path=public_path('uploads/temp/space_contracts/'.$brela_registration_folder.'/'.'certificates/brela_registration.pdf');
+                $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/brela_registration.pdf');
+
+                $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
+                File::makeDirectory($new_directory,0777,true,true);
+                File::move($temp_path, $new_path);
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$brela_registration_folder);
+                DB::table('uploads_temp')->where('folder', $brela_registration_folder)->delete();
+
+            }
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['tbs_certificate' => $tbs_certificates_path]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['gpsa_certificate' => $gpsa_certificates_path]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['food_business_license' => $food_business_licenses_path]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['business_license' => $business_licenses_path]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['osha_certificate' => $osha_certificates_path]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['tcra_registration' => $tcra_registration_path]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id_created)
+                ->update(['brela_registration' => $brela_registration_path]);
+
+
+
+            //File management ends
+
+
+
 
 
 
