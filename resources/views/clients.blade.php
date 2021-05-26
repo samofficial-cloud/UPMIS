@@ -155,20 +155,32 @@ hr {
       @else
       @endif
 
+
+
+
+          @if($category=='Research Flats only' OR $category=='All')
+              <button class="tablinks flats_clients" onclick="openClients(event, 'flats')"><strong>Research Flats</strong></button>
+          @else
+          @endif
+
+
+
+          @if($category=='Insurance only' OR $category=='All')
+              <button class="tablinks insurance_clients" onclick="openClients(event, 'insurance')"><strong>Insurance</strong></button>
+          @else
+          @endif
+
+
+
+
+
+
       @if ($category=='CPTU only' OR $category=='All')
         <button class="tablinks car_clients" onclick="openClients(event, 'car')"><strong>Car Rental</strong></button>
       @else
       @endif
 
-     @if($category=='Insurance only' OR $category=='All')
-         <button class="tablinks insurance_clients" onclick="openClients(event, 'insurance')"><strong>Insurance</strong></button>
-     @else
-     @endif
 
-     @if($category=='Research Flats only' OR $category=='All')
-         <button class="tablinks flats_clients" onclick="openClients(event, 'flats')"><strong>Research Flats</strong></button>
-     @else
-     @endif
     </div>
 
 
