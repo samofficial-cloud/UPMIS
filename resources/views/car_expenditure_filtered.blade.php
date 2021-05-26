@@ -24,7 +24,7 @@
       <th scope="col" style="color:#fff;"><center>Fuel Consumed (litres)</center></th>
       <th scope="col" style="color:#fff;"><center>Amount (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Total (TZS)</center></th>
-      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
       <th scope="col" style="color:#fff;"><center>Action</center></th>
       @endif
     </tr>
@@ -41,7 +41,7 @@
         <td>{{$operational->fuel_consumed}}</td>
         <td style="text-align: right;">{{number_format($operational->amount)}}</td>
         <td style="text-align: right;">{{number_format($operational->total)}}</td>
-        @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+        @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
         <td>
           <a title="Edit Operational Expenditure" data-toggle="modal" data-target="#editops{{$operational->id}}" role="button" aria-pressed="true" id="{{$operational->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
          <div class="modal fade" id="editops{{$operational->id}}" role="dialog">

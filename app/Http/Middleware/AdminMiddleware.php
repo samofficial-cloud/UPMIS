@@ -31,10 +31,15 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
 
-        if ($this->auth->getUser()->role !="System Administrator") {
+        if ($this->auth->getUser()->role =="System Administrator" || $this->auth->getUser()->role =="Super Administrator") {
+
+            return $next($request);
+
+        }else{
+
             abort(403, 'Unauthorized action.');
         }
 
-        return $next($request);
+
     }
 }

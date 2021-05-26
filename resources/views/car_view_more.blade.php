@@ -164,7 +164,7 @@ hr {
 			 <div class="card-body">
           <b><h3>Operational Expenditures</h3></b>
           <hr>
-          {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+          {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
           @if($privileges=='Read only')
           @else
             <a title="Add Operational Expenditure" data-toggle="modal" data-target="#car_operational" class="btn btn-success btn-sm" style="
@@ -298,7 +298,7 @@ hr {
       <th scope="col" style="color:#fff;"><center>Fuel Consumed (litres)</center></th>
       <th scope="col" style="color:#fff;"><center>Amount (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Total (TZS)</center></th>
-     {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+     {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
      @if($privileges=='Read only')
       @else
         <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -317,7 +317,7 @@ hr {
         <td>{{$operational->fuel_consumed}}</td>
         <td style="text-align: right;">{{number_format($operational->amount)}}</td>
         <td style="text-align: right;">{{number_format($operational->total)}}</td>
-        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
         @if($privileges=='Read only')
         @else
         <td>
@@ -447,7 +447,7 @@ hr {
 <div class="card-body">
 <h3>Bookings</h3>
 <hr>
-{{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+{{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
 @if($privileges=='Read only')
 @else
 

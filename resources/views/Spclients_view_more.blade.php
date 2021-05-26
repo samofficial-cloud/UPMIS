@@ -165,7 +165,7 @@ hr {
           <th scope="col"  style="color:#fff;"><center>End Date</center></th>
           <th scope="col"  style="color:#fff;"><center>Major Industry</center></th>
           <th scope="col"  style="color:#fff;"><center>Minor Industry</center></th>
-          @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator')
+          @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
           <th scope="col"  style="color:#fff;"><center>Action</center></th>
           @endif
         </tr>
@@ -258,7 +258,7 @@ hr {
             <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
             <td>{{$var->major_industry}}</td>
             <td>{{$var->minor_industry}}</td>
-            @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator')
+            @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
             <td><center>
               @if($var->contract_status==0 or $var->end_date<date('Y-m-d'))
                <a title="Renew this Contract" href="{{ route('renew_space_contract_form',$var->contract_id) }}" title="Click to Renew Contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>

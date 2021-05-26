@@ -54,7 +54,7 @@ class HomeController extends Controller
         $space_inbox=null;
         $space_outbox=null;
 
-        if(Auth::user()->role=='DVC Administrator'){
+        if(Auth::user()->role=='Director DPDI'){
             if(count($space_approval_stage)==0){
 
 

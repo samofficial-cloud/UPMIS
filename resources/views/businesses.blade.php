@@ -231,7 +231,7 @@ input[type=radio]{
 
                     </div>
 
-                     @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='DVC Administrator'))
+                     @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='Director DPDI'))
 
 
 
@@ -297,7 +297,7 @@ input[type=radio]{
                                                  <td><center>
 
 
-                                                         @if(Auth::user()->role=='DVC Administrator')
+                                                         @if(Auth::user()->role=='Director DPDI')
 
                                                          <a title="Approve this Space" data-toggle="modal" data-target="#approve{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><center><i class="fas fa-reply" style=" color: #3490dc; cursor: pointer;"></i></center></a>
                                                          <div class="modal fade" id="approve{{$var->id}}" role="dialog">
@@ -729,7 +729,7 @@ input[type=radio]{
 
                                                  <td><center>
                                                          @if($var->flag==0)
-                                                             DVC Administration
+                                                             Director DPDI
                                                          @elseif($var->flag==1)
                                                              DPDI Planner
                                                          @else
@@ -1141,248 +1141,259 @@ input[type=radio]{
 
                                                          @if($privileges=='Read only')
                                                          @else
-                                                             <a data-toggle="modal" title="Edit space information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                                                             @admin
+                                                             <a data-toggle="modal" title="Edit Real Estate Information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
+                                                             <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
+
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title">Edit Real Estate Information</h5></b>
+
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
+                                                                                 {{csrf_field()}}
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
+                                                                                         <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
+
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+                                                                                 <div id="descriptionDivEdit"  class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
+                                                                                         <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+
+
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                                                         <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                         <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                         <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                         <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                                                                                         <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                                                         @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                             <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+
+                                                                                             <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+
+                                                                                                 <div class="col-4 inline_block form-wrapper">
+                                                                                                     <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                     <div class="">
+                                                                                                         <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                                     </div>
+                                                                                                 </div>
+
+                                                                                                 <div class="col-4 inline_block  form-wrapper">
+                                                                                                     <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                     <div  class="">
+                                                                                                         <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                                     </div>
+                                                                                                 </div>
+
+
+                                                                                                 <div class="col-3 inline_block  form-wrapper">
+                                                                                                     <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                     <div  class="">
+                                                                                                         <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                             <option value="" ></option>
+
+                                                                                                             @if($var->rent_price_guide_currency=='TZS')
+                                                                                                                 <option value="USD" >USD</option>
+                                                                                                                 <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                                                                                             @elseif($var->rent_price_guide_currency=='USD')
+                                                                                                                 <option value="TZS">TZS</option>
+                                                                                                                 <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+
+                                                                                                             @else
+
+                                                                                                             @endif
+
+                                                                                                         </select>
+                                                                                                     </div>
+
+                                                                                                 </div>
+
+                                                                                             </div>
+
+                                                                                         @else
+                                                                                             <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                                                                                             <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
+
+                                                                                                 <div class="col-4 inline_block form-wrapper">
+                                                                                                     <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                     <div class="">
+                                                                                                         <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                                                     </div>
+                                                                                                 </div>
+
+                                                                                                 <div class="col-4 inline_block  form-wrapper">
+                                                                                                     <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                     <div  class="">
+                                                                                                         <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                                                     </div>
+                                                                                                 </div>
+
+
+                                                                                                 <div class="col-3 inline_block  form-wrapper">
+                                                                                                     <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                     <div  class="">
+                                                                                                         <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                             <option value=""></option>
+                                                                                                             <option value="USD" >USD</option>
+                                                                                                             <option value="TZS">TZS</option>
+                                                                                                         </select>
+                                                                                                     </div>
+
+                                                                                                 </div>
+
+                                                                                             </div>
+                                                                                         @endif
+
+
+
+
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for=""  ><strong>Comments</strong></label>
+                                                                                         <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+                                                                                 <div align="right">
+                                                                                     <button class="btn btn-primary" type="submit">Save</button>
+                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+                                                                             </form>
+
+
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+
+                                                             </div>
+
+                                                             @endadmin
                                                              @if($var->occupation_status==1)
 
                                                              @else
+                                                                 @if(Auth::user()->role=='DPDI Planner')
+
                                                                  <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this Real Estate"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
-                                                             @endif
+                                                                 @else
+                                                                 @endif
+                                                                 @endif
 
 
-
+                                                            @admin
                                                              <a data-toggle="modal" title="Delete Real Estate" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                             <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
+
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title">Are you sure you want to deactivate the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
+
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <form method="get" action="{{ route('delete_space',$var->id)}}" >
+                                                                                 {{csrf_field()}}
+
+
+
+                                                                                 <div align="right">
+                                                                                     <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                                 </div>
+
+
+                                                                             </form>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+
+                                                             </div>
+
+                                                             @endadmin
                                                          @endif
 
-                                                         <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
 
-                                                             <div class="modal-dialog" role="document">
-                                                                 <div class="modal-content">
-                                                                     <div class="modal-header">
-                                                                         <b><h5 class="modal-title">Edit Real Estate Information</h5></b>
 
-                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                     </div>
 
-                                                                     <div class="modal-body">
-                                                                         <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
-                                                                             {{csrf_field()}}
 
 
-                                                                             <div class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
-                                                                                     <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
-
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-                                                                             <div id="descriptionDivEdit"  class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
-                                                                                     <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-
-
-
-
-                                                                             <div class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
-                                                                                     <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-                                                                             <div class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
-                                                                                     <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-                                                                             <div class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
-                                                                                     <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-                                                                             <div class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
-                                                                                     <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-
-                                                                             <div class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                                                                     <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-
-
-                                                                             <div class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
-                                                                                     @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
-                                                                                         <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
-
-                                                                                         <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
-
-                                                                                             <div class="col-4 inline_block form-wrapper">
-                                                                                                 <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                                                 <div class="">
-                                                                                                     <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
-                                                                                                 </div>
-                                                                                             </div>
-
-                                                                                             <div class="col-4 inline_block  form-wrapper">
-                                                                                                 <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                                                 <div  class="">
-                                                                                                     <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
-                                                                                                 </div>
-                                                                                             </div>
-
-
-                                                                                             <div class="col-3 inline_block  form-wrapper">
-                                                                                                 <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                                                 <div  class="">
-                                                                                                     <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
-                                                                                                         <option value="" ></option>
-
-                                                                                                         @if($var->rent_price_guide_currency=='TZS')
-                                                                                                             <option value="USD" >USD</option>
-                                                                                                             <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
-                                                                                                         @elseif($var->rent_price_guide_currency=='USD')
-                                                                                                             <option value="TZS">TZS</option>
-                                                                                                             <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
-
-                                                                                                         @else
-
-                                                                                                         @endif
-
-                                                                                                     </select>
-                                                                                                 </div>
-
-                                                                                             </div>
-
-                                                                                         </div>
-
-                                                                                     @else
-                                                                                         <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
-                                                                                         <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
-
-                                                                                             <div class="col-4 inline_block form-wrapper">
-                                                                                                 <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                                                 <div class="">
-                                                                                                     <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
-                                                                                                 </div>
-                                                                                             </div>
-
-                                                                                             <div class="col-4 inline_block  form-wrapper">
-                                                                                                 <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                                                 <div  class="">
-                                                                                                     <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
-                                                                                                 </div>
-                                                                                             </div>
-
-
-                                                                                             <div class="col-3 inline_block  form-wrapper">
-                                                                                                 <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                                                 <div  class="">
-                                                                                                     <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
-                                                                                                         <option value=""></option>
-                                                                                                         <option value="USD" >USD</option>
-                                                                                                         <option value="TZS">TZS</option>
-                                                                                                     </select>
-                                                                                                 </div>
-
-                                                                                             </div>
-
-                                                                                         </div>
-                                                                                     @endif
-
-
-
-
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-                                                                             <div class="form-group">
-                                                                                 <div class="form-wrapper">
-                                                                                     <label for=""  ><strong>Comments</strong></label>
-                                                                                     <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
-                                                                                 </div>
-                                                                             </div>
-                                                                             <br>
-
-
-                                                                             <div align="right">
-                                                                                 <button class="btn btn-primary" type="submit">Save</button>
-                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                             </div>
-                                                                         </form>
-
-
-                                                                     </div>
-                                                                 </div>
-                                                             </div>
-
-
-                                                         </div>
-
-
-
-                                                         <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
-
-                                                             <div class="modal-dialog" role="document">
-                                                                 <div class="modal-content">
-                                                                     <div class="modal-header">
-                                                                         <b><h5 class="modal-title">Are you sure you want to deactivate the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
-
-                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                     </div>
-
-                                                                     <div class="modal-body">
-                                                                         <form method="get" action="{{ route('delete_space',$var->id)}}" >
-                                                                             {{csrf_field()}}
-
-
-
-                                                                             <div align="right">
-                                                                                 <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
-                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
-                                                                             </div>
-
-
-                                                                         </form>
-                                                                     </div>
-                                                                 </div>
-                                                             </div>
-
-
-                                                         </div>
 
 
                                                      </center>
@@ -1800,248 +1811,261 @@ input[type=radio]{
 
                                                      @if($privileges=='Read only')
                                                      @else
+                                                         @admin
                                                          <a data-toggle="modal" title="Edit Real Estate information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
+                                                         <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
+
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Edit Real Estate Information</h5></b>
+
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
+                                                                             {{csrf_field()}}
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
+
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div id="descriptionDivEdit"  class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+
+
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
+                                                                                     <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                                                     @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                         <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+
+                                                                                         <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+
+                                                                                             <div class="col-4 inline_block form-wrapper">
+                                                                                                 <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                 <div class="">
+                                                                                                     <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="col-4 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                 <div  class="">
+                                                                                                     <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
+
+
+                                                                                             <div class="col-3 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                 <div  class="">
+                                                                                                     <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                         <option value="" ></option>
+
+                                                                                                         @if($var->rent_price_guide_currency=='TZS')
+                                                                                                             <option value="USD" >USD</option>
+                                                                                                             <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                                                                                         @elseif($var->rent_price_guide_currency=='USD')
+                                                                                                             <option value="TZS">TZS</option>
+                                                                                                             <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+
+                                                                                                         @else
+
+                                                                                                         @endif
+
+                                                                                                     </select>
+                                                                                                 </div>
+
+                                                                                             </div>
+
+                                                                                         </div>
+
+                                                                                     @else
+                                                                                         <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                                                                                         <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
+
+                                                                                             <div class="col-4 inline_block form-wrapper">
+                                                                                                 <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                 <div class="">
+                                                                                                     <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="col-4 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                 <div  class="">
+                                                                                                     <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                                                 </div>
+                                                                                             </div>
+
+
+                                                                                             <div class="col-3 inline_block  form-wrapper">
+                                                                                                 <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                 <div  class="">
+                                                                                                     <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                         <option value=""></option>
+                                                                                                         <option value="USD" >USD</option>
+                                                                                                         <option value="TZS">TZS</option>
+                                                                                                     </select>
+                                                                                                 </div>
+
+                                                                                             </div>
+
+                                                                                         </div>
+                                                                                     @endif
+
+
+
+
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for=""  ><strong>Comments</strong></label>
+                                                                                     <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit">Save</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+                                                                         </form>
+
+
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+                                                         </div>
+                                                     @endadmin
                                                          @if($var->occupation_status==1)
 
                                                          @else
+
+                                                             @if(Auth::user()->role=='DPDI Planner')
                                                              <a href="/space_contract_on_fly/{{$var->id}}" title="Rent this Real Estate"><i class="fa fa-file-text" style="font-size:20px;" aria-hidden="true"></i></a>
+                                                             @else
+                                                             @endif
+
+
                                                          @endif
 
 
 
+                                                     @admin
                                                          <a data-toggle="modal" title="Delete Real Estate" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+                                                         <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
+
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Are you sure you want to deactivate the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
+
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <form method="get" action="{{ route('delete_space',$var->id)}}" >
+                                                                             {{csrf_field()}}
+
+
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                             </div>
+
+
+                                                                         </form>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+                                                         </div>
+                                                         @endadmin
                                                      @endif
 
-                                                     <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
 
-                                                         <div class="modal-dialog" role="document">
-                                                             <div class="modal-content">
-                                                                 <div class="modal-header">
-                                                                     <b><h5 class="modal-title">Edit Real Estate Information</h5></b>
 
-                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                 </div>
 
-                                                                 <div class="modal-body">
-                                                                     <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
-                                                                         {{csrf_field()}}
 
 
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
-                                                                                 <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
-
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-                                                                         <div id="descriptionDivEdit"  class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
-                                                                                 <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-
-
-
-
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
-                                                                                 <input type="text" class="form-control"  name="space_location" value="{{$var->location}}" readonly  autocomplete="off">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
-                                                                                 <input type="text" readonly class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}"  autocomplete="off">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
-                                                                                 <input type="text" readonly class="form-control" id="" name="has_water_bill" value="{{$var->has_water_bill_space}}"  autocomplete="off">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
-                                                                                 <input type="text" readonly class="form-control" id="" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for=""  ><strong>Size (SQM) <span style="color: red;"></span></strong></label>
-                                                                                 <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-
-
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
-                                                                                 @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
-                                                                                     <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
-
-                                                                                     <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
-
-                                                                                         <div class="col-4 inline_block form-wrapper">
-                                                                                             <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                                             <div class="">
-                                                                                                 <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
-                                                                                             </div>
-                                                                                         </div>
-
-                                                                                         <div class="col-4 inline_block  form-wrapper">
-                                                                                             <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                                             <div  class="">
-                                                                                                 <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
-                                                                                             </div>
-                                                                                         </div>
-
-
-                                                                                         <div class="col-3 inline_block  form-wrapper">
-                                                                                             <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                                             <div  class="">
-                                                                                                 <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
-                                                                                                     <option value="" ></option>
-
-                                                                                                     @if($var->rent_price_guide_currency=='TZS')
-                                                                                                         <option value="USD" >USD</option>
-                                                                                                         <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
-                                                                                                     @elseif($var->rent_price_guide_currency=='USD')
-                                                                                                         <option value="TZS">TZS</option>
-                                                                                                         <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
-
-                                                                                                     @else
-
-                                                                                                     @endif
-
-                                                                                                 </select>
-                                                                                             </div>
-
-                                                                                         </div>
-
-                                                                                     </div>
-
-                                                                                 @else
-                                                                                     <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
-                                                                                     <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
-
-                                                                                         <div class="col-4 inline_block form-wrapper">
-                                                                                             <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                                             <div class="">
-                                                                                                 <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
-                                                                                             </div>
-                                                                                         </div>
-
-                                                                                         <div class="col-4 inline_block  form-wrapper">
-                                                                                             <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                                             <div  class="">
-                                                                                                 <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
-                                                                                             </div>
-                                                                                         </div>
-
-
-                                                                                         <div class="col-3 inline_block  form-wrapper">
-                                                                                             <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                                             <div  class="">
-                                                                                                 <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
-                                                                                                     <option value=""></option>
-                                                                                                     <option value="USD" >USD</option>
-                                                                                                     <option value="TZS">TZS</option>
-                                                                                                 </select>
-                                                                                             </div>
-
-                                                                                         </div>
-
-                                                                                     </div>
-                                                                                 @endif
-
-
-
-
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for=""  ><strong>Comments</strong></label>
-                                                                                 <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-
-
-                                                                         <div align="right">
-                                                                             <button class="btn btn-primary" type="submit">Save</button>
-                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                         </div>
-                                                                     </form>
-
-
-                                                                 </div>
-                                                             </div>
-                                                         </div>
-
-
-                                                     </div>
-
-
-
-                                                     <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
-
-                                                         <div class="modal-dialog" role="document">
-                                                             <div class="modal-content">
-                                                                 <div class="modal-header">
-                                                                     <b><h5 class="modal-title">Are you sure you want to deactivate the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
-
-                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                 </div>
-
-                                                                 <div class="modal-body">
-                                                                     <form method="get" action="{{ route('delete_space',$var->id)}}" >
-                                                                         {{csrf_field()}}
-
-
-
-                                                                         <div align="right">
-                                                                             <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
-                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
-                                                                         </div>
-
-
-                                                                     </form>
-                                                                 </div>
-                                                             </div>
-                                                         </div>
-
-
-                                                     </div>
 
 
                                                  </center>
@@ -2402,6 +2426,7 @@ input[type=radio]{
                     <div id="research_flats_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
                         @if($privileges=='Read only')
                         @else
+                            @admin
                              <a title="Add New Room" data-toggle="modal" data-target="#addroom" class="btn btn-success button_color active" style="
     padding: 10px;
     margin-bottom: 2px;
@@ -2476,6 +2501,7 @@ input[type=radio]{
         </div>
       </div>
     </div>
+                            @endadmin
                         @endif
 
 @if(count($rooms)!=0)
@@ -2492,7 +2518,9 @@ input[type=radio]{
             <th scope="col" style="color:#fff;width: 20%;"><center>Charging price for students</center></th>
                 @if($privileges=='Read only')
                 @else
+                    @admin
                     <th scope="col" style="color:#fff;"><center>Action</center></th>
+                    @endadmin
                 @endif
           </tr>
         </thead>
@@ -2507,7 +2535,10 @@ input[type=radio]{
             <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
             @if($privileges=='Read only')
             @else
-            <td>
+                  @admin
+                  <td>
+                <center>
+
               <a title="Edit Room Details" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
               <div class="modal fade" id="editroom{{$room->id}}" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -2584,6 +2615,7 @@ input[type=radio]{
               </div>
             </div>
           </div>
+
                <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 
         <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
@@ -2606,7 +2638,10 @@ input[type=radio]{
 </div>
 </div>
 </div>
+
+                </center>
             </td>
+                  @endadmin
             @endif
           </tr>
           <?php $i = $i + 1; ?>
@@ -2636,6 +2671,9 @@ input[type=radio]{
 
                              @if($privileges=='Read only')
                             @else
+
+                                 @if(Auth::user()->role=='Transport Officer-CPTU')
+
                                 <a title="Add a Vehicle" data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="padding: 10px; margin-bottom: 5px;margin-top: 4px;" role="button" aria-pressed="true">Add Vehicle</a>
 
                                 <div class="modal fade" id="car" role="dialog">
@@ -2699,6 +2737,8 @@ input[type=radio]{
                                         </div>
                                     </div>
                                 </div>
+                                @else
+                                     @endif
                                 <br>
 
                             @endif
@@ -2870,7 +2910,15 @@ input[type=radio]{
                                               <td><center>{{$car->vehicle_model}}</center></td>
                                               <td><center>{{$car->vehicle_status}}</center></td>
                                               <td><center>{{number_format($car->hire_rate)}}</center></td>
-                                              <td><center>{{$car->form_status}}</center></td>
+                                              <td><center>
+
+
+
+                                                      @if($car->form_status=='DVC Administrator')
+                                                          DVC Administration
+                                                      @else
+                                                          @endif
+                                                      </center></td>
                                             </tr>
                                              <?php $c = $c + 1; ?>
                                         @endforeach
@@ -3014,7 +3062,7 @@ input[type=radio]{
 {{--                            <center><h3><strong>Vehicles Fleet</strong></h3></center>--}}
 {{--                            <hr>--}}
 {{--                            <br>--}}
-                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
 
 
                             <?php $i = 1; ?>
@@ -3039,9 +3087,10 @@ input[type=radio]{
                                         <td><center>{{ number_format($cars->hire_rate)}}</center></td>
                                         <td><center>
                                                 <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-                                               {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                               {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                                                @if($privileges=='Read only')
                                                 @else
+                                                   @admin
                                                     <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                                                     <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
 
@@ -3140,6 +3189,7 @@ input[type=radio]{
                                                             </div>
                                                         </div>
                                                     </div>
+                                                   @endadmin
                                                 @endif
                                             </center>
                                         </td>
@@ -3163,7 +3213,7 @@ input[type=radio]{
 {{--                            <center><h3><strong>Vehicles Fleet</strong></h3></center>--}}
 {{--                            <hr>--}}
 {{--                            <br>--}}
-                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
 
 
                             <?php $i = 1; ?>
@@ -3188,9 +3238,10 @@ input[type=radio]{
                                         <td><center>{{ number_format($cars->hire_rate)}}</center></td>
                                         <td><center>
                                                 <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-                                               {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                               {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                                                @if($privileges=='Read only')
                                                 @else
+                                                   @admin
                                                     <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                                                     <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
 
@@ -3289,6 +3340,7 @@ input[type=radio]{
                                                             </div>
                                                         </div>
                                                     </div>
+                                                   @endadmin
                                                 @endif
                                             </center>
                                         </td>
@@ -3310,7 +3362,7 @@ input[type=radio]{
 {{--                            <br>--}}
 {{--                            <center><h3><strong>Hire Rates</strong></h3></center>--}}
 {{--                            <hr>--}}
-                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                             @if($privileges=='Read only')
                                 @else
                                 <a data-toggle="modal" data-target="#hiree" class="btn btn-success button_color active" style="
@@ -3365,7 +3417,7 @@ input[type=radio]{
                                         <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
                                         <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
                                         <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                                         @if($privileges=='Read only')
                                         @else
                                             <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -3378,7 +3430,7 @@ input[type=radio]{
                                             <th scope="row" class="counterCell text-center">.</th>
                                             <td>{{$rate->vehicle_model}}</td>
                                             <td><center>{{number_format($rate->hire_rate)}}</center></td>
-                                           {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                           {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                                            @if($privileges=='Read only')
                                             @else
                                                 <td><center>
@@ -3493,7 +3545,7 @@ input[type=radio]{
 {{--                            <br>--}}
 {{--                            <center><h3><strong>Cost Centres</strong></h3></center>--}}
 {{--                            <hr>--}}
-                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                             @if($privileges=='Read only')
                             @else
                                 <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success button_color active" style="
@@ -3547,7 +3599,7 @@ input[type=radio]{
                                         <th scope="col" style="color:#fff;"><center>Cost Centre Id</center></th>
                                         <th scope="col" style="color:#fff;"><center>Cost Centre Name</center></th>
                                         <th scope="col" style="color:#fff;"><center>Division ID</center></th>
-                                        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                                         @if($privileges=='Read only')
                                         @else
                                             <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -3561,7 +3613,7 @@ input[type=radio]{
                                             <td><center>{{$var->costcentre_id}}</center></td>
                                             <td>{{$var->costcentre}}</td>
                                             <td>{{$var->division_id}}</td>
-                                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                                             @if($privileges=='Read only')
                                             @else
                                                 <td><center>

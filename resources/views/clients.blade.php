@@ -313,7 +313,7 @@ hr {
       <td>{{$client->address}}</td>
         <td><center>
                 <a title="View More Details" role="button" href="{{ route('ResearchClientsViewMore',[$client->first_name,$client->last_name,$client->email,$client->phone_number]) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-                {{-- @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
+                {{-- @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                 @if($privileges=='Read only')
                 @else
                     <a title="Edit Client Details" data-toggle="modal" data-target="#edit_research{{$client->id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
@@ -609,7 +609,7 @@ hr {
       <td>{{$client->address}}</td>
         <td><center>
                 <a title="View More Details" role="button" href="{{ route('ResearchClientsViewMore',[$client->first_name,$client->last_name,$client->email,$client->phone_number]) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-                {{-- @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
+                {{-- @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                 @if($privileges=='Read only')
                 @else
                     <a title="Edit Client Details" data-toggle="modal" data-target="#edit_research_inactive{{$client->id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
@@ -788,7 +788,7 @@ hr {
 
   <div id="sp_current" class="tabcontent2">
           <br>
-   {{--  @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
+   {{--  @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
 
    @if($privileges=='Read only')
     @else
@@ -911,7 +911,7 @@ hr {
       <td>{{$client->address}}</td>
       <td><center>
          <a title="View More Details" role="button" href="{{ route('ClientViewMore',$client->client_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-        {{-- @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
+        {{-- @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
         @if($privileges=='Read only')
         @else
         <a title="Edit Client Details" data-toggle="modal" data-target="#edit{{$client->client_id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
@@ -1086,7 +1086,7 @@ hr {
 
  <div id="Sp_previous" class="tabcontent2">
   <br>
-  {{-- @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
+  {{-- @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
   @if($privileges=='Read only')
   @else
           <a class="btn btn-success btn-sm" style="
@@ -1216,7 +1216,7 @@ hr {
       @endif
       <td><center>
          <a title="View More Details" role="button" href="{{ route('ClientViewMore',$client->client_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-         {{--  @if(Auth::user()->role=='DPDI Planner' OR Auth::user()->role=='System Administrator') --}}
+         {{--  @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
          @if($privileges=='Read only')
           @else
            <a title="Edit Client Details" data-toggle="modal" data-target="#edit_space_inactive{{$client->client_id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
@@ -1399,7 +1399,7 @@ hr {
     </div>
      <div id="cptu_active" class="cptucontent">
 
-    {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+    {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
     @if($privileges=='Read only')
     @else
 <a class="btn btn-success btn-sm" style="
@@ -1523,7 +1523,7 @@ hr {
       {{-- <td><center>{{date("d/m/Y",strtotime($client->start_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td> --}}
       <td><center>
         <a title="View More Details" role="button" href="{{ route('CarClientsViewMore',[$client->fullName,$client->email,$client->cost_centre])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
         @if($privileges=='Read only')
           @else
         <a title="Edit Client Details" data-toggle="modal" data-target="#Caredit{{$i}}" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
@@ -1700,7 +1700,7 @@ hr {
   </div>
   <div id="cptu_inactive" class="cptucontent">
     <br>
-    {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+    {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
     @if($privileges=='Read only')
     @else
 <a class="btn btn-success btn-sm" style="
@@ -1823,7 +1823,7 @@ hr {
       {{-- <td><center>{{date("d/m/Y",strtotime($client->start_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td> --}}
       <td><center>
         <a title="View More Details" role="button" href="{{ route('CarClientsViewMore',[$client->fullName,$client->email,$client->cost_centre])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+        {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
         @if($privileges=='Read only')
         @else
         <a title="Edit Client Details" data-toggle="modal" data-target="#Caredit_inactive{{$i}}" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
@@ -2009,7 +2009,7 @@ hr {
   </div>
 
   <div id="udia_current" class="udiacontent" >
-  {{-- @if(Auth::user()->role=='Insurance Officer' OR Auth::user()->role=='System Administrator') --}}
+  {{-- @if(Auth::user()->role=='Insurance Officer' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
   @if($privileges=='Read only')
   @else
   <a class="btn btn-success btn-sm" style="
@@ -2135,7 +2135,7 @@ hr {
       <td>
         <center>
          <a title="View More Details" role="button" href="{{ route('InsuranceClientsViewMore',[$client->full_name,$client->email,$client->phone_number])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-       {{--  @if(Auth::user()->role=='Insurance Officer' OR Auth::user()->role=='System Administrator') --}}
+       {{--  @if(Auth::user()->role=='Insurance Officer' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
        @if($privileges=='Read only')
         @else
         <a title="Edit Client Details" data-toggle="modal" data-target="#editIns{{$j}}" role="button" aria-pressed="true" id="{{$j}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
@@ -2301,7 +2301,7 @@ hr {
 </div>
   <div id="udia_previous" class="udiacontent" >
   <br>
-{{--   @if(Auth::user()->role=='Insurance Officer' OR Auth::user()->role=='System Administrator') --}}
+{{--   @if(Auth::user()->role=='Insurance Officer' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
 @if($privileges=='Read only')
 @else
   <a class="btn btn-success btn-sm" style="
@@ -2425,7 +2425,7 @@ hr {
       <td>
         <center>
             <a title="View More Details" role="button" href="{{ route('InsuranceClientsViewMore',[$client->full_name,$client->email,$client->phone_number])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-        {{-- @if(Auth::user()->role=='Insurance Officer' OR Auth::user()->role=='System Administrator') --}}
+        {{-- @if(Auth::user()->role=='Insurance Officer' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
         @if($privileges=='Read only')
         @else
         <a title="Edit Client Details" data-toggle="modal" data-target="#in_editIns_inactive{{$k}}" role="button" aria-pressed="true" id="{{$k}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>

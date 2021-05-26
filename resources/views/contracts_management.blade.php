@@ -668,12 +668,17 @@ div.dt-buttons{
 
                     @if($privileges=='Read only')
                     @else
+
+                        @if(Auth::user()->role=='DPDI Planner')
                         <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
     padding: 10px;
     margin-left: 2px;
     margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true" title="Add new Real Estate Contract">Add New Contract</a>
-                    @endif
+                        @else
+                            @endif
+
+                        @endif
 
 {{--                    <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>--}}
 
@@ -728,12 +733,15 @@ div.dt-buttons{
                   @else
 
                       <div style="float:left;">
-
+                          @if(Auth::user()->role=='DPDI Planner')
                       <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
     padding: 10px;
     margin-left: 2px;
     margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true" title="Add new Real Estate Contract">Add New Contract</a>
+                          @else
+                          @endif
+
                       </div>
 
                         @admin

@@ -2969,7 +2969,7 @@
 
                                                 <a title="Print this invoice" href="{{ route('print_space_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_space_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_space_invoice{{$var->invoice_number}}" role="dialog">
@@ -3851,7 +3851,7 @@
 
 <a title="Print this invoice" href="{{ route('print_space_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-             @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+             @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_space_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_space_invoice{{$var->invoice_number}}" role="dialog">
@@ -5776,7 +5776,7 @@
 <a title="Print this invoice" href="{{ route('print_space_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
 
-         @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+         @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_space_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_space_invoice{{$var->invoice_number}}" role="dialog">
@@ -6657,7 +6657,7 @@
 
 <a title="Print this invoice" href="{{ route('print_space_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-          @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+          @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_space_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_space_invoice{{$var->invoice_number}}" role="dialog">
@@ -9679,7 +9679,7 @@
 
 <a title="Print this invoice" href="{{ route('print_water_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
- @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+ @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_water_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_water_invoice{{$var->invoice_number}}" role="dialog">
@@ -10639,7 +10639,7 @@
 
 <a title="Print this invoice" href="{{ route('print_water_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                                    @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                                    @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_water_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_water_invoice{{$var->invoice_number}}" role="dialog">
@@ -12700,7 +12700,7 @@
 <a title="Print this invoice" href="{{ route('print_water_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
 
- @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+ @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_water_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_water_invoice{{$var->invoice_number}}" role="dialog">
@@ -13660,7 +13660,7 @@
 
 <a title="Print this invoice" href="{{ route('print_water_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                                    @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                                    @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_water_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_water_invoice{{$var->invoice_number}}" role="dialog">
@@ -16650,7 +16650,7 @@
 <a title="Print this invoice" href="{{ route('print_electricity_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
 
- @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+ @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_electricity_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_electricity_invoice{{$var->invoice_number}}" role="dialog">
@@ -17607,7 +17607,7 @@
 <a title="Print this invoice" href="{{ route('print_electricity_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
 
-                                                                 @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                                                 @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_electricity_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_electricity_invoice{{$var->invoice_number}}" role="dialog">
@@ -19664,7 +19664,7 @@
 
 <a title="Print this invoice" href="{{ route('print_electricity_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
- @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+ @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_electricity_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_electricity_invoice{{$var->invoice_number}}" role="dialog">
@@ -20619,7 +20619,7 @@
 
 <a title="Print this invoice" href="{{ route('print_electricity_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
- @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+ @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_electricity_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_electricity_invoice{{$var->invoice_number}}" role="dialog">
@@ -23276,7 +23276,7 @@
                                                                     @endif
 
 
-             @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+             @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_car_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_car_invoice{{$var->invoice_number}}" role="dialog">
@@ -23849,7 +23849,7 @@
                                                                     @endif
 
 
-     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_car_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_car_invoice{{$var->invoice_number}}" role="dialog">
@@ -25602,7 +25602,7 @@
                                                                     @endif
 
 
-     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_car_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_car_invoice{{$var->invoice_number}}" role="dialog">
@@ -26174,7 +26174,7 @@
                                                                         <a title="Print this invoice" href="{{ route('print_car_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
                                                                     @endif
 
-     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_car_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_car_invoice{{$var->invoice_number}}" role="dialog">
@@ -28350,7 +28350,7 @@
 
 <a title="Print this invoice" href="{{ route('print_research_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                                                         @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                                                         @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_research_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_research_invoice{{$var->invoice_number}}" role="dialog">
@@ -28883,7 +28883,7 @@
 
 <a title="Print this invoice" href="{{ route('print_research_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                          @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                          @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_research_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_research_invoice{{$var->invoice_number}}" role="dialog">
@@ -30380,7 +30380,7 @@
 
 <a title="Print this invoice" href="{{ route('print_research_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                          @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                          @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_research_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_research_invoice{{$var->invoice_number}}" role="dialog">
@@ -30913,7 +30913,7 @@
 
 <a title="Print this invoice" href="{{ route('print_research_invoice',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                                                                     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                                                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_research_invoice{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_research_invoice{{$var->invoice_number}}" role="dialog">
@@ -34084,7 +34084,7 @@
 
 <a title="Print this invoice" href="{{ route('print_insurance_invoice_clients',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                                                                              @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                                                                              @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_insurance_invoice_clients{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_insurance_invoice_clients{{$var->invoice_number}}" role="dialog">
@@ -35212,7 +35212,7 @@
 
 <a title="Print this invoice" href="{{ route('print_insurance_invoice_clients',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_insurance_invoice_clients{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_insurance_invoice_clients{{$var->invoice_number}}" role="dialog">
@@ -37785,7 +37785,7 @@
 
 <a title="Print this invoice" href="{{ route('print_insurance_invoice_clients',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_insurance_invoice_clients{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_insurance_invoice_clients{{$var->invoice_number}}" role="dialog">
@@ -38911,7 +38911,7 @@
 
 <a title="Print this invoice" href="{{ route('print_insurance_invoice_clients',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
-                                     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_insurance_invoice_clients{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_insurance_invoice_clients{{$var->invoice_number}}" role="dialog">
@@ -40794,7 +40794,7 @@
 
 
 
-                                     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_insurance_invoice_principals{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_insurance_invoice_principals{{$var->invoice_number}}" role="dialog">
@@ -41276,7 +41276,7 @@
 <a title="Print this invoice" href="{{ route('print_insurance_invoice_principals',$var->invoice_number) }}"><i class="fa fa-print" aria-hidden="true"></i></a>
 
 
-                                     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_insurance_invoice_principals{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_insurance_invoice_principals{{$var->invoice_number}}" role="dialog">
@@ -42577,7 +42577,7 @@
 
 
 
-                                     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_insurance_invoice_principals{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_insurance_invoice_principals{{$var->invoice_number}}" role="dialog">
@@ -43055,7 +43055,7 @@
 
 
 
-                                     @if(Auth::user()->role=='System Administrator' AND ($var->invoice_status=='1'))
+                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator') AND ($var->invoice_status=='1'))
                                                             <a title="Cancel this invoice" data-toggle="modal" data-target="#cancel_insurance_invoice_principals{{$var->invoice_number}}" role="button" aria-pressed="true"><i class="fa fa-times" aria-hidden="true" style=" color:red;"></i></a>
 
                                                                  <div class="modal fade" id="cancel_insurance_invoice_principals{{$var->invoice_number}}" role="dialog">

@@ -1660,7 +1660,7 @@ $i=1;
   </div>
   <div id="active" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
     <br>
-    @if(Auth::user()->role=='System Administrator')
+    @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
  <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
     padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
   </a>
@@ -1742,7 +1742,7 @@ $i=1;
   </div>
   <div id="inactive" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
     <br>
-    @if(Auth::user()->role=='System Administrator')
+    @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
  <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
     padding: 10px; margin-bottom: 5px; margin-top: 4px;">New Contract
   </a>

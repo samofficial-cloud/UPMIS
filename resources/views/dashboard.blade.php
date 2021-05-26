@@ -132,6 +132,8 @@
   $suite_rooms = DB::table('research_flats_rooms')->where('category','Suite Room')->where('status','1')->count();
   $total_rooms= $single_rooms + $shared_rooms + $suite_rooms;
   $year = date('Y');
+
+
   ?>
     <br>
 
@@ -365,7 +367,7 @@
           <th scope="col">Category</th>
           <th scope="col" >Sub Category</th>
           <th scope="col" >Location</th>
-          @if(Auth::user()->role=='System Administrator')
+          @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
           <th scope="col">Action</th>
           @endif
         </tr>
@@ -502,7 +504,7 @@
               <td>{{$space->major_industry}}</td>
               <td>{{$space->minor_industry}}</td>
               <td>{{$space->location}}</td>
-              @if(Auth::user()->role=='System Administrator')
+              @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
               <td><a href="{{ route('renew_space_contract_form',$space->contract_id) }}" title="Click to renew this contract"><i class="fa fa-refresh" style="font-size:25px;"></i></a>
                 @if($space->email!='')
                  <a data-toggle="modal" data-target="#mail{{$space->contract_id}}" role="button" aria-pressed="true" title="Click to notify this client"><i class="fa fa-envelope" aria-hidden="true" style="font-size:25px; color: #3490dc; cursor: pointer;"></i></a>
@@ -757,7 +759,7 @@
                                 {{-- <th scope="col" >GePG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
                                 <th scope="col" >Debt Age</th>
-                                @if(Auth::user()->role=='System Administrator')
+                                @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                 <th scope="col" >Action</th>
                                 @endif
                             </tr>
@@ -934,7 +936,7 @@
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
-                                    @if(Auth::user()->role=='System Administrator')
+                                    @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                     <td>
                                       @if($var->email!='')
                                       <a title="Send Email to this Client" data-toggle="modal" data-target="#spacemail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
@@ -1114,7 +1116,7 @@
                                 {{-- <th scope="col" >GePG Control No</th> --}}
                                 <th scope="col" >Invoice Date</th>
                                 <th scope="col" >Debt Age</th>
-                                @if(Auth::user()->role=='System Administrator')
+                                @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                 <th scope="col" >Action</th>
                                 @endif
                             </tr>
@@ -1231,7 +1233,7 @@
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
-                                    @if(Auth::user()->role=='System Administrator')
+                                    @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                     <td>
                                       @if($var->email!='')
                                        <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
@@ -1408,7 +1410,7 @@
                                 <th scope="col" >Amount</th>
                                 <th scope="col" >Invoice Date</th>
                                 <th scope="col" >Debt Age</th>
-                                @if(Auth::user()->role=='System Administrator')
+                                @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                 <th scope="col" >Action</th>
                                 @endif
                             </tr>
@@ -1469,7 +1471,7 @@
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
                                     <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
-                                                                       @if(Auth::user()->role=='System Administrator')
+                                                                       @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                     <td>
                                       @if($email!='')
                                        <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>

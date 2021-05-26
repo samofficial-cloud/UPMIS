@@ -324,7 +324,7 @@ $i='1';
  <center><h3><strong>Vehicle Fleet</strong></h3></center>
   <hr>
   <br>
-   @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+   @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
         <a title="Add a Vehicle" data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -418,7 +418,7 @@ $i='1';
       <td><center>{{ number_format($cars->hire_rate)}}</center></td>
         <td><center>
          <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+          @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
       	<a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
       	 <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
 
@@ -539,7 +539,7 @@ $i='1';
   <br>
   <center><h3><strong>Hire Rates</strong></h3></center>
   <hr>
-  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
           <a data-toggle="modal" data-target="#hiree" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -593,7 +593,7 @@ $i='1';
       <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
       <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
       <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
       <th scope="col" style="color:#fff;"><center>Action</center></th>
       @endif
     </tr>
@@ -604,7 +604,7 @@ $i='1';
     <th scope="row" class="counterCell text-center">.</th>
     <td>{{$rate->vehicle_model}}</td>
     <td><center>{{number_format($rate->hire_rate)}}</center></td>
-    @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+    @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
     <td><center>
       <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;cursor: pointer;"></i></a>
          <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
@@ -721,7 +721,7 @@ $i='1';
   <br>
   <center><h3><strong>Cost Centres</strong></h3></center>
   <hr>
-  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
           <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success button_color active" style="
     padding: 10px;
 
@@ -773,7 +773,7 @@ $i='1';
       <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
       <th scope="col" style="color:#fff;"><center>Cost Centre Id</center></th>
       <th scope="col" style="color:#fff;"><center>Cost Centre Name</center></th>
-      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
       <th scope="col" style="color:#fff;"><center>Action</center></th>
       @endif
     </tr>
@@ -784,7 +784,7 @@ $i='1';
       <td><center>{{$k}}.</center></td>
       <td><center>{{$var->costcentre_id}}</center></td>
       <td>{{$var->costcentre}}</td>
-      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator')
+      @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
     <td><center>
       <a title="Edit this Cost Centre Details" data-toggle="modal" data-target="#centre{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
          <div class="modal fade" id="centre{{$var->id}}" role="dialog">
@@ -900,7 +900,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -911,7 +911,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -937,15 +937,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -963,7 +963,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -986,7 +986,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     } );
 
   var table1 = $('#myTable1').DataTable( {
-      dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',     
+      dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
     } );
 
   var table2 = $('#myTable2').DataTable( {
@@ -1005,7 +1005,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -1016,7 +1016,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1041,15 +1041,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1067,7 +1067,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1104,7 +1104,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 exportOptions: {
                     columns: [ 0, 1, 2]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -1115,7 +1115,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1139,15 +1139,15 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                       alignment: 'center'
                     };
 
-                    
 
-        //            doc.content[2].table.widths = 
+
+        //            doc.content[2].table.widths =
         // Array(doc.content[2].table.body[0].length + 1).join('*').split('');
 
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1165,7 +1165,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
@@ -1317,7 +1317,7 @@ $("#check").click(function(e){
     var query = $('#start_date').val();
     var query2 = $('#end_date').val();
 
-  
+
 
     if(query!='' && query2!=''){
       if(new Date(query2) <= new Date(query)){
@@ -1358,7 +1358,7 @@ $("#check").click(function(e){
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 },
-                
+
 
 
                 customize: function ( doc ) {
@@ -1369,7 +1369,7 @@ $("#check").click(function(e){
                                     return {
                                         alignment: 'center',
                                         text: [{ text: page.toString() }]
-                                        
+
                                     }
                   });
 
@@ -1397,7 +1397,7 @@ $("#check").click(function(e){
         doc.styles.tableHeader.color = 'black';
         doc.styles.tableHeader.bold = 'false';
         doc.styles.tableBodyOdd.fillColor='';
-        doc.styles.tableHeader.fontSize = 10;  
+        doc.styles.tableHeader.fontSize = 10;
         doc.content[2].layout ={
           hLineWidth: function (i, node) {
           return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -1415,7 +1415,7 @@ $("#check").click(function(e){
           return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
         }
         };
-                  
+
 
                     doc.content.splice( 1, 0, {
                         margin: [ 0, 0, 0, 12 ],
