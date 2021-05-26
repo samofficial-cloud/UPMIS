@@ -3104,7 +3104,7 @@ var tablelog = $('#LogTable').DataTable( {
                 //messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT \n \n Research Flats Contracts',
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4,5, 6, 7]
+                    columns: [ 0, 1, 2, 3, 4,5, 6, 7,8]
                 },
 
                 customize: function ( doc ) {
@@ -3122,7 +3122,7 @@ var tablelog = $('#LogTable').DataTable( {
 
 
 
-                  doc.content[1].table.widths = [22, '*', 120, 80, 80, 100, 80, 80];
+                  doc.content[1].table.widths = [22, '*', 50, 80, 80, 100, 80, 80,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                       doc.content[1].table.body[i][0]=i+'.';
@@ -3193,7 +3193,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Research Flats Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7]
+                columns: [1, 2, 3, 4, 5, 6, 7,8]
                 },
             },
           ]
@@ -3254,7 +3254,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8,9,10]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
                 },
 
 
@@ -3271,13 +3271,13 @@ var tablelog = $('#LogTable').DataTable( {
                                     }
                   });
 
-                  doc.content[1].table.widths=[22, '*', 60, 60, 70,60,60,60,60,60,60];
+                  doc.content[1].table.widths=[22, '*', 60, 90, 70,60,60,70,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
                       doc.content[1].table.body[i][5].alignment = 'center';
                       doc.content[1].table.body[i][6].alignment = 'center';
-                      doc.content[1].table.body[i][9].alignment = 'center';
+                      // doc.content[1].table.body[i][9].alignment = 'center';
                     };
 
 
@@ -3337,7 +3337,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Insurance Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8,9,10]
+                columns: [1, 2, 3, 4, 5, 6, 7, 8]
                 },
             },
         ]

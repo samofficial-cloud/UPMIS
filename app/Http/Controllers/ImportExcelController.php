@@ -657,7 +657,7 @@ class ImportExcelController extends Controller
 
 
         $excel = App::make('excel');
-        $excel->create('space_contracts_format', function($excel) use($data) {
+        $excel->create('real_estate_contracts_format', function($excel) use($data) {
 
             $excel->sheet('Sheetname', function($sheet) use($data) {
 
