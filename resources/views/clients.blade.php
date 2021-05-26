@@ -132,7 +132,7 @@ hr {
   $k2=1;
   ?>
 <div class="container" style="max-width: 100%;">
-  <br>
+
    @if ($message = Session::get('errors'))
           <div class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

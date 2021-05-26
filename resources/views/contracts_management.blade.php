@@ -1218,7 +1218,7 @@ div.dt-buttons{
 {{--                    <hr>--}}
 
 
-                    <table class="hover table table-striped table-bordered" id="myTableInsurance">
+                    <table class="hover table table-striped table-bordered" style="width: 100% !important;" id="myTableInsurance">
                         <thead class="thead-dark">
                         <tr>
 
@@ -2943,7 +2943,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
-            // processing:true,
+            processing:true,
             serverSide:true,
             ajax: {
                 url:"{{ route('get_space_contracts') }}"
@@ -3208,7 +3208,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
-
+            processing:true,
             serverSide:true,
             ajax: {
                 url:"{{ route('get_insurance_contracts') }}"
