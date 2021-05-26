@@ -362,8 +362,8 @@
           <th scope="col" style="width: 5%;">S/N</th>
           <th scope="col" style="width: 25%;">Client</th>
           <th scope="col">Contract ID</th>
-          <th scope="col">Major Industry</th>
-          <th scope="col" >MInor Industry</th>
+          <th scope="col">Category</th>
+          <th scope="col" >Sub Category</th>
           <th scope="col" >Location</th>
           @if(Auth::user()->role=='System Administrator')
           <th scope="col">Action</th>

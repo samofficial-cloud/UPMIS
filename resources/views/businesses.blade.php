@@ -212,16 +212,21 @@ input[type=radio]{
                         @endif
 
 
-                        @if ($category=='CPTU only' OR $category=='All')
-                            <button class="tablinks_inner bills car_identity" onclick="openInnerInvoices(event, 'car_rental_inner')"><strong>Car rental</strong></button>
-                        @else
-                        @endif
+
 
 
                         @if($category=='Insurance only' OR $category=='All')
                                 <button class="tablinks_inner bills insurance_identity" onclick="openInnerInvoices(event, 'insurance_inner')"><strong>Insurance</strong></button>
                         @else
                         @endif
+
+
+
+                            @if ($category=='CPTU only' OR $category=='All')
+                                <button class="tablinks_inner bills car_identity" onclick="openInnerInvoices(event, 'car_rental_inner')"><strong>Car rental</strong></button>
+                            @else
+                            @endif
+
 
 
                     </div>
@@ -251,8 +256,8 @@ input[type=radio]{
                                          <thead >
                                          <tr >
                                              <th scope="col" ><center>S/N</center></th>
-                                             <th scope="col">Major Industry</th>
-                                             <th scope="col">Minor Industry</th>
+                                             <th scope="col">Category</th>
+                                             <th scope="col">Sub Category</th>
                                              <th scope="col">Real Estate Number</th>
                                              <th scope="col" >Location</th>
                                              <th scope="col" >Sub Location</th>
@@ -381,7 +386,7 @@ input[type=radio]{
 
                                                                              <div class="form-group">
                                                                                  <div class="form-wrapper">
-                                                                                     <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                                                     <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
                                                                                      <select id="getMajor_rejected"  class="form-control" name="major_industry" required>
                                                                                          <option value="{{$var->major_industry}}" selected>{{$var->major_industry}}</option>
 
@@ -411,7 +416,7 @@ input[type=radio]{
 
                                                                              <div id="descriptionDiv"  class="form-group">
                                                                                  <div class="form-wrapper">
-                                                                                     <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                                                     <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
                                                                                      <select id="minor_list_rejected" required class="form-control" name="minor_industry" >
                                                                                          <option value="{{$var->minor_industry}}" selected>{{$var->minor_industry}}</option>
 
@@ -683,8 +688,8 @@ input[type=radio]{
                                          <thead >
                                          <tr>
                                              <th scope="col"><center>S/N</center></th>
-                                             <th scope="col">Major Industry</th>
-                                             <th scope="col">Minor Industry</th>
+                                             <th scope="col">Category</th>
+                                             <th scope="col">Sub Category</th>
                                              <th scope="col">Real Estate Number</th>
                                              <th scope="col" >Location</th>
                                              <th scope="col" >Sub Location</th>
@@ -794,7 +799,7 @@ input[type=radio]{
 
                                                          <div class="form-group">
                                                              <div class="form-wrapper">
-                                                                 <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                                 <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
                                                                  <select id="getMajor"  class="form-control" name="major_industry" required>
                                                                      <option value="" selected></option>
 
@@ -824,7 +829,7 @@ input[type=radio]{
 
                                                          <div id="descriptionDiv"  class="form-group">
                                                              <div class="form-wrapper">
-                                                                 <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                                 <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
                                                                  <select id="minor_list" required class="form-control" name="minor_industry" >
 
 
@@ -982,8 +987,8 @@ input[type=radio]{
                                          <thead class="thead-dark">
                                          <tr>
                                              <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                             <th scope="col" style="color:#fff;">Major Industry</th>
-                                             <th scope="col" style="color:#fff;">Minor Industry</th>
+                                             <th scope="col" style="color:#fff;">Category</th>
+                                             <th scope="col" style="color:#fff;">Sub Category</th>
                                              <th scope="col" style="color:#fff;">Real Estate Number</th>
                                              <th scope="col"  style="color:#fff;">Location</th>
                                              <th scope="col"  style="color:#fff;">Sub Location</th>
@@ -1057,12 +1062,12 @@ input[type=radio]{
                                                                              </tr>
 
                                                                              <tr>
-                                                                                 <td>Major industry :</td>
+                                                                                 <td>Category :</td>
                                                                                  <td>{{$var->major_industry}}</td>
                                                                              </tr>
 
                                                                              <tr>
-                                                                                 <td>Minor industry :</td>
+                                                                                 <td>Sub Category :</td>
                                                                                  <td>{{$var->minor_industry}}</td>
                                                                              </tr>
 
@@ -1166,7 +1171,7 @@ input[type=radio]{
 
                                                                              <div class="form-group">
                                                                                  <div class="form-wrapper">
-                                                                                     <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                                                     <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
                                                                                      <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
 
                                                                                  </div>
@@ -1176,7 +1181,7 @@ input[type=radio]{
 
                                                                              <div id="descriptionDivEdit"  class="form-group">
                                                                                  <div class="form-wrapper">
-                                                                                     <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                                                     <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
                                                                                      <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
                                                                                  </div>
                                                                              </div>
@@ -1453,7 +1458,7 @@ input[type=radio]{
 
                                                      <div class="form-group">
                                                          <div class="form-wrapper">
-                                                             <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                             <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
                                                              <select id="getMajor"  class="form-control" name="major_industry" required>
                                                                  <option value="" selected></option>
 
@@ -1483,7 +1488,7 @@ input[type=radio]{
 
                                                      <div id="descriptionDiv"  class="form-group">
                                                          <div class="form-wrapper">
-                                                             <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                             <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
                                                              <select id="minor_list" required class="form-control" name="minor_industry" >
 
 
@@ -1641,8 +1646,8 @@ input[type=radio]{
                                      <thead class="thead-dark">
                                      <tr>
                                          <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                         <th scope="col" style="color:#fff;">Major Industry</th>
-                                         <th scope="col" style="color:#fff;">Minor Industry</th>
+                                         <th scope="col" style="color:#fff;">Category</th>
+                                         <th scope="col" style="color:#fff;">Sub Category</th>
                                          <th scope="col" style="color:#fff;">Real Estate Number</th>
                                          <th scope="col"  style="color:#fff;">Location</th>
                                          <th scope="col"  style="color:#fff;">Sub Location</th>
@@ -1716,12 +1721,12 @@ input[type=radio]{
                                                                          </tr>
 
                                                                          <tr>
-                                                                             <td>Major industry :</td>
+                                                                             <td>Category :</td>
                                                                              <td>{{$var->major_industry}}</td>
                                                                          </tr>
 
                                                                          <tr>
-                                                                             <td>Minor industry :</td>
+                                                                             <td>Sub Category :</td>
                                                                              <td>{{$var->minor_industry}}</td>
                                                                          </tr>
 
@@ -1825,7 +1830,7 @@ input[type=radio]{
 
                                                                          <div class="form-group">
                                                                              <div class="form-wrapper">
-                                                                                 <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                                                 <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
                                                                                  <input type="text" class="form-control"  name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
 
                                                                              </div>
@@ -1835,7 +1840,7 @@ input[type=radio]{
 
                                                                          <div id="descriptionDivEdit"  class="form-group">
                                                                              <div class="form-wrapper">
-                                                                                 <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                                                 <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
                                                                                  <input type="text" class="form-control" id="major_industry_description" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
                                                                              </div>
                                                                          </div>

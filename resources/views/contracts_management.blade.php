@@ -155,8 +155,8 @@ div.dt-buttons{
       <div class="container " style="max-width: 100%;">
 
 
-        <br>
-        @if ($message = Session::get('errors'))
+
+            @if ($message = Session::get('errors'))
           <div class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
@@ -250,7 +250,7 @@ div.dt-buttons{
                         <tr>
                             <th scope="col" ><center>S/N</center></th>
                             <th scope="col" >Client Name</th>
-                            <th scope="col" ><center>Contract ID</center></th>
+                            <th scope="col" ><center>Contract Number</center></th>
                             <th scope="col" ><center>Real Estate Number</center></th>
                             <th scope="col"  ><center>Amount(Academic season)</center></th>
                             <th scope="col"  ><center>Amount(Vacation season)</center></th>
@@ -409,7 +409,7 @@ div.dt-buttons{
                             <tr>
                                 <th scope="col" ><center>S/N</center></th>
                                 <th scope="col" >Client Name</th>
-                                <th scope="col" ><center>Contract ID</center></th>
+                                <th scope="col" ><center>Contract Number</center></th>
                                 <th scope="col" ><center>Real Estate Number</center></th>
                                 <th scope="col"  ><center>Amount(Academic season)</center></th>
                                 <th scope="col"  ><center>Amount(Vacation season)</center></th>
@@ -581,7 +581,7 @@ div.dt-buttons{
                         <tr>
                             <th scope="col" ><center>S/N</center></th>
                             <th scope="col" >Client Name</th>
-                            <th scope="col" ><center>Contract ID</center></th>
+                            <th scope="col" ><center>Contract Number</center></th>
                             <th scope="col" ><center>Real Estate Number</center></th>
                             <th scope="col"  ><center>Amount(Academic season)</center></th>
                             <th scope="col"  ><center>Amount(Vacation season)</center></th>
@@ -818,11 +818,12 @@ div.dt-buttons{
                           <th scope="col" style="color:#fff;">Client Name</th>
                           <th scope="col" style="color:#fff;">Contract Number</th>
                           <th scope="col" style="color:#fff;"><center>Real Estate Number</center></th>
+                          <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                          <th scope="col"  style="color:#fff;"><center>End Date</center></th>
                           <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
                           <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
-                          <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                          <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+
 
 
                           <th scope="col"  style="color:#fff;"><center>Status</center></th>
@@ -938,11 +939,12 @@ div.dt-buttons{
                         <tr>
                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
                             <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-                            <th scope="col" style="color:#fff;"><center>Contract ID</center></th>
+                            <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Room No</center></th>
                             <th scope="col" style="color:#fff;"><center>Host Name</center></th>
                             <th scope="col" style="color:#fff;"><center>Arrival Date</center></th>
                             <th scope="col" style="color:#fff;"><center>Departure Date</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Room No</center></th>
+
                             <th scope="col"  style="color:#fff;"><center>Total Amount (USD)</center></th>
                             <th scope="col"  style="color:#fff;"><center>Toatal Amount (TZS)</center></th>
                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
@@ -1018,6 +1020,44 @@ div.dt-buttons{
                                 </td>
                                 <td style="text-align: center;">{{$var->id}}</td>
                                 <td>
+                                    <a class="link_style" data-toggle="modal" data-target="#flat_room{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->room_no}}</a>
+
+                                    <div class="modal fade" id="flat_room{{$var->id}}" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">{{$var->room_no}} Details.</h5></b>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <?php $room=DB::table('research_flats_rooms')->where('room_no',$var->room_no)->first(); ?>
+                                                    <table style="width: 100%;">
+                                                        <tr>
+                                                            <td>Room Number</td>
+                                                            <td>{{$room->room_no}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Category</td>
+                                                            <td>{{$room->category}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Charging price for workers</td>
+                                                            <td>{{$room->currency}} {{number_format($room->charge_workers)}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Charging price for students</td>
+                                                            <td>{{$room->currency}} {{number_format($room->charge_students)}}</td>
+                                                        </tr>
+                                                    </table>
+                                                    <br>
+                                                    <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
 
                                     @if($var->host_name=='')
                                     N/A
@@ -1075,44 +1115,7 @@ div.dt-buttons{
 
                               <td style="text-align: center;">{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
                               <td style="text-align: center;">{{date("d/m/Y",strtotime($var->departure_date))}}</td>
-                              <td>
-                                <a class="link_style" data-toggle="modal" data-target="#flat_room{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->room_no}}</a>
 
-                                    <div class="modal fade" id="flat_room{{$var->id}}" role="dialog">
-                                      <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <b><h5 class="modal-title">{{$var->room_no}} Details.</h5></b>
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          </div>
-
-                                  <div class="modal-body">
-                                    <?php $room=DB::table('research_flats_rooms')->where('room_no',$var->room_no)->first(); ?>
-                                    <table style="width: 100%;">
-                                      <tr>
-                                        <td>Room Number</td>
-                                        <td>{{$room->room_no}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Category</td>
-                                        <td>{{$room->category}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Charging price for workers</td>
-                                        <td>{{$room->currency}} {{number_format($room->charge_workers)}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Charging price for students</td>
-                                        <td>{{$room->currency}} {{number_format($room->charge_students)}}</td>
-                                      </tr>
-                                    </table>
-                                    <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                                </td>
                               <td style="text-align: right;">{{number_format($var->total_usd)}}</td>
                               <td style="text-align: right;">{{number_format($var->total_tzs)}}</td>
                               <td>
@@ -1221,18 +1224,16 @@ div.dt-buttons{
 
                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
                             <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                            <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
 
                             <th scope="col" style="color:#fff;"><center>Class</center></th>
                             <th scope="col" style="color:#fff;"><center>Principal</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Insurance Type</center></th>
+
                             <th scope="col"  style="color:#fff;"><center>Commission Date</center></th>
                             <th scope="col"  style="color:#fff;"><center>End Date</center></th>
                             <th scope="col"  style="color:#fff;"><center>Premium</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Commission </center></th>
 
-
-                            <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Contract Status</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                         </tr>
@@ -1277,7 +1278,7 @@ div.dt-buttons{
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Contract Id</center></th>
+      <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -1336,7 +1337,7 @@ div.dt-buttons{
   @if(count($outbox)>0)
   <table>
     <thead>
-      <th style="width: 14%"><center>Contract Id</center></th>
+      <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -1399,7 +1400,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1475,7 +1476,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar3">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1518,7 +1519,7 @@ div.dt-buttons{
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <b><h5 class="modal-title">Fill the contract id to continue</h5></b>
+              <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -1527,7 +1528,7 @@ div.dt-buttons{
               {{csrf_field()}}
                   <div class="form-group">
                     <div class="form-wrapper">
-                      <label for="hire_rate">Contract ID<span style="color: red;">*</span></label>
+                      <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
                       <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
@@ -1547,7 +1548,7 @@ div.dt-buttons{
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
           <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract ID</center></th>
+          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Client Name</center></th>
           <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
@@ -1585,7 +1586,7 @@ div.dt-buttons{
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Contract Id</center></th>
+      <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -1644,7 +1645,7 @@ div.dt-buttons{
   @if(count($outbox)>0)
 <table>
    <thead>
-      <th style="width: 14%"><center>Contract Id</center></th>
+      <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -1676,7 +1677,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1714,7 +1715,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar4">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1756,7 +1757,7 @@ div.dt-buttons{
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Contract Id</center></th>
+      <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -1814,7 +1815,7 @@ div.dt-buttons{
   @if(count($outbox)>0)
 <table>
    <thead>
-      <th style="width: 14%"><center>Contract Id</center></th>
+      <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -1846,7 +1847,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1882,7 +1883,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar5">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -1929,7 +1930,7 @@ div.dt-buttons{
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Contract Id</center></th>
+      <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -1986,7 +1987,7 @@ div.dt-buttons{
   @if(count($outbox)>0)
 <table>
    <thead>
-      <th style="width: 14%"><center>Contract Id</center></th>
+      <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -2048,7 +2049,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -2124,7 +2125,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar6">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -2166,7 +2167,7 @@ div.dt-buttons{
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <b><h5 class="modal-title">Fill the contract id to continue</h5></b>
+              <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -2175,7 +2176,7 @@ div.dt-buttons{
               {{csrf_field()}}
                   <div class="form-group">
                     <div class="form-wrapper">
-                      <label for="hire_rate">Contract ID<span style="color: red;">*</span></label>
+                      <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
                       <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
@@ -2195,7 +2196,7 @@ div.dt-buttons{
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
           <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract ID</center></th>
+          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Client Name</center></th>
           <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
@@ -2234,7 +2235,7 @@ div.dt-buttons{
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Contract Id</center></th>
+      <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
       <th style="width: 16%"><center>Department/Faculty/unit</center></th>
@@ -2289,7 +2290,7 @@ div.dt-buttons{
   @if(count($outbox)>0)
 <table>
    <thead>
-      <th style="width: 14%"><center>Contract Id</center></th>
+      <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
       <th style="width: 14%"><center>Department/Faculty/unit</center></th>
@@ -2321,7 +2322,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -2357,7 +2358,7 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar7">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
@@ -2396,7 +2397,7 @@ div.dt-buttons{
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
           <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract ID</center></th>
+          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Client Name</center></th>
           <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
@@ -2443,7 +2444,7 @@ div.dt-buttons{
   <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
@@ -2531,7 +2532,7 @@ div.dt-buttons{
     <table class="hover table table-striped table-bordered" id="myTablecar2">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Id</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
       <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
       <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
@@ -2576,7 +2577,7 @@ div.dt-buttons{
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <b><h5 class="modal-title">Fill the contract id to continue</h5></b>
+              <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -2585,7 +2586,7 @@ div.dt-buttons{
               {{csrf_field()}}
                   <div class="form-group">
                     <div class="form-wrapper">
-                      <label for="hire_rate">Contract ID<span style="color: red;">*</span></label>
+                      <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
                       <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                     </div>
                 </div>
@@ -2606,7 +2607,7 @@ div.dt-buttons{
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
           <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract ID</center></th>
+          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Client Name</center></th>
           <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
@@ -2961,10 +2962,11 @@ var tablelog = $('#LogTable').DataTable( {
                 {data: 'full_name' , className: 'text-center',searchable: true},
                 {data: 'contract_id' , className: 'text-center',searchable: true},
                 {data: 'space_id_contract', className: 'text-center'},
-                {data: 'amount_academic_season', className: 'text-center'},
-                {data: 'amount_vacation_season', className: 'text-center'},
                 {data: 'start_date', className: 'text-center'},
                 {data: 'end_date', className: 'text-center'},
+                {data: 'amount_academic_season', className: 'text-center'},
+                {data: 'amount_vacation_season', className: 'text-center'},
+
 
                 {data: 'contract_status', className: 'text-center'},
                 {data: 'action', className: 'text-center',  orderable: false, searchable: false},
@@ -3223,14 +3225,15 @@ var tablelog = $('#LogTable').DataTable( {
 
                 {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
            {data: 'full_name' , className: 'text-center'},
+           {data: 'id' , className: 'text-center'},
            {data: 'insurance_class', className: 'text-center'},
            {data: 'principal', className: 'text-center'},
-           {data: 'insurance_type', className: 'text-center'},
+
            {data: 'commission_date', className: 'text-center'},
            {data: 'end_date', className: 'text-center'},
            {data: 'premium', className: 'text-center'},
-           {data: 'commission', className: 'text-center'},
-           {data: 'created_at', className: 'text-center'},
+
+
            {data: 'contract_status', className: 'text-center'},
                 {data: 'action', className: 'text-center', name: 'action', orderable: false, searchable: false},
 

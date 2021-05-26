@@ -163,6 +163,17 @@
                     @endif
 
 
+
+
+                    @if ($category=='Research Flats only' OR $category=='All')
+                            <button class="tablinks research_identity" onclick="openInvoices(event, 'research_invoices')"><strong>Research Flats</strong></button>
+                        @else
+                        @endif
+
+
+
+
+
                     @if($category=='Insurance only' OR $category=='All')
                         <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_invoices')"><strong>Insurance</strong></button>
 
@@ -176,10 +187,7 @@
                     @endif
 
 
-                        @if ($category=='Research Flats only' OR $category=='All')
-                            <button class="tablinks research_identity" onclick="openInvoices(event, 'research_invoices')"><strong>Research Flats</strong></button>
-                        @else
-                        @endif
+
 
 
 

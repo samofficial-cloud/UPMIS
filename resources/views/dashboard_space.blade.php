@@ -285,8 +285,8 @@
           <th scope="col" style="width: 5%;">S/N</th>
           <th scope="col" style="width: 20%;">Client</th>
           <th scope="col">Contract ID</th>
-          <th scope="col" style="width: 15%;">Major Industry</th>
-          <th scope="col" >Minor Industry</th>
+          <th scope="col" style="width: 15%;">Category</th>
+          <th scope="col" >Sub Category</th>
           <th scope="col" style="width: 15%;">Location</th>
           <th scope="col" style="width: 20%;">Sub Location</th>
         </tr>
@@ -523,8 +523,8 @@
           <th scope="col" style="width: 5%;">S/N</th>
           <th scope="col" style="width: 25%;">Client</th>
           <th scope="col">Contract ID</th>
-          <th scope="col">Major Industry</th>
-          <th scope="col" >Minor Industry</th>
+          <th scope="col">Category</th>
+          <th scope="col" >Sub Category</th>
           <th scope="col" >Location</th>
           <th scope="col">Action</th>
         </tr>
@@ -932,12 +932,12 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Major Industry</td>
+                                                                    <td>Category</td>
                                                                     <td colspan="2">{{$var->major_industry}} </td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Minor Industry</td>
+                                                                    <td>Sub Category</td>
                                                                     <td colspan="2">{{$var->minor_industry}} </td>
                                                                 </tr>
 
@@ -1295,12 +1295,12 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Major Industry</td>
+                                                                    <td>Category</td>
                                                                     <td colspan="2">{{$var->major_industry}} </td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Minor Industry</td>
+                                                                    <td>Sub Category</td>
                                                                     <td colspan="2">{{$var->minor_industry}} </td>
                                                                 </tr>
 
@@ -1660,12 +1660,12 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Major Industry</td>
+                                                                    <td>Category</td>
                                                                     <td colspan="2">{{$var->major_industry}} </td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td>Minor Industry</td>
+                                                                    <td>Sub Category</td>
                                                                     <td colspan="2">{{$var->minor_industry}} </td>
                                                                 </tr>
 

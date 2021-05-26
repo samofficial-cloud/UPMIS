@@ -166,12 +166,6 @@
                     @endif
 
 
-                    @if ($category=='CPTU only' OR $category=='All')
-                        <button class="tablinks car_identity" onclick="openInvoices(event, 'car_rental_payments')"><strong>Car Rental</strong></button>
-                    @else
-                    @endif
-
-
 
                         @if ($category=='Research Flats only' OR $category=='All')
                             <button class="tablinks research_identity" onclick="openInvoices(event, 'research_payments')"><strong>Research Flats</strong></button>
@@ -179,10 +173,22 @@
                         @endif
 
 
-                    @if($category=='Insurance only' OR $category=='All')
-                        <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
+                        @if($category=='Insurance only' OR $category=='All')
+                            <button class="tablinks insurance_identity" onclick="openInvoices(event, 'insurance_payments')"><strong>Insurance</strong></button>
+                        @else
+                        @endif
+
+
+
+
+                    @if ($category=='CPTU only' OR $category=='All')
+                        <button class="tablinks car_identity" onclick="openInvoices(event, 'car_rental_payments')"><strong>Car Rental</strong></button>
                     @else
                     @endif
+
+
+
+
 
 
 
