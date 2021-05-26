@@ -304,14 +304,15 @@ div.dt-buttons{
                                 <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
 
                                 @if($var->edit_status=='1')
-                                    <div ><span style="background-color: orange; color:white;  padding:3px;   text-align: center;"><a title="View Reason" style="color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#reason{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true">View Reason</a></span> </div>
+                                    <td><center>
+                                    <div ><span style="cursor: pointer;  background-color: orange; color:white !important;  padding:3px;   text-align: center;"><a title="View Reason" style="color:white !important; display:inline-block;"  class="" data-toggle="modal"  data-target="#reason{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true">View Reason</a></span> </div>
 
                                     <div class="modal fade" id="reason{{$var->contract_id}}" role="dialog">
 
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <b><h5 class="modal-title">Description</h5></b>
+                                                    <b><h5 class="modal-title">Reason(s) for Editing the Contract</h5></b>
 
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 </div>
@@ -348,7 +349,7 @@ div.dt-buttons{
                                             </div>
                                         </div>
                                     </div>
-
+                                        </center>  </td>
 
                                 @else
                                     <td><center> <div ><span style="background-color: #0aac19; color:white;  padding:3px;   text-align: center;">{{$var->reason_for_forwarding}}</span> </div></center>  </td>
@@ -674,9 +675,9 @@ div.dt-buttons{
     margin-top: 4px;" role="button" aria-pressed="true" title="Add new Real Estate Contract">Add New Contract</a>
                     @endif
 
-                    <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>
+{{--                    <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>--}}
 
-                    <hr>
+{{--                    <hr>--}}
                     <?php
                     $i=1;
                     ?>
@@ -718,23 +719,93 @@ div.dt-buttons{
             </div>
           @else
 
-              <div id="space_contracts" class="tabcontentOuter">
+              <div id="space_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontentOuter">
                   <br>
 
 
 
                   @if($privileges=='Read only')
                   @else
+
+                      <div style="float:left;">
+
                       <a href="/space_contract_form" class="btn button_color active" style=" color: white;   background-color: #38c172;
     padding: 10px;
     margin-left: 2px;
     margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true" title="Add new Real Estate Contract">Add New Contract</a>
+                      </div>
+
+                        @admin
+                          <div style="float:right;">
+                              <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_space" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                              <div style="float:right;"><a href="/get_space_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                              <div style="clear: both;"></div>
+                          </div>
+                        @endadmin
+
+                          <div style="clear: both;"></div>
+
+
+                      <div class="modal fade" id="import_data_space" role="dialog">
+
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  </div>
+
+                                  <div class="modal-body">
+
+                                      <form method="post" enctype="multipart/form-data" action="/import_space_contracts"   >
+                                          {{csrf_field()}}
+
+                                          <div class="form-row">
+
+
+                                              <div  class=" col-md-12 ">
+                                                  <div class="">
+                                                      <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                      <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                      <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                  </div>
+                                              </div>
+                                              <br>
+
+
+                                          </div>
+
+
+                                          <div align="right">
+                                              <button  class="btn btn-primary" type="submit">Import</button>
+                                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                          </div>
+                                      </form>
+
+
+
+
+
+
+
+
+
+                                  </div>
+                              </div>
+                          </div>
+
+
+                      </div>
+
+
                   @endif
 
-                  <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>
+{{--                  <h3 style="text-align: center"><strong>Real Estate Contracts</strong></h3>--}}
 
-                  <hr>
+{{--                  <hr>--}}
                   <?php
                   $i=1;
                   ?>
@@ -745,13 +816,14 @@ div.dt-buttons{
                       <tr>
                           <th scope="col" style="color:#fff;"><center>S/N</center></th>
                           <th scope="col" style="color:#fff;">Client Name</th>
+                          <th scope="col" style="color:#fff;">Contract Number</th>
                           <th scope="col" style="color:#fff;"><center>Real Estate Number</center></th>
                           <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
                           <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
                           <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
                           <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                          <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
+
 
                           <th scope="col"  style="color:#fff;"><center>Status</center></th>
                           <th scope="col"  style="color:#fff;"><center>Action</center></th>
@@ -780,21 +852,86 @@ div.dt-buttons{
 
 
 
-             <div id="research_flats_contracts" class="tabcontentOuter">
+             <div id="research_flats_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontentOuter">
               <?php $r =1; ?>
                 <br>
                 @if($privileges=='Read only')
                 @else
-                <a href="{{ route('contractflat') }}" title="Add new contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
+
+
+<div style="float:left;">
+    <a href="{{ route('contractflat') }}" title="Add new contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
                     padding: 10px;
                     margin-left: 2px;
                     margin-bottom: 15px;
                     margin-top: 4px;" role="button" aria-pressed="true">Add New Contract</a>
-                @endif
+
+</div>
+                      @admin
+                      <div style="float:right;">
+                          <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_research" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+                          <div class="modal fade" id="import_data_research" role="dialog">
+
+                              <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      </div>
+
+                                      <div class="modal-body">
+
+                                          <form method="post" enctype="multipart/form-data" action="/import_research_contracts"   >
+                                              {{csrf_field()}}
+
+                                              <div class="form-row">
+
+
+                                                  <div  class=" col-md-12 ">
+                                                      <div class="">
+                                                          <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                          <input type="file" class="" id="" name="import_data"  placeholder="" required  accept=".xls,.xlsx" autocomplete="off">
+                                                          <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                      </div>
+                                                  </div>
+                                                  <br>
+
+
+                                              </div>
+
+
+                                              <div align="right">
+                                                  <button  class="btn btn-primary" type="submit">Import</button>
+                                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                              </div>
+                                          </form>
+
+
+
+
+
+
+
+
+
+                                      </div>
+                                  </div>
+                              </div>
+
+
+                          </div>
+                          <div style="float:right;"><a href="/get_research_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                          <div style="clear: both;"></div>
+                      </div>
+                      @endadmin
+                  <div style="clear: both;"></div>
+
+                  @endif
 
                 <div class="">
-                    <h3 style="text-align: center"><strong>Research Flats Contracts</strong></h3>
-                    <hr>
+{{--                    <h3 style="text-align: center"><strong>Research Flats Contracts</strong></h3>--}}
+{{--                    <hr>--}}
 
                     <table class="hover table table-striped table-bordered" id="myTableResearch">
                         <thead class="thead-dark">
@@ -995,22 +1132,87 @@ div.dt-buttons{
 
 
 
-            <div id="insurance_contracts" class="tabcontentOuter">
+            <div id="insurance_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontentOuter">
                 <br>
 
 
                 @if($privileges=='Read only')
                 @else
-                <a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
+
+<div style="float:left;"><a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
     padding: 10px;
     margin-left: 2px;
     margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true">Add New Contract</a>
+</div>
+
+                    @admin
+                    <div style="float:right;">
+                        <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_insurance" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+                        <div class="modal fade" id="import_data_insurance" role="dialog">
+
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <form method="post" enctype="multipart/form-data" action="/import_insurance_contracts"   >
+                                            {{csrf_field()}}
+
+                                            <div class="form-row">
+
+
+                                                <div  class=" col-md-12 ">
+                                                    <div class="">
+                                                        <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                        <input type="file" class="" id="" name="import_data"  placeholder="" required  accept=".xls,.xlsx" autocomplete="off">
+
+                                                        <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                    </div>
+
+                                                </div>
+                                                <br>
+
+
+                                            </div>
+
+
+                                            <div align="right">
+                                                <button  class="btn btn-primary" type="submit">Import</button>
+                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div style="float:right;"><a href="/get_insurance_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    @endadmin
+                    <div style="clear: both;"></div>
+
                 @endif
 
                 <div class="">
-                    <h3 style="text-align: center"><strong>Insurance Contracts</strong></h3>
-                    <hr>
+{{--                    <h3 style="text-align: center"><strong>Insurance Contracts</strong></h3>--}}
+{{--                    <hr>--}}
 
 
                     <table class="hover table table-striped table-bordered" id="myTableInsurance">
@@ -1052,10 +1254,10 @@ div.dt-buttons{
 
  @if ($category=='CPTU only' OR $category=='All')
 
-            <div id="car_contracts" class="tabcontentOuter">
+            <div id="car_contracts"  class="tabcontentOuter">
 
                 {{-- <h4 style="text-align: center">Car Rental Contracts</h4> --}}
-                <br>
+{{--                <br>--}}
                 @if(Auth::user()->role=='Transport Officer-CPTU')
   <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
     padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
@@ -1070,7 +1272,7 @@ div.dt-buttons{
             <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheet</strong></button>
         </div>
-<div id="inbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+<div id="inbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px; ">
   <br>
   @if(count($inbox)>0)
 <table>
@@ -2222,12 +2424,12 @@ div.dt-buttons{
 </div>
 @elseif((Auth::user()->role!='DVC Administrator')&&($category=='All')||(Auth::user()->role!='Accountant')&&($category=='All'))
 
-<div class="tab2">
+<div class="tab2" style="margin-top: 12px;">
            {{--  <button class="tablinks" onclick="openContracts(event, 'active')" id="defaultOpen"><strong>Active</strong></button> --}}
             <button class="tablinks" onclick="openContracts(event, 'inactive')" id="defaultOpen"><strong>Contracts</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheets</strong></button>
 </div>
-  <div id="active" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+  <div id="active" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
     <br>
     @if($privileges=='Read only')
     @else
@@ -2235,8 +2437,8 @@ div.dt-buttons{
         padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
       </a>
   @endif
-   <h4 style="text-align: center"><strong>Active Car Rental Contracts</strong></h4>
-   <hr>
+{{--   <h4 style="text-align: center"><strong>Active Car Rental Contracts</strong></h4>--}}
+{{--   <hr>--}}
 @if(count($closed_act)!=0)
   <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
@@ -2315,7 +2517,7 @@ div.dt-buttons{
   <p style="font-size: 18px;">No record found.</p>
   @endif
   </div>
-  <div id="inactive" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+  <div id="inactive" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
     <br>
      @if($privileges=='Read only')
     @else
@@ -2323,8 +2525,8 @@ div.dt-buttons{
           padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
         </a>
   @endif
-   <h4 style="text-align: center"><strong>Car Rental Contracts</strong></h4>
-   <hr>
+{{--   <h4 style="text-align: center"><strong>Car Rental Contracts</strong></h4>--}}
+{{--   <hr>--}}
    @if(count($closed_inact)!=0)
     <table class="hover table table-striped table-bordered" id="myTablecar2">
     <thead class="thead-dark">
@@ -2361,7 +2563,7 @@ div.dt-buttons{
   @endif
   </div>
 
-  <div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+  <div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
   <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
   $d = 1;
   ?>
@@ -2727,12 +2929,19 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
 
 var tablelog = $('#LogTable').DataTable( {
-            dom: '<"top"fl>rt<"bottom"pi>'
+            dom: '<"top"fl>rt<"bottom"pi>',
+    "pageLength": 100,
+    "bLengthChange": false
         });
 
 
         var table = $('#myTablea').DataTable( {
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
             // processing:true,
             serverSide:true,
             ajax: {
@@ -2750,12 +2959,13 @@ var tablelog = $('#LogTable').DataTable( {
 
                 {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
                 {data: 'full_name' , className: 'text-center',searchable: true},
+                {data: 'contract_id' , className: 'text-center',searchable: true},
                 {data: 'space_id_contract', className: 'text-center'},
                 {data: 'amount_academic_season', className: 'text-center'},
                 {data: 'amount_vacation_season', className: 'text-center'},
                 {data: 'start_date', className: 'text-center'},
                 {data: 'end_date', className: 'text-center'},
-                {data: 'creation_date', className: 'text-center'},
+
                 {data: 'contract_status', className: 'text-center'},
                 {data: 'action', className: 'text-center',  orderable: false, searchable: false},
 
@@ -2776,7 +2986,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7,8]
                 },
 
 
@@ -2798,8 +3008,8 @@ var tablelog = $('#LogTable').DataTable( {
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
-                      doc.content[1].table.body[i][1] = form_data[i-1][1].split('"true">').pop().split('</a>')[0];
-                      doc.content[1].table.body[i][2] =form_data[i-1][2].split('"true"><center>').pop().split('</center>')[0] ;
+                      // doc.content[1].table.body[i][1] = form_data[i-1][1].split('"true">').pop().split('</a>')[0];
+                      // doc.content[1].table.body[i][2] =form_data[i-1][2].split('"true"><center>').pop().split('</center>')[0] ;
                       doc.content[1].table.body[i][5].alignment = 'center';
                       doc.content[1].table.body[i][6].alignment = 'center';
                       doc.content[1].table.body[i][7].alignment = 'center';
@@ -2869,11 +3079,18 @@ var tablelog = $('#LogTable').DataTable( {
         });
 
         var table2 = $('#myTable2').DataTable( {
-            dom: '<"top"fl>rt<"bottom"pi>'
+            dom: '<"top"fl>rt<"bottom"pi>',
+            "pageLength": 100,
+            "bLengthChange": false
         });
 
         var table_research = $('#myTableResearch').DataTable( {
-            dom: '<"top"fl><"top"<"pull-right"B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
             buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Research Flats Contracts',
@@ -2983,7 +3200,12 @@ var tablelog = $('#LogTable').DataTable( {
         var myTableInsurance = $('#myTableInsurance').DataTable( {
 
             // deferRender:true,
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
 
             serverSide:true,
             ajax: {
@@ -3123,7 +3345,12 @@ var tablelog = $('#LogTable').DataTable( {
 
 
         var table3 = $('#myTablecar').DataTable( {
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Active Car Rental Contracts',
@@ -3226,7 +3453,12 @@ var tablelog = $('#LogTable').DataTable( {
         });
 
          var table4 = $('#myTablecar2').DataTable( {
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -3329,7 +3561,12 @@ var tablelog = $('#LogTable').DataTable( {
         });
 
         var table5 = $('#myTablecar3').DataTable( {
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -3432,7 +3669,12 @@ var tablelog = $('#LogTable').DataTable( {
           });
 
         var table6 = $('#myTablecar4').DataTable( {
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -3535,7 +3777,12 @@ var tablelog = $('#LogTable').DataTable( {
         });
 
         var table7 = $('#myTablecar5').DataTable( {
-           dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+           dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -3638,7 +3885,12 @@ var tablelog = $('#LogTable').DataTable( {
         });
 
            var table8 = $('#myTablecar6').DataTable( {
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -3741,7 +3993,12 @@ var tablelog = $('#LogTable').DataTable( {
         });
 
             var table9 = $('#myTablecar7').DataTable( {
-            dom: '<"top"fl><"top"<"pull-right" B>>rt<"bottom"pi>',
+            dom:
+    "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+    "<'top'<tr>>" +
+    "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',

@@ -94,12 +94,57 @@ class SpaceController extends Controller
 
         if($request->get('rent_price_guide_checkbox')==null){
 
-        DB::table('spaces')->insert(
-            ['space_id' => $final_space_id,'space_id_code'=>$code_name,'space_id_number'=>$new_space_id_number,'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => '','rent_price_guide_to' => '','rent_price_guide_currency' => '','rent_price_guide_checkbox' => 0,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]);
+//        DB::table('spaces')->insert(
+//            ['space_id' => $final_space_id,'space_id_code'=>$code_name,'space_id_number'=>$new_space_id_number,'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => '','rent_price_guide_to' => '','rent_price_guide_currency' => '','rent_price_guide_checkbox' => 0,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]);
+
+        $space= new space();
+        $space->space_id=$final_space_id;
+        $space->space_id_code=$code_name;
+        $space->space_id_number=$new_space_id_number;
+        $space->major_industry=$request->get('major_industry');
+        $space->location=$request->get('space_location');
+        $space->size=$request->get('space_size');
+        $space->rent_price_guide_checkbox=0;
+        $space->sub_location=$request->get('space_sub_location');
+        $space->minor_industry=$request->get('minor_industry');
+        $space->comments=$comments;
+        $space->has_water_bill_space=$request->get('has_water_bill');
+        $space->has_electricity_bill_space=$request->get('has_electricity_bill');
+
+        $space->save();
+
+
         }else{
-        DB::table('spaces')->insert(
-            ['space_id' => $final_space_id,'space_id_code'=>$code_name,'space_id_number'=>$new_space_id_number,'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => $request->get('rent_price_guide_from'),'rent_price_guide_to' => $request->get('rent_price_guide_to'),'rent_price_guide_currency' => $request->get('rent_price_guide_currency'),'rent_price_guide_checkbox' => 1,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]
-        );
+//        DB::table('spaces')->insert(
+//            ['space_id' => $final_space_id,'space_id_code'=>$code_name,'space_id_number'=>$new_space_id_number,'major_industry' => $request->get('major_industry'), 'location' => $request->get('space_location'), 'size' => $request->get('space_size'),'rent_price_guide_from' => $request->get('rent_price_guide_from'),'rent_price_guide_to' => $request->get('rent_price_guide_to'),'rent_price_guide_currency' => $request->get('rent_price_guide_currency'),'rent_price_guide_checkbox' => 1,'sub_location'=>$request->get('space_sub_location'),'minor_industry'=>$request->get('minor_industry'),'comments'=>$comments,'has_water_bill_space'=>$request->get('has_water_bill'),'has_electricity_bill_space'=>$request->get('has_electricity_bill')]
+//        );
+
+            $space= new space();
+            $space->space_id=$final_space_id;
+            $space->space_id_code=$code_name;
+            $space->space_id_number=$new_space_id_number;
+            $space->major_industry=$request->get('major_industry');
+            $space->location=$request->get('space_location');
+            $space->size=$request->get('space_size');
+            $space->rent_price_guide_from=$request->get('rent_price_guide_from');
+            $space->rent_price_guide_to=$request->get('rent_price_guide_to');
+            $space->rent_price_guide_currency=$request->get('rent_price_guide_currency');
+
+
+            $space->rent_price_guide_checkbox=1;
+            $space->sub_location=$request->get('space_sub_location');
+            $space->minor_industry=$request->get('minor_industry');
+            $space->comments=$comments;
+            $space->has_water_bill_space=$request->get('has_water_bill');
+            $space->has_electricity_bill_space=$request->get('has_electricity_bill');
+
+            $space->save();
+
+
+
+
+
+
     }
 
         $newly_created_space_id=DB::table('spaces')->orderBy('id','desc')->limit('1')->value('id');

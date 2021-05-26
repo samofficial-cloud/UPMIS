@@ -195,7 +195,7 @@
   </div>
   <div class="card bg-primary text-white" id="clientdiv">
     <div class="card-body" style="line-height: 25px;" >
-      <h5 class="card-title">General Statistics<i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
+      <h5 class="card-title">General Statistics<i class="fas fa-umbrella" style="font-size:30px; float: right; color: black;"></i></h5>
       Principals: {{$total_insurance}}
       <br>Packages: {{$packages}}
       <hr style="margin-top: 1rem;
@@ -224,32 +224,48 @@
     <div class="card ">
        <br>
        <center><div id="loading2"></div></center>
-  <div class="col-sm-12">
-    <div>
-        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
-        <div class="form-group" style="margin-right: 5px;">
-
-          <select name="income_year" id="income_year" class="form-control" required="">
-              <option value=" " disabled selected hidden>Select Year</option>
-                @for($x=-5;$x<=0; $x++)
-                  <option value="{{$year + $x}}">{{$year + $x}}</option>
-                @endfor
-          </select>
-          <span id="error_msg"></span>
-        </div>
-
-      <div class="form-group"  style="margin-right: 5px;">
-          <input type="submit" name="filter" value="Filter" id="income_filter" class="btn btn-primary">
-      </div>
-
-
-    </form>
-  </div>
-</div>
       <div class="card-body">
-        <h4 class="card-title" style="font-family: sans-serif;">Income Collected from Cover Note Sales per each Class</h4>
-            <hr>
+
+
+
+
+
+
+
+
+
+
+          <div style="float: left;"><h4 class="card-title" style="font-family: sans-serif; line-height: 36px;">Income Collected from Cover Note Sales per each Class</h4></div>
+
+          <div style="float: left; margin-left: 1%;">  <div class="">
+                  <div>
+                      <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+                          <div class="form-group" style="margin-right: 5px;">
+
+                              <select name="income_year" id="income_year" class="form-control" required="">
+                                  <option value=" " disabled selected hidden>Select Year</option>
+                                  @for($x=-5;$x<=0; $x++)
+                                      <option value="{{$year + $x}}">{{$year + $x}}</option>
+                                  @endfor
+                              </select>
+                              <span id="error_msg"></span>
+                          </div>
+
+                          <div class="form-group"  style="margin-right: 5px;">
+                              <input type="submit" name="filter" value="Filter" id="income_filter" class="btn btn-primary">
+                          </div>
+
+
+                      </form>
+                  </div>
+              </div></div>
+
+
+          <hr style="clear: both; padding-top: 1%;">
+
+
           <div class="card ">
     {!! $chart2->container() !!}
   </div>

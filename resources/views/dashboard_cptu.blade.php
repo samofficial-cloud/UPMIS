@@ -188,7 +188,7 @@
 
   <div class="card card text-white bg-success">
     <div class="card-body">
-      <h5 class="card-title">General Statistics <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
+      <h5 class="card-title">General Statistics <i class="fas fa-car" style="font-size:30px; float: right; color: black;"></i></h5>
       Total Vehicles: {{$total_cars}}
       <br>Running Vehicles: {{$running_cars}}
       <br>Minor Repair Vehicles: {{$minor_cars}}

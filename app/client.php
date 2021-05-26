@@ -13,5 +13,10 @@ class client extends Model
     protected  $primaryKey = 'client_id';
 
 
-    
+//    public function space_contract(){
+//
+//
+//        return $this->hasMany('App\space_contract');
+//    }
+
 }

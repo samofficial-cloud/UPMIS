@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right"><strong>{{ __('Password') }}</strong> <span style="color: red;"> *</span></strong><br><p style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Password must be atleast 8 characters)</p></label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right"><strong>{{ __('Password') }}</strong> <span style="color: red;"> *</span></strong><br><p style="font-size: 11px; color: red; margin-bottom: -1rem;">Password must be at least 8 characters long with at least one upper case letter, one small letter, one digit and one special character</p></label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right"><strong>{{ __('Confirm Password') }}</strong><span style="color: red;"> *</span></strong><br><p style="font-size: 11px; color: #69b88c;margin-bottom: -1rem;">(Password must be atleast 8 characters)</p></label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right"><strong>{{ __('Confirm Password') }}</strong><span style="color: red;"> *</span></strong><br></label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>

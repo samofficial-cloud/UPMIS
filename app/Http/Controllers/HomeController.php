@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\cost_centre;
 use App\hire_rate;
+use App\Rules\PasswordValidate;
 use Illuminate\Http\Request;
 use PDF;
 use App\carRental;
@@ -178,7 +179,7 @@ class HomeController extends Controller
         $debtor_name = $request->get('first_name').' '.$request->get('last_name');
       }
       elseif($debtor=='host'){
-        $debtor_name = $request->get('college');
+        $debtor_name = $request->get('host_name');
       }
 
 
@@ -800,7 +801,7 @@ class HomeController extends Controller
         else{
            $validatedData = $request->validate([
             'current-password' => 'required',
-            'new-password' => 'required|string|min:8|confirmed',
+               'new-password' => ['required','confirmed', new PasswordValidate()]
         ]);
 
         //Change Password
@@ -812,6 +813,28 @@ class HomeController extends Controller
         }
 
     }
+
+
+
+
+    public function resetPassword(Request $request){
+
+
+            $validatedData = $request->validate([
+                'current-password' => 'required',
+                'new-password' => ['required','confirmed', new PasswordValidate()]
+            ]);
+
+            //Change Password
+            $user = Auth::user();
+            $user->password = bcrypt($request->get('new-password'));
+            $user->save();
+
+//            return redirect()->back()->with("success","Password has been reset successfully!");
+
+
+    }
+
 
 
     public function changepassworddetailslogin(Request $request){
@@ -829,7 +852,7 @@ class HomeController extends Controller
         else{
            $validatedData = $request->validate([
             'current-password' => 'required',
-            'new-password' => 'required|string|min:8|confirmed',
+               'new-password' => ['required','confirmed', new PasswordValidate()]
         ]);
 
         //Change Password

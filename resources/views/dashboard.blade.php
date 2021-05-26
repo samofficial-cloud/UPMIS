@@ -124,8 +124,9 @@
   $running_cars=carRental::where('flag','1')->where('vehicle_status','Running')->count();
   $minor_cars=carRental::where('flag','1')->where('vehicle_status','Minor Repair')->count();
   $grounded_cars=carRental::where('flag','1')->where('vehicle_status','Grounded')->count();
-  $total_insurance=insurance::select('insurance_company')->groupby('insurance_company')->distinct()->get();
-  $classes = insurance::select('class')->where('status',1)->distinct()->get();
+  $total_insurance_covers=\App\insurance_contract::whereMonth('commission_date',\Carbon\Carbon::now()->month)->whereYear('commission_date',\Carbon\Carbon::now()->year)->count();
+
+  $classes=insurance::select('class')->where('status',1)->distinct()->get();
   $single_rooms = DB::table('research_flats_rooms')->where('category','Single Room')->where('status','1')->count();
   $shared_rooms = DB::table('research_flats_rooms')->where('category','Shared Room')->where('status','1')->count();
   $suite_rooms = DB::table('research_flats_rooms')->where('category','Suite Room')->where('status','1')->count();
@@ -151,83 +152,125 @@
     @endif
 
         <div class="card-deck" style="font-size: 15px; font-family: sans-serif;">
-  <div class="card text-white bg-info">
 
-    <div class="card-body" >
-      <h5 class="card-title">UDIA <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
-      <p>Principals: {{count($total_insurance)}}
-      <br>Packages: {{count($classes)}}
+            <a class="card text-white bg-info" href="/contracts_management" style="cursor: pointer; text-decoration:none;">
+
+
+                <div class="">
+
+
+                    <div class="card-body" >
+                        <h5 class="card-title">Insurance <i class="fas fa-umbrella" style="font-size:30px; float: right; color: black;"></i></h5>
+
+                        <p>Insurance Covers Sold This Month: {{$total_insurance_covers}}
+                        {{--      <br>Packages: {{count($classes)}}--}}
+                    </div>
+                </div>
+
+            </a>
+
+<a class="card card text-white bg-success" href="/businesses" style="cursor: pointer; text-decoration:none;">
+
+    <div >
+        <div class="card-body">
+            <h5 class="card-title">Car Rental<i class="fas fa-car" style="font-size:30px; float: right; color: black;"></i></h5>
+            <p>Total Vehicles: {{$total_cars}}
+                <br>Running Vehicles: {{$running_cars}}
+                <br>Minor Repair Vehicles: {{$minor_cars}}
+                <br>Grounded Vehicles: {{$grounded_cars}}</p>
+        </div>
     </div>
-  </div>
-  <div class="card card text-white bg-success">
-    <div class="card-body">
-      <h5 class="card-title">CPTU <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
-      <p>Total Vehicles: {{$total_cars}}
-      <br>Running Vehicles: {{$running_cars}}
-      <br>Minor Repair Vehicles: {{$minor_cars}}
-      <br>Grounded Vehicles: {{$grounded_cars}}</p>
-    </div>
-  </div>
-  <div class="card text-white" style="background-color: #eb9025;">
-    <div class="card-body">
-     <h5 class="card-title">Spaces <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
-      <p>Total Real Estate: {{$total_spaces}}
-      <br>Occupied: {{count($occupied_spaces)}}
-      <br>Available: {{$available_spaces}}
-    </div>
-  </div>
-  <div class="card text-white" style="background-color: #eb2553;">
-    <div class="card-body">
-     <h5 class="card-title">Research Flats <i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
-        Total Rooms: {{$total_rooms}}
-        <br>Standard Rooms: {{$single_rooms}}
-        <br>Shared Rooms: {{$shared_rooms}}
-        <br>Suite Rooms: {{$suite_rooms}}
-    </div>
-  </div>
+
+
+</a>
+
+
+            <a class="card text-white" style="background-color: #eb9025; cursor: pointer; text-decoration:none !important;" href="/businesses" ><div >
+                    <div class="card-body">
+                        <h5 class="card-title">Real Estate <i class="fas fa-city" style="font-size:30px; float: right; color: black;"></i></h5>
+                        <p>Total Real Estate: {{$total_spaces}}
+                            <br>Occupied: {{count($occupied_spaces)}}
+                            <br>Vacant: {{$available_spaces}}
+                    </div>
+                </div> </a>
+
+  <a href="/businesses" style="cursor: pointer; background-color: #eb2553 !important; text-decoration:none;" class="card text-white" >
+
+      <div>
+          <div class="card-body">
+              <h5 class="card-title">Research Flats <i class="fas fa-building" style="font-size:30px; float: right; color: black;"></i></h5>
+              Total Rooms: {{$total_rooms}}
+              <br>Standard Rooms: {{$single_rooms}}
+              <br>Shared Rooms: {{$shared_rooms}}
+              <br>Suite Rooms: {{$suite_rooms}}
+          </div>
+      </div>
+
+  </a>
+
 </div>
         <br>
         <div class="card">
           <br>
-          <div class="col-sm-12">
-    <div>
-        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
-        <div class="form-group" style="margin-right: 5px;">
-
-          <select name="activity_year" id="activity_year" class="form-control" required="">
-              <option value=" " disabled selected hidden>Select Year</option>
-                @for($x=-5;$x<=0; $x++)
-                  <option value="{{$year + $x}}">{{$year + $x}}</option>
-                @endfor
-          </select>
-          <span id="activity_msg"></span>
-        </div>
-
-      <div class="form-group"  style="margin-right: 5px;">
-          <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
-      </div>
-
-
-    </form>
-  </div>
-</div>
           <div class="card-body">
-            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Real Estate Activities</h4>
-            <hr>
-        <div class="card-deck">
-  <div class="card border-info">
-     {!! $chart->container() !!}
-  </div>
-  <div class="card border-info">
-     {!! $chart2->container() !!}
-  </div>
-  <div class="card border-info">
-     {!! $chart3->container() !!}
-  </div>
-  <div class="card border-info">
-     {!! $chart41->container() !!}
-  </div>
+              <div>
+
+                  <div style="float: left;"><h4 class="card-title" style="font-family: sans-serif; line-height: 36px;">Activities</h4></div>
+
+                  <div style="float: left; margin-left: 1%;" class="">
+                      <div>
+                          <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+                              <div class="form-group" style="margin-right: 5px;">
+
+                                  <select name="activity_year" id="activity_year" class="form-control" required="">
+                                      <option value=" " disabled selected hidden>Select Year</option>
+                                      @for($x=-5;$x<=0; $x++)
+                                          <option value="{{$year + $x}}">{{$year + $x}}</option>
+                                      @endfor
+                                  </select>
+                                  <span id="activity_msg"></span>
+                              </div>
+
+                              <div class="form-group"  style="margin-right: 5px;">
+                                  <input type="submit" name="filter" value="Filter" id="activity_filter" class="btn btn-primary">
+                              </div>
+
+
+                          </form>
+                      </div>
+                  </div>
+
+              </div>
+
+<hr style="clear: both; padding-top: 1%;">
+
+        <div class="card-deck" style="display: flex; margin-top: 2% !important; clear: both; flex-direction: column">
+            <div style="display: flex; flex-direction: row !important;">
+
+                <div class="card border-info">
+                    {!! $chart->container() !!}
+                </div>
+                <div class="card border-info">
+                    {!! $chart2->container() !!}
+                </div>
+
+
+            </div>
+
+            <div class="pt-4" style="display: flex;  flex-direction: row; !important;">
+
+                <div class="card border-info">
+                    {!! $chart3->container() !!}
+                </div>
+                <div class="card border-info">
+                    {!! $chart41->container() !!}
+                </div>
+
+            </div>
+
+
 </div>
  </div>
   </div>
@@ -548,49 +591,72 @@
 <br>
 <div class="card">
   <br>
-  <div class="col-sm-12">
-    <div>
-        <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
-        <div class="form-group" style="margin-right: 5px;">
-
-          <select name="income_year" id="income_year" class="form-control" required="">
-              <option value=" " disabled selected hidden>Select Year</option>
-                @for($x=-5;$x<=0; $x++)
-                  <option value="{{$year + $x}}">{{$year + $x}}</option>
-                @endfor
-          </select>
-          <span id="error_msg"></span>
-        </div>
-
-      <div class="form-group"  style="margin-right: 5px;">
-          <input type="submit" name="filter" value="Filter" id="income_filter" class="btn btn-primary">
-      </div>
-
-
-    </form>
-  </div>
-</div>
           <div class="card-body" >
             <div id="content">
-            <h4 class="card-title" style="font-family: sans-serif;">UDIA, CPTU and Real Estate Income Generation</h4>
-            <hr>
+
+                <div style="float: left;"><h4 class="card-title" style="font-family: sans-serif; line-height: 36px;">Income Generation</h4></div>
+
+                <div style="float: left; margin-left: 1%;"> <div class="">
+                        <div>
+                            <form class="form-inline" role="form" method="post" accept-charset="utf-8">
+
+                                <div class="form-group" style="margin-right: 5px;">
+
+                                    <select name="income_year" id="income_year" class="form-control" required="">
+                                        <option value=" " disabled selected hidden>Select Year</option>
+                                        @for($x=-5;$x<=0; $x++)
+                                            <option value="{{$year + $x}}">{{$year + $x}}</option>
+                                        @endfor
+                                    </select>
+                                    <span id="error_msg"></span>
+                                </div>
+
+                                <div class="form-group"  style="margin-right: 5px;">
+                                    <input type="submit" name="filter" value="Filter" id="income_filter" class="btn btn-primary">
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div></div>
+
+
+            <hr style="clear: both; padding-top: 1%;">
             <div >
     <center><div id="loading"></div></center>
   </div>
-<div class="card-deck">
-  <div class="card border-info">
-     {!! $chart4->container() !!}
-  </div>
-  <div class="card border-info">
-     {!! $chart5->container() !!}
-  </div>
-  <div class="card border-info">
-     {!! $chart6->container() !!}
-  </div>
-  <div class="card border-info">
-     {!! $chart7->container() !!}
-  </div>
+<div class="card-deck" style="display: flex; flex-direction: column;">
+
+    <div style="display: flex; flex-direction: row;">
+
+        <div class="card border-info">
+            {!! $chart4->container() !!}
+        </div>
+        <div class="card border-info">
+            {!! $chart5->container() !!}
+        </div>
+
+    </div>
+
+
+    <div class="pt-4" style="display: flex; flex-direction: row;">
+
+        <div class="card border-info">
+            {!! $chart6->container() !!}
+        </div>
+
+        <div class="card border-info">
+            {!! $chart7->container() !!}
+        </div>
+
+    </div>
+
+
+
+
+
+
 </div>
 </div>
 </div>

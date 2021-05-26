@@ -54,13 +54,13 @@
                     {{-- {{ config('app.name', 'Laravel') }} --}}
                     <div class="d-flex flex-row">
                      <div class="pl-2">
-                        
-                  
+
+
                     <a class="navbar-brand" href="{{ url('#') }}">
                             <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
-                  
+
                     </div>
-                    <div class="pl-3 pt-3" style="color: #111;"><h2 style="font-size: 2vw">UDSM's PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
+                    <div class="pl-3 pt-3" style="color: #111;"><h2 style="font-size: 2vw">UDSM PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
 
                     </div>
                 </div>
@@ -74,12 +74,12 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
-                    
-                       
-                  
+
+
+
                     <!-- Right Side Of Navbar -->
-                   
-                    
+
+
                     {{-- hereee --}}
                 </div>
             </div>

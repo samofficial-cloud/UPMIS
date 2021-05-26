@@ -364,6 +364,8 @@ Route::post('/system_chats/send','systemChatController@sendMessage')->name('send
 
 Route::post('/change_password_details','HomeController@changepassworddetails')->name('changepassword_details');
 
+Route::post('/reset_password','HomeController@resetPassword')->name('reset_password');
+
 Route::post('/change_password_details_login','HomeController@changepassworddetailslogin')->name('changepassword_details_login');
 
 Route::get('/system_chats/view/{name}','systemChatController@viewchat')->name('viewchat');
@@ -518,6 +520,10 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/add_event', 'SpaceController@addEvent')->name('add_event');
     Route::post('/delete_event/{id}', 'SpaceController@deleteEvent')->name('delete_event');
 
+    //Import data
+    Route::post('/import_space_contracts', 'ImportExcelController@importSpaceContracts')->name('import_space_contracts');
+    Route::get('/get_space_contracts_format', 'ImportExcelController@spaceContractsFormat')->name('get_space_contracts_format');
+
 
 
 });
@@ -585,6 +591,12 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::get('/cancel_insurance_invoice_principals/{id}', 'InvoicesController@CancelInsurancePrincipalsInvoice')->name('cancel_insurance_invoice_principals');
 
 
+    //Import data
+    Route::post('/import_insurance_contracts', 'ImportExcelController@importInsuranceContracts')->name('import_insurance_contracts');
+    Route::get('/get_insurance_contracts_format', 'ImportExcelController@insuranceContractsFormat')->name('get_insurance_contracts_format');
+
+
+
 
 });
 
@@ -628,6 +640,13 @@ Route::group(['middleware' => ['auth', 'research']], function() {
     Route::get('/print_research_invoice/{id}', 'InvoicesController@PrintResearchInvoice')->name('print_research_invoice');
 
     Route::get('/cancel_research_invoice/{id}', 'InvoicesController@CancelResearchInvoice')->name('cancel_research_invoice');
+
+
+    //Import data
+    Route::post('/import_research_contracts', 'ImportExcelController@importResearchContracts')->name('import_research_contracts');
+    Route::get('/get_research_contracts_format', 'ImportExcelController@researchContractsFormat')->name('get_research_contracts_format');
+
+
 
 
 });

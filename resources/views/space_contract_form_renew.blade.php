@@ -4229,6 +4229,13 @@ select.list-dt:focus {
                 var has_security_deposit=$('#has_security_deposit').val();
 
 
+                $('#total_amountDiv').hide();
+                $('#academic_season_totalDiv').hide();
+                $('#vacation_season_totalDiv').hide();
+
+
+
+
                 if(query=='Yes') {
 
 

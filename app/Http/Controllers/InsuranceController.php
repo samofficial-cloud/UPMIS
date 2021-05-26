@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\insurance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,10 +45,20 @@ class InsuranceController extends Controller
 
 
 
-        DB::table('insurance')->insert(
-            ['class' => $request->get('class'),'insurance_company' => $request->get('insurance_company'),'insurance_type' => $request->get('insurance_type'),'commission_percentage'=>$request->get('commission_percentage')]
-        );
 
+
+
+//        DB::table('insurance')->insert(
+//            ['class' => $request->get('class'),'insurance_company' => $request->get('insurance_company'),'insurance_type' => $request->get('insurance_type'),'commission_percentage'=>$request->get('commission_percentage')]
+//        );
+
+
+        $insurance= new insurance;
+        $insurance->class=$request->get('class');
+        $insurance->insurance_company=$request->get('insurance_company');
+        $insurance->insurance_type=$request->get('insurance_type');
+        $insurance->commission_percentage=$request->get('commission_percentage');
+        $insurance->save();
 
         return redirect('/businesses')
             ->with('success', 'New Insurance package added successfully');
@@ -57,24 +68,37 @@ class InsuranceController extends Controller
     {
 
 
+//
+//        DB::table('insurance')
+//            ->where('id', $id)
+//            ->update(['class' => $request->get('class')]);
+//
+//
+//        DB::table('insurance')
+//            ->where('id', $id)
+//            ->update(['insurance_company' => $request->get('insurance_company')]);
+//
+//        DB::table('insurance')
+//            ->where('id', $id)
+//            ->update(['insurance_type' => $request->get('insurance_type')]);
+//
+//
+//        DB::table('insurance')
+//            ->where('id', $id)
+//            ->update(['commission_percentage' => $request->get('commission_percentage')]);
+//
 
-        DB::table('insurance')
-            ->where('id', $id)
-            ->update(['class' => $request->get('class')]);
 
 
-        DB::table('insurance')
-            ->where('id', $id)
-            ->update(['insurance_company' => $request->get('insurance_company')]);
 
-        DB::table('insurance')
-            ->where('id', $id)
-            ->update(['insurance_type' => $request->get('insurance_type')]);
+        $insurance = insurance::find($id);
+        $insurance->class=$request->get('class');
+        $insurance->insurance_company=$request->get('insurance_company');
+        $insurance->insurance_type=$request->get('insurance_type');
+        $insurance->commission_percentage=$request->get('commission_percentage');
+        $insurance->save();
 
 
-        DB::table('insurance')
-            ->where('id', $id)
-            ->update(['commission_percentage' => $request->get('commission_percentage')]);
 
 
         return redirect('/businesses')
@@ -85,9 +109,16 @@ class InsuranceController extends Controller
     public function deactivateInsurance(Request $request,$id)
     {
 
-        DB::table('insurance')
-            ->where('id', $id)
-            ->update(['status' => 0]);
+//        DB::table('insurance')
+//            ->where('id', $id)
+//            ->update(['status' => 0]);
+
+
+        $insurance = insurance::find($id);
+        $insurance->status=0;
+        $insurance->save();
+
+
 
 
         return redirect('/businesses')

@@ -9,4 +9,13 @@ class space_contract extends Model
 {
     //
     use Notifiable;
+
+
+
+    public function client(){
+
+
+            return $this->belongsTo('App\client','full_name','full_name');
+    }
+
 }

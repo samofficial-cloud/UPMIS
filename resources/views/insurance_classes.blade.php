@@ -13,6 +13,13 @@
             display: inline-block;
         }
 
+
+        div.top{
+
+            width: 100%;
+        }
+
+
         div.dataTables_length select {
             height:25px;
             width:10px;
@@ -288,7 +295,9 @@
 
     <script type="text/javascript">
         var table = $('#myTable').DataTable( {
-            dom: '<"top"fl>rt<"bottom"pi>'
+            dom: '<"top"fl>rt<"bottom"pi>',
+            "pageLength": 100,
+            "bLengthChange": false
         } );
 
     </script>

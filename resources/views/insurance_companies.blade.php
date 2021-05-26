@@ -29,6 +29,13 @@
     border-bottom: 0px solid #111;
   }
 
+
+  div.top{
+
+      width: 100%;
+  }
+
+
   hr {
     margin-top: 0rem;
     margin-bottom: 2rem;
@@ -354,7 +361,9 @@
 
 <script type="text/javascript">
   var table = $('#myTable').DataTable( {
-    dom: '<"top"fl>rt<"bottom"pi>'
+    dom: '<"top"fl>rt<"bottom"pi>',
+      "pageLength": 100,
+      "bLengthChange": false
   } );
 
 </script>

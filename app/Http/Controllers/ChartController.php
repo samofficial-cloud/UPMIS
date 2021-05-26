@@ -65,7 +65,7 @@ class ChartController extends Controller
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("UDIA: Insurance covers sold in $year");
+        $chart->title("Insurance covers sold in $year");
         $chart->options(['scales' => self::chartSetAxes('Months','Number of Insurance Covers Sold')]);
         $chart->dataset('Insurance Covers Sold', 'bar', $data1)->options([
             'fill' => 'true',
@@ -585,7 +585,7 @@ class ChartController extends Controller
 
     public function flatsindex(){
         $year=date('Y');
-        $data = collect([]); 
+        $data = collect([]);
 
             for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
                 $data->push(DB::table('research_flats_contracts')->select('id')
@@ -674,7 +674,7 @@ public function flats_activity_filter(){
            $data2 = $data2->toArray();
     }
 
-    $flats_income = collect([]); 
+    $flats_income = collect([]);
 
 
     for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
@@ -713,9 +713,9 @@ public function flats_activity_filter(){
             }
             else{
                foreach ($i as $value) {
-                $flat2[]= $value;   
-                } 
-            }      
+                $flat2[]= $value;
+                }
+            }
         }
 
     if ($flats_income2 instanceof Collection) {
@@ -729,9 +729,9 @@ public function flats_activity_filter(){
             }
             else{
                foreach ($i as $value) {
-                $flat3[]= $value;   
-                } 
-            }      
+                $flat3[]= $value;
+                }
+            }
         }
 
         $single_room_clients = DB::table('research_flats_rooms')->join('research_flats_contracts','research_flats_contracts.room_no','=','research_flats_rooms.room_no')->where('category','Single Room')->whereYear('arrival_date',$_GET['year'])->count();
@@ -759,7 +759,7 @@ public function flats_activity_filter(){
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("CPTU: Rented cars in $year");
+        $chart->title("Rented cars in $year");
         $chart->options(['scales' => self::chartSetAxes('Months','Number of rented cars')]);
         $chart->dataset('Rented Cars', 'bar', $data )->options([
             'fill' => 'true',
@@ -784,7 +784,7 @@ public function flats_activity_filter(){
         $chart2->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         $chart2->title("Income Generation $year");
         $chart2->options(['scales' => self::chartSetAxes('Months','Income (TZS)')]);
-        $chart2->dataset('CPTU Income', 'bar', $CPTU_income)->options([
+        $chart2->dataset('Car Rental Income', 'bar', $CPTU_income)->options([
             'fill' => 'true',
             'borderColor' => '#38c172',
             "borderWidth"=>2,
@@ -871,9 +871,9 @@ public function flats_activity_filter(){
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("Rented spaces in $year");
-        $chart->options(['scales' => self::chartSetAxes('Months','Number of rented spaces')]);
-        $chart->dataset('Rented Spaces', 'bar', $data2)->options([
+        $chart->title("Rented Real Estate in $year");
+        $chart->options(['scales' => self::chartSetAxes('Months','Number of Rented Real Estate')]);
+        $chart->dataset('Rented Real Estate', 'bar', $data2)->options([
             'fill' => 'true',
             'borderColor' => '#3490dc',
             "borderWidth"=>2,
@@ -907,7 +907,7 @@ public function flats_activity_filter(){
 
     $chart1 = new SampleChart;
         $chart1->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart1->title("Space Income Generation $year");
+        $chart1->title("Real Estate Income Generation $year");
         $chart1->options(['scales' => self::chartSetAxes('Months','Income')]);
         $chart1->dataset('TZS', 'bar', $space_income)->options([
             'fill' => 'true',
@@ -1188,7 +1188,7 @@ public function flats_activity_filter(){
 
         $chart = new SampleChart;
         $chart->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart->title("UDIA: Insurance covers sold in $year");
+        $chart->title("Insurance Covers Sold in $year");
         $chart->options(['scales' => self::chartSetAxes('Months','Number of Insurance Covers Sold')]);
         $chart->dataset('Insurance Covers Sold', 'bar', $data1)->options([
             'fill' => 'true',
@@ -1217,7 +1217,7 @@ public function flats_activity_filter(){
         $chart2 = new SampleChart;
         $chart2->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
         //$chart2->labels($rentedCars->pluck('month'));
-        $chart2->title("CPTU: Rented cars in $year");
+        $chart2->title("Rented Cars in $year");
         $chart2->options(['scales' => self::chartSetAxes('Months','Number of rented cars')]);
         $chart2->dataset('Rented Cars', 'bar', $data )->options([
             'fill' => 'true',
@@ -1245,9 +1245,9 @@ public function flats_activity_filter(){
 
         $chart3 = new SampleChart;
         $chart3->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart3->title("Rented spaces in $year");
-        $chart3->options(['scales' => self::chartSetAxes('Months','Number of rented spaces')]);
-        $chart3->dataset('Rented Spaces', 'bar', $data2)->options([
+        $chart3->title("Rented Real Estate in $year");
+        $chart3->options(['scales' => self::chartSetAxes('Months','Number of Rented Real Estate')]);
+        $chart3->dataset('Rented Real Estate', 'bar', $data2)->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
             "borderWidth"=>1,
@@ -1255,7 +1255,7 @@ public function flats_activity_filter(){
         ]);
 
 
-        $data31 = collect([]); 
+        $data31 = collect([]);
 
             for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
                 $data31->push(DB::table('research_flats_contracts')->select('id')
@@ -1267,8 +1267,8 @@ public function flats_activity_filter(){
             $chart41 = new SampleChart;
             $chart41->labels(['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
             $chart41->title("Research Flats Activities $year");
-            $chart41->options(['scales' => self::chartSetAxes('Month','Rented Room(s)')]);
-            $chart41->dataset('Total Activities', 'bar', $data31 )->options([
+            $chart41->options(['scales' => self::chartSetAxes('Months','Number of Rented Room(s)')]);
+            $chart41->dataset('Rented Rooms', 'bar', $data31 )->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
             "borderWidth"=>2,
@@ -1365,7 +1365,7 @@ public function flats_activity_filter(){
 
         $chart4 = new SampleChart;
         $chart4->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart4->title("UDIA Income Generation $year");
+        $chart4->title("Insurance Income Generation $year");
         $chart4->options(['scales' => self::chartSetAxes('Months','Income (TZS)')]);
          $chart4->dataset('BRITAM', 'bar', $UDIA_income_britam)->options([
             'fill' => 'true',
@@ -1388,9 +1388,9 @@ public function flats_activity_filter(){
 
         $chart5 = new SampleChart;
         $chart5->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart5->title("CPTU Income Generation $year");
+        $chart5->title("Car Rental Income Generation $year");
         $chart5->options(['scales' => self::chartSetAxes('Months','Income (TZS)')]);
-        $chart5->dataset('CPTU Income', 'bar', $CPTU_income)
+        $chart5->dataset('Car Rental Income', 'bar', $CPTU_income)
         ->options([
             'fill' => 'true',
             'borderColor' => '#6cb2eb',
@@ -1400,7 +1400,7 @@ public function flats_activity_filter(){
 
         $chart6 = new SampleChart;
         $chart6->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-        $chart6->title("Space Income Generation $year");
+        $chart6->title("Real Estate Income Generation $year");
         $chart6->options(['scales' => self::chartSetAxes('Months','Income')]);
         $chart6->dataset('TZS', 'bar', $space_income)->options([
             'fill' => 'true',
@@ -1448,7 +1448,7 @@ public function flats_activity_filter(){
             $chart7 = new SampleChart;
             $chart7->labels(['Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
             $chart7->title("Research Flats Income $year");
-            $chart7->options(['scales' => self::chartSetAxes('Month','Income')]);
+            $chart7->options(['scales' => self::chartSetAxes('Months','Income')]);
             $chart7->dataset('TZS', 'bar', $flats_income)->options([
                 'fill' => 'true',
                 'borderColor' => '#38c172',
@@ -1473,7 +1473,7 @@ public function flats_activity_filter(){
 
 
         $flats_invoices= DB::table('research_flats_invoices')->join('research_flats_payments','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')->join('research_flats_contracts','research_flats_contracts.id','=','research_flats_invoices.contract_id')->where('payment_status','!=','Paid')->whereRaw('DATEDIFF(CURDATE(),invoice_date) > 30')->orderBy('invoice_date','asc')->get();
-        
+
 
 
 
@@ -1593,7 +1593,7 @@ public function flats_activity_filter(){
            $flats_income2 = $flats_income2->toArray();
     }
 
-   
+
 
 
 
@@ -1725,11 +1725,11 @@ public function flats_activity_filter(){
             }
             else{
                foreach ($i as $value) {
-                $flat4[]= $value;   
-            } 
+                $flat4[]= $value;
+            }
         }
-            
-            
+
+
         }
 
         $flat5 = array();
@@ -1739,15 +1739,15 @@ public function flats_activity_filter(){
             }
             else{
                foreach ($i as $value) {
-                $flat5[]= $value;   
-            } 
+                $flat5[]= $value;
+            }
         }
-            
-            
+
+
         }
 
         return response()->json(['cptu'=>$flat, 'udia'=>$flat2, 'space'=>$flat3, 'icea'=>$flata, 'britam'=>$flatb, 'nic'=>$flatc,'flats1'=>$flat4,'flats2'=>$flat5]);
-    
+
 
     }
 
@@ -1782,7 +1782,7 @@ public function flats_activity_filter(){
                     ->count());
     }
 
-    $data3 = collect([]); 
+    $data3 = collect([]);
 
             for ($days_backwards = 1; $days_backwards <= 12; $days_backwards++) {
                 $data3->push(DB::table('research_flats_contracts')->select('id')
@@ -1810,7 +1810,7 @@ public function flats_activity_filter(){
            $data3 = $data3->toArray();
     }
 
-   
+
 
 
     return response()->json(['cptu'=>$data, 'udia'=>$data1, 'space'=>$data2, 'flats'=>$data3]);

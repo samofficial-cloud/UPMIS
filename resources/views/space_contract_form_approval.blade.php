@@ -495,7 +495,7 @@ select.list-dt:focus {
                                     @endif
 
 
-                                    @endforeach
+
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
@@ -512,112 +512,46 @@ select.list-dt:focus {
                                         <div id="contract_categoryDiv" class="form-wrapper col-12" style="display: none">
                                             <label for="contract_category">Category of contract <span style="color: red;"> *</span></label>
                                             <span id="contract_category_msg"></span>
-                                            <select id="contract_category" class="form-control" name="contract_category" >
-                                                <option value="" ></option>
-                                                <option value="Solicited" >Solicited</option>
-                                                <option value="Unsolicited" >Unsolicited</option>
-                                            </select>
+
+
+                                            <input type="text" id="contract_category" value="{{$var->contract_category}}" name="contract_category" class="form-control" readonly>
                                         </div>
 
 
 
-                                        <div id="tinDiv" class="form-group col-6 pt-4">
+                                        <div id="tinDiv" class="form-group col-12 pt-4">
                                             <div class="form-wrapper">
                                                 <label for="tin">TIN <span style="color: red;"> *</span></label>
                                                 <span id="tin_msg"></span>
-                                                <input type="number" id="tin" name="tin" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                                <input type="number" id="tin" readonly value="{{$var->tin}}" name="tin" class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
                                                 <p id="error_tin"></p>
                                             </div>
                                         </div>
 
 
 
-                                        <div id="tbs_certificateDiv" style="display: none;" class="form-group col-6 pt-4">
-                                            <div class="form-wrapper">
-                                                <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                <span id="tbs_certificate_msg"></span>
-                                                <input type="file" id="tbs_certificate"    name="tbs_certificate" class="form-control">
-                                            </div>
-                                        </div>
-
-
-                                        <div id="gpsa_certificateDiv" style="display: none;"  class="form-group col-6 pt-4">
-                                            <div class="form-wrapper">
-                                                <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                <span id="gpsa_certificate_msg"></span>
-                                                <input type="file" id="gpsa_certificate"  name="gpsa_certificate" class="form-control">
-                                            </div>
-                                        </div>
-
-
-                                        <div id="food_business_licenseDiv" style="display: none;" class="form-group col-6 pt-4">
-                                            <div class="form-wrapper">
-                                                <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                <span id="food_business_license_msg"></span>
-                                                <input type="file" id="food_business_license"  name="food_business_license" class="form-control">
-                                            </div>
-                                        </div>
-
-
-                                        <div style="display: none;" id="business_licenseDiv" class="form-group col-6 pt-4">
-                                            <div class="form-wrapper">
-                                                <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                <span id="business_license_msg"></span>
-                                                <input type="file" id="business_license"  name="business_license" class="form-control">
-                                            </div>
-                                        </div>
-
-
-
-                                        <div style="display: none;" id="osha_certificateDiv" class="form-group col-12 pt-4">
-                                            <div class="form-wrapper">
-                                                <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                <span id="osha_certificate_msg"></span>
-                                                <input type="file" id="osha_certificate"  name="osha_certificate" class="form-control">
-                                            </div>
-                                        </div>
-
-
-                                        <div style="display: none;" id="tcra_registrationDiv"  class="form-group col-6 pt-4">
-                                            <div class="form-wrapper">
-                                                <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                <span id="tcra_registration_msg"></span>
-                                                <input type="file"  id="tcra_registration"  name="tcra_registration" class="form-control">
-                                            </div>
-                                        </div>
-
-
-                                        <div style="display: none;" id="brela_registrationDiv" class="form-group col-12">
-                                            <div class="form-wrapper">
-                                                <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                <span id="brela_registration_msg"></span>
-                                                <input type="file" id="brela_registration"  name="brela_registration" class="form-control">
-                                            </div>
-                                        </div>
 
 
 
 
-                                        <div class="form-wrapper col-12 pt-4">
+
+                                        <div class="form-wrapper col-12">
                                             <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                             <span id="start_date_msg"></span>
-                                            <input type="date" id="start_date" name="start_date" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
+                                            <input type="date" readonly id="start_date" name="start_date" value="{{$var->start_date}}" class="form-control" >
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="duration">Duration <span style="color: red;"> *</span></label>
                                             <span id="duration_msg"></span>
-                                            <input type="number" id="duration" name="duration" class="form-control">
+                                            <input type="number" readonly  id="duration" value="{{$var->duration}}" name="duration" class="form-control" >
                                         </div>
 
                                         <div class="form-wrapper col-6">
                                             <label for="currency">Period <span style="color: red;"> *</span></label>
                                             <span id="duration_period_msg"></span>
-                                            <select id="duration_period" class="form-control" name="duration_period">
-                                                <option value="" ></option>
-                                                <option value="Months" >Months</option>
-                                                <option value="Years" >Years</option>
-                                            </select>
+
+                                            <input type="text" readonly  id="duration_period" value="{{$var->duration_period}}" name="duration_period" class="form-control" >
                                         </div>
 
 
@@ -625,7 +559,7 @@ select.list-dt:focus {
                                         <div id="percentage_to_payDiv"  class="form-wrapper pt-4 col-12">
                                             <label for="percentage_to_pay">Percentage to be paid(Of total collection) <span style="color: red;"> *</span></label>
                                             <span id="percentage_to_pay_msg"></span>
-                                            <input type="number"  step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
+                                            <input type="number" step="0.01" id="percentage_to_pay" readonly name="percentage_to_pay" class="form-control">
                                         </div>
 
 
@@ -636,108 +570,172 @@ select.list-dt:focus {
                                         <div id="academic_dependenceDiv" class="form-wrapper col-12">
                                             <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
                                             <span id="academic_dependence_msg"></span>
-                                            <select id="academic_dependence" class="form-control" name="academic_dependence" >
-                                                <option value="" ></option>
-                                                <option value="No" >No</option>
-                                                <option value="Yes" >Yes</option>
-                                            </select>
+                                            <input type="text" readonly id="academic_dependence" name="academic_dependence" value="{{$var->academic_dependence}}" class="form-control">
                                         </div>
 
+                                        @if($var->academic_dependence=='Yes')
 
-                                        <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                            <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
-                                            <span id="academic_season_msg"></span>
-                                            <input type="number"  id="academic_season" name="academic_season" class="form-control" >
-                                        </div>
+                                            @if($var->has_additional_businesses=='')
+                                                <div id="academicDiv"  class="form-wrapper pt-4 col-6">
+                                                    <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                                    <span id="academic_season_msg"></span>
+                                                    <input type="number" value="{{$var->academic_season}}" readonly id="academic_season" name="academic_season" class="form-control">
+                                                </div>
 
 
-                                        <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                            <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
-                                            <span id="vacation_season_msg"></span>
-                                            <input type="number"  id="vacation_season" name="vacation_season" class="form-control" >
-                                        </div>
+                                                <div id="vacationDiv"  class="form-wrapper pt-4 col-6">
+                                                    <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                                    <span id="vacation_season_msg"></span>
+                                                    <input type="number" readonly value="{{$var->vacation_season}}" id="vacation_season" name="vacation_season" class="form-control" >
+                                                </div>
 
-                                        <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                                            <label for="amount">Amount per payment cycle<span style="color: red;"> *</span></label>
-                                            <span id="amount_msg"></span>
-                                            <input type="number"  id="amount" name="amount" class="form-control" >
-                                        </div>
+                                            @else
+                                                <div id="academicDiv"  class="form-wrapper pt-4 col-6">
+                                                    <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                                    <span id="academic_season_msg"></span>
+                                                    <input type="number" readonly value="{{($var->academic_season-$var->additional_businesses_amount)}}" id="academic_season" name="academic_season" class="form-control">
+                                                </div>
+
+
+                                                <div id="vacationDiv"  class="form-wrapper pt-4 col-6">
+                                                    <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                                    <span id="vacation_season_msg"></span>
+                                                    <input type="number" readonly value="{{($var->vacation_season-$var->additional_businesses_amount)}}" id="vacation_season" name="vacation_season" class="form-control" >
+                                                </div>
+
+                                            @endif
+
+                                        @else
+                                            @if($var->has_additional_businesses=='')
+                                                <div id="amountDiv"  class="form-wrapper pt-4 col-12">
+                                                    <label for="amount">Amount per payment cycle <span style="color: red;"> *</span></label>
+                                                    <span id="amount_msg"></span>
+                                                    <input type="number" readonly value="{{$var->amount}}" id="amount" name="amount" class="form-control" >
+                                                </div>
+                                            @else
+                                                <div id="amountDiv"  class="form-wrapper pt-4 col-12">
+                                                    <label for="amount">Amount per payment cycle <span style="color: red;"> *</span></label>
+                                                    <span id="amount_msg"></span>
+                                                    <input type="number" readonly  value="{{($var->amount-$var->additional_businesses_amount)}}" id="amount" name="amount" class="form-control" >
+                                                </div>
+                                            @endif
+
+
+
+                                        @endif
 
                                         <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
                                             <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
-                                            <input type="number"  id="rent_sqm" name="rent_sqm"  class="form-control">
-                                        </div>
-
-                                        <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style="display: none; text-align: left;">
-
-                                            <label for="has_additional_businesses" style="display: inline-block;">Has additional businesses in the area</label>
-                                            <input type="checkbox"  style="display: inline-block;" value="1" id="has_additional_businesses" onchange="showAdditionalBusinesses()"  name="has_additional_businesses" autocomplete="off">
-
+                                            <input type="text" value="{{$var->rent_sqm}}" readonly id="rent_sqm" name="rent_sqm"  class="form-control">
                                         </div>
 
 
-
-                                        <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" style="display: none;">
-                                            <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
-                                            <span id="additional_businesses_list_msg"></span>
-                                            <textarea style="width: 100%;" id="additional_businesses_list" name="additional_businesses_list"></textarea>
-
-                                        </div>
-
-
-                                        <div id="additional_businesses_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
-                                            <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
-                                            <span id="additional_businesses_amount_msg"></span>
-                                            <input type="number"  id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
-                                        </div>
-
-                                        <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
-                                            <label for="total_amount">Total amount per payment cycle<span style="color: red;"> *</span></label>
-                                            <span id="total_amount_msg"></span>
-                                            <input type="text"  id="total_amount" readonly name="total_amount" class="form-control">
-                                        </div>
+                                        @if($var->has_additional_businesses!='')
+                                            <div  class="form-wrapper col-12">
+                                                <label for="has_security_deposit">Has additional businesses in the area?<span style="color: red;"> *</span></label>
+                                                <span id="has_security_deposit_msg"></span>
+                                                <input type="text"   value="Yes" readonly  class="form-control">
+                                            </div>
 
 
-                                        <div id="academic_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                            <label for="academic_season_total">Total amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
-                                            <span id="academic_season_total_msg"></span>
-                                            <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
-                                        </div>
+
+                                            <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" >
+                                                <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
+                                                <span id="additional_businesses_list_msg"></span>
+                                                <textarea style="width: 100%;" readonly id="additional_businesses_list"  name="additional_businesses_list">{{$var->additional_businesses_list}}</textarea>
+
+                                            </div>
 
 
-                                        <div id="vacation_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                            <label for="vacation_season_total">Total amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
-                                            <span id="vacation_season_total_msg"></span>
-                                            <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
-                                        </div>
+                                            <div id="additional_businesses_amountDiv"  class="form-wrapper pt-4 col-12">
+                                                <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
+                                                <span id="additional_businesses_amount_msg"></span>
+                                                <input type="number" readonly id="additional_businesses_amount" value="{{$var->additional_businesses_amount}}" name="additional_businesses_amount" class="form-control">
+                                            </div>
+
+                                            @if($var->academic_dependence=='No')
+                                                <div id="total_amountDiv"  class="form-wrapper pt-4 col-12">
+                                                    <label for="total_amount">Total amount per payment cycle<span style="color: red;"> *</span></label>
+                                                    <span id="total_amount_msg"></span>
+                                                    <input type="text"  id="total_amount" value="{{$var->amount}}" readonly name="total_amount" class="form-control">
+                                                </div>
+
+                                            @else
+                                                <div id="academic_season_totalDiv"  class="form-wrapper pt-4 col-6">
+                                                    <label for="academic_season_total">Total amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                                    <span id="academic_season_total_msg"></span>
+                                                    <input type="text" readonly id="academic_season_total" value="{{$var->academic_season}}" name="academic_season_total" class="form-control">
+                                                </div>
 
 
-                                        <div id="has_security_depositDiv" class="form-wrapper col-12">
-                                            <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
-                                            <span id="has_security_deposit_msg"></span>
-                                            <select id="has_security_deposit" class="form-control" name="has_security_deposit">
-                                                <option value="" ></option>
-                                                <option value="No" >No</option>
-                                                <option value="Yes" >Yes</option>
-                                            </select>
-                                        </div>
+                                                <div id="vacation_season_totalDiv"  class="form-wrapper pt-4 col-6">
+                                                    <label for="vacation_season_total">Total amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                                    <span id="vacation_season_total_msg"></span>
+                                                    <input type="text" readonly id="vacation_season_total" value="{{$var->vacation_season}}" name="vacation_season_total" class="form-control">
+                                                </div>
+                                            @endif
 
-                                        <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                                            <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
-                                            <span id="security_deposit_msg"></span>
-                                            <input type="text" readonly id="security_deposit" name="security_deposit" class="form-control">
-                                        </div>
+                                        @else
+
+
+
+
+
+                                            <div  class="form-wrapper col-12">
+                                                <label for="has_security_deposit">Has additional businesses in the area?<span style="color: red;"> *</span></label>
+                                                <span id="has_security_deposit_msg"></span>
+                                                <input type="text"   value="No" readonly  class="form-control">
+                                            </div>
+
+
+                                        @endif
+
+                                        @if($var->security_deposit=='0' || $var->security_deposit=='')
+                                            <div id="has_security_depositDiv" class="form-wrapper col-12">
+                                                <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
+                                                <span id="has_security_deposit_msg"></span>
+                                                <input type="text"  id="has_security_deposit" value="No" readonly name="has_security_deposit" class="form-control">
+                                            </div>
+
+
+
+                                            {{--                                                        <div id="security_depositDiv"  class="form-wrapper pt-4 col-12">--}}
+                                            {{--                                                            <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>--}}
+                                            {{--                                                            <span id="security_deposit_msg"></span>--}}
+                                            {{--                                                            <input type="text"  value="{{$var->security_deposit}}" id="security_deposit" readonly name="security_deposit" class="form-control">--}}
+                                            {{--                                                        </div>--}}
+
+
+                                        @else
+
+
+                                            <div id="has_security_depositDiv" class="form-wrapper col-12">
+                                                <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
+                                                <span id="has_security_deposit_msg"></span>
+                                                <input type="text"  id="has_security_deposit" value="Yes" readonly name="has_security_deposit" class="form-control">
+                                            </div>
+
+
+
+                                            <div id="security_depositDiv"  class="form-wrapper pt-4 col-12">
+                                                <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
+                                                <span id="security_deposit_msg"></span>
+                                                <input type="text"  value="{{$var->security_deposit}}" id="security_deposit" readonly name="security_deposit" class="form-control">
+                                            </div>
+
+
+                                        @endif
+
+
+
 
 
 
                                         <div id="currencydiv" class="form-wrapper col-12 pt-4">
                                             <label for="currency">Currency <span style="color: red;"> *</span></label>
                                             <span id="currency_msg"></span>
-                                            <select id="currency" class="form-control"  name="currency">
-                                                <option value="" ></option>
-                                                <option id="currency_tzs" value="TZS" >TZS</option>
-                                                <option id="currency_usd" value="USD" >USD</option>
-                                            </select>
+
+                                            <input type="text"  value="{{$var->currency}}" id="currency" readonly name="currency" class="form-control">
                                             <p class="pt-2" style="display: none;" id="currency_clause"><b>N.B This is the currency that will be used for all sub-clients</b></p>
                                         </div>
 
@@ -750,35 +748,35 @@ select.list-dt:focus {
                                         <div class="form-wrapper col-12">
                                             <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
                                             <span id="payment_cycle_msg"></span>
-                                            <input type="number"  id="payment_cycle" name="payment_cycle" class="form-control">
+                                            <input type="number" readonly id="payment_cycle" value="{{$var->payment_cycle}}" name="payment_cycle" class="form-control">
 
                                         </div>
 
-                                        <div class="form-wrapper col-12" id="escalation_rateDiv" style="display: none;">
-                                            <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
-                                            <span id="escalation_rate_msg"></span>
-                                            <input type="number"  id="escalation_rate" name="escalation_rate" class="form-control" >
-                                        </div>
+
+
+                                        @if($var->academic_dependence=='No')
+                                            <div class="form-wrapper col-12" id="escalation_rateDiv" >
+                                                <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
+                                                <span id="escalation_rate_msg"></span>
+                                                <input type="number" readonly  id="escalation_rate" value="{{$var->escalation_rate}}" name="escalation_rate" class="form-control" >
+                                            </div>
+                                        @else
+
+                                            <div class="form-wrapper col-6" id="escalation_rate_vacationDiv" >
+                                                <label for="escalation_rate_vacation">Escalation Rate(Vacation season) <span style="color: red;"> *</span></label>
+                                                <span id="escalation_rate_vacation_msg"></span>
+                                                <input type="number" readonly  id="escalation_rate_vacation" value="{{$var->escalation_rate_vacation}}" name="escalation_rate_vacation" class="form-control" >
+                                            </div>
 
 
 
+                                            <div class="form-wrapper col-6" id="escalation_rate_academicDiv" >
+                                                <label for="escalation_rate_academic">Escalation Rate(Academic season) <span style="color: red;"> *</span></label>
+                                                <span id="escalation_rate_academic_msg"></span>
+                                                <input type="number" readonly id="escalation_rate_academic" value="{{$var->escalation_rate_academic}}" name="escalation_rate_academic" class="form-control" >
+                                            </div>
 
-                                        <div class="form-wrapper col-6" id="escalation_rate_vacationDiv" style="display: none;">
-                                            <label for="escalation_rate_vacation">Escalation Rate(Vacation season) <span style="color: red;"> *</span></label>
-                                            <span id="escalation_rate_vacation_msg"></span>
-                                            <input type="number"  id="escalation_rate_vacation" name="escalation_rate_vacation" class="form-control" >
-                                        </div>
-
-
-
-
-                                        <div class="form-wrapper col-6" id="escalation_rate_academicDiv" style="display: none;">
-                                            <label for="escalation_rate_academic">Escalation Rate(Academic season) <span style="color: red;"> *</span></label>
-                                            <span id="escalation_rate_academic_msg"></span>
-                                            <input type="number"  id="escalation_rate_academic" name="escalation_rate_academic" class="form-control" >
-                                        </div>
-
-
+                                        @endif
 
 
                                     </div>
@@ -788,6 +786,7 @@ select.list-dt:focus {
                                     <br>
                                     <br>
 
+                                    @endforeach
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
 

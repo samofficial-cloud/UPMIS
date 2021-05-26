@@ -31,8 +31,8 @@ class ContractsController extends Controller
      */
     public function ContractsManagement()
     {
-        $space_contracts_approval_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage',1)->orderBy('space_contracts.contract_id','desc')->get();
-        $space_contracts_declined_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage',2)->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_approval_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage',1)->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_declined_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage',2)->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
 
 
         $space_contract_inbox=null;
@@ -1063,6 +1063,12 @@ if($privileges=='Read only') {
                 ->where('contract_id', $request->get('contract_id'))
                 ->update(['contract_stage' => 2]);
 
+
+            DB::table('space_contracts')
+                ->where('contract_id', $request->get('contract_id'))
+                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
+
+
             DB::table('space_contracts')
                 ->where('contract_id', $request->get('contract_id'))
                 ->update(['edit_status' => 0]);
@@ -1087,6 +1093,12 @@ if($privileges=='Read only') {
             DB::table('space_contracts')
                 ->where('contract_id', $request->get('contract_id'))
                 ->update(['edit_status' => 0]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $request->get('contract_id'))
+                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
+
 
 
             return redirect('/contracts_management')
@@ -1262,11 +1274,22 @@ if($privileges=='Read only') {
                 }
 
 
+                $academic_season_total=0;
+                $vacation_season_total=0;
+                $amount_total=0;
+
+                if($request->get('academic_dependence')=='Yes'){
+
+                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
 
 
-                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                }else{
+
+                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+
+
+                }
 
                 DB::table('space_contracts')->insert(
                     ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
@@ -1469,10 +1492,23 @@ if($privileges=='Read only') {
                         $rent_sqm=$request->get('rent_sqm');
                     }
 
-                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                    $academic_season_total=0;
+                    $vacation_season_total=0;
+                    $amount_total=0;
 
+
+                    if($request->get('academic_dependence')=='Yes'){
+
+                        $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                        $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
+
+                    }else{
+
+                        $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+
+
+                    }
 
                     DB::table('space_contracts')->insert(
                         ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
@@ -1495,10 +1531,23 @@ if($privileges=='Read only') {
                         $rent_sqm=$request->get('rent_sqm');
                     }
 
-                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                    $academic_season_total=0;
+                    $vacation_season_total=0;
+                    $amount_total=0;
 
+
+                    if($request->get('academic_dependence')=='Yes'){
+
+                        $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                        $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
+
+                    }else{
+
+                        $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+
+
+                    }
                     DB::table('space_contracts')->insert(
                         ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
                     );
@@ -1719,10 +1768,23 @@ if($privileges=='Read only') {
                     $rent_sqm=$request->get('rent_sqm');
                 }
 
-                $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                $academic_season_total=0;
+                $vacation_season_total=0;
+                $amount_total=0;
 
+
+                if($request->get('academic_dependence')=='Yes'){
+
+                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
+
+                }else{
+
+                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+
+
+                }
 
                 DB::table('space_contracts')->insert(
                     ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
@@ -1927,10 +1989,23 @@ if($privileges=='Read only') {
                         $rent_sqm=$request->get('rent_sqm');
                     }
 
-                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                    $academic_season_total=0;
+                    $vacation_season_total=0;
+                    $amount_total=0;
 
+
+                    if($request->get('academic_dependence')=='Yes'){
+
+                        $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                        $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
+
+                    }else{
+
+                        $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+
+
+                    }
 
                     DB::table('space_contracts')->insert(
                         ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $full_name,'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
@@ -1954,10 +2029,23 @@ if($privileges=='Read only') {
                     }
 
 
-                    $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
-                    $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
-                    $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+                    $academic_season_total=0;
+                    $vacation_season_total=0;
+                    $amount_total=0;
 
+
+                    if($request->get('academic_dependence')=='Yes'){
+
+                        $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
+                        $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
+
+
+                    }else{
+
+                        $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
+
+
+                    }
                     DB::table('space_contracts')->insert(
                         ['space_id_contract' => $request->get('space_id_contract'),'academic_dependence' => $request->get('academic_dependence'), 'amount' => $amount_total,'currency' => $request->get('currency'),'payment_cycle' => $request->get('payment_cycle'),'start_date' => $request->get('start_date'),'end_date' => $end_date,'full_name' => $request->get('company_name'),'escalation_rate' => $request->get('escalation_rate'),'programming_end_date' => $programming_end_date,'programming_start_date' => $programming_start_date,'has_water_bill'=>$request->get('has_water_bill'),'has_electricity_bill'=>$request->get('has_electricity_bill'),'duration'=>$request->get('duration'),'duration_period'=>$request->get('duration_period'),'rent_sqm'=>$rent_sqm,'vacation_season'=>$vacation_season_total,'academic_season'=>$academic_season_total,'tbs_certificate'=>$tbs_certificates_path,'gpsa_certificate'=>$gpsa_certificates_path,'food_business_license'=>$gpsa_certificates_path,'business_license'=>$business_licenses_path,'osha_certificate'=>$osha_certificates_path,'tcra_registration'=>$tcra_registration_path,'brela_registration'=>$brela_registration_path,'contract_category'=>$request->get('contract_category'),'has_additional_businesses'=>$request->get('has_additional_businesses'),'additional_businesses_amount'=>$request->get('additional_businesses_amount'),'additional_businesses_list'=>$request->get('additional_businesses_list'),'security_deposit'=>$request->get('security_deposit'),'has_clients'=>$has_clients,'under_client'=>$under_client,'parent_client'=>$request->get('parent_client'),'client_type_contract'=>$request->get('client_type_contract'),'percentage'=>$request->get('percentage_to_pay'), 'escalation_rate_vacation'=>$request->get('escalation_rate_vacation'),'escalation_rate_academic'=>$request->get('escalation_rate_academic')]
                     );
@@ -2792,6 +2880,21 @@ if($privileges=='Read only') {
                 ->update(['escalation_rate' => $request->get('escalation_rate')]);
 
 
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['escalation_rate_academic'=>$request->get('escalation_rate_academic')]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['escalation_rate_vacation'=>$request->get('escalation_rate_vacation')]);
+
+
+
+
+
             $rent_sqm = "";
 
             if ($request->get('rent_sqm') == '') {
@@ -2817,6 +2920,21 @@ if($privileges=='Read only') {
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
                 ->update(['edit_status' => 1]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['reason_for_forwarding' => $request->get('reason_for_forwarding')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
+
+
+
+
 
 
             $data = [
@@ -3060,6 +3178,22 @@ if($privileges=='Read only') {
                 ->update(['escalation_rate' => $request->get('escalation_rate')]);
 
 
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['escalation_rate_academic'=>$request->get('escalation_rate_academic')]);
+
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['escalation_rate_vacation'=>$request->get('escalation_rate_vacation')]);
+
+
+
+
+
             $rent_sqm = "";
 
             if ($request->get('rent_sqm') == '') {
@@ -3085,6 +3219,15 @@ if($privileges=='Read only') {
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
                 ->update(['edit_status' => 1]);
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['reason_for_forwarding' => $request->get('reason_for_forwarding')]);
+
+
+            DB::table('space_contracts')
+                ->where('contract_id', $contract_id)
+                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
 
 
 

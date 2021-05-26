@@ -330,7 +330,7 @@
                             <p>Fill all form fields with (*) to go to the next step</p>
                             <div class="row">
                                 <div class="col-md-12 mx-0">
-                                    <form id="msform"  onsubmit="return submitFunction()" METHOD="POST" enctype="multipart/form-data"  action="{{ route('create_space_contract')}}">
+                                    <form id="msform"  onsubmit="return submitFunction()" METHOD="POST" enctype="multipart/form-data"  action="{{ route('edit_space_contract_final',['contract_id'=>$contract_id,'client_id'=>$client_id])}}">
 
                                     {{csrf_field()}}
 
@@ -351,11 +351,11 @@
                                                         <label for="client_type">Client Category <span style="color: red;"> *</span></label>
                                                         <span id="ctypemsg"></span>
 
-                                                        <input type="text" id="client_type" name="client_type" value="{{$var->type}}"  readonly class="form-control" >
+                                                        <input type="text" id="client_type"  value="{{$var->type}}"  readonly class="form-control" >
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group row" id="namediv" style="display: none;">
+                                                <div class="form-group row" id="namediv" >
 
 
 
@@ -373,17 +373,17 @@
                                                         <span id="name2msg"></span>
                                                         <input type="text" id="last_name"  name="last_name" class="form-control"  value="{{$var->last_name}}">
                                                     </div>
-                                                </div>
+
                                                 @else
-                                                <div class="form-group" id="companydiv">
+                                                <div class="form-group col-12" id="companydiv">
                                                     <div class="form-wrapper">
                                                         <label for="company_name">Company Name <span style="color: red;"> *</span></label>
                                                         <span id="cnamemsg"></span>
-                                                        <input type="text" id="company_name"  name="company_name" value="{{$var->company_name}}" class="form-control">
+                                                        <input type="text" id="company_name"  name="company_name" value="{{$var->first_name}}" class="form-control">
                                                     </div>
                                                 </div>
                                                 @endif
-
+                                                </div>
                                                 <div class="form-group row">
 
 
@@ -547,11 +547,11 @@
 
 
 
-                                                    <input type="hidden"  step="0.01" class="form-control" id="space_size" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                    <input type="hidden"  step="0.01" class="form-control" id="space_size" name="space_size" value=""  autocomplete="off">
 
-                                                    <input type="hidden"  class="form-control" id="has_water_bill" name="has_water_bill" value="{{$var->has_water_bill}}"  autocomplete="off">
+                                                    <input type="hidden"  class="form-control" id="has_water_bill" name="has_water_bill" value=""  autocomplete="off">
 
-                                                    <input type="hidden"  class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="{{$var->has_electricity_bill}}"  autocomplete="off">
+                                                    <input type="hidden"  class="form-control" id="has_electricity_bill" name="has_electricity_bill" value=""  autocomplete="off">
 
 
 
@@ -600,7 +600,7 @@
 
 
 
-                                                    <div id="tinDiv" class="form-group col-6 pt-4">
+                                                    <div id="tinDiv" class="form-group col-12 pt-4">
                                                         <div class="form-wrapper">
                                                             <label for="tin">TIN <span style="color: red;"> *</span></label>
                                                             <span id="tin_msg"></span>
@@ -616,10 +616,10 @@
 
 
 
-                                                    <div class="form-wrapper col-12 " style="margin-top: 4.5rem !important;">
+                                                    <div class="form-wrapper col-12 " >
                                                         <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                                         <span id="start_date_msg"></span>
-                                                        <input type="date" id="start_date" name="start_date" value="{{$var->start_date}}" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
+                                                        <input type="date" id="start_date" name="start_date" value="{{$var->start_date}}" class="form-control" >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
@@ -780,7 +780,7 @@
 
 
 
-                                                        <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" >
+                                                        <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12"  style="display: none;">
                                                             <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
                                                             <span id="additional_businesses_list_msg"></span>
                                                             <textarea style="width: 100%;" id="additional_businesses_list" value="" name="additional_businesses_list"></textarea>
@@ -788,7 +788,7 @@
                                                         </div>
 
 
-                                                        <div id="additional_businesses_amountDiv"  class="form-wrapper pt-4 col-12">
+                                                        <div id="additional_businesses_amountDiv"  class="form-wrapper pt-4 col-12" style="display: none;">
                                                             <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
                                                             <span id="additional_businesses_amount_msg"></span>
                                                             <input type="number"  id="additional_businesses_amount" value="" name="additional_businesses_amount" class="form-control">
@@ -824,24 +824,44 @@
 
                                                     @endif
 
-                                                    @if($var->security_deposit=='0')
+                                                    @if($var->security_deposit=='0' || $var->security_deposit=='')
                                                     <div id="has_security_depositDiv" class="form-wrapper col-12">
                                                         <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
                                                         <span id="has_security_deposit_msg"></span>
-                                                        <select id="has_security_deposit" class="form-control" name="has_security_deposit">
-                                                            <option value="No" >No</option>
-                                                            <option value="Yes" >Yes</option>
-                                                        </select>
+                                                        <input type="text"  id="has_security_deposit" value="No" readonly name="has_security_deposit" class="form-control">
                                                     </div>
+
+
+
+{{--                                                        <div id="security_depositDiv"  class="form-wrapper pt-4 col-12">--}}
+{{--                                                            <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>--}}
+{{--                                                            <span id="security_deposit_msg"></span>--}}
+{{--                                                            <input type="text"  value="{{$var->security_deposit}}" id="security_deposit" readonly name="security_deposit" class="form-control">--}}
+{{--                                                        </div>--}}
+
+
                                                     @else
+
+
+                                                        <div id="has_security_depositDiv" class="form-wrapper col-12">
+                                                            <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
+                                                            <span id="has_security_deposit_msg"></span>
+                                                            <input type="text"  id="has_security_deposit" value="Yes" readonly name="has_security_deposit" class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="security_depositDiv"  class="form-wrapper pt-4 col-12">
+                                                            <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
+                                                            <span id="security_deposit_msg"></span>
+                                                            <input type="text"  value="{{$var->security_deposit}}" id="security_deposit" readonly name="security_deposit" class="form-control">
+                                                        </div>
+
+
                                                     @endif
 
 
-                                                    <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                                                        <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
-                                                        <span id="security_deposit_msg"></span>
-                                                        <input type="text"  id="security_deposit" readonly name="security_deposit" class="form-control">
-                                                    </div>
+
 
 
 
@@ -1067,17 +1087,47 @@
 
 
                                             </div>
-                                            <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="submit" id="submit5" name="submit" class="submit action-button" value="Save"/>
-                                            <input type="submit" id="save_and_print_btn" onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
-                                            <input type="button" id="cancel5" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+
+                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                            <input type="button" id="next4" onclick=" return validate();" name="next" class="next action-button" value="Next" />
+                                            <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
 
                                         </fieldset>
 
 
 
 
+                                        <fieldset>
+                                            <div class="form-card">
 
+
+
+
+                                                <div class="form-group">
+                                                    <div class="form-wrapper">
+                                                        <label for="remarks">Reason(s) for Editing the Contract<span style="color: red;">*</span></label>
+                                                        <textarea  required type="text"  name="reason_for_forwarding" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+
+
+                                            </div>
+
+                                            <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous" />
+                                            <input type="submit" id="submit5" name="submit" class="submit action-button" value="Save"/>
+                                            <input type="submit" id="save_and_print_btn" onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
+                                            <input type="button" id="cancel5" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+
+
+
+                                        </fieldset>
 
 
 
@@ -1296,13 +1346,13 @@
 
 
 
-            p14=0;
-            p15=0;
-            p16=0;
-            p17=0;
-            p18=0;
-            p19=0;
-            p20=0;
+            p14=1;
+            p15=1;
+            p16=1;
+            p17=1;
+            p18=1;
+            p19=1;
+            p20=1;
 
 
             var temp;
@@ -1388,150 +1438,150 @@
             }
 
 
-            //File pond starts
+{{--            //File pond starts--}}
 
-            FilePond.registerPlugin(FilePondPluginFileValidateType);
+{{--            FilePond.registerPlugin(FilePondPluginFileValidateType);--}}
 
-            FilePond.registerPlugin(FilePondPluginFileValidateSize);
+{{--            FilePond.registerPlugin(FilePondPluginFileValidateSize);--}}
 
 
 
-            const tbs_certificateinputElement = document.querySelector('#tbs_certificate');
-            const tbs_certificatepond = FilePond.create(tbs_certificateinputElement, {
-                onaddfile: (error, file) => {
+{{--            const tbs_certificateinputElement = document.querySelector('#tbs_certificate');--}}
+{{--            const tbs_certificatepond = FilePond.create(tbs_certificateinputElement, {--}}
+{{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
+{{--                    if(error==null){--}}
 
 
-                        checkRequired(14);
+{{--                        checkRequired(14);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+{{--                }--}}
+{{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(14);
+{{--                    if(error==null){--}}
+{{--                        onFileRemove(14);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
+{{--                }--}}
 
-            });
+{{--            });--}}
 
 
-            const gpsa_certificateinputElement = document.querySelector('#gpsa_certificate');
-            const gpsa_certificatepond = FilePond.create(gpsa_certificateinputElement, {
-                onaddfile: (error, file) => {
+{{--            const gpsa_certificateinputElement = document.querySelector('#gpsa_certificate');--}}
+{{--            const gpsa_certificatepond = FilePond.create(gpsa_certificateinputElement, {--}}
+{{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
+{{--                    if(error==null){--}}
 
 
-                        checkRequired(15);
+{{--                        checkRequired(15);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+{{--                }--}}
+{{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(15);
+{{--                    if(error==null){--}}
+{{--                        onFileRemove(15);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
+{{--                }--}}
 
-            });
+{{--            });--}}
 
 
 
 
 
-            const food_business_licenseinputElement = document.querySelector('#food_business_license');
-            const food_business_licensepond = FilePond.create(food_business_licenseinputElement, {
-                onaddfile: (error, file) => {
+{{--            const food_business_licenseinputElement = document.querySelector('#food_business_license');--}}
+{{--            const food_business_licensepond = FilePond.create(food_business_licenseinputElement, {--}}
+{{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
+{{--                    if(error==null){--}}
 
-                        checkRequired(16);
+{{--                        checkRequired(16);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+{{--                }--}}
+{{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(16);
+{{--                    if(error==null){--}}
+{{--                        onFileRemove(16);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
+{{--                }--}}
 
-            });
+{{--            });--}}
 
 
 
 
-            const business_licenseinputElement = document.querySelector('#business_license');
-            const business_licensepond = FilePond.create(business_licenseinputElement, {
-                onaddfile: (error, file) => {
+{{--            const business_licenseinputElement = document.querySelector('#business_license');--}}
+{{--            const business_licensepond = FilePond.create(business_licenseinputElement, {--}}
+{{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
+{{--                    if(error==null){--}}
 
-                        checkRequired(17);
-                    }else{
+{{--                        checkRequired(17);--}}
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+{{--                }--}}
+{{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(17);
+{{--                    if(error==null){--}}
+{{--                        onFileRemove(17);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
+{{--                }--}}
 
-            });
+{{--            });--}}
 
 
 
@@ -1540,177 +1590,177 @@
 
 
 
-            const osha_certificateinputElement = document.querySelector('#osha_certificate');
-            const osha_certificatepond = FilePond.create(osha_certificateinputElement, {
-                onaddfile: (error, file) => {
+{{--            const osha_certificateinputElement = document.querySelector('#osha_certificate');--}}
+{{--            const osha_certificatepond = FilePond.create(osha_certificateinputElement, {--}}
+{{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
-                        checkRequired(18);
+{{--                    if(error==null){--}}
+{{--                        checkRequired(18);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+{{--                }--}}
+{{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(18);
+{{--                    if(error==null){--}}
+{{--                        onFileRemove(18);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
+{{--                }--}}
 
-            });
+{{--            });--}}
 
 
 
 
-            const tcra_registrationinputElement = document.querySelector('#tcra_registration');
-            const tcra_registrationpond = FilePond.create(tcra_registrationinputElement, {
-                onaddfile: (error, file) => {
+{{--            const tcra_registrationinputElement = document.querySelector('#tcra_registration');--}}
+{{--            const tcra_registrationpond = FilePond.create(tcra_registrationinputElement, {--}}
+{{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
-                        checkRequired(19);
+{{--                    if(error==null){--}}
+{{--                        checkRequired(19);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+{{--                }--}}
+{{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(19);
+{{--                    if(error==null){--}}
+{{--                        onFileRemove(19);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
+{{--                }--}}
 
-            });
+{{--            });--}}
 
 
 
 
-            const brela_registrationinputElement = document.querySelector('#brela_registration');
-            const brela_registrationpond = FilePond.create(brela_registrationinputElement, {
-                onaddfile: (error, file) => {
+{{--            const brela_registrationinputElement = document.querySelector('#brela_registration');--}}
+{{--            const brela_registrationpond = FilePond.create(brela_registrationinputElement, {--}}
+{{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
-                        checkRequired(20);
+{{--                    if(error==null){--}}
+{{--                        checkRequired(20);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
+{{--                }--}}
 
-                ,onremovefile: (error, file) => {
+{{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(20);
+{{--                    if(error==null){--}}
+{{--                        onFileRemove(20);--}}
 
-                    }else{
+{{--                    }else{--}}
 
 
 
-                    }
+{{--                    }--}}
 
 
-                }
+{{--                }--}}
 
 
 
 
 
-            });
+{{--            });--}}
 
 
 
 
 
-            $(function(){
+{{--            $(function(){--}}
 
-                // Turn input element into a pond with configuration options
-                $('input[type="file"]').filepond({
-                    allowMultiple: false
-                });
+{{--                // Turn input element into a pond with configuration options--}}
+{{--                $('input[type="file"]').filepond({--}}
+{{--                    allowMultiple: false--}}
+{{--                });--}}
 
 
 
-                // Listen for addfile event
-                $('input[type="file"]').on('FilePond:addfile', function(error, file) {
-                    console.log('file added event');
-                });
+{{--                // Listen for addfile event--}}
+{{--                $('input[type="file"]').on('FilePond:addfile', function(error, file) {--}}
+{{--                    console.log('file added event');--}}
+{{--                });--}}
 
-                // Manually add a file using the addfile method
-                // $('input[type="file"]').filepond('addFile', 'index.html').then(function(file){
-                //     console.log('file added', file);
-                // });
+{{--                // Manually add a file using the addfile method--}}
+{{--                // $('input[type="file"]').filepond('addFile', 'index.html').then(function(file){--}}
+{{--                //     console.log('file added', file);--}}
+{{--                // });--}}
 
 
 
 
 
-                FilePond.setOptions({
-                    server: {
-                        url: '/upload',
-                        headers: {
+{{--                FilePond.setOptions({--}}
+{{--                    server: {--}}
+{{--                        url: '/upload',--}}
+{{--                        headers: {--}}
 
-                            'X-CSRF-TOKEN': '{{csrf_token()}}'
-                        },
+{{--                            'X-CSRF-TOKEN': '{{csrf_token()}}'--}}
+{{--                        },--}}
 
-                        revert:{
+{{--                        revert:{--}}
 
-                            url: '/revert_upload',
-                            headers: {
+{{--                            url: '/revert_upload',--}}
+{{--                            headers: {--}}
 
-                                'X-CSRF-TOKEN': '{{csrf_token()}}'
-                            },
+{{--                                'X-CSRF-TOKEN': '{{csrf_token()}}'--}}
+{{--                            },--}}
 
 
-                            onload: function (responce) {
-                                console.log(responce);
+{{--                            onload: function (responce) {--}}
+{{--                                console.log(responce);--}}
 
-                            },
+{{--                            },--}}
 
 
 
-                        }
+{{--                        }--}}
 
 
 
-                    },
+{{--                    },--}}
 
-                    labelFileProcessing: 'Uploading',
+{{--                    labelFileProcessing: 'Uploading',--}}
 
-                    acceptedFileTypes: ['application/pdf'],
+{{--                    acceptedFileTypes: ['application/pdf'],--}}
 
-                    fileValidateTypeLabelExpectedTypes: 'Expects pdf',
+{{--                    fileValidateTypeLabelExpectedTypes: 'Expects pdf',--}}
 
-                    maxFileSize: '15MB'
+{{--                    maxFileSize: '15MB'--}}
 
 
-                });
+{{--                });--}}
 
 
 
@@ -1720,73 +1770,73 @@
 
 
 
-            });
+{{--            });--}}
 
 
 
-            function checkRequired(number){
-                if(number=='14'){
-                    p14=1;
-                }else if(number=='15'){
-                    p15=1;
+{{--            function checkRequired(number){--}}
+{{--                if(number=='14'){--}}
+{{--                    p14=1;--}}
+{{--                }else if(number=='15'){--}}
+{{--                    p15=1;--}}
 
-                }else if(number=='16'){
+{{--                }else if(number=='16'){--}}
 
-                    p16=1;
+{{--                    p16=1;--}}
 
-                }else if(number=='17'){
+{{--                }else if(number=='17'){--}}
 
-                    p17=1;
-                }else if(number=='18'){
+{{--                    p17=1;--}}
+{{--                }else if(number=='18'){--}}
 
-                    p18=1;
+{{--                    p18=1;--}}
 
-                }else if(number=='19'){
+{{--                }else if(number=='19'){--}}
 
-                    p19=1;
-                }else if(number=='20'){
+{{--                    p19=1;--}}
+{{--                }else if(number=='20'){--}}
 
-                    p20=1;
-                }else{
+{{--                    p20=1;--}}
+{{--                }else{--}}
 
 
 
-                }
-            }
+{{--                }--}}
+{{--            }--}}
 
 
 
-            function onFileRemove(number){
-                if(number=='14'){
-                    p14=0;
-                }else if(number=='15'){
-                    p15=0;
+{{--            function onFileRemove(number){--}}
+{{--                if(number=='14'){--}}
+{{--                    p14=0;--}}
+{{--                }else if(number=='15'){--}}
+{{--                    p15=0;--}}
 
-                }else if(number=='16'){
+{{--                }else if(number=='16'){--}}
 
-                    p16=0;
+{{--                    p16=0;--}}
 
-                }else if(number=='17'){
+{{--                }else if(number=='17'){--}}
 
-                    p17=0;
-                }else if(number=='18'){
+{{--                    p17=0;--}}
+{{--                }else if(number=='18'){--}}
 
-                    p18=0;
+{{--                    p18=0;--}}
 
-                }else if(number=='19'){
+{{--                }else if(number=='19'){--}}
 
-                    p19=0;
-                }else if(number=='20'){
+{{--                    p19=0;--}}
+{{--                }else if(number=='20'){--}}
 
-                    p20=0;
-                }else{
+{{--                    p20=0;--}}
+{{--                }else{--}}
 
 
 
-                }
-            }
+{{--                }--}}
+{{--            }--}}
 
-//Filepond ends
+{{--//Filepond ends--}}
 
 
             $("#next1").click(function(){
@@ -1812,7 +1862,7 @@
                 var parent_client=$("#parent_client").val();
 
 
-                if(clientType=="1"){
+                if(clientType=="Individual"){
                     $('#ctypemsg').hide();
                     $('#client_type').attr('style','border: 1px solid #ccc');
                     if(firstName==""){
@@ -1866,7 +1916,7 @@
 
                 }
 
-                else if(clientType=="2"){
+                else if(clientType=="Company/Organization"){
                     $('#ctypemsg').hide();
                     $('#client_type').attr('style','border: 1px solid #ccc');
                     if(companyName==""){
@@ -2311,6 +2361,7 @@
                     });
 
 
+
                     gonext();
                 }
 
@@ -2323,9 +2374,9 @@
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
                 var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p21,p22,p23,p26;
-                var first_name=document.getElementById('first_name').value;
-                var last_name=document.getElementById('last_name').value;
-                var company_name=document.getElementById('company_name').value;
+                var first_name= $("#first_name").val();
+                var last_name= $("#last_name").val();
+                var company_name=$("#company_name").val();
                 var client_type=document.getElementById('client_type').value;
                 var email=$("#email").val();
                 var client_type_contract=$("#client_type_contract").val();
@@ -2344,15 +2395,15 @@
                 var duration_period=$('#duration_period').val();
 
                 var academic_dependence=document.getElementById('academic_dependence').value;
-                var vacation_season=document.getElementById('vacation_season').value;
-                var academic_season=document.getElementById('academic_season').value;
-                var amount=document.getElementById('amount').value;
+                var vacation_season=$('#vacation_season').val();
+                var academic_season=$('#academic_season').val();
+                var amount= $('#amount').val();
                 var rent_sqm=document.getElementById('rent_sqm').value;
                 var currency=document.getElementById('currency').value;
                 var payment_cycle=document.getElementById('payment_cycle').value;
-                var escalation_rate=document.getElementById('escalation_rate').value;
-                var escalation_rate_vacation=document.getElementById('escalation_rate_vacation').value;
-                var escalation_rate_academic=document.getElementById('escalation_rate_academic').value;
+                var escalation_rate=$('#escalation_rate').val();
+                var escalation_rate_vacation=$('#escalation_rate_vacation').val();
+                var escalation_rate_academic= $('#escalation_rate_academic').val();
                 var space_size=document.getElementById('space_size').value;
                 var has_water_bill=document.getElementById('has_water_bill').value;
                 var has_electricity_bill=document.getElementById('has_electricity_bill').value;
@@ -2374,6 +2425,7 @@
                 var vacation_season_total=$("#vacation_season_total").val();
                 var security_deposit=$("#security_deposit").val();
                 var has_security_deposit=$("#has_security_deposit").val();
+
 
 
 
@@ -2651,153 +2703,153 @@
 
 
 
-                if(p14=="0"){
-
-                    $('#tbs_certificate_msg').show();
-                    var message=document.getElementById('tbs_certificate_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#tbs_certificate_msg').hide();
-                    $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-
-
-                if(p15=="0"){
-
-                    $('#gpsa_certificate_msg').show();
-                    var message=document.getElementById('gpsa_certificate_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#gpsa_certificate_msg').hide();
-                    $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-
-                if(p16=="0"){
-
-                    $('#food_business_license_msg').show();
-                    var message=document.getElementById('food_business_license_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#food_business_license').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#food_business_license_msg').hide();
-                    $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-                if(p17=="0"){
-
-                    $('#business_license_msg').show();
-                    var message=document.getElementById('business_license_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#business_license').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#business_license_msg').hide();
-                    $('#business_license').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-                if(p18=="0"){
-
-                    $('#osha_certificate_msg').show();
-                    var message=document.getElementById('osha_certificate_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#osha_certificate_msg').hide();
-                    $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-                if(p19=="0"){
-
-                    $('#tcra_registration_msg').show();
-                    var message=document.getElementById('tcra_registration_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#tcra_registration_msg').hide();
-                    $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-                if(p20=="0"){
-
-                    $('#brela_registration_msg').show();
-                    var message=document.getElementById('brela_registration_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#brela_registration').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#brela_registration_msg').hide();
-                    $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
-
-                }
+                // if(p14=="0"){
+                //
+                //     $('#tbs_certificate_msg').show();
+                //     var message=document.getElementById('tbs_certificate_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#tbs_certificate_msg').hide();
+                //     $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p15=="0"){
+                //
+                //     $('#gpsa_certificate_msg').show();
+                //     var message=document.getElementById('gpsa_certificate_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#gpsa_certificate_msg').hide();
+                //     $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p16=="0"){
+                //
+                //     $('#food_business_license_msg').show();
+                //     var message=document.getElementById('food_business_license_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#food_business_license').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#food_business_license_msg').hide();
+                //     $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p17=="0"){
+                //
+                //     $('#business_license_msg').show();
+                //     var message=document.getElementById('business_license_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#business_license').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#business_license_msg').hide();
+                //     $('#business_license').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p18=="0"){
+                //
+                //     $('#osha_certificate_msg').show();
+                //     var message=document.getElementById('osha_certificate_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#osha_certificate_msg').hide();
+                //     $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p19=="0"){
+                //
+                //     $('#tcra_registration_msg').show();
+                //     var message=document.getElementById('tcra_registration_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#tcra_registration_msg').hide();
+                //     $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p20=="0"){
+                //
+                //     $('#brela_registration_msg').show();
+                //     var message=document.getElementById('brela_registration_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#brela_registration').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#brela_registration_msg').hide();
+                //     $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
 
 
 
@@ -2959,18 +3011,23 @@
                 $("#academic_dependance_confirm").html(academic_dependence);
                 $("#academic_dependance_confirm").css('font-weight', 'bold');
 
+                if(academic_season!=null) {
+                    $("#amount_academic_confirm").html(thousands_separators(academic_season) + " " + currency);
+                    $("#amount_academic_confirm").css('font-weight', 'bold');
+                }
 
-                $("#amount_academic_confirm").html(thousands_separators(academic_season)+" "+currency);
-                $("#amount_academic_confirm").css('font-weight', 'bold');
+                if(vacation_season!=null) {
+                    $("#amount_vacation_confirm").html(thousands_separators(vacation_season) + " " + currency);
+                    $("#amount_vacation_confirm").css('font-weight', 'bold');
+                }
 
 
-                $("#amount_vacation_confirm").html(thousands_separators(vacation_season)+" "+currency);
-                $("#amount_vacation_confirm").css('font-weight', 'bold');
+                if(amount!=null) {
+                    $("#amount_confirm").html(thousands_separators(amount) + " " + currency);
+                    $("#amount_confirm").css('font-weight', 'bold');
+                }
 
-                $("#amount_confirm").html(thousands_separators(amount)+" "+currency);
-                $("#amount_confirm").css('font-weight', 'bold');
-
-                if(rent_sqm==''){
+                if(rent_sqm=='' || rent_sqm=='N/A'){
 
                     $("#rent_sqm_confirm").html('N/A');
                     $("#rent_sqm_confirm").css('font-weight', 'bold');
@@ -2995,7 +3052,7 @@
 
 
 
-                if(client_type=='1'){
+                if(client_type=='Individual'){
 
                     $("#client_type_confirm").html("Individual");
                     $("#client_type_confirm").css('font-weight', 'bold');
@@ -3006,7 +3063,7 @@
                     $("#company_name_row_confirm").hide();
 
 
-                }else if(client_type=='2'){
+                }else if(client_type=='Company/Organization'){
 
                     $("#client_type_confirm").html("Company");
                     $("#client_type_confirm").css('font-weight', 'bold');
@@ -3042,6 +3099,11 @@
                     $("#amount_row_confirm").hide();
                 }
 
+
+                if(academic_dependence=='Yes'){
+                    escalation_rate=0;
+
+                }
 
 
                 if(client_type_contract=='Direct and has clients'){
@@ -4135,122 +4197,6 @@
             $("#next4").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
-                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p26;
-                var first_name=document.getElementById('first_name').value;
-                var last_name=document.getElementById('last_name').value;
-                var company_name=document.getElementById('company_name').value;
-                var client_type=document.getElementById('client_type').value;
-                var email=$("#email").val();
-                var official_client_id=$("#official_client_id").val();
-
-                var percentage_to_pay=$("#percentage_to_pay").val();
-                var phone_number=document.getElementById('phone_number').value;
-                var address=document.getElementById('address').value;
-                var sub_location = $('#space_sub_location').val();
-                var location = $('#space_location').val();
-                var minor = $('#minor_list').val();
-                var major = $('#getMajor').val();
-                var space_id = $('#space_id_contract').val();
-
-                var start_date=document.getElementById('start_date').value;
-                var duration=document.getElementById('duration').value;
-                var duration_period=document.getElementById('duration_period').value;
-
-                var academic_dependence=document.getElementById('academic_dependence').value;
-                var vacation_season=document.getElementById('vacation_season').value;
-                var academic_season=document.getElementById('academic_season').value;
-                var amount=document.getElementById('amount').value;
-                var rent_sqm=document.getElementById('rent_sqm').value;
-                var currency=document.getElementById('currency').value;
-                var payment_cycle=document.getElementById('payment_cycle').value;
-                var escalation_rate=document.getElementById('escalation_rate').value;
-                var space_size=document.getElementById('space_size').value;
-                var has_water_bill=document.getElementById('has_water_bill').value;
-                var has_electricity_bill=document.getElementById('has_electricity_bill').value;
-
-
-                var tin=$("#tin").val();
-                var contract_category=$("#contract_category").val();
-                var tbs_certificate=$("#tbs_certificate").val();
-                var gpsa_certificate=$("#gpsa_certificate").val();
-                var food_business_license=$("#food_business_license").val();
-                var business_license=$("#business_license").val();
-                var osha_certificate=$("#osha_certificate").val();
-                var tcra_registration=$("#tcra_registration").val();
-                var brela_registration=$("#brela_registration").val();
-                var additional_businesses_list=$("#additional_businesses_list").val();
-                var additional_businesses_amount=$("#additional_businesses_amount").val();
-                var total_amount=$("#total_amount").val();
-                var academic_season_total=$("#academic_season_total").val();
-                var vacation_season_total=$("#vacation_season_total").val();
-                var security_deposit=$("#security_deposit").val();
-                var clientType=$("#client_type").val();
-
-
-
-
-                const monthNames = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"];
-                const dateObj = new Date(start_date);
-                const month = dateObj.getMonth()+1;
-                const day = String(dateObj.getDate()).padStart(2, '0');
-                const year = dateObj.getFullYear();
-                const output = day  + '/'+ month  + '/' + year;
-
-
-                function thousands_separators(num)
-                {
-                    var num_parts = num.toString().split(".");
-                    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    return num_parts.join(".");
-                }
-
-
-
-                // document.getElementById("client").innerHTML ='';
-
-
-
-
-                if(client_type=='1'){
-
-                    $("#debtor_name").val(first_name+" "+last_name);
-
-                }else if(client_type=='2'){
-
-                    $("#debtor_name").val(company_name);
-
-                }else{
-
-
-                }
-
-
-
-
-                $("#debtor_account_code_space").val(official_client_id);
-                $("#tin_invoice").val(tin);
-                $("#debtor_address_space").val(address);
-
-                $("#invoicing_period_start_date").val(start_date);
-
-                var start_date2=new Date(start_date);
-
-                var calculated_end_date = new Date(start_date2.setMonth(start_date2.getMonth()+ +payment_cycle));
-
-                var MyDateString = (calculated_end_date.getFullYear() + '-'
-                    + ('0' + (calculated_end_date.getMonth()+1)).slice(-2) + '-'+('0' + calculated_end_date.getDate()).slice(-2));
-
-
-
-
-
-
-
-
-                $("#invoicing_period_end_date").val(MyDateString);
-
-                $("#currency_invoice").val(currency);
 
 
                 gonext();
@@ -4366,6 +4312,12 @@
                 var amount=$('#amount').val();
                 var additional_businesses_amount=$('#additional_businesses_amount').val();
                 var has_security_deposit=$('#has_security_deposit').val();
+
+
+                $('#total_amountDiv').hide();
+                $('#academic_season_totalDiv').hide();
+                $('#vacation_season_totalDiv').hide();
+
 
 
                 if(query=='Yes') {

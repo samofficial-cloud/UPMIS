@@ -3149,6 +3149,15 @@
 
 
 
+
+                if(academic_dependence=='Yes'){
+                    escalation_rate=0;
+
+                }
+
+
+
+
                 if(client_type_contract=='Direct and has clients'){
 
 
@@ -4472,6 +4481,10 @@
                 var additional_businesses_amount=$('#additional_businesses_amount').val();
                 var has_security_deposit=$('#has_security_deposit').val();
 
+
+                $('#total_amountDiv').hide();
+                $('#academic_season_totalDiv').hide();
+                $('#vacation_season_totalDiv').hide();
 
                 if(query=='Yes') {
 

@@ -790,12 +790,12 @@ $today=date('Y-m-d');
                                     </div>
 
 
-                                    <div class="form-group ">
-                                        <div class="form-wrapper">
-                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                                            <input type="text" class="form-control"  name="inc_code" value="" required  autocomplete="off">
-                                        </div>
-                                    </div>
+{{--                                    <div class="form-group ">--}}
+{{--                                        <div class="form-wrapper">--}}
+{{--                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>--}}
+{{--                                            <input type="text" class="form-control"  name="inc_code" value="" required  autocomplete="off">--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
 
 
 

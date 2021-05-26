@@ -35,6 +35,11 @@ class carRentalController extends Controller
             $hire_rate = $request->input('hire_rate');
             $data=array('vehicle_reg_no'=>$vehicle_reg_no,"vehicle_model"=>$vehicle_model,'vehicle_status'=>$vehicle_status, 'hire_rate'=>$hire_rate, 'flag'=>'0', 'form_status'=>'DVC Administrator','cptu_msg_status'=>'outbox','dvc_msg_status'=>'inbox');
             $id = DB::table('car_rentals')->insertGetId($data);
+
+//              carRental::insert($data);
+//              $id =carRental::latest()->first()->id;
+
+
           }
           else{
             $id = $deactivated->id;

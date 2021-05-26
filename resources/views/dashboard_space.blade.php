@@ -218,7 +218,7 @@
   </div>
   <div class="card bg-primary text-white">
     <div class="card-body" style="line-height: 25px;" >
-      <h5 class="card-title">General Statistics<i class="fa fa-line-chart" style="font-size:30px; float: right; color: black;"></i></h5>
+      <h5 class="card-title">General Statistics<i class="fas fa-city" style="font-size:30px; float: right; color: black;"></i></h5>
        Available Real Estate: {{$available_spaces}}
       <br>Occupied Real Estate: {{$occupied_spaces}}
       <br>Total Real Estate: {{$total_spaces}}

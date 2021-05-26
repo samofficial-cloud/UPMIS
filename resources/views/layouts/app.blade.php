@@ -99,7 +99,7 @@
                             <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
                     @endif
                     </div>
-                    <div class="pl-3 pt-3" style="color: #111;"><h2 style="font-size: 2vw">UDSM's PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
+                    <div class="pl-3 pt-3" style="color: #111;"><h2 style="font-size: 2vw; font-weight: 600; ">UDSM PROJECTS MANAGEMENT INFORMATION SYSTEM</h2>
 
                     </div>
                 </div>

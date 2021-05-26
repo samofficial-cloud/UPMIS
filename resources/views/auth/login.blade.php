@@ -4,7 +4,7 @@
 	<title>UPMIS Login</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -14,13 +14,13 @@
 	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/util.css">
@@ -140,12 +140,12 @@ input#search:focus {
 		<div class="container-login100" style="background-image: url('images/bg-02.png');">
 			<div >
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
-        	
+
 		<div class="modal-form">
             <div class="tr_logo"><center>
-                
+
                 <p id="tr_head">University of Dar es Salaam</p>
-                <p id="tr_tail">UDSM's Projects Management Information System</p></center>
+                <p id="tr_tail">UDSM Projects Management Information System</p></center>
             </div>
             <br>
 			<div class="login-height">
@@ -191,10 +191,10 @@ input#search:focus {
       <img class="d-block w-100 h-100" src="/images/udia1.jpeg" alt="Fifth slide">
        <div class="carousel-caption d-none d-md-block">
    {{--  <h5 style="color:black;">UDSM Insurance Agency</h5> --}}
-    
+
   </div>
     </div>
-    
+
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -280,7 +280,7 @@ input#search:focus {
 	</div>
 
 	<div id="dropDownSelect1"></div>
-	
+
 <!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
