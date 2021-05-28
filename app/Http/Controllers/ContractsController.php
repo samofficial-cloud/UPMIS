@@ -1130,23 +1130,29 @@ if($privileges=='Read only') {
     {
 
 
-        $programming_end_date='';
-        $programming_start_date='';
+        $programming_end_date=null;
+        $programming_start_date=null;
         //for programming purposes
 
 
-        $programming_start_date_temp = Carbon::createFromFormat('Y-m-d', $request->get('invoicing_period_end_date'));
+        if($request->get('client_type_contract')=='Direct and has clients' OR $request->get('client_type_contract')=='Indirect'){
 
 
-        $programming_start_date = $programming_start_date_temp->addDays(1);
 
+        }else {
+
+            $programming_start_date_temp = Carbon::createFromFormat('Y-m-d', $request->get('invoicing_period_end_date'));
+
+
+            $programming_start_date = $programming_start_date_temp->addDays(1);
 
 
             $programming_end_date_temp = Carbon::createFromFormat('Y-m-d', $request->get('invoicing_period_end_date'));
 
 
-        $programming_end_date = $programming_end_date_temp->addMonths($request->get('payment_cycle'))->addDays(1);
+            $programming_end_date = $programming_end_date_temp->addMonths($request->get('payment_cycle'))->addDays(1);
 
+        }
 
 
 
@@ -1405,14 +1411,15 @@ if($privileges=='Read only') {
 
                 $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
                 $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/tbs_certificate.pdf');
+                $temp_path=public_path('uploads/temp/space_contracts/'.$tbs_certificate_folder.'/'.'certificates/tbs_certificate.pdf');
                 $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tbs_certificate.pdf');
 
                 $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
                 File::makeDirectory($new_directory,0777,true,true);
+
                 File::move($temp_path, $new_path);
-                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
-                DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$tbs_certificate_folder);
+                DB::table('uploads_temp')->where('folder', $tbs_certificate_folder)->delete();
             }
 
             if($gpsa_certificate_folder!=null){
@@ -1592,6 +1599,7 @@ if($privileges=='Read only') {
                 'payment_cycle'   => $request->get('payment_cycle'),
                 'escalation_rate'   => $request->get('escalation_rate'),
                 'currency'   => $request->get('currency'),
+                'client_type_contract'   => $request->get('client_type_contract'),
 
             ];
 
@@ -1604,60 +1612,66 @@ if($privileges=='Read only') {
 
             //invoice creation starts
 
-            $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
-            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
-            $today=date('Y-m-d');
+            if($request->get('client_type_contract')=='Direct and has clients' OR $request->get('client_type_contract')=='Indirect'){
 
-            $amount_in_words='';
 
-            if($request->get('currency_invoice')=='TZS'){
-                $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' TZS',' ');
 
-            }if ($request->get('currency_invoice')=='USD'){
+            }else {
 
-                $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' USD',' ');
+                $financial_year = DB::table('system_settings')->where('id', 1)->value('financial_year');
+                $max_no_of_days_to_pay = DB::table('system_settings')->where('id', 1)->value('max_no_of_days_to_pay_invoice');
+                $today = date('Y-m-d');
+
+                $amount_in_words = '';
+
+                if ($request->get('currency_invoice') == 'TZS') {
+                    $amount_in_words = Terbilang::make($request->get('amount_to_be_paid'), ' TZS', ' ');
+
+                }
+                if ($request->get('currency_invoice') == 'USD') {
+
+                    $amount_in_words = Terbilang::make($request->get('amount_to_be_paid'), ' USD', ' ');
+                } else {
+
+
+                }
+
+
+                $created_contract_id = DB::table('space_contracts')->orderBy('contract_id', 'desc')->limit(1)->value('contract_id');
+
+
+                $invoice_to_be_created = DB::select('call invoice_exists_space (?,?,?)', [$created_contract_id, $request->get('invoicing_period_start_date'), $request->get('invoicing_period_end_date')]);
+
+
+                if (count($invoice_to_be_created) == 0) {
+
+                    DB::table('invoices')->insert(
+                        ['invoice_number_votebook' => '', 'contract_id' => $created_contract_id, 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'), 'invoicing_period_end_date' => $request->get('invoicing_period_end_date'), 'period' => $request->get('period', 'N/A'), 'project_id' => $request->get('project_id', 'N/A'), 'debtor_account_code' => $request->get('debtor_account_code', 'N/A'), 'debtor_name' => $request->get('debtor_name'), 'debtor_address' => $request->get('debtor_address'), 'amount_to_be_paid' => $request->get('amount_to_be_paid'), 'currency_invoice' => $request->get('currency_invoice'), 'gepg_control_no' => '', 'tin' => $request->get('tin_invoice', 'N/A'), 'vrn' => $request->get('vrn', 'N/A'), 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => $request->get('status', 'N/A'), 'amount_in_words' => $amount_in_words, 'inc_code' => $request->get('inc_code'), 'invoice_category' => 'Space', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => $request->get('description', 'N/A'), 'prepared_by' => Auth::user()->name, 'approved_by' => 'N/A', 'stage' => 1]
+                    );
+
+                    $invoice_number_created = DB::table('invoices')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
+                    );
+
+                    DB::table('space_payments')->insert(
+                        ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'), 'amount_paid' => 0, 'amount_not_paid' => $request->get('amount_to_be_paid'), 'currency_payments' => $request->get('currency_invoice'), 'receipt_number' => '']
+                    );
+
+
+                } else {
+                    return redirect()->back()->with("error", "Invoice already exists. Please try again");
+
+                }
             }
-
-            else{
-
-
-            }
-
-
-            $created_contract_id=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
-
-
-            $invoice_to_be_created=DB::select('call invoice_exists_space (?,?,?)',[$created_contract_id,$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date')]);
-
-
-            if(count($invoice_to_be_created)==0){
-
-                DB::table('invoices')->insert(
-                    ['invoice_number_votebook'=>'','contract_id' => $created_contract_id, 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $request->get('period','N/A'),'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency_invoice'),'gepg_control_no'=>'','tin'=>$request->get('tin_invoice','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
-                );
-
-                $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
-
-                DB::table('invoice_notifications')->insert(
-                    ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
-                );
-
-                DB::table('space_payments')->insert(
-                    ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency_invoice'),'receipt_number' => '']
-                );
-
-
-            }else{
-                return redirect()->back()->with("error","Invoice already exists. Please try again");
-
-            }
-
             //invoice creation ends
 
             DB::table('spaces')
                 ->where('space_id', $request->get('space_id_contract'))
                 ->update(['occupation_status' => 1]);
 
+            $created_contract_id = DB::table('space_contracts')->orderBy('contract_id', 'desc')->limit(1)->value('contract_id');
 
 
             DB::table('space_contracts')
@@ -1910,14 +1924,14 @@ if($privileges=='Read only') {
 
                 $tbs_certificates_path='uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/'.'tbs_certificate.pdf';
                 $tbs_certificates_path2=public_path().'/'.'uploads'.'/'.'space_contracts'.'/'.$contract_id_created.'/'.'certificates/';
-                $temp_path=public_path('uploads/temp/space_contracts/'.$business_license_folder.'/'.'certificates/tbs_certificate.pdf');
+                $temp_path=public_path('uploads/temp/space_contracts/'.$tbs_certificate_folder.'/'.'certificates/tbs_certificate.pdf');
                 $new_path=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/tbs_certificate.pdf');
 
                 $new_directory=public_path('uploads/space_contracts/'.$contract_id_created.'/'.'certificates/');
                 File::makeDirectory($new_directory,0777,true,true);
                 File::move($temp_path, $new_path);
-                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$business_license_folder);
-                DB::table('uploads_temp')->where('folder', $business_license_folder)->delete();
+                File::deleteDirectory(public_path().'/'.'uploads'.'/temp/'.'space_contracts'.'/'.$tbs_certificate_folder);
+                DB::table('uploads_temp')->where('folder', $tbs_certificate_folder)->delete();
             }
 
             if($gpsa_certificate_folder!=null){
@@ -2074,52 +2088,59 @@ if($privileges=='Read only') {
 
             //Invoice creation starts
 
-            $financial_year=DB::table('system_settings')->where('id',1)->value('financial_year');
-            $max_no_of_days_to_pay=DB::table('system_settings')->where('id',1)->value('max_no_of_days_to_pay_invoice');
-            $today=date('Y-m-d');
-
-            $amount_in_words='';
-
-            if($request->get('currency_invoice')=='TZS'){
-                $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' TZS',' ');
-
-            }if ($request->get('currency_invoice')=='USD'){
-
-                $amount_in_words=Terbilang::make($request->get('amount_to_be_paid'),' USD',' ');
-            }
-
-            else{
+            if($request->get('client_type_contract')=='Direct and has clients' OR $request->get('client_type_contract')=='Indirect'){
 
 
-            }
+
+            }else {
 
 
-            $created_contract_id=DB::table('space_contracts')->orderBy('contract_id','desc')->limit(1)->value('contract_id');
+                $financial_year = DB::table('system_settings')->where('id', 1)->value('financial_year');
+                $max_no_of_days_to_pay = DB::table('system_settings')->where('id', 1)->value('max_no_of_days_to_pay_invoice');
+                $today = date('Y-m-d');
+
+                $amount_in_words = '';
+
+                if ($request->get('currency_invoice') == 'TZS') {
+                    $amount_in_words = Terbilang::make($request->get('amount_to_be_paid'), ' TZS', ' ');
+
+                }
+                if ($request->get('currency_invoice') == 'USD') {
+
+                    $amount_in_words = Terbilang::make($request->get('amount_to_be_paid'), ' USD', ' ');
+                } else {
 
 
-            $invoice_to_be_created=DB::select('call invoice_exists_space (?,?,?)',[$created_contract_id,$request->get('invoicing_period_start_date'),$request->get('invoicing_period_end_date')]);
+                }
 
 
-            if(count($invoice_to_be_created)==0){
-
-                DB::table('invoices')->insert(
-                    ['invoice_number_votebook'=>'','contract_id' => $created_contract_id, 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $request->get('period','N/A'),'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency_invoice'),'gepg_control_no'=>'','tin'=>$request->get('tin_invoice','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
-                );
-
-                $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
-
-                DB::table('invoice_notifications')->insert(
-                    ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
-                );
-
-                DB::table('space_payments')->insert(
-                    ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency_invoice'),'receipt_number' => '']
-                );
+                $created_contract_id = DB::table('space_contracts')->orderBy('contract_id', 'desc')->limit(1)->value('contract_id');
 
 
-            }else{
-                return redirect()->back()->with("error","Invoice already exists. Please try again");
+                $invoice_to_be_created = DB::select('call invoice_exists_space (?,?,?)', [$created_contract_id, $request->get('invoicing_period_start_date'), $request->get('invoicing_period_end_date')]);
 
+
+                if (count($invoice_to_be_created) == 0) {
+
+                    DB::table('invoices')->insert(
+                        ['invoice_number_votebook' => '', 'contract_id' => $created_contract_id, 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'), 'invoicing_period_end_date' => $request->get('invoicing_period_end_date'), 'period' => $request->get('period', 'N/A'), 'project_id' => $request->get('project_id', 'N/A'), 'debtor_account_code' => $request->get('debtor_account_code', 'N/A'), 'debtor_name' => $request->get('debtor_name'), 'debtor_address' => $request->get('debtor_address'), 'amount_to_be_paid' => $request->get('amount_to_be_paid'), 'currency_invoice' => $request->get('currency_invoice'), 'gepg_control_no' => '', 'tin' => $request->get('tin_invoice', 'N/A'), 'vrn' => $request->get('vrn', 'N/A'), 'max_no_of_days_to_pay' => $max_no_of_days_to_pay, 'status' => $request->get('status', 'N/A'), 'amount_in_words' => $amount_in_words, 'inc_code' => $request->get('inc_code'), 'invoice_category' => 'Space', 'invoice_date' => $today, 'financial_year' => $financial_year, 'payment_status' => 'Not paid', 'description' => $request->get('description', 'N/A'), 'prepared_by' => Auth::user()->name, 'approved_by' => 'N/A', 'stage' => 1]
+                    );
+
+                    $invoice_number_created = DB::table('invoices')->orderBy('invoice_number', 'desc')->limit(1)->value('invoice_number');
+
+                    DB::table('invoice_notifications')->insert(
+                        ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
+                    );
+
+                    DB::table('space_payments')->insert(
+                        ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'), 'amount_paid' => 0, 'amount_not_paid' => $request->get('amount_to_be_paid'), 'currency_payments' => $request->get('currency_invoice'), 'receipt_number' => '']
+                    );
+
+
+                } else {
+                    return redirect()->back()->with("error", "Invoice already exists. Please try again");
+
+                }
             }
 
             //Invoice creation ends
@@ -2128,6 +2149,7 @@ if($privileges=='Read only') {
                 ->where('space_id', $request->get('space_id_contract'))
                 ->update(['occupation_status' => 1]);
 
+            $created_contract_id = DB::table('space_contracts')->orderBy('contract_id', 'desc')->limit(1)->value('contract_id');
 
             DB::table('space_contracts')
                 ->where('contract_id', $created_contract_id)
@@ -2644,8 +2666,9 @@ if($privileges=='Read only') {
         $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->get();
 
         $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->value('clients.client_id');
+        $start_date = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->value('space_contracts.start_date');
 
-        return view('space_contract_form_edit')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id);
+        return view('space_contract_form_edit')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id)->with('start_date',$start_date);
     }
 
 

@@ -366,15 +366,34 @@
 
 
 
+
+
+
         <main>
             @yield('content')
         </main>
+
+
     </div>
     <script src="{{asset('js/filepond.js')}}" type="text/javascript"></script>
     <script src="{{asset('js/filepond.jquery.js')}}" type="text/javascript"></script>
     <script src="{{asset('js/filepond-plugin-file-validate-size.js')}}" type="text/javascript"></script>
     <script src="{{asset('js/filepond-plugin-file-validate-type.js')}}" type="text/javascript"></script>
     @yield('pagescript')
+
+    <script>
+
+        $( ".date_datepicker").datepicker({
+
+            dateFormat: 'yy-mm-dd',
+            calendarWeeks: true,
+            autoclose: true,
+            todayHighlight: true,
+            rtl: true,
+            orientation:"auto"
+        });
+
+    </script>
 
 
 </body>

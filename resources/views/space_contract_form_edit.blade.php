@@ -619,7 +619,8 @@
                                                     <div class="form-wrapper col-12 " >
                                                         <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                                         <span id="start_date_msg"></span>
-                                                        <input type="date" id="start_date" name="start_date" value="{{$var->start_date}}" class="form-control" >
+                                                        <input  id="start_date"  value="{{date('d/m/Y',strtotime($var->start_date))}}" class="form-control">
+                                                        <input type="hidden" id="start_date_alternate" name="start_date" class="form-control" >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
@@ -1109,7 +1110,6 @@
                                                         <textarea  required type="text"  name="reason_for_forwarding" class="form-control"></textarea>
                                                     </div>
                                                 </div>
-
 
 
 
@@ -2194,6 +2194,13 @@
                 var major = $('#getMajor').val();
                 var space_id = $('#space_id_contract').val();
 
+
+                var start_date={!! json_encode($start_date) !!};
+
+                $('#start_date_alternate').val(start_date);
+
+
+
                 if(major==""){
                     p1=0;
                     $('#major_msg').show();
@@ -2391,6 +2398,8 @@
                 var space_id = $('#space_id_contract').val();
 
                 var start_date=document.getElementById('start_date').value;
+                var start_date_alternate=document.getElementById('start_date_alternate').value;
+
                 var duration= $('#duration').val();
                 var duration_period=$('#duration_period').val();
 
@@ -2929,7 +2938,14 @@
                 const month = dateObj.getMonth()+1;
                 const day = String(dateObj.getDate()).padStart(2, '0');
                 const year = dateObj.getFullYear();
-                const output = day  + '/'+ month  + '/' + year;
+
+
+                var new_start_date_alternate = new Date(start_date_alternate);
+
+
+                const output = (('0' + new_start_date_alternate.getDate()).slice(-2) + '/'
+                    + ('0' + (new_start_date_alternate.getMonth()+1)).slice(-2) + '/'+new_start_date_alternate.getFullYear());
+
 
 
                 function thousands_separators(num)
@@ -4591,6 +4607,34 @@
 
             }
         });
+
+
+
+    </script>
+
+
+
+
+    <script>
+
+        $( "#start_date").datepicker({
+
+            dateFormat: 'dd/mm/yy',
+
+            autoclose: true,
+            altField: "#start_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+
+
+            orientation:"auto"
+        });
+
+
+
+
+
 
 
 

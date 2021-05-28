@@ -138,6 +138,21 @@ input#search:focus {
 <body>
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('images/bg-02.png');">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success row col-xs-12" style="margin-left: -13px;
+    margin-bottom: -1px;
+    margin-top: 4px;">
+                    <p>{{$message}}</p>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                    <br>
+                </div>
+            @endif
+
 			<div >
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
 

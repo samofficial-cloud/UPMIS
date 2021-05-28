@@ -632,7 +632,8 @@
                                                     <div class="form-wrapper col-12 pt-4" style="margin-top: 4.5rem !important;">
                                                         <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                                         <span id="start_date_msg"></span>
-                                                        <input type="date" id="start_date" name="start_date" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
+                                                        <input autocomplete="off" id="start_date"  class="form-control">
+                                                        <input type="hidden" id="start_date_alternate" name="start_date" class="form-control "  >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
@@ -1039,7 +1040,8 @@
                                                     <div class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;"> *</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date" name="invoicing_period_start_date" value="" required autocomplete="off">
+                                                            <input  class="form-control " id="invoicing_period_start_date"   required autocomplete="off">
+                                                            <input  type="hidden" id="invoicing_period_start_date_alternate" name="invoicing_period_start_date" value="" required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -1047,7 +1049,8 @@
                                                     <div  class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
                                                             <label for="">Invoice End Date <span style="color: red;"> *</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date" name="invoicing_period_end_date" value="" required  autocomplete="off">
+                                                            <input  class="form-control " id="invoicing_period_end_date"  value="" required  autocomplete="off">
+                                                            <input  type="hidden" id="invoicing_period_end_date_alternate" name="invoicing_period_end_date" value="" required  autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -2272,6 +2275,7 @@
                 var space_id = $('#space_id_contract').val();
 
                 var start_date=document.getElementById('start_date').value;
+                var start_date_alternate=document.getElementById('start_date_alternate').value;
                 var duration= $('#duration').val();
                 var duration_period=$('#duration_period').val();
 
@@ -2764,7 +2768,13 @@
                 const month = dateObj.getMonth()+1;
                 const day = String(dateObj.getDate()).padStart(2, '0');
                 const year = dateObj.getFullYear();
-                const output = day  + '/'+ month  + '/' + year;
+
+                var new_start_date_alternate = new Date(start_date_alternate);
+
+
+                const output = (('0' + new_start_date_alternate.getDate()).slice(-2) + '/'
+                    + ('0' + (new_start_date_alternate.getMonth()+1)).slice(-2) + '/'+new_start_date_alternate.getFullYear());
+
 
 
                 function thousands_separators(num)
@@ -4039,6 +4049,7 @@
                 var space_id = $('#space_id_contract').val();
 
                 var start_date=document.getElementById('start_date').value;
+                var start_date_alternate=document.getElementById('start_date_alternate').value;
                 var duration=document.getElementById('duration').value;
                 var duration_period=document.getElementById('duration_period').value;
 
@@ -4120,21 +4131,30 @@
 
                 $("#invoicing_period_start_date").val(start_date);
 
-                var start_date2=new Date(start_date);
+
+
+
+                $("#invoicing_period_start_date_alternate").val(start_date_alternate);
+
+                var start_date2=new Date(start_date_alternate);
 
                 var calculated_end_date = new Date(start_date2.setMonth(start_date2.getMonth()+ +payment_cycle));
 
-                var MyDateString = (calculated_end_date.getFullYear() + '-'
+                var invoicing_period_end_date_alternate = (calculated_end_date.getFullYear() + '-'
                     + ('0' + (calculated_end_date.getMonth()+1)).slice(-2) + '-'+('0' + calculated_end_date.getDate()).slice(-2));
 
 
 
+                var invoicing_period_end_date = (('0' + calculated_end_date.getDate()).slice(-2) + '/'
+                    + ('0' + (calculated_end_date.getMonth()+1)).slice(-2) + '/'+calculated_end_date.getFullYear());
 
 
 
 
 
-                $("#invoicing_period_end_date").val(MyDateString);
+                $("#invoicing_period_end_date").val(invoicing_period_end_date);
+                $("#invoicing_period_end_date_alternate").val(invoicing_period_end_date_alternate);
+
 
                 $("#currency_invoice").val(currency);
 
@@ -4572,5 +4592,63 @@
 
 
     </script>
+
+
+
+    <script>
+
+        $( "#start_date").datepicker({
+
+            dateFormat: 'dd/mm/yy',
+
+            autoclose: true,
+            altField: "#start_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+
+
+            orientation:"auto"
+        });
+
+
+
+        $( "#invoicing_period_start_date").datepicker({
+
+            dateFormat: 'dd/mm/yy',
+            calendarWeeks: true,
+            autoclose: true,
+            altField: "#invoicing_period_start_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+
+            orientation:"auto"
+        });
+
+
+
+
+
+        $( "#invoicing_period_end_date").datepicker({
+
+            dateFormat: 'dd/mm/yy',
+            calendarWeeks: true,
+            autoclose: true,
+
+            altField: "#invoicing_period_end_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            orientation:"auto"
+        });
+
+
+
+
+
+    </script>
+
+
 
 @endsection

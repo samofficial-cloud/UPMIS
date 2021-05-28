@@ -693,13 +693,15 @@ div.dt-buttons{
                         <tr>
                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
                             <th scope="col" style="color:#fff;">Client Name</th>
+                            <th scope="col" style="color:#fff;">Contract Number</th>
                             <th scope="col" style="color:#fff;"><center>Real Estate Number</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
+                            <th scope="col"  style="color:#fff;"><center>End Date</center></th>
                             <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
                             <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
-                            <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                            <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Contract Creation Date</center></th>
+
+
 
                             <th scope="col"  style="color:#fff;"><center>Status</center></th>
                             <th scope="col"  style="color:#fff;"><center>Action</center></th>

@@ -692,7 +692,8 @@
                                                     <div class="form-wrapper col-12 " style="margin-top: 4.5rem !important;">
                                                         <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                                         <span id="start_date_msg"></span>
-                                                        <input type="date" id="start_date" name="start_date" class="form-control"  min="{{date_format($date,"Y-m-d")}}">
+                                                        <input autocomplete="off" id="start_date"  class="form-control">
+                                                        <input type="hidden" id="start_date_alternate" name="start_date" class="form-control "  >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
@@ -932,48 +933,48 @@
                                                         <td id="address_confirm"></td>
                                                     </tr>
 
-                                                    <tr>
+                                                    <tr id="major_industry_row_confirm">
                                                         <td> Major industry:</td>
                                                         <td id="major_industry_confirm"></td>
                                                     </tr>
 
 
-                                                    <tr>
+                                                    <tr id="minor_industry_row_confirm">
                                                         <td> Minor industry:</td>
                                                         <td id="minor_industry_confirm"></td>
                                                     </tr>
 
 
-                                                    <tr>
+                                                    <tr id="location_row_confirm">
                                                         <td> Location:</td>
                                                         <td id="location_confirm"></td>
                                                     </tr>
 
 
-                                                    <tr>
+                                                    <tr id="sub_location_row_confirm">
                                                         <td>Sub location:</td>
                                                         <td id="sub_location_confirm"></td>
                                                     </tr>
 
-                                                    <tr>
+                                                    <tr id="space_number_row_confirm">
                                                         <td>Real Estate number:</td>
                                                         <td id="space_number_confirm"></td>
                                                     </tr>
 
 
 
-                                                    <tr>
+                                                    <tr id="space_size_row_confirm">
                                                         <td>Real Estate size(SQM):</td>
                                                         <td id="space_size_confirm"></td>
                                                     </tr>
 
-                                                    <tr>
+                                                    <tr id="has_electricity_bill_row_confirm">
                                                         <td>Has electricity bill:</td>
                                                         <td id="has_electricity_bill_confirm"></td>
                                                     </tr>
 
 
-                                                    <tr>
+                                                    <tr id="has_water_bill_row_confirm">
                                                         <td>Has water bill:</td>
                                                         <td id="has_water_bill_confirm"></td>
                                                     </tr>
@@ -991,7 +992,7 @@
 
 
 
-                                                    <tr>
+                                                    <tr id="academic_dependance_row_confirm">
                                                         <td>Depend on academic year:</td>
                                                         <td id="academic_dependance_confirm"></td>
                                                     </tr>
@@ -1013,7 +1014,7 @@
                                                     </tr>
 
 
-                                                    <tr >
+                                                    <tr id="rent_sqm_row_confirm">
                                                         <td>Rent/SQM:</td>
                                                         <td id="rent_sqm_confirm"></td>
                                                     </tr>
@@ -1038,9 +1039,11 @@
 
 
                                             </div>
-                                            <input type="button"  name="previous" class="previous action-button-previous" value="Previous" />
+                                            <input type="button" id="previous4" name="previous" class="previous action-button-previous" value="Previous" />
                                             <input type="button" id="next4" name="next" class="next action-button" value="Next" />
-                                            <input type="button"  class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                                            <input type="submit" id="submit4" name="submit" class="submit action-button" value="Save"/>
+                                            <input type="submit" id="save_and_print_btn4"  onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
+                                            <input type="button" id="cancel4"  class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
                                             {{-- <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
 
                                         </fieldset>
@@ -1100,7 +1103,8 @@
                                                     <div class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;"> *</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date" name="invoicing_period_start_date" value="" required autocomplete="off">
+                                                            <input  class="form-control " id="invoicing_period_start_date"   required autocomplete="off">
+                                                            <input  type="hidden" id="invoicing_period_start_date_alternate" name="invoicing_period_start_date" value="" required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -1108,7 +1112,8 @@
                                                     <div  class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
                                                             <label for="">Invoice End Date <span style="color: red;"> *</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date" name="invoicing_period_end_date" value="" required  autocomplete="off">
+                                                            <input  class="form-control " id="invoicing_period_end_date"  value="" required  autocomplete="off">
+                                                            <input  type="hidden" id="invoicing_period_end_date_alternate" name="invoicing_period_end_date" value="" required  autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -1116,7 +1121,7 @@
                                                     <div class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
                                                             <label for="">Period <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="" name="period" value=""  required  autocomplete="off">
+                                                            <input type="text" class="form-control" id="period_invoice" name="period" value=""  required  autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -1124,7 +1129,7 @@
                                                     <div   class="form-group col-6 pt-4">
                                                         <div class="form-wrapper">
                                                             <label for="" >Project ID <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="" name="project_id" value="" required  autocomplete="off">
+                                                            <input type="text" class="form-control" id="project_id_invoice" name="project_id" value="" required  autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -1216,6 +1221,16 @@
             $("#submit5").hide();
             $("#save_and_print_btn").hide();
 
+
+            //No invoice
+            $("#cancel4").css("background-color", "#87ceeb");
+            $("#cancel4").val('Finish');
+            $("#previous4").hide();
+            $("#submit4").hide();
+            $("#save_and_print_btn4").hide();
+
+
+
             if(button_clicked=='Save and print'){
 
                 $("#msform").attr("target","_blank");
@@ -1229,11 +1244,6 @@
             return true;
 
         }
-
-
-
-
-
 
 
 
@@ -2445,6 +2455,7 @@
                 var space_id = $('#space_id_contract').val();
 
                 var start_date=document.getElementById('start_date').value;
+                var start_date_alternate=document.getElementById('start_date_alternate').value;
                 var duration= $('#duration').val();
                 var duration_period=$('#duration_period').val();
 
@@ -2978,11 +2989,19 @@
 
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
-                const dateObj = new Date(start_date);
+                const dateObj = new Date(start_date_alternate);
                 const month = dateObj.getMonth()+1;
                 const day = String(dateObj.getDate()).padStart(2, '0');
                 const year = dateObj.getFullYear();
-                const output = day  + '/'+ month  + '/' + year;
+                // const output = day  + '/'+ month  + '/' + year;
+
+                var new_start_date_alternate = new Date(start_date_alternate);
+
+
+                const output = (('0' + new_start_date_alternate.getDate()).slice(-2) + '/'
+                    + ('0' + (new_start_date_alternate.getMonth()+1)).slice(-2) + '/'+new_start_date_alternate.getFullYear());
+
+
 
 
                 function thousands_separators(num)
@@ -4235,7 +4254,107 @@
 
 
 
+                if(client_type_contract=='Direct and has clients'){
 
+                    $('#next4').hide();
+                    $('#submit4').show();
+                    $('#save_and_print_btn4').show();
+
+
+
+                    $('#major_industry_row_confirm').hide();
+                    $('#minor_industry_row_confirm').hide();
+                    $('#location_row_confirm').hide();
+                    $('#sub_location_row_confirm').hide();
+                    $('#space_number_row_confirm').hide();
+                    $('#space_size_row_confirm').hide();
+                    $('#has_electricity_bill_row_confirm').hide();
+                    $('#has_water_bill_row_confirm').hide();
+                    $('#academic_dependance_row_confirm').hide();
+                    $('#amount_academic_row_confirm').hide();
+                    $('#amount_vacation_row_confirm').hide();
+                    $('#rent_sqm_row_confirm').hide();
+
+
+                    $('#invoicing_period_start_date').prop('required',false);
+                    $('#invoicing_period_start_date_alternate').prop('required',false);
+                    $('#invoicing_period_end_date').prop('required',false);
+                    $('#invoicing_period_end_date_alternate').prop('required',false);
+                    $('#period_invoice').prop('required',false);
+                    $('#project_id_invoice').prop('required',false);
+                    $('#amount_to_be_paid').prop('required',false);
+                    $('#status').prop('required',false);
+                    $('#description').prop('required',false);
+
+
+
+
+                }else if(client_type_contract=='Indirect'){
+
+                    $('#next4').hide();
+                    $('#submit4').show();
+                    $('#save_and_print_btn4').show();
+
+
+                    $('#major_industry_row_confirm').show();
+                    $('#minor_industry_row_confirm').show();
+                    $('#location_row_confirm').show();
+                    $('#sub_location_row_confirm').show();
+                    $('#space_number_row_confirm').show();
+                    $('#space_size_row_confirm').show();
+                    $('#has_electricity_bill_row_confirm').show();
+                    $('#has_water_bill_row_confirm').show();
+                    $('#academic_dependance_row_confirm').show();
+                    $('#amount_academic_row_confirm').show();
+                    $('#amount_vacation_row_confirm').show();
+                    $('#rent_sqm_row_confirm').show();
+
+
+                    $('#invoicing_period_start_date').prop('required',false);
+                    $('#invoicing_period_start_date_alternate').prop('required',false);
+                    $('#invoicing_period_end_date').prop('required',false);
+                    $('#invoicing_period_end_date_alternate').prop('required',false);
+                    $('#period_invoice').prop('required',false);
+                    $('#project_id_invoice').prop('required',false);
+                    $('#amount_to_be_paid').prop('required',false);
+                    $('#status').prop('required',false);
+                    $('#description').prop('required',false);
+
+
+                }
+                else{
+                    $('#next4').show();
+                    $('#submit4').hide();
+                    $('#save_and_print_btn4').hide();
+
+
+                    $('#major_industry_row_confirm').show();
+                    $('#minor_industry_row_confirm').show();
+                    $('#location_row_confirm').show();
+                    $('#sub_location_row_confirm').show();
+                    $('#space_number_row_confirm').show();
+                    $('#space_size_row_confirm').show();
+                    $('#has_electricity_bill_row_confirm').show();
+                    $('#has_water_bill_row_confirm').show();
+                    $('#academic_dependance_row_confirm').show();
+                    $('#amount_academic_row_confirm').show();
+                    $('#amount_vacation_row_confirm').show();
+                    $('#rent_sqm_row_confirm').show();
+
+
+                    $('#invoicing_period_start_date').prop('required',true);
+                    $('#invoicing_period_start_date_alternate').prop('required',true);
+                    $('#invoicing_period_end_date').prop('required',true);
+                    $('#invoicing_period_end_date_alternate').prop('required',true);
+                    $('#period_invoice').prop('required',true);
+                    $('#project_id_invoice').prop('required',true);
+                    $('#amount_to_be_paid').prop('required',true);
+                    $('#status').prop('required',true);
+                    $('#description').prop('required',true);
+
+
+
+                }
 
 
 
@@ -4267,6 +4386,7 @@
                 var space_id = $('#space_id_contract').val();
 
                 var start_date=document.getElementById('start_date').value;
+                var start_date_alternate=document.getElementById('start_date_alternate').value;
                 var duration=document.getElementById('duration').value;
                 var duration_period=document.getElementById('duration_period').value;
 
@@ -4346,23 +4466,35 @@
                 $("#tin_invoice").val(tin);
                 $("#debtor_address_space").val(address);
 
+
+
                 $("#invoicing_period_start_date").val(start_date);
 
-                var start_date2=new Date(start_date);
+
+
+
+                $("#invoicing_period_start_date_alternate").val(start_date_alternate);
+
+                var start_date2=new Date(start_date_alternate);
 
                 var calculated_end_date = new Date(start_date2.setMonth(start_date2.getMonth()+ +payment_cycle));
 
-               var MyDateString = (calculated_end_date.getFullYear() + '-'
+               var invoicing_period_end_date_alternate = (calculated_end_date.getFullYear() + '-'
                     + ('0' + (calculated_end_date.getMonth()+1)).slice(-2) + '-'+('0' + calculated_end_date.getDate()).slice(-2));
 
 
 
+                var invoicing_period_end_date = (('0' + calculated_end_date.getDate()).slice(-2) + '/'
+                    + ('0' + (calculated_end_date.getMonth()+1)).slice(-2) + '/'+calculated_end_date.getFullYear());
 
 
 
 
 
-                $("#invoicing_period_end_date").val(MyDateString);
+                $("#invoicing_period_end_date").val(invoicing_period_end_date);
+                $("#invoicing_period_end_date_alternate").val(invoicing_period_end_date_alternate);
+
+
 
                 $("#currency_invoice").val(currency);
 
@@ -4761,6 +4893,63 @@
 
 
     </script>
+
+    <script>
+
+        $( "#start_date").datepicker({
+
+            dateFormat: 'dd/mm/yy',
+
+            autoclose: true,
+            altField: "#start_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+
+
+            orientation:"auto"
+        });
+
+
+
+        $( "#invoicing_period_start_date").datepicker({
+
+            dateFormat: 'dd/mm/yy',
+            calendarWeeks: true,
+            autoclose: true,
+            altField: "#invoicing_period_start_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+
+            orientation:"auto"
+        });
+
+
+
+
+
+        $( "#invoicing_period_end_date").datepicker({
+
+            dateFormat: 'dd/mm/yy',
+            calendarWeeks: true,
+            autoclose: true,
+
+            altField: "#invoicing_period_end_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            orientation:"auto"
+        });
+
+
+
+
+
+    </script>
+
+
+
 
 
 

@@ -64,7 +64,7 @@
 
 
 
-    @if($client_type=='Individual')
+    @if($client_type=='1')
         <div style="width: 100%; clear: both;">
             <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">First name:</div>
             <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$first_name}}</b></div>
@@ -76,7 +76,7 @@
             <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$last_name}}</b></div>
 
         </div>
-    @elseif($client_type=='Company/Organization')
+    @elseif($client_type=='2')
         <div style="width: 100%; clear: both;">
             <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Company name:</div>
             <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$company_name}}</b></div>
@@ -111,7 +111,7 @@
 
 
 
-
+    @if($client_type_contract!='Direct and has clients')
         <h2 style="clear: both; padding-top: 2%">B. Real Estate information</h2>
 
 
@@ -176,9 +176,14 @@
 
     </div>
 
+    @else
+    @endif
 
-    <h2 style="clear: both; padding-top: 2%">C. Payment information</h2>
-
+    @if($client_type_contract=='Direct and has clients')
+    <h2 style="clear: both; padding-top: 2%">B. Payment information</h2>
+    @else
+        <h2 style="clear: both; padding-top: 2%">C. Payment information</h2>
+    @endif
 
     <div style="width: 100%; clear: both; ">
         <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Start date:</div>
