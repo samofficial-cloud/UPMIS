@@ -524,6 +524,14 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/import_space_contracts', 'ImportExcelController@importSpaceContracts')->name('import_space_contracts');
     Route::get('/get_space_contracts_format', 'ImportExcelController@spaceContractsFormat')->name('get_space_contracts_format');
 
+    Route::post('/import_space_payments', 'ImportExcelController@importSpacePayments')->name('import_space_payments');
+    Route::get('/get_space_payments_format', 'ImportExcelController@spacePaymentsFormat')->name('get_space_payments_format');
+
+
+    Route::post('/import_spaces', 'ImportExcelController@importSpaces')->name('import_spaces');
+    Route::get('/get_spaces_format', 'ImportExcelController@spacesFormat')->name('get_spaces_format');
+
+
 
 
 });

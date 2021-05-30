@@ -124,16 +124,11 @@ class ImportExcelController extends Controller
 
 
 
-
+//space code starts
                  $final_space_id=null;
 
 
-                $existing_space_id=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('space_id');
-                $has_water_bill=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('has_water_bill_space');
-                $has_electricity_bill=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('has_electricity_bill_space');
-
-
-                    if($existing_space_id=='') {
+                    if($value["space_idleave_empty_if_not_yet_assigned_by_the_system"]==null){
 
 
                         $code_name = DB::table('space_classification')->where('minor_industry', $value["minor_industry"])->value('code_name');
@@ -196,14 +191,89 @@ class ImportExcelController extends Controller
                         //create new space ends
 
 
-
-
-
                     }else{
 
-                        $final_space_id=$existing_space_id;
+
+                        $existing_space_id=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->where('space_id',$value["space_idleave_empty_if_not_yet_assigned_by_the_system"])->orderBy('id','desc')->limit(1)->value('space_id');
+
+
+                        if($existing_space_id==null) {
+
+
+                            $code_name = DB::table('space_classification')->where('minor_industry', $value["minor_industry"])->value('code_name');
+
+                            if ($code_name == '') {
+
+                                return back()->with('errors', 'Space code name does not exist. Please consult with the system Administrator');
+
+                            } else {
+
+
+                            }
+
+
+                            $space_id_number = DB::table('spaces')->where('space_id_code', $code_name)->orderBy('id', 'desc')->limit(1)->value('space_id_number');
+
+
+                            $integer = '';
+                            $incremented = '';
+                            $new_space_id_number = '';
+
+
+                            if ($space_id_number != "") {
+
+
+                                $integer = ltrim($space_id_number, '0');
+                                $incremented = $integer + 1;
+                                $new_space_id_number = sprintf("%04d", $incremented);
+
+                            } else {
+
+
+                                $incremented = 1;
+                                $new_space_id_number = sprintf("%04d", $incremented);
+
+                            }
+
+                            $final_space_id = $code_name . '' . $new_space_id_number;
+
+
+
+                            //create new space starts
+
+                            $space= new space();
+                            $space->space_id=$final_space_id;
+                            $space->space_id_code=$code_name;
+                            $space->space_id_number=$new_space_id_number;
+                            $space->major_industry=$value["major_industry"];
+                            $space->location=$value["location"];
+                            $space->size='';
+                            $space->rent_price_guide_checkbox=0;
+                            $space->sub_location=$value["sub_location"];
+                            $space->minor_industry=$value["minor_industry"];
+                            $space->comments='';
+                            $space->has_water_bill_space=$value["has_water_billyes_or_no"];
+                            $space->has_electricity_bill_space=$value["has_electricity_billyes_or_no"];
+
+                            $space->save();
+
+                            //create new space ends
+
+
+
+
+
+                        }else{
+
+                            $final_space_id=$existing_space_id;
+
+                        }
+
 
                     }
+
+//space code ends
+
 
 
 
@@ -314,15 +384,11 @@ class ImportExcelController extends Controller
 
 
 
+//space code starts
                         $final_space_id=null;
 
 
-                        $existing_space_id=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('space_id');
-                        $has_water_bill=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('has_water_bill_space');
-                        $has_electricity_bill=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('has_electricity_bill_space');
-
-
-                        if($existing_space_id=='') {
+                        if($value["space_idleave_empty_if_not_yet_assigned_by_the_system"]==null){
 
 
                             $code_name = DB::table('space_classification')->where('minor_industry', $value["minor_industry"])->value('code_name');
@@ -385,12 +451,88 @@ class ImportExcelController extends Controller
                             //create new space ends
 
 
-
                         }else{
 
-                            $final_space_id=$existing_space_id;
+
+                            $existing_space_id=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->where('space_id',$value["space_idleave_empty_if_not_yet_assigned_by_the_system"])->orderBy('id','desc')->limit(1)->value('space_id');
+
+
+                            if($existing_space_id==null) {
+
+
+                                $code_name = DB::table('space_classification')->where('minor_industry', $value["minor_industry"])->value('code_name');
+
+                                if ($code_name == '') {
+
+                                    return back()->with('errors', 'Space code name does not exist. Please consult with the system Administrator');
+
+                                } else {
+
+
+                                }
+
+
+                                $space_id_number = DB::table('spaces')->where('space_id_code', $code_name)->orderBy('id', 'desc')->limit(1)->value('space_id_number');
+
+
+                                $integer = '';
+                                $incremented = '';
+                                $new_space_id_number = '';
+
+
+                                if ($space_id_number != "") {
+
+
+                                    $integer = ltrim($space_id_number, '0');
+                                    $incremented = $integer + 1;
+                                    $new_space_id_number = sprintf("%04d", $incremented);
+
+                                } else {
+
+
+                                    $incremented = 1;
+                                    $new_space_id_number = sprintf("%04d", $incremented);
+
+                                }
+
+                                $final_space_id = $code_name . '' . $new_space_id_number;
+
+
+
+                                //create new space starts
+
+                                $space= new space();
+                                $space->space_id=$final_space_id;
+                                $space->space_id_code=$code_name;
+                                $space->space_id_number=$new_space_id_number;
+                                $space->major_industry=$value["major_industry"];
+                                $space->location=$value["location"];
+                                $space->size='';
+                                $space->rent_price_guide_checkbox=0;
+                                $space->sub_location=$value["sub_location"];
+                                $space->minor_industry=$value["minor_industry"];
+                                $space->comments='';
+                                $space->has_water_bill_space=$value["has_water_billyes_or_no"];
+                                $space->has_electricity_bill_space=$value["has_electricity_billyes_or_no"];
+
+                                $space->save();
+
+                                //create new space ends
+
+
+
+
+
+                            }else{
+
+                                $final_space_id=$existing_space_id;
+
+                            }
+
 
                         }
+
+//space code ends
 
 
 
@@ -500,15 +642,11 @@ class ImportExcelController extends Controller
 
 
 
+//space code starts
                         $final_space_id=null;
 
 
-                        $existing_space_id=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('space_id');
-                        $has_water_bill=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('has_water_bill_space');
-                        $has_electricity_bill=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->value('has_electricity_bill_space');
-
-
-                        if($existing_space_id=='') {
+                        if($value["space_idleave_empty_if_not_yet_assigned_by_the_system"]==null){
 
 
                             $code_name = DB::table('space_classification')->where('minor_industry', $value["minor_industry"])->value('code_name');
@@ -571,13 +709,88 @@ class ImportExcelController extends Controller
                             //create new space ends
 
 
-
-
                         }else{
 
-                            $final_space_id=$existing_space_id;
+
+                            $existing_space_id=DB::table('spaces')->where('major_industry',$value["major_industry"])->where('minor_industry',$value["minor_industry"])->where('location',$value["location"])->where('sub_location',$value["sub_location"])->where('space_id',$value["space_idleave_empty_if_not_yet_assigned_by_the_system"])->orderBy('id','desc')->limit(1)->value('space_id');
+
+
+                            if($existing_space_id==null) {
+
+
+                                $code_name = DB::table('space_classification')->where('minor_industry', $value["minor_industry"])->value('code_name');
+
+                                if ($code_name == '') {
+
+                                    return back()->with('errors', 'Space code name does not exist. Please consult with the system Administrator');
+
+                                } else {
+
+
+                                }
+
+
+                                $space_id_number = DB::table('spaces')->where('space_id_code', $code_name)->orderBy('id', 'desc')->limit(1)->value('space_id_number');
+
+
+                                $integer = '';
+                                $incremented = '';
+                                $new_space_id_number = '';
+
+
+                                if ($space_id_number != "") {
+
+
+                                    $integer = ltrim($space_id_number, '0');
+                                    $incremented = $integer + 1;
+                                    $new_space_id_number = sprintf("%04d", $incremented);
+
+                                } else {
+
+
+                                    $incremented = 1;
+                                    $new_space_id_number = sprintf("%04d", $incremented);
+
+                                }
+
+                                $final_space_id = $code_name . '' . $new_space_id_number;
+
+
+
+                                //create new space starts
+
+                                $space= new space();
+                                $space->space_id=$final_space_id;
+                                $space->space_id_code=$code_name;
+                                $space->space_id_number=$new_space_id_number;
+                                $space->major_industry=$value["major_industry"];
+                                $space->location=$value["location"];
+                                $space->size='';
+                                $space->rent_price_guide_checkbox=0;
+                                $space->sub_location=$value["sub_location"];
+                                $space->minor_industry=$value["minor_industry"];
+                                $space->comments='';
+                                $space->has_water_bill_space=$value["has_water_billyes_or_no"];
+                                $space->has_electricity_bill_space=$value["has_electricity_billyes_or_no"];
+
+                                $space->save();
+
+                                //create new space ends
+
+
+
+
+
+                            }else{
+
+                                $final_space_id=$existing_space_id;
+
+                            }
+
 
                         }
+
+//space code ends
 
 
 
@@ -653,7 +866,7 @@ class ImportExcelController extends Controller
 
 
 
-        $data=SpaceContractsFormat::join('clients','clients.full_name','=','space_contracts_format.full_name')->join('spaces','spaces.space_id','=','space_contracts_format.space_id_contract')->select('type as Client Category(Company/Organization,Individual)','first_name as First Name(Empty for company case)','last_name as Last Name(Empty for company case)','company_name as Company Name(Empty for Individual case)','official_client_id as Client ID','email as Email','phone_number as Phone Number','address as Address','client_type_contract as Client Type(Direct,Direct and has clients,Indirect)','major_industry as Major Industry','minor_industry as Minor Industry','location as Location','sub_location as Sub Location','has_water_bill_space as Has Water Bill?(Yes or No)','has_electricity_bill_space as Has Electricity Bill?(Yes or No)','contract_category as Contract Category(Solicited or Unsolicited)','tin as TIN','duration as Contract Duration','duration_period as Contract Duration(Years or Months)','start_date as Start Date','end_date as End Date','academic_dependence as Academic Calendar Dependence(Yes or No)','academic_season as Academic Season Amount(Includes additional businesses.Empty if not applicable)','vacation_season as Vacation Season Amount(Includes additional businesses.Empty if not applicable)','amount as Amount(Includes additional businesses.Leave Empty if depends on academic calendar)','rent_sqm as Rent/SQM','has_additional_businesses as Additional Businesses in the Area?(Yes or No)','additional_businesses_list as List of Additional Businesses(Empty if none)','additional_businesses_amount as Amount to be paid for additional businesses in the area(Empty if no additional businesses)','security_deposit as Security Deposit(0 if not applicable)','currency as Currency(TZS or USD)','payment_cycle as Payment Cycle in Months(1,2,3 etc)','escalation_rate as Escalation Rate(Empty if depend on academic calendar)','escalation_rate_vacation as Escalation Rate Vacation Season(Empty if N/A)','escalation_rate_academic as Escalation Rate Academic Season(Empty if N/A)','parent_client as Parent Client ID(Empty if N/A)','programming_start_date as Current Payment Cycle Start Date','programming_end_date as Current Payment Cycle End Date','contract_status as Contract Status(0 for Terminated, 1 for either Active or Expired)')->get();
+        $data=SpaceContractsFormat::join('clients','clients.full_name','=','space_contracts_format.full_name')->join('spaces','spaces.space_id','=','space_contracts_format.space_id_contract')->select('type as Client Category(Company/Organization,Individual)','first_name as First Name(Empty for company case)','last_name as Last Name(Empty for company case)','company_name as Company Name(Empty for Individual case)','official_client_id as Client ID','email as Email','phone_number as Phone Number','address as Address','client_type_contract as Client Type(Direct,Direct and has clients,Indirect)','space_id as Space ID(Leave Empty if not yet assigned by the system)','major_industry as Major Industry','minor_industry as Minor Industry','location as Location','sub_location as Sub Location','has_water_bill_space as Has Water Bill?(Yes or No)','has_electricity_bill_space as Has Electricity Bill?(Yes or No)','contract_category as Contract Category(Solicited or Unsolicited)','tin as TIN','duration as Contract Duration','duration_period as Contract Duration(Years or Months)','start_date as Start Date','end_date as End Date','academic_dependence as Academic Calendar Dependence(Yes or No)','academic_season as Academic Season Amount(Includes additional businesses.Empty if not applicable)','vacation_season as Vacation Season Amount(Includes additional businesses.Empty if not applicable)','amount as Amount(Includes additional businesses.Leave Empty if depends on academic calendar)','rent_sqm as Rent/SQM','has_additional_businesses as Additional Businesses in the Area?(Yes or No)','additional_businesses_list as List of Additional Businesses(Empty if none)','additional_businesses_amount as Amount to be paid for additional businesses in the area(Empty if no additional businesses)','security_deposit as Security Deposit(0 if not applicable)','currency as Currency(TZS or USD)','payment_cycle as Payment Cycle in Months(1,2,3 etc)','escalation_rate as Escalation Rate(Empty if depend on academic calendar)','escalation_rate_vacation as Escalation Rate Vacation Season(Empty if N/A)','escalation_rate_academic as Escalation Rate Academic Season(Empty if N/A)','parent_client as Parent Client ID(Empty if N/A)','programming_start_date as Current Payment Cycle Start Date','programming_end_date as Current Payment Cycle End Date','contract_status as Contract Status(0 for Terminated, 1 for either Active or Expired)')->get();
 
 
         $excel = App::make('excel');
@@ -880,6 +1093,324 @@ class ImportExcelController extends Controller
 
 
     }
+
+
+
+
+    public function importSpacePayments(Request $request)
+    {
+        $this->validate($request, [
+            'import_data'  => 'required|mimes:xls,xlsx'
+        ]);
+
+        $path = $request->file('import_data')->getRealPath();
+
+
+
+        $excel = App::make('excel');
+
+        $data=$excel->load($path)->get();
+
+        if($data->count() > 0)
+        {
+            foreach($data as  $value)
+            {
+
+
+
+                $research_flats_contract= new research_flats_contract();
+                $research_flats_contract->client_category=$value['client_category'];
+                $research_flats_contract->client_type=$value['client_type'];
+                $research_flats_contract->campus_individual=$value['campusclient'];
+                $research_flats_contract->college_individual=$value['collegeclient'];
+                $research_flats_contract->department_individual=$value['departmentclient'];
+                $research_flats_contract->first_name=$value['first_nameclient'];
+                $research_flats_contract->last_name=$value['last_nameclient'];
+                $research_flats_contract->gender=$value['genderclient'];
+                $research_flats_contract->professional=$value["professionalclient"];
+                $research_flats_contract->address=$value["addressclient"];
+                $research_flats_contract->email=$value["emailclient"];
+                $research_flats_contract->phone_number=$value["phone_numberclient"];
+                $research_flats_contract->tin=$value["tinclient"];
+                $research_flats_contract->nationality=$value["nationalityclient"];
+                $research_flats_contract->purpose=$value["purpose_of_visit"];
+                $research_flats_contract->passport_no=$value["passport_numberclient"];
+                $research_flats_contract->issue_date=$value["issue_date"];
+                $research_flats_contract->issue_place=$value["issue_place"];
+                $research_flats_contract->id_type=$value["type_of_identification_card"];
+                $research_flats_contract->id_number=$value["identification_card_number"];
+                $research_flats_contract->host_name=$value["full_namehost"];
+                $research_flats_contract->campus_host=$value["campushost"];
+                $research_flats_contract->college_host=$value["collegehost"];
+                $research_flats_contract->department_host=$value["departmenthost"];
+                $research_flats_contract->host_address=$value["addresshost"];
+                $research_flats_contract->host_email=$value["emailhost"];
+                $research_flats_contract->host_phone=$value["phone_numberhost"];
+                $research_flats_contract->room_no=$value["room_no"];
+                $research_flats_contract->arrival_date=$value["date_of_arrival"];
+                $research_flats_contract->arrival_time=$value["time_of_arrival"];
+                $research_flats_contract->departure_date=$value["date_of_departure"];
+                $research_flats_contract->payment_mode=$value["mode_of_payment"];
+                $research_flats_contract->amount_usd=$value["room_rateusd"];
+                $research_flats_contract->amount_tzs=$value["room_ratetzs"];
+                $research_flats_contract->total_usd=$value["total_usd"];
+                $research_flats_contract->total_tzs=$value["total_tzs"];
+                $research_flats_contract->receipt_no=$value["receipt_no"];
+                $research_flats_contract->receipt_date=$value["receipt_date" ];
+                $research_flats_contract->total_days=$value["total_no._of_days"];
+                $research_flats_contract->invoice_debtor=$value["invoice_debtor" ];
+                $research_flats_contract->invoice_currency=$value["invoice_currency"];
+
+                $research_flats_contract->save();
+
+
+            }
+
+//            if(!empty($insert_data))
+//            {
+//                DB::table('tbl_customer')->insert($insert_data);
+//            }
+        }
+        return back()->with('success', 'Excel Data Imported successfully.');
+    }
+
+
+    public function spacePaymentsFormat()
+    {
+
+
+        $data=App\space_payment::select('client_category as Client Category(Domestic or Foreigner)','client_type as Client Type(Internal or External)','campus_individual as Campus(Client)','college_individual as College(Client)','department_individual as Department(Client)','first_name as First Name(Client)','last_name as Last Name(Client)','gender as Gender(Client)-Female or Male','professional as Professional(Client)','address as Address(Client)','email as Email(Client)','phone_number as Phone Number(Client)','tin as TIN(Client)','nationality as Nationality(Client)','purpose as Purpose of Visit','passport_no as Passport Number(Client)','issue_date as Issue Date','issue_place as Issue Place','id_type as Type of Identification Card(National Identity Card, Driving Licence, Voters Card, Workers Identity Card)','id_number as Identification Card Number','host_name as Full name(Host)','campus_host as Campus(Host)','college_host as College(Host)','department_host as Department(Host)','host_address as Address(Host)','host_email as Email(Host)','host_phone as Phone Number(Host)','room_no as Room No(Room 01,Room 02, Room 03, Room 04 or Room 05)','arrival_date as Date of Arrival','arrival_time as Time of Arrival','departure_date as Date of Departure','payment_mode as Mode of Payment','amount_usd as Room Rate(USD)','amount_tzs as Room Rate(TZS)','total_usd as Total (USD)','total_tzs as Total (TZS)','receipt_no as Receipt No','receipt_date as Receipt Date','total_days as Total No. of days','invoice_debtor as Invoice Debtor(Individual or Host)','invoice_currency as Invoice Currency(USD or TZS)')->get();
+
+
+        $excel = App::make('excel');
+        $excel->create('research_contracts_format', function($excel) use($data) {
+
+            $excel->sheet('Sheetname', function($sheet) use($data) {
+
+                $sheet->fromModel($data);
+
+
+            });
+
+        })->export('xlsx');
+
+
+
+
+    }
+
+
+
+
+
+    public function importSpaces(Request $request)
+    {
+        $this->validate($request, [
+            'import_data'  => 'required|mimes:xls,xlsx'
+        ]);
+
+        $path = $request->file('import_data')->getRealPath();
+
+
+
+        $excel = App::make('excel');
+
+        $data=$excel->load($path)->get();
+
+        if($data->count() > 0)
+        {
+            foreach($data as  $value)
+            {
+
+
+                if($value["space_idleave_empty_if_not_yet_generated_by_the_system"]==null){
+
+
+                    $code_name = DB::table('space_classification')->where('minor_industry', $value["sub_category"])->value('code_name');
+
+                    if ($code_name == '') {
+
+                        return back()->with('errors', 'Space code name does not exist. Please consult with the system Administrator');
+
+                    } else {
+
+
+                    }
+
+
+                    $space_id_number = DB::table('spaces')->where('space_id_code', $code_name)->orderBy('id', 'desc')->limit(1)->value('space_id_number');
+
+
+                    $integer = '';
+                    $incremented = '';
+                    $new_space_id_number = '';
+
+
+                    if ($space_id_number != "") {
+
+
+                        $integer = ltrim($space_id_number, '0');
+                        $incremented = $integer + 1;
+                        $new_space_id_number = sprintf("%04d", $incremented);
+
+                    } else {
+
+
+                        $incremented = 1;
+                        $new_space_id_number = sprintf("%04d", $incremented);
+
+                    }
+
+                    $final_space_id = $code_name . '' . $new_space_id_number;
+
+
+
+                    //create new space starts
+
+                    $space= new space();
+                    $space->space_id=$final_space_id;
+                    $space->space_id_code=$code_name;
+                    $space->space_id_number=$new_space_id_number;
+                    $space->major_industry=$value["category"];
+                    $space->location=$value["locationj.k_nyereremabibomikochenikijitonyamaubungokunduchi_or_mlimani_city"];
+                    $space->sub_location=$value["sub_location"];
+                    $space->size=$value["sizesqm"];
+                    $space->rent_price_guide_checkbox=$value["has_rent_price_guide1_for_yes_or_0_for_no"];
+                    $space->rent_price_guide_from=$value["rent_price_guidefrom_leave_empty_if_na"];
+                    $space->rent_price_guide_to=$value["rent_price_guideto_leave_empty_if_na"];
+                    $space->rent_price_guide_currency=$value["rent_price_guidecurrency"];
+                    $space->minor_industry=$value["sub_category"];
+                    $space->comments=$value["remarks"];
+                    $space->has_water_bill_space=$value["has_water_billyes_or_no"];
+                    $space->has_electricity_bill_space=$value["has_electricity_billyes_or_no"];
+                    $space->occupation_status=$value["occupational_status1_for_occupied_0_for_vacant"];
+
+                    $space->save();
+
+                    //create new space ends
+
+                }else{
+
+                    $existing_space_id=DB::table('spaces')->where('major_industry',$value["category"])->where('minor_industry',$value["sub_category"])->where('location',$value["locationj.k_nyereremabibomikochenikijitonyamaubungokunduchi_or_mlimani_city"])->where('sub_location',$value["sub_location"])->where('space_id',$value["space_idleave_empty_if_not_yet_generated_by_the_system"])->orderBy('id','desc')->limit(1)->value('space_id');
+
+
+                    if($existing_space_id==null) {
+
+
+
+                        $code_name = DB::table('space_classification')->where('minor_industry', $value["sub_category"])->value('code_name');
+
+                        if ($code_name == '') {
+
+                            return back()->with('errors', 'Space code name does not exist. Please consult with the system Administrator');
+
+                        } else {
+
+
+                        }
+
+
+                        $space_id_number = DB::table('spaces')->where('space_id_code', $code_name)->orderBy('id', 'desc')->limit(1)->value('space_id_number');
+
+
+                        $integer = '';
+                        $incremented = '';
+                        $new_space_id_number = '';
+
+
+                        if ($space_id_number != "") {
+
+
+                            $integer = ltrim($space_id_number, '0');
+                            $incremented = $integer + 1;
+                            $new_space_id_number = sprintf("%04d", $incremented);
+
+                        } else {
+
+
+                            $incremented = 1;
+                            $new_space_id_number = sprintf("%04d", $incremented);
+
+                        }
+
+                        $final_space_id = $code_name . '' . $new_space_id_number;
+
+
+
+                        //create new space starts
+
+                        $space= new space();
+                        $space->space_id=$final_space_id;
+                        $space->space_id_code=$code_name;
+                        $space->space_id_number=$new_space_id_number;
+                        $space->major_industry=$value["category"];
+                        $space->location=$value["locationj.k_nyereremabibomikochenikijitonyamaubungokunduchi_or_mlimani_city"];
+                        $space->sub_location=$value["sub_location"];
+                        $space->size=$value["sizesqm"];
+                        $space->rent_price_guide_checkbox=$value["has_rent_price_guide1_for_yes_or_0_for_no"];
+                        $space->rent_price_guide_from=$value["rent_price_guidefrom_leave_empty_if_na"];
+                        $space->rent_price_guide_to=$value["rent_price_guideto_leave_empty_if_na"];
+                        $space->rent_price_guide_currency=$value["rent_price_guidecurrency"];
+                        $space->minor_industry=$value["sub_category"];
+                        $space->comments=$value["remarks"];
+                        $space->has_water_bill_space=$value["has_water_billyes_or_no"];
+                        $space->has_electricity_bill_space=$value["has_electricity_billyes_or_no"];
+                        $space->occupation_status=$value["occupational_status1_for_occupied_0_for_vacant"];
+
+                        $space->save();
+
+                        //create new space ends
+
+
+                    }else{
+
+
+
+
+                    }
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+
+
+        }
+        return back()->with('success', 'Excel Data Imported successfully.');
+    }
+
+
+    public function spacesFormat()
+    {
+
+
+        $data=App\spaces_format::select('space_id as Space ID(Leave Empty if not yet generated by the system)','major_industry as Category','minor_industry as Sub Category','location as Location(J.K Nyerere,Mabibo,Mikocheni,Kijitonyama,Ubungo,Kunduchi or Mlimani city)','sub_location as Sub Location','size as Size(SQM)','has_electricity_bill_space as Has Electricity Bill?(Yes or No)','has_water_bill_space as Has Water Bill?(Yes or No)','rent_price_guide_checkbox as Has Rent Price Guide?(1 for Yes or 0 for No)','rent_price_guide_from as Rent Price Guide(From)-Leave Empty if N/A','rent_price_guide_to as Rent Price Guide(To)-Leave Empty if N/A','rent_price_guide_currency as Rent Price Guide(Currency)','occupation_status as Occupational status(1 for Occupied, 0 for Vacant)','comments as Remarks')->get();
+
+
+        $excel = App::make('excel');
+        $excel->create('real_estate_format', function($excel) use($data) {
+
+            $excel->sheet('Sheetname', function($sheet) use($data) {
+
+                $sheet->fromModel($data);
+
+
+            });
+
+        })->export('xlsx');
+
+
+
+
+    }
+
 
 
 

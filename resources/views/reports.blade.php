@@ -341,12 +341,15 @@ $year=$current-3;
             <div class="form-wrapper col-6">
               <label for="start_date">From<span style="color: red;">*</span></label>
               <span id="startdatemsg"></span>
-              <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input id="start_date_view"  class="form-control" autocomplete="off">
+                <input type="hidden" id="start_date" name="start_date" class="form-control">
             </div>
+
             <div class="form-wrapper col-6">
               <label for="end_date">To<span style="color: red;">*</span></label>
               <span id="enddatemsg"></span>
-              <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+              <input  id="end_date_view"  class="form-control" autocomplete="off">
+                <input type="hidden" id="end_date" name="end_date" class="form-control">
             </div>
           </div>
 
@@ -542,13 +545,15 @@ $year=$current-3;
     <div class="form-wrapper col-6">
         <label for="insurance_start_date">From<span style="color: red;">*</span></label>
         <span id="insurance_start_datemsg"></span>
-        <input type="date" id="insurance_start_date" name="insurance_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+        <input  id="insurance_start_date_view"  class="form-control" autocomplete="off">
+        <input type="hidden" id="insurance_start_date" name="insurance_start_date" class="form-control">
       </div>
 
     <div class="form-wrapper col-6">
       <label for="insurance_end_date">To<span style="color: red;">*</span></label>
       <span id="insurance_end_datemsg"></span>
-      <input type="date" id="insurance_end_date" name="insurance_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+      <input id="insurance_end_date_view" class="form-control" autocomplete="off">
+        <input type="hidden" id="insurance_end_date" name="insurance_end_date" class="form-control">
     </div>
   </div>
 
@@ -754,12 +759,14 @@ $year=$current-3;
             <div class="form-wrapper col-6">
               <label for="t_Invoice_start_date">From<span style="color: red;">*</span></label>
               <span id="t_Invoice_startdatemsg"></span>
-              <input type="date" id="t_Invoice_start_date" name="t_Invoice_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input  id="t_Invoice_start_date_view"  class="form-control" autocomplete="off">
+                <input type="hidden" id="t_Invoice_start_date" name="t_Invoice_start_date" class="form-control">
             </div>
             <div class="form-wrapper col-6">
               <label for="t_Invoice_end_date">To<span style="color: red;">*</span></label>
               <span id="t_invoice_enddatemsg"></span>
-              <input type="date" id="t_invoice_end_date" name="t_invoice_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input id="t_invoice_end_date_view" class="form-control" autocomplete="off">
+                <input type="hidden" id="t_invoice_end_date" name="t_invoice_end_date" class="form-control">
             </div>
           </div>
 
@@ -941,12 +948,14 @@ $year=$current-3;
             <div class="form-wrapper col-6">
               <label for="carhistory_start_date">From<span style="color: red;">*</span></label>
               <span id="carhistory_startdatemsg"></span>
-              <input type="date" id="carhistory_start_date" name="carhistory_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>" >
+              <input id="carhistory_start_date_view" autocomplete="off" class="form-control">
+                <input type="hidden" id="carhistory_start_date" name="carhistory_start_date" class="form-control">
             </div>
             <div class="form-wrapper col-6">
               <label for="carhistory_end_date">To<span style="color: red;">*</span></label>
               <span id="carhistory_enddatemsg"></span>
-              <input type="date" id="carhistory_end_date" name="carhistory_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>" >
+              <input  id="carhistory_end_date_view" autocomplete="off"  class="form-control">
+                <input type="hidden" id="carhistory_end_date" name="carhistory_end_date" class="form-control">
             </div>
           </div>
 
@@ -1109,12 +1118,14 @@ $year=$current-3;
             <div class="form-wrapper col-6">
               <label for="client_start_date">From<span style="color: red;">*</span></label>
               <span id="client_startdatemsg"></span>
-              <input type="date" id="client_start_date" name="client_start_date" class="form-control" >
+              <input autocomplete="off" id="client_start_date_view"  class="form-control">
+                <input type="hidden" id="client_start_date" name="client_start_date" class="form-control">
             </div>
             <div class="form-wrapper col-6">
               <label for="client_end_date">To<span style="color: red;">*</span></label>
               <span id="client_enddatemsg"></span>
-              <input type="date" id="client_end_date" name="client_end_date" class="form-control" >
+              <input autocomplete="off" id="client_end_date_view"  class="form-control">
+                <input type="hidden" id="client_end_date" name="client_end_date" class="form-control">
             </div>
           </div>
 
@@ -1172,12 +1183,14 @@ $year=$current-3;
             <div class="form-wrapper col-6">
               <label for="carrevenue_start_date">From<span style="color: red;">*</span></label>
               <span id="carrevenue_startdatemsg"></span>
-              <input type="date" id="carrevenue_start_date" name="carrevenue_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>" >
+              <input autocomplete="off" id="carrevenue_start_date_view"  class="form-control">
+                <input type="hidden" id="carrevenue_start_date" name="carrevenue_start_date" class="form-control">
             </div>
             <div class="form-wrapper col-6">
               <label for="carrevenue_end_date">To<span style="color: red;">*</span></label>
               <span id="carrevenue_enddatemsg"></span>
-              <input type="date" id="carrevenue_end_date" name="carrevenue_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>" >
+              <input autocomplete="off" id="carrevenue_end_date_view"  class="form-control">
+                <input type="hidden" id="carrevenue_end_date" name="carrevenue_end_date" class="form-control">
             </div>
           </div>
 
@@ -1214,12 +1227,14 @@ $year=$current-3;
             <div class="form-wrapper col-6">
               <label for="rent_start_date">From<span style="color: red;">*</span></label>
               <span id="rent_startdatemsg"></span>
-              <input type="date" id="rent_start_date" name="rent_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input autocomplete="off" id="rent_start_date_view"  class="form-control" >
+                <input type="hidden" id="rent_start_date" name="rent_start_date" class="form-control">
             </div>
             <div class="form-wrapper col-6">
               <label for="rent_end_date">To<span style="color: red;">*</span></label>
               <span id="rent_enddatemsg"></span>
-              <input type="date" id="rent_end_date" name="rent_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input autocomplete="off" id="rent_end_date_view"  class="form-control">
+                <input type="hidden" id="rent_end_date" name="rent_end_date" class="form-control">
             </div>
           </div>
 
@@ -1227,12 +1242,14 @@ $year=$current-3;
             <div class="form-wrapper col-6">
               <label for="rev_start_date">From<span style="color: red;">*</span></label>
               <span id="rev_startdatemsg"></span>
-              <input type="date" id="rev_start_date" name="rev_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input autocomplete="off" id="rev_start_date_view"  class="form-control">
+                <input type="hidden" id="rev_start_date" name="rev_start_date" class="form-control">
             </div>
             <div class="form-wrapper col-6">
               <label for="rev_end_date">To<span style="color: red;">*</span></label>
               <span id="rev_enddatemsg"></span>
-              <input type="date" id="rev_end_date" name="rev_end_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input autocomplete="off" id="rev_end_date_view"  class="form-control">
+                <input type="hidden" id="rev_end_date" name="rev_end_date" class="form-control">
             </div>
           </div>
 
@@ -1591,13 +1608,15 @@ $year=$current-3;
         <div class="form-wrapper col-6">
           <label for="summary2_start_date">From<span style="color: red;">*</span></label>
           <span id="summary2_startdatemsg"></span>
-          <input type="date" id="summary2_start_date" name="summary2_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+          <input autocomplete="off" id="summary2_start_date_view" class="form-control">
+            <input type="hidden" id="summary2_start_date" name="summary2_start_date" class="form-control">
         </div>
 
         <div class="form-wrapper col-6">
           <label for="summary2_end_date">To<span style="color: red;">*</span></label>
           <span id="summary2_enddatemsg"></span>
-          <input type="date" id="summary2_end_date" name="summary2_end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+          <input autocomplete="off" id="summary2_end_date_view"  class="form-control">
+            <input type="hidden" id="summary2_end_date" name="summary2_end_date" class="form-control">
         </div>
 
     </div>
@@ -1661,13 +1680,15 @@ $year=$current-3;
         <div class="form-wrapper col-6">
           <label for="summary_start_date">From<span style="color: red;">*</span></label>
           <span id="summary_startdatemsg"></span>
-          <input type="date" id="summary_start_date" name="summary_start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+          <input autocomplete="off" id="summary_start_date_view"  class="form-control">
+            <input type="hidden" id="summary_start_date" name="summary_start_date" class="form-control">
         </div>
 
         <div class="form-wrapper col-6">
           <label for="summary_end_date">To<span style="color: red;">*</span></label>
           <span id="summary_enddatemsg"></span>
-          <input type="date" id="summary_end_date" name="summary_end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+          <input autocomplete="off" id="summary_end_date_view" class="form-control">
+            <input type="hidden" id="summary_end_date" name="summary_end_date" class="form-control">
         </div>
     </div>
 
@@ -7068,5 +7089,295 @@ window.addEventListener( "pageshow", function ( event ) {
   }
 });
 </script>
+
+
+
+
+    <script>
+<?php
+$today_date=date('Y-m-d');
+
+?>
+
+        var today={!! json_encode($today_date) !!};
+
+
+        $( "#start_date_view").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#start_date",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            maxDate:new Date(today),
+            orientation:"auto"
+        });
+
+
+        $("#end_date_view").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#end_date",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            maxDate:new Date(today),
+            orientation:"auto"
+        });
+
+
+
+
+
+$( "#insurance_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#insurance_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+$("#insurance_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#insurance_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+
+
+
+
+$( "#t_Invoice_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#t_Invoice_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+$("#t_invoice_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#t_invoice_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+
+
+
+
+$( "#carhistory_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#carhistory_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+$("#carhistory_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#carhistory_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+
+
+
+
+$( "#client_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#client_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    orientation:"auto"
+});
+
+
+$("#client_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#client_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    orientation:"auto"
+});
+
+
+
+
+
+$( "#carrevenue_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#carrevenue_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+$("#carrevenue_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#carrevenue_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+
+
+
+
+$("#rent_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#rent_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+$("#rent_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#rent_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+
+
+
+$("#rev_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#rev_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+$("#rev_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#rev_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+
+
+
+
+$("#summary2_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#summary2_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+$("#summary2_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#summary2_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+
+
+
+$("#summary_start_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#summary_start_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+$("#summary_end_date_view").datepicker({
+    dateFormat: 'dd/mm/yy',
+    autoclose: true,
+    altField: "#summary_end_date",
+    altFormat: "yy-mm-dd",
+    todayHighlight: true,
+    rtl: true,
+    maxDate:new Date(today),
+    orientation:"auto"
+});
+
+
+
+
+    </script>
+
+
+
+
 
 @endsection

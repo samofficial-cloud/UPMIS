@@ -117,6 +117,16 @@
     ?>
 
 
+
+    <?php
+    $semester_one_start=null;
+    $semester_one_end=null;
+    $semester_two_start=null;
+    $semester_two_end=null;
+
+    ?>
+
+
     <div class="main_content">
       <div class="container " style="max-width: 100%;">
         @if ($message = Session::get('success'))
@@ -171,12 +181,19 @@
 
                       <hr style="border:0; border-top: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 0 !important;">
 
+                      <?php
+                      $semester_one_start=$var->semester_one_start;
+                      $semester_one_end=$var->semester_one_end;
+                      $semester_two_start=$var->semester_two_start;
+                      $semester_two_end=$var->semester_two_end;
+                      ?>
+
 
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>First semester start date</strong></label>
-                              <input type="date" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->semester_one_start}}" id="rent_price_guide_checkbox" name="semester_one_start" min="{{date_format($date,"Y-m-d")}}" autocomplete="off">
-
+                              <input required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{date("d/m/Y",strtotime($var->semester_one_start))}}" id="first_sem_start_date_view"   autocomplete="off">
+                              <input type="hidden" id="first_sem_start_date" name="semester_one_start" required class="form-control">
                           </div>
                       </div>
 
@@ -186,8 +203,8 @@
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>First semester end date</strong></label>
-                              <input type="date" min="{{date_format($date,"Y-m-d")}}" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->semester_one_end}}" id="rent_price_guide_checkbox" name="semester_one_end" autocomplete="off">
-
+                              <input  required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{date("d/m/Y",strtotime($var->semester_one_end))}}" id="first_sem_end_date_view"  autocomplete="off">
+                              <input type="hidden" id="first_sem_end_date" name="semester_one_end" required class="form-control">
                           </div>
                       </div>
 
@@ -200,8 +217,8 @@
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Second semester start date</strong></label>
-                              <input type="date" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->semester_two_start}}" id="rent_price_guide_checkbox" name="semester_two_start" min="{{date_format($date,"Y-m-d")}}" autocomplete="off">
-
+                              <input  required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{date("d/m/Y",strtotime($var->semester_two_start))}}" id="second_sem_start_date_view" autocomplete="off">
+                              <input type="hidden" id="second_sem_start_date" name="semester_two_start" required class="form-control">
                           </div>
                       </div>
 
@@ -211,8 +228,8 @@
                       <div class="group_children">
                           <div class="form-wrapper">
                               <label class="label_styles" for="rent_price_guide_checkbox" style="display: inline-block;"><strong>Second semester end date</strong></label>
-                              <input type="date" min="{{date_format($date,"Y-m-d")}}" required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{$var->semester_two_end}}" id="rent_price_guide_checkbox" name="semester_two_end" autocomplete="off">
-
+                              <input  required style="display: inline-block; float: right; clear: both;  text-align: center;" value="{{date("d/m/Y",strtotime($var->semester_two_end))}}" id="second_sem_end_date_view"  autocomplete="off">
+                              <input type="hidden" id="second_sem_end_date" name="semester_two_end" required class="form-control">
                           </div>
                       </div>
 
@@ -541,6 +558,105 @@
 
 {{--</script>--}}
 
+
+
+
+<script>
+
+   var semester_one_start=null;
+   var semester_one_end=null;
+   var semester_two_start=null;
+   var semester_two_end=null;
+
+
+    $(window).on('load', function () {
+
+        semester_one_start={!! json_encode($semester_one_start) !!};
+        semester_one_end={!! json_encode($semester_one_end) !!};
+        semester_two_start={!! json_encode($semester_two_start) !!};
+        semester_two_end={!! json_encode($semester_two_end) !!};
+
+        $('#first_sem_start_date').val(semester_one_start);
+        $('#first_sem_end_date').val(semester_one_end);
+        $('#second_sem_start_date').val(semester_two_start);
+        $('#second_sem_end_date').val(semester_two_end);
+
+
+    });
+
+
+        <?php
+        $today_date=date('Y-m-d');
+
+        ?>
+
+    var min_date={!! json_encode(date_format($date,"Y-m-d")) !!};
+
+
+    $("#first_sem_start_date_view").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#first_sem_start_date",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        minDate:new Date(min_date),
+        orientation:"auto"
+    });
+
+
+    $("#first_sem_end_date_view").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#first_sem_end_date",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        minDate:new Date(min_date),
+        orientation:"auto"
+    });
+
+
+
+        $("#second_sem_start_date_view").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#second_sem_start_date",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            minDate:new Date(min_date),
+            orientation:"auto"
+        });
+
+
+
+        $("#second_sem_start_date_view").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#second_sem_start_date",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            minDate:new Date(min_date),
+            orientation:"auto"
+        });
+
+
+
+        $("#second_sem_end_date_view").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#second_sem_end_date",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            minDate:new Date(min_date),
+            orientation:"auto"
+        });
+
+
+</script>
 
 
 @endsection

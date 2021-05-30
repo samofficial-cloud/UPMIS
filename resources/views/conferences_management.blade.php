@@ -245,8 +245,8 @@
                       <div class="form-group">
                           <div class="form-wrapper">
                               <label for=""  ><strong>Event Date<span style="color: red;"> *</span> </strong></label>
-                              <input type="date" class="form-control"   name="event_date" value="" required autocomplete="off">
-
+                              <input  class="form-control" id="event_date_add_view"  value="" required autocomplete="off">
+                              <input type="hidden" id="event_date_add" name="event_date" required class="form-control">
                           </div>
                       </div>
                       <br>
@@ -607,5 +607,22 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
   } );
 
 </script>
+
+
+    <script>
+
+
+        $("#event_date_add_view").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#event_date_add",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            orientation:"auto"
+        });
+
+
+    </script>
 
 @endsection

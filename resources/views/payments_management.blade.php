@@ -1435,7 +1435,72 @@
 
                             @if(count($space_payments)>0)
                                 <br>
-                                <div class="col-sm-12">
+
+
+
+
+
+
+                                <div style="    margin-left: 0.3%; margin-right: 1.2%;">
+{{--                                    @admin--}}
+{{--                                    <div style="float:left;">--}}
+{{--                                        <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_space" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>--}}
+
+{{--                                        <div style="float:right;"><a href="/get_space_payments_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>--}}
+{{--                                        <div style="clear: both;"></div>--}}
+{{--                                        <div class="modal fade" id="import_data_space" role="dialog">--}}
+
+{{--                                            <div class="modal-dialog" role="document">--}}
+{{--                                                <div class="modal-content">--}}
+{{--                                                    <div class="modal-header">--}}
+{{--                                                        <b><h5 class="modal-title">Importing Data</h5></b>--}}
+
+{{--                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+{{--                                                    </div>--}}
+
+{{--                                                    <div class="modal-body">--}}
+
+{{--                                                        <form method="post" enctype="multipart/form-data" action="/import_space_payments"   >--}}
+{{--                                                            {{csrf_field()}}--}}
+
+{{--                                                            <div class="form-row">--}}
+
+
+{{--                                                                <div  class=" col-md-12 ">--}}
+{{--                                                                    <div class="">--}}
+{{--                                                                        <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>--}}
+{{--                                                                        <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">--}}
+{{--                                                                        <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
+{{--                                                                <br>--}}
+
+
+{{--                                                            </div>--}}
+
+
+{{--                                                            <div align="right">--}}
+{{--                                                                <button  class="btn btn-primary" type="submit">Import</button>--}}
+{{--                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
+{{--                                                            </div>--}}
+{{--                                                        </form>--}}
+
+
+
+
+
+
+
+
+
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+
+
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    @endadmin--}}
                                     <div class="pull-right">
                                         <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
@@ -1463,7 +1528,15 @@
                                             </div>
                                         </form>
                                     </div>
+
+                                    <div style="clear: both;"></div>
                                 </div>
+
+
+
+
+
+
                                 <div id="space_content">
                                     <table class="hover table table-striped  table-bordered" id="myTable">
                                         <thead class="thead-dark">

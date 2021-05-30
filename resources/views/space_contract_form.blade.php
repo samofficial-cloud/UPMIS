@@ -693,7 +693,7 @@
                                                         <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                                         <span id="start_date_msg"></span>
                                                         <input autocomplete="off" id="start_date"  class="form-control">
-                                                        <input type="hidden" id="start_date_alternate" name="start_date" class="form-control "  >
+                                                        <input type="hidden" id="start_date_alternate" name="start_date" class="form-control " >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">

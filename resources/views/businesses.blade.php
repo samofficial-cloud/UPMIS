@@ -1440,6 +1440,66 @@ input[type=radio]{
 {{--                                 <hr>--}}
 
 
+                                 @admin
+                                 <div style="float:right;">
+                                     <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_space" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                     <div style="float:right;"><a href="/get_spaces_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                     <div style="clear: both;"></div>
+                                     <div class="modal fade" id="import_data_space" role="dialog">
+
+                                         <div class="modal-dialog" role="document">
+                                             <div class="modal-content">
+                                                 <div class="modal-header">
+                                                     <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                 </div>
+
+                                                 <div class="modal-body">
+
+                                                     <form method="post" enctype="multipart/form-data" action="/import_spaces"   >
+                                                         {{csrf_field()}}
+
+                                                         <div class="form-row">
+
+
+                                                             <div  class=" col-md-12 ">
+                                                                 <div class="">
+                                                                     <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                     <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                     <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                 </div>
+                                                             </div>
+                                                             <br>
+
+
+                                                         </div>
+
+
+                                                         <div align="right">
+                                                             <button  class="btn btn-primary" type="submit">Import</button>
+                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                         </div>
+                                                     </form>
+
+
+
+
+
+
+
+
+
+                                                 </div>
+                                             </div>
+                                         </div>
+
+
+                                     </div>
+                                 </div>
+                                 @endadmin
+
 
                                  @if(Auth::user()->role=='DPDI Planner')
                                      <a data-toggle="modal" data-target="#space" class="btn button_color active" style=" color:white;   background-color: #38c172; padding: 10px;
@@ -3523,11 +3583,13 @@ input[type=radio]{
                                         <div class="form-group row">
                                             <div class="form-wrapper col-6">
                                                 <label for="start_date">Start Date<span style="color: red;">*</span></label>
-                                                <input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
+                                                <input autocomplete="off" id="start_date_view"  class="form-control" required="" >
+                                                <input type="hidden" id="start_date" name="start_date" required class="form-control">
                                             </div>
                                             <div class="form-wrapper col-6">
                                                 <label for="end_date">End Date<span style="color: red;">*</span></label>
-                                                <input type="date" id="end_date" name="end_date" class="form-control" required="" min="{{$today}}">
+                                                <input autocomplete="off" id="end_date_view" class="form-control" required="">
+                                                <input type="hidden" id="end_date" name="end_date" required class="form-control">
                                             </div>
                                         </div>
                                         <center><button class="btn btn-primary" type="submit" id="check">Submit</button></center>
@@ -5113,5 +5175,42 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     </script>
 
 
+
+
+<script>
+        <?php
+        $today_date=date('Y-m-d');
+
+        ?>
+
+    var today={!! json_encode($today_date) !!};
+
+
+    $("#start_date_view").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#start_date",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        minDate:new Date(today),
+        orientation:"auto"
+    });
+
+
+    $("#end_date_view").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#end_date",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        minDate:new Date(today),
+        orientation:"auto"
+    });
+
+
+
+</script>
 
 @endsection
