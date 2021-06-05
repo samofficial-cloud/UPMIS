@@ -135,84 +135,161 @@
         <hr style="    border-bottom: 1px solid #e5e5e5 !important;">
 
 
+            @admin
+<div>
 
 
 
-
-<br>
- <a style="cursor: pointer; color: black; font-weight: bold; background-color: #38c172; color:white; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal" title="Add new role" data-target="#add_role"  role="button" aria-pressed="true" name="editC">Add New Role </a>
+        <a style="cursor: pointer; float: left; color: black;  background-color: #38c172; color:white; background-clip: border-box;  padding: 10px; border-radius: 0.25rem;" data-toggle="modal" title="Add new role" data-target="#add_role"  role="button" aria-pressed="true" name="editC">Add New Role </a>
 
 
 
-          <div class="modal fade" id="add_role" role="dialog">
+        <div class="modal fade" id="add_role" role="dialog">
 
             <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <b><h5 class="modal-title">Adding New Role</h5></b>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <b><h5 class="modal-title">Adding New Role</h5></b>
 
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <div class="modal-body">
-                  <form method="post" action="{{ route('add_role')}}"  id="form1" >
-                    {{csrf_field()}}
-
-
-                      <div class="form-group">
-                          <div class="form-wrapper">
-                              <label for=""  ><strong>Role<span style="color: red;"> *</span> </strong></label>
-                              <input type="text" class="form-control"   name="user_roles" value="" required autocomplete="off">
-
-                          </div>
-                      </div>
-                      <br>
-
-
-                      <div  class="form-group">
-                          <div class="form-wrapper">
-                              <label for=""><strong>Businesses<span style="color: red;"> *</span></strong></label>
-
-                              <select id="" class="form-control" name="category" required>
-                                  <option value="" ></option>
-                                      <option value="CPTU only" >CPTU only</option>
-                                      <option value="Insurance only" >Insurance only</option>
-                                      <option value="Real Estate only" >Real Estate only</option>
-                                      <option value="All">All</option>
-                              </select>
-                          </div>
-                      </div>
-                      <br>
-
-
-                      <div  class="form-group">
-                          <div class="form-wrapper">
-                              <label for=""><strong>Privileges<span style="color: red;"> *</span></strong></label>
-
-                              <select id="" class="form-control" name="privileges" required>
-                                  <option value="" ></option>
-                                  <option value="Read only" >Read only</option>
-                                  <option value="Read, add, edit and delete">Read, add, edit and delete</option>
-                              </select>
-                          </div>
-                      </div>
-                      <br>
-
-
-
-                    <div align="right">
-                      <button class="btn btn-primary" type="submit" >Save</button>
-                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                  </form>
+
+                    <div class="modal-body">
+                        <form method="post" action="{{ route('add_role')}}"  id="form1" >
+                            {{csrf_field()}}
 
 
+                            <div class="form-group">
+                                <div class="form-wrapper">
+                                    <label for=""  ><strong>Role<span style="color: red;"> *</span> </strong></label>
+                                    <input type="text" class="form-control"   name="user_roles" value="" required autocomplete="off">
+
+                                </div>
+                            </div>
+                            <br>
+
+
+                            <div  class="form-group">
+                                <div class="form-wrapper">
+                                    <label for=""><strong>Businesses<span style="color: red;"> *</span></strong></label>
+
+                                    <select id="" class="form-control" name="category" required>
+                                        <option value="" ></option>
+                                        <option value="CPTU only" >CPTU only</option>
+                                        <option value="Insurance only" >Insurance only</option>
+                                        <option value="Real Estate only" >Real Estate only</option>
+                                        <option value="All">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+
+
+                            <div  class="form-group">
+                                <div class="form-wrapper">
+                                    <label for=""><strong>Privileges<span style="color: red;"> *</span></strong></label>
+
+                                    <select id="" class="form-control" name="privileges" required>
+                                        <option value="" ></option>
+                                        <option value="Read only" >Read only</option>
+                                        <option value="Read, add, edit and delete">Read, add, edit and delete</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+
+
+
+                            <div align="right">
+                                <button class="btn btn-primary" type="submit" >Save</button>
+                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+
+
+                    </div>
                 </div>
-              </div>
             </div>
 
 
-          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+            <div style="float:right;">
+                <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_cost_centres" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                <div style="float:right;"><a href="/get_roles_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                <div style="clear: both;"></div>
+                <div class="modal fade" id="import_data_cost_centres" role="dialog">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <form method="post" enctype="multipart/form-data" action="/import_roles">
+                                    {{csrf_field()}}
+
+                                    <div class="form-row">
+
+
+                                        <div  class=" col-md-12 ">
+                                            <div class="">
+                                                <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+
+                                    </div>
+
+
+                                    <div align="right">
+                                        <button  class="btn btn-primary" type="submit">Import</button>
+                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+    <div style="clear: both;"></div>
+</div>
+
+            @endadmin
+
+
+
+
+
 
         <div style="margin-top: 2%;">
 

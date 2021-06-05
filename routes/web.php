@@ -35,6 +35,16 @@ Route::post('/login/custom', [
 
 
 
+
+        Route::post('/import_roles', 'ImportExcelController@importRoles')->name('import_roles');
+        Route::get('/get_roles_format', 'ImportExcelController@rolesFormat')->name('get_roles_format');
+
+
+
+        Route::post('/import_users', 'ImportExcelController@importUsers')->name('import_users');
+        Route::get('/get_users_format', 'ImportExcelController@usersFormat')->name('get_users_format');
+
+
         Route::get('file','UploadFileController@create');
     Route::post('file','UploadFileController@store');
 
@@ -405,12 +415,11 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 
 
 
-
-
 });
 
 //space
 Route::group(['middleware' => ['auth', 'space']], function() {
+
     //space contracts
     Route::get('/space_contracts_management', 'ContractsController@SpaceContractsManagement');
     Route::get('/space_contracts_subclients/{client_id}', 'ContractsController@SpaceContractsSubClientsManagement')->name('space_contracts_subclients');
@@ -455,6 +464,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
 
 
     // Water Bills
+
     Route::get('/create_water_bills_invoice', 'InvoicesController@CreateWaterBillsInvoice')->name('create_water_bills_invoice');
     Route::get('/water_bills_invoice_management', 'InvoicesController@WaterBillsInvoiceManagement');
     Route::post('/send_invoice_water_bills/{id}', 'InvoicesController@sendInvoiceWaterBills')->name('send_invoice_water_bills');
@@ -494,6 +504,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/cancel_discount_addition_request/{id}', 'PaymentController@cancelDiscountAdditionRequest')->name('cancel_discount_addition_request');
     Route::post('/approve_discount_request/{id}', 'PaymentController@approveDiscountRequest')->name('approve_discount_request');
 
+
 //File management
 
     Route::get('/view_pdf/{contract_id}/{type}','ContractsController@ViewPdf')->name('view_pdf');
@@ -531,10 +542,16 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/import_spaces', 'ImportExcelController@importSpaces')->name('import_spaces');
     Route::get('/get_spaces_format', 'ImportExcelController@spacesFormat')->name('get_spaces_format');
 
+    Route::post('/import_space_invoices', 'ImportExcelController@importSpaceInvoices')->name('import_space_invoices');
+    Route::get('/get_space_invoices_format', 'ImportExcelController@spaceInvoicesFormat')->name('get_space_invoices_format');
+
+    Route::post('/import_water_bill_invoices', 'ImportExcelController@importWaterBillInvoices')->name('import_water_bill_invoices');
+    Route::get('/get_water_bill_invoices_format', 'ImportExcelController@waterBillInvoicesFormat')->name('get_water_bill_invoices_format');
 
 
+});Route::post('/import_electricity_bill_invoices', 'ImportExcelController@importElectricityBillInvoices')->name('import_electricity_bill_invoices');
+Route::get('/get_electricity_bill_invoices_format', 'ImportExcelController@electricityBillInvoicesFormat')->name('get_electricity_bill_invoices_format');
 
-});
 
 
 //insurance
@@ -606,6 +623,28 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
 
 
 
+    Route::post('/import_insurance_packages', 'ImportExcelController@importInsurancePackages')->name('import_insurance_packages');
+    Route::get('/get_insurance_packages_format', 'ImportExcelController@insurancePackagesFormat')->name('get_insurance_packages_format');
+
+
+
+    Route::post('/import_insurance_companies', 'ImportExcelController@importInsuranceCompanies')->name('import_insurance_companies');
+    Route::get('/get_insurance_companies_format', 'ImportExcelController@insuranceCompaniesFormat')->name('get_insurance_companies_format');
+
+
+    Route::post('/import_insurance_classes', 'ImportExcelController@importInsuranceClasses')->name('import_insurance_classes');
+    Route::get('/get_insurance_classes_format', 'ImportExcelController@insuranceClassesFormat')->name('get_insurance_classes_format');
+
+
+    Route::post('/import_insurance_invoices', 'ImportExcelController@importInsuranceInvoices')->name('import_insurance_invoices');
+    Route::get('/get_insurance_invoices_format', 'ImportExcelController@insuranceInvoicesFormat')->name('get_insurance_invoices_format');
+
+    Route::post('/import_insurance_clients_invoices', 'ImportExcelController@importInsuranceClientsInvoices')->name('import_insurance_clients_invoices');
+    Route::get('/get_insurance_clients_invoices_format', 'ImportExcelController@insuranceClientsInvoicesFormat')->name('get_insurance_clients_invoices_format');
+
+
+
+
 });
 
 
@@ -626,6 +665,34 @@ Route::group(['middleware' => ['auth', 'car']], function() {
 
 
     Route::get('/cancel_car_invoice/{id}', 'InvoicesController@CancelCarInvoice')->name('cancel_car_invoice');
+
+
+    //import data
+    Route::post('/import_car_contracts', 'ImportExcelController@importCarContracts')->name('import_car_contracts');
+    Route::get('/get_car_contracts_format', 'ImportExcelController@carContractsFormat')->name('get_car_contracts_format');
+
+
+    Route::post('/import_logsheets', 'ImportExcelController@importLogSheets')->name('import_logsheets');
+    Route::get('/get_logsheets_format', 'ImportExcelController@logSheetsFormat')->name('get_logsheets_format');
+
+
+    Route::post('/import_hire_rate', 'ImportExcelController@importHireRate')->name('import_hire_rate');
+    Route::get('/get_hire_rate_format', 'ImportExcelController@hireRateFormat')->name('get_hire_rate_format');
+
+
+    Route::post('/import_vehicles', 'ImportExcelController@importVehicles')->name('import_vehicles');
+    Route::get('/get_vehicles_format', 'ImportExcelController@vehiclesFormat')->name('get_vehicles_format');
+
+
+    Route::post('/import_cost_centres', 'ImportExcelController@importCostCentres')->name('import_cost_centres');
+    Route::get('/get_cost_centres_format', 'ImportExcelController@CostCentresFormat')->name('get_cost_centres_format');
+
+
+
+    Route::post('/import_car_invoices', 'ImportExcelController@importCarInvoices')->name('import_car_invoices');
+    Route::get('/get_car_invoices_format', 'ImportExcelController@carInvoicesFormat')->name('get_car_invoices_format');
+
+
 
 
 });
@@ -653,6 +720,14 @@ Route::group(['middleware' => ['auth', 'research']], function() {
     //Import data
     Route::post('/import_research_contracts', 'ImportExcelController@importResearchContracts')->name('import_research_contracts');
     Route::get('/get_research_contracts_format', 'ImportExcelController@researchContractsFormat')->name('get_research_contracts_format');
+
+
+    Route::post('/import_research_rooms', 'ImportExcelController@importResearchRooms')->name('import_research_rooms');
+    Route::get('/get_research_rooms_format', 'ImportExcelController@researchRoomsFormat')->name('get_research_rooms_format');
+
+    Route::post('/import_research_invoices', 'ImportExcelController@importResearchInvoices')->name('import_research_invoices');
+    Route::get('/get_research_invoices_format', 'ImportExcelController@researchInvoicesFormat')->name('get_research_invoices_format');
+
 
 
 

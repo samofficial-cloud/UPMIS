@@ -988,7 +988,7 @@
 
                                             </div>
                                             <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
-                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                            <a onclick="history.back()" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
 
                                         {{-- Third Form --}}
@@ -1223,7 +1223,7 @@
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                             <input type="button" name="next" id="next2" class="submit action-button" value="Next"/>
-                                            <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
+                                            <a onclick="history.back()" style="background-color: red !important;" class="btn  action-button" >Cancel</a>
                                         </fieldset>
 
 

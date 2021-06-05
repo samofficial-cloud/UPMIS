@@ -25,7 +25,7 @@ class SpaceController extends Controller
      */
     public function index()
     {
-        $spaces=DB::table('spaces')->where('status',1)->get();
+        $spaces=DB::table('spaces')->where('status',1)->where('flag',2)->get();
 
 
 

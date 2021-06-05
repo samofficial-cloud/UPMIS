@@ -34,6 +34,7 @@
 <script src="{{asset('select2/dist/js/select2.min.js')}}" type="text/javascript"></script>
 
     <script src="{{ asset('js/jquery-ui.js') }}" ></script>
+    <script src="{{ asset('js/jquery.timepicker.min.js') }}" ></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -52,6 +53,7 @@
     <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery-ui.structure.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery-ui.theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/jquery.timepicker.min.css') }}" rel="stylesheet">
 
 
      @yield('style')
@@ -383,9 +385,8 @@
 
     <script>
 
-        $( ".date_datepicker").datepicker({
-
-            dateFormat: 'yy-mm-dd',
+        $(".date_datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
             calendarWeeks: true,
             autoclose: true,
             todayHighlight: true,

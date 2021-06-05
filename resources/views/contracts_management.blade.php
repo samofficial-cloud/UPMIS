@@ -1283,7 +1283,7 @@ div.dt-buttons{
             <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
             <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheet</strong></button>
         </div>
-<div id="inbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px; ">
+<div id="inbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
   <br>
   @if(count($inbox)>0)
 <table>
@@ -1554,6 +1554,12 @@ div.dt-buttons{
         </div>
       </div>
 </div>
+
+
+
+
+
+
   <br><br>
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
@@ -2202,6 +2208,12 @@ div.dt-buttons{
         </div>
       </div>
 </div>
+
+
+
+
+
+
   <br><br>
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
@@ -2532,9 +2544,77 @@ div.dt-buttons{
     <br>
      @if($privileges=='Read only')
     @else
+
+         <div style="float:left;">
        <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
           padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
         </a>
+         </div>
+
+          @admin
+          <div style="float:right;">
+              <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_car" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+              <div style="float:right;"><a href="/get_car_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+              <div style="clear: both;"></div>
+          </div>
+          @endadmin
+         <div style="clear: both;"></div>
+
+
+          <div class="modal fade" id="import_data_car" role="dialog">
+
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <b><h5 class="modal-title">Importing Data</h5></b>
+
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+
+                      <div class="modal-body">
+
+                          <form method="post" enctype="multipart/form-data" action="/import_car_contracts"   >
+                              {{csrf_field()}}
+
+                              <div class="form-row">
+
+
+                                  <div  class=" col-md-12 ">
+                                      <div class="">
+                                          <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                          <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                          <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                      </div>
+                                  </div>
+                                  <br>
+
+
+                              </div>
+
+
+                              <div align="right">
+                                  <button  class="btn btn-primary" type="submit">Import</button>
+                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                              </div>
+                          </form>
+
+
+
+
+
+
+
+
+
+                      </div>
+                  </div>
+              </div>
+
+
+          </div>
+
+
   @endif
 {{--   <h4 style="text-align: center"><strong>Car Rental Contracts</strong></h4>--}}
 {{--   <hr>--}}
@@ -2612,6 +2692,76 @@ div.dt-buttons{
         </div>
       </div>
 </div>
+
+
+
+
+          @admin
+          <div style="float:right;">
+              <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+              <div style="float:right;"><a href="/get_logsheets_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+              <div style="clear: both;"></div>
+          </div>
+          @endadmin
+          <div style="clear: both;"></div>
+
+
+          <div class="modal fade" id="import_data_logsheets" role="dialog">
+
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <b><h5 class="modal-title">Importing Data</h5></b>
+
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+
+                      <div class="modal-body">
+
+                          <form method="post" enctype="multipart/form-data" action="/import_logsheets">
+                              {{csrf_field()}}
+
+                              <div class="form-row">
+
+
+                                  <div  class=" col-md-12 ">
+                                      <div class="">
+                                          <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                          <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                          <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                      </div>
+                                  </div>
+                                  <br>
+
+
+                              </div>
+
+
+                              <div align="right">
+                                  <button  class="btn btn-primary" type="submit">Import</button>
+                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                              </div>
+                          </form>
+
+
+
+
+
+
+
+
+
+                      </div>
+                  </div>
+              </div>
+
+
+          </div>
+
+
+
+
     @endif
     <br><br>
     <table class="hover table table-bordered  table-striped" id="LogTable">

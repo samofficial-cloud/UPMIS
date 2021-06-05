@@ -118,7 +118,9 @@ class carContractsController extends Controller
         ->where('flag','1')
         ->get();
         $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
-        $payment_status=DB::table('car_rental_invoices')->select('payment_status')->where('contract_id',$id)->value('payment_status');
+        $payment_status=DB::table('car_rental_invoices')->select('payment_status')->where('contract_id',$id)->orderBy('invoice_number','desc')->limit(1)->value('payment_status');
+
+
          return view('CarRentalFormB3')->with('contract',$contract)->with('data',$data)->with('nature', $nature)->with('payment_status',$payment_status);
     }
 
@@ -131,7 +133,7 @@ class carContractsController extends Controller
         ->where('flag','1')
         ->get();
         $nature = carContract::select('trip_nature')->where('id',$id)->value('trip_nature');
-        $payment_status=DB::table('car_rental_invoices')->select('payment_status')->where('contract_id',$id)->value('payment_status');
+        $payment_status=DB::table('car_rental_invoices')->select('payment_status')->where('contract_id',$id)->orderBy('invoice_number','desc')->limit(1)->value('payment_status');
          return view('CarRentalFormB31')->with('contract',$contract)->with('data',$data)->with('nature', $nature)->with('payment_status',$payment_status);
     }
 
@@ -218,6 +220,7 @@ class carContractsController extends Controller
         }
 
     }
+
 
     public function newContractB(Request $request){
         $id=$request->get('contract_id');

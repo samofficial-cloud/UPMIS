@@ -6066,7 +6066,73 @@
 
                                     @if(count($space_invoices)>0)
 
-                                        <div class="col-sm-12">
+
+                                        <div class="col-sm-12" style="padding-left:3px;">
+
+
+
+                                             @admin
+                                <div style="float:left;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_space_invoices" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_space_invoices_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                    <div class="modal fade" id="import_data_space_invoices" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" enctype="multipart/form-data" action="/import_space_invoices">
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+                                                            <div  class=" col-md-12 ">
+                                                                <div class="">
+                                                                    <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                    <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                    <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+                                                            <button  class="btn btn-primary" type="submit">Import</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @endadmin
+
+
+
                                             <div class="pull-right">
                                                 <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
@@ -12994,7 +13060,72 @@
 
                                     @if(count($water_invoices)>0)
 
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12" style="padding-left:3px;">
+
+
+                                                        @admin
+                                <div style="float:left;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_water_bill_invoices" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_water_bill_invoices_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                    <div class="modal fade" id="import_data_water_bill_invoices" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" enctype="multipart/form-data" action="/import_water_bill_invoices">
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+                                                            <div  class=" col-md-12 ">
+                                                                <div class="">
+                                                                    <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                    <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                    <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+                                                            <button  class="btn btn-primary" type="submit">Import</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @endadmin
+
+
+
+
                                             <div class="pull-right">
                                                 <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
@@ -13412,7 +13543,7 @@
                                                                         @else
                                                                         @endif
 
-                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+{{--                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>--}}
 
                                                                             <div class="modal fade" id="send_invoice_water{{$var->invoice_number}}" role="dialog">
 
@@ -19956,7 +20087,74 @@
 
                                     @if(count($electricity_invoices)>0)
 
-                                        <div class="col-sm-12">
+
+
+                                        <div class="col-sm-12" style="padding-left:3px;">
+
+
+
+                                                      @admin
+                                <div style="float:left;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_electricity_bill_invoices" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_electricity_bill_invoices_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                    <div class="modal fade" id="import_data_electricity_bill_invoices" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" enctype="multipart/form-data" action="/import_electricity_bill_invoices">
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+                                                            <div  class=" col-md-12 ">
+                                                                <div class="">
+                                                                    <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                    <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                    <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+                                                            <button  class="btn btn-primary" type="submit">Import</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @endadmin
+
+
+
                                             <div class="pull-right">
                                                 <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
@@ -20372,7 +20570,7 @@
                                                                         @else
                                                                         @endif
 
-                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+{{--                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>--}}
 
                                                                             <div class="modal fade" id="send_invoice_electricity{{$var->invoice_number}}" role="dialog">
 
@@ -21792,10 +21990,10 @@
 
 
 
-                                                                                                <div id="vrn_carDiv" style="display:none;" class="form-group col-md-12 mt-1">
+                                                                                                <div  class="form-group col-md-12 mt-1">
                                                                                                     <div class="form-wrapper">
-                                                                                                        <label for=""  >Vehicle Registration Number (VRN)</label>
-                                                                                                        <input type="text" class="form-control" id="vrn_car" name="vrn" value="{{$var->vrn}}" readonly  autocomplete="off">
+                                                                                                        <label for=""  >Vehicle Registration Number (VRN)<span style="color: red;">*</span></label>
+                                                                                                        <input type="text" class="form-control" required name="vrn" value="{{$var->vrn}}"   autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -22828,10 +23026,10 @@
 
 
 
-                                                                    <div id="vrn_carDiv" style="display:none;" class="form-group col-md-12 mt-1">
+                                                                    <div id="vrn_car2Div" style="display:none;" class="form-group col-md-12 mt-1">
                                                                         <div class="form-wrapper">
-                                                                            <label for=""  >Vehicle Registration Number (VRN)</label>
-                                                                            <input type="text" class="form-control" id="vrn_car" name="vrn" value="" readonly  autocomplete="off">
+                                                                            <label for=""  >Vehicle Registration Number (VRN)<span style="color: red;">*</span></label>
+                                                                            <input type="text" class="form-control"  name="vrn" value="" required  autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -24120,10 +24318,10 @@
 
 
 
-                                                                                            <div id="vrn_carDiv" style="display:none;" class="form-group col-md-12 mt-1">
+                                                                                            <div   class="form-group col-md-12 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Vehicle Registration Number (VRN)</label>
-                                                                                                    <input type="text" class="form-control" id="vrn_car" name="vrn" value="{{$var->vrn}}" readonly  autocomplete="off">
+                                                                                                    <input type="text" class="form-control" id="vrn_car" name="vrn" value="{{$var->vrn}}"   autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -25870,7 +26068,71 @@
 
                                         @if(count($car_invoices)>0)
 
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12" style="padding-left:3px;">
+
+
+
+                                             @admin
+                                <div style="float:left;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_car_rental_invoices" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_car_invoices_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                    <div class="modal fade" id="import_data_car_rental_invoices" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" enctype="multipart/form-data" action="/import_car_invoices">
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+                                                            <div  class=" col-md-12 ">
+                                                                <div class="">
+                                                                    <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                    <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                    <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+                                                            <button  class="btn btn-primary" type="submit">Import</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @endadmin
+
+
                                                 <div class="pull-right">
                                                     <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
@@ -30532,6 +30794,7 @@
 
 
 
+
                                                     <div style="display:none;" id="invoicing_period_end_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
@@ -30642,7 +30905,71 @@
 
                                         @if(count($research_invoices)>0)
 
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12" style="padding-left:3px;">
+
+
+
+                                             @admin
+                                <div style="float:left;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_research_invoices" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_research_invoices_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                    <div class="modal fade" id="import_data_research_invoices" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" enctype="multipart/form-data" action="/import_research_invoices">
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+                                                            <div  class=" col-md-12 ">
+                                                                <div class="">
+                                                                    <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                    <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                    <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+                                                            <button  class="btn btn-primary" type="submit">Import</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @endadmin
+
+
                                                 <div class="pull-right">
                                                     <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
@@ -38073,7 +38400,70 @@
 
                                         @if(count($insurance_clients_invoices)>0)
 
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12" style="padding-left:3px;">
+
+
+                                                    @admin
+                                <div style="float:left;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_insurance_clients_invoices" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_insurance_clients_invoices_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                    <div class="modal fade" id="import_data_insurance_clients_invoices" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" enctype="multipart/form-data" action="/import_insurance_clients_invoices">
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+                                                            <div  class=" col-md-12 ">
+                                                                <div class="">
+                                                                    <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                    <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                    <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+                                                            <button  class="btn btn-primary" type="submit">Import</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @endadmin
+
+
                                                 <div class="pull-right">
                                                     <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
@@ -42865,7 +43255,70 @@
 
                                         @if(count($insurance_invoices)>0)
 
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12" style="padding-left:3px;">
+
+
+                                             @admin
+                                <div style="float:left;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_insurance_invoices" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_insurance_invoices_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                    <div class="modal fade" id="import_data_insurance_invoices" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" enctype="multipart/form-data" action="/import_insurance_invoices">
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+                                                            <div  class=" col-md-12 ">
+                                                                <div class="">
+                                                                    <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                    <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                    <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+                                                            <button  class="btn btn-primary" type="submit">Import</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @endadmin
+
+
                                                 <div class="pull-right">
                                                     <form class="form-inline" role="form" method="post" accept-charset="utf-8">
 
@@ -45347,6 +45800,7 @@
                             $('#submit_car').prop('disabled', true);
 
                             $('#debtor_name_carDiv').hide();
+                            $('#vrn_car2Div').hide();
                             // $('#invoice_number_carDiv').hide();
                             $('#debtor_account_code_carDiv').hide();
                             $('#tin_carDiv').hide();
@@ -45371,6 +45825,7 @@
                             $('#submit_car').prop('disabled', false);
 
                             $('#debtor_name_carDiv').show();
+                            $('#vrn_car2Div').show();
                             // $('#invoice_number_carDiv').show();
                             $('#debtor_account_code_carDiv').show();
                             $('#tin_carDiv').show();

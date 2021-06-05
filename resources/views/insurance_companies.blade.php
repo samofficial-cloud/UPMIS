@@ -115,75 +115,154 @@
 
 
 
-<br>
- <a style="cursor: pointer; color:white; font-weight: bold; background-color: #38c172; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;" data-toggle="modal"  data-target="#add_company"  role="button" aria-pressed="true" name="editC">Add New Insurance Company</a>
 
 
+            <div>
 
-          <div class="modal fade" id="add_company" role="dialog">
-
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <b><h5 class="modal-title">Adding new insurance company</h5></b>
-
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <div class="modal-body">
-                  <form method="post" action="{{ route('add_insurance_company')}}"  id="form1">
-                    {{csrf_field()}}
-
-
-                      <div class="form-group">
-                          <div class="form-wrapper">
-                              <label for=""  ><strong>Name<span style="color: red;"> *</span> </strong></label>
-                              <input type="text" class="form-control"   name="company" value="" required autocomplete="off">
-
-                          </div>
-                      </div>
-                      <br>
-
-                      <div class="form-group">
-                          <div class="form-wrapper">
-                              <label for=""  ><strong>Email<span style="color: red;"> *</span> </strong></label>
-                              <input type="email" class="form-control"   name="company_email" value="" required autocomplete="off">
-
-                          </div>
-                      </div>
-                      <br>
-
-                      <div class="form-group">
-                          <div class="form-wrapper">
-                              <label for=""  ><strong>Address<span style="color: red;"> *</span> </strong></label>
-                              <input type="text" class="form-control"   name="company_address" value="" required autocomplete="off">
-
-                          </div>
-                      </div>
-                      <br>
-
-                      <div class="form-group">
-                          <div class="form-wrapper">
-                              <label for=""  ><strong>TIN<span style="color: red;"> *</span> </strong></label>
-                              <input type="text" class="form-control" name="company_tin" value="" required autocomplete="off">
-
-                          </div>
-                      </div>
-                      <br>
-
-                    <div align="right">
-                      <button class="btn btn-primary" type="submit" >Submit</button>
-                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                    </div>
-                  </form>
-
-
-                </div>
-              </div>
+            <div style="float: left; padding-top: 12px;">
+                <a style="cursor: pointer; color:white;  background-color: #38c172; background-clip: border-box;  padding: 10px; border-radius: 0.25rem;" data-toggle="modal"  data-target="#add_company"  role="button" aria-pressed="true" name="editC">Add New Insurance Company</a>
             </div>
 
 
-          </div>
+                <div class="modal fade" id="add_company" role="dialog">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <b><h5 class="modal-title">Adding new insurance company</h5></b>
+
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form method="post" action="{{ route('add_insurance_company')}}"  id="form1">
+                                    {{csrf_field()}}
+
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for=""  ><strong>Name<span style="color: red;"> *</span> </strong></label>
+                                            <input type="text" class="form-control"   name="company" value="" required autocomplete="off">
+
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for=""  ><strong>Email<span style="color: red;"> *</span> </strong></label>
+                                            <input type="email" class="form-control"   name="company_email" value="" required autocomplete="off">
+
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for=""  ><strong>Address<span style="color: red;"> *</span> </strong></label>
+                                            <input type="text" class="form-control"   name="company_address" value="" required autocomplete="off">
+
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-group">
+                                        <div class="form-wrapper">
+                                            <label for=""  ><strong>TIN<span style="color: red;"> *</span> </strong></label>
+                                            <input type="text" class="form-control" name="company_tin" value="" required autocomplete="off">
+
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div align="right">
+                                        <button class="btn btn-primary" type="submit" >Submit</button>
+                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+            @admin
+            <div style="float:right;">
+                <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;   "  data-target="#import_data_insurance_companies" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                <div style="float:right;"><a href="/get_insurance_companies_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  "   title="Download Sample">Download Sample</a> </div>
+                <div style="clear: both;"></div>
+                <div class="modal fade" id="import_data_insurance_companies" role="dialog">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <form method="post" enctype="multipart/form-data" action="/import_insurance_companies">
+                                    {{csrf_field()}}
+
+                                    <div class="form-row">
+
+
+                                        <div  class=" col-md-12 ">
+                                            <div class="">
+                                                <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+
+                                    </div>
+
+
+                                    <div align="right">
+                                        <button  class="btn btn-primary" type="submit">Import</button>
+                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            @endadmin
+
+
+                <div style="clear: both;"></div>
+
+            </div>
+
+
+
+
 
         <div style="margin-top: 2%;">
 

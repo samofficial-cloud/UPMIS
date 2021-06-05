@@ -194,7 +194,7 @@ $today=date('Y-m-d');
     <div class="row justify-content-center mt-0">
         <div class="col-12 col-sm-9 col-md-7 col-lg-9 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-            	<h4><strong>UNIVERSITY OF DAR ES SALAAM - MAIN ADMINISTRATION</strong></h4>w
+            	<h4><strong>UNIVERSITY OF DAR ES SALAAM - MAIN ADMINISTRATION</strong></h4>
                 <h4><strong>CENTRAL POOL TRANSPORTATION UNIT<br>VEHICLE REQUISTION FORM</strong></h4>
                 <div class="row">
                     <div class="col-md-12 mx-0">
@@ -293,22 +293,24 @@ $today=date('Y-m-d');
 					<div class="form-group row">
 						<div class="form-wrapper col-6">
 							<label for="start_date">Start Date<span style="color: red;">*</span></label>
-							<input type="date" id="start_date" name="start_date" class="form-control" required="" min="{{$today}}">
-						</div>
+							<input  id="start_date_view"  class="form-control" required="" autocomplete="off">
+                            <input type="hidden" id="start_date" name="start_date" required class="form-control">
+                        </div>
 						<div class="form-wrapper col-6">
 							<label for="end_date">End Date<span style="color: red;">*</span></label>
-							<input type="date" id="end_date" name="end_date" class="form-control" required="" min="{{$today}}">
+							<input  id="end_date_view"  class="form-control" required="" autocomplete="off">
+                            <input type="hidden" id="end_date" name="end_date" required class="form-control">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<div class="form-wrapper col-6">
 							<label for="start_time">Start Time<span style="color: red;">*</span></label>
-							<input type="time" id="start_time" name="start_time" class="form-control" required="">
+							<input  id="start_time" name="start_time" class="form-control" required="">
 						</div>
 						<div class="form-wrapper col-6">
 							<label for="end_time">End Time<span style="color: red;">*</span></label>
-							<input type="time" id="end_time" name="end_time" class="form-control" required="">
+							<input  id="end_time" name="end_time" class="form-control" required="">
 						</div>
 					</div>
 
@@ -618,5 +620,57 @@ $(document).on('click', '#list', function(){
 
 
 </script>
+
+
+<script>
+
+        <?php
+        $today_date=date('Y-m-d');
+
+        ?>
+
+    var today={!! json_encode($today_date) !!};
+
+    $("#start_date_view").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#start_date",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        minDate:new Date(today),
+        orientation:"auto"
+    });
+
+
+    $("#end_date_view").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#end_date",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        minDate:new Date(today),
+        orientation:"auto"
+    });
+
+        $('#start_time').timepicker({
+            timeFormat: 'HH:mm',
+            interval: 60,
+            dropdown: true,
+            scrollbar: true
+        });
+
+        $('#end_time').timepicker({
+            timeFormat: 'HH:mm',
+            interval: 60,
+            dropdown: true,
+            scrollbar: true
+        });
+
+
+</script>
+
+
 
 @endsection

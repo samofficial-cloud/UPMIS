@@ -2161,12 +2161,91 @@ input[type=radio]{
 
                         @if($privileges=='Read only')
                         @else
-                            <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="  color: white;  background-color: #38c172;
+                            <div style="float:left;">
+
+
+                                <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="  color: white;  background-color: #38c172;
+
     padding: 10px;
     margin-left: -2px;
     margin-bottom: 15px;
     margin-top: 4px;" role="button" aria-pressed="true">Add new Insurance Package</a>
+                            </div>
+
+
+
+                        @admin
+
+                            <div style="float:right;">
+                                <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_insurance_package" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                <div style="float:right;"><a href="/get_insurance_packages_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                <div style="clear: both;"></div>
+                            </div>
+
+                            <div style="clear: both;"></div>
+
+
+                            <div class="modal fade" id="import_data_insurance_package" role="dialog">
+
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form method="post" enctype="multipart/form-data" action="/import_insurance_packages">
+                                                {{csrf_field()}}
+
+                                                <div class="form-row">
+
+
+                                                    <div  class=" col-md-12 ">
+                                                        <div class="">
+                                                            <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                            <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                            <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+
+
+                                                </div>
+
+
+                                                <div align="right">
+                                                    <button  class="btn btn-primary" type="submit">Import</button>
+                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+
+
+
+
+
+
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            @endadmin
+
+
+
+
+
                         @endif
+
 
                         <div class="">
 
@@ -2487,10 +2566,11 @@ input[type=radio]{
                         @if($privileges=='Read only')
                         @else
                             @admin
-                             <a title="Add New Room" data-toggle="modal" data-target="#addroom" class="btn btn-success button_color active" style="
-    padding: 10px;
-    margin-bottom: 2px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add Room</a>
+                        <div style="float: left;">
+
+
+                            <a title="Add New Room" data-toggle="modal" data-target="#addroom" class="btn btn-success  active" style=" padding: 10px; background-color: #38c172; cursor: pointer; border: none;  margin-bottom: 2px;    margin-top: 4px;" role="button" aria-pressed="true">Add Room</a>
+                        </div>
 
     <div class="modal fade" id="addroom" role="dialog">
 
@@ -2561,6 +2641,77 @@ input[type=radio]{
         </div>
       </div>
     </div>
+
+
+
+                            <div style="float:right;">
+                                <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                <div style="float:right;"><a href="/get_research_rooms_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                <div style="clear: both;"></div>
+                            </div>
+
+                            <div style="clear: both;"></div>
+
+
+                            <div class="modal fade" id="import_data_logsheets" role="dialog">
+
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <form method="post" enctype="multipart/form-data" action="/import_research_rooms">
+                                                {{csrf_field()}}
+
+                                                <div class="form-row">
+
+
+                                                    <div  class=" col-md-12 ">
+                                                        <div class="">
+                                                            <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                            <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                            <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+
+
+                                                </div>
+
+
+                                                <div align="right">
+                                                    <button  class="btn btn-primary" type="submit">Import</button>
+                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+
+
+
+
+
+
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+
+
+
+
                             @endadmin
                         @endif
 
@@ -3268,6 +3419,71 @@ input[type=radio]{
 
 
 
+                                     @admin
+
+                                     <div style="float:right;">
+                                         <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_vehicles" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                         <div style="float:right;"><a href="/get_vehicles_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                         <div style="clear: both;"></div>
+                                     </div>
+
+                                     <div style="clear: both;"></div>
+
+
+                                     <div class="modal fade" id="import_vehicles" role="dialog">
+
+                                         <div class="modal-dialog" role="document">
+                                             <div class="modal-content">
+                                                 <div class="modal-header">
+                                                     <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                 </div>
+
+                                                 <div class="modal-body">
+
+                                                     <form method="post" enctype="multipart/form-data" action="/import_vehicles">
+                                                         {{csrf_field()}}
+
+                                                         <div class="form-row">
+
+
+                                                             <div  class=" col-md-12 ">
+                                                                 <div class="">
+                                                                     <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                     <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                     <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                 </div>
+                                                             </div>
+                                                             <br>
+
+
+                                                         </div>
+
+
+                                                         <div align="right">
+                                                             <button  class="btn btn-primary" type="submit">Import</button>
+                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                         </div>
+                                                     </form>
+
+
+
+
+
+
+
+
+
+                                                 </div>
+                                             </div>
+                                         </div>
+
+
+                                     </div>
+
+                                     @endadmin
 
 {{--                            <br>--}}
 {{--                            <center><h3><strong>Vehicles Fleet</strong></h3></center>--}}
@@ -3425,11 +3641,85 @@ input[type=radio]{
                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                             @if($privileges=='Read only')
                                 @else
-                                <a data-toggle="modal" data-target="#hiree" class="btn btn-success button_color active" style="
-    padding: 10px;
+
+                                <div style="float:left;">
+
+                                    <a data-toggle="modal" data-target="#hiree" class="btn btn-success  active" style="background-color: #38c172; border: none;    padding: 10px;
 
     margin-bottom: 5px;
     margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
+                                </div>
+
+
+
+
+                                @admin
+
+                                <div style="float:right;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_hire_rate" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_hire_rate_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                </div>
+
+                                <div style="clear: both;"></div>
+
+
+                                <div class="modal fade" id="import_data_hire_rate" role="dialog">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                <form method="post" enctype="multipart/form-data" action="/import_hire_rate">
+                                                    {{csrf_field()}}
+
+                                                    <div class="form-row">
+
+
+                                                        <div  class=" col-md-12 ">
+                                                            <div class="">
+                                                                <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                    </div>
+
+
+                                                    <div align="right">
+                                                        <button  class="btn btn-primary" type="submit">Import</button>
+                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </form>
+
+
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                @endadmin
+
+
 
                                 <div class="modal fade" id="hiree" role="dialog">
 
@@ -3610,47 +3900,122 @@ input[type=radio]{
                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                             @if($privileges=='Read only')
                             @else
-                                <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success button_color active" style="
-    padding: 10px;
 
-    margin-bottom: 5px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add Cost Centre</a>
-                                <div class="modal fade" id="cost_centree" role="dialog">
 
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <b><h5 class="modal-title">Fill the form below to add new cost centre</h5></b>
 
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            </div>
+                        <div style="float:left;">
 
-                                            <div class="modal-body">
-                                                <form method="post" action="{{ route('addcentre') }}">
-                                                    {{csrf_field()}}
-                                                    <div class="form-group" id="costcentreiddiv">
-                                                        <div class="form-wrapper">
-                                                            <label for="costcentreid">Cost Centre id<span style="color: red;">*</span></label>
-                                                            <input type="text" id="costcentreid" name="costcentreid" class="form-control" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                        </div>
+
+                            <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success  active" style="background-color: #38c172; border: none;    padding: 10px;
+
+                            margin-bottom: 5px;
+                            margin-top: 4px;" role="button" aria-pressed="true">Add Cost Centre</a>
+                            <div class="modal fade" id="cost_centree" role="dialog">
+
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b><h5 class="modal-title">Fill the form below to add new cost centre</h5></b>
+
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ route('addcentre') }}">
+                                                {{csrf_field()}}
+                                                <div class="form-group" id="costcentreiddiv">
+                                                    <div class="form-wrapper">
+                                                        <label for="costcentreid">Cost Centre id<span style="color: red;">*</span></label>
+                                                        <input type="text" id="costcentreid" name="costcentreid" class="form-control" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                                     </div>
+                                                </div>
 
-                                                    <div class="form-group" id="centrenamediv">
-                                                        <div class="form-wrapper">
-                                                            <label for="centrename">Cost Centre Name<span style="color: red;">*</span></label>
-                                                            <input type="text" id="centrename" name="centrename" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                                        </div>
+                                                <div class="form-group" id="centrenamediv">
+                                                    <div class="form-wrapper">
+                                                        <label for="centrename">Cost Centre Name<span style="color: red;">*</span></label>
+                                                        <input type="text" id="centrename" name="centrename" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                                     </div>
+                                                </div>
 
-                                                    <div align="right">
-                                                        <button class="btn btn-primary" type="submit">Save</button>
-                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                <div align="right">
+                                                    <button class="btn btn-primary" type="submit">Save</button>
+                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+
+                        </div>
+
+
+
+
+                                @admin
+                                <div style="float:right;">
+                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_cost_centres" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                    <div style="float:right;"><a href="/get_cost_centres_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                    <div style="clear: both;"></div>
+                                    <div class="modal fade" id="import_data_cost_centres" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <form method="post" enctype="multipart/form-data" action="/import_cost_centres">
+                                                        {{csrf_field()}}
+
+                                                        <div class="form-row">
+
+
+                                                            <div  class=" col-md-12 ">
+                                                                <div class="">
+                                                                    <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                    <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                    <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+
+                                                        </div>
+
+
+                                                        <div align="right">
+                                                            <button  class="btn btn-primary" type="submit">Import</button>
+                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @endadmin
+
+
+
+
                             @endif
                             <br>
                            <div class="" style="width: 100%;">

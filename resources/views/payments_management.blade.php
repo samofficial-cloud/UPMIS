@@ -816,7 +816,7 @@
 
 
 <div id="space_complete_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_deep_inner">
-{{--    <br>--}}
+    <br>
 
 {{--    <h3 style="text-align: center"><strong>Real Estate payments</strong></h3>--}}
 
@@ -1308,7 +1308,7 @@
                     @else
 
                         <div id="space_payments_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; " class="tabcontent_inner">
-{{--                            <br>--}}
+                            <br>
 
 {{--                            <h3 style="text-align: center"><strong>Real Estate payments</strong></h3>--}}
 
@@ -1791,7 +1791,7 @@
 
 
                 <div id="water_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; ">
-{{--                    <br>--}}
+                    <br>
 {{--                    <h3 style="text-align: center"><strong>Water bill payments</strong></h3>--}}
 
 {{--                    <hr>--}}
@@ -2122,7 +2122,7 @@
 
 
                 <div id="electricity_payments" class="tabcontent_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; ">
-{{--                    <br>--}}
+                    <br>
 {{--                    <h3 style="text-align: center"><strong>Electricity bill payments</strong></h3>--}}
 
 {{--                    <hr>--}}
@@ -2461,7 +2461,7 @@
 
 
                 <div id="car_rental_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "  class="tabcontent">
-{{--                    <br>--}}
+                    <br>
 
 
 {{--                    <h3 style="text-align: center"><strong>Car rental payments</strong></h3>--}}
@@ -2791,7 +2791,7 @@
 
 
                     <div id="research_payments" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px; "  class="tabcontent">
-{{--                        <br>--}}
+                        <br>
 
 
 {{--                        <h3 style="text-align: center"><strong>Research Flats payments</strong></h3>--}}
@@ -3127,7 +3127,7 @@
                         <div id="insurance_category_clients" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px;" class="tabcontent_inner_insurance">
 
 
-{{--                            <br>--}}
+                            <br>
 {{--                            <h3 style="text-align: center"><strong>Insurance payments(Clients)</strong></h3>--}}
 
 {{--                            <hr>--}}
@@ -3442,7 +3442,7 @@
 
                         <div id="insurance_category_principals" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px; padding: 6px 12px;" class="tabcontent_inner_insurance">
 
-{{--                            <br>--}}
+                            <br>
 {{--                            <h3 style="text-align: center"><strong>Insurance payments(Principals)</strong></h3>--}}
 
 {{--                            <hr>--}}

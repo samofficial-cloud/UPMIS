@@ -787,7 +787,7 @@ $today=date('Y-m-d');
                         <div class="form-wrapper col-6">
                             <label for="speedmeter_time">Time<span style="color: red;">*</span></label>
                             <span id="speedmeter_timemsg"></span>
-                            <input type="time" id="speedmeter_time" name="speedmeter_time" class="form-control" value="{{$contract->initial_speedmeter_time}}">
+                            <input  id="speedmeter_time" name="speedmeter_time" class="form-control" value="{{$contract->initial_speedmeter_time}}">
                         </div>
                     </div>
 
@@ -800,7 +800,7 @@ $today=date('Y-m-d');
                         <div class="form-wrapper col-6">
                             <label for="end_speedmeter_time">Time<span style="color: red;">*</span></label>
                             <span id="end_speedmeter_timemsg"></span>
-                            <input type="time" id="end_speedmeter_time" name="end_speedmeter_time" class="form-control" value="{{$contract->ending_speedmeter_time}}">
+                            <input  id="end_speedmeter_time" name="end_speedmeter_time" class="form-control" value="{{$contract->ending_speedmeter_time}}">
                         </div>
                     </div>
 
@@ -1315,4 +1315,32 @@ $today=date('Y-m-d');
  }
   }
 </script>
+
+
+
+                <script>
+
+
+
+                    $('#speedmeter_time').timepicker({
+                        timeFormat: 'HH:mm',
+                        interval: 60,
+                        dropdown: true,
+                        scrollbar: true
+                    });
+
+                    $('#end_speedmeter_time').timepicker({
+                        timeFormat: 'HH:mm',
+                        interval: 60,
+                        dropdown: true,
+                        scrollbar: true
+                    });
+
+
+
+
+                </script>
+
+
+
 @endsection

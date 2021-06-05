@@ -3960,6 +3960,12 @@ class InvoicesController extends Controller
 
 
 
+        DB::table('car_rental_invoices')
+            ->where('invoice_number', $invoice_id)
+            ->update(['vrn' => $request->get('vrn')]);
+
+
+
 
         DB::table('car_rental_invoices')
             ->where('invoice_number', $invoice_id)

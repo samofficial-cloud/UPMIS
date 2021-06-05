@@ -140,22 +140,93 @@ div.dt-buttons{
 
 
 
-            <a style="cursor: pointer;" data-toggle="modal" title="Add new user" data-target="#add_user"  role="button" aria-pressed="true" name="editC"><div style="float:left; font-weight: bold; background-color: #38c172; color:white; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Add New User
+            <a style="cursor: pointer;" data-toggle="modal" title="Add new user" data-target="#add_user"  role="button" aria-pressed="true" name="editC"><div style="float:left;  background-color: #38c172; color:white; background-clip: border-box;  padding: 8px; border-radius: 0.25rem;">Add New User
 </div></a>
 
 {{--            <a title="Other settings" style="cursor: pointer;  color: black !important; font-weight: bold; text-decoration: none;" href="/role_management"> <div style="float:right;      background-color: #f6f6f6; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;"><i class="fas fa-cog"></i>--}}
 {{--                </div>--}}
 {{--            </a>--}}
 
-            <a style="cursor: pointer; color: black !important; font-weight: bold; text-decoration: none;" href="/role_management"> <div style="float:left; margin-left: 0.5%; color:white;    background-color: #38c172; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">Roles management
+            <a style="cursor: pointer; color: black !important;  text-decoration: none;" href="/role_management"> <div style="float:left; margin-left: 0.5%; color:white;    background-color: #38c172; background-clip: border-box;  padding: 8px; border-radius: 0.25rem;">Roles management
             </div>
             </a>
 
-            <a style="cursor: pointer; color: black !important; font-weight: bold; text-decoration: none;" href="/user_activity"> <div style="float:right; margin-left: 0.5%; color:white;    background-color: #38c172; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); padding: 1%; border-radius: 0.25rem;">User Activity Log
-                </div>
-            </a>
 
-            <div style="clear: both;"></div>
+
+            <div style="float:right;">
+
+
+
+                <div style="float: left;"><a style="background-color: #38c172; padding: 8px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;" class="btn button_color active" href="/user_activity"> User Activity Log</a></div>
+                <div style="float: left;"><a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 8px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_cost_centres" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+                <div style="float: left;"><a href="/get_users_format" class="btn button_color active" style="background-color: #38c172; padding: 8px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a></div>
+
+
+
+
+
+
+
+                <div style="clear: both;"></div>
+            </div>
+
+
+
+
+
+
+            <div class="modal fade" id="import_data_cost_centres" role="dialog">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <b><h5 class="modal-title">Importing Data</h5></b>
+
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <form method="post" enctype="multipart/form-data" action="/import_users">
+                                {{csrf_field()}}
+
+                                <div class="form-row">
+
+
+                                    <div  class=" col-md-12 ">
+                                        <div class="">
+                                            <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                            <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                            <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, user roles entered must be the same as the ones stored in the system." </span></div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+
+                                </div>
+
+
+                                <div align="right">
+                                    <button  class="btn btn-primary" type="submit">Import</button>
+                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+
+
+
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
 
           <div class="modal fade" id="add_user" role="dialog">
 

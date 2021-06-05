@@ -187,7 +187,8 @@ class ContractsController extends Controller
          $outbox=carContract::where('cptu_msg_status','outbox')->where('form_completion','1')->orderBy('id','dsc')->get();
         $inbox=carContract::where('cptu_msg_status','inbox')->where('form_completion','1')->orderBy('id','dsc')->get();
         $closed_act=carContract::where('form_completion','1')->where('flag',1)->orderBy('id','dsc')->get();
-         $closed_inact=carContract::where('form_completion','1')->where('flag',1)->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
+         $closed_inact=carContract::where('form_completion','1')->where('flag',1)->orderBy('id','dsc')->get();
+//          $closed_inact=carContract::where('form_completion','1')->where('flag',1)->wheredate('end_date','<',date('Y-m-d'))->orderBy('id','dsc')->get();
         // foreach ($inbox as $msg) {
         //     # code...
         //      DB::table('notifications')
