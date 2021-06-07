@@ -442,12 +442,12 @@ select.list-dt:focus {
                                     <div class="form-group row">
 
                                         <div class="form-wrapper col-6">
-                                            <label for="major_industry"  ><strong>Major industry</strong></label>
+                                            <label for="major_industry"  ><strong>Category</strong></label>
                                             <input type="text" class="form-control" id="getMajor" name="major_industry" value="{{$var->major_industry}}" readonly  autocomplete="off">
                                         </div>
 
                                         <div class="form-wrapper col-6">
-                                            <label for=""  ><strong>Minor industry</strong></label>
+                                            <label for=""  ><strong>Sub Category</strong></label>
                                             <input type="text" class="form-control" id="minor_list" name="minor_industry" value="{{$var->minor_industry}}" readonly  autocomplete="off">
                                         </div>
                                     </div>
@@ -844,13 +844,13 @@ select.list-dt:focus {
                                         </tr>
 
                                         <tr>
-                                            <td> Major industry:</td>
+                                            <td> Category:</td>
                                             <td id="major_industry_confirm"></td>
                                         </tr>
 
 
                                         <tr>
-                                            <td> Minor industry:</td>
+                                            <td> Sub Category:</td>
                                             <td id="minor_industry_confirm"></td>
                                         </tr>
 

@@ -890,7 +890,7 @@
                             <div class="form-group col-md-12">
                                 <div class="form-wrapper">
                                     <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                    <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                 </div>
                             </div>
                             <br>
@@ -952,7 +952,7 @@
                             From
                         </div>
                         <div >
-                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                             <span id="start_msg"></span>
                         </div>
 
@@ -961,7 +961,7 @@
                         </div>
 
                         <div >
-                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                             <span id="end_msg"></span>
                         </div>
                     </div>
@@ -1382,7 +1382,7 @@
                                                     <div class="form-group col-md-12">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <br>
@@ -1509,7 +1509,7 @@
                                                     From
                                                 </div>
                                                 <div >
-                                                    <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                    <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                     <span id="start_msg"></span>
                                                 </div>
 
@@ -1518,7 +1518,7 @@
                                                 </div>
 
                                                 <div >
-                                                    <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                    <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                     <span id="end_msg"></span>
                                                 </div>
                                             </div>
@@ -1859,7 +1859,7 @@
                                             <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                    <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                 </div>
                                             </div>
                                             <br>
@@ -1920,7 +1920,7 @@
               From
             </div>
             <div >
-              <input type="date" id="start_date4" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input  id="start_date4" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                <span id="start_msg4"></span>
             </div>
 
@@ -1929,7 +1929,7 @@
             </div>
 
             <div >
-           <input type="date" id="end_date4" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+           <input  id="end_date4" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
             <span id="end_msg4"></span>
             </div>
         </div>
@@ -2190,7 +2190,7 @@
                                             <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                    <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                 </div>
                                             </div>
                                             <br>
@@ -2252,7 +2252,7 @@
               From
             </div>
             <div >
-              <input type="date" id="start_date5" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input  id="start_date5" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                <span id="start_msg5"></span>
             </div>
 
@@ -2261,7 +2261,7 @@
             </div>
 
             <div >
-           <input type="date" id="end_date5" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+           <input  id="end_date5" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
             <span id="end_msg5"></span>
             </div>
         </div>
@@ -2531,7 +2531,7 @@
                                             <div class="form-group col-md-12">
                                                 <div class="form-wrapper">
                                                     <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                    <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                 </div>
                                             </div>
                                             <br>
@@ -2591,7 +2591,7 @@
               From
             </div>
             <div >
-              <input type="date" id="start_date2" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input  id="start_date2" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                <span id="start_msg2"></span>
             </div>
 
@@ -2600,7 +2600,7 @@
             </div>
 
             <div>
-           <input type="date" id="end_date2" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+           <input  id="end_date2" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
             <span id="end_msg2"></span>
             </div>
         </div>
@@ -2861,7 +2861,7 @@
                                                 <div class="form-group col-md-12">
                                                     <div class="form-wrapper">
                                                         <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                        <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                        <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <br>
@@ -2921,7 +2921,7 @@
                                                 From
                                             </div>
                                             <div >
-                                                <input type="date" id="start_date2" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                <input  id="start_date2" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                 <span id="start_msg2"></span>
                                             </div>
 
@@ -2930,7 +2930,7 @@
                                             </div>
 
                                             <div>
-                                                <input type="date" id="end_date2" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                <input  id="end_date2" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                 <span id="end_msg2"></span>
                                             </div>
                                         </div>
@@ -3191,7 +3191,7 @@
                                                         <div class="form-group col-md-12">
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -3256,7 +3256,7 @@
                                                     From
                                                 </div>
                                                 <div >
-                                                    <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                    <input  id="start_date3" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                     <span id="start_msg3"></span>
                                                 </div>
 
@@ -3265,7 +3265,7 @@
                                                 </div>
 
                                                 <div >
-                                                    <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                    <input  id="end_date3" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                     <span id="end_msg3"></span>
                                                 </div>
                                             </div>
@@ -3506,7 +3506,7 @@
                                                         <div class="form-group col-md-12">
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>
@@ -3571,7 +3571,7 @@
                                                     From
                                                 </div>
                                                 <div >
-                                                    <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                    <input  id="start_date3" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                     <span id="start_msg3"></span>
                                                 </div>
 
@@ -3580,7 +3580,7 @@
                                                 </div>
 
                                                 <div >
-                                                    <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                    <input  id="end_date3" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                     <span id="end_msg3"></span>
                                                 </div>
                                             </div>

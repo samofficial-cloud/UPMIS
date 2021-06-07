@@ -999,7 +999,8 @@
                                                     <div class="form-wrapper col-12">
                                                         <label for="start_date">Commission Date <span style="color: red;"> *</span></label>
                                                         <span id="commission_date_msg"></span>
-                                                        <input type="date" id="commission_date" name="commission_date" class="form-control"  min="{{$today}}">
+                                                        <input  id="commission_date" class="form-control" autocomplete="off">
+                                                        <input  type="hidden" id="commission_date_alternate" name="commission_date" value=""  autocomplete="off">
                                                     </div>
                                                     {{--                    <div class="form-wrapper col-6">--}}
                                                     {{--                        <label for="duration">Duration <span style="color: red;"> *</span></label>--}}
@@ -3284,6 +3285,7 @@
                 var insurance_type_na=document.getElementById('insurance_type_na').value;
                 var phone_number=document.getElementById('phone_number').value;
                 var commission_date=document.getElementById('commission_date').value;
+                var commission_date_alternate=document.getElementById('commission_date_alternate').value;
                 var sum_insured=document.getElementById('sum_insured').value;
                 var premium=document.getElementById('premium').value;
                 var actual_ex_vat=document.getElementById('actual_ex_vat').value;
@@ -3731,11 +3733,13 @@
 
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
-                const dateObj = new Date(commission_date);
-                const month = dateObj.getMonth()+1;
-                const day = String(dateObj.getDate()).padStart(2, '0');
-                const year = dateObj.getFullYear();
-                const output = day  + '/'+ month  + '/' + year;
+
+                var commission_date_alternate = new Date(commission_date_alternate);
+
+
+                const output = (('0' + commission_date_alternate.getDate()).slice(-2) + '/'
+                    + ('0' + (commission_date_alternate.getMonth()+1)).slice(-2) + '/'+commission_date_alternate.getFullYear());
+
 
 
                 function thousands_separators(num)
@@ -11064,7 +11068,7 @@
                     $.ajax({
                         url:"{{ route('client_name_suggestions') }}",
                         method:"GET",
-                        data:{query:query,_token:_token},
+                        data:{query:query},
                         success:function(data){
                             if(data=='0'){
                                 // $('#space_id_contract').attr('style','border:1px solid #f00');
@@ -11091,6 +11095,27 @@
                 $('#full_name').val($(this).text());
 
                 $('#nameListClientName').fadeOut();
+
+
+                var query=$(this).text();
+
+                $.ajax({
+                    url:"{{ route('client_name_particulars_insurance') }}",
+                    method:"GET",
+                    data:{query:query},
+                    success:function(data){
+
+
+                        var final_data=JSON.parse(data);
+
+
+                        $('#email').val(final_data.email);
+                        $('#tin').val(final_data.tin);
+                        $('#phone_number').val(final_data.phone_number);
+
+                    }
+                });
+
 
             });
 
@@ -11373,6 +11398,28 @@
 
 
     </script>
+
+
+
+    <script>
+
+
+        $("#commission_date").datepicker({
+
+            dateFormat: 'dd/mm/yy',
+            calendarWeeks: true,
+            autoclose: true,
+            altField: "#commission_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            orientation:"auto"
+        });
+
+
+
+    </script>
+
 
 
 @endsection

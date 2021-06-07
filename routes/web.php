@@ -92,6 +92,7 @@ Route::post('/login/custom', [
     Route::get('/contracts_management/research_flats', 'HomeController@contractresearchflats')->name('contractflat');
 
     Route::post('/contracts_management/research_flats/add_contract', 'HomeController@add_research_contract')->name('addcontractflat');
+    Route::post('/contracts_management/research_flats/terminate_contract/{id}', 'HomeController@terminate_research_contract')->name('terminatecontractflat');
 
     Route::post('/autocomplete/research_flats/category', 'HomeController@auto_category')->name('auto_category');
 
@@ -582,6 +583,7 @@ Route::group(['middleware' => ['auth', 'insurance']], function() {
     Route::get('/deactivate_insurance/{id}', 'InsuranceController@deactivateInsurance')->name('deactivate_insurance');
     Route::get('/generate_type_list', 'InsuranceController@generateTypes')->name('generate_type_list');
     Route::get('/client_name_suggestions', 'InsuranceController@clientNameSuggestions')->name('client_name_suggestions');
+    Route::get('/client_name_particulars_insurance', 'InsuranceController@clientParticulars')->name('client_name_particulars_insurance');
     Route::get('/vehicle_registration_no_suggestions', 'InsuranceController@vehicleRegistrationNumberSuggestions')->name('vehicle_registration_no_suggestions');
     //payments
     Route::post('/create_insurance_payment_manually', 'PaymentController@CreateInsurancePaymentManually')->name('create_insurance_payment_manually');
@@ -695,6 +697,12 @@ Route::group(['middleware' => ['auth', 'car']], function() {
 
 
 
+    Route::get('/cost_centres_management', 'carRentalController@costCentresManagement')->name('cost_centres_management');
+    Route::get('/hire_rates_management', 'carRentalController@hireRatesManagement')->name('hire_rates_management');
+
+
+
+
 });
 
 
@@ -727,6 +735,7 @@ Route::group(['middleware' => ['auth', 'research']], function() {
 
     Route::post('/import_research_invoices', 'ImportExcelController@importResearchInvoices')->name('import_research_invoices');
     Route::get('/get_research_invoices_format', 'ImportExcelController@researchInvoicesFormat')->name('get_research_invoices_format');
+
 
 
 

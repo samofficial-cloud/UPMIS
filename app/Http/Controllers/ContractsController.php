@@ -7262,8 +7262,9 @@ if($request->get('mode_of_payment')=='By installment'){
 
         $insurance_data=DB::table('insurance')->where('status',1)->get();
         $contract_data=DB::table('insurance_contracts')->where('id',$id)->get();
+        $commission_date=DB::table('insurance_contracts')->where('id',$id)->value('commission_date');
 
-        return view('insurance_contract_form_edit')->with('insurance_data',$insurance_data)->with('contract_id',$id)->with('contract_data',$contract_data);
+        return view('insurance_contract_form_edit')->with('insurance_data',$insurance_data)->with('contract_id',$id)->with('contract_data',$contract_data)->with('commission_date',$commission_date);
     }
 
 

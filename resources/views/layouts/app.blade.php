@@ -35,6 +35,7 @@
 
     <script src="{{ asset('js/jquery-ui.js') }}" ></script>
     <script src="{{ asset('js/jquery.timepicker.min.js') }}" ></script>
+    <script src="{{ asset('js/flatpickr.js') }}" ></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -54,6 +55,7 @@
     <link href="{{ asset('css/jquery-ui.structure.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery-ui.theme.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.timepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/flatpickr.min.css') }}" rel="stylesheet">
 
 
      @yield('style')
@@ -393,6 +395,24 @@
             rtl: true,
             orientation:"auto"
         });
+
+        $(".flatpickr_date").flatpickr({
+
+            altInput: true,
+            altFormat: "d/m/Y",
+            dateFormat: "Y-m-d",
+            // altInputClass:"white_background form-control"
+            onReady: function(dateObj, dateStr, fp) {
+                fp.altInput.required = fp.element.required;
+                fp.altInput.removeAttribute('readonly');
+                fp.altInput.onkeydown = function () { return false; };
+                fp.altInput.onpaste = function () { return false; };
+            }
+
+
+        });
+
+
 
     </script>
 

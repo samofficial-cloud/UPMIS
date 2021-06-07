@@ -647,7 +647,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -656,7 +656,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -989,7 +989,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -1338,7 +1338,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -1347,7 +1347,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -2057,7 +2057,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -2258,7 +2258,7 @@
                                                                 <div style="display: none;" id="invoicing_period_start_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -2267,7 +2267,7 @@
                                                                 <div style="display: none;" id="invoicing_period_end_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -2390,8 +2390,8 @@
                                                         <div style="padding: 0px 7px;">
                                                             From
                                                         </div>
-                                                        <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                        <div>
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -2400,7 +2400,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -2750,13 +2750,14 @@
                                                                         @else
                                                                         @endif
 
-                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+{{--                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>--}}
+{{--                                                                            --}}
                                                                             <div class="modal fade" id="send_invoice{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
+                                                                                                <b><h5 class="modal-title">Sending Invoice to {{$var->debtor_name}} </h5></b>
 
                                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                         </div>
@@ -2908,7 +2909,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -3136,7 +3137,7 @@
                                                                 <div style="display: none;" id="invoicing_period_start_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -3145,7 +3146,7 @@
                                                                 <div style="display: none;" id="invoicing_period_end_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -3269,7 +3270,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -3278,7 +3279,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -3786,7 +3787,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -4162,7 +4163,7 @@
                                                                                         <div  class="form-group col-md-6 mt-1">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                             </div>
                                                                                         </div>
 
@@ -4171,7 +4172,7 @@
                                                                                         <div  class="form-group col-md-6 mt-1">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                             </div>
                                                                                         </div>
 
@@ -4857,7 +4858,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -5060,7 +5061,7 @@
                                                                 <div style="display: none;" id="invoicing_period_start_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -5069,7 +5070,7 @@
                                                                 <div style="display: none;" id="invoicing_period_end_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -5193,7 +5194,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -5202,7 +5203,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -5712,7 +5713,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -5942,7 +5943,7 @@
                                                                 <div style="display: none;" id="invoicing_period_start_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -5951,7 +5952,7 @@
                                                                 <div style="display: none;" id="invoicing_period_end_dateDiv" class="form-group col-md-6 mt-1">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -6141,7 +6142,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -6150,7 +6151,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -6660,7 +6661,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -7254,7 +7255,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -7263,7 +7264,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -7641,7 +7642,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -7962,7 +7963,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -7971,7 +7972,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -8720,7 +8721,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -8922,7 +8923,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_waterDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -8931,7 +8932,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_waterDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -9086,7 +9087,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -9095,7 +9096,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -9497,7 +9498,8 @@
                                                                         @else
                                                                         @endif
 
-                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+{{--                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_water{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>--}}
+{{--                                                                            --}}
                                                                             <div class="modal fade" id="send_invoice_water{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
@@ -9680,7 +9682,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -9911,7 +9913,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_waterDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -9920,7 +9922,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_waterDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -10048,7 +10050,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -10057,7 +10059,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -10639,7 +10641,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -11003,7 +11005,7 @@
                                                                                         <div  class="form-group col-md-6 mt-1">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                             </div>
                                                                                         </div>
 
@@ -11012,7 +11014,7 @@
                                                                                         <div  class="form-group col-md-6 mt-1">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                             </div>
                                                                                         </div>
 
@@ -11772,7 +11774,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -11971,7 +11973,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_waterDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -11980,7 +11982,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_waterDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -12107,7 +12109,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -12116,7 +12118,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -12700,7 +12702,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -12931,7 +12933,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_waterDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -12940,7 +12942,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_waterDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -13134,7 +13136,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -13143,7 +13145,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -13726,7 +13728,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -14323,7 +14325,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" readonly name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -14332,7 +14334,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" readonly id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -14705,7 +14707,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -15025,7 +15027,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -15034,7 +15036,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -15766,7 +15768,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -15964,7 +15966,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_electricityDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -15973,7 +15975,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_electricityDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -16127,7 +16129,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -16136,7 +16138,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -16532,7 +16534,8 @@
                                                                         @else
                                                                         @endif
 
-                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+{{--                                                                        <a title="Send invoice" data-toggle="modal" style=" color: #3490dc; cursor: pointer;"  data-target="#send_invoice_electricity{{$var->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-envelope" aria-hidden="true"></i></a>--}}
+{{--                                                                            --}}
                                                                             <div class="modal fade" id="send_invoice_electricity{{$var->invoice_number}}" role="dialog">
 
                                                                                 <div class="modal-dialog" role="document">
@@ -16716,7 +16719,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -16950,7 +16953,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_electricityDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -16959,7 +16962,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_electricityDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -17086,7 +17089,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -17095,7 +17098,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -17674,7 +17677,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -18035,7 +18038,7 @@
                                                                                         <div  class="form-group col-md-6 mt-1">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                             </div>
                                                                                         </div>
 
@@ -18044,7 +18047,7 @@
                                                                                         <div  class="form-group col-md-6 mt-1">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                             </div>
                                                                                         </div>
 
@@ -18803,7 +18806,7 @@
                                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                                             <div class="form-wrapper">
                                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <br>
@@ -19004,7 +19007,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_electricityDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -19013,7 +19016,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_electricityDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -19139,7 +19142,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -19148,7 +19151,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -19732,7 +19735,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -19960,7 +19963,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_electricityDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="invoicing_period_start_date_electricity" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -19969,7 +19972,7 @@
                                                                 <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_electricityDiv">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="invoicing_period_end_date_electricity" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
 
@@ -20163,7 +20166,7 @@
                                                             From
                                                         </div>
                                                         <div >
-                                                            <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="start_msg"></span>
                                                         </div>
 
@@ -20172,7 +20175,7 @@
                                                         </div>
 
                                                         <div >
-                                                            <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                            <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                             <span id="end_msg"></span>
                                                         </div>
                                                     </div>
@@ -20754,7 +20757,7 @@
                                                                                                     <div class="form-group col-md-12 pt-2">
                                                                                                         <div class="form-wrapper">
                                                                                                             <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                            <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                            <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <br>
@@ -21712,7 +21715,7 @@
                                                                                                             <div class="form-group col-md-12 pt-2">
                                                                                                                 <div class="form-wrapper">
                                                                                                                     <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                    <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                             <br>
@@ -22016,7 +22019,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -22025,7 +22028,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -22867,7 +22870,7 @@
                                                                                                             <div class="form-group col-md-12 pt-2">
                                                                                                                 <div class="form-wrapper">
                                                                                                                     <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                    <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                             <br>
@@ -23052,7 +23055,7 @@
                                                                     <div style="display:none;" id="invoicing_period_start_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
                                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                            <input type="date" class="form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -23061,7 +23064,7 @@
                                                                     <div style="display:none;" id="invoicing_period_end_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
                                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                            <input type="date" class="form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -23177,7 +23180,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -23186,7 +23189,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -23626,7 +23629,7 @@
                                                                     <div style="display:none;" id="invoicing_period_start_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
                                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                            <input type="date" class="form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -23635,7 +23638,7 @@
                                                                     <div style="display:none;" id="invoicing_period_end_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
                                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                            <input type="date" class="form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -23751,7 +23754,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -23760,7 +23763,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -24344,7 +24347,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -24353,7 +24356,7 @@
                                                                                             <div  class="form-group col-md-6 mt-1">
                                                                                                 <div class="form-wrapper">
                                                                                                     <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                    <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                    <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                 </div>
                                                                                             </div>
 
@@ -25194,7 +25197,7 @@
                                                                                                             <div class="form-group col-md-12 pt-2">
                                                                                                                 <div class="form-wrapper">
                                                                                                                     <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                                    <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                                    <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                             <br>
@@ -25379,7 +25382,7 @@
                                                                     <div style="display:none;" id="invoicing_period_start_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
                                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                            <input type="date" class="form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -25388,7 +25391,7 @@
                                                                     <div style="display:none;" id="invoicing_period_end_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
                                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                            <input type="date" class="form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -25504,7 +25507,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -25513,7 +25516,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -25952,7 +25955,7 @@
                                                                     <div style="display:none;" id="invoicing_period_start_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
                                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                            <input type="date" class="form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_car" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -25961,7 +25964,7 @@
                                                                     <div style="display:none;" id="invoicing_period_end_date_carDiv" class="form-group col-md-6 mt-1">
                                                                         <div class="form-wrapper">
                                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                            <input type="date" class="form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_car" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                         </div>
                                                                     </div>
 
@@ -26141,7 +26144,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -26150,7 +26153,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -27100,7 +27103,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -27375,7 +27378,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -27384,7 +27387,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -28045,7 +28048,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -28225,7 +28228,7 @@
                                                     <div style="display:none;" id="invoicing_period_start_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date_research" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_research" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -28234,7 +28237,7 @@
                                                     <div style="display:none;" id="invoicing_period_end_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date_research" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_research" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -28350,7 +28353,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -28359,7 +28362,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -28759,7 +28762,7 @@
                                                     <div style="display:none;" id="invoicing_period_start_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date_research" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_research" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -28768,7 +28771,7 @@
                                                     <div style="display:none;" id="invoicing_period_end_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date_research" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_research" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -28884,7 +28887,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -28893,7 +28896,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -29406,7 +29409,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -29415,7 +29418,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -30076,7 +30079,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -30255,7 +30258,7 @@
                                                     <div style="display:none;" id="invoicing_period_start_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date_research" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_research" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -30264,7 +30267,7 @@
                                                     <div style="display:none;" id="invoicing_period_end_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date_research" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_research" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -30380,7 +30383,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -30389,7 +30392,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -30788,7 +30791,7 @@
                                                     <div style="display:none;" id="invoicing_period_start_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date_research" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_research" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -30798,7 +30801,7 @@
                                                     <div style="display:none;" id="invoicing_period_end_date_researchDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date_research" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_research" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -30978,7 +30981,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -30987,7 +30990,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -31829,7 +31832,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -32662,7 +32665,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -32671,7 +32674,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -33251,7 +33254,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -33443,7 +33446,7 @@
                                                     <div style="display: none;" id="invoicing_period_start_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -33452,7 +33455,7 @@
                                                     <div style="display: none;" id="invoicing_period_end_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -33581,7 +33584,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -33590,7 +33593,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -34572,7 +34575,7 @@
                                                     <div style="display: none;" id="invoicing_period_start_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -34581,7 +34584,7 @@
                                                     <div style="display: none;" id="invoicing_period_end_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -34710,7 +34713,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -34719,7 +34722,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -36364,7 +36367,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -36373,7 +36376,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -36953,7 +36956,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -37145,7 +37148,7 @@
                                                     <div style="display: none;" id="invoicing_period_start_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -37154,7 +37157,7 @@
                                                     <div style="display: none;" id="invoicing_period_end_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -37283,7 +37286,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -37292,7 +37295,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -38271,7 +38274,7 @@
                                                     <div style="display: none;" id="invoicing_period_start_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -38280,7 +38283,7 @@
                                                     <div style="display: none;" id="invoicing_period_end_date_insurance_clientsDiv" class="form-group col-md-6 mt-1">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -38472,7 +38475,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -38481,7 +38484,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -39876,7 +39879,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -40089,7 +40092,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -40098,7 +40101,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -40673,7 +40676,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -40884,7 +40887,7 @@
                                                     <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -40893,7 +40896,7 @@
                                                     <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -41004,7 +41007,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -41013,7 +41016,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -41363,7 +41366,7 @@
                                                     <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -41372,7 +41375,7 @@
                                                     <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -41483,7 +41486,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -41492,7 +41495,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -41871,7 +41874,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var->invoicing_period_start_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -41880,7 +41883,7 @@
                                                                                                 <div  class="form-group col-md-6 mt-1">
                                                                                                     <div class="form-wrapper">
                                                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
+                                                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="{{$var->invoicing_period_end_date}}" Required autocomplete="off">
                                                                                                     </div>
                                                                                                 </div>
 
@@ -42455,7 +42458,7 @@
                                                                                         <div class="form-group col-md-12 pt-2">
                                                                                             <div class="form-wrapper">
                                                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                             </div>
                                                                                         </div>
                                                                                         <br>
@@ -42665,7 +42668,7 @@
                                                     <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -42674,7 +42677,7 @@
                                                     <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -42785,7 +42788,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -42794,7 +42797,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -43144,7 +43147,7 @@
                                                     <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_start_date_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_start_date_insurance" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -43153,7 +43156,7 @@
                                                     <div class="form-group col-md-6 mt-1" style="display: none;" id="invoicing_period_end_date_insuranceDiv">
                                                         <div class="form-wrapper">
                                                             <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                            <input type="date" class="form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                            <input  class="flatpickr_date form-control" id="invoicing_period_end_date_insurance" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -43327,7 +43330,7 @@
                                                                 From
                                                             </div>
                                                             <div >
-                                                                <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="start_msg"></span>
                                                             </div>
 
@@ -43336,7 +43339,7 @@
                                                             </div>
 
                                                             <div >
-                                                                <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                                <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
                                                                 <span id="end_msg"></span>
                                                             </div>
                                                         </div>
@@ -47208,5 +47211,34 @@
 
 
      </script>
+
+
+    <script>
+
+       <?php
+        $today_date=date('Y-m-d');
+
+        ?>
+
+    var today_date={!! json_encode($today_date) !!};
+
+
+    $("#issue_date").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#issue_date_alternate",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        orientation:"auto"
+    });
+
+
+    </script>
+
+
+
+
+
 
 @endsection

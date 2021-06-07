@@ -152,10 +152,10 @@
                                 <hr>
                     <table class="table table-striped table-bordered" style="width: 100%">
 
-{{--                        <tr>--}}
-{{--                            <td>Contract ID:</td>--}}
-{{--                            <td>{{$var->contract_id}}</td>--}}
-{{--                        </tr>--}}
+                        <tr>
+                            <td>Contract ID:</td>
+                            <td>{{$var->contract_id}}</td>
+                        </tr>
 
 
                         <tr>
@@ -448,7 +448,7 @@
                                                                 <div class="form-group col-md-6">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_start_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
                                                                 <br>
@@ -457,7 +457,7 @@
                                                                 <div class="form-group col-md-6">
                                                                     <div class="form-wrapper">
                                                                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                                                                        <input type="date" class="form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
+                                                                        <input  class="flatpickr_date form-control" id="" name="invoicing_period_end_date" value="" Required autocomplete="off">
                                                                     </div>
                                                                 </div>
                                                                 <br>
@@ -828,7 +828,7 @@
                                                                                 <div class="form-group col-md-12 pt-2">
                                                                                     <div class="form-wrapper">
                                                                                         <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                                        <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                                        <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                                                     </div>
                                                                                 </div>
                                                                                 <br>
@@ -989,7 +989,7 @@
                                                         <div class="form-group col-md-12">
                                                             <div class="form-wrapper">
                                                                 <label for=""  >Date the payment was made by the client<span style="color: red;">*</span></label>
-                                                                <input type="date" min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
+                                                                <input  min="{{date_format($date,"Y-m-d")}}" max="{{date("Y-m-d")}}" class="flatpickr_date form-control" id="receipt_space" name="date_of_payment" value="" required  autocomplete="off">
                                                             </div>
                                                         </div>
                                                         <br>

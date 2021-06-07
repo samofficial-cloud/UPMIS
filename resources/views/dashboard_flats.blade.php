@@ -125,12 +125,26 @@
     <div class="main_content">
       <?php
         $single_rooms = DB::table('research_flats_rooms')->where('category','Single Room')->where('status','1')->count();
+        $single_rooms_occupied = DB::table('research_flats_rooms')->where('category','Single Room')->where('status','1')->where('occupational_status','Occupied')->count();
+        $single_rooms_vacant = $single_rooms-$single_rooms_occupied;
+
         $shared_rooms = DB::table('research_flats_rooms')->where('category','Shared Room')->where('status','1')->count();
+        $shared_rooms_occupied = DB::table('research_flats_rooms')->where('category','Shared Room')->where('status','1')->where('occupational_status','Occupied')->count();
+        $shared_rooms_vacant=$shared_rooms-$shared_rooms_occupied;
+
         $suite_rooms = DB::table('research_flats_rooms')->where('category','Suite Room')->where('status','1')->count();
+        $suite_rooms_occupied = DB::table('research_flats_rooms')->where('category','Suite Room')->where('status','1')->where('occupational_status','Occupied')->count();
+        $suite_rooms_vacant=$suite_rooms-$suite_rooms_occupied;
+
+
         $total_rooms= $single_rooms + $shared_rooms + $suite_rooms;
+
         $single_room_clients = DB::table('research_flats_rooms')->join('research_flats_contracts','research_flats_contracts.room_no','=','research_flats_rooms.room_no')->where('category','Single Room')->whereYear('arrival_date',date('Y'))->count();
         $shared_room_clients = DB::table('research_flats_rooms')->join('research_flats_contracts','research_flats_contracts.room_no','=','research_flats_rooms.room_no')->where('category','Shared Room')->whereYear('arrival_date',date('Y'))->count();
         $suite_room_clients = DB::table('research_flats_rooms')->join('research_flats_contracts','research_flats_contracts.room_no','=','research_flats_rooms.room_no')->where('category','Suite Room')->whereYear('arrival_date',date('Y'))->count();
+
+
+
         $total_clients = $single_room_clients + $shared_room_clients +$suite_room_clients;
         $year= date('Y');
       ?>
@@ -187,16 +201,26 @@
                       <div class="card card text-white bg-success">
                         <div class="card-body">
                           <h5 class="card-title">General Statistics <i class="fas fa-building" style="font-size:30px; float: right; color: black;"></i></h5>
-                          Total Rooms: {{$total_rooms}}
-                          <br>Standard Rooms: {{$single_rooms}}
-                          <br>Shared Rooms: {{$shared_rooms}}
-                          <br>Suite Rooms: {{$suite_rooms}}
-                          <hr style="margin-top: 1rem;
-                        margin-bottom: 1rem;
-                        border: 0;
-                        border: 1px solid #505559;">
-                        <div id="cardData">
+                            <div>Total Rooms: {{$total_rooms}}</div>
+                            <div class="pt-1">Standard Rooms: {{$single_rooms}}
+                                <hr style="margin-bottom: 0rem;">
+                                <span>Occupied: {{$single_rooms_occupied}}</span>     <span class="pl-4">Vacant: {{$single_rooms_vacant}}</span>
+                            </div>
+
+                            <div class="pt-1"> Shared Rooms: {{$shared_rooms}}
+                                <hr style="margin-bottom: 0rem;">
+                                <span>Occupied: {{$shared_rooms_occupied}}</span>     <span class="pl-4">Vacant: {{$shared_rooms_vacant}}</span>
+                            </div>
+                            <div class="pt-1">Suite Rooms: {{$suite_rooms}}
+                                <hr style="margin-bottom: 0rem; ">
+                                <span>Occupied: {{$suite_rooms_occupied}}</span>     <span class="pl-4">Vacant: {{$suite_rooms_vacant}}</span>
+                            </div>
+<br>
                           <h5>Clients Statistics {{date('Y')}}</h5>
+                            <hr style="margin-top: 0rem;
+                        margin-bottom: 0rem;
+                         border: 1px solid #505559;">
+                            <div id="cardData">
                               Standard Room Clients: {{$single_room_clients}}
                           <br>Shared Room Clients: {{$shared_room_clients}}
                           <br>Suite Room Clients: {{$suite_room_clients}}

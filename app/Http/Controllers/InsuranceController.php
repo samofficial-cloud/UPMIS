@@ -284,6 +284,38 @@ class InsuranceController extends Controller
 
 
 
+    public function clientParticulars(Request $request)
+    {
+
+
+
+        if($request->get('query'))
+        {
+            $query = $request->get('query');
+
+
+            $client_particulars=DB::table('insurance_contracts')->where('full_name',$query)->orderBy('id','desc')->limit(1)->get();
+
+
+            foreach ($client_particulars as $var){
+
+                $data = [
+                    'email'   => $var->email,
+                    'phone_number'   => $var->phone_number,
+                    'tin'   => $var->tin,
+
+                ];
+
+                }
+
+            echo json_encode($data);
+
+
+        }
+
+
+    }
+
 
     public function vehicleRegistrationNumberSuggestions(Request $request)
     {

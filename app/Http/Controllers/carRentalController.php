@@ -33,7 +33,8 @@ class carRentalController extends Controller
             $vehicle_model = $request->input('model');
             $vehicle_status = $request->input('vehicle_status');
             $hire_rate = $request->input('hire_rate');
-            $data=array('vehicle_reg_no'=>$vehicle_reg_no,"vehicle_model"=>$vehicle_model,'vehicle_status'=>$vehicle_status, 'hire_rate'=>$hire_rate, 'flag'=>'0', 'form_status'=>'DVC Administrator','cptu_msg_status'=>'outbox','dvc_msg_status'=>'inbox');
+            $hire_status = $request->input('hire_status');
+            $data=array('vehicle_reg_no'=>$vehicle_reg_no,"vehicle_model"=>$vehicle_model,'vehicle_status'=>$vehicle_status, 'hire_rate'=>$hire_rate, 'flag'=>'0', 'form_status'=>'DVC Administrator','cptu_msg_status'=>'outbox','dvc_msg_status'=>'inbox','hire_status'=>$hire_status);
             $id = DB::table('car_rentals')->insertGetId($data);
 
 //              carRental::insert($data);
@@ -45,6 +46,7 @@ class carRentalController extends Controller
             $id = $deactivated->id;
             $deactivated->vehicle_model = $request->input('model');
             $deactivated->hire_rate=$request->input('hire_rate');
+            $deactivated->hire_status=$request->input('hire_status');
             $deactivated->form_status = 'DVC Administrator';
             $deactivated->cptu_msg_status = 'outbox';
             $deactivated->dvc_msg_status = 'inbox';
@@ -152,6 +154,7 @@ public function editcar(Request $request){
 	$car->vehicle_model=$request->get('model');
 	$car->vehicle_status=$request->get('vehicle_status');
 	$car->hire_rate=$request->get('hire_rate');
+	$car->hire_status=$request->get('hire_status');
 
 	$car->save();
 	return redirect()->back()->with('success', 'Car Details Edited Successfully');
@@ -373,5 +376,20 @@ public function deletecentre($id){
 
   return View::make('car_booking_filtered');
  }
+
+
+
+    public function costCentresManagement(){
+
+        $costcentres=cost_centre::orderBy('costcentre_id','asc')->where('status',1)->get();
+        return view('cost_centres_management')->with('costcentres',$costcentres);
+    }
+
+    public function hireRatesManagement(){
+
+        $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
+
+        return view('hire_rates_management')->with('rate',$rate);
+    }
 
 }

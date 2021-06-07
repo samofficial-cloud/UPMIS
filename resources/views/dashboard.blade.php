@@ -121,15 +121,30 @@
         ->distinct()
         ->count();
   $total_cars=carRental::where('flag','1')->count();
+    $hired_cars=carRental::where('flag','1')->where('hire_status','Hired')->count();
+    $not_hired_cars=$total_cars-$hired_cars;
   $running_cars=carRental::where('flag','1')->where('vehicle_status','Running')->count();
   $minor_cars=carRental::where('flag','1')->where('vehicle_status','Minor Repair')->count();
   $grounded_cars=carRental::where('flag','1')->where('vehicle_status','Grounded')->count();
+  $total_rented_cars=\App\carContract::whereMonth('start_date',\Carbon\Carbon::now()->month)->whereYear('start_date',\Carbon\Carbon::now()->year)->count();
+
   $total_insurance_covers=\App\insurance_contract::whereMonth('commission_date',\Carbon\Carbon::now()->month)->whereYear('commission_date',\Carbon\Carbon::now()->year)->count();
 
   $classes=insurance::select('class')->where('status',1)->distinct()->get();
   $single_rooms = DB::table('research_flats_rooms')->where('category','Single Room')->where('status','1')->count();
+  $single_rooms_occupied = DB::table('research_flats_rooms')->where('category','Single Room')->where('status','1')->where('occupational_status','Occupied')->count();
+  $single_rooms_vacant = $single_rooms-$single_rooms_occupied;
+
   $shared_rooms = DB::table('research_flats_rooms')->where('category','Shared Room')->where('status','1')->count();
+  $shared_rooms_occupied = DB::table('research_flats_rooms')->where('category','Shared Room')->where('status','1')->where('occupational_status','Occupied')->count();
+  $shared_rooms_vacant=$shared_rooms-$shared_rooms_occupied;
+
   $suite_rooms = DB::table('research_flats_rooms')->where('category','Suite Room')->where('status','1')->count();
+  $suite_rooms_occupied = DB::table('research_flats_rooms')->where('category','Suite Room')->where('status','1')->where('occupational_status','Occupied')->count();
+  $suite_rooms_vacant=$suite_rooms-$suite_rooms_occupied;
+
+
+
   $total_rooms= $single_rooms + $shared_rooms + $suite_rooms;
   $year = date('Y');
 
@@ -177,9 +192,13 @@
         <div class="card-body">
             <h5 class="card-title">Car Rental<i class="fas fa-car" style="font-size:30px; float: right; color: black;"></i></h5>
             <p>Total Vehicles: {{$total_cars}}
+                <br>Hired Vehicles: <?php echo e($hired_cars); ?>
+                <br>Available Vehicles: <?php echo e($not_hired_cars); ?>
+
                 <br>Running Vehicles: {{$running_cars}}
                 <br>Minor Repair Vehicles: {{$minor_cars}}
-                <br>Grounded Vehicles: {{$grounded_cars}}</p>
+                <br>Grounded Vehicles: {{$grounded_cars}}
+                <br>Total Cars Rented This Month: {{$total_rented_cars}}</p>
         </div>
     </div>
 
@@ -201,10 +220,23 @@
       <div>
           <div class="card-body">
               <h5 class="card-title">Research Flats <i class="fas fa-building" style="font-size:30px; float: right; color: black;"></i></h5>
-              Total Rooms: {{$total_rooms}}
-              <br>Standard Rooms: {{$single_rooms}}
-              <br>Shared Rooms: {{$shared_rooms}}
-              <br>Suite Rooms: {{$suite_rooms}}
+
+            <div>Total Rooms: {{$total_rooms}}</div>
+              <div class="pt-1">Standard Rooms: {{$single_rooms}}
+                  <hr style="margin-bottom: 0rem;">
+                  <span>Occupied: {{$single_rooms_occupied}}</span>     <span class="pl-4">Vacant: {{$single_rooms_vacant}}</span>
+              </div>
+
+              <div class="pt-1"> Shared Rooms: {{$shared_rooms}}
+                  <hr style="margin-bottom: 0rem;">
+                  <span>Occupied: {{$shared_rooms_occupied}}</span>     <span class="pl-4">Vacant: {{$shared_rooms_vacant}}</span>
+              </div>
+              <div class="pt-1">Suite Rooms: {{$suite_rooms}}
+                    <hr style="margin-bottom: 0rem;">
+                    <span>Occupied: {{$suite_rooms_occupied}}</span>     <span class="pl-4">Vacant: {{$suite_rooms_vacant}}</span>
+                </div>
+
+
           </div>
       </div>
 

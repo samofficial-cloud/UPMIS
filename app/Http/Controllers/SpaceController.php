@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\space;
-
+use Carbon\Carbon;
 class SpaceController extends Controller
 {
     /**
@@ -728,7 +728,7 @@ foreach($minor_industries as $minor_industry) {
 
         DB::table('conference_events')
             ->where('id', $id)
-            ->update(['event_date' =>  $request->get('event_date')]);
+            ->update(['event_date' =>  Carbon::createFromFormat('d/m/Y', $request->get('event_date'))->format('Y-m-d')]);
 
 
 

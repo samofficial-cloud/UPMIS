@@ -118,14 +118,14 @@
 
 
     <div style="width: 100%; clear: both; ">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Major industry:</div>
+        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Category:</div>
         <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$major_industry}}</b></div>
 
     </div>
 
 
     <div style="width: 100%; clear: both; ">
-        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Minor industry:</div>
+        <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Sub Category:</div>
         <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$minor_industry}}</b></div>
 
     </div>

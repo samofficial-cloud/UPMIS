@@ -494,7 +494,7 @@
 
 
                                                     <div class="form-wrapper col-12 pt-1">
-                                                        <label for="major_industry"  ><strong>Major industry <span style="color: red;"> *</span></strong></label>
+                                                        <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
                                                         <span id="major_msg"></span>
                                                         <select id="getMajor"  class="form-control" name="major_industry" >
                                                             <option value="" selected></option>
@@ -521,7 +521,7 @@
                                                     </div>
 
                                                     <div class="form-wrapper col-12 pt-2">
-                                                        <label for=""  ><strong>Minor industry <span style="color: red;"> *</span></strong></label>
+                                                        <label for=""  ><strong>Sub Category<span style="color: red;"> *</span></strong></label>
                                                         <span id="minor_msg"></span>
                                                         <select id="minor_list"  class="form-control" name="minor_industry" >
 
@@ -934,13 +934,13 @@
                                                     </tr>
 
                                                     <tr id="major_industry_row_confirm">
-                                                        <td> Major industry:</td>
+                                                        <td> Category:</td>
                                                         <td id="major_industry_confirm"></td>
                                                     </tr>
 
 
                                                     <tr id="minor_industry_row_confirm">
-                                                        <td> Minor industry:</td>
+                                                        <td> Sub Category:</td>
                                                         <td id="minor_industry_confirm"></td>
                                                     </tr>
 

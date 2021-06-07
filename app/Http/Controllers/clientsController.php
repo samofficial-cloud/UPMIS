@@ -20,21 +20,69 @@ class clientsController extends Controller
 {
     //
     public function index(){
-  $SCclients=client::whereIn('full_name',space_contract::select('full_name')->whereDate('end_date','>=',date('Y-m-d'))->where('contract_status','1')->distinct()->pluck('full_name')->toArray())
-      ->where('contract','Space')
-      ->orderBy('clients.full_name','asc')->get();
+//  $SCclients=client::whereIn('full_name',space_contract::select('full_name')->whereDate('end_date','>=',date('Y-m-d'))->where('contract_status','1')->distinct()->pluck('full_name')->toArray())
+//      ->where('contract','Space')
+//      ->orderBy('clients.full_name','asc')->get();
+
+        $SCclients=client::whereIn('full_name',space_contract::select('full_name')->distinct()->pluck('full_name')->toArray())
+            ->where('contract','Space')
+            ->orderBy('clients.full_name','asc')->get();
+
+
+//        $names[]=null;
+//        foreach ($SCclients as $client) {
+//
+//
+//            $has_active_contract = DB::table('space_contracts')->where('full_name', $client->full_name)->where('end_date', '>', date('Y-m-d'))->where('contract_status', '1')->get();
+//
+//
+//            if (count($has_active_contract) > 0) {
+//
+//
+//                                                $names=[
+//
+//                                                'full_name'   => $client->full_name,
+//                                                'tin' =>$client->tin,
+//                                                'phone_number' =>$client->phone_number,
+//                                                'email' =>$client->email,
+//                                                'address' =>$client->address,
+//                                                'client_id' =>$client->client_id
+//
+//
+//                                                    ];
+//
+//                                        } else {
+////                $names=[
+////
+////                    'full_name'   => $client->full_name,
+////                    'tin' =>$client->tin,
+////                    'phone_number' =>$client->phone_number,
+////                    'email' =>$client->email,
+////                    'address' =>$client->address,
+////                    'client_id' =>$client->client_id
+////
+////
+////                ];
+//                                            }
+//
+//        }
+
+
+
   $SPclients=client::select('client_id','email','phone_number','address','clients.full_name','contract_status','tin')->join('space_contracts', 'space_contracts.full_name','=','clients.full_name')->where('contract','Space')->whereDate('end_date','<',date('Y-m-d'))->orwhere('contract_status','0')->orderBy('clients.full_name','asc')->distinct()->get();
-  $active_carclients=carContract::select('fullName','email','cost_centre','faculty','tin','id')->whereDate('end_date','>=',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
+
+
+  $active_carclients=carContract::select('fullName','email','cost_centre','faculty','tin','id')->distinct()->orderBy('fullName','asc')->get();
   $inactive_carclients=carContract::select('fullName','email','cost_centre','faculty','tin','id')->whereDate('end_date','<',date('Y-m-d'))->where('form_completion','1')->distinct()->orderBy('fullName','asc')->get();
    $insuranceclients=insurance_contract::orderBy('full_name','asc')->get();
-   $active_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class','tin','id')->whereDate('end_date','>=',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
+   $active_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class','tin','id')->distinct()->orderBy('full_name','asc')->get();
    $inactive_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class','tin','id')->whereDate('end_date','<',date('Y-m-d'))->distinct()->orderBy('full_name','asc')->get();
 
    $Spemails=client::whereIn('full_name',space_contract::select('full_name')->where('contract_status','1')->distinct()->pluck('full_name')->toArray())
       ->where('contract','Space')
       ->orderBy('clients.full_name','asc')->get();
 
-      $flats_current = research_flats_contract::select('first_name','last_name','address','email','phone_number','tin','id')->whereDate('departure_date','>=',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
+      $flats_current = research_flats_contract::select('first_name','last_name','address','email','phone_number','tin','id')->distinct()->orderBy('first_name','asc')->get();
 
       $flats_previous = research_flats_contract::select('first_name','last_name','address','email','phone_number','tin','id')->whereDate('departure_date','<',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
 
@@ -134,7 +182,12 @@ class clientsController extends Controller
     $details=client::where('client_id',$id)->get();
     $contracts=space_contract::join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','space_contracts.space_id_contract','=','spaces.space_id')->where('space_contracts.full_name',$clientname)->orderBy('contract_id','dsc')->get();
     $invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->where('debtor_name',$clientname)->orderBy('invoice_number','dsc')->get();
-    return view('Spclients_view_more')->with('clientname',$clientname)->with('details',$details)->with('contracts',$contracts)->with('invoices',$invoices);
+
+    $payments=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->join('space_payments','space_payments.invoice_number','=','invoices.invoice_number')->where('debtor_name',$clientname)->orderBy('space_payments.id','desc')->get();
+
+
+
+    return view('Spclients_view_more')->with('clientname',$clientname)->with('details',$details)->with('contracts',$contracts)->with('invoices',$invoices)->with('payments',$payments);
     }
 
     public function CarViewMore($name, $email, $centre){
@@ -142,7 +195,14 @@ class clientsController extends Controller
         $invoices= DB::table('car_rental_invoices')
                    ->whereIn('contract_id',DB::table('car_contracts')->select('id')->where('email',$email)->where('fullName',$name)->where('cost_centre',$centre)->pluck('id')->toArray())
                    ->get();
-       return view('carClients_view_more')->with('clientname',$name)->with('clientemail',$email)->with('clientcentre',$centre)->with('contracts',$contracts)->with('invoices',$invoices);
+
+
+        $payments= DB::table('car_rental_invoices')
+            ->whereIn('contract_id',DB::table('car_contracts')->select('id')->where('email',$email)->where('fullName',$name)->where('cost_centre',$centre)->pluck('id')->toArray())->join('car_rental_payments','car_rental_invoices.invoice_number','=','car_rental_payments.invoice_number')
+            ->get();
+
+
+       return view('carClients_view_more')->with('clientname',$name)->with('clientemail',$email)->with('clientcentre',$centre)->with('contracts',$contracts)->with('invoices',$invoices)->with('payments',$payments);
     }
 
 
@@ -162,7 +222,9 @@ class clientsController extends Controller
 
         $invoices=DB::table('research_flats_invoices')->whereIn('contract_id',DB::table('research_flats_contracts')->select('id')->where('email',$email)->where('first_name',$first_name)->where('last_name',$last_name)->where('phone_number',$phone_number))->get();
 
-        return view('research_clients_view_more')->with('clientname',$first_name.' '.$last_name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('invoices',$invoices);
+        $payments=DB::table('research_flats_invoices')->whereIn('contract_id',DB::table('research_flats_contracts')->select('id')->where('email',$email)->where('first_name',$first_name)->where('last_name',$last_name)->where('phone_number',$phone_number))->join('research_flats_payments','research_flats_invoices.invoice_number','=','research_flats_payments.invoice_number')->get();
+
+        return view('research_clients_view_more')->with('clientname',$first_name.' '.$last_name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('invoices',$invoices)->with('payments',$payments);
     }
 
     public function InsuranceClientsViewMore($full_name, $email, $phone_number){
@@ -170,7 +232,9 @@ class clientsController extends Controller
 
         $invoices=DB::table('insurance_invoices_clients')->whereIn('contract_id',DB::table('insurance_contracts')->select('id')->where('email',$email)->where('full_name',$full_name)->where('phone_number',$phone_number))->get();
 
-        return view('insurance_clients_view_more')->with('clientname',$full_name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('invoices',$invoices);
+        $payments=DB::table('insurance_invoices_clients')->whereIn('contract_id',DB::table('insurance_contracts')->select('id')->where('email',$email)->where('full_name',$full_name)->where('phone_number',$phone_number))->join('insurance_clients_payments','insurance_invoices_clients.invoice_number','=','insurance_clients_payments.invoice_number')->get();
+
+        return view('insurance_clients_view_more')->with('clientname',$full_name)->with('clientemail',$email)->with('phone_number',$phone_number)->with('contracts',$contracts)->with('invoices',$invoices)->with('payments',$payments);
     }
 
     public function SendMessage(Request $request){

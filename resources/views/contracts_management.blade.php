@@ -956,7 +956,8 @@ div.dt-buttons{
                             <th scope="col" style="color:#fff;"><center>Departure Date</center></th>
 
                             <th scope="col"  style="color:#fff;"><center>Total Amount (USD)</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Toatal Amount (TZS)</center></th>
+                            <th scope="col"  style="color:#fff;"><center>Total Amount (TZS)</center></th>
+                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
                         </tr>
                         </thead>
@@ -1128,11 +1129,86 @@ div.dt-buttons{
 
                               <td style="text-align: right;">{{number_format($var->total_usd)}}</td>
                               <td style="text-align: right;">{{number_format($var->total_tzs)}}</td>
+                              <td style="text-align: right;">
+
+                                  @if($var->contract_status==0)
+                                  TERMINATED
+
+                                  @elseif($var->departure_date<date('Y-m-d'))
+                                  EXPIRED
+                                  @else
+                                  ACTIVE
+                                  @endif
+
+                              </td>
                               <td>
                                   <center>
-                                <a title="Edit this contract" href="{{ route('editResearchForm', $var->id) }}"><i class="fa fa-edit" aria-hidden="true" style="font-size:20px; color:green;"></i></a>
-{{--                                      <a href="{{ route('renewResearchForm', $var->id)}}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>--}}
-                                <a title="Download this contract" href="{{ route('printResearchForm') }}?id={{$var->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center>
+
+
+
+
+                                          <a title="Download this contract" href="{{ route('printResearchForm') }}?id={{$var->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+
+
+                                      @if($privileges=='Read only')
+                                      @else
+
+                                          <a title="Edit this contract" href="{{ route('editResearchForm', $var->id) }}"><i class="fa fa-edit" aria-hidden="true" style="font-size:20px; color:green;"></i></a>
+
+                                      @if($var->contract_status==0 OR $var->departure_date<date('Y-m-d'))
+                                          <a href="{{ route('renewResearchForm', $var->id)}}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+
+                                          @endif
+
+                                      @if($var->contract_status==0)
+
+
+                                      @elseif($var->departure_date<date('Y-m-d'))
+
+                                      @else
+
+                                          <a title="Terminate this contract" data-toggle="modal" data-target="#terminate_research{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                          <div class="modal fade" id="terminate_research{{$var->id}}" role="dialog">
+
+                                              <div class="modal-dialog" role="document">
+                                                  <div class="modal-content">
+                                                      <div class="modal-header">
+                                                          <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
+                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                      </div>
+
+                                                      <div class="modal-body">
+                                                          <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>{{$var->first_name}} {{$var->last_name}}'s</strong> contract, Please provide reason to proceed</p>
+
+                                                          <form method="post" action="{{ route('terminatecontractflat',$var->id) }}" >
+                                                              {{csrf_field()}}
+
+                                                              <div class="form-group">
+                                                                  <div class="form-wrapper">
+                                                                      <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
+                                                                      <textarea required name="reason_for_termination" class="form-control"></textarea>
+
+                                                                  </div>
+                                                              </div>
+                                                              <br>
+
+                                                              <div align="right">
+                                                                  <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                              </div>
+
+                                                          </form>
+
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      @endif
+
+                                      @endif
+
+                                  </center>
                               </td>
                             </tr>
                             <?php $r = $r +1; ?>
@@ -1291,8 +1367,9 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 16%"><center>Trip Date</center></th>
+
+      <th style="width: 16%"><center>Start Date</center></th>
+      <th style="width: 16%"><center>End Date</center></th>
       <th style="width: 16%"><center>Destination</center></th>
     </thead>
     <tbody>
@@ -1329,9 +1406,57 @@ div.dt-buttons{
 
 
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->fullName}}</center></td>
-        <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client1{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+              <div class="modal fade" id="car_client1{{$inbox->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$inbox->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$inbox->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$inbox->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$inbox->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
         <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -1350,8 +1475,9 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 15%"><center>Trip Date</center></th>
+
+      <th style="width: 15%"><center>Start Date</center></th>
+      <th style="width: 15%"><center>End Date</center></th>
       <th style="width: 14%"><center>Destination</center></th>
       <th style="width: 14%"><center>Form Status</center></th>
       <th style="width: 14%"><center>Action</center></th>
@@ -1361,9 +1487,57 @@ div.dt-buttons{
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->fullName}}</center></td>
-        <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client2{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+              <div class="modal fade" id="car_client2{{$outbox->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$outbox->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$outbox->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$outbox->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$outbox->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} </center></td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
          @if($outbox->start_date < date('Y-m-d'))
@@ -1412,8 +1586,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1423,9 +1598,58 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+        <td>
+
+            <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client3{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+            <div class="modal fade" id="car_client3{{$closed->id}}" role="dialog">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <b><h5 class="modal-title">Client Details.</h5></b>
+
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                <tr>
+                                    <td>Client:</td>
+                                    <td>{{$closed->fullName}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Email:</td>
+                                    <td>{{$closed->email}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>TIN:</td>
+                                    <td>{{$closed->tin}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Department/Faculty/Unit:</td>
+                                    <td>{{$closed->faculty}}</td>
+                                </tr>
+
+
+                            </table>
+                            <br>
+                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </td>
+
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -1488,8 +1712,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1499,9 +1724,58 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client4{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client4{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
         <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -1569,7 +1843,8 @@ div.dt-buttons{
           <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
           <th scope="col" style="color:#fff;"><center>Destination</center></th>
-          <th scope="col" style="color:#fff;"><center>Trip Dates</center></th>
+          <th scope="col" style="color:#fff;"><center>Start Date</center></th>
+          <th scope="col" style="color:#fff;"><center>End Date</center></th>
           <th scope="col" style="color:#fff;"><center>Action</center></th>
         </thead>
         <tbody>
@@ -1582,7 +1857,8 @@ div.dt-buttons{
               <td>{{$details->driver_name}}</td>
               <td><center>{{$details->vehicle_reg_no}}</center></td>
               <td><center>{{$details->destination}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->start_date))}} - {{date("d/m/Y",strtotime($details->end_date))}}</center></td>
+              <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
+              <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
               <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
             </tr>
             <?php $d = $d+1; ?>
@@ -1605,8 +1881,9 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 16%"><center>Trip Date</center></th>
+
+      <th style="width: 16%"><center>Start Date</center></th>
+      <th style="width: 16%"><center>End Date</center></th>
       <th style="width: 16%"><center>Destination</center></th>
     </thead>
     <tbody>
@@ -1643,9 +1920,58 @@ div.dt-buttons{
 
 
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->fullName}}</center></td>
-        <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+             <td>
+
+                 <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client5{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+                 <div class="modal fade" id="car_client5{{$inbox->id}}" role="dialog">
+
+                     <div class="modal-dialog" role="document">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                                 <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                             </div>
+
+                             <div class="modal-body">
+                                 <table class="table table-striped table-bordered " style="width: 100%">
+
+                                     <tr>
+                                         <td>Client:</td>
+                                         <td>{{$inbox->fullName}}</td>
+                                     </tr>
+
+
+                                     <tr>
+                                         <td>Email:</td>
+                                         <td>{{$inbox->email}}</td>
+                                     </tr>
+
+                                     <tr>
+                                         <td>TIN:</td>
+                                         <td>{{$inbox->tin}}</td>
+                                     </tr>
+
+
+                                     <tr>
+                                         <td>Department/Faculty/Unit:</td>
+                                         <td>{{$inbox->faculty}}</td>
+                                     </tr>
+
+
+                                 </table>
+                                 <br>
+                                 <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
+
+             </td>
+
+        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} </center></td>
+        <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
          <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -1664,8 +1990,9 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 15%"><center>Trip Date</center></th>
+
+      <th style="width: 15%"><center>Start Date</center></th>
+      <th style="width: 15%"><center>End Date</center></th>
       <th style="width: 14%"><center>Destination</center></th>
       <th style="width: 14%"><center>Form Status</center></th>
     </thead>
@@ -1674,9 +2001,58 @@ div.dt-buttons{
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->fullName}}</center></td>
-        <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client6{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+              <div class="modal fade" id="car_client6{{$outbox->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$outbox->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$outbox->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$outbox->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$outbox->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+
+        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
@@ -1695,8 +2071,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1706,9 +2083,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client7{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -1733,8 +2158,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1746,7 +2172,8 @@ div.dt-buttons{
         <td><center>{{$closed->id}}</center></td>
         <td>{{$closed->fullName}}</td>
         <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -1776,8 +2203,9 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 16%"><center>Trip Date</center></th>
+
+      <th style="width: 16%"><center>Start Date</center></th>
+      <th style="width: 16%"><center>End Date</center></th>
       <th style="width: 16%"><center>Destination</center></th>
     </thead>
     <tbody>
@@ -1813,9 +2241,57 @@ div.dt-buttons{
         @endif
 
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->fullName}}</center></td>
-        <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+              <td>
+
+                  <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client8{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+                  <div class="modal fade" id="car_client8{{$inbox->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <tr>
+                                          <td>Client:</td>
+                                          <td>{{$inbox->fullName}}</td>
+                                      </tr>
+
+
+                                      <tr>
+                                          <td>Email:</td>
+                                          <td>{{$inbox->email}}</td>
+                                      </tr>
+
+                                      <tr>
+                                          <td>TIN:</td>
+                                          <td>{{$inbox->tin}}</td>
+                                      </tr>
+
+
+                                      <tr>
+                                          <td>Department/Faculty/Unit:</td>
+                                          <td>{{$inbox->faculty}}</td>
+                                      </tr>
+
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+
+              </td>
+        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
          <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -1834,8 +2310,9 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 15%"><center>Trip Date</center></th>
+
+      <th style="width: 15%"><center>Start Date</center></th>
+      <th style="width: 15%"><center>End Date</center></th>
       <th style="width: 14%"><center>Destination</center></th>
       <th style="width: 14%"><center>Form Status</center></th>
     </thead>
@@ -1844,9 +2321,57 @@ div.dt-buttons{
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->fullName}}</center></td>
-        <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client9{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+              <div class="modal fade" id="car_client9{{$outbox->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$outbox->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$outbox->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$outbox->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$outbox->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
@@ -1865,8 +2390,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1876,9 +2402,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client10{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client10{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -1901,8 +2475,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1912,9 +2487,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client11{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client11{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -1949,8 +2572,9 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 16%"><center>Trip Date</center></th>
+
+      <th style="width: 16%"><center>Start Date</center></th>
+      <th style="width: 16%"><center>End Date</center></th>
       <th style="width: 16%"><center>Destination</center></th>
     </thead>
     <tbody>
@@ -1985,9 +2609,57 @@ div.dt-buttons{
         @endif
 
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->fullName}}</center></td>
-        <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+            <td>
+
+                <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client12{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+                <div class="modal fade" id="car_client12{{$inbox->id}}" role="dialog">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                <table class="table table-striped table-bordered " style="width: 100%">
+
+                                    <tr>
+                                        <td>Client:</td>
+                                        <td>{{$inbox->fullName}}</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>{{$inbox->email}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>TIN:</td>
+                                        <td>{{$inbox->tin}}</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>Department/Faculty/Unit:</td>
+                                        <td>{{$inbox->faculty}}</td>
+                                    </tr>
+
+
+                                </table>
+                                <br>
+                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </td>
+        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
+        <td><center> {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
         <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -2006,8 +2678,9 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 15%"><center>Trip Date</center></th>
+
+      <th style="width: 15%"><center>Start Date</center></th>
+      <th style="width: 15%"><center>End Date</center></th>
       <th style="width: 14%"><center>Destination</center></th>
       <th style="width: 14%"><center>Form Status</center></th>
       <th style="width: 14%"><center>Action</center></th>
@@ -2017,9 +2690,57 @@ div.dt-buttons{
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->fullName}}</center></td>
-        <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client13{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+              <div class="modal fade" id="car_client13{{$outbox->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$outbox->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$outbox->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$outbox->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$outbox->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
        @if($outbox->start_date < date('Y-m-d'))
@@ -2067,8 +2788,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -2078,9 +2800,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client14{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client14{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+        <td><center> {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -2143,8 +2913,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -2154,9 +2925,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client15{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client15{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -2223,7 +3042,8 @@ div.dt-buttons{
           <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
           <th scope="col" style="color:#fff;"><center>Destination</center></th>
-          <th scope="col" style="color:#fff;"><center>Trip Dates</center></th>
+          <th scope="col" style="color:#fff;"><center>Start Date</center></th>
+          <th scope="col" style="color:#fff;"><center>End Date</center></th>
           <th scope="col" style="color:#fff;"><center>Action</center></th>
         </thead>
         <tbody>
@@ -2236,7 +3056,8 @@ div.dt-buttons{
               <td>{{$details->driver_name}}</td>
               <td><center>{{$details->vehicle_reg_no}}</center></td>
               <td><center>{{$details->destination}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->start_date))}} - {{date("d/m/Y",strtotime($details->end_date))}}</center></td>
+              <td><center>{{date("d/m/Y",strtotime($details->start_date))}} </center></td>
+              <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
               <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
             </tr>
             <?php $d = $d+1; ?>
@@ -2260,8 +3081,9 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 16%"><center>Trip Date</center></th>
+
+      <th style="width: 16%"><center>Start Date</center></th>
+      <th style="width: 16%"><center>End Date</center></th>
       <th style="width: 16%"><center>Destination</center></th>
     </thead>
     <tbody>
@@ -2294,9 +3116,57 @@ div.dt-buttons{
            <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
         @endif
         <td><center>{{$inbox->form_initiator}}</center></td>
-        <td><center>{{$inbox->fullName}}</center></td>
-        <td><center>{{$inbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} - {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client16{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+              <div class="modal fade" id="car_client16{{$inbox->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$inbox->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$inbox->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$inbox->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$inbox->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} </center></td>
+        <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
          <td><center>{{$inbox->destination}}</center></td>
       </tr>
       @endforeach
@@ -2315,8 +3185,9 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Department/Faculty/unit</center></th>
-      <th style="width: 15%"><center>Trip Date</center></th>
+
+      <th style="width: 15%"><center>Start Date</center></th>
+      <th style="width: 15%"><center>End Date</center></th>
       <th style="width: 14%"><center>Destination</center></th>
       <th style="width: 14%"><center>Form Status</center></th>
     </thead>
@@ -2325,9 +3196,57 @@ div.dt-buttons{
       <tr>
         <td><center>{{$outbox->id}}</center></td>
         <td><center>{{$outbox->form_initiator}}</center></td>
-        <td><center>{{$outbox->fullName}}</center></td>
-        <td><center>{{$outbox->faculty}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} - {{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client17{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+              <div class="modal fade" id="car_client17{{$outbox->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$outbox->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$outbox->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$outbox->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$outbox->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} </center></td>
+        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
         <td><center>{{$outbox->form_status}} Stage</center></td>
       </tr>
@@ -2346,8 +3265,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -2357,9 +3277,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client18{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client18{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -2382,8 +3350,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -2393,9 +3362,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client19{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client19{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
+        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -2424,7 +3441,8 @@ div.dt-buttons{
           <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
           <th scope="col" style="color:#fff;"><center>Destination</center></th>
-          <th scope="col" style="color:#fff;"><center>Trip Dates</center></th>
+          <th scope="col" style="color:#fff;"><center>Start Date</center></th>
+          <th scope="col" style="color:#fff;"><center>End Date</center></th>
           <th scope="col" style="color:#fff;"><center>Action</center></th>
         </thead>
         <tbody>
@@ -2437,7 +3455,8 @@ div.dt-buttons{
               <td>{{$details->driver_name}}</td>
               <td><center>{{$details->vehicle_reg_no}}</center></td>
               <td><center>{{$details->destination}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->start_date))}} - {{date("d/m/Y",strtotime($details->end_date))}}</center></td>
+              <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
+              <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
               <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
             </tr>
             <?php $d = $d+1; ?>
@@ -2468,8 +3487,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 17%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 17%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;  width: 8%"><center>Action</center></th>
@@ -2479,9 +3499,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client20{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client20{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td>{{date("d/m/Y",strtotime($closed->start_date))}} </td>
+        <td>{{date("d/m/Y",strtotime($closed->end_date))}}</td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -2624,8 +3692,9 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 250px;"><center>Department/Faculty/unit</center></th>
-      <th scope="col" style="color:#fff; width: 17%"><center>Trip Date</center></th>
+
+      <th scope="col" style="color:#fff; width: 17%"><center>Start Date</center></th>
+      <th scope="col" style="color:#fff; width: 17%"><center>End Date</center></th>
       <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
        <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
       <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -2635,9 +3704,57 @@ div.dt-buttons{
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
         <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
-        <td>{{date("d/m/Y",strtotime($closed->start_date))}} - {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client21{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client21{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+        <td>{{date("d/m/Y",strtotime($closed->start_date))}} </td>
+        <td> {{date("d/m/Y",strtotime($closed->end_date))}}</td>
          <td>{{$closed->destination}}</td>
          <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
          <td><center>
@@ -2772,7 +3889,8 @@ div.dt-buttons{
           <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
           <th scope="col" style="color:#fff;"><center>Destination</center></th>
-          <th scope="col" style="color:#fff;"><center>Trip Dates</center></th>
+          <th scope="col" style="color:#fff;"><center>Start Date</center></th>
+          <th scope="col" style="color:#fff;"><center>End Date</center></th>
           <th scope="col" style="color:#fff;"><center>Action</center></th>
         </thead>
         <tbody>
@@ -2785,7 +3903,8 @@ div.dt-buttons{
               <td>{{$details->driver_name}}</td>
               <td><center>{{$details->vehicle_reg_no}}</center></td>
               <td><center>{{$details->destination}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->start_date))}} - {{date("d/m/Y",strtotime($details->end_date))}}</center></td>
+              <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
+              <td><center> {{date("d/m/Y",strtotime($details->end_date))}}</center></td>
               <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
             </tr>
             <?php $d = $d+1; ?>
@@ -3264,7 +4383,7 @@ var tablelog = $('#LogTable').DataTable( {
                 //messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT \n \n Research Flats Contracts',
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4,5, 6, 7,8]
+                    columns: [ 0, 1, 2, 3, 4,5, 6, 7,8,9]
                 },
 
                 customize: function ( doc ) {
@@ -3282,7 +4401,7 @@ var tablelog = $('#LogTable').DataTable( {
 
 
 
-                  doc.content[1].table.widths = [22, '*', 50, 80, 80, 100, 80, 80,80];
+                  doc.content[1].table.widths = [22, '*', 50, 70, 70, 90, 70, 70,70,70];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                       doc.content[1].table.body[i][0]=i+'.';
@@ -3353,7 +4472,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Research Flats Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7,8]
+                columns: [1, 2, 3, 4, 5, 6, 7,8,9]
                 },
             },
           ]

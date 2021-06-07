@@ -155,11 +155,22 @@ hr {
 				<td>Hire rate/KM</td>
 				<td>TZS {{number_format($details->hire_rate)}}</td>
 			</tr>
+
+
+                <tr>
+                    <td>Hire Status</td>
+                    <td>{{$details->hire_status}}</td>
+                </tr>
+
 			@endforeach
 		</table>
 	</div>
 	</div>
-		<br>
+
+        <br>
+
+
+
 		<div class="card">
 			 <div class="card-body">
           <b><h3>Operational Expenditures</h3></b>
@@ -199,7 +210,7 @@ hr {
         <div class="form-group" id="datediv">
           <div class="form-wrapper">
             <label for="date_received">Date Received<span style="color: red;">*</span></label>
-            <input type="date" id="date_received" name="date_received" class="form-control" required="" max="{{(date('Y-m-d'))}}">
+            <input  id="date_received" name="date_received" class="flatpickr_date form-control" required="" max="{{(date('Y-m-d'))}}">
           </div>
         </div>
 
@@ -262,7 +273,7 @@ hr {
               From
             </div>
             <div >
-              <input type="date" id="start_date" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input  id="start_date" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                <span id="start_msg"></span>
             </div>
 
@@ -271,7 +282,7 @@ hr {
             </div>
 
             <div >
-           <input type="date" id="end_date" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+           <input  id="end_date" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
             <span id="end_msg"></span>
             </div>
         </div>
@@ -348,7 +359,7 @@ hr {
         <div class="form-group" id="datediv">
           <div class="form-wrapper">
             <label for="date_received{{$operational->id}}">Date Received</label>
-            <input type="date" id="date_received{{$operational->id}}" name="date_received" class="form-control" required="" value="{{$operational->date_received}}" max={{date('Y-m-d')}}>
+            <input  id="date_received{{$operational->id}}" name="date_received" class="flatpickr_date form-control" required="" value="{{$operational->date_received}}" max={{date('Y-m-d')}}>
           </div>
         </div>
         <br>
@@ -442,6 +453,62 @@ hr {
 @endif
 </div>
 </div>
+        <br>
+
+
+        <div class="card">
+            <div class="card-body">
+                <b><h3>Vehicle Availability</h3></b>
+                <hr>
+
+                <div id="availability" style=" padding: 1%;" >
+                    <br>
+                    {{--                            <center><h3><strong>Vehicle Availability</strong></h3></center>--}}
+                    {{--                            <hr>--}}
+                    <form id="msform">
+                        <fieldset>
+                            <div class="form-card">
+                                {{--  <h4 class="fs-title">Please fill the form below</h4> --}}
+                                <div class="form-group row">
+
+
+
+
+
+
+                                    <div class="form-wrapper col-12">
+                                        <label for="model">Vehicle<span style="color: red;">*</span></label>
+                                        <input autocomplete="off" readonly id="vehicle_available" value="{{$details->vehicle_model}}-{{$_GET['vehicle_reg_no']}}" name="vehicle" class="form-control" >
+
+                                    </div>
+
+
+
+
+                                    <div class="form-wrapper col-6 pt-4">
+                                        <label for="start_date">Start Date<span style="color: red;">*</span></label>
+                                        <input autocomplete="off" id="start_date_view"  class="form-control" required="" >
+                                        <input type="hidden" id="start_date" name="start_date" required class="form-control">
+                                    </div>
+                                    <div class="form-wrapper col-6 pt-4">
+                                        <label for="end_date">End Date<span style="color: red;">*</span></label>
+                                        <input autocomplete="off" id="end_date_view" class="form-control" required="">
+                                        <input type="hidden" id="end_date" name="end_date" required class="form-control">
+                                    </div>
+                                </div>
+                                <center><button class="btn btn-primary" type="submit" id="check">Submit</button></center>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <br>
+                    <div id="content">
+                        <center><div id="loading"></div></center>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
 <br>
 <div class="card">
 <div class="card-body">
@@ -477,7 +544,7 @@ hr {
               From
             </div>
             <div >
-              <input type="date" id="start2_date" name="start_date" class="form-control" min="<?php echo(date('Y-m-d'))?>">
+              <input  id="start2_date" name="start_date" class="flatpickr_date form-control" min="<?php echo(date('Y-m-d'))?>">
                <span id="start2_msg"></span>
             </div>
 
@@ -486,7 +553,7 @@ hr {
             </div>
 
             <div >
-           <input type="date" id="end2_date" name="end_date" class="form-control"  min="<?php echo(date('Y-m-d'))?>">
+           <input  id="end2_date" name="end_date" class="flatpickr_date form-control"  min="<?php echo(date('Y-m-d'))?>">
             <span id="end2_msg"></span>
             </div>
         </div>
@@ -546,7 +613,7 @@ hr {
               From
             </div>
             <div >
-              <input type="date" id="start_date3" name="start_date" class="form-control" max="<?php echo(date('Y-m-d'))?>">
+              <input  id="start_date3" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
                <span id="start_msg3"></span>
             </div>
 
@@ -555,7 +622,7 @@ hr {
             </div>
 
             <div >
-           <input type="date" id="end_date3" name="end_date" class="form-control"  max="<?php echo(date('Y-m-d'))?>">
+           <input  id="end_date3" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
             <span id="end_msg3"></span>
             </div>
         </div>
@@ -605,6 +672,9 @@ hr {
 </div>
 </div>
 </div>
+
+
+
 </div>
 </div>
 </div>
@@ -1402,5 +1472,84 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
   });
 
 });
+
+
+
+
+  $(document).ajaxSend(function(){
+      $("#loading").fadeIn(250);
+  });
+  $(document).ajaxComplete(function(){
+      $("#loading").fadeOut(250);
+  });
+
+  $("#check").click(function(e){
+      $("#error").hide();
+      var query = $('#start_date').val();
+      var query2 = $('#end_date').val();
+      var query3 = $('#vehicle_available').val();
+      var query4 = $('#vehicle_available_model').val();
+      if(query!='' && query2!=''){
+          if(new Date(query2) <= new Date(query)){
+              var query3=query2;
+              query2=query;
+              query=query3;
+          }
+          $.ajax({
+              url: "/car/available_cars?",
+              context: document.body,
+              data:{start_date:query,end_date:query2,vehicle:query3,vehicle_model:query4}
+          })
+              .done(function(fragment) {
+                  $("#content").html(fragment);
+                  var table = $('#myTables4').DataTable( {
+                      dom: '<"top"l>rt<"bottom"pi>'
+                  });
+              });
+          return false;
+
+      }
+
+  });
+
+
+
 </script>
+
+
+
+<script>
+        <?php
+        $today_date=date('Y-m-d');
+
+        ?>
+
+    var today={!! json_encode($today_date) !!};
+
+
+    $("#start_date_view").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#start_date",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        minDate:new Date(today),
+        orientation:"auto"
+    });
+
+
+    $("#end_date_view").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#end_date",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        orientation:"auto"
+    });
+</script>
+
+
+
 @endsection

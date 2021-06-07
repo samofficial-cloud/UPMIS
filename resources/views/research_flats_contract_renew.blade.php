@@ -313,7 +313,7 @@ $today=date('Y-m-d');
                 <h5 style="line-height: 1.5;">RESEARCH FLATS ACCOMMODATION FACILITY<br>REGISTRATION FORM</h5>
                 <div class="row">
                     <div class="col-md-12 mx-0">
-                        <form id="msform" method="post" action="{{ route('sendeditResearchForm',$contract->id) }}">
+                        <form id="msform" method="post" action="{{ route('addcontractflat') }}">
                             {{csrf_field()}}
                                <ul id="progressbar">
                                     <li class="active" id="client"><strong>Client</strong></li>
@@ -384,7 +384,7 @@ $today=date('Y-m-d');
                                     <div class="form-wrapper col-4">
                                         <label for="first_name">First Name<span style="color: red;">*</span></label>
                                             <span id="firstnamemsg"></span>
-                                        <input type="text" id="first_name" name="first_name" class="form-control" autocomplete="off" value="{{$contract->first_name}}"  readonly="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
+                                        <input type="text" id="first_name" name="first_name"  class="form-control" autocomplete="off" value="{{$contract->first_name}}"  readonly="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" >
                                         <span id="nameList"></span>
                                     </div>
                                     <div class="form-wrapper col-5">
@@ -412,7 +412,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="professional">Professional<span style="color: red;">*</span></label>
                                             <span id="profmsg"></span>
-                                            <input type="text" id="professional" name="professional" class="form-control"  value="{{$contract->professional}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="professional" readonly name="professional" class="form-control"  value="{{$contract->professional}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
@@ -420,19 +420,19 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-4">
                                             <label for="address">Address<span style="color: red;">*</span></label>
                                             <span id="addressmsg"></span>
-                                            <input type="text" id="address" name="address" class="form-control"   value="{{$contract->address}}">
+                                            <input type="text" id="address" readonly name="address" class="form-control"   value="{{$contract->address}}">
                                         </div>
 
                                         <div class="form-wrapper col-5">
                                             <label for="email">Email<span style="color: red;">*</span></label>
                                             <span id="emailmsg"></span>
-                                            <input type="text" name="email" id="email" class="form-control"  placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25" value="{{$contract->email}}">
+                                            <input type="text" name="email" readonly id="email" class="form-control"  placeholder="someone@example.com" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25" value="{{$contract->email}}">
                                         </div>
 
                                         <div class="form-wrapper col-3">
                                             <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
                                             <span id="phonemsg"></span>
-                                            <input type="text" id="phone_number" name="phone_number" value="{{$contract->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                            <input type="text" id="phone_number" readonly name="phone_number" value="{{$contract->phone_number}}" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                         </div>
 
                                        @if($contract->tin!='')
@@ -440,7 +440,7 @@ $today=date('Y-m-d');
                                            <div class="form-wrapper">
                                                <label for="tin">TIN <span style="color: red;"> *</span></label>
                                                <span id="tin_msg"></span>
-                                               <input type="number" id="tin" name="tin" class="form-control" value="{{$contract->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                               <input type="number" id="tin" readonly name="tin" class="form-control" value="{{$contract->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
                                                <p id="error_tin"></p>
                                            </div>
                                        </div>
@@ -455,7 +455,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="nationality">Nationality<span style="color: red;">*</span></label>
                                             <span id="nationality_msg"></span>
-                                            <input type="text" id="nationality" name="nationality" class="form-control"  value="{{$contract->nationality}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="nationality"  readonly name="nationality" class="form-control"  value="{{$contract->nationality}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
@@ -463,7 +463,7 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper">
                                             <label for="purpose">Purpose of Visit<span style="color: red;">*</span></label>
                                             <span id="purposemsg"></span>
-                                            <input type="text" id="purpose" name="purpose" class="form-control"  value="{{$contract->purpose}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="purpose" readonly name="purpose" class="form-control"  value="{{$contract->purpose}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
                                     </div>
 
@@ -471,14 +471,14 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-4">
                                             <label for="passport_no">Passport No</label>
                                             <span id="pass_nomsg"></span>
-                                            <input type="text" id="passport_no" name="passport_no" class="form-control"  value="{{$contract->passport_no}}">
+                                            <input type="text" id="passport_no" readonly name="passport_no" class="form-control"  value="{{$contract->passport_no}}">
                                         </div>
 
                                         <div class="form-wrapper col-4">
                                             <label for="issue_date">Date of Issue<span style="color: red;">*</span></label>
                                             <span id="issue_datemsg"></span>
-                                            <input  id="issue_date"  class="form-control" autocomplete="off"  value="{{date("d/m/Y",strtotime($contract->issue_date))}}">
-                                            <input type="hidden" id="issue_date_alternate" name="issue_date"  class="form-control">
+                                            <input  id="issue_date"  class="form-control" readonly autocomplete="off"  value="{{date("d/m/Y",strtotime($contract->issue_date))}}">
+                                            <input type="hidden" id="issue_date_alternate" readonly name="issue_date"  class="form-control">
 
                                             <?php
                                             $received_issue_date=$contract->issue_date;
@@ -489,7 +489,7 @@ $today=date('Y-m-d');
                                          <div class="form-wrapper col-4">
                                             <label for="issue_place">Place of Issue<span style="color: red;">*</span></label>
                                             <span id="issue_placemsg"></span>
-                                            <input type="text" id="issue_place" name="issue_place" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" value="{{$contract->issue_place}}">
+                                            <input type="text" id="issue_place" readonly name="issue_place" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;" value="{{$contract->issue_place}}">
                                         </div>
 
 
@@ -497,32 +497,8 @@ $today=date('Y-m-d');
                                          <div class="form-wrapper col-12" id="id_typeDiv" >
                                              <label for="id_type">Type of Identification Card<span style="color: red;">*</span></label>
                                              <span id="id_type_msg"></span>
-                                             <select class="form-control id_type"  id="id_type" name="id_type">
-                                                 <option value="{{$contract->id_type}}" selected>{{$contract->id_type}}</option>
 
-                                                 @if($contract->id_type=='National Identity Card')
-                                                     <option value="Driving License">Driving Licence</option>
-                                                     <option value="Voters Card">Voters Card</option>
-                                                     <option value="Workers Identity Card">Workers Identity Card</option>
-
-                                                 @elseif($contract->id_type=='Driving License')
-                                                     <option value="National Identity Card">National Identity Card</option>
-                                                     <option value="Voters Card">Voters Card</option>
-                                                     <option value="Workers Identity Card">Workers Identity Card</option>
-
-                                                 @elseif($contract->id_type=='Voters Card')
-                                                     <option value="National Identity Card">National Identity Card</option>
-                                                     <option value="Driving License">Driving Licence</option>
-                                                     <option value="Workers Identity Card">Workers Identity Card</option>
-
-                                                 @elseif($contract->id_type=='Workers Identity Card')
-                                                 <option value="National Identity Card">National Identity Card</option>
-                                                 <option value="Driving License">Driving Licence</option>
-                                                 <option value="Voters Card">Voters Card</option>
-                                                 @else
-                                                 @endif
-
-                                             </select>
+                                             <input type="text" id="id_type" readonly name="id_type" class="form-control"  value="{{$contract->id_type}}" >
                                          </div>
                                          @else
                                          @endif
@@ -531,7 +507,7 @@ $today=date('Y-m-d');
                                          <div class="form-wrapper col-12 pt-4" id="id_numberDiv" >
                                              <label for="id_number">ID Number<span style="color: red;">*</span></label>
                                              <span id="id_number_msg"></span>
-                                             <input type="text" id="id_number" value="{{$contract->id_number}}" name="id_number" class="form-control">
+                                             <input type="text" id="id_number" readonly value="{{$contract->id_number}}" name="id_number" class="form-control">
                                          </div>
                                          @else
                                          @endif
@@ -592,19 +568,19 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-4">
                                             <label for="host_address">Address<span style="color: red;">*</span></label>
                                             <span id="host_addressmsg"></span>
-                                            <input type="text" id="host_address" name="host_address" class="form-control" value="{{$contract->host_address}}"  >
+                                            <input type="text" id="host_address" name="host_address" readonly class="form-control" value="{{$contract->host_address}}"  >
                                         </div>
 
                                         <div class="form-wrapper col-5">
                                             <label for="host_email">Email<span style="color: red;">*</span></label>
                                             <span id="host_emailmsg"></span>
-                                            <input type="text" id="host_email" name="host_email" class="form-control"  value="{{$contract->host_email}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                            <input type="text" id="host_email" readonly name="host_email" class="form-control"  value="{{$contract->host_email}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
                                         </div>
 
                                         <div class="form-wrapper col-3">
                                             <label for="host_phone">Phone Number <span style="color: red;"> *</span></label>
                                             <span id="host_phonemsg"></span>
-                                            <input type="text" id="host_phone"  name="host_phone" class="form-control" value="{{$contract->host_phone}}" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                            <input type="text" id="host_phone" readonly name="host_phone" class="form-control" value="{{$contract->host_phone}}" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
                                         </div>
 
 
@@ -635,13 +611,14 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper col-6">
                                             <label for="arrival_date">Date of Arrival<span style="color: red;">*</span></label>
                                             <span id="arrival_datemsg"></span>
-                                            <input type="date" id="arrival_date" name="arrival_date" class="form-control" value="{{$contract->arrival_date}}"  readonly="">
+                                            <input  id="arrival_date" name="arrival_date" class="form-control" value=""  >
+                                          <input type="hidden" id="arrival_date_alternate" name="arrival_date"  class="form-control">
                                       </div>
 
                                       <div class="form-wrapper col-6">
                                             <label for="arrival_time">Time<span style="color: red;">*</span></label>
                                             <span id="arrival_timemsg"></span>
-                                            <input  id="arrival_time" name="arrival_time" class="form-control"  value="{{$contract->arrival_time}}">
+                                            <input  id="arrival_time" name="arrival_time"  class="form-control"  value="">
                                       </div>
                                     </div>
 
@@ -649,7 +626,8 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper">
                                             <label for="departure_date">Expected Date of Departure<span style="color: red;">*</span></label>
                                             <span id="departure_datemsg"></span>
-                                            <input type="date" id="departure_date" name="departure_date" class="form-control"  value="{{$contract->departure_date}}" readonly="">
+                                            <input  id="departure_date" name="departure_date" class="form-control"  value="" >
+                                          <input type="hidden" id="departure_date_alternate" name="departure_date"  class="form-control">
                                       </div>
                                     </div>
                                 </div>
@@ -701,13 +679,13 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_no">Receipt No<span style="color: red;">*</span></label>
                                           <span id="receipt_no_msg"></span>
-                                          <input type="text" id="receipt_no" name="receipt_no" class="form-control"  value="{{$contract->receipt_no}}">
+                                          <input type="text" id="receipt_no" name="receipt_no" class="form-control"  value="">
                                       </div>
 
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_date">Of Date<span style="color: red;">*</span></label>
                                           <span id="receipt_date_msg"></span>
-                                            <input  id="receipt_date"  class="form-control"  autocomplete="off" value="{{date("d/m/Y",strtotime($contract->receipt_date))}}">
+                                            <input  id="receipt_date"  class="form-control"  autocomplete="off" value="">
                                           <input type="hidden" id="receipt_date_alternate" name="receipt_date"  class="form-control">
 
                                           <?php
@@ -751,7 +729,7 @@ $today=date('Y-m-d');
                                     <div class="form-group">
                                       <div class="form-wrapper">
                                         <label for="debtor">Debtor<span style="color: red;">*</span></label>
-                                        <input type="text" class="form-control"  id="debtor" name="debtor" readonly="" value="{{ucfirst(strtolower($contract->invoice_debtor))}}">
+                                        <input type="text" class="form-control"  id="debtor" name="debtor" readonly="" value="{{strtolower($contract->invoice_debtor)}}">
                                         {{-- <select class="form-control" required="" id="debtor" name="debtor" required="">
                                           <option value="" disabled selected hidden>Select Debtor</option>
                                             <option value="individual">Individual</option>
@@ -1583,15 +1561,7 @@ $("#next2").click(function(){
     var today_date={!! json_encode($today_date) !!};
 
 
-    $("#issue_date").datepicker({
-        dateFormat: 'dd/mm/yy',
-        autoclose: true,
-        altField: "#issue_date_alternate",
-        altFormat: "yy-mm-dd",
-        todayHighlight: true,
-        rtl: true,
-        orientation:"auto"
-    });
+
 
 
     $("#arrival_date").datepicker({

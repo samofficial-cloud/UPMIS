@@ -498,7 +498,8 @@ $today=date('Y-m-d');
                                         <div class="form-wrapper col-4">
                                             <label for="issue_date">Date of Issue<span style="color: red;">*</span></label>
                                             <span id="issue_datemsg"></span>
-                                            <input type="date" id="issue_date" name="issue_date" class="form-control"  max="{{date('Y-m-d')}}">
+                                            <input  id="issue_date" autocomplete="off" class="form-control"  >
+                                            <input type="hidden" id="issue_date_alternate" name="issue_date"  class="form-control">
                                         </div>
 
                                          <div class="form-wrapper col-4">
@@ -655,13 +656,14 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper col-6">
                                             <label for="arrival_date">Date of Arrival<span style="color: red;">*</span></label>
                                             <span id="arrival_datemsg"></span>
-                                            <input type="date" id="arrival_date" name="arrival_date" class="form-control"  max="{{date('Y-m-d')}}">
+                                            <input  id="arrival_date"  class="form-control"  autocomplete="off">
+                                          <input type="hidden" id="arrival_date_alternate" name="arrival_date"  class="form-control">
                                       </div>
 
                                       <div class="form-wrapper col-6">
                                             <label for="arrival_time">Time<span style="color: red;">*</span></label>
                                             <span id="arrival_timemsg"></span>
-                                            <input type="time" id="arrival_time" name="arrival_time" class="form-control" >
+                                            <input  id="arrival_time" name="arrival_time" class="form-control" >
                                       </div>
                                     </div>
 
@@ -669,7 +671,8 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper">
                                             <label for="departure_date">Expected Date of Departure<span style="color: red;">*</span></label>
                                             <span id="departure_datemsg"></span>
-                                            <input type="date" id="departure_date" name="departure_date" class="form-control"  min="{{date('Y-m-d')}}">
+                                            <input  id="departure_date"  class="form-control"  autocomplete="off">
+                                            <input type="hidden" id="departure_date_alternate" name="departure_date"  class="form-control">
                                       </div>
                                     </div>
                                 </div>
@@ -735,7 +738,8 @@ $today=date('Y-m-d');
                                       <div class="form-wrapper col-6">
                                             <label for="receipt_date">Of Date<span style="color: red;">*</span></label>
                                             <span id="receipt_date_msg"></span>
-                                            <input type="date" id="receipt_date" name="receipt_date" class="form-control" >
+                                            <input  id="receipt_date" autocomplete="off" class="form-control" >
+                                          <input type="hidden" id="receipt_date_alternate" name="receipt_date"  class="form-control">
                                       </div>
                                     </div>
 
@@ -1900,7 +1904,11 @@ $("#next3").click(function(){
                         $('#purpose').val(data.purpose);
                         $('#passport_no').val(data.passport_no);
                         $('#tin').val(data.tin);
-                        $('#issue_date').val(data.issue);
+
+                          var dateAr = (data.issue).split('-');
+                          var newIssueDate = dateAr[1] + '/' + dateAr[2] + '/' + dateAr[0].slice(-2);
+                        $('#issue_date').val(newIssueDate);
+                        $('#issue_date_alternate').val(data.issue);
                         $('#issue_place').val(data.place);
                         $('#nationality').val(data.nationality);
                       });
@@ -2267,7 +2275,75 @@ $("#next3").click(function(){
 </script>
 
 
+<script>
 
+
+        <?php
+        $today_date=date('Y-m-d');
+
+        ?>
+
+    var today_date={!! json_encode($today_date) !!};
+
+
+    $("#issue_date").datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        altField: "#issue_date_alternate",
+        altFormat: "yy-mm-dd",
+        todayHighlight: true,
+        rtl: true,
+        orientation:"auto"
+    });
+
+
+        $("#arrival_date").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#arrival_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            orientation:"auto"
+        });
+
+
+
+        $("#departure_date").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#departure_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            orientation:"auto"
+        });
+
+
+
+
+        $("#receipt_date").datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            altField: "#receipt_date_alternate",
+            altFormat: "yy-mm-dd",
+            todayHighlight: true,
+            rtl: true,
+            orientation:"auto"
+        });
+
+
+
+
+        $('#arrival_time').timepicker({
+            timeFormat: 'HH:mm',
+            interval: 60,
+            dropdown: true,
+            scrollbar: true
+        });
+
+
+</script>
 
 
 

@@ -130,6 +130,8 @@
   use App\insurance;
   use App\carContract;
   $total_cars=carRental::where('flag','1')->count();
+    $hired_cars=carRental::where('flag','1')->where('hire_status','Hired')->count();
+    $not_hired_cars=$total_cars-$hired_cars;
   $running_cars=carRental::where('flag','1')->where('vehicle_status','Running')->count();
   $minor_cars=carRental::where('flag','1')->where('vehicle_status','Minor Repair')->count();
   $grounded_cars=carRental::where('flag','1')->where('vehicle_status','Grounded')->count();
@@ -190,9 +192,12 @@
     <div class="card-body">
       <h5 class="card-title">General Statistics <i class="fas fa-car" style="font-size:30px; float: right; color: black;"></i></h5>
       Total Vehicles: {{$total_cars}}
+        <br>Hired Vehicles: <?php echo e($hired_cars); ?>
+        <br>Available Vehicles: <?php echo e($not_hired_cars); ?>
       <br>Running Vehicles: {{$running_cars}}
       <br>Minor Repair Vehicles: {{$minor_cars}}
       <br>Grounded Vehicles: {{$grounded_cars}}
+
       <hr style="margin-top: 1rem;
     margin-bottom: 1rem;
     border: 0;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\cost_centre;
 use App\hire_rate;
+use App\research_flats_contract;
 use App\Rules\PasswordValidate;
 use Illuminate\Http\Request;
 use PDF;
@@ -224,9 +225,23 @@ class HomeController extends Controller
       return $pdf->stream('Research Flats Accomodation Form.pdf');
     }
 
+
+
+    public function terminate_research_contract(Request $request,$id){
+
+        $research_contract=research_flats_contract::find($id);
+        $research_contract->contract_status=0;
+        $research_contract->reason_for_termination=$request->get('reason_for_termination');
+        $research_contract->save();
+        return redirect()->route('contracts_management')->with('success', 'Contract Terminated Successfully');
+    }
+
     public function editResearchForm($id){
       $contract=DB::table('research_flats_contracts')->where('id', $id)->first();
       $room_cat = DB::table('research_flats_rooms')->select('category')->where('room_no',$contract->room_no)->value('category');
+
+
+
       return View('research_flats_contract_edit',compact('contract','room_cat'));
     }
 
@@ -461,7 +476,7 @@ class HomeController extends Controller
       }
       else{
          DB::table('research_flats_rooms')->insert(
-            ['room_no' => $request->get('room_no'), 'category'=>$request->get('category'), 'currency'=>$request->get('currency'),'charge_workers'=>$request->get('charge_workers'),'charge_students'=>$request->get('charge_students')]);
+            ['room_no' => $request->get('room_no'), 'category'=>$request->get('category'), 'currency'=>$request->get('currency'),'charge_workers'=>$request->get('charge_workers'),'charge_students'=>$request->get('charge_students'),'occupational_status'=>$request->get('occupational_status')]);
        return redirect()->back()->with('success', 'Room Added Successfully');
       }
 
@@ -493,6 +508,11 @@ class HomeController extends Controller
       DB::table('research_flats_rooms')
       ->where('id', $id)
       ->update(['charge_students' => $request->get('charge_students')]);
+
+
+      DB::table('research_flats_rooms')
+      ->where('id', $id)
+      ->update(['occupational_status'=>$request->get('occupational_status')]);
 
       return redirect()->back()->with('success', 'Room Details Edited Successfully');
      }

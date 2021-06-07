@@ -411,7 +411,7 @@
                                 <div class="form-group">
                                     <div class="form-wrapper">
                                         <label for=""  ><strong>Event Date<span style="color: red;"> *</span> </strong></label>
-                                        <input type="date" class="form-control"   name="event_date" value="{{$var->event_date}}" required autocomplete="off">
+                                        <input  class="form-control date_datepicker"   name="event_date" value="{{date("d/m/Y",strtotime($var->event_date))}}" required autocomplete="off">
 
                                     </div>
                                 </div>
