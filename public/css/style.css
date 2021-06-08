@@ -926,3 +926,21 @@ margin-left: 43.5%;
 
     background-color: white !important;
 }
+
+
+thead tr th {
+
+    text-align: center !important;
+    font-size:0.9rem !important;
+}
+
+
+ td {
+
+
+    font-size:0.9rem !important;
+}
+
+ body{
+     font-size:0.9rem !important;
+ }

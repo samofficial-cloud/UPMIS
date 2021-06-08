@@ -2627,14 +2627,14 @@ input[type=radio]{
 
                     <div class="form-group">
                         <div class="form-wrapper">
-                            <label for="charge_workers">Charging price for workers<span style="color: red;">*</span></label>
+                            <label for="charge_workers">Staff Rate<span style="color: red;">*</span></label>
                               <input type="text" id="charge_workers" name="charge_workers" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="form-wrapper">
-                            <label for="charge_students">Charging price for students<span style="color: red;">*</span></label>
+                            <label for="charge_students">Students Rate<span style="color: red;">*</span></label>
                               <input type="text" id="charge_students" name="charge_students" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                     </div>
@@ -2751,8 +2751,8 @@ input[type=radio]{
             <th scope="col" style="color:#fff;"><center>Room No.</center></th>
             <th scope="col" style="color:#fff;"><center>Category</center></th>
             <th scope="col" style="color:#fff;"><center>Currency</center></th>
-            <th scope="col" style="color:#fff; width: 20%;"><center>Charging price for workers</center></th>
-            <th scope="col" style="color:#fff;width: 20%;"><center>Charging price for students</center></th>
+            <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
+            <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
             <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
                 @if($privileges=='Read only')
                 @else
@@ -2832,14 +2832,14 @@ input[type=radio]{
                     <br>
                     <div class="form-group">
                         <div class="form-wrapper">
-                            <label for="charge_workers{{$room->id}}">Charging price for workers<span style="color: red;">*</span></label>
+                            <label for="charge_workers{{$room->id}}">Staff Rate<span style="color: red;">*</span></label>
                               <input type="text" id="charge_workers{{$room->id}}" name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                     </div>
                     <br>
                     <div class="form-group">
                         <div class="form-wrapper">
-                            <label for="charge_students{{$room->id}}">Charging price for students<span style="color: red;">*</span></label>
+                            <label for="charge_students{{$room->id}}">Students Rate<span style="color: red;">*</span></label>
                               <input type="text" id="charge_students{{$room->id}}" name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                         </div>
                     </div>

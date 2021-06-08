@@ -1364,10 +1364,10 @@ div.dt-buttons{
   @if(count($inbox)>0)
 <table>
     <thead>
-      <th style="width: 16%"><center>Contract Number</center></th>
-      <th style="width: 16%"><center>Initiated By</center></th>
+    <th style="width: 16%"><center>Contract Number</center></th>
+    <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
-
+      <th style="width: 16%"><center>Vehicle</center></th>
       <th style="width: 16%"><center>Start Date</center></th>
       <th style="width: 16%"><center>End Date</center></th>
       <th style="width: 16%"><center>Destination</center></th>
@@ -1455,6 +1455,51 @@ div.dt-buttons{
 
 
           </td>
+        <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details1{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                <div class="modal fade" id="vehicle_details1{{$inbox->id}}" role="dialog">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                <table class="table table-striped table-bordered " style="width: 100%">
+
+                                    <?php
+                                    $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                    ?>
+
+                                    @foreach($vehicle_details as $vehicle_detail)
+                                    <tr>
+                                        <td>Vehicle Model:</td>
+                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>Vehicle Registration Number:</td>
+                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Hire Rate/KM:</td>
+                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                    </tr>
+
+                                        @endforeach
+
+                                </table>
+                                <br>
+                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                            </div>
+                        </div>
+                    </div>
+                </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
         <td><center>{{$inbox->destination}}</center></td>
@@ -1475,6 +1520,7 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Vehicle</center></th>
 
       <th style="width: 15%"><center>Start Date</center></th>
       <th style="width: 15%"><center>End Date</center></th>
@@ -1536,6 +1582,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details2{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details2{{$outbox->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                      ?>
+
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} </center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -1586,6 +1678,7 @@ div.dt-buttons{
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
       <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -1647,7 +1740,51 @@ div.dt-buttons{
 
 
         </td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details3{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details3{{$closed->id}}" role="dialog">
 
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -1710,8 +1847,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar3">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -1723,7 +1861,7 @@ div.dt-buttons{
       @foreach($closed_inact as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client4{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -1773,7 +1911,52 @@ div.dt-buttons{
 
 
           </td>
-        <td>{{$closed->faculty}}</td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details4{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details4{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -1838,10 +2021,10 @@ div.dt-buttons{
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
           <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
+          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
+          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Destination</center></th>
           <th scope="col" style="color:#fff;"><center>Start Date</center></th>
           <th scope="col" style="color:#fff;"><center>End Date</center></th>
@@ -1852,10 +2035,10 @@ div.dt-buttons{
             <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
             <tr>
               <th style="text-align: center;">{{$d}}.</th>
-              <td><center>{{$log->contract_id}}</center></td>
               <td>{{$details->fullName}}</td>
-              <td>{{$details->driver_name}}</td>
-              <td><center>{{$details->vehicle_reg_no}}</center></td>
+                <td><center>{{$log->contract_id}}</center></td>
+                <td><center>{{$details->vehicle_reg_no}}</center></td>
+                <td>{{$details->driver_name}}</td>
               <td><center>{{$details->destination}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
@@ -1881,6 +2064,7 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Vehicle</center></th>
 
       <th style="width: 16%"><center>Start Date</center></th>
       <th style="width: 16%"><center>End Date</center></th>
@@ -1969,7 +2153,51 @@ div.dt-buttons{
 
 
              </td>
+             <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details5{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                     <div class="modal fade" id="vehicle_details5{{$inbox->id}}" role="dialog">
 
+                         <div class="modal-dialog" role="document">
+                             <div class="modal-content">
+                                 <div class="modal-header">
+                                     <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                 </div>
+
+                                 <div class="modal-body">
+                                     <table class="table table-striped table-bordered " style="width: 100%">
+
+                                         <?php
+                                         $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                         ?>
+
+                                         @foreach($vehicle_details as $vehicle_detail)
+                                             <tr>
+                                                 <td>Vehicle Model:</td>
+                                                 <td>{{$vehicle_detail->vehicle_model}}</td>
+                                             </tr>
+
+
+                                             <tr>
+                                                 <td>Vehicle Registration Number:</td>
+                                                 <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                             </tr>
+
+                                             <tr>
+                                                 <td>Hire Rate/KM:</td>
+                                                 <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                             </tr>
+
+                                         @endforeach
+
+                                     </table>
+                                     <br>
+                                     <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                 </div>
+                             </div>
+                         </div>
+                     </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} </center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
          <td><center>{{$inbox->destination}}</center></td>
@@ -1990,6 +2218,7 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Vehicle</center></th>
 
       <th style="width: 15%"><center>Start Date</center></th>
       <th style="width: 15%"><center>End Date</center></th>
@@ -2050,7 +2279,51 @@ div.dt-buttons{
 
 
           </td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details6{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details6{{$outbox->id}}" role="dialog">
 
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -2069,8 +2342,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -2082,7 +2356,7 @@ div.dt-buttons{
       @foreach($closed_act as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -2132,6 +2406,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details7{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -2156,8 +2476,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar4">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -2169,9 +2490,102 @@ div.dt-buttons{
       @foreach($closed_inact as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
-        <td>{{$closed->fullName}}</td>
-        <td>{{$closed->faculty}}</td>
+
+          <td>
+
+              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+              <div class="modal fade" id="car_client7{{$closed->id}}" role="dialog">
+
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <b><h5 class="modal-title">Client Details.</h5></b>
+
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body">
+                              <table class="table table-striped table-bordered " style="width: 100%">
+
+                                  <tr>
+                                      <td>Client:</td>
+                                      <td>{{$closed->fullName}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Email:</td>
+                                      <td>{{$closed->email}}</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>TIN:</td>
+                                      <td>{{$closed->tin}}</td>
+                                  </tr>
+
+
+                                  <tr>
+                                      <td>Department/Faculty/Unit:</td>
+                                      <td>{{$closed->faculty}}</td>
+                                  </tr>
+
+
+                              </table>
+                              <br>
+                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details8{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details8{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -2203,6 +2617,7 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Vehicle</center></th>
 
       <th style="width: 16%"><center>Start Date</center></th>
       <th style="width: 16%"><center>End Date</center></th>
@@ -2290,6 +2705,51 @@ div.dt-buttons{
 
 
               </td>
+              <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details9{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                      <div class="modal fade" id="vehicle_details9{{$inbox->id}}" role="dialog">
+
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  </div>
+
+                                  <div class="modal-body">
+                                      <table class="table table-striped table-bordered " style="width: 100%">
+
+                                          <?php
+                                          $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                          ?>
+
+                                          @foreach($vehicle_details as $vehicle_detail)
+                                              <tr>
+                                                  <td>Vehicle Model:</td>
+                                                  <td>{{$vehicle_detail->vehicle_model}}</td>
+                                              </tr>
+
+
+                                              <tr>
+                                                  <td>Vehicle Registration Number:</td>
+                                                  <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                              </tr>
+
+                                              <tr>
+                                                  <td>Hire Rate/KM:</td>
+                                                  <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                              </tr>
+
+                                          @endforeach
+
+                                      </table>
+                                      <br>
+                                      <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                  </div>
+                              </div>
+                          </div>
+                      </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
          <td><center>{{$inbox->destination}}</center></td>
@@ -2310,6 +2770,7 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Vehicle</center></th>
 
       <th style="width: 15%"><center>Start Date</center></th>
       <th style="width: 15%"><center>End Date</center></th>
@@ -2370,6 +2831,51 @@ div.dt-buttons{
 
 
           </td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details10{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details10{{$outbox->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -2388,8 +2894,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -2401,7 +2908,7 @@ div.dt-buttons{
       @foreach($closed_act as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client10{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -2451,6 +2958,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details11{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details11{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -2473,8 +3026,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar5">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -2486,7 +3040,7 @@ div.dt-buttons{
       @foreach($closed_inact as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client11{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -2536,6 +3090,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details12{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details12{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -2572,6 +3172,7 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Vehicle</center></th>
 
       <th style="width: 16%"><center>Start Date</center></th>
       <th style="width: 16%"><center>End Date</center></th>
@@ -2658,6 +3259,51 @@ div.dt-buttons{
 
 
             </td>
+            <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details13{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                    <div class="modal fade" id="vehicle_details13{{$inbox->id}}" role="dialog">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <table class="table table-striped table-bordered " style="width: 100%">
+
+                                        <?php
+                                        $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                        ?>
+
+                                        @foreach($vehicle_details as $vehicle_detail)
+                                            <tr>
+                                                <td>Vehicle Model:</td>
+                                                <td>{{$vehicle_detail->vehicle_model}}</td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td>Vehicle Registration Number:</td>
+                                                <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Hire Rate/KM:</td>
+                                                <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                            </tr>
+
+                                        @endforeach
+
+                                    </table>
+                                    <br>
+                                    <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                </div>
+                            </div>
+                        </div>
+                    </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
         <td><center> {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
         <td><center>{{$inbox->destination}}</center></td>
@@ -2678,6 +3324,7 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Vehicle</center></th>
 
       <th style="width: 15%"><center>Start Date</center></th>
       <th style="width: 15%"><center>End Date</center></th>
@@ -2739,6 +3386,51 @@ div.dt-buttons{
 
 
           </td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details14{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details14{{$outbox->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -2786,8 +3478,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -2799,7 +3492,7 @@ div.dt-buttons{
       @foreach($closed_act as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client14{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -2849,6 +3542,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details15{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details15{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
         <td><center> {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -2911,8 +3650,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar6">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -2924,7 +3664,7 @@ div.dt-buttons{
       @foreach($closed_inact as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client15{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -2974,6 +3714,53 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details16{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details16{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
+
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -3037,10 +3824,10 @@ div.dt-buttons{
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
           <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
+          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
+          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Destination</center></th>
           <th scope="col" style="color:#fff;"><center>Start Date</center></th>
           <th scope="col" style="color:#fff;"><center>End Date</center></th>
@@ -3051,10 +3838,10 @@ div.dt-buttons{
             <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
             <tr>
               <th style="text-align: center;">{{$d}}.</th>
-              <td><center>{{$log->contract_id}}</center></td>
               <td>{{$details->fullName}}</td>
-              <td>{{$details->driver_name}}</td>
-              <td><center>{{$details->vehicle_reg_no}}</center></td>
+                <td><center>{{$log->contract_id}}</center></td>
+                <td><center>{{$details->vehicle_reg_no}}</center></td>
+                <td>{{$details->driver_name}}</td>
               <td><center>{{$details->destination}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($details->start_date))}} </center></td>
               <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
@@ -3081,6 +3868,7 @@ div.dt-buttons{
       <th style="width: 16%"><center>Contract Number</center></th>
       <th style="width: 16%"><center>Initiated By</center></th>
       <th style="width: 16%"><center>Client Name</center></th>
+      <th style="width: 16%"><center>Vehicle</center></th>
 
       <th style="width: 16%"><center>Start Date</center></th>
       <th style="width: 16%"><center>End Date</center></th>
@@ -3165,6 +3953,51 @@ div.dt-buttons{
 
 
           </td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details17{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details17{{$inbox->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} </center></td>
         <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
          <td><center>{{$inbox->destination}}</center></td>
@@ -3185,6 +4018,7 @@ div.dt-buttons{
       <th style="width: 14%"><center>Contract Number</center></th>
       <th style="width: 14%"><center>Initiated By</center></th>
       <th style="width: 14%"><center>Client Name</center></th>
+      <th style="width: 14%"><center>Vehicle</center></th>
 
       <th style="width: 15%"><center>Start Date</center></th>
       <th style="width: 15%"><center>End Date</center></th>
@@ -3245,6 +4079,51 @@ div.dt-buttons{
 
 
           </td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details18{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details18{{$outbox->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} </center></td>
         <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
          <td><center>{{$outbox->destination}}</center></td>
@@ -3263,8 +4142,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -3276,7 +4156,7 @@ div.dt-buttons{
       @foreach($closed_act as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client18{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -3326,6 +4206,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details19{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details19{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -3348,8 +4274,9 @@ div.dt-buttons{
 <table class="hover table table-striped table-bordered" id="myTablecar7">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
@@ -3361,7 +4288,7 @@ div.dt-buttons{
       @foreach($closed_inact as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client19{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -3411,6 +4338,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details20{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details20{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
         <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
          <td>{{$closed->destination}}</td>
@@ -3436,10 +4409,10 @@ div.dt-buttons{
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
           <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
+          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
+          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Destination</center></th>
           <th scope="col" style="color:#fff;"><center>Start Date</center></th>
           <th scope="col" style="color:#fff;"><center>End Date</center></th>
@@ -3450,10 +4423,10 @@ div.dt-buttons{
             <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
             <tr>
               <th style="text-align: center;">{{$d}}.</th>
-              <td><center>{{$log->contract_id}}</center></td>
               <td>{{$details->fullName}}</td>
-              <td>{{$details->driver_name}}</td>
-              <td><center>{{$details->vehicle_reg_no}}</center></td>
+                <td><center>{{$log->contract_id}}</center></td>
+                <td><center>{{$details->vehicle_reg_no}}</center></td>
+                <td>{{$details->driver_name}}</td>
               <td><center>{{$details->destination}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
@@ -3485,8 +4458,9 @@ div.dt-buttons{
   <table class="hover table table-striped table-bordered" id="myTablecar">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 17%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 17%"><center>End Date</center></th>
@@ -3498,7 +4472,7 @@ div.dt-buttons{
       @foreach($closed_act as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client20{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -3548,6 +4522,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details21{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details21{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td>{{date("d/m/Y",strtotime($closed->start_date))}} </td>
         <td>{{date("d/m/Y",strtotime($closed->end_date))}}</td>
          <td>{{$closed->destination}}</td>
@@ -3690,8 +4710,9 @@ div.dt-buttons{
     <table class="hover table table-striped table-bordered" id="myTablecar2">
     <thead class="thead-dark">
       <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
       <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
 
       <th scope="col" style="color:#fff; width: 17%"><center>Start Date</center></th>
       <th scope="col" style="color:#fff; width: 17%"><center>End Date</center></th>
@@ -3703,7 +4724,7 @@ div.dt-buttons{
       @foreach($closed_inact as $closed)
       <tr>
         <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
+
           <td>
 
               <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client21{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
@@ -3753,6 +4774,52 @@ div.dt-buttons{
 
 
           </td>
+          <td><center>{{$closed->id}}</center></td>
+          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details22{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                  <div class="modal fade" id="vehicle_details22{{$closed->id}}" role="dialog">
+
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+
+                              <div class="modal-body">
+                                  <table class="table table-striped table-bordered " style="width: 100%">
+
+                                      <?php
+                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                      ?>
+
+                                      @foreach($vehicle_details as $vehicle_detail)
+                                          <tr>
+                                              <td>Vehicle Model:</td>
+                                              <td>{{$vehicle_detail->vehicle_model}}</td>
+                                          </tr>
+
+
+                                          <tr>
+                                              <td>Vehicle Registration Number:</td>
+                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                          </tr>
+
+                                          <tr>
+                                              <td>Hire Rate/KM:</td>
+                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                          </tr>
+
+                                      @endforeach
+
+                                  </table>
+                                  <br>
+                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                              </div>
+                          </div>
+                      </div>
+                  </div></center></td>
         <td>{{date("d/m/Y",strtotime($closed->start_date))}} </td>
         <td> {{date("d/m/Y",strtotime($closed->end_date))}}</td>
          <td>{{$closed->destination}}</td>
@@ -3884,10 +4951,10 @@ div.dt-buttons{
     <table class="hover table table-bordered  table-striped" id="LogTable">
       <thead class="thead-dark">
           <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
+          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
           <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
+          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
           <th scope="col" style="color:#fff;"><center>Destination</center></th>
           <th scope="col" style="color:#fff;"><center>Start Date</center></th>
           <th scope="col" style="color:#fff;"><center>End Date</center></th>
@@ -3898,10 +4965,10 @@ div.dt-buttons{
             <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
             <tr>
               <th style="text-align: center;">{{$d}}.</th>
-              <td><center>{{$log->contract_id}}</center></td>
               <td>{{$details->fullName}}</td>
-              <td>{{$details->driver_name}}</td>
-              <td><center>{{$details->vehicle_reg_no}}</center></td>
+                <td><center>{{$log->contract_id}}</center></td>
+                <td><center>{{$details->vehicle_reg_no}}</center></td>
+                <td>{{$details->driver_name}}</td>
               <td><center>{{$details->destination}}</center></td>
               <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
               <td><center> {{date("d/m/Y",strtotime($details->end_date))}}</center></td>
@@ -4645,7 +5712,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6,7]
                 },
 
 
@@ -4662,7 +5729,7 @@ var tablelog = $('#LogTable').DataTable( {
                                     }
                   });
 
-                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80];
+                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
@@ -4728,7 +5795,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Active Car Rental Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
+                columns: [1, 2, 3, 4, 5, 6,7]
                 },
             },
         ]
@@ -4753,7 +5820,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6,7]
                 },
 
 
@@ -4770,7 +5837,7 @@ var tablelog = $('#LogTable').DataTable( {
                                     }
                   });
 
-                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80];
+                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
@@ -4836,7 +5903,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Car Rental Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
+                columns: [1, 2, 3, 4, 5, 6,7]
                 },
             },
         ]
@@ -4861,7 +5928,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6,7]
                 },
 
 
@@ -4878,7 +5945,7 @@ var tablelog = $('#LogTable').DataTable( {
                                     }
                   });
 
-                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80];
+                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
@@ -4944,7 +6011,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Car Rental Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
+                columns: [1, 2, 3, 4, 5, 6,7]
                 },
             },
         ]
@@ -4969,7 +6036,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6,7]
                 },
 
 
@@ -4986,7 +6053,7 @@ var tablelog = $('#LogTable').DataTable( {
                                     }
                   });
 
-                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80];
+                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
@@ -5052,7 +6119,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Car Rental Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
+                columns: [1, 2, 3, 4, 5, 6,7]
                 },
             },
         ]
@@ -5077,7 +6144,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6,7]
                 },
 
 
@@ -5094,7 +6161,7 @@ var tablelog = $('#LogTable').DataTable( {
                                     }
                   });
 
-                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80];
+                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
@@ -5160,7 +6227,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Car Rental Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
+                columns: [1, 2, 3, 4, 5, 6,7]
                 },
             },
         ]
@@ -5185,7 +6252,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6,7]
                 },
 
 
@@ -5202,7 +6269,7 @@ var tablelog = $('#LogTable').DataTable( {
                                     }
                   });
 
-                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80];
+                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
@@ -5268,7 +6335,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Car Rental Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
+                columns: [1, 2, 3, 4, 5, 6,7]
                 },
             },
         ]
@@ -5293,7 +6360,7 @@ var tablelog = $('#LogTable').DataTable( {
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    columns: [ 0, 1, 2, 3, 4, 5, 6,7]
                 },
 
 
@@ -5310,7 +6377,7 @@ var tablelog = $('#LogTable').DataTable( {
                                     }
                   });
 
-                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80];
+                  doc.content[1].table.widths=[22, 50, 140, '*', 110,90,80,80];
                   var rowCount = doc.content[1].table.body.length;
                       for (i = 1; i < rowCount; i++) {
                          doc.content[1].table.body[i][0]=i+'.';
@@ -5376,7 +6443,7 @@ var tablelog = $('#LogTable').DataTable( {
                 className: 'excelButton',
                 title: 'Car Rental Contracts',
                 exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6]
+                columns: [1, 2, 3, 4, 5, 6,7]
                 },
             },
         ]

@@ -396,9 +396,7 @@
           <th scope="col" style="width: 5%;">S/N</th>
           <th scope="col" style="width: 25%;">Client</th>
           <th scope="col">Contract ID</th>
-          <th scope="col">Category</th>
-          <th scope="col" >Sub Category</th>
-          <th scope="col" >Location</th>
+          <th scope="col" >Expiration Date</th>
           @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
           <th scope="col">Action</th>
           @endif
@@ -485,6 +483,30 @@
                                           <td>Real Estate ID:</td>
                                           <td colspan="2">{{$space->space_id_contract}}</td>
                                       </tr>
+
+                                     <tr>
+                                         <td>Category:</td>
+                                         <td colspan="2">{{$space->major_industry}}</td>
+                                     </tr>
+
+                                     <tr>
+                                         <td>Sub Category:</td>
+                                         <td colspan="2">{{$space->minor_industry}}</td>
+                                     </tr>
+
+
+                                     <tr>
+                                         <td>Location:</td>
+                                         <td colspan="2">{{$space->location}}</td>
+                                     </tr>
+
+
+                                     <tr>
+                                         <td>Sub Location:</td>
+                                         <td colspan="2">{{$space->sub_location}}</td>
+                                     </tr>
+
+
                                       <tr>
                                           <td>Lease Start</td>
                                           <td colspan="2">{{date("d/m/Y",strtotime($space->start_date))}}</td>
@@ -525,7 +547,15 @@
                                         @endif
                                       </tr>
                                       @endif
+
+
+
+
+
                                   </table>
+
+                                  <br><br>
+                                  <p style="text-align: center">Go to <a href="/contracts_management">Contracts</a></p>
                                   <br>
                                   <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
                               </div>
@@ -533,9 +563,8 @@
                           </div>
                         </div>
                       </td>
-              <td>{{$space->major_industry}}</td>
-              <td>{{$space->minor_industry}}</td>
-              <td>{{$space->location}}</td>
+
+              <td>{{date("d/m/Y",strtotime($space->end_date))}}</td>
               @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
               <td><a href="{{ route('renew_space_contract_form',$space->contract_id) }}" title="Click to renew this contract"><i class="fa fa-refresh" style="font-size:25px;"></i></a>
                 @if($space->email!='')
@@ -783,14 +812,14 @@
                                 <th scope="col"><center>S/N</center></th>
                                 <th scope="col" >Debtor Name</th>
                                 <th scope="col">Invoice Number</th>
-                                <th scope="col" >Start Date</th>
-                                <th scope="col" >End date</th>
+{{--                                <th scope="col" >Start Date</th>--}}
+{{--                                <th scope="col" >End date</th>--}}
                                {{--  <th scope="col" >Period</th> --}}
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" >Amount</th>
                                 {{-- <th scope="col" >GePG Control No</th> --}}
-                                <th scope="col" >Invoice Date</th>
-                                <th scope="col" >Debt Age</th>
+{{--                                <th scope="col" >Invoice Date</th>--}}
+                                <th scope="col" >Time Overdue</th>
                                 @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                 <th scope="col" >Action</th>
                                 @endif
@@ -853,10 +882,105 @@
                       </div>
                   </div>
                                     </td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>
+                                            <a  title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>
+                                                {{$var->invoice_number_votebook}}</center></a>
+                                            <div class="modal fade" id="invoice{{$var->invoice_number}}" role="dialog">
 
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Full Invoice Details.</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Number:</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Income(Inc) Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Start Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> End Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Period:</td>
+                                                                    <td> {{$var->period}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Project ID:</td>
+                                                                    <td> {{$var->project_id}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Amount:</td>
+                                                                    <td> {{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>GePG Control Number:</td>
+                                                                    <td>{{$var->gepg_control_no}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Payment Status:</td>
+                                                                    <td>{{$var->payment_status}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>Comments:</td>
+                                                                    <td>{{$var->user_comments}}</td>
+                                                                </tr>
+
+
+
+
+
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></center></td>
+
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>--}}
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>--}}
                                     <td>
                                        <a title="View contract" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#contracta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>
                                             <div class="modal fade" id="contracta{{$var->invoice_number}}" role="dialog">
@@ -966,7 +1090,7 @@
                                             </div>
                                     </td>
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>--}}
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                     <td>
@@ -1056,7 +1180,7 @@
 <br>
 <div class="card">
     <div class="card-body">
-     <h3 class="card-title" style="font-family: sans-serif;">Outstanding CPTU Debt(s)</h3>
+     <h3 class="card-title" style="font-family: sans-serif;">Outstanding Car Rental Debt(s)</h3>
      <hr>
     <a title="Send email to selected clients" href="#" id="notify_all_cptu" class="btn btn-info btn-sm" data-toggle="modal" data-target="#mail_all" role="button" style="
     padding: 10px;
@@ -1140,14 +1264,14 @@
                                 <th scope="col"><center>S/N</center></th>
                                 <th scope="col" >Debtor Name</th>
                                 <th scope="col">Invoice Number</th>
-                                <th scope="col" >Start Date</th>
-                                <th scope="col" >End date</th>
+{{--                                <th scope="col" >Start Date</th>--}}
+{{--                                <th scope="col" >End date</th>--}}
                                {{--  <th scope="col" >Period</th> --}}
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" >Amount</th>
                                 {{-- <th scope="col" >GePG Control No</th> --}}
-                                <th scope="col" >Invoice Date</th>
-                                <th scope="col" >Debt Age</th>
+{{--                                <th scope="col" >Invoice Date</th>--}}
+                                <th scope="col" >Time Overdue</th>
                                 @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                 <th scope="col" >Action</th>
                                 @endif
@@ -1202,10 +1326,118 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>  <a title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_car{{$var->invoice_number}}"  aria-pressed="true">{{$var->invoice_number_votebook}}</a>
+                                            <div class="modal fade" id="invoice_car{{$var->invoice_number}}" role="dialog">
 
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Full Invoice Details.</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table class="table table-striped table-bordered" style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Number:</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Income(Inc) Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Start Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> End Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Period:</td>
+                                                                    <td> {{$var->period}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Project ID:</td>
+                                                                    <td> {{$var->project_id}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Amount:</td>
+                                                                    <td> {{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                                </tr>
+
+
+                                                                @if($var->gepg_control_no!='')
+                                                                    <tr>
+                                                                        <td>GePG Control Number:</td>
+                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                    </tr>
+                                                                @else
+                                                                @endif
+
+
+
+                                                                @if($var->account_no!='')
+                                                                    <tr>
+                                                                        <td>Account Number:</td>
+                                                                        <td>{{$var->account_no}}</td>
+                                                                    </tr>
+                                                                @else
+                                                                @endif
+
+
+
+
+                                                                <tr>
+                                                                    <td>Payment Status:</td>
+                                                                    <td>{{$var->payment_status}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>Comments:</td>
+                                                                    <td>{{$var->user_comments}}</td>
+                                                                </tr>
+
+
+
+
+
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></center></td>
+
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>--}}
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>--}}
                                     {{-- <td>{{$var->period}}</td> --}}
                                     <td>
                                       <a title="View contract" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#contracta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>
@@ -1263,7 +1495,7 @@
                                     </td>
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>--}}
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
                                     @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                     <td>
@@ -1437,11 +1669,11 @@
                                 <th scope="col"><center>S/N</center></th>
                                 <th scope="col" >Debtor Name</th>
                                 <th scope="col">Invoice Number</th>
-                                <th scope="col" >Start Date</th>
-                                <th scope="col" >End date</th>
+{{--                                <th scope="col" >Start Date</th>--}}
+{{--                                <th scope="col" >End date</th>--}}
                                 <th scope="col" >Amount</th>
-                                <th scope="col" >Invoice Date</th>
-                                <th scope="col" >Debt Age</th>
+{{--                                <th scope="col" >Invoice Date</th>--}}
+                                <th scope="col" >Time Overdue</th>
                                 @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                 <th scope="col" >Action</th>
                                 @endif
@@ -1494,14 +1726,106 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>  <a title="View invoice" style="cursor: pointer; color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice_insurance_principals{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->invoice_number_votebook}}</center></a>
+                                            <div class="modal fade" id="invoice_insurance_principals{{$var->invoice_number}}" role="dialog">
 
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                    {{-- <td>{{$var->period}}</td> --}}
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Full Invoice Details.</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Number:</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Income(Inc) Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Start Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> End Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Period:</td>
+                                                                    <td> {{$var->period}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Project ID:</td>
+                                                                    <td> {{$var->project_id}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Amount:</td>
+                                                                    <td> {{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>GePG Control Number:</td>
+                                                                    <td>{{$var->gepg_control_no}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Payment Status:</td>
+                                                                    <td>{{$var->payment_status}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>Comments:</td>
+                                                                    <td>{{$var->user_comments}}</td>
+                                                                </tr>
+
+
+
+
+
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></center></td>
+
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>--}}
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>--}}
+{{--                                    --}}{{-- <td>{{$var->period}}</td> --}}
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>--}}
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
                                                                        @if((Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator'))
                                     <td>
@@ -1678,12 +2002,12 @@
                                 <th scope="col"><center>S/N</center></th>
                                 <th scope="col" >Debtor Name</th>
                                 <th scope="col">Invoice Number</th>
-                                <th scope="col" >Arrival Date</th>
-                                <th scope="col" >Departure date</th>
+{{--                                <th scope="col" >Arrival Date</th>--}}
+{{--                                <th scope="col" >Departure date</th>--}}
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" style="width: 12%;">Amount</th>
-                                <th scope="col" >Invoice Date</th>
-                                <th scope="col" >Debt Age</th>
+{{--                                <th scope="col" >Invoice Date</th>--}}
+                                <th scope="col" >Time Overdue</th>
                                 <th scope="col" >Action</th>
                             </tr>
                             </thead>
@@ -1692,12 +2016,184 @@
                                 <tr>
                                     <th scope="row" class="counterCell">.</th>
                                     <td>{{$var->debtor_name}}</td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->arrival_date))}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->departure_date))}}</center></td>
-                                    <td><center>{{$var->id}}</center></td>
+                                    <td><center> <a title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_research{{$var->invoice_number}}"  aria-pressed="true">{{$var->invoice_number_votebook}}</a>
+                                            <div class="modal fade" id="invoice_research{{$var->invoice_number}}" role="dialog">
+
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Full Invoice Details.</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Number:</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Income(Inc) Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Start Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> End Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Period:</td>
+                                                                    <td> {{$var->period}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Project ID:</td>
+                                                                    <td> {{$var->project_id}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Amount:</td>
+                                                                    <td> {{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>GePG Control Number:</td>
+                                                                    <td>{{$var->gepg_control_no}}</td>
+                                                                </tr>
+
+
+
+
+
+
+
+
+
+                                                                <tr>
+                                                                    <td>Payment Status:</td>
+                                                                    <td>{{$var->payment_status}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>Comments:</td>
+                                                                    <td>{{$var->user_comments}}</td>
+                                                                </tr>
+
+
+
+
+
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></center></td>
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->arrival_date))}}</center></td>--}}
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->departure_date))}}</center></td>--}}
+                                    <td><center>  <a title="View contract" style="cursor: pointer; color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract_research{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->id}}</a>
+                                            <div class="modal fade" id="contract_research{{$var->invoice_number}}" role="dialog">
+
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Contract Details</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Contract ID:</td>
+                                                                    <td>{{$var->id}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->first_name}} {{$var->last_name}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Host Name:</td>
+                                                                    <td> {{$var->host_name}}</td>
+                                                                </tr>
+
+
+
+
+                                                                <tr>
+                                                                    <td>Arrival Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Departure Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->departure_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Room Number:</td>
+                                                                    <td>{{$var->room_no}}</td>
+                                                                </tr>
+
+
+
+
+                                                                <tr>
+                                                                    <td>Total Amount(TZS):</td>
+                                                                    <td>{{number_format($var->total_tzs)}} TZS</td>
+                                                                    {{--                                                                    <td>{{number_format($var->amount)}} {{$var->currency}}</td>--}}
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Total Amount(USD):</td>
+                                                                    <td>{{number_format($var->total_usd)}} USD</td>
+                                                                    {{--                                                                    <td>{{number_format($var->amount)}} {{$var->currency}}</td>--}}
+                                                                </tr>
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></center></td>
+
                                     <td style="text-align: right;">{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>--}}
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
                                     <td>
                                       @if(($var->invoice_debtor=='individual' && $var->email!='') || ($var->invoice_debtor=='host' && $var->host_email!=''))

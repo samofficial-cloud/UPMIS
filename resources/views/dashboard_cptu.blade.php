@@ -304,14 +304,14 @@
                                 <th scope="col"><center>S/N</center></th>
                                 <th scope="col" >Debtor Name</th>
                                 <th scope="col">Invoice Number</th>
-                                <th scope="col" >Start Date</th>
-                                <th scope="col" >End date</th>
+{{--                                <th scope="col" >Start Date</th>--}}
+{{--                                <th scope="col" >End date</th>--}}
                                {{--  <th scope="col" >Period</th> --}}
                                 <th scope="col">Contract Id</th>
                                 <th scope="col" >Amount</th>
                                 {{-- <th scope="col" >GePG Control No</th> --}}
-                                <th scope="col" >Invoice Date</th>
-                                <th scope="col" >Debt Age</th>
+{{--                                <th scope="col" >Invoice Date</th>--}}
+                                <th scope="col" >Time Overdue</th>
                                 <th scope="col" >Action</th>
                             </tr>
                             </thead>
@@ -364,11 +364,119 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td><center>{{$var->invoice_number}}</center></td>
+                                    <td><center>  <a title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_car{{$var->invoice_number}}"  aria-pressed="true">{{$var->invoice_number_votebook}}</a>
+                                            <div class="modal fade" id="invoice_car{{$var->invoice_number}}" role="dialog">
 
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                    {{-- <td>{{$var->period}}</td> --}}
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">Full Invoice Details.</h5></b>
+
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table class="table table-striped table-bordered" style="width: 100%">
+
+                                                                <tr>
+                                                                    <td>Client:</td>
+                                                                    <td>{{$var->debtor_name}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Number:</td>
+                                                                    <td>{{$var->invoice_number_votebook}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Income(Inc) Code:</td>
+                                                                    <td>{{$var->inc_code}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Start Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> End Date:</td>
+                                                                    <td> {{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Period:</td>
+                                                                    <td> {{$var->period}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td> Project ID:</td>
+                                                                    <td> {{$var->project_id}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td> Amount:</td>
+                                                                    <td> {{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                                </tr>
+
+
+                                                                @if($var->gepg_control_no!='')
+                                                                    <tr>
+                                                                        <td>GePG Control Number:</td>
+                                                                        <td>{{$var->gepg_control_no}}</td>
+                                                                    </tr>
+                                                                @else
+                                                                @endif
+
+
+
+                                                                @if($var->account_no!='')
+                                                                    <tr>
+                                                                        <td>Account Number:</td>
+                                                                        <td>{{$var->account_no}}</td>
+                                                                    </tr>
+                                                                @else
+                                                                @endif
+
+
+
+
+                                                                <tr>
+                                                                    <td>Payment Status:</td>
+                                                                    <td>{{$var->payment_status}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td>Invoice Date:</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->invoice_date))}}</td>
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td>Comments:</td>
+                                                                    <td>{{$var->user_comments}}</td>
+                                                                </tr>
+
+
+
+
+
+
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></center></td>
+
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>--}}
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>--}}
+{{--                                    --}}{{-- <td>{{$var->period}}</td> --}}
                                     <td>
                                       <a title="View contract" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#contracta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>
                                             <div class="modal fade" id="contracta{{$var->invoice_number}}" role="dialog">
@@ -425,7 +533,7 @@
                                     </td>
                                     <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
-                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>
+{{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>--}}
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
                                     <td>
                                       @if($var->email!="")
