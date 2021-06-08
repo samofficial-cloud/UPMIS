@@ -9,12 +9,14 @@ use App\space_contract;
 use App\Notifications\SendMessage;
 use App\Notifications\SendMessage2;
 use DB;
+use Auth;
 use App\Http\Controllers\Controller;
 use App\carContract;
 use App\insurance_contract;
 use App\insurance_parameter;
 use Notification;
 use App\research_flats_contract;
+use DataTables;
 
 class clientsController extends Controller
 {
@@ -189,6 +191,438 @@ class clientsController extends Controller
 
     return view('Spclients_view_more')->with('clientname',$clientname)->with('details',$details)->with('contracts',$contracts)->with('invoices',$invoices)->with('payments',$payments);
     }
+
+
+    public function getInsuranceClients(Request $request){
+
+
+
+        return datatables()->of(DB::table('insurance_contracts')->select('full_name','email','phone_number','insurance_class','tin','id')->distinct()->orderBy('full_name','asc'))->addIndexColumn()
+            ->editColumn('tin', function($row){
+
+                if($row->tin==''){
+
+                    return 'N/A';
+                }else{
+
+                    return $row->tin;
+                }
+
+            })->addColumn('status', function($row){
+
+                                        $has_active_contract=DB::table('insurance_contracts')->where('full_name',$row->full_name)->where('end_date','>',date('Y-m-d'))->where('contract_status','1')->get();
+
+                                        if(count($has_active_contract)>0){
+
+                                          return 'ACTIVE';
+
+                                        }else{
+                                            return 'INACTIVE';
+                                        }
+
+
+            })->addColumn('action', function($row){
+
+            $action = '
+<a title="View More Details" role="button" href="/clients/insurance/view_more/'.$row->full_name.'/'.$row->email.'/'.$row->phone_number.'"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
+
+';
+
+            $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+
+            if($privileges=='Read only') {
+
+
+            }else{
+
+
+                $action.=' <a title="Edit Client Details" data-toggle="modal" data-target="#editIns'.$row->id.'" role="button" aria-pressed="true" id="'.$row->id.'"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                <div class="modal fade" id="editIns'.$row->id.'" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <form method="post" action="/clients/Insurance/edit">
+                                                                    ' . csrf_field() . '
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="client_name">Client Name</label>
+                                                                            <input type="text" id="udia_act_name" name="client_name" class="form-control" value="'.$row->full_name.'" readonly="">
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="client_name">Insurance Class</label>
+                                                                            <input type="text" id="udia_act_class" name="client_class" class="form-control" value="'.$row->insurance_class.'" readonly="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="phone_number">Phone Number<span style="color:red;">*</span></label>
+
+                                                                            <input type="text" id="udia_act_number" name="phone_number" class="form-control" value="'.$row->phone_number.'" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                                                   maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="email">Email<span style="color:red;">*</span></label>
+                                                                            <input type="text" id="udia_act_email" name="email" class="form-control" value="'.$row->email.'" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div  class="form-group ">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                                            <span id="tin_msg"></span>
+                                                                            <input type="number" id="tin" name="tin" required class="form-control"  value="'.$row->tin.'" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersInsuranceActive(this.value,'.$row->id.';"  maxlength = "9">
+                                                                            <p id="error_tin_insurance_active'.$row->id.'"></p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <br>
+
+
+                                                                    <br>
+                                                                    <input type="text" name="id" value="'.$row->id.'" hidden="">
+
+                                                                    <div align="right">
+                                                                        <button class="btn btn-primary" id="insurance_active'.$row->id.'"  type="submit">Save</button>
+                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+
+
+                if($row->email!=''){
+
+                    $action.='  <a title="Send Email to this Client" data-toggle="modal" data-target="#mailIns'.$row->id.'" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+                                                    <div class="modal fade" id="mailIns'.$row->id.'" role="dialog">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <b><h5 class="modal-title">New Message</h5></b>
+
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    <form method="post" action="/clients/Space/SendMessage" enctype="multipart/form-data">
+                                                                        '.csrf_field().'
+                                                                        <div class="form-group row">
+                                                                            <label for="client_names" class="col-sm-2">To</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="udia_act_names" name="client_name" class="form-control" value="'.$row->full_name.'" readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group row">
+                                                                            <label for="udia_subject" class="col-sm-2">Subject<span style="color:red;">*</span></label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="udia_subject" name="subject" class="form-control" value="" required="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group row">
+                                                                            <label for="udia_greetings" class="col-sm-2">Salutation</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="udia_greetings" name="greetings" class="form-control" value="Dear '.$row->full_name.'" readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="udia_message" class="col-sm-2">Message<span style="color:red;">*</span></label>
+                                                                            <div class="col-sm-9">
+                                                                                <textarea type="text" id="udia_message" name="message" class="form-control" value="" rows="7" required=""></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="udia_attachment" class="col-sm-2">Attachments</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="file" id="udia_attachment" name="filenames[]" class="myfrm form-control" multiple="">
+                                                                                <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="udia_closing" class="col-sm-2">Closing</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="udia_closing" name="closing" class="form-control" value="Regards, University of Dar es Salaam Insurance Agency." readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <input type="text" name="type" value="udia" hidden="">
+                                                                        <div align="right">
+                                                                            <button class="btn btn-primary" type="submit">Send</button>
+                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>';
+
+                }else{
+
+                $action.='      <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>';
+
+                }
+
+            }
+
+            return $action;
+
+        })->rawColumns(['action','status'])
+            ->make(true);
+
+
+
+    }
+
+
+
+
+    public function getSpaceClients(Request $request){
+
+
+
+        return datatables()->of($SCclients=client::whereIn('full_name',space_contract::select('full_name')->distinct()->pluck('full_name')->toArray())
+            ->where('contract','Space')
+            ->orderBy('clients.full_name','asc'))->addIndexColumn()
+            ->editColumn('tin', function($row){
+
+                if($row->tin==''){
+
+                    return 'N/A';
+                }else{
+
+                    return $row->tin;
+                }
+
+            })->addColumn('status', function($row){
+
+                $has_active_contract=DB::table('space_contracts')->where('full_name',$row->full_name)->where('end_date','>',date('Y-m-d'))->where('contract_status','1')->get();
+
+                if(count($has_active_contract)>0){
+
+                    return 'ACTIVE';
+
+                }else{
+                    return 'INACTIVE';
+                }
+
+
+            })->addColumn('action', function($row){
+
+                $action = '
+<a title="View More Details" role="button" href="/clients/Space/view_more/'.$row->client_id.'"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
+
+';
+
+                $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+
+                if($privileges=='Read only') {
+
+
+                }else{
+
+
+                    $action.='<a title="Edit Client Details" data-toggle="modal" data-target="#edit'.$row->client_id.'" role="button" aria-pressed="true" id="'.$row->client_id.'"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                <div class="modal fade" id="edit'.$row->client_id.'" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <form method="post" action="/clients/Space/edit">
+                                                                   ' . csrf_field() . '
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="client_name'.$row->client_id.'">Client Name</label>
+                                                                            <input type="text" id="client_name'.$row->client_id.'" name="client_name" class="form-control" value="'.$row->full_name.'" readonly="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="client_type'.$row->client_id.'">Client Type</label>
+                                                                            <input type="text" id="client_type'.$row->client_id.'" name="client_type" class="form-control" value="'.$row->type.'" readonly="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div  class="form-group ">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                                            <span id="tin_msg"></span>
+                                                                            <input type="number" id="tin" name="tin" required class="form-control"  value="'.$row->tin.'" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersSpaceActive(this.value,'.$row->client_id.');"  maxlength = "9">
+                                                                            <p id="error_tin_space_active'.$row->client_id.'"></p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <br>
+
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="phone_number'.$row->client_id.'">Phone Number<span style="color: red;">*</span></label>
+
+                                                                            <input type="text" id="phone_number'.$row->client_id.'" name="phone_number" class="form-control" value="'.$row->phone_number.'" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                                                   maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="email'.$row->client_id.'">Email<span style="color: red;">*</span></label>
+                                                                            <input type="text" id="email'.$row->client_id.'" name="email" class="form-control" value="'.$row->email.'" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="address'.$row->client_id.'">Address<span style="color: red;">*</span></label>
+                                                                            <input type="text" id="address'.$row->client_id.'" name="address" class="form-control" value="'.$row->address.'" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+                                                                    <input type="text" name="id" value="'.$row->client_id.'" hidden="">
+
+                                                                    <div align="right">
+                                                                        <button class="btn btn-primary" id="space_active'.$row->client_id.'" type="submit">Save</button>
+                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+
+
+                    if($row->email!=''){
+
+                        $action.='   <a title="Send Email to this Client" data-toggle="modal" data-target="#mail'.$row->client_id.'" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+                                                    <div class="modal fade" id="mail'.$row->client_id.'" role="dialog">
+                                                        <div class="modal-dialog  modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <b><h5 class="modal-title">New Message</h5></b>
+
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    <form method="post" action="/clients/Space/SendMessage" enctype="multipart/form-data">
+                                                                        ' . csrf_field() . '
+                                                                        <div class="form-group row">
+                                                                            <label for="client_names'.$row->client_id.'" class="col-sm-2">To</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="client_names'.$row->client_id.'" name="client_name" class="form-control" value="'.$row->full_name.'" readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group row">
+                                                                            <label for="subject'.$row->client_id.'" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="subject'.$row->client_id.'" name="subject" class="form-control" value="" required="" >
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group row">
+                                                                            <label for="greetings'.$row->client_id.'" class="col-sm-2">Salutation</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="greetings'.$row->client_id.'" name="greetings" class="form-control" value="Dear '.$row->full_name.'," readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="message'.$row->client_id.'" class="col-sm-2">Body<span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-9">
+                                                                                <textarea type="text" id="message'.$row->client_id.'" name="message" class="form-control" value="" rows="7" required=""></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="attachment'.$row->client_id.'" class="col-sm-2">Attachments</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
+                                                                                <span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <input type="text" name="type" value="space" hidden="">
+
+                                                                        <div class="form-group row">
+                                                                            <label for="closing'.$row->client_id.'" class="col-sm-2">Closing</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="closing'.$row->client_id.'" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div align="right">
+                                                                            <button class="btn btn-primary" type="submit">Send</button>
+                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>';
+
+                    }else{
+
+                        $action.='      <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>';
+
+                    }
+
+                }
+
+                return $action;
+
+            })->rawColumns(['action','status'])
+            ->make(true);
+
+
+
+    }
+
+
 
     public function CarViewMore($name, $email, $centre){
         $contracts=carContract::select('car_contracts.*','vehicle_model','hire_rate','vehicle_status')->join('car_rentals','car_contracts.vehicle_reg_no','=','car_rentals.vehicle_reg_no')->where('email',$email)->where('fullName',$name)->where('cost_centre',$centre)->get();

@@ -24,7 +24,9 @@ Route::post('/login/custom', [
     //Data retrieval
 
         Route::get('/get_insurance_contracts', 'ContractsController@getInsuranceContracts')->name('get_insurance_contracts');
+        Route::get('/get_insurance_clients', 'clientsController@getInsuranceClients')->name('get_insurance_clients');
         Route::get('/get_space_contracts', 'ContractsController@getSpaceContracts')->name('get_space_contracts');
+        Route::get('/get_space_clients', 'clientsController@getSpaceClients')->name('get_space_clients');
 
 
         //Data upload
