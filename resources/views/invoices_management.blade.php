@@ -21245,7 +21245,7 @@
                                                                                             <div class="modal-dialog" role="document">
                                                                                                 <div class="modal-content">
                                                                                                     <div class="modal-header">
-                                                                                                        <b><h5 class="modal-title">Adding account number </h5></b>
+                                                                                                        <b><h5 class="modal-title">Adding account number, income(inc) code and invoice number </h5></b>
 
                                                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                                     </div>
@@ -22496,7 +22496,7 @@
                                                                                             <div class="modal-dialog" role="document">
                                                                                                 <div class="modal-content">
                                                                                                     <div class="modal-header">
-                                                                                                        <b><h5 class="modal-title">Adding account number </h5></b>
+                                                                                                        <b><h5 class="modal-title">Adding account number, income(inc) code and invoice number </h5></b>
 
                                                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                                     </div>
@@ -23131,7 +23131,7 @@
 
 
                                                                 <div align="right">
-                                                                    <button id="submit_car" class="btn btn-primary" type="submit">Submit</button>
+                                                                    <button id="submit_car" class="btn btn-primary" type="submit">Forward</button>
                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                 </div>
                                                             </form>
@@ -24823,7 +24823,7 @@
                                                                                             <div class="modal-dialog" role="document">
                                                                                                 <div class="modal-content">
                                                                                                     <div class="modal-header">
-                                                                                                        <b><h5 class="modal-title">Adding account number </h5></b>
+                                                                                                        <b><h5 class="modal-title">Adding account number, income(inc) code and invoice number </h5></b>
 
                                                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                                     </div>

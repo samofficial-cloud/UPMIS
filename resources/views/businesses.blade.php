@@ -324,7 +324,7 @@ input[type=radio]{
                                                                              <div class="form-group">
                                                                                  <div class="row">
                                                                                      <div class="form-wrapper col-12">
-                                                                                         <label for="approval_status">Do you approve the addition of this space?</label>
+                                                                                         <label for="approval_status">Do you approve the addition of this real estate?</label>
                                                                                      </div>
                                                                                  </div>
                                                                                  <div class="row">

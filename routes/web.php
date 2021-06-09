@@ -28,6 +28,9 @@ Route::post('/login/custom', [
         Route::get('/get_space_contracts', 'ContractsController@getSpaceContracts')->name('get_space_contracts');
         Route::get('/get_space_clients', 'clientsController@getSpaceClients')->name('get_space_clients');
 
+        Route::get('/get_car_clients', 'clientsController@getCarClients')->name('get_car_clients');
+        Route::get('/get_research_clients', 'clientsController@getResearchClients')->name('get_research_clients');
+
 
         //Data upload
         Route::post('/upload', 'ContractsController@storeTemporarily');

@@ -186,7 +186,7 @@
 
             </a>
 
-<a class="card card text-white bg-success" href="/businesses" style="cursor: pointer; text-decoration:none;">
+<a class="card card text-white bg-success" href="/businesses" style="cursor: pointer; margin-left: 0.04%; text-decoration:none;">
 
     <div >
         <div class="card-body">
@@ -206,7 +206,7 @@
 </a>
 
 
-            <a class="card text-white" style="background-color: #eb9025; cursor: pointer; text-decoration:none !important;" href="/businesses" ><div >
+            <a class="card text-white" style="background-color: #eb9025; margin-left: 0.04%; cursor: pointer; text-decoration:none !important;" href="/businesses" ><div >
                     <div class="card-body">
                         <h5 class="card-title">Real Estate <i class="fas fa-city" style="font-size:30px; float: right; color: black;"></i></h5>
                         <p>Total Real Estate: {{$total_spaces}}
@@ -215,10 +215,10 @@
                     </div>
                 </div> </a>
 
-  <a href="/businesses" style="cursor: pointer; background-color: #eb2553 !important; text-decoration:none;" class="card text-white" >
+  <a href="/businesses" style="cursor: pointer; margin-left: 0.04%; background-color: #eb2553 !important; text-decoration:none;" class="card text-white" >
 
-      <div>
-          <div class="card-body">
+      <div >
+          <div class="card-body" >
               <h5 class="card-title">Research Flats <i class="fas fa-building" style="font-size:30px; float: right; color: black;"></i></h5>
 
             <div>Total Rooms: {{$total_rooms}}</div>

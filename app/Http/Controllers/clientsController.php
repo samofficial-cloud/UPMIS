@@ -12,6 +12,7 @@ use DB;
 use Auth;
 use App\Http\Controllers\Controller;
 use App\carContract;
+use App\cost_centre;
 use App\insurance_contract;
 use App\insurance_parameter;
 use Notification;
@@ -405,6 +406,230 @@ class clientsController extends Controller
 
 
 
+    public function getCarClients(Request $request){
+
+
+
+        return datatables()->of(carContract::select('fullName','email','cost_centre','faculty','tin','id')->distinct()->orderBy('fullName','asc'))->addIndexColumn()
+            ->editColumn('tin', function($row){
+
+                if($row->tin==''){
+
+                    return 'N/A';
+                }else{
+
+                    return $row->tin;
+                }
+
+            })->addColumn('status', function($row){
+
+
+                $has_active_contract=DB::table('car_contracts')->where('fullName',$row->fullName)->where('end_date','>=',date('Y-m-d'))->where('form_completion','1')->get();
+
+
+                if(count($has_active_contract)>0){
+
+                    return 'ACTIVE';
+
+                }else{
+                    return 'INACTIVE';
+                }
+
+
+            })->addColumn('action', function($row){
+
+                $action = '
+<a title="View More Details" role="button" href="/clients/car_rental/view_more/'.$row->fullName.'/'.$row->email.'/'.$row->cost_centre.'"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+
+';
+
+                $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+
+                if($privileges=='Read only') {
+
+
+                }else{
+
+
+                    $action.=' <a title="Edit Client Details" data-toggle="modal" data-target="#Caredit'.$row->id.'" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                <div class="modal fade" id="Caredit'.$row->id.'" role="dialog">
+
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <form method="post" action="/clients/Car/edit">
+                                                                    '.csrf_field().'
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="carclient_name{{$i}}">Client Name</label>
+                                                                            <input type="text" id="carclient_name{{$i}}" name="client_name" class="form-control" value="'.$row->fullName.'" readonly="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+
+                                                                    <div  class="form-group ">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                                            <span id="tin_msg"></span>
+                                                                            <input type="number" id="tin" name="tin" required class="form-control"  value="'.$row->tin.'" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersCarActive(this.value,'.$row->id.');"  maxlength = "9">
+                                                                            <p id="error_tin_car_active'.$row->id.'"></p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="Caremail{{$i}}">Email<span style="color: red;">*</span></label>
+                                                                            <input type="text" id="Caremail{{$i}}" name="email" class="form-control" value="'.$row->email.'" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="Carcentre{{$i}}">Cost Centre<span style="color: red;">*</span></label>
+                                                                            <select type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" required="" onkeyup="filterFunction()">
+                                                                                <option value="'.$row->cost_centre.'">'.$row->cost_centre.'-'.$row->faculty.'</option>
+                                                                                ';
+
+                                                                                $cost_centres=cost_centre::orderBy('costcentre_id','asc')->get();
+
+                                                                                foreach($cost_centres as $cost_centre){
+                                                                                    if($cost_centre->costcentre_id !=$row->cost_centre ){
+                                                                                        $action.='<option value="'.$cost_centre->costcentre_id.'">'.$cost_centre->costcentre_id.'-'.$cost_centre->costcentre.'</option>';
+                                                                                    }
+
+                                                                                    }
+                                                      $action.='
+                                                                            </select>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="carclient_department{{$i}}">Department/Faculty</label>
+                                                                            <input type="text" id="carclient_department{{$i}}" name="department" class="form-control"  readonly="" value="'.$row->faculty.'">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <input type="text" name="Caremail" value="'.$row->email.'" hidden="">
+                                                                    <input type="text" name="Carcostcentre" value="'.$row->cost_centre.'" hidden="">
+                                                                    <input type="text" name="Carfullname" value="'.$row->fullName.'" hidden="">
+
+                                                                    <div align="right">
+                                                                        <button class="btn btn-primary" id="car_active'.$row->id.'" type="submit">Save</button>
+                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+
+
+                    if($row->email!=''){
+
+                        $action.='  <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$i}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+                                                    <div class="modal fade" id="carmail{{$i}}" role="dialog">
+                                                        <div class="modal-dialog  modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <b><h5 class="modal-title">New Message</h5></b>
+
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    <form method="post" action="/clients/Space/SendMessage" enctype="multipart/form-data">
+                                                                        '.csrf_field().'
+                                                                        <div class="form-group row">
+                                                                            <label for="carclient_names{{$i}}" class="col-sm-2">To</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="carclient_names{{$i}}" name="client_name" class="form-control" value="'.$row->fullName.'" readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group row">
+                                                                            <label for="carsubject{{$i}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="carsubject{{$i}}" name="subject" class="form-control" value="" >
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="cargreetings{{$i}}" class="col-sm-2">Salutation</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="cargreetings{{$i}}" name="greetings" class="form-control" value="Dear '.$row->fullName.'," readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="carmessage{{$i}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-9">
+                                                                                <textarea type="text" id="carmessage{{$i}}" name="message" class="form-control" value="" rows="7"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="carattachment{{$i}}" class="col-sm-2">Attachments</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="file" id="carattachment{{$i}}" name="filenames[]" class="myfrm form-control" multiple="">
+                                                                                <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group row">
+                                                                            <label for="carclosing{{$i}}" class="col-sm-2">Closing</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <input type="text" name="type" value="car" hidden="">
+                                                                        <div align="right">
+                                                                            <button class="btn btn-primary" type="submit">Send</button>
+                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>';
+
+                    }else{
+
+                        $action.='      <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>';
+
+                    }
+
+                }
+
+                return $action;
+
+            })->rawColumns(['action','status'])
+            ->make(true);
+
+
+
+    }
+
+
     public function getSpaceClients(Request $request){
 
 
@@ -439,7 +664,6 @@ class clientsController extends Controller
 
                 $action = '
 <a title="View More Details" role="button" href="/clients/Space/view_more/'.$row->client_id.'"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-
 ';
 
                 $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
@@ -452,15 +676,12 @@ class clientsController extends Controller
 
                     $action.='<a title="Edit Client Details" data-toggle="modal" data-target="#edit'.$row->client_id.'" role="button" aria-pressed="true" id="'.$row->client_id.'"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                                                 <div class="modal fade" id="edit'.$row->client_id.'" role="dialog">
-
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
-
                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
-
                                                             <div class="modal-body">
                                                                 <form method="post" action="/clients/Space/edit">
                                                                    ' . csrf_field() . '
@@ -471,7 +692,6 @@ class clientsController extends Controller
                                                                         </div>
                                                                     </div>
                                                                     <br>
-
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="client_type'.$row->client_id.'">Client Type</label>
@@ -479,7 +699,6 @@ class clientsController extends Controller
                                                                         </div>
                                                                     </div>
                                                                     <br>
-
                                                                     <div  class="form-group ">
                                                                         <div class="form-wrapper">
                                                                             <label for="tin">TIN <span style="color: red;"> *</span></label>
@@ -488,21 +707,15 @@ class clientsController extends Controller
                                                                             <p id="error_tin_space_active'.$row->client_id.'"></p>
                                                                         </div>
                                                                     </div>
-
                                                                     <br>
-
-
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="phone_number'.$row->client_id.'">Phone Number<span style="color: red;">*</span></label>
-
                                                                             <input type="text" id="phone_number'.$row->client_id.'" name="phone_number" class="form-control" value="'.$row->phone_number.'" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                                                                    maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-
                                                                         </div>
                                                                     </div>
                                                                     <br>
-
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="email'.$row->client_id.'">Email<span style="color: red;">*</span></label>
@@ -510,7 +723,6 @@ class clientsController extends Controller
                                                                         </div>
                                                                     </div>
                                                                     <br>
-
                                                                     <div class="form-group">
                                                                         <div class="form-wrapper">
                                                                             <label for="address'.$row->client_id.'">Address<span style="color: red;">*</span></label>
@@ -519,7 +731,6 @@ class clientsController extends Controller
                                                                     </div>
                                                                     <br>
                                                                     <input type="text" name="id" value="'.$row->client_id.'" hidden="">
-
                                                                     <div align="right">
                                                                         <button class="btn btn-primary" id="space_active'.$row->client_id.'" type="submit">Save</button>
                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
@@ -539,10 +750,8 @@ class clientsController extends Controller
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <b><h5 class="modal-title">New Message</h5></b>
-
                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                 </div>
-
                                                                 <div class="modal-body">
                                                                     <form method="post" action="/clients/Space/SendMessage" enctype="multipart/form-data">
                                                                         ' . csrf_field() . '
@@ -567,7 +776,6 @@ class clientsController extends Controller
                                                                             </div>
                                                                         </div>
                                                                         <br>
-
                                                                         <div class="form-group row">
                                                                             <label for="message'.$row->client_id.'" class="col-sm-2">Body<span style="color: red;">*</span></label>
                                                                             <div class="col-sm-9">
@@ -575,7 +783,6 @@ class clientsController extends Controller
                                                                             </div>
                                                                         </div>
                                                                         <br>
-
                                                                         <div class="form-group row">
                                                                             <label for="attachment'.$row->client_id.'" class="col-sm-2">Attachments</label>
                                                                             <div class="col-sm-9">
@@ -584,9 +791,7 @@ class clientsController extends Controller
                                                                             </div>
                                                                         </div>
                                                                         <br>
-
                                                                         <input type="text" name="type" value="space" hidden="">
-
                                                                         <div class="form-group row">
                                                                             <label for="closing'.$row->client_id.'" class="col-sm-2">Closing</label>
                                                                             <div class="col-sm-9">
@@ -594,7 +799,6 @@ class clientsController extends Controller
                                                                             </div>
                                                                         </div>
                                                                         <br>
-
                                                                         <div align="right">
                                                                             <button class="btn btn-primary" type="submit">Send</button>
                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
@@ -621,6 +825,227 @@ class clientsController extends Controller
 
 
     }
+
+
+
+
+
+    public function getResearchClients(Request $request){
+
+
+
+        return datatables()->of(research_flats_contract::select('first_name','last_name','address','email','phone_number','tin','id')->distinct()->orderBy('first_name','asc'))->addIndexColumn()
+            ->editColumn('tin', function($row){
+
+                if($row->tin==''){
+
+                    return 'N/A';
+                }else{
+
+                    return $row->tin;
+                }
+
+            })->addColumn('status', function($row){
+
+                $has_active_contract=DB::table('research_flats_contracts')->where('first_name',$row->first_name)->where('last_name',$row->last_name)->where('email',$row->email)->where('departure_date','>=',date('Y-m-d'))->where('contract_status','1')->get();
+
+                if(count($has_active_contract)>0){
+
+                    return 'ACTIVE';
+
+                }else{
+                    return 'INACTIVE';
+                }
+
+
+            })->addColumn('action', function($row){
+
+                $action = '
+ <a title="View More Details" role="button" href="/clients/Research/view_more/'.$row->first_name.'/'.$row->last_name.'/'.$row->email.'/'.$row->phone_number.'"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
+';
+
+                $privileges=DB::table('users')->join('general_settings','users.role','=','general_settings.user_roles')->where('users.role',Auth::user()->role)->value('privileges');
+
+                if($privileges=='Read only') {
+
+
+                }else{
+
+
+                    $action.='<a title="Edit Client Details" data-toggle="modal" data-target="#edit_research'.$row->id.'" role="button" aria-pressed="true" id="'.$row->client_id.'"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                <div class="modal fade" id="edit_research'.$row->id.'" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
+
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <form method="post" action="/clients/Research/edit/'.$row->id.'">
+                                                                    ' . csrf_field() . '
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="client_name{{$client->id}}">Client Name</label>
+                                                                            <input type="text" id="client_name{{$client->id}}" name="client_name" class="form-control" value="'.$row->first_name.' '.$row->last_name.'" readonly="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+
+
+                                                                    <div  class="form-group ">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
+                                                                            <span id="tin_msg"></span>
+                                                                            <input type="number" id="tin" name="tin" required class="form-control"  value="'.$row->tin.'" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersResearchActive(this.value,'.$row->id.');"  maxlength = "9">
+                                                                            <p id="error_tin_research_active'.$row->id.'"></p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <br>
+
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="phone_number{{$client->id}}">Phone Number<span style="color: red;">*</span></label>
+
+                                                                            <input type="text" id="phone_number{{$client->id}}" name="phone_number" class="form-control" value="'.$row->phone_number.'" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                                                   maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="email{{$client->id}}">Email<span style="color: red;">*</span></label>
+                                                                            <input type="text" id="email{{$client->id}}" name="email" class="form-control" value="'.$row->email.'" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for="address{{$client->id}}">Address<span style="color: red;">*</span></label>
+                                                                            <input type="text" id="address{{$client->id}}" name="address" class="form-control" value="'.$row->address.'" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+                                                                    <input type="text" name="id" value="'.$row->id.'" hidden="">
+
+                                                                    <div align="right">
+                                                                        <button class="btn btn-primary" id="research_active{{$client->id}}" type="submit">Save</button>
+                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+
+
+                    if($row->email!=''){
+
+                        $action.='  <a title="Send Email to this Client" data-toggle="modal" data-target="#mail'.$row->id.'" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
+                                                    <div class="modal fade" id="mail'.$row->id.'" role="dialog">
+                                                        <div class="modal-dialog  modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <b><h5 class="modal-title">New Message</h5></b>
+
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    <form method="post" action="/clients/Space/SendMessage" enctype="multipart/form-data">
+                                                                        ' . csrf_field() . '
+                                                                        <div class="form-group row">
+                                                                            <label for="client_names{{$client->id}}" class="col-sm-2">To</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="client_names{{$client->id}}" name="client_name" class="form-control" value="'.$row->first_name.' '.$row->last_name.'" readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group row">
+                                                                            <label for="subject{{$client->id}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="subject{{$client->id}}" name="subject" class="form-control" value="" required="" >
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group row">
+                                                                            <label for="greetings{{$client->id}}" class="col-sm-2">Salutation</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="greetings{{$client->id}}" name="greetings" class="form-control" value="Dear '.$row->first_name.' '.$row->last_name.'," readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="message{{$client->id}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-9">
+                                                                                <textarea type="text" id="message{{$client->id}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div class="form-group row">
+                                                                            <label for="attachment{{$client->id}}" class="col-sm-2">Attachments</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
+                                                                                <span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <input type="text" name="type" value="flats" hidden="">
+                                                                        <input type="text" name="contract_id" value="'.$row->id.'" hidden="">
+
+                                                                        <div class="form-group row">
+                                                                            <label for="closing{{$client->id}}" class="col-sm-2">Closing</label>
+                                                                            <div class="col-sm-9">
+                                                                                <input type="text" id="closing{{$client->id}}" name="closing" class="form-control" value="Regards, Research Flats UDSM." readonly="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+
+                                                                        <div align="right">
+                                                                            <button class="btn btn-primary" type="submit">Send</button>
+                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>';
+
+                    }else{
+
+                        $action.=' <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>';
+
+                    }
+
+                }
+
+                return $action;
+
+            })->addColumn('full_name',function ($row){
+
+                return $row->first_name.' '.$row->last_name;
+
+
+            })->rawColumns(['action','status','full_name'])
+            ->make(true);
+
+
+
+    }
+
+
+
 
 
 

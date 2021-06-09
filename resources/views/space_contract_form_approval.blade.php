@@ -1544,15 +1544,15 @@ select.list-dt:focus {
                 var duration_period=$('#duration_period').val();
 
                 var academic_dependence=document.getElementById('academic_dependence').value;
-                var vacation_season=document.getElementById('vacation_season').value;
-                var academic_season=document.getElementById('academic_season').value;
-                var amount=document.getElementById('amount').value;
+                var vacation_season=$('#vacation_season').val();
+                var academic_season=$('#academic_season').val();
+                var amount=$('#amount').val();
                 var rent_sqm=document.getElementById('rent_sqm').value;
                 var currency=document.getElementById('currency').value;
                 var payment_cycle=document.getElementById('payment_cycle').value;
-                var escalation_rate=document.getElementById('escalation_rate').value;
-                var escalation_rate_vacation=document.getElementById('escalation_rate_vacation').value;
-                var escalation_rate_academic=document.getElementById('escalation_rate_academic').value;
+                var escalation_rate=$('#escalation_rate').val();
+                var escalation_rate_vacation=$('#escalation_rate_vacation').val();
+                var escalation_rate_academic=$('#escalation_rate_academic').val();
                 var space_size=document.getElementById('space_size').value;
                 var has_water_bill=document.getElementById('has_water_bill').value;
                 var has_electricity_bill=document.getElementById('has_electricity_bill').value;
@@ -2115,15 +2115,25 @@ select.list-dt:focus {
                 $("#academic_dependance_confirm").css('font-weight', 'bold');
 
 
-                $("#amount_academic_confirm").html(thousands_separators(academic_season)+" "+currency);
-                $("#amount_academic_confirm").css('font-weight', 'bold');
 
 
-                $("#amount_vacation_confirm").html(thousands_separators(vacation_season)+" "+currency);
-                $("#amount_vacation_confirm").css('font-weight', 'bold');
+if(academic_dependence=='Yes'){
 
-                $("#amount_confirm").html(thousands_separators(amount)+" "+currency);
-                $("#amount_confirm").css('font-weight', 'bold');
+    $("#amount_vacation_confirm").html(thousands_separators(vacation_season)+" "+currency);
+    $("#amount_vacation_confirm").css('font-weight', 'bold');
+
+
+    $("#amount_academic_confirm").html(thousands_separators(academic_season)+" "+currency);
+    $("#amount_academic_confirm").css('font-weight', 'bold');
+}else{
+
+
+    $("#amount_confirm").html(thousands_separators(amount)+" "+currency);
+    $("#amount_confirm").css('font-weight', 'bold');
+}
+
+
+
 
                 if(rent_sqm==''){
 
