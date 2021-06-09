@@ -33,6 +33,25 @@
 
 
         }
+
+
+        .dataTables_wrapper .dataTables_processing {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-left: -100px;
+            margin-top: -26px;
+            text-align: center;
+            padding: 1em 0;
+            z-index: 1;
+        }
+
         table.dataTable.no-footer {
             border-bottom: 0px solid #111;
         }
@@ -73,7 +92,7 @@
     use App\cost_centre;
     ?>
     <div class="wrapper">
-        <div id="coverScreen"  class="pageLoad"></div>
+{{--        <div id="coverScreen"  class="pageLoad"></div>--}}
         <div class="sidebar">
             <ul style="list-style-type:none;">
 
@@ -189,11 +208,7 @@
 
                     @if($privileges=='Read only')
                     @else
-                        <a class="btn btn-success btn-sm" style="
-    padding: 10px;
-    color: #fff;font-size: 16px;
-    margin-bottom: 5px;
-    margin-top: 4px;" href="/contracts_management/research_flats">Add Client</a>
+                        <a class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;" href="/contracts_management/research_flats">Add Client</a>
 
 
                         <a title="Send email to selected clients" href="#" id="asp_btn_mail_flats_current" class="btn btn-info btn-sm" data-toggle="modal" data-target="#asp_mail_flats_current" role="button" aria-pressed="true" style="
@@ -285,7 +300,7 @@
                     {{--            <center><h3><strong>Active Clients</strong></h3></center>--}}
                     {{--            <hr>--}}
                     @if(count($flats_current)!=0)
-                        <table class="hover table table-striped table-bordered" id="myTable_flatsc">
+                        <table class="hover table table-striped table-bordered" style="width: 100%;" id="myTable_flatsc">
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
@@ -299,195 +314,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($flats_current as $client)
-                                <tr>
-                                    <th scope="row" style="text-align: center;">{{$k1}}.</th>
-                                    <td>{{$client->first_name}} {{$client->last_name}}</td>
-                                    <td>{{$client->tin}}</td>
-                                    <td>{{$client->phone_number}}</td>
-                                    <td>{{$client->email}}</td>
-                                    <td>{{$client->address}}</td>
-                                    <td>
 
-                                        <?php
-
-                                        $has_active_contract=DB::table('research_flats_contracts')->where('first_name',$client->first_name)->where('last_name',$client->last_name)->where('email',$client->email)->where('departure_date','>=',date('Y-m-d'))->get();
-
-                                        ?>
-
-
-                                        @if(count($has_active_contract)>0)
-
-
-
-                                            ACTIVE
-
-
-                                        @else
-                                            INACTIVE
-                                        @endif
-
-                                    </td>
-                                    <td><center>
-                                            <a title="View More Details" role="button" href="{{ route('ResearchClientsViewMore',[$client->first_name,$client->last_name,$client->email,$client->phone_number]) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-                                            {{-- @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                                            @if($privileges=='Read only')
-                                            @else
-                                                <a title="Edit Client Details" data-toggle="modal" data-target="#edit_research{{$client->id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-                                                <div class="modal fade" id="edit_research{{$client->id}}" role="dialog">
-
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
-
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            </div>
-
-                                                            <div class="modal-body">
-                                                                <form method="post" action="{{ route('editResearchclients',$client->id) }}">
-                                                                    {{csrf_field()}}
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="client_name{{$client->id}}">Client Name</label>
-                                                                            <input type="text" id="client_name{{$client->id}}" name="client_name" class="form-control" value="{{$client->first_name.' '.$client->last_name}}" readonly="">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-
-
-                                                                    <div  class="form-group ">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
-                                                                            <span id="tin_msg"></span>
-                                                                            <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersResearchActive(this.value,{{$client->id}});"  maxlength = "9">
-                                                                            <p id="error_tin_research_active{{$client->id}}"></p>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <br>
-
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="phone_number{{$client->id}}">Phone Number<span style="color: red;">*</span></label>
-
-                                                                            <input type="text" id="phone_number{{$client->id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                                                   maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="email{{$client->id}}">Email<span style="color: red;">*</span></label>
-                                                                            <input type="text" id="email{{$client->id}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="address{{$client->id}}">Address<span style="color: red;">*</span></label>
-                                                                            <input type="text" id="address{{$client->id}}" name="address" class="form-control" value="{{$client->address}}" required="">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-                                                                    <input type="text" name="id" value="{{$client->id}}" hidden="">
-
-                                                                    <div align="right">
-                                                                        <button class="btn btn-primary" id="research_active{{$client->id}}" type="submit">Save</button>
-                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @if($client->email!='')
-                                                    <a title="Send Email to this Client" data-toggle="modal" data-target="#mail{{$client->id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
-                                                    <div class="modal fade" id="mail{{$client->id}}" role="dialog">
-                                                        <div class="modal-dialog  modal-lg" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">New Message</h5></b>
-
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
-                                                                        {{csrf_field()}}
-                                                                        <div class="form-group row">
-                                                                            <label for="client_names{{$client->id}}" class="col-sm-2">To</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="client_names{{$client->id}}" name="client_name" class="form-control" value="{{$client->first_name.' '.$client->last_name}}" readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group row">
-                                                                            <label for="subject{{$client->id}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="subject{{$client->id}}" name="subject" class="form-control" value="" required="" >
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group row">
-                                                                            <label for="greetings{{$client->id}}" class="col-sm-2">Salutation</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="greetings{{$client->id}}" name="greetings" class="form-control" value="Dear {{$client->first_name.' '.$client->last_name}}," readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="message{{$client->id}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-9">
-                                                                                <textarea type="text" id="message{{$client->id}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="attachment{{$client->id}}" class="col-sm-2">Attachments</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
-                                                                                <span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <input type="text" name="type" value="flats" hidden="">
-                                                                        <input type="text" name="contract_id" value="{{$client->id}}" hidden="">
-
-                                                                        <div class="form-group row">
-                                                                            <label for="closing{{$client->id}}" class="col-sm-2">Closing</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="closing{{$client->id}}" name="closing" class="form-control" value="Regards, Research Flats UDSM." readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div align="right">
-                                                                            <button class="btn btn-primary" type="submit">Send</button>
-                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
-                                                @endif
-                                            @endif
-                                        </center>
-                                    </td>
-                                </tr>
-                                <?php $k1 = $k1 +1; ?>
-                            @endforeach
                             </tbody>
                         </table>
                     @else
@@ -505,11 +332,7 @@
 
                     @if($privileges=='Read only')
                     @else
-                        <a class="btn btn-success btn-sm" style="
-    padding: 10px;
-    color: #fff;font-size: 16px;
-    margin-bottom: 5px;
-    margin-top: 4px;" href="/space_contract_form">Add Client</a>
+                        <a class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;" href="/space_contract_form">Add Client</a>
 
                         <a title="Send email to selected clients" href="#" id="asp_btn_mail" class="btn btn-info btn-sm" data-toggle="modal" data-target="#asp_mail" role="button" aria-pressed="true" style="
     padding: 10px;
@@ -610,207 +433,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($SCclients as $client)
-                                <tr>
-                                    <th scope="row" style="text-align: center;">{{$a1}}.</th>
-                                    <td>{{$client->full_name}}</td>
-                                    <td>@if($client->tin=='')
-                                            N/A
-                                        @else
-                                            {{$client->tin}}
-                                        @endif
-                                    </td>
-                                    <td>{{$client->phone_number}}</td>
-                                    <td>{{$client->email}}</td>
-                                    <td>{{$client->address}}</td>
-                                    <td>
 
-                                        <?php
-
-                                        $has_active_contract=DB::table('space_contracts')->where('full_name',$client->full_name)->where('end_date','>',date('Y-m-d'))->where('contract_status','1')->get();
-
-                                        ?>
-
-
-                                        @if(count($has_active_contract)>0)
-
-
-
-                                                ACTIVE
-
-
-                                        @else
-                                                INACTIVE
-                                            @endif
-
-                                    </td>
-                                    <td><center>
-                                            <a title="View More Details" role="button" href="{{ route('ClientViewMore',$client->client_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-                                            {{-- @if(Auth::user()->role=='DPDI Planner' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                                            @if($privileges=='Read only')
-                                            @else
-                                                <a title="Edit Client Details" data-toggle="modal" data-target="#edit{{$client->client_id}}" role="button" aria-pressed="true" id="{{$client->client_id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-                                                <div class="modal fade" id="edit{{$client->client_id}}" role="dialog">
-
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
-
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            </div>
-
-                                                            <div class="modal-body">
-                                                                <form method="post" action="{{ route('editclients') }}">
-                                                                    {{csrf_field()}}
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="client_name{{$client->client_id}}">Client Name</label>
-                                                                            <input type="text" id="client_name{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="client_type{{$client->client_id}}">Client Type</label>
-                                                                            <input type="text" id="client_type{{$client->client_id}}" name="client_type" class="form-control" value="{{$client->type}}" readonly="">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div  class="form-group ">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
-                                                                            <span id="tin_msg"></span>
-                                                                            <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersSpaceActive(this.value,{{$client->client_id}});"  maxlength = "9">
-                                                                            <p id="error_tin_space_active{{$client->client_id}}"></p>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <br>
-
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="phone_number{{$client->client_id}}">Phone Number<span style="color: red;">*</span></label>
-
-                                                                            <input type="text" id="phone_number{{$client->client_id}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                                                   maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="email{{$client->client_id}}">Email<span style="color: red;">*</span></label>
-                                                                            <input type="text" id="email{{$client->client_id}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="address{{$client->client_id}}">Address<span style="color: red;">*</span></label>
-                                                                            <input type="text" id="address{{$client->client_id}}" name="address" class="form-control" value="{{$client->address}}" required="">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-                                                                    <input type="text" name="id" value="{{$client->client_id}}" hidden="">
-
-                                                                    <div align="right">
-                                                                        <button class="btn btn-primary" id="space_active{{$client->client_id}}" type="submit">Save</button>
-                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @if($client->email!='')
-                                                    <a title="Send Email to this Client" data-toggle="modal" data-target="#mail{{$client->client_id}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
-                                                    <div class="modal fade" id="mail{{$client->client_id}}" role="dialog">
-                                                        <div class="modal-dialog  modal-lg" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">New Message</h5></b>
-
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
-                                                                        {{csrf_field()}}
-                                                                        <div class="form-group row">
-                                                                            <label for="client_names{{$client->client_id}}" class="col-sm-2">To</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="client_names{{$client->client_id}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group row">
-                                                                            <label for="subject{{$client->client_id}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="subject{{$client->client_id}}" name="subject" class="form-control" value="" required="" >
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group row">
-                                                                            <label for="greetings{{$client->client_id}}" class="col-sm-2">Salutation</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="greetings{{$client->client_id}}" name="greetings" class="form-control" value="Dear {{$client->full_name}}," readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="message{{$client->client_id}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-9">
-                                                                                <textarea type="text" id="message{{$client->client_id}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="attachment{{$client->client_id}}" class="col-sm-2">Attachments</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="file" name="filenames[]" class="myfrm form-control" multiple="">
-                                                                                <span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <input type="text" name="type" value="space" hidden="">
-
-                                                                        <div class="form-group row">
-                                                                            <label for="closing{{$client->client_id}}" class="col-sm-2">Closing</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="closing{{$client->client_id}}" name="closing" class="form-control" value="Regards, Real Estate Department UDSM." readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div align="right">
-                                                                            <button class="btn btn-primary" type="submit">Send</button>
-                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
-                                                @endif
-                                            @endif
-                                        </center>
-                                    </td>
-                                </tr>
-                                <?php $i=$i+1;
-                                $a1 = $a1+1;
-                                ?>
-                            @endforeach
                             </tbody>
                         </table>
                     @else
@@ -825,11 +448,7 @@
                     {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                     @if($privileges=='Read only')
                     @else
-                        <a class="btn btn-success btn-sm" style="
-    padding: 10px;
-    color: #fff;font-size: 16px;
-    margin-bottom: 5px;
-    margin-top: 4px;" href="{{ route('carRentalForm') }}">Add Client</a>
+                        <a class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;" href="{{ route('carRentalForm') }}">Add Client</a>
 
                         <a title="Send email to selected clients" href="#" id="acp_btn_mail" class="btn btn-info btn-sm" data-toggle="modal" data-target="#acp_mail" role="button" aria-pressed="true" style="
     padding: 10px;
@@ -914,7 +533,7 @@
                     {{--<hr>--}}
                     <?php $a3=1;?>
                     @if(count($active_carclients)!=0)
-                        <table class="hover table table-striped table-bordered" id="myTable2">
+                        <table class="hover table table-striped table-bordered" style="width: 100%;" id="myTable2">
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
@@ -929,213 +548,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($active_carclients as $client)
-                                <tr>
-                                    <th scope="row" style="text-align: center;">{{$a3}}.</th>
-                                    <td>{{$client->fullName}}</td>
-                                    <td>
-                                        @if($client->tin=='')
-                                            N/A
-                                        @else
-                                            {{$client->tin}}
-                                        @endif
 
-                                    </td>
-                                    <td><center>{{$client->cost_centre}}</center></td>
-                                    <td>{{$client->faculty}}</td>
-                                    <td>{{$client->email}}</td>
-                                    <td>
-
-                                        <?php
-
-                                        $has_active_contract=DB::table('car_contracts')->where('fullName',$client->fullName)->where('end_date','>=',date('Y-m-d'))->where('form_completion','1')->get();
-
-                                        ?>
-
-
-                                        @if(count($has_active_contract)>0)
-
-
-
-                                            ACTIVE
-
-
-                                        @else
-                                            INACTIVE
-                                        @endif
-
-                                    </td>
-                                    {{-- <td><center>{{date("d/m/Y",strtotime($client->start_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td> --}}
-                                    <td><center>
-                                            <a title="View More Details" role="button" href="{{ route('CarClientsViewMore',[$client->fullName,$client->email,$client->cost_centre])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-                                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                                            @if($privileges=='Read only')
-                                            @else
-                                                <a title="Edit Client Details" data-toggle="modal" data-target="#Caredit{{$i}}" role="button" aria-pressed="true" id="{{$i}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-                                                <div class="modal fade" id="Caredit{{$i}}" role="dialog">
-
-                                                    <div class="modal-dialog modal-lg" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
-
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            </div>
-
-                                                            <div class="modal-body">
-                                                                <form method="post" action="{{ route('editCarclients') }}">
-                                                                    {{csrf_field()}}
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="carclient_name{{$i}}">Client Name</label>
-                                                                            <input type="text" id="carclient_name{{$i}}" name="client_name" class="form-control" value="{{$client->fullName}}" readonly="">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-
-                                                                    <div  class="form-group ">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
-                                                                            <span id="tin_msg"></span>
-                                                                            <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersCarActive(this.value,{{$client->id}});"  maxlength = "9">
-                                                                            <p id="error_tin_car_active{{$client->id}}"></p>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="Caremail{{$i}}">Email<span style="color: red;">*</span></label>
-                                                                            <input type="text" id="Caremail{{$i}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="Carcentre{{$i}}">Cost Centre<span style="color: red;">*</span></label>
-                                                                            <select type="text" id="Carcentre{{$i}}" name="cost_centre" class="form-control" required="" onkeyup="filterFunction()">
-                                                                                <option value="{{$client->cost_centre}}">{{$client->cost_centre}}-{{$client->faculty}}</option>
-                                                                                <?php
-                                                                                $cost_centres=cost_centre::orderBy('costcentre_id','asc')->get();
-                                                                                ?>
-                                                                                @foreach($cost_centres as $cost_centre)
-                                                                                    @if($cost_centre->costcentre_id !=$client->cost_centre )
-                                                                                        <option value="{{$cost_centre->costcentre_id}}">{{$cost_centre->costcentre_id}}-{{$cost_centre->costcentre}}</option>
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            </select>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="carclient_department{{$i}}">Department/Faculty</label>
-                                                                            <input type="text" id="carclient_department{{$i}}" name="department" class="form-control"  readonly="" value="{{$client->faculty}}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <input type="text" name="Caremail" value="{{$client->email}}" hidden="">
-                                                                    <input type="text" name="Carcostcentre" value="{{$client->cost_centre}}" hidden="">
-                                                                    <input type="text" name="Carfullname" value="{{$client->fullName}}" hidden="">
-
-                                                                    <div align="right">
-                                                                        <button class="btn btn-primary" id="car_active{{$client->id}}" type="submit">Save</button>
-                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @if($client->email!='')
-                                                    <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$i}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
-                                                    <div class="modal fade" id="carmail{{$i}}" role="dialog">
-                                                        <div class="modal-dialog  modal-lg" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">New Message</h5></b>
-
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
-                                                                        {{csrf_field()}}
-                                                                        <div class="form-group row">
-                                                                            <label for="carclient_names{{$i}}" class="col-sm-2">To</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="carclient_names{{$i}}" name="client_name" class="form-control" value="{{$client->fullName}}" readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group row">
-                                                                            <label for="carsubject{{$i}}" class="col-sm-2">Subject<span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="carsubject{{$i}}" name="subject" class="form-control" value="" >
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="cargreetings{{$i}}" class="col-sm-2">Salutation</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="cargreetings{{$i}}" name="greetings" class="form-control" value="Dear {{$client->fullName}}," readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="carmessage{{$i}}" class="col-sm-2">Body<span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-9">
-                                                                                <textarea type="text" id="carmessage{{$i}}" name="message" class="form-control" value="" rows="7"></textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="carattachment{{$i}}" class="col-sm-2">Attachments</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="file" id="carattachment{{$i}}" name="filenames[]" class="myfrm form-control" multiple="">
-                                                                                <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group row">
-                                                                            <label for="carclosing{{$i}}" class="col-sm-2">Closing</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="carclosing{{$i}}" name="closing" class="form-control" value="Regards, Central Pool Transport Unit UDSM." readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <input type="text" name="type" value="car" hidden="">
-                                                                        <div align="right">
-                                                                            <button class="btn btn-primary" type="submit">Send</button>
-                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
-                                                @endif
-                                            @endif
-                                        </center>
-                                    </td>
-                                </tr>
-                                <?php $i=$i+1;
-                                $a3= $a3+1;
-                                ?>
-                            @endforeach
                             </tbody>
                         </table>
                     @else
@@ -1148,11 +561,7 @@
                     {{-- @if(Auth::user()->role=='Insurance Officer' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                     @if($privileges=='Read only')
                     @else
-                        <a class="btn btn-success btn-sm" style="
-    padding: 10px;
-    color: #fff;font-size: 16px;
-    margin-bottom: 5px;
-    margin-top: 4px;" href="/insurance_contract_form">Add Client</a>
+                        <a class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;" href="/insurance_contract_form">Add Client</a>
 
                         <a title="Send email to selected clients" href="#" id="aia_btn_mail" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aia_mail" role="button" aria-pressed="true" style="
     padding: 10px;
@@ -1234,8 +643,8 @@
                     {{-- <center><h3><strong>Active Clients</strong></h3></center>--}}
                     {{-- <hr>--}}
                     <?php $a5=1;?>
-                    @if(count($active_insuranceclients)!=0)
-                        <table class="hover table table-striped table-bordered" id="myTable3">
+
+                        <table class="hover table table-striped table-bordered" style="width: 100%;" id="myTable3">
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
@@ -1249,212 +658,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($active_insuranceclients as $client)
-                                <tr>
-                                    <th scope="row" style="text-align: center;">{{$a5}}.</th>
-                                    <td>{{$client->full_name}}</td>
-                                    <td>
-                                        @if($client->tin=='')
-                                            N/A
-                                        @else
-                                            {{$client->tin}}
-                                        @endif
 
 
-                                    </td>
-                                    <td>{{$client->phone_number}}</td>
-                                    {{-- <td>{{ucfirst(strtolower($client->principal))}}</td>
-  <td>{{ucfirst(strtolower($client->insurance_type))}}</td>
-  <td>{{number_format($client->sum_insured)}}</td>
-  <td><center>{{date("d/m/Y",strtotime($client->commission_date))}} - {{date("d/m/Y",strtotime($client->end_date))}}</center></td> --}}
-                                    <td>{{$client->email}}</td>
-                                    <td>{{$client->insurance_class}}</td>
-                                    <td>
-
-                                        <?php
-
-                                        $has_active_contract=DB::table('insurance_contracts')->where('full_name',$client->full_name)->where('end_date','>',date('Y-m-d'))->where('contract_status','1')->get();
-
-                                        ?>
-
-
-                                        @if(count($has_active_contract)>0)
-
-
-                                            ACTIVE
-
-
-                                        @else
-                                            INACTIVE
-                                        @endif
-
-                                    </td>
-                                    <td>
-                                        <center>
-                                            <a title="View More Details" role="button" href="{{ route('InsuranceClientsViewMore',[$client->full_name,$client->email,$client->phone_number])}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc;"></i></a>
-                                            {{--  @if(Auth::user()->role=='Insurance Officer' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                                            @if($privileges=='Read only')
-                                            @else
-                                                <a title="Edit Client Details" data-toggle="modal" data-target="#editIns{{$j}}" role="button" aria-pressed="true" id="{{$j}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-                                                <div class="modal fade" id="editIns{{$j}}" role="dialog">
-
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <b><h5 class="modal-title">Fill the form below to edit client details</h5></b>
-
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            </div>
-
-                                                            <div class="modal-body">
-                                                                <form method="post" action="{{ route('editInsclients') }}">
-                                                                    {{csrf_field()}}
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="client_name{{$j}}">Client Name</label>
-                                                                            <input type="text" id="udia_act_name{{$j}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
-                                                                        </div>
-                                                                    </div>
-
-
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="client_name{{$j}}">Insurance Class</label>
-                                                                            <input type="text" id="udia_act_class{{$j}}" name="client_class" class="form-control" value="{{$client->insurance_class}}" readonly="">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="phone_number{{$j}}">Phone Number<span style="color:red;">*</span></label>
-
-                                                                            <input type="text" id="udia_act_number{{$j}}" name="phone_number" class="form-control" value="{{$client->phone_number}}" required="" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                                                   maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div class="form-group">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="email{{$j}}">Email<span style="color:red;">*</span></label>
-                                                                            <input type="text" id="udia_act_email{{$j}}" name="email" class="form-control" value="{{$client->email}}" required="" pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" maxlength="25">
-                                                                        </div>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <div  class="form-group ">
-                                                                        <div class="form-wrapper">
-                                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
-                                                                            <span id="tin_msg"></span>
-                                                                            <input type="number" id="tin" name="tin" required class="form-control"  value="{{$client->tin}}" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersInsuranceActive(this.value,{{$client->id}});"  maxlength = "9">
-                                                                            <p id="error_tin_insurance_active{{$client->id}}"></p>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <br>
-
-
-                                                                    <br>
-                                                                    <input type="text" name="id" value="{{$j}}" hidden="">
-
-                                                                    <div align="right">
-                                                                        <button class="btn btn-primary" id="insurance_active{{$client->id}}"  type="submit">Save</button>
-                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @if($client->email!='')
-                                                    <a title="Send Email to this Client" data-toggle="modal" data-target="#mailIns{{$j}}" role="button" aria-pressed="true"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
-                                                    <div class="modal fade" id="mailIns{{$j}}" role="dialog">
-                                                        <div class="modal-dialog modal-lg" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">New Message</h5></b>
-
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="post" action="{{ route('SendMessage') }}" enctype="multipart/form-data">
-                                                                        {{csrf_field()}}
-                                                                        <div class="form-group row">
-                                                                            <label for="client_names{{$j}}" class="col-sm-2">To</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="udia_act_names{{$j}}" name="client_name" class="form-control" value="{{$client->full_name}}" readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group row">
-                                                                            <label for="udia_subject{{$j}}" class="col-sm-2">Subject<span style="color:red;">*</span></label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="udia_subject{{$j}}" name="subject" class="form-control" value="" required="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group row">
-                                                                            <label for="udia_greetings{{$j}}" class="col-sm-2">Salutation</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="udia_greetings{{$j}}" name="greetings" class="form-control" value="Dear {{$client->full_name}}," readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="udia_message{{$j}}" class="col-sm-2">Message<span style="color:red;">*</span></label>
-                                                                            <div class="col-sm-9">
-                                                                                <textarea type="text" id="udia_message{{$j}}" name="message" class="form-control" value="" rows="7" required=""></textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="udia_attachment{{$j}}" class="col-sm-2">Attachments</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="file" id="udia_attachment{{$j}}" name="filenames[]" class="myfrm form-control" multiple="">
-                                                                                <center><span style="font-size: 11px; color: red;margin-bottom: -1rem;">(Attachments should be less than 30MB)</span></center>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group row">
-                                                                            <label for="udia_closing{{$j}}" class="col-sm-2">Closing</label>
-                                                                            <div class="col-sm-9">
-                                                                                <input type="text" id="udia_closing{{$j}}" name="closing" class="form-control" value="Regards, University of Dar es Salaam Insurance Agency." readonly="">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <input type="text" name="type" value="udia" hidden="">
-                                                                        <div align="right">
-                                                                            <button class="btn btn-primary" type="submit">Send</button>
-                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <a title="Send Email to this Client" role="button" aria-pressed="true" onclick="myFunction()"><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></a>
-                                                @endif
-                                            @endif
-                                        </center>
-                                    </td>
-                                </tr>
-                                <?php $j=$j+1; $a5 = $a5 +1;?>
-                            @endforeach
                             </tbody>
                         </table>
-                    @else
-                        <br><br>
-                        <p style="font-size: 18px;">No client has been found.</p>
-                    @endif
+
                 </div>
 
             </div>
@@ -1682,6 +890,32 @@
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
                 "bLengthChange": false,
+                processing:true,
+                serverSide:true,
+                deferRender:true,
+                ajax: {
+                    url:"{{ route('get_research_clients') }}"
+
+                },
+                columnDefs: [ {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                } ],
+                "order": [[ 1, 'asc' ]],
+
+                columns: [
+
+                    {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
+                    {data: 'full_name' , className: 'text-left',searchable: true},
+                    {data: 'tin' , className: 'text-left',searchable: true},
+                    {data: 'phone_number', className: 'text-left'},
+                    {data: 'email', className: 'text-left'},
+                    {data: 'address', className: 'text-left'},
+                    {data: 'status', className: 'text-left',searchable: true},
+                    {data: 'action', className: 'text-center',  orderable: false, searchable: false}
+
+                ],
 
                 buttons: [
                     {   extend: 'pdfHtml5',
@@ -1898,6 +1132,32 @@
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
                 "bLengthChange": false,
+                processing:true,
+                serverSide:true,
+                deferRender:true,
+                ajax: {
+                    url:"{{ route('get_space_clients') }}"
+
+                },
+                columnDefs: [ {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                } ],
+                "order": [[ 1, 'asc' ]],
+
+                columns: [
+
+                    {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
+                    {data: 'full_name' , className: 'text-left',searchable: true},
+                    {data: 'tin' , className: 'text-left',searchable: true},
+                    {data: 'phone_number', className: 'text-left'},
+                    {data: 'email', className: 'text-left'},
+                    {data: 'address', className: 'text-left'},
+                    {data: 'status', className: 'text-left',searchable: true},
+                    {data: 'action', className: 'text-center',  orderable: false, searchable: false}
+
+                ],
                 buttons: [
                     {   extend: 'pdfHtml5',
                         filename:'Real Estate Active Clients',
@@ -2106,6 +1366,33 @@
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
                 "bLengthChange": false,
+                processing:true,
+                serverSide:true,
+                deferRender:true,
+                ajax: {
+                    url:"{{ route('get_car_clients') }}"
+
+                },
+                columnDefs: [ {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                } ],
+                "order": [[ 1, 'asc' ]],
+
+                columns: [
+
+                    {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
+                    {data: 'fullName' , className: 'text-left',searchable: true},
+                    {data: 'tin' , className: 'text-left',searchable: true},
+
+                    {data: 'cost_centre', className: 'text-left'},
+                    {data: 'faculty', className: 'text-left'},
+                    {data: 'email', className: 'text-left'},
+                    {data: 'status', className: 'text-left',searchable: true},
+                    {data: 'action', className: 'text-center',  orderable: false, searchable: false}
+
+                ],
                 buttons: [
                     {   extend: 'pdfHtml5',
                         filename:'CPTU Active Clients',
@@ -2207,6 +1494,33 @@
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
                 "bLengthChange": false,
+                processing:true,
+                deferRender:true,
+                serverSide:true,
+                ajax: {
+                    url:"{{ route('get_insurance_clients') }}"
+
+                },
+                columnDefs: [ {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                } ],
+                "order": [[ 1, 'asc' ]],
+
+                columns: [
+
+                    {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
+                    {data: 'full_name' , className: 'text-left',searchable: true},
+                    {data: 'tin' , className: 'text-left',searchable: true},
+                    {data: 'phone_number', className: 'text-left'},
+                    {data: 'email', className: 'text-left'},
+                    {data: 'insurance_class', className: 'text-left'},
+                    {data: 'status', className: 'text-left',searchable: true},
+                    {data: 'action', className: 'text-center',  orderable: false, searchable: false}
+
+                ],
+
                 buttons: [
                     {   extend: 'pdfHtml5',
                         filename:'UDIA Active Clients',
@@ -2550,25 +1864,25 @@
 
             var table6 = $('#myTable').DataTable();
 
-            $('#myTable tbody').on( 'click', 'tr', function () {
-                document.getElementById("asp_par_names").innerHTML="";
-                document.getElementById("asp_greetings").value="Dear ";
-                var emailz = $(this).find('td:eq(2)').text();
-                if(emailz==""){
-
-                }
-                else{
-
-                    $(this).toggleClass('selected');
-                    var count6=table6.rows('.selected').data().length +' row(s) selected';
-                    if(count6>'2'){
-                        $('#asp_btn_mail').show();
-                    }
-                    else{
-                        $('#asp_btn_mail').hide();
-                    }
-                }
-            });
+            // $('#myTable tbody').on( 'click', 'tr', function () {
+            //     document.getElementById("asp_par_names").innerHTML="";
+            //     document.getElementById("asp_greetings").value="Dear ";
+            //     var emailz = $(this).find('td:eq(2)').text();
+            //     if(emailz==""){
+            //
+            //     }
+            //     else{
+            //
+            //         $(this).toggleClass('selected');
+            //         var count6=table6.rows('.selected').data().length +' row(s) selected';
+            //         if(count6>'2'){
+            //             $('#asp_btn_mail').show();
+            //         }
+            //         else{
+            //             $('#asp_btn_mail').hide();
+            //         }
+            //     }
+            // });
 
 
 
@@ -2576,7 +1890,6 @@
                 document.getElementById("asp_par_names").innerHTML="";
                 document.getElementById("asp_greetings").value="Dear ";
                 var datas6 = table6.rows('.selected').data();
-
                 var result6 = [];
                 for (var i = 0; i < datas6.length; i++)
                 {
@@ -2612,28 +1925,28 @@
 
             var table1 = $('#myTable1').DataTable();
 
-            $('#myTable1 tbody').on( 'click', 'tr', function () {
-                document.getElementById("par_names").innerHTML="";
-                document.getElementById("inasp_greetings").value="Dear ";
-                var emailz1 = $(this).find('td:eq(2)').text();
-                if(emailz1==''){
-
-                }
-                else{
-
-                    $(this).toggleClass('selected');
-                    var count=table1.rows('.selected').data().length +' row(s) selected';
-                    console.log(count);
-                    if(count>'2'){
-                        $('#btn_mail').show();
-                        console.log("show");
-                    }
-                    else{
-                        $('#btn_mail').hide();
-                        console.log("hide");
-                    }
-                }
-            } );
+            // $('#myTable1 tbody').on( 'click', 'tr', function () {
+            //     document.getElementById("par_names").innerHTML="";
+            //     document.getElementById("inasp_greetings").value="Dear ";
+            //     var emailz1 = $(this).find('td:eq(2)').text();
+            //     if(emailz1==''){
+            //
+            //     }
+            //     else{
+            //
+            //         $(this).toggleClass('selected');
+            //         var count=table1.rows('.selected').data().length +' row(s) selected';
+            //         console.log(count);
+            //         if(count>'2'){
+            //             $('#btn_mail').show();
+            //             console.log("show");
+            //         }
+            //         else{
+            //             $('#btn_mail').hide();
+            //             console.log("hide");
+            //         }
+            //     }
+            // } );
 
 
 
@@ -2676,24 +1989,24 @@
 
             var table7 = $('#myTable2').DataTable();
 
-            $('#myTable2 tbody').on( 'click', 'tr', function () {
-                document.getElementById("acp_par_names").innerHTML="";
-                document.getElementById("acp_greetings").value="Dear ";
-                var emailz2 = $(this).find('td:eq(3)').text();
-                if(emailz2==''){
-
-                }
-                else{
-                    $(this).toggleClass('selected');
-                    var count7=table7.rows('.selected').data().length +' row(s) selected';
-                    if(count7>'2'){
-                        $('#acp_btn_mail').show();
-                    }
-                    else{
-                        $('#acp_btn_mail').hide();
-                    }
-                }
-            });
+            // $('#myTable2 tbody').on( 'click', 'tr', function () {
+            //     document.getElementById("acp_par_names").innerHTML="";
+            //     document.getElementById("acp_greetings").value="Dear ";
+            //     var emailz2 = $(this).find('td:eq(3)').text();
+            //     if(emailz2==''){
+            //
+            //     }
+            //     else{
+            //         $(this).toggleClass('selected');
+            //         var count7=table7.rows('.selected').data().length +' row(s) selected';
+            //         if(count7>'2'){
+            //             $('#acp_btn_mail').show();
+            //         }
+            //         else{
+            //             $('#acp_btn_mail').hide();
+            //         }
+            //     }
+            // });
 
 
 
@@ -2736,26 +2049,26 @@
 
             var table8 = $('#myTable5').DataTable();
 
-            $('#myTable5 tbody').on( 'click', 'tr', function () {
-                document.getElementById("incp_par_names").innerHTML="";
-                document.getElementById("incp_greetings").value="Dear ";
-                var emailz3 = $(this).find('td:eq(3)').text();
-                if(emailz3==''){
-
-                }
-                else{
-                    $(this).toggleClass('selected');
-                    var count8=table8.rows('.selected').data().length +' row(s) selected';
-                    if(count8>'2'){
-                        $('#incp_btn_mail').show();
-                    }
-                    else{
-                        $('#incp_btn_mail').hide();
-                    }
-                }
-
-
-            });
+            // $('#myTable5 tbody').on( 'click', 'tr', function () {
+            //     document.getElementById("incp_par_names").innerHTML="";
+            //     document.getElementById("incp_greetings").value="Dear ";
+            //     var emailz3 = $(this).find('td:eq(3)').text();
+            //     if(emailz3==''){
+            //
+            //     }
+            //     else{
+            //         $(this).toggleClass('selected');
+            //         var count8=table8.rows('.selected').data().length +' row(s) selected';
+            //         if(count8>'2'){
+            //             $('#incp_btn_mail').show();
+            //         }
+            //         else{
+            //             $('#incp_btn_mail').hide();
+            //         }
+            //     }
+            //
+            //
+            // });
 
 
 
@@ -2798,24 +2111,24 @@
 
             var table9 = $('#myTable3').DataTable();
 
-            $('#myTable3 tbody').on( 'click', 'tr', function () {
-                document.getElementById("aia_par_names").innerHTML="";
-                document.getElementById("aia_greetings").value="Dear ";
-                var emailz4 = $(this).find('td:eq(2)').text();
-                if(emailz4==""){}
-                else{
-                    $(this).toggleClass('selected');
-                    var count9=table9.rows('.selected').data().length +' row(s) selected';
-                    if(count9>'2'){
-                        $('#aia_btn_mail').show();
-                    }
-                    else{
-                        $('#aia_btn_mail').hide();
-                    }
-                }
-
-
-            });
+            // $('#myTable3 tbody').on( 'click', 'tr', function () {
+            //     document.getElementById("aia_par_names").innerHTML="";
+            //     document.getElementById("aia_greetings").value="Dear ";
+            //     var emailz4 = $(this).find('td:eq(2)').text();
+            //     if(emailz4==""){}
+            //     else{
+            //         $(this).toggleClass('selected');
+            //         var count9=table9.rows('.selected').data().length +' row(s) selected';
+            //         if(count9>'2'){
+            //             $('#aia_btn_mail').show();
+            //         }
+            //         else{
+            //             $('#aia_btn_mail').hide();
+            //         }
+            //     }
+            //
+            //
+            // });
 
 
 
@@ -2857,24 +2170,24 @@
 
 
             var table10 = $('#myTable4').DataTable();
-
-            $('#myTable4 tbody').on( 'click', 'tr', function () {
-                document.getElementById("inia_par_names").innerHTML="";
-                document.getElementById("inia_greetings").value="Dear ";
-                var emailz5 = $(this).find('td:eq(2)').text();
-                if(emailz5==''){}
-                else{
-                    $(this).toggleClass('selected');
-                    var count10=table10.rows('.selected').data().length +' row(s) selected';
-                    if(count10>'2'){
-                        $('#inia_btn_mail').show();
-                    }
-                    else{
-                        $('#inia_btn_mail').hide();
-                    }
-                }
-
-            });
+            //
+            // $('#myTable4 tbody').on( 'click', 'tr', function () {
+            //     document.getElementById("inia_par_names").innerHTML="";
+            //     document.getElementById("inia_greetings").value="Dear ";
+            //     var emailz5 = $(this).find('td:eq(2)').text();
+            //     if(emailz5==''){}
+            //     else{
+            //         $(this).toggleClass('selected');
+            //         var count10=table10.rows('.selected').data().length +' row(s) selected';
+            //         if(count10>'2'){
+            //             $('#inia_btn_mail').show();
+            //         }
+            //         else{
+            //             $('#inia_btn_mail').hide();
+            //         }
+            //     }
+            //
+            // });
 
 
 
@@ -2930,25 +2243,25 @@
 
             var table26 = $('#myTable_flatsc').DataTable();
 
-            $('#myTable_flatsc tbody').on( 'click', 'tr', function () {
-                document.getElementById("aflats_par_names").innerHTML="";
-                document.getElementById("aflats_greetings").value="Dear ";
-                var emailz = $(this).find('td:eq(2)').text();
-                if(emailz==""){
-
-                }
-                else{
-
-                    $(this).toggleClass('selected');
-                    var count6=table26.rows('.selected').data().length +' row(s) selected';
-                    if(count6>'2'){
-                        $('#asp_btn_mail_flats_current').show();
-                    }
-                    else{
-                        $('#asp_btn_mail_flats_current').hide();
-                    }
-                }
-            });
+            // $('#myTable_flatsc tbody').on( 'click', 'tr', function () {
+            //     document.getElementById("aflats_par_names").innerHTML="";
+            //     document.getElementById("aflats_greetings").value="Dear ";
+            //     var emailz = $(this).find('td:eq(2)').text();
+            //     if(emailz==""){
+            //
+            //     }
+            //     else{
+            //
+            //         $(this).toggleClass('selected');
+            //         var count6=table26.rows('.selected').data().length +' row(s) selected';
+            //         if(count6>'2'){
+            //             $('#asp_btn_mail_flats_current').show();
+            //         }
+            //         else{
+            //             $('#asp_btn_mail_flats_current').hide();
+            //         }
+            //     }
+            // });
 
 
 
@@ -2995,25 +2308,25 @@
 
             var table27 = $('#myTable_flatsp').DataTable();
 
-            $('#myTable_flatsp tbody').on( 'click', 'tr', function () {
-                document.getElementById("inaflats_par_names").innerHTML="";
-                document.getElementById("inaflats_greetings").value="Dear ";
-                var emailz = $(this).find('td:eq(2)').text();
-                if(emailz==""){
-
-                }
-                else{
-
-                    $(this).toggleClass('selected');
-                    var count6=table27.rows('.selected').data().length +' row(s) selected';
-                    if(count6>'2'){
-                        $('#inasp_btn_mail_flats_current').show();
-                    }
-                    else{
-                        $('#inasp_btn_mail_flats_current').hide();
-                    }
-                }
-            });
+            // $('#myTable_flatsp tbody').on( 'click', 'tr', function () {
+            //     document.getElementById("inaflats_par_names").innerHTML="";
+            //     document.getElementById("inaflats_greetings").value="Dear ";
+            //     var emailz = $(this).find('td:eq(2)').text();
+            //     if(emailz==""){
+            //
+            //     }
+            //     else{
+            //
+            //         $(this).toggleClass('selected');
+            //         var count6=table27.rows('.selected').data().length +' row(s) selected';
+            //         if(count6>'2'){
+            //             $('#inasp_btn_mail_flats_current').show();
+            //         }
+            //         else{
+            //             $('#inasp_btn_mail_flats_current').hide();
+            //         }
+            //     }
+            // });
 
 
 
