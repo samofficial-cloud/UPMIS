@@ -333,6 +333,9 @@ Route::get('/reports/tenant/aging_analysis','HomeController@tenantAgingAnalysisR
 
 Route::get('/reports/car_rental/pdf','HomeController@carreportPDF')->name('carreportpdf');
 
+Route::get('/reports/car_rental/cost_centre_list_report','HomeController@costCentreListReport')->name('cost_centre_list_report');
+Route::get('/reports/car_rental/hire_rates_report','HomeController@hireRatesReport')->name('hire_rates_report');
+
 Route::get('/reports/car_rental2/pdf','HomeController@carreportPDF2')->name('carreportpdf2');
 
 Route::get('/reports/car_rental3/pdf','HomeController@carreportPDF3')->name('carreportpdf3');

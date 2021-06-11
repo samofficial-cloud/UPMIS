@@ -1,5 +1,8 @@
 <?php
 
+use App\research_flats_invoice;
+use App\research_flats_payment;
+
 return [
     'activated'        => true, // active/inactive all logging
     'middleware'       => ['web', 'auth','admin'],
@@ -12,7 +15,13 @@ return [
         'insurance' => "App\insurance",
         'carRental' => "App\carRental",
         'research_flats_contract' => "App\research_flats_contract",
-        'space' => "App\space"
+        'space' => "App\space",
+        'client' => "App\client",
+        'space_contract' => "App\space_contract",
+        'invoice' => "App\invoice",
+        'space_payment' => "App\space_payment",
+        'research_flats_invoice' => "App\research_flats_invoice",
+        'research_flats_payment' => "App\research_flats_payment"
 
 
     ],

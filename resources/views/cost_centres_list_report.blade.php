@@ -115,8 +115,8 @@
             </div>
           @endif
 
-
-        <p class="mt-1" style="font-size:30px !important; ">Cost Centres</p>
+<br><br>
+        <h4 class="mt-1 text-center" >List of cost Centres</h4>
         <hr style="    border-bottom: 1px solid #e5e5e5 !important;">
 
 
@@ -130,125 +130,7 @@
                 {{--                            <center><h3><strong>Cost Centres</strong></h3></center>--}}
                 {{--                            <hr>--}}
                 {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                @if($privileges=='Read only')
-                @else
 
-
-
-                    <div style="float:left;">
-
-
-                        <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success  active" style="background-color: #38c172; border: none;    padding: 10px;
-
-                            margin-bottom: 5px;
-                            margin-top: 4px;" role="button" aria-pressed="true">Add Cost Centre</a>
-                        <div class="modal fade" id="cost_centree" role="dialog">
-
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <b><h5 class="modal-title">Fill the form below to add new cost centre</h5></b>
-
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <form method="post" action="{{ route('addcentre') }}">
-                                            {{csrf_field()}}
-                                            <div class="form-group" id="costcentreiddiv">
-                                                <div class="form-wrapper">
-                                                    <label for="costcentreid">Cost Centre id<span style="color: red;">*</span></label>
-                                                    <input type="text" id="costcentreid" name="costcentreid" class="form-control" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group" id="centrenamediv">
-                                                <div class="form-wrapper">
-                                                    <label for="centrename">Cost Centre Name<span style="color: red;">*</span></label>
-                                                    <input type="text" id="centrename" name="centrename" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                                </div>
-                                            </div>
-
-                                            <div align="right">
-                                                <button class="btn btn-primary" type="submit">Save</button>
-                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-
-
-                    @admin
-                    <div style="float:right;">
-                        <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_cost_centres" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-
-                        <div style="float:right;"><a href="/get_cost_centres_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-                        <div style="clear: both;"></div>
-                        <div class="modal fade" id="import_data_cost_centres" role="dialog">
-
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <b><h5 class="modal-title">Importing Data</h5></b>
-
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-
-                                    <div class="modal-body">
-
-                                        <form method="post" enctype="multipart/form-data" action="/import_cost_centres">
-                                            {{csrf_field()}}
-
-                                            <div class="form-row">
-
-
-                                                <div  class=" col-md-12 ">
-                                                    <div class="">
-                                                        <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                                        <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
-                                                        <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                                    </div>
-                                                </div>
-                                                <br>
-
-
-                                            </div>
-
-
-                                            <div align="right">
-                                                <button  class="btn btn-primary" type="submit">Import</button>
-                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </form>
-
-
-
-
-
-
-
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    @endadmin
-
-
-
-
-                @endif
                 <br>
                 <div class="" style="width: 100%; ">
                     <table class="hover table table-striped table-bordered" id="myTable5">
@@ -259,10 +141,7 @@
                             <th scope="col" style="color:#fff;"><center>Cost Centre Name</center></th>
                             <th scope="col" style="color:#fff;"><center>Division ID</center></th>
                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                            @if($privileges=='Read only')
-                            @else
-                                <th scope="col" style="color:#fff;"><center>Action</center></th>
-                            @endif
+
                         </tr>
                         </thead>
                         <tbody>
@@ -273,75 +152,7 @@
                                 <td>{{$var->costcentre}}</td>
                                 <td>{{$var->division_id}}</td>
                                 {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                                @if($privileges=='Read only')
-                                @else
-                                    <td><center>
-                                            <a title="Edit this Cost Centre Details" data-toggle="modal" data-target="#centre{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-                                            <div class="modal fade" id="centre{{$var->id}}" role="dialog">
 
-                                                <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title">Fill the form below to edit cost centre details</h5></b>
-
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <form method="post" action="{{ route('editcentre') }}">
-                                                                {{csrf_field()}}
-                                                                <div class="form-group">
-                                                                    <div class="form-wrapper">
-                                                                        <label for="costcentre_id{{$var->id}}">Cost Centre Id<span style="color: red;">*</span></label>
-                                                                        <input type="text" id="costcentre_id{{$var->id}}" name="costcentre_id" class="form-control" required="" autocomplete="off" value="{{$var->costcentre_id}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-
-                                                                <div class="form-group">
-                                                                    <div class="form-wrapper">
-                                                                        <label for="centrename{{$var->id}}">Cost Centre Name<span style="color: red;">*</span></label>
-                                                                        <input type="text" id="centrename{{$var->id}}" name="centrename" class="form-control" required="" value="{{$var->costcentre}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <input type="text" name="centreid" value="{{$var->id}}" hidden="">
-
-                                                                <div align="right">
-                                                                    <button class="btn btn-primary" type="submit">Save</button>
-                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                </div>
-
-                                                            </form>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <a title="Delete this cost centre" data-toggle="modal" data-target="#Deletecentre{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-                                            <div class="modal fade" id="Deletecentre{{$var->id}}" role="dialog">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <p style="font-size: 20px;">Are you sure you want to delete this cost centre?</p>
-                                                            <br>
-                                                            <div align="right">
-                                                                <a class="btn btn-info" href="{{route('deletecentre',$var->id)}}">Proceed</a>
-                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div></center>
-                                    </td>
-                                @endif
 
                             </tr>
                             <?php $k=$k+1;?>

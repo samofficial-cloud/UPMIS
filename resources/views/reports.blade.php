@@ -896,9 +896,12 @@ $year=$current-3;
 
               <option value="clients">List of Clients</option>
               <option value="cars">List of Rental Cars</option>
+
               <option value="history">Car Rental History</option>
               <option value="revenue">Revenue Report From CPTU Vehicles</option>
               <option value="operational">Revenue Report For Service, Repairs and Fuel For Motor Vehicles</option>
+              <option value="cost_centre_list">List of Cost-centres</option>
+              <option value="hire_rates">Hire Rates</option>
             </select>
         </div>
     </div>
@@ -4310,6 +4313,91 @@ $("#car_type").click(function(){
         $("input[name='clientcontract_filter']:checked").prop("checked", false);
         $("input[name='clientdate_filter']:checked").prop("checked", false);
         $("input[name='clientpayment_filter']:checked").prop("checked", false);
+
+ }else if(query=='cost_centre_list'){
+
+     $('#revenue_durationdiv').hide();
+     $('#carsfilterBydiv').hide();
+     $('#carhistoryfilterBydiv').hide();
+     $('#carclientfilterBydiv').hide();
+     $('#carrevenuefilterBydiv').hide();
+     $('#carmodeldiv').hide();
+     $('#carstatusdiv').hide();
+     $('#carrangediv').hide();
+     $('#clientcostcentrediv').hide();
+     $('#clientcontractdiv').hide();
+     $('#clientdatediv').hide();
+     $('#clientpaymentdiv').hide();
+     $('#clientcostcentre').val("");
+     $('#client_start_date').val("");
+     $('#client_end_date').val("");
+     $('#rentstatusdiv').hide();
+     $('#vehicleregdiv').hide();
+     $('#model').val("");
+     $('#vehicle_status').val("");
+     $('#carmin_price').val("");
+     $('#carmax_price').val("");
+     $('#rent_status').val("");
+     $('#rev_start_date').val("");
+     $('#rev_end_date').val("");
+     $('#vehicle_reg').val("");
+     $('#carrevenuedatediv').hide();
+     $('#carrevenueregdiv').hide();
+     $('#carrevenuemodeldiv').hide();
+     $("input[name='carrevenuedate_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuemodel_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuereg_filter']:checked").prop("checked", false);
+     $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+     $("input[name='carrange_filter']:checked").prop("checked", false);
+     $("input[name='rentstatus_filter']:checked").prop("checked", false);
+     $("input[name='clientcostcentre_filter']:checked").prop("checked", false);
+     $("input[name='clientcontract_filter']:checked").prop("checked", false);
+     $("input[name='clientdate_filter']:checked").prop("checked", false);
+     $("input[name='clientpayment_filter']:checked").prop("checked", false);
+
+ }else if(query=='hire_rates'){
+
+     $('#revenue_durationdiv').hide();
+     $('#carsfilterBydiv').hide();
+     $('#carhistoryfilterBydiv').hide();
+     $('#carclientfilterBydiv').hide();
+     $('#carrevenuefilterBydiv').hide();
+     $('#carmodeldiv').hide();
+     $('#carstatusdiv').hide();
+     $('#carrangediv').hide();
+     $('#clientcostcentrediv').hide();
+     $('#clientcontractdiv').hide();
+     $('#clientdatediv').hide();
+     $('#clientpaymentdiv').hide();
+     $('#clientcostcentre').val("");
+     $('#client_start_date').val("");
+     $('#client_end_date').val("");
+     $('#rentstatusdiv').hide();
+     $('#vehicleregdiv').hide();
+     $('#model').val("");
+     $('#vehicle_status').val("");
+     $('#carmin_price').val("");
+     $('#carmax_price').val("");
+     $('#rent_status').val("");
+     $('#rev_start_date').val("");
+     $('#rev_end_date').val("");
+     $('#vehicle_reg').val("");
+     $('#carrevenuedatediv').hide();
+     $('#carrevenueregdiv').hide();
+     $('#carrevenuemodeldiv').hide();
+     $("input[name='carrevenuedate_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuemodel_filter']:checked").prop("checked", false);
+     $("input[name='carrevenuereg_filter']:checked").prop("checked", false);
+     $("input[name='carmodel_filter']:checked").prop("checked", false);
+     $("input[name='carstatus_filter']:checked").prop("checked", false);
+     $("input[name='carrange_filter']:checked").prop("checked", false);
+     $("input[name='rentstatus_filter']:checked").prop("checked", false);
+     $("input[name='clientcostcentre_filter']:checked").prop("checked", false);
+     $("input[name='clientcontract_filter']:checked").prop("checked", false);
+     $("input[name='clientdate_filter']:checked").prop("checked", false);
+     $("input[name='clientpayment_filter']:checked").prop("checked", false);
+
  }
  else{
   $('#revenue_durationdiv').hide();
@@ -6652,6 +6740,38 @@ var a100=0;
             }
         });
           }
+
+      }else if(query16=='cost_centre_list'){
+
+
+          $.ajax({
+              url: "{{ route('spacereport1') }}",
+              method:"GET",
+              data: postData5,
+              contentType: "application/x-www-form-urlencoded",
+              success: function(data) {
+                  window.location.href = "/reports/car_rental/cost_centre_list_report";
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  console.log(errorThrown);
+              }
+          });
+
+      }else if(query16=='hire_rates'){
+
+          $.ajax({
+              url: "{{ route('spacereport1') }}",
+              method:"GET",
+              data: postData5,
+              contentType: "application/x-www-form-urlencoded",
+              success: function(data) {
+                  window.location.href = "/reports/car_rental/hire_rates_report";
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  console.log(errorThrown);
+              }
+          });
+
 
       }
       else{

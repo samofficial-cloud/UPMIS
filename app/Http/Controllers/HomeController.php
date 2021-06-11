@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\cost_centre;
 use App\hire_rate;
 use App\research_flats_contract;
+use App\research_flats_invoice;
+use App\research_flats_payment;
 use App\Rules\PasswordValidate;
 use Illuminate\Http\Request;
 use PDF;
@@ -199,13 +201,83 @@ class HomeController extends Controller
 
 
 
+      $research_flats_contract=new research_flats_contract();
+      $research_flats_contract->first_name=ucfirst(strtolower($request->get('first_name')));
+      $research_flats_contract->last_name=ucfirst(strtolower($request->get('last_name')));
+      $research_flats_contract->gender=$request->get('gender');
+      $research_flats_contract->professional=ucfirst(strtolower($request->get('professional')));
+      $research_flats_contract->address=ucfirst(strtolower($request->get('address')));
+      $research_flats_contract->email=$request->get('email');
+      $research_flats_contract->phone_number=$request->get('phone_number');
+      $research_flats_contract->purpose=ucfirst(strtolower($request->get('purpose')));
+      $research_flats_contract->passport_no=$request->get('passport_no');
+      $research_flats_contract->issue_date=$request->get('issue_date');
+      $research_flats_contract->issue_place=$request->get('issue_place');
+      $research_flats_contract->room_no=$request->get('room_no');
+      $research_flats_contract->arrival_date=$request->get('arrival_date');
+      $research_flats_contract->arrival_time=$request->get('arrival_time');
+      $research_flats_contract->departure_date=$request->get('departure_date');
+      $research_flats_contract->payment_mode='Invoice';
+      $research_flats_contract->receipt_no=$request->get('receipt_no');
+      $research_flats_contract->receipt_date=$request->get('receipt_date');
+      $research_flats_contract->total_days=$request->get('total_days');
+      $research_flats_contract->final_payment=0;
+      $research_flats_contract->amount_usd=$amount_usd;
+      $research_flats_contract->amount_tzs=$amount_tzs;
+      $research_flats_contract->total_usd=$total_usd;
+      $research_flats_contract->total_tzs=$total_tzs;
+      $research_flats_contract->nationality=$request->get('nationality');
+      $research_flats_contract->host_name=$request->get('host_name');
+      $research_flats_contract->college_host=$college_host;
+      $research_flats_contract->department_host=$request->get('department_host');
+      $research_flats_contract->campus_host=$campus_host;
+      $research_flats_contract->host_address=ucfirst(strtolower($request->get('host_address')));
+      $research_flats_contract->host_email=$request->get('host_email');
+      $research_flats_contract->host_phone=$request->get('host_phone');
+      $research_flats_contract->invoice_debtor=$debtor;
+      $research_flats_contract->invoice_currency=$currency;
+      $research_flats_contract->college_individual=$college_individual;
+      $research_flats_contract->department_individual=$request->get('department_individual');
+      $research_flats_contract->campus_individual=$campus_individual;
+      $research_flats_contract->tin=$request->get('tin');
+      $research_flats_contract->client_category=$request->get('client_category');
+      $research_flats_contract->client_type=$request->get('client_type');
+      $research_flats_contract->id_type=$request->get('id_type');
+      $research_flats_contract->id_number=$request->get('id_number');
+      $research_flats_contract->save();
 
-      $contract_id = DB::table('research_flats_contracts')->insertGetId(
-            ['first_name' => ucfirst(strtolower($request->get('first_name'))), 'last_name'=>ucfirst(strtolower($request->get('last_name'))), 'gender'=>$request->get('gender'),'professional'=>ucfirst(strtolower($request->get('professional'))),'address'=>ucfirst(strtolower($request->get('address'))), 'email'=>$request->get('email'), 'phone_number'=>$request->get('phone_number'), 'purpose'=>ucfirst(strtolower($request->get('purpose'))), 'passport_no'=>$request->get('passport_no'), 'issue_date'=>$request->get('issue_date'), 'issue_place'=>$request->get('issue_place'), 'room_no'=>$request->get('room_no'), 'arrival_date'=>$request->get('arrival_date'), 'arrival_time'=>$request->get('arrival_time'), 'departure_date'=>$request->get('departure_date'), 'payment_mode'=>'Invoice', 'receipt_no'=>$request->get('receipt_no'), 'receipt_date'=>$request->get('receipt_date'), 'total_days'=>$request->get('total_days'), 'final_payment'=>0,'amount_usd'=>$amount_usd, 'amount_tzs'=>$amount_tzs, 'total_usd'=>$total_usd, 'total_tzs'=>$total_tzs, 'nationality'=>$request->get('nationality'), 'host_name'=>$request->get('host_name'), 'college_host'=>$college_host,'department_host'=>$request->get('department_host'),'campus_host'=>$campus_host, 'host_address'=>ucfirst(strtolower($request->get('host_address'))), 'host_email'=>$request->get('host_email'), 'host_phone'=>$request->get('host_phone'), 'invoice_debtor'=>$debtor, 'invoice_currency'=>$currency, 'college_individual'=>$college_individual,'department_individual'=>$request->get('department_individual'),'campus_individual'=>$campus_individual,'tin'=>$request->get('tin'),'client_category'=>$request->get('client_category'),'client_type'=>$request->get('client_type'),'id_type'=>$request->get('id_type'),'id_number'=>$request->get('id_number')]);
 
-       DB::table('research_flats_invoices')->insert(
-                    ['contract_id' => $contract_id, 'invoicing_period_start_date' => $request->get('arrival_date'),'invoicing_period_end_date' => $request->get('departure_date'),'period' => '','project_id' => 'research_flats','debtor_account_code' => '','debtor_name' => $debtor_name,'debtor_address' => '','amount_to_be_paid' => $amount_to_be_paid,'currency_invoice'=>$currency,'gepg_control_no'=>'','tin'=>'','vrn'=>'','max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>'OK','amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Research Flats','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>'Research Flats','prepared_by'=>Auth::user()->name,'approved_by'=>Auth::user()->name]
-                );
+        $contract_id=research_flats_contract::latest()->first()->value('id');
+
+
+
+       $research_flats_invoice=new research_flats_invoice();
+        $research_flats_invoice->contract_id=$contract_id;
+        $research_flats_invoice->invoicing_period_start_date=$request->get('arrival_date');
+        $research_flats_invoice->invoicing_period_end_date=$request->get('departure_date');
+        $research_flats_invoice->period='';
+        $research_flats_invoice->project_id='research_flats';
+        $research_flats_invoice->debtor_account_code='';
+        $research_flats_invoice->debtor_name=$debtor_name;
+        $research_flats_invoice->debtor_address='';
+        $research_flats_invoice->amount_to_be_paid=$amount_to_be_paid;
+        $research_flats_invoice->currency_invoice=$currency;
+        $research_flats_invoice->gepg_control_no='';
+        $research_flats_invoice->tin='';
+        $research_flats_invoice->vrn='';
+        $research_flats_invoice->max_no_of_days_to_pay=$max_no_of_days_to_pay;
+        $research_flats_invoice->status='OK';
+        $research_flats_invoice->amount_in_words=$amount_in_words;
+        $research_flats_invoice->inc_code=$request->get('inc_code');
+        $research_flats_invoice->invoice_category='Research Flats';
+        $research_flats_invoice->invoice_date=$today;
+        $research_flats_invoice->financial_year=$financial_year;
+        $research_flats_invoice->payment_status='Not paid';
+        $research_flats_invoice->description='Research Flats';
+        $research_flats_invoice->prepared_by=Auth::user()->name;
+        $research_flats_invoice->approved_by=Auth::user()->name;
+        $research_flats_invoice->save();
+
 
        $invoice_number_created=DB::table('research_flats_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
@@ -213,9 +285,15 @@ class HomeController extends Controller
                     ['invoice_id' => $invoice_number_created, 'invoice_category' => 'research_flats']
                 );
 
-       DB::table('research_flats_payments')->insert(
-                   ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => null,'amount_paid' => 0,'amount_not_paid' =>$amount_to_be_paid,'currency_payments' => $currency,'receipt_number' => '']
-               );
+       $research_flats_payment= new research_flats_payment();
+        $research_flats_payment->invoice_number=$invoice_number_created;
+        $research_flats_payment->invoice_number_votebook=null;
+        $research_flats_payment->amount_paid=0;
+        $research_flats_payment->amount_not_paid=$amount_to_be_paid;
+        $research_flats_payment->currency_payments=$currency;
+        $research_flats_payment->receipt_number='';
+        $research_flats_payment->save();
+
 
       return redirect()->route('contracts_management')->with('success', 'Contract Created Successfully');
     }
@@ -225,6 +303,21 @@ class HomeController extends Controller
       return $pdf->stream('Research Flats Accomodation Form.pdf');
     }
 
+
+
+    public function costCentreListReport(Request $request){
+
+        $costcentres=cost_centre::orderBy('costcentre_id','asc')->where('status',1)->get();
+        return view('cost_centres_list_report')->with('costcentres',$costcentres);
+    }
+
+
+    public function hireRatesReport(Request $request){
+
+        $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
+
+        return view('hire_rates_report')->with('rate',$rate);
+    }
 
 
     public function terminate_research_contract(Request $request,$id){
@@ -254,174 +347,7 @@ class HomeController extends Controller
 
 
     public function sendeditResearchForm(Request $request, $id){
-       DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['first_name' => $request->get('first_name')]);
 
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['last_name' => $request->get('last_name')]);
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['client_category' => $request->get('client_category')]);
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['client_type' => $request->get('client_type')]);
-
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['campus_individual' => $request->get('campus_individual')]);
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['college_individual' => $request->get('college_individual')]);
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['department_individual' => $request->get('department_individual')]);
-
-
-
-
-
-
-
-
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['gender' => $request->get('gender')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['professional' => $request->get('professional')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['address' => $request->get('address')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['email' => $request->get('email')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['phone_number' => $request->get('phone_number')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['purpose' => $request->get('purpose')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['passport_no' => $request->get('passport_no')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['issue_date' => $request->get('issue_date')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['issue_place' => $request->get('issue_place')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['room_no' => $request->get('room_no')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['arrival_date' => $request->get('arrival_date')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['arrival_time' => $request->get('arrival_time')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['departure_date' => $request->get('departure_date')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['payment_mode' => $request->get('payment_mode')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['receipt_no' => $request->get('receipt_no')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['receipt_date' => $request->get('receipt_date')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['total_days' => $request->get('total_days')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['final_payment' => $request->get('final_payment')]);
-
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['nationality' => $request->get('nationality')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['host_name' => $request->get('host_name')]);
-
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['campus_host' => $request->get('campus_host')]);
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['college_host' => $request->get('college_host')]);
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['department_host' => $request->get('department_host')]);
-
-
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['tin' => $request->get('tin')]);
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['id_type' => $request->get('id_type')]);
-
-
-        DB::table('research_flats_contracts')
-            ->where('id', $id)
-            ->update(['id_number' => $request->get('id_number')]);
-
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['host_address' => $request->get('host_address')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['host_email' => $request->get('host_email')]);
-
-        DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['host_phone' => $request->get('host_phone')]);
 
         $category =$request->get('room_cat');
 
@@ -446,21 +372,51 @@ class HomeController extends Controller
         $total_tzs = $request->get('total_suit_tzs');
       }
 
-      DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['amount_tzs' => $amount_tzs]);
 
-      DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['amount_usd' => $amount_usd]);
 
-      DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['total_usd' => $total_usd]);
+        $research_flats_contract=research_flats_contract::where('id', $id)->first();
+        $research_flats_contract->first_name=$request->get('first_name');
+        $research_flats_contract->last_name=$request->get('last_name');
+        $research_flats_contract->gender=$request->get('gender');
+        $research_flats_contract->professional=$request->get('professional');
+        $research_flats_contract->address=$request->get('address');
+        $research_flats_contract->email=$request->get('email');
+        $research_flats_contract->phone_number=$request->get('phone_number');
+        $research_flats_contract->purpose=$request->get('purpose');
+        $research_flats_contract->passport_no=$request->get('passport_no');
+        $research_flats_contract->issue_date=$request->get('issue_date');
+        $research_flats_contract->issue_place=$request->get('issue_place');
+        $research_flats_contract->room_no=$request->get('room_no');
+        $research_flats_contract->arrival_date=$request->get('arrival_date');
+        $research_flats_contract->arrival_time=$request->get('arrival_time');
+        $research_flats_contract->departure_date=$request->get('departure_date');
+        $research_flats_contract->payment_mode='Invoice';
+        $research_flats_contract->receipt_no=$request->get('receipt_no');
+        $research_flats_contract->receipt_date=$request->get('receipt_date');
+        $research_flats_contract->total_days=$request->get('total_days');
+        $research_flats_contract->final_payment=0;
+        $research_flats_contract->amount_usd=$amount_usd;
+        $research_flats_contract->amount_tzs=$amount_tzs;
+        $research_flats_contract->total_usd=$total_usd;
+        $research_flats_contract->total_tzs=$total_tzs;
+        $research_flats_contract->nationality=$request->get('nationality');
+        $research_flats_contract->host_name=$request->get('host_name');
+        $research_flats_contract->college_host=$request->get('college_host');
+        $research_flats_contract->department_host=$request->get('department_host');
+        $research_flats_contract->campus_host=$request->get('campus_host');
+        $research_flats_contract->host_address=$request->get('host_address');
+        $research_flats_contract->host_email=$request->get('host_email');
+        $research_flats_contract->host_phone=$request->get('host_phone');
+        $research_flats_contract->college_individual=$request->get('college_individual');
+        $research_flats_contract->department_individual=$request->get('department_individual');
+        $research_flats_contract->campus_individual=$request->get('campus_individual');
+        $research_flats_contract->tin=$request->get('tin');
+        $research_flats_contract->client_category=$request->get('client_category');
+        $research_flats_contract->client_type=$request->get('client_type');
+        $research_flats_contract->id_type=$request->get('id_type');
+        $research_flats_contract->id_number=$request->get('id_number');
+        $research_flats_contract->save();
 
-      DB::table('research_flats_contracts')
-                ->where('id', $id)
-                ->update(['total_tzs' => $total_tzs]);
 
     return redirect()->route('contracts_management')->with('success', 'Contract Edited Successfully');
 

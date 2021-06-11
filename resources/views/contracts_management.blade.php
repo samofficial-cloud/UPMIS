@@ -4632,12 +4632,13 @@ div.dt-buttons{
     <br>
      @if($privileges=='Read only')
     @else
-
+          @if(Auth::user()->role=='Transport Officer-CPTU')
          <div style="float:left;">
        <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
           padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
         </a>
          </div>
+          @endif
 
           @admin
           <div style="float:right;">
