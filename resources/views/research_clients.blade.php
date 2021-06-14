@@ -549,7 +549,7 @@
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
                 "bLengthChange": false,
-
+                "orderClasses": false,
                 buttons: [
                     {   extend: 'pdfHtml5',
                         filename:'Research Flats Clients',
