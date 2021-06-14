@@ -1158,6 +1158,7 @@ if($privileges=='Read only') {
 
             $programming_end_date = $programming_end_date_temp->addMonths($request->get('payment_cycle'))->addDays(1);
 
+
         }
 
 

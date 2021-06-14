@@ -169,6 +169,10 @@ Route::post('/login/custom', [
 
 
         Route::get('/clients', 'clientsController@index')->name('clients');
+        Route::get('/clients/research', 'clientsController@researchClients')->name('research_clients');
+        Route::get('/clients/insurance', 'clientsController@insuranceClients')->name('insurance_clients');
+        Route::get('/clients/car_rental', 'clientsController@carClients')->name('car_rental_clients');
+
 
 Route::post('/clients/Space/edit', 'clientsController@edit')->name('editclients');
 

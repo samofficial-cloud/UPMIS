@@ -90,7 +90,37 @@ class clientsController extends Controller
       $flats_previous = research_flats_contract::select('first_name','last_name','address','email','phone_number','tin','id')->whereDate('departure_date','<',date('Y-m-d'))->distinct()->orderBy('first_name','asc')->get();
 
     return view('clients')->with('SCclients',$SCclients)->with('SPclients',$SPclients)->with('active_carclients',$active_carclients)->with('inactive_carclients',$inactive_carclients)->with('insuranceclients',$insuranceclients)->with('active_insuranceclients',$active_insuranceclients)->with('inactive_insuranceclients',$inactive_insuranceclients)->with('Spemails',$Spemails)->with('flats_current',$flats_current)->with('flats_previous',$flats_previous);
+
     }
+
+
+    public function researchClients(Request $request){
+
+        $flats_current = research_flats_contract::select('first_name','last_name','address','email','phone_number','tin','id')->distinct()->orderBy('first_name','asc')->get();
+
+        return view('research_clients')->with('flats_current',$flats_current);
+
+    }
+
+
+    public function insuranceClients(Request $request){
+
+        $active_insuranceclients=insurance_contract::select('full_name','email','phone_number','insurance_class','tin','id')->distinct()->orderBy('full_name','asc')->get();
+        return view('insurance_clients')->with('active_insuranceclients',$active_insuranceclients);
+
+    }
+
+
+    public function carClients(Request $request){
+
+        $active_carclients=carContract::select('fullName','email','cost_centre','faculty','tin','id')->distinct()->orderBy('fullName','asc')->get();
+
+        return view('car_clients')->with('active_carclients',$active_carclients);
+
+    }
+
+
+
 
     public function edit(Request $request){
         $full_name=$request->get('client_name');
@@ -397,7 +427,7 @@ class clientsController extends Controller
             return $action;
 
         })->rawColumns(['action','status'])
-            ->make(true);
+            ->toJson();
 
 
 
