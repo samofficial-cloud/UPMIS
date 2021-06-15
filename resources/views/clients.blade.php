@@ -151,30 +151,31 @@
 
                 <div class="tab">
 
+                    @if ($category=='Real Estate only' OR $category=='All')
                         <button class="tablinks active space_clients" onclick='javascript:window.location.href="/clients"' ><strong>Real Estate</strong></button>
+                    @else
+                    @endif
 
 
 
-
-
-
+                        @if($category=='Research Flats only' OR $category=='All')
                         <button class="tablinks flats_clients" onclick='javascript:window.location.href="/clients/research"'><strong>Research Flats</strong></button>
+                        @else
+                        @endif
 
 
 
-
-
+                        @if($category=='Insurance only' OR $category=='All')
                         <button class="tablinks insurance_clients" onclick='javascript:window.location.href="/clients/insurance"'><strong>Insurance</strong></button>
+                        @else
+                        @endif
 
 
 
-
-
-
-
-
+                        @if ($category=='CPTU only' OR $category=='All')
                         <button class="tablinks car_clients" onclick='javascript:window.location.href="/clients/car_rental"'><strong>Car Rental</strong></button>
-
+                        @else
+                        @endif
 
 
                 </div>

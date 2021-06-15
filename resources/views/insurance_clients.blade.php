@@ -151,30 +151,31 @@
 
                     <div class="tab">
 
-                        <button class="tablinks  space_clients" onclick='javascript:window.location.href="/clients"' ><strong>Real Estate</strong></button>
+                        @if ($category=='Real Estate only' OR $category=='All')
+                            <button class="tablinks  space_clients" onclick='javascript:window.location.href="/clients"' ><strong>Real Estate</strong></button>
+                        @else
+                        @endif
 
 
 
+                        @if($category=='Research Flats only' OR $category=='All')
+                            <button class="tablinks flats_clients" onclick='javascript:window.location.href="/clients/research"'><strong>Research Flats</strong></button>
+                        @else
+                        @endif
 
 
 
-                        <button class="tablinks flats_clients" onclick='javascript:window.location.href="/clients/research"'><strong>Research Flats</strong></button>
+                        @if($category=='Insurance only' OR $category=='All')
+                            <button class="tablinks active insurance_clients" onclick='javascript:window.location.href="/clients/insurance"'><strong>Insurance</strong></button>
+                        @else
+                        @endif
 
 
 
-
-
-                        <button class="tablinks active insurance_clients" onclick='javascript:window.location.href="/clients/insurance"'><strong>Insurance</strong></button>
-
-
-
-
-
-
-
-
-                        <button class="tablinks car_clients" onclick='javascript:window.location.href="/clients/car_rental"'><strong>Car Rental</strong></button>
-
+                        @if ($category=='CPTU only' OR $category=='All')
+                            <button class="tablinks car_clients" onclick='javascript:window.location.href="/clients/car_rental"'><strong>Car Rental</strong></button>
+                        @else
+                        @endif
 
 
                     </div>
